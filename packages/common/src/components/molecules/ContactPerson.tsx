@@ -20,7 +20,7 @@ interface IProps {
 }
 
 const ContactPerson = (props: IProps): React.ReactElement => {
-  const { firstName, lastName, email, designation, phoneNumber, onContactTypeClicked, image } = props;
+  const { firstName, lastName, designation, phoneNumber, onContactTypeClicked, image } = props;
   const fullName = `${firstName} ${lastName}`;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -28,7 +28,7 @@ const ContactPerson = (props: IProps): React.ReactElement => {
   const OPTIONS = [
     { icon: icons.whatsapp, id: ContactActions.WHATSAPP, visible: !phoneNumber.includes('**') },
     { icon: icons.phone, id: ContactActions.CALL, visible: !phoneNumber.includes('**') },
-    { icon: icons.envelope, id: ContactActions.MAIL, visible: !email.includes('**') },
+    { icon: icons.envelope, id: ContactActions.MAIL, visible: true },
   ];
 
   return (

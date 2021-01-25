@@ -22,7 +22,7 @@ class EventWithProfile extends Component<IProps> {
     const {
       t,
       detail: {
-        user: { fullName, profilePicture },
+        user: { name, profilePicture },
       },
       handleConfirmation,
       handleReschedule,
@@ -31,9 +31,9 @@ class EventWithProfile extends Component<IProps> {
     return (
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <Avatar fullName={fullName} isOnlyAvatar imageSize={72} image={profilePicture} />
+          <Avatar fullName={name} isOnlyAvatar imageSize={72} image={profilePicture} />
           <Text type="regular" style={styles.name}>
-            {fullName}
+            {name}
           </Text>
         </View>
         <Divider containerStyles={styles.divider} />

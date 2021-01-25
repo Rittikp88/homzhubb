@@ -9,12 +9,14 @@ import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { VisitUtils } from '@homzhub/common/src/utils/VisitUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -25,15 +27,12 @@ import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
-  DetailType,
   IAssetVisitPayload,
   IUpdateVisitPayload,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IDropdownObject } from '@homzhub/common/src/constants/FinanceOverview';
-import { MISSED_COMPLETED_DATA, UPCOMING_DROPDOWN_DATA } from '@homzhub/common/src/constants/SiteVisit';
 import { IRoutes, Tabs, VisitRoutes } from '@homzhub/common/src/constants/Tabs';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -44,6 +43,7 @@ interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
   setVisitIds: (payload: number[]) => void;
   setVisitType: (payload: Tabs) => void;
+  clearVisits: () => void;
 }
 
 interface IStateProps {
@@ -58,7 +58,6 @@ type NavigationType =
 
 interface IProps {
   isFromProperty?: boolean;
-  isFromTenancies?: boolean;
   onReschedule: (isNew?: boolean, userId?: number) => void;
   selectedAssetId?: number;
   isViewChanged?: boolean;
@@ -178,13 +177,13 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
   }
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
-    const { visits, isLoading, reviewVisitId } = this.props;
+    const { visits, isLoading, reviewVisitId, t } = this.props;
     const { dropdownValue, pillars } = this.state;
     let dropdownData;
 
     switch (route.key) {
       case Tabs.UPCOMING:
-        dropdownData = this.getDropdownData(Tabs.UPCOMING);
+        dropdownData = VisitUtils.getDropdownData(Tabs.UPCOMING);
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
             <PropertyVisitList
@@ -201,7 +200,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
           </View>
         );
       case Tabs.MISSED:
-        dropdownData = this.getDropdownData(Tabs.MISSED);
+        dropdownData = VisitUtils.getDropdownData(Tabs.MISSED);
         return (
           <View onLayout={(e): void => this.onLayout(e, 1)}>
             <PropertyVisitList
@@ -218,7 +217,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
           </View>
         );
       case Tabs.COMPLETED:
-        dropdownData = this.getDropdownData(Tabs.COMPLETED);
+        dropdownData = VisitUtils.getDropdownData(Tabs.COMPLETED);
         return (
           <View onLayout={(e): void => this.onLayout(e, 2)}>
             <PropertyVisitList
@@ -238,40 +237,24 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
           </View>
         );
       default:
-        return <EmptyState />;
+        return <EmptyState icon={icons.schedule} title={t('property:noVisits')} />;
     }
   };
 
   private onDropdownValueSelect = (startDate: string, endDate: string, visitType: Tabs): void => {
-    const { getAssetVisit, selectedAssetId, setVisitPayload } = this.props;
-    let status;
-    const start_date__lt = endDate;
-    const start_date__gte = startDate;
+    const { getAssetVisit, selectedAssetId, setVisitPayload, isFromProperty = false, asset } = this.props;
 
-    switch (visitType) {
-      case Tabs.MISSED:
-        status = VisitStatus.PENDING;
-        break;
-      case Tabs.COMPLETED:
-        status = VisitStatus.ACCEPTED;
-        break;
-      default:
-    }
+    const payload = VisitUtils.onDropdownValueSelect({
+      assetPayload: asset,
+      visitType,
+      startDate,
+      endDate,
+      isFromProperty,
+      selectedAssetId,
+      setVisitPayload,
+    });
 
-    if (setVisitPayload) {
-      setVisitPayload({
-        ...(start_date__gte && { start_date__gte }),
-        ...(start_date__lt && { start_date__lt }),
-        ...(status && { status }),
-      });
-    }
-
-    const payload: IAssetVisitPayload = {
-      start_date__lt,
-      start_date__gte,
-      ...(status && { status }),
-      ...(selectedAssetId !== 0 && { asset_id: selectedAssetId }),
-    };
+    if (!payload) return;
 
     getAssetVisit(payload);
   };
@@ -318,9 +301,10 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
   };
 
   private handleIndexChange = (index: number): void => {
-    const { setVisitType } = this.props;
+    const { setVisitType, clearVisits } = this.props;
     const { key } = VisitRoutes[index];
     setVisitType(key);
+    clearVisits();
     this.setState({ currentIndex: index, dropdownValue: 1 }, this.getVisitsData);
   };
 
@@ -354,7 +338,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     this.setState({
       dropdownValue: value as number,
     });
-    const data = this.getDropdownData(visitType);
+    const data = VisitUtils.getDropdownData(visitType);
     const selectedData = data.find((item) => item.value === (value as number));
     if (selectedData) {
       const fromDate =
@@ -400,120 +384,30 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     });
   };
 
-  private getDropdownData = (visitType: Tabs): IDropdownObject[] => {
-    const { t } = this.props;
-    let results;
-    switch (visitType) {
-      case Tabs.UPCOMING:
-        results = Object.values(UPCOMING_DROPDOWN_DATA);
-        break;
-      case Tabs.MISSED:
-      case Tabs.COMPLETED:
-        results = Object.values(MISSED_COMPLETED_DATA);
-        break;
-      default:
-        results = Object.values(MISSED_COMPLETED_DATA);
-    }
-
-    return results.map((currentData: IDropdownObject) => {
-      return {
-        ...currentData,
-        label: t(currentData.label),
-      };
-    });
-  };
-
   private getVisitsData = (): void => {
-    const {
-      getAssetVisit,
-      asset,
-      isFromProperty = false,
-      selectedAssetId,
-      setVisitPayload,
-      visitId,
-      isFromTenancies,
-    } = this.props;
+    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload, visitId } = this.props;
     const { currentIndex, dropdownValue, isFromNav } = this.state;
     const currentRoute = VisitRoutes[currentIndex];
-    const date = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
-    let dropdownData: IDropdownObject[] = [];
-    let key = '';
 
-    let start_date_lte;
-    let start_date_gte;
-    let lease_listing_id;
-    let sale_listing_id;
-    let start_date_lt;
-    let status;
-
-    if (isFromTenancies) {
-      return;
-    }
-
-    switch (currentRoute.key) {
-      case Tabs.UPCOMING:
-        dropdownData = this.getDropdownData(Tabs.UPCOMING);
-        key = Tabs.UPCOMING;
-        start_date_gte = date;
-        status = `${VisitStatus.ACCEPTED},${VisitStatus.PENDING}`;
-        break;
-      case Tabs.MISSED:
-        dropdownData = this.getDropdownData(Tabs.MISSED);
-        key = Tabs.MISSED;
-        start_date_gte = date;
-        status = `${VisitStatus.REJECTED},${VisitStatus.CANCELLED},${VisitStatus.PENDING}`;
-        break;
-      case Tabs.COMPLETED:
-        dropdownData = this.getDropdownData(Tabs.COMPLETED);
-        key = Tabs.COMPLETED;
-        start_date_lte = date;
-        status = `${VisitStatus.ACCEPTED}`;
-        break;
-      default:
-    }
-
-    const selectedData = dropdownData.find((item) => item.value === dropdownValue);
-
-    if (selectedData) {
-      start_date_gte =
-        key === (Tabs.UPCOMING || Tabs.MISSED) && selectedData.startDate < date ? date : selectedData.startDate;
-      start_date_lt = selectedData.endDate;
-    }
-
-    if (setVisitPayload) {
-      setVisitPayload({
-        ...(start_date_lte && { start_date__lte: start_date_lte }),
-        ...(start_date_gte && { start_date__gte: start_date_gte }),
-        ...(start_date_lt && { start_date__lt: start_date_lt }),
-        ...(status && { status__in: status }),
-      });
-    }
-
-    if (isFromProperty && asset && asset.assetType) {
-      const isLease = asset.assetType === DetailType.LEASE_UNIT || asset.assetType === DetailType.LEASE_LISTING;
-      if (isLease) {
-        lease_listing_id = asset.lease_listing_id;
-      } else {
-        sale_listing_id = asset.sale_listing_id;
-      }
-    }
-    let payload: IAssetVisitPayload;
+    let payload: IAssetVisitPayload | null;
     if (isFromNav && visitId) {
       payload = {
         id: visitId,
       };
       this.setState({ isFromNav: false });
     } else {
-      payload = {
-        ...(start_date_lte && { start_date__lte: start_date_lte }),
-        ...(key !== Tabs.MISSED && start_date_lt && { start_date__lt: start_date_lt }),
-        ...(start_date_gte && { start_date__gte: start_date_gte }),
-        ...(isFromProperty && lease_listing_id && { lease_listing_id }),
-        ...(isFromProperty && sale_listing_id && { sale_listing_id }),
-        ...(selectedAssetId && selectedAssetId !== 0 && { asset_id: selectedAssetId }),
-        ...(status && { status__in: status }),
-      };
+      payload = VisitUtils.getVisitPayload({
+        assetPayload: asset,
+        dropdownValue,
+        isFromProperty,
+        visitType: currentRoute.key,
+        visitId,
+        selectedAssetId,
+        setVisitPayload,
+      });
     }
+
+    if (!payload) return;
 
     getAssetVisit(payload);
   };
@@ -536,12 +430,13 @@ export const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetVisit, setVisitIds, setVisitType } = AssetActions;
+  const { getAssetVisit, setVisitIds, setVisitType, clearVisits } = AssetActions;
   return bindActionCreators(
     {
       getAssetVisit,
       setVisitIds,
       setVisitType,
+      clearVisits,
     },
     dispatch
   );

@@ -190,7 +190,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         <View style={containerStyle}>
           {!isUserView && (
             <Avatar
-              fullName={user.fullName}
+              fullName={user.name}
               isRightIcon
               onPressRightIcon={onPressIcon}
               designation={userRole}

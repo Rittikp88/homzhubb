@@ -244,6 +244,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
       ...(data?.promo_code && { promo_code: data.promo_code }),
     };
     this.setState({ isLoading: true });
+
     try {
       const response = await RecordAssetRepository.getOrderSummary(payload);
       this.setState({ isLoading: false });
@@ -252,8 +253,9 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
       this.setState({ isLoading: false });
       if (data?.promo_code) {
         this.setState({ isPromoFailed: true });
+      } else {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       }
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 }

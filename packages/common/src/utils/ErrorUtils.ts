@@ -2,7 +2,7 @@ import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
 class ErrorUtils {
-  public getErrorMessage = (e: IApiClientError): string => {
+  public getErrorMessage = (e: IApiClientError, isFieldRequired?: boolean): string => {
     if (e.original && e.original.error && e.original.error.length > 0) {
       const { error } = e.original;
       if (error[0].message.detail) {
@@ -12,7 +12,7 @@ class ErrorUtils {
     }
     if (e.original && e.original.data && e.original.data.length > 0) {
       const { data } = e.original;
-      if (data[0].field) {
+      if (data[0].field && isFieldRequired) {
         return `${data[0].field} - ${data[0].message}`;
       }
       return data[0].message;

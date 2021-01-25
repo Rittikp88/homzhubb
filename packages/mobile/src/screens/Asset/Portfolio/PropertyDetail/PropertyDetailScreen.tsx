@@ -11,6 +11,7 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -67,6 +68,7 @@ interface IDispatchProps {
   setAssetId: (payload: number) => void;
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   getAssetById: () => void;
+  clearAsset: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
@@ -126,7 +128,9 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   public componentWillUnmount(): void {
+    const { clearAsset } = this.props;
     this.focusListener();
+    clearAsset();
   }
 
   public render = (): React.ReactNode => {
@@ -134,15 +138,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const {
-      currentIndex,
-      propertyData,
-      heights,
-      isLoading,
-      isMenuVisible,
-      scrollEnabled,
-      isDeleteProperty,
-    } = this.state;
+    const { propertyData, isLoading, isMenuVisible, scrollEnabled, isDeleteProperty } = this.state;
 
     if (isLoading) {
       return <Loader visible />;
@@ -156,7 +152,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
 
     const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
-      this.handleAction(propertyData.id, payload, param);
+      this.handleAction(propertyData, payload, param);
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
     const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED;
@@ -186,58 +182,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
                 onHandleAction={onPressAction}
                 containerStyle={styles.card}
               />
-              <TabView
-                lazy
-                swipeEnabled={false}
-                style={{ height: heights[currentIndex] }}
-                initialLayout={TAB_LAYOUT}
-                renderScene={({ route }): React.ReactElement | null => this.renderTabScene(route)}
-                onIndexChange={this.handleIndexChange}
-                renderTabBar={(props): React.ReactElement => {
-                  const {
-                    navigationState: { index, routes },
-                  } = props;
-                  const currentRoute = routes[index];
-                  return (
-                    <TabBar
-                      {...props}
-                      scrollEnabled
-                      style={{ backgroundColor: theme.colors.white }}
-                      indicatorStyle={{ backgroundColor: theme.colors.blue }}
-                      renderIcon={({ route }): React.ReactElement => {
-                        const isSelected = currentRoute.key === route.key;
-                        return (
-                          <Icon
-                            name={route.icon}
-                            color={isSelected ? theme.colors.blue : theme.colors.darkTint3}
-                            size={22}
-                          />
-                        );
-                      }}
-                      renderLabel={({ route }): React.ReactElement => {
-                        const isSelected = currentRoute.key === route.key;
-                        return (
-                          <Text
-                            type="small"
-                            style={[
-                              styles.label,
-                              isSelected && {
-                                color: theme.colors.blue,
-                              },
-                            ]}
-                          >
-                            {route.title}
-                          </Text>
-                        );
-                      }}
-                    />
-                  );
-                }}
-                navigationState={{
-                  index: currentIndex,
-                  routes: Routes,
-                }}
-              />
+              {this.renderTabView()}
             </View>
           </UserScreen>
           {this.renderFullscreenCarousel()}
@@ -258,6 +203,68 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
           </BottomSheet>
         </View>
       </TouchableWithoutFeedback>
+    );
+  };
+
+  private renderTabView = (): React.ReactElement | null => {
+    const {
+      route: { params },
+    } = this.props;
+    const { currentIndex, heights } = this.state;
+
+    if (params && params.isFromTenancies) {
+      return null;
+    }
+
+    return (
+      <TabView
+        lazy
+        swipeEnabled={false}
+        style={{ height: heights[currentIndex] }}
+        initialLayout={TAB_LAYOUT}
+        renderScene={({ route }): React.ReactElement | null => this.renderTabScene(route)}
+        onIndexChange={this.handleIndexChange}
+        renderTabBar={(props): React.ReactElement => {
+          const {
+            navigationState: { index, routes },
+          } = props;
+          const currentRoute = routes[index];
+          return (
+            <TabBar
+              {...props}
+              scrollEnabled
+              style={{ backgroundColor: theme.colors.white }}
+              indicatorStyle={{ backgroundColor: theme.colors.blue }}
+              renderIcon={({ route }): React.ReactElement => {
+                const isSelected = currentRoute.key === route.key;
+                return (
+                  <Icon name={route.icon} color={isSelected ? theme.colors.blue : theme.colors.darkTint3} size={22} />
+                );
+              }}
+              renderLabel={({ route }): React.ReactElement => {
+                const isSelected = currentRoute.key === route.key;
+                return (
+                  <Text
+                    type="small"
+                    style={[
+                      styles.label,
+                      isSelected && {
+                        color: theme.colors.blue,
+                      },
+                    ]}
+                  >
+                    {route.title}
+                  </Text>
+                );
+              }}
+            />
+          );
+        }}
+        navigationState={{
+          index: currentIndex,
+          routes: Routes,
+        }}
+      />
     );
   };
 
@@ -305,12 +312,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.SITE_VISITS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 4)}>
-            <SiteVisitTab
-              onReschedule={this.navigateToBookVisit}
-              navigation={navigation}
-              isFromProperty
-              isFromTenancies={params?.isFromTenancies}
-            />
+            <SiteVisitTab onReschedule={this.navigateToBookVisit} navigation={navigation} isFromProperty />
           </View>
         );
       case Tabs.FINANCIALS:
@@ -537,13 +539,14 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     return list;
   };
 
-  private handleAction = (assetId: number, payload: IClosureReasonPayload, param?: IListingParam): void => {
+  private handleAction = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
     const { navigation, setAssetId } = this.props;
     const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
     const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
     const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
+    const { id } = asset;
 
-    setAssetId(assetId);
+    setAssetId(id);
 
     if (param && param.hasTakeAction) {
       // @ts-ignore
@@ -552,7 +555,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         param: { isFromPortfolio: true },
       });
     } else {
-      navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param });
+      navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });
     }
   };
 
@@ -589,8 +592,9 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     setEditPropertyFlow,
     toggleEditPropertyFlowBottomSheet,
   } = RecordAssetActions;
+  const { clearAsset } = AssetActions;
   return bindActionCreators(
-    { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet },
+    { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet, clearAsset },
     dispatch
   );
 };

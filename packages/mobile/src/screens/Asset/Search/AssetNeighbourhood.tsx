@@ -75,7 +75,6 @@ export class AssetNeighbourhood extends React.Component<Props, IOwnState> {
     const {
       assetLocation: { longitude, latitude },
     } = asset;
-
     return (
       <View style={styles.flexOne}>
         <Header type="secondary" icon={icons.leftArrow} onIconPress={this.onBackPress} title={asset.projectName} />
@@ -200,8 +199,10 @@ export class AssetNeighbourhood extends React.Component<Props, IOwnState> {
         undefined,
         metricSystem
       );
+
       this.setState({ pointsOfInterest, isApiActive: false });
     } catch (e) {
+      this.setState({ isBottomSheetVisible: false, isApiActive: false });
       AlertHelper.error({ message: e.message });
     }
   };

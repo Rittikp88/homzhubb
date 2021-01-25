@@ -36,6 +36,7 @@ import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
@@ -205,7 +206,7 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
                       <Avatar
                         isRightIcon
                         key={item.id}
-                        fullName={item.user.fullName}
+                        fullName={item.user.name}
                         designation={StringUtils.toTitleCase(designation)}
                         date={item.updatedAt ?? item.createdAt}
                         image={item.user.profilePicture}
@@ -306,33 +307,33 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
       case VisitStatus.ACCEPTED:
         if (date > todayDate) {
           return {
-            label: 'Upcoming',
+            label: Tabs.UPCOMING,
             color: theme.colors.green,
           };
         }
         return {
-          label: 'Completed',
+          label: Tabs.COMPLETED,
           color: theme.colors.green,
         };
       case VisitStatus.PENDING:
         if (date < todayDate) {
           return {
-            label: 'Missed',
+            label: Tabs.MISSED,
             color: theme.colors.error,
           };
         }
         return {
-          label: 'Upcoming',
+          label: Tabs.UPCOMING,
           color: theme.colors.green,
         };
       case VisitStatus.CANCELLED:
         return {
-          label: 'Cancelled',
+          label: Tabs.CANCELLED,
           color: theme.colors.error,
         };
       case VisitStatus.REJECTED:
         return {
-          label: 'Declined',
+          label: Tabs.DECLINED,
           color: theme.colors.error,
         };
       default:
