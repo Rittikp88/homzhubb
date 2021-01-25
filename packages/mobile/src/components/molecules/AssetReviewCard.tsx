@@ -43,7 +43,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     isReported,
   } = review;
   const comment = comments.length > 0 ? comments[0].comment : '';
-  const commentDate = comments.length > 0 ? comments[0].postedAt : undefined;
+  const commentDate = comments.length > 0 ? comments[0].modifiedAt : undefined;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const owner = useSelector(UserSelector.getUserProfile);
 
