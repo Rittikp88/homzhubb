@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
@@ -20,6 +22,8 @@ interface IFormData {
 
 const HaveAnyQuestionsForm: React.FC = () => {
   const { t } = useTranslation();
+  const isTablet = useDown(deviceBreakpoint.TABLET);
+  const styles = askQuesFormStyle(isTablet);
   const contact = { fullName: 'Shreya Sharma', countryCode: '+1', phoneNumber: '(217) 555-0113' } as User;
 
   const formData = {
@@ -101,35 +105,48 @@ const handleFormSubmit = (values: IFormData, formActions: FormikHelpers<IFormDat
   //
 };
 
-const styles = StyleSheet.create({
-  buttonStyle: {
-    flex: 0,
-    marginHorizontal: 20,
-  },
-  textAreaStyle: { height: 100 },
-  textArea: {
-    marginTop: 16,
-  },
-  title: {
-    marginBottom: 20,
-  },
+interface IAskQuesFormStyle {
+  buttonStyle: ViewStyle;
+  textAreaStyle: ViewStyle;
+  textArea: ViewStyle;
+  title: ViewStyle;
+  divider: ViewStyle;
+  subtitle: ViewStyle;
+  content: ViewStyle;
+}
 
-  divider: {
-    marginTop: 16,
-  },
+const askQuesFormStyle = (isTablet: boolean): StyleSheet.NamedStyles<IAskQuesFormStyle> =>
+  StyleSheet.create<IAskQuesFormStyle>({
+    buttonStyle: {
+      flex: 0,
+      marginHorizontal: 20,
+    },
+    textAreaStyle: {
+      height: 100,
+    },
+    textArea: {
+      marginTop: 16,
+    },
+    title: {
+      marginBottom: 20,
+    },
 
-  subtitle: {
-    marginTop: 8,
-    marginBottom: 16,
-  },
+    divider: {
+      marginTop: 16,
+    },
 
-  content: {
-    backgroundColor: theme.colors.white,
-    marginLeft: 20,
-    width: '100%',
-    paddingVertical: 24,
-    paddingHorizontal: 20,
-  },
-});
+    subtitle: {
+      marginTop: 8,
+      marginBottom: 16,
+    },
 
+    content: {
+      backgroundColor: theme.colors.white,
+      marginLeft: isTablet ? 0 : 20,
+      width: '100%',
+      paddingVertical: 24,
+      paddingHorizontal: 20,
+      marginVertical: isTablet ? 16 : 0,
+    },
+  });
 export default HaveAnyQuestionsForm;

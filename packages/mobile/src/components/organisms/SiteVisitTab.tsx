@@ -424,7 +424,15 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
   };
 
   private getVisitsData = (): void => {
-    const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload, visitId, isFromTenancies } = this.props;
+    const {
+      getAssetVisit,
+      asset,
+      isFromProperty = false,
+      selectedAssetId,
+      setVisitPayload,
+      visitId,
+      isFromTenancies,
+    } = this.props;
     const { currentIndex, dropdownValue, isFromNav } = this.state;
     const currentRoute = VisitRoutes[currentIndex];
     const date = DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO24Format);
@@ -438,7 +446,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     let start_date_lt;
     let status;
 
-    if(isFromTenancies) {
+    if (isFromTenancies) {
       return;
     }
 

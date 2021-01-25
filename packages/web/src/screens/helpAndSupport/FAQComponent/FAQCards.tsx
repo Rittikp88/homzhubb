@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: 4,
     margin: 10,
-    marginLeft: 20,
     borderColor: theme.colors.darkTint10,
     borderWidth: 1,
   },
