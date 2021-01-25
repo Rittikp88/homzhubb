@@ -58,10 +58,11 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     } = this.props;
     getAssetPlanList();
     await this.getAssetAdvertisements();
-    if (params) return;
-    setTimeout(() => {
-      this.setState({ isSheetVisible: true });
-    }, 0);
+    if (!params) {
+      setTimeout(() => {
+        this.setState({ isSheetVisible: true });
+      }, 0);
+    }
   };
 
   public render(): React.ReactElement {

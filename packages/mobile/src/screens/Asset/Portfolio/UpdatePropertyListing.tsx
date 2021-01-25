@@ -9,7 +9,6 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
-import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -19,22 +18,15 @@ import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDr
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import CancelTerminateListing, { IFormData } from '@homzhub/mobile/src/components/organisms/CancelTerminateListing';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import {
   ICancelListingPayload,
   ITerminateListingPayload,
   ListingType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-interface IStateProps {
-  assetDetail: Asset | null;
-}
-
 interface IDispatchProps {
-  getAssetById: () => void;
   resetState: () => void;
 }
 
@@ -46,12 +38,11 @@ interface IScreenState {
 }
 
 type libProps = WithTranslation & NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.UpdatePropertyScreen>;
-type Props = IStateProps & IDispatchProps & libProps;
+type Props = IDispatchProps & libProps;
 
 class UpdatePropertyListing extends Component<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
-    props.getAssetById();
     this.state = {
       isLoading: false,
       isFormTouched: false,
@@ -86,22 +77,29 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
   };
 
   public render(): React.ReactNode {
-    const { t, assetDetail } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     const { isSheetVisible, isLoading } = this.state;
+
+    const {
+      assetDetail: { projectName, address, country },
+    } = params;
 
     return (
       <>
         <UserScreen
           title={t('portfolio')}
-          loading={isLoading || !assetDetail}
+          loading={isLoading}
           pageTitle={this.renderSectionHeader()}
           onBackPress={(): void => this.onBack(false)}
         >
           <View style={styles.container}>
             <PropertyAddressCountry
-              primaryAddress={assetDetail?.projectName ?? ''}
-              subAddress={assetDetail?.address ?? ''}
-              countryFlag={assetDetail?.country.flag ?? ''}
+              primaryAddress={projectName}
+              subAddress={address}
+              countryFlag={country.flag}
               containerStyle={styles.address}
             />
             <Divider containerStyles={styles.divider} />
@@ -208,12 +206,11 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
   private handleSubmit = (formData: IFormData): void => {
     const {
       t,
-      assetDetail,
       navigation,
       route: { params },
     } = this.props;
-    if (!assetDetail) return;
-    const { id, leaseListingIds, saleListingIds } = assetDetail;
+    if (params && !params.assetDetail) return;
+    const { id, assetStatusInfo } = params.assetDetail;
     const { reasonId, isTerminate, description, terminationDate } = formData;
 
     this.setState({ isLoading: true });
@@ -239,10 +236,13 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
           AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });
         });
     } else {
+      if (!assetStatusInfo) return;
+      const { leaseListingId, saleListingId } = assetStatusInfo;
+
       const payload: ICancelListingPayload = {
         param: {
-          listingType: leaseListingIds.length > 0 ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
-          listingId: leaseListingIds.length > 0 ? leaseListingIds[0] : saleListingIds[0],
+          listingType: leaseListingId && leaseListingId > 0 ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+          listingId: leaseListingId && leaseListingId > 0 ? leaseListingId : saleListingId ?? 0,
           assetId: id,
         },
         data: {
@@ -266,11 +266,13 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
   };
 
   private updateAsset = async (): Promise<void> => {
-    const { assetDetail } = this.props;
+    const {
+      route: { params },
+    } = this.props;
 
-    if (!assetDetail) return;
+    if (params && !params.assetDetail) return;
 
-    const { lastVisitedStepSerialized, id } = assetDetail;
+    const { lastVisitedStepSerialized, id } = params.assetDetail;
 
     const last_visited_step = {
       ...lastVisitedStepSerialized,
@@ -290,21 +292,13 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
   // HANDLERS END
 }
 
-const mapStateToProps = (state: IState): IStateProps => {
-  const { getAssetDetails } = RecordAssetSelectors;
-
-  return {
-    assetDetail: getAssetDetails(state),
-  };
-};
-
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetById, resetState } = RecordAssetActions;
-  return bindActionCreators({ getAssetById, resetState }, dispatch);
+  const { resetState } = RecordAssetActions;
+  return bindActionCreators({ resetState }, dispatch);
 };
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(UpdatePropertyListing));
 

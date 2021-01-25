@@ -5,6 +5,7 @@ import { Formik, FormikProps } from 'formik';
 import { FormikHelpers } from 'formik/dist/types';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUpdateEmergencyContact } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -137,7 +138,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
     } catch (e) {
       updateFormLoadingState(false);
       formikHelpers.setSubmitting(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 

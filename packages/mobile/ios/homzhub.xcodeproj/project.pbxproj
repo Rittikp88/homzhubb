@@ -1100,7 +1100,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Harish Taori (KB2425WYJP)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1190,7 +1190,7 @@
 				CODE_SIGN_ENTITLEMENTS = homzhub/homzhub.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Homzhub Pte Ltd (9TKZH83J22)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

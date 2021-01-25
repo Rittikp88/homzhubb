@@ -21,6 +21,9 @@ export class AssetReviewComment {
   @JsonProperty('can_delete', Boolean)
   private _canDelete = false;
 
+  @JsonProperty('modified_at', String)
+  private _modifiedAt = '';
+
   get id(): number {
     return this._id;
   }
@@ -47,5 +50,9 @@ export class AssetReviewComment {
 
   get canDelete(): boolean {
     return this._canDelete;
+  }
+
+  get modifiedAt(): string {
+    return this._modifiedAt;
   }
 }

@@ -30,6 +30,7 @@ export const AssetActionTypes = {
     VISIT_TYPE: `${actionTypePrefix}VISIT_TYPE`,
   },
   CLEAR_ASSET: `${actionTypePrefix}CLEAR_ASSET`,
+  CLEAR_VISITS: `${actionTypePrefix}CLEAR_VISITS`,
 };
 
 const getAssetReviews = (payload: IGetListingReviews): IFluxStandardAction<IGetListingReviews> => ({
@@ -106,6 +107,10 @@ const setVisitType = (payload: Tabs): IFluxStandardAction<Tabs> => ({
   payload,
 });
 
+const clearVisits = (): IFluxStandardAction => ({
+  type: AssetActionTypes.CLEAR_VISITS,
+});
+
 export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[] | Tabs;
 
 export const AssetActions = {
@@ -124,4 +129,5 @@ export const AssetActions = {
   getAssetVisitFailure,
   setVisitIds,
   setVisitType,
+  clearVisits,
 };

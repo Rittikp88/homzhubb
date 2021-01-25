@@ -19,6 +19,8 @@ export enum Tabs {
   UPCOMING = 'Upcoming',
   MISSED = 'Missed',
   COMPLETED = 'Completed',
+  CANCELLED = 'Cancelled',
+  DECLINED = 'Declined',
 }
 
 // enum END

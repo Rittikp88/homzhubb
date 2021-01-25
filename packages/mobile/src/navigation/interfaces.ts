@@ -8,6 +8,7 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
@@ -228,6 +229,7 @@ export interface IUpdatePropertyProps {
   formType: UpdatePropertyFormTypes;
   payload: IClosureReasonPayload;
   param?: IListingParam;
+  assetDetail: Asset;
 }
 
 export interface ISignUpParams extends IScreenCallback {

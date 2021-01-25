@@ -112,6 +112,8 @@ export const assetReducer = (
       return { ...state, ['visitIds']: action.payload as number[] };
     case AssetActionTypes.SET.VISIT_TYPE:
       return { ...state, ['visitType']: action.payload as Tabs };
+    case AssetActionTypes.CLEAR_VISITS:
+      return { ...state, ['visits']: initialAssetState.visits };
     case AssetActionTypes.CLEAR_ASSET:
       return initialAssetState;
     default:

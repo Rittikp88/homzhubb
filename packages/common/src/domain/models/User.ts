@@ -74,6 +74,10 @@ export class User {
     return this._lastName;
   }
 
+  get name(): string {
+    return `${this.firstName} ${this.lastName}`;
+  }
+
   get email(): string {
     return this._email;
   }

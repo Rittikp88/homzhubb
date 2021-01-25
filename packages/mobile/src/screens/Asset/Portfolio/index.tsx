@@ -184,7 +184,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
       this.onViewProperty({ ...data, dataType: type }, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
-      this.handleActions(item.id, payload, param);
+      this.handleActions(item, payload, param);
     return (
       <AssetCard
         assetData={item}
@@ -320,9 +320,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
-  private handleActions = (assetId: number, payload: IClosureReasonPayload, param?: IListingParam): void => {
+  private handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
     const { navigation, setAssetId } = this.props;
-    setAssetId(assetId);
+    const { id } = asset;
+    setAssetId(id);
     const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
     const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
     const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
@@ -333,7 +334,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         params: { isFromPortfolio: true },
       });
     } else {
-      navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param });
+      navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });
     }
   };
 
