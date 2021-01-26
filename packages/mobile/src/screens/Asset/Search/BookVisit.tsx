@@ -236,6 +236,7 @@ export class BookVisit extends Component<Props, IVisitState> {
           calendarTitle={t('selectDate')}
           placeHolder={t('datePlaceholder')}
           maxDate={maxDate}
+          isCurrentDateEnable
           selectedValue={selectedDate}
           iconColor={theme.colors.darkTint8}
           placeHolderStyle={styles.placeholderStyle}

@@ -19,6 +19,7 @@ const MAX_YEAR = Number(DateUtils.getNextYear(16));
 interface ICalendarProps {
   onSelect: (day: string) => void;
   selectedDate: string;
+  isCurrentDateEnable?: boolean;
   allowPastDates?: boolean;
   maxDate?: string;
   minDate?: string;
@@ -39,11 +40,11 @@ interface ICalendarState {
 export class CalendarComponent extends Component<ICalendarProps, ICalendarState> {
   public constructor(props: ICalendarProps) {
     super(props);
-    const { selectedDate } = props;
+    const { selectedDate, isCurrentDateEnable } = props;
     this.state = {
       isMonthView: false,
       isYearView: false,
-      selectedDate,
+      selectedDate: isCurrentDateEnable ? DateUtils.getCurrentDate() : selectedDate,
       day: moment().format(DateFormats.DD),
       month: new Date().getMonth(),
       year: moment().format(DateFormats.YYYY),

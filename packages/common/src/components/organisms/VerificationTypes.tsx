@@ -24,6 +24,7 @@ interface IProps {
   localDocuments: ExistingVerificationDocuments[];
   handleUpload: (verificationData: VerificationDocumentTypes) => void;
   deleteDocument: (document: ExistingVerificationDocuments, isLocalDocument: boolean | null) => Promise<void>;
+  handleTypes?: (types: VerificationDocumentTypes[]) => void;
 }
 
 interface IVerificationState {
@@ -123,12 +124,15 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
   };
 
   public getVerificationTypes = async (): Promise<void> => {
-    const { typeOfPlan } = this.props;
+    const { typeOfPlan, handleTypes } = this.props;
     try {
       const response: VerificationDocumentTypes[] = await AssetRepository.getVerificationDocumentTypes();
       const filteredResponse = response.filter((data: VerificationDocumentTypes) => {
         return data.category === typeOfPlan || data.category === 'IDENTITY';
       });
+      if (handleTypes) {
+        handleTypes(filteredResponse);
+      }
       this.setState({
         verificationTypes: filteredResponse,
       });

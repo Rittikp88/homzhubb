@@ -57,10 +57,7 @@ const ContactPerson = (props: IProps): React.ReactElement => {
               {visible && (
                 <TouchableOpacity
                   key={id}
-                  style={[
-                    styles.iconButton,
-                    PlatformUtils.isMobile() ? undefined : isMobile && styles.iconButtonMobile,
-                  ]}
+                  style={[styles.iconButton, (PlatformUtils.isMobile() || isMobile) && styles.iconButtonMobile]}
                   onPress={onPress}
                   testID="to"
                 >

@@ -62,15 +62,8 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const { existingDocuments, localDocuments, isLoading, verificationTypes } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
-    // TODO (21-12-2020): Remove this temp hack once camera module is refactored
     const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
-    const containsAllReqd =
-      verificationTypes.length > 3
-        ? uploadedTypes.includes(VerificationDocumentCategory.ID_PROOF) &&
-          uploadedTypes.includes(VerificationDocumentCategory.OCCUPANCY_CERTIFICATE) &&
-          uploadedTypes.includes(VerificationDocumentCategory.PROPERTY_TAX)
-        : uploadedTypes.includes(VerificationDocumentCategory.ID_PROOF) &&
-          uploadedTypes.includes(VerificationDocumentCategory.OWNERSHIP_VERIFICATION_DOCUMENT);
+    const containsAllReqd = uploadedTypes.length === verificationTypes.length;
 
     return (
       <>
@@ -80,6 +73,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           localDocuments={localDocuments}
           handleUpload={this.handleVerificationDocumentUploads}
           deleteDocument={this.deleteDocument}
+          handleTypes={this.handleVerificationTypes}
         />
         <Button
           type="primary"
@@ -93,6 +87,12 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   }
 
   // HANDLERS START
+
+  public handleVerificationTypes = (types: VerificationDocumentTypes[]): void => {
+    this.setState({
+      verificationTypes: types,
+    });
+  };
 
   public handleVerificationDocumentUploads = async (data: VerificationDocumentTypes): Promise<void> => {
     const verificationDocumentId = data.id;

@@ -30,6 +30,7 @@ interface IFormCalendarProps extends WithTranslation {
   fontType?: FontWeightType;
   maxDate?: string;
   minDate?: string;
+  isCurrentDateEnable?: boolean;
   bubbleSelectedDate?: (day: string) => void;
 }
 
@@ -63,6 +64,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       maxDate,
       minDate,
       isYearView = false,
+      isCurrentDateEnable = false,
       calendarTitle,
     } = this.props;
     const { isCalendarVisible } = this.state;
@@ -116,6 +118,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
               minDate={minDate}
               isOnlyYearView={isYearView}
               onSelect={this.onDateSelected}
+              isCurrentDateEnable={isCurrentDateEnable}
               selectedDate={selectedValue ?? formProps?.values[name]}
             />
           </BottomSheet>

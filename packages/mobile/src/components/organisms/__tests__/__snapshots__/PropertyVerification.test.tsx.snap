@@ -5,6 +5,7 @@ exports[`PropertyVerification should match snapshot 1`] = `
   <VerificationTypes
     deleteDocument={[Function]}
     existingDocuments={Array []}
+    handleTypes={[Function]}
     handleUpload={[Function]}
     localDocuments={Array []}
   />
