@@ -238,7 +238,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
           rating={reviewedBy.rating}
           date={reviewedAt}
         />
-        {description && (
+        {!!description && (
           <Label type="large" numberOfLines={!showMore ? 2 : undefined} style={styles.review}>
             {description}
           </Label>

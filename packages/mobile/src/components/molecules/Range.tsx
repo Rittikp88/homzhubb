@@ -42,6 +42,8 @@ export const Range = (props: IProps): React.ReactElement => {
     onDropdownValueChange,
   } = props;
   const { t } = useTranslation();
+  const [minRange, setMinRange] = useState(0);
+  const [maxRange, setMaxRange] = useState(0);
   const [dropdownValue, setValue] = useState<string | number>('');
   useEffect(() => {
     if (selectedUnit) {
@@ -60,23 +62,30 @@ export const Range = (props: IProps): React.ReactElement => {
   const getAreaValue = (value: number): string => `${value.toLocaleString()} ${currentCarpetAreaUnit}`;
 
   const maxChanged = isPriceRange
-    ? `${currencySymbol}${getCurrencyValue(maxChangedValue)}`
-    : getAreaValue(maxChangedValue);
+    ? `${currencySymbol}${getCurrencyValue(maxRange || maxChangedValue)}`
+    : getAreaValue(maxRange || maxChangedValue);
 
   const minChanged = isPriceRange
-    ? `${currencySymbol}${getCurrencyValue(minChangedValue)}`
-    : getAreaValue(minChangedValue);
+    ? `${currencySymbol}${getCurrencyValue(minRange || minChangedValue)}`
+    : getAreaValue(minRange || minChangedValue);
 
-  const maxValue = maxChangedValue > 0 && maxChangedValue < range.max ? maxChanged : t('any');
-  const minValue = minChangedValue > 0 && minChangedValue > range.min ? minChanged : t('any');
+  const maxValue = (maxChangedValue > 0 && maxChangedValue < range.max) || maxRange ? maxChanged : t('any');
+  const minValue = (minChangedValue > 0 && minChangedValue > range.min) || minRange ? minChanged : t('any');
 
   const onUpdatePrice = (value1: number, value2?: number): void => {
+    setMinRange(value1);
+    if (value2) {
+      setMaxRange(value2);
+    }
+  };
+
+  const onChangeDone = (value: number[]): void => {
     if (isPriceRange) {
-      onChangeSlide('min_price', value1);
-      onChangeSlide('max_price', value2 || 0);
+      onChangeSlide('min_price', value[0]);
+      onChangeSlide('max_price', value[1] || 0);
     } else {
-      onChangeSlide('min_area', value1);
-      onChangeSlide('max_area', value2 || 0);
+      onChangeSlide('min_area', value[0]);
+      onChangeSlide('max_area', value[1] || 0);
     }
   };
 
@@ -111,6 +120,7 @@ export const Range = (props: IProps): React.ReactElement => {
         <Slider
           key={range.max}
           onSliderChange={onUpdatePrice}
+          onChangeFinish={onChangeDone}
           isMultipleSlider
           minSliderRange={range.min}
           maxSliderRange={range.max}

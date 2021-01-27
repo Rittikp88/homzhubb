@@ -25,7 +25,9 @@ exports[`Text Area should match snapshot 1`] = `
       Some label
     </Label>
   </View>
-  <View
+  <ForwardRef
+    activeOpacity={1}
+    onPress={[Function]}
     style={
       Array [
         Object {
@@ -57,7 +59,7 @@ exports[`Text Area should match snapshot 1`] = `
       underlineColorAndroid="transparent"
       value="Message"
     />
-  </View>
+  </ForwardRef>
   <Label
     style={
       Array [
@@ -102,7 +104,9 @@ exports[`Text Area should match snapshot for optional 1`] = `
       Some label
     </Label>
   </View>
-  <View
+  <ForwardRef
+    activeOpacity={1}
+    onPress={[Function]}
     style={
       Array [
         Object {
@@ -134,7 +138,7 @@ exports[`Text Area should match snapshot for optional 1`] = `
       underlineColorAndroid="transparent"
       value="Message"
     />
-  </View>
+  </ForwardRef>
   <Label
     style={
       Array [

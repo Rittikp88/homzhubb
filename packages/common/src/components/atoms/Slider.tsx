@@ -12,6 +12,7 @@ interface ISliderProps {
   minSliderValue?: number;
   maxSliderValue?: number;
   onSliderChange: (val1: number, val2?: number) => void;
+  onChangeFinish?: (value: number[]) => void;
   labelText?: string;
   testID?: string;
 }
@@ -35,7 +36,7 @@ export class Slider extends Component<ISliderProps, IOwnState> {
 
   private renderMultipleSlider = (): React.ReactElement => {
     let { maxSliderValue = 0 } = this.props;
-    const { maxSliderRange = 10, minSliderRange = 0, isLabelRequired, minSliderValue = 0 } = this.props;
+    const { maxSliderRange = 10, minSliderRange = 0, isLabelRequired, minSliderValue = 0, onChangeFinish } = this.props;
     if (maxSliderValue && maxSliderValue <= 0) {
       maxSliderValue = maxSliderRange;
     }
@@ -50,6 +51,7 @@ export class Slider extends Component<ISliderProps, IOwnState> {
         snapped
         enableLabel={isLabelRequired}
         isMarkersSeparated
+        onValuesChangeFinish={onChangeFinish}
         selectedStyle={styles.selectedStyle}
         markerContainerStyle={styles.markerContainer}
         customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}

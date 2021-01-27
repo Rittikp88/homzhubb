@@ -333,5 +333,6 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     marginHorizontal: 16,
+    height: 50,
   },
 });

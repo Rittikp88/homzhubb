@@ -30,7 +30,7 @@ interface IRazorPayError {
   description: string;
   error?: {
     description: string;
-  }
+  };
 }
 
 interface IProps extends IButtonProps {
@@ -105,7 +105,7 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
           payment_transaction_id,
           user_invoice_id,
         });
-        if(this.getErrorResponse(error.code) === PaymentFailureResponse.PAYMENT_CANCELLED && error.error) {
+        if (this.getErrorResponse(error.code) === PaymentFailureResponse.PAYMENT_CANCELLED && error.error) {
           AlertHelper.error({ message: error.error.description });
         } else {
           AlertHelper.error({ message: error.description });

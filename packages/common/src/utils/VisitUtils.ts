@@ -95,7 +95,7 @@ class VisitUtils {
   public onDropdownValueSelect = (data: IVisitPayload): IAssetVisitPayload | null => {
     const { isFromProperty, assetPayload, selectedAssetId, setVisitPayload, startDate, endDate, visitType } = data;
     const status__in = this.getStatus(visitType);
-    const start_date__lt = endDate;
+    const start_date__lte = endDate;
     const start_date__gte = startDate;
     let lease_listing_id;
     let sale_listing_id;
@@ -103,7 +103,7 @@ class VisitUtils {
     if (setVisitPayload) {
       setVisitPayload({
         ...(start_date__gte && { start_date__gte }),
-        ...(start_date__lt && { start_date__lt }),
+        ...(start_date__lte && { start_date__lte }),
         ...(status__in && { status__in }),
       });
     }
@@ -119,7 +119,7 @@ class VisitUtils {
     }
 
     return {
-      start_date__lt,
+      start_date__lte,
       start_date__gte,
       ...(status__in && { status__in }),
       ...(isFromProperty && lease_listing_id && { lease_listing_id }),

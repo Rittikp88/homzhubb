@@ -51,6 +51,7 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
   public render(): React.ReactNode {
     const { formData } = this.state;
     const { t, isTerminate = false, onFormEdit, reasonData, leaseEndDate } = this.props;
+
     return (
       <View style={styles.form}>
         <Formik
@@ -59,6 +60,8 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
           validate={FormUtils.validate(this.formSchema)}
         >
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
+            const { reasonId, terminationDate } = formProps.values;
+            const isButtonEnable = isTerminate ? reasonId > 0 && !!terminationDate : reasonId > 0;
             const handleDescription = (value: string): void => {
               formProps.setFieldValue('description', value);
             };
@@ -106,8 +109,9 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
                 <FormButton
                   // @ts-ignore
                   onPress={formProps.handleSubmit}
-                  containerStyle={{ backgroundColor: theme.colors.error }}
+                  containerStyle={{ backgroundColor: isButtonEnable ? theme.colors.error : theme.colors.disabled }}
                   formProps={formProps}
+                  disabled={!isButtonEnable}
                   type="primary"
                   title={isTerminate ? t('common:terminate') : t('property:deleteListing')}
                 />

@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleProp, StyleSheet, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -18,6 +18,7 @@ interface IProps {
 }
 
 export const TextArea = (props: IProps): React.ReactElement => {
+  const ref: React.RefObject<TextInput> = useRef(null);
   const {
     label,
     placeholder,
@@ -30,7 +31,15 @@ export const TextArea = (props: IProps): React.ReactElement => {
     textAreaStyle,
   } = props;
   const { t } = useTranslation();
+
+  const onPressBox = (): void => {
+    if (ref.current) {
+      ref.current.focus();
+    }
+  };
+
   const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
+
   return (
     <View style={containerStyle}>
       <View style={styles.labelView}>
@@ -43,8 +52,9 @@ export const TextArea = (props: IProps): React.ReactElement => {
           </Label>
         )}
       </View>
-      <View style={[styles.textAreaContainer, textAreaStyle]}>
+      <TouchableOpacity style={[styles.textAreaContainer, textAreaStyle]} onPress={onPressBox} activeOpacity={1}>
         <TextInput
+          ref={ref}
           autoCorrect={false}
           style={[styles.textArea, inputContainerStyle]}
           placeholder={placeholder}
@@ -53,7 +63,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
           value={value}
           onChangeText={onMessageChange}
         />
-      </View>
+      </TouchableOpacity>
       <Label type="small" style={[styles.labelStyle, styles.helpText]}>
         {t('charactersRemaining', { wordCount })}
       </Label>
