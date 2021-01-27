@@ -159,7 +159,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
           hideArrows
           // @ts-ignore
           renderHeader={(): null => null}
-          minDate={minDate || (allowPastDates ? undefined : new Date())}
+          minDate={minDate ? DateUtils.getDisplayDate(minDate, 'YYYY-MM-DD') : (allowPastDates ? undefined : new Date())}
           maxDate={maxDate}
           current={date}
           key={date}
