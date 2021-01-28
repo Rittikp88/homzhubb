@@ -47,6 +47,7 @@ class EventWithProfile extends Component<IProps> {
           handleConfirmation={handleConfirmation}
           handleReschedule={handleReschedule}
           containerStyle={styles.list}
+          isResponsiveHeightRequired={false}
         />
       </ScrollView>
     );

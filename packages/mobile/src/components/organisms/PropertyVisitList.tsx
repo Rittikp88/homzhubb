@@ -58,6 +58,7 @@ interface IProps {
   pillars?: Pillar[];
   resetData?: () => void;
   reviewVisitId?: number;
+  isResponsiveHeightRequired?: boolean;
 }
 
 interface IScreenState {
@@ -101,8 +102,10 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
       handleDropdown,
       isUserView,
       containerStyle,
+      isResponsiveHeightRequired = true,
     } = this.props;
     const { height } = this.state;
+
     const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
 
     return (
@@ -125,7 +128,10 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
           </View>
         )}
         {visitData.length > 0 ? (
-          <ScrollView style={{ minHeight: height }} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            style={isResponsiveHeightRequired ? { minHeight: height } : {}}
+            showsVerticalScrollIndicator={false}
+          >
             {visitData.map((item) => {
               const results = item.results as AssetVisit[];
               return (
