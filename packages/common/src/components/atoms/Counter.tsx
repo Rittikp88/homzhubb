@@ -6,7 +6,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface ITitle {
@@ -31,7 +31,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const { onValueChange, defaultValue, name, svgImage, maxCount = 10, minCount = 0, containerStyles, disabled } = props;
   const [count, setCount] = useState(defaultValue);
-  const [prviousCount, setPreviousCount] = useState(defaultValue);
+  const [previousCount, setPreviousCount] = useState(defaultValue);
 
   useEffect(() => {
     onValueChange(count, name?.id);
@@ -71,8 +71,8 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
   };
 
   const onEndEditing = (): void => {
-    if (prviousCount) {
-      setCount(prviousCount);
+    if (previousCount) {
+      setCount(previousCount);
       return;
     }
 

@@ -180,9 +180,11 @@ class FinanceUtils {
         ? DateUtils.getCurrentMonthIndex()
         : DateUtils.getCurrentMonthIndex() - 1;
 
-    const startingWeekNumber = DateUtils.getISOWeekNumber(new Date(currentYear, requiredMonth, 1));
+    const startingWeekNumber =
+      requiredMonth === 0 ? 1 : DateUtils.getISOWeekNumber(new Date(currentYear, requiredMonth, 1));
     const lastWeekNumber = DateUtils.getISOWeekNumber(new Date(currentYear, requiredMonth + 1, 0));
     let weekCount = lastWeekNumber - startingWeekNumber;
+
     if (weekCount < 0) {
       weekCount = 0;
     }
@@ -209,7 +211,6 @@ class FinanceUtils {
       debitArray[currentMonthIndex] = debitsSum;
       creditArray[currentMonthIndex] = creditsSum;
     });
-
     return {
       data1: debitArray,
       data2: creditArray,

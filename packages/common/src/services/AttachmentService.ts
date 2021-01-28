@@ -4,8 +4,10 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src//utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src//domain/repositories/AssetRepository';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { PermissionsService } from '@homzhub/common/src/services/Permissions/PermissionService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
+import { PERMISSION_TYPE } from '@homzhub/common/src/constants/PermissionTypes';
 
 export enum AttachmentError {
   UPLOAD_IMAGE_ERROR = 'File is corrupted',
@@ -53,8 +55,9 @@ class AttachmentService {
 
   public downloadAttachment = async (refKey: string, fileName: string): Promise<void> => {
     const response: DownloadAttachment = await AssetRepository.downloadAttachment(refKey);
+    const permission = await PermissionsService.checkPermission(PERMISSION_TYPE.storage);
 
-    if (response) {
+    if (response && permission) {
       try {
         const { dirs } = RNFetchBlob.fs;
         const dir = PlatformUtils.isIOS() ? dirs.DocumentDir : dirs.DownloadDir;

@@ -81,7 +81,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
         showsVerticalScrollIndicator={false}
         onTouchStart={(): void => {
           if (shouldEnableOuterScroll) {
-            shouldEnableOuterScroll(false);
+            shouldEnableOuterScroll(true);
           }
         }}
         onMomentumScrollEnd={(): void => {
