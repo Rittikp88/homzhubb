@@ -128,7 +128,7 @@
     "noServicesFound": "No Services Found",
     "proceed": "Proceed",
     "minCount": "Cannot reduce beyond this",
-    "maxCount": "Cannot increase beyond this",
+    "maxCount": "Cannot increase beyond {{count}}",
     "loremIpsum": "loremIpsum Morbi nulla aliquam lectus mauris sed amet",
     "accept": "Accept",
     "reject": "Reject",

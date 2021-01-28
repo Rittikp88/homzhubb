@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle, TextInput } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -31,6 +31,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const { onValueChange, defaultValue, name, svgImage, maxCount = 10, minCount = 0, containerStyles, disabled } = props;
   const [count, setCount] = useState(defaultValue);
+  const [prviousCount, setPreviousCount] = useState(defaultValue);
 
   useEffect(() => {
     onValueChange(count, name?.id);
@@ -53,6 +54,36 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
       return;
     }
     AlertHelper.error({ message: t('minCount') });
+  };
+
+  const onCountChange = (value: string): void => {
+    if (Number(value) > maxCount) {
+      AlertHelper.error({ message: t('maxCount', { count: maxCount }) });
+      setCount(Number(defaultValue));
+      return;
+    }
+    if (Number(value) < 0) {
+      AlertHelper.error({ message: t('minCount') });
+      return;
+    }
+    setPreviousCount(Number(value));
+    setCount(Number(value));
+  };
+
+  const onEndEditing = (): void => {
+    if (prviousCount) {
+      setCount(prviousCount);
+      return;
+    }
+
+    if (count === 0 || count > maxCount) {
+      setCount(defaultValue);
+    }
+  };
+
+  const onFocus = (): void => {
+    setPreviousCount(count);
+    setCount(0);
   };
 
   return (
@@ -81,12 +112,21 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
             onPress={disabled ? undefined : decrementCount}
           />
         </View>
-        <Label
-          type="large"
-          style={{ color: isDecDisabled || isIncDisabled ? theme.colors.darkTint5 : theme.colors.primaryColor }}
-        >
-          {count}
-        </Label>
+        <TextInput
+          style={[
+            {
+              color: isDecDisabled || isIncDisabled ? theme.colors.darkTint5 : theme.colors.primaryColor,
+            },
+            styles.counterValue,
+          ]}
+          keyboardType="number-pad"
+          maxLength={2}
+          defaultValue={defaultValue.toString()}
+          value={count.toString()}
+          onChangeText={onCountChange}
+          onEndEditing={onEndEditing}
+          onFocus={onFocus}
+        />
         <View
           style={[
             { backgroundColor: isIncDisabled ? theme.colors.disabledOpacity : theme.colors.activeOpacity },
@@ -130,5 +170,9 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     width: PlatformUtils.isMobile() ? 100 : '100%',
+  },
+  counterValue: {
+    flex: 1,
+    textAlign: 'center',
   },
 });
