@@ -7,14 +7,14 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
-import { IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 
 interface IProps extends WithTranslation {
   detail: UserInteraction;
   handleVisitAction: (visitId: number, action: VisitActions, isUserView?: boolean) => void;
   handleConfirmation: (id: number) => void;
-  handleReschedule: (id: number) => void;
+  handleReschedule: (asset: AssetVisit) => void;
 }
 
 class EventWithProfile extends Component<IProps> {

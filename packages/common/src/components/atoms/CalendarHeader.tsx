@@ -15,6 +15,7 @@ interface IProps {
   isYearView?: boolean;
   isCurrentMonth?: boolean;
   maxDate?: string;
+  month?: number;
   onBackPress?: () => void;
   onNextPress?: () => void;
   onMonthPress?: () => void;
@@ -35,8 +36,10 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
     isMonthView = false,
     isYearView = false,
     yearTitle,
+    month,
   } = props;
-
+  const isNextDisable =
+    maxDate && (moment(maxDate).month() === moment().month() || (month && moment(maxDate).month() === month));
   return (
     <>
       <View style={styles.headerContainer}>
@@ -64,9 +67,7 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
         <Icon
           name={icons.rightArrow}
           size={22}
-          color={
-            maxDate && moment(maxDate).month() === moment().month() ? theme.colors.disabled : theme.colors.primaryColor
-          }
+          color={isNextDisable ? theme.colors.disabled : theme.colors.primaryColor}
           onPress={onNextPress}
         />
       </View>

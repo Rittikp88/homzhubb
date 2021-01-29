@@ -10,7 +10,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IPostAssetDetailsProps, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -108,7 +108,8 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
 
     navigation.addListener('focus', this.onFocus);
 
-    if (!params) {
+    // @ts-ignore
+    if (!params || (params && params.status)) {
       this.setDataFromAsset();
       return;
     }
@@ -118,9 +119,10 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
 
   public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>): void {
     const { asset } = this.props;
+    const { formData } = this.state;
+    const { formData: prevForm } = prevState;
     const { asset: prevAsset } = prevProps;
-
-    if (asset !== prevAsset) {
+    if (asset !== prevAsset || formData.projectName !== prevForm.projectName) {
       this.setDataFromAsset();
     }
   }
@@ -153,6 +155,9 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       assetGroupSelectionDisabled,
     } = this.state;
 
+    // TODO: Update this logic once verification shield logic is on place
+    const isVerificationDonne = asset ? asset.lastVisitedStep.isPropertyReady : false;
+
     return (
       <Formik
         validateOnMount
@@ -177,9 +182,9 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                   propertyAddress={address}
                   onNavigate={this.onChange}
                   testID="propertyLocation"
-                  isVerificationDone={asset?.isVerificationDocumentUploaded}
+                  isVerificationDone={isVerificationDonne}
                 />
-                <PostAssetForm formProps={formProps} isVerificationDone={asset?.isVerificationDocumentUploaded} />
+                <PostAssetForm formProps={formProps} isVerificationDone={isVerificationDonne} />
                 <AssetGroupSelection
                   isDisabled={assetGroupSelectionDisabled}
                   assetGroups={assetGroups}
@@ -290,6 +295,13 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     shouldGoBack?: boolean
   ): Promise<void> => {
     const {
+      setAssetId,
+      assetId,
+      navigation,
+      lastVisitedStep,
+      route: { params },
+    } = this.props;
+    const {
       projectName: project_name,
       unitNo: unit_number,
       blockNo: block_number,
@@ -300,8 +312,8 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       countryIsoCode: country_iso2_code,
       address,
     } = values;
-    const { setAssetId, assetId, navigation, lastVisitedStep } = this.props;
     const { assetGroupTypeId: asset_type, longitude, latitude } = this.state;
+
     let visitedStep = {
       asset_creation: {
         is_created: true,
@@ -320,7 +332,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       };
     }
 
-    const params = {
+    const payload = {
       city_name,
       state_name,
       country_name,
@@ -339,9 +351,11 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     formActions.setSubmitting(true);
     try {
       if (assetId > -1) {
-        await AssetRepository.updateAsset(assetId, params);
+        // @ts-ignore
+        const isApprovedListing = params && params.status === 'APPROVED';
+        await AssetRepository.updateAsset(assetId, { ...payload, change_status: isApprovedListing });
       } else {
-        const response = await AssetRepository.createAsset(params);
+        const response = await AssetRepository.createAsset(payload);
         setAssetId(response.id);
         AnalyticsService.track(EventType.AddPropertySuccess, { property_address: address });
       }
@@ -422,7 +436,17 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     const { formData } = this.state;
 
     if (!params) return;
-    const { name, pincode, state, address, country, city, countryIsoCode, longitude, latitude } = params;
+    const {
+      name,
+      pincode,
+      state,
+      address,
+      country,
+      city,
+      countryIsoCode,
+      longitude,
+      latitude,
+    } = params as IPostAssetDetailsProps;
 
     this.setState({
       formData: {

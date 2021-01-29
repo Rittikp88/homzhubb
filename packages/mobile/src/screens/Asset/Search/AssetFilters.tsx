@@ -142,8 +142,6 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   public renderSearchRadius = (): React.ReactNode => {
     const {
       t,
-      setFilter,
-      filters,
       filters: { miscellaneous },
     } = this.props;
     const {
@@ -151,8 +149,9 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     } = this.state;
     const translatedSearchRadius = this.translateData(searchRadius);
     const onSelectSearchRadius = (value: string | number): void => {
-      setFilter({ miscellaneous: { ...filters.miscellaneous, search_radius: value } });
+      this.updateFilter(translatedSearchRadius, value as number, 'search_radius');
     };
+
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
@@ -160,7 +159,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <Dropdown
           data={translatedSearchRadius}
-          value={miscellaneous?.search_radius || 0}
+          value={miscellaneous?.search_radius.id || 0}
           listTitle={t('selectSearchRadius')}
           placeholder={t('selectRadius')}
           listHeight={theme.viewport.height / 2}
@@ -177,17 +176,17 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   public renderDateAdded = (): React.ReactElement => {
     const {
       t,
-      setFilter,
-      filters,
       filters: { miscellaneous },
     } = this.props;
     const {
       data: { dateAdded },
     } = this.state;
     const translatedDateAdded = this.translateData(dateAdded);
+
     const onSelectDateAdded = (value: string | number): void => {
-      setFilter({ miscellaneous: { ...filters.miscellaneous, date_added: value } });
+      this.updateFilter(translatedDateAdded, value as number, 'date_added');
     };
+
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
@@ -195,7 +194,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <Dropdown
           data={translatedDateAdded}
-          value={miscellaneous?.date_added || 0}
+          value={miscellaneous?.date_added.id || 0}
           listTitle={t('selectDateAdded')}
           placeholder={t('selectDateAdded')}
           listHeight={theme.viewport.height / 2}
@@ -212,17 +211,17 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   public renderPropertyAge = (): React.ReactElement => {
     const {
       t,
-      setFilter,
-      filters,
       filters: { miscellaneous },
     } = this.props;
     const {
       data: { propertyAge },
     } = this.state;
     const translatedPropertyAge = this.translateData(propertyAge);
+
     const onSelectPropertyAge = (value: string | number): void => {
-      setFilter({ miscellaneous: { ...filters.miscellaneous, property_age: value } });
+      this.updateFilter(translatedPropertyAge, value as number, 'property_age');
     };
+
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
@@ -230,7 +229,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <Dropdown
           data={translatedPropertyAge}
-          value={miscellaneous?.property_age || 0}
+          value={miscellaneous?.property_age.id || 0}
           listTitle={t('selectPropertyAge')}
           placeholder={t('selectPropertyAge')}
           listHeight={theme.viewport.height / 2}
@@ -247,8 +246,6 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   public renderRentFreePeriod = (): React.ReactElement => {
     const {
       t,
-      setFilter,
-      filters,
       filters: { miscellaneous },
     } = this.props;
     const {
@@ -256,8 +253,9 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     } = this.state;
     const translatedRentFreePeriod = this.translateData(rentFreePeriod);
     const onSelectRentFreePeriod = (value: string | number): void => {
-      setFilter({ miscellaneous: { ...filters.miscellaneous, rent_free_period: value } });
+      this.updateFilter(translatedRentFreePeriod, value as number, 'rent_free_period');
     };
+
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
@@ -265,7 +263,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         </Text>
         <Dropdown
           data={translatedRentFreePeriod}
-          value={miscellaneous?.rent_free_period || 0}
+          value={miscellaneous?.rent_free_period.id || 0}
           listTitle={t('selectRentFreePeriod')}
           placeholder={t('selectRentFreePeriod')}
           listHeight={theme.viewport.height / 2}
@@ -627,6 +625,19 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
         label: t(currentData.label),
       };
     });
+  };
+
+  public updateFilter = (data: IFilterData[], value: number, key: string): void => {
+    const { setFilter, filters } = this.props;
+    const selectedData = data.find((item) => item.value === value);
+    if (selectedData) {
+      setFilter({
+        miscellaneous: {
+          ...filters.miscellaneous,
+          [key]: { id: selectedData.value, label: selectedData.label },
+        },
+      });
+    }
   };
 
   public transformFacingData = (): { title: string; value: string }[] => {

@@ -5,6 +5,7 @@ import { SearchActionTypes, SearchPayloadTypes } from '@homzhub/common/src/modul
 import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { IFilterDetails } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -30,10 +31,10 @@ export const initialSearchState: ISearchState = {
     miscellaneous: {
       show_verified: false,
       agent_listed: false,
-      search_radius: -1,
-      date_added: -1,
-      property_age: -1,
-      rent_free_period: -1,
+      search_radius: new Unit(),
+      date_added: new Unit(),
+      property_age: new Unit(),
+      rent_free_period: new Unit(),
       expected_move_in_date: DateUtils.getCurrentMonthLastDate(),
       facing: [],
       furnishing: [],

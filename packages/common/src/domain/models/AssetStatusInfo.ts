@@ -37,6 +37,9 @@ export class AssetStatusInfo {
   @JsonProperty('action', LabelColor, true)
   private _action: LabelColor | null = null;
 
+  @JsonProperty('status', String, true)
+  private _status = '';
+
   constructor(
     lease_listing: number | null,
     sale_listing: number | null,
@@ -87,5 +90,9 @@ export class AssetStatusInfo {
 
   get isListingPresent(): boolean {
     return !!((this.leaseListingId && this.leaseListingId > 0) || (this.saleListingId && this.saleListingId > 0));
+  }
+
+  get status(): string {
+    return this._status;
   }
 }

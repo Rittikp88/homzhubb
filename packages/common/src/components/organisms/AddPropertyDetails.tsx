@@ -85,8 +85,11 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
   }
 
   public render(): ReactElement {
-    const { spaceTypes, t, isEditPropertyFlow, isMobile } = this.props;
+    const { spaceTypes, t, isMobile, lastVisitedStep } = this.props;
     const { descriptionForm, furnishingForm, descriptionDropdownValues } = this.state;
+
+    // TODO: Update this logic once verification shield logic is on place
+    const isVerificationDone = lastVisitedStep.listing ? lastVisitedStep.listing.is_verification_done : false;
 
     return (
       <>
@@ -104,7 +107,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
                       flowType={FlowTypes.PostAssetFlow}
                       onChange={this.handleSpaceFormChange}
                       spacesTypes={spaceTypes}
-                      isEditPropertyFlow={isEditPropertyFlow}
+                      isVerificationDone={isVerificationDone}
                     />
                   </AssetListingSection>
 

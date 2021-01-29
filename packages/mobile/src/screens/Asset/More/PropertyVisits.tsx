@@ -14,7 +14,7 @@ import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/Site
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IBookVisitProps, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
@@ -143,12 +143,12 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     getAssetVisit(payload);
   };
 
-  private rescheduleVisit = (isNew?: boolean, userId?: number): void => {
+  private rescheduleVisit = (param: IBookVisitProps, isNew?: boolean): void => {
     const { navigation } = this.props;
     // @ts-ignore
     navigation.navigate(ScreensKeys.BookVisit, {
       isReschedule: !isNew,
-      ...(userId && { userId }),
+      ...param,
     });
   };
 

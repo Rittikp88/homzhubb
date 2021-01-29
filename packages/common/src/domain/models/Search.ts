@@ -9,6 +9,10 @@ export enum ContactActions {
   MAIL = 'MAIL',
 }
 
+export enum DeviceType {
+  MOBILE = 'MOBILE',
+}
+
 export interface ITransactionRange {
   min: number;
   max: number;
@@ -59,13 +63,15 @@ export interface IFilter {
   currency_code?: string;
   sort_by?: string;
   is_sorting?: boolean;
+  user_location_latitude?: number;
+  user_location_longitude?: number;
   miscellaneous?: {
     show_verified: boolean;
     agent_listed: boolean;
-    search_radius: number;
-    date_added: number;
-    property_age: number;
-    rent_free_period: number;
+    search_radius: IUnit;
+    date_added: IUnit;
+    property_age: IUnit;
+    rent_free_period: IUnit;
     expected_move_in_date: string;
     facing: string[];
     furnishing: FurnishingTypes[];
@@ -91,4 +97,36 @@ export interface IProperties {
   sale_term?: IPropertyTerm | null;
   attachments: IImages[];
   is_favorite?: boolean;
+}
+
+export interface ISearchHistoryPayload {
+  results_count: number;
+  device_type: DeviceType;
+  currency?: string;
+  min_price?: number;
+  max_price?: number;
+  device_id?: string;
+  ip_address?: string;
+  bath_count?: number;
+  asset_group?: number;
+  browser_type?: string;
+  asset_type?: number[];
+  room_count?: number[];
+  is_verified?: boolean;
+  search_latitude?: number;
+  search_longitude?: number;
+  asset_transaction_type?: string;
+  user_location_latitude?: number;
+  user_location_longitude?: number;
+  miscellaneous_search_criteria?: {
+    property_age?: IUnit;
+    search_radius?: IUnit;
+    agent_listed?: boolean;
+    expected_move_in_date?: string;
+    property_amenities?: number[];
+    date_added?: IUnit;
+    facing?: string[];
+    rent_free_period?: IUnit;
+    furnishing_status?: FurnishingTypes[];
+  };
 }

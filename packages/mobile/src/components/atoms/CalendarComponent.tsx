@@ -93,6 +93,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
       <CalendarHeader
         isAllowPastDate={allowPastDates}
         headerTitle={title}
+        month={month}
         headerYear={`${newYear || year}`}
         isCurrentMonth={isCurrentMonth}
         isMonthView={isMonthView}
@@ -153,6 +154,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const updateMonth = month + 1;
     const date = selectedDate || DateUtils.getFormattedDate(day, updateMonth, year, 'YYYY-MM-DD').toDateString();
     const markedDate = !selectedDate ? moment().format('YYYY-MM-DD') : moment(date).format('YYYY-MM-DD');
+
     return (
       <>
         <Calendar

@@ -38,8 +38,14 @@ class DateUtils {
     return moment().month(monthIndex).format(format);
   };
 
+  public isLeapYear = (year: string): boolean => {
+    return moment([year]).isLeapYear();
+  };
+
   public getFormattedDate = (day: string, month: number, year: string, format: string): Date => {
-    return moment(`${year}-${month}-${day}`, format).toDate();
+    const isLeapYear = this.isLeapYear(year);
+    const formattedDay = isLeapYear && month === 1 ? day : '28';
+    return moment(`${year}-${month}-${formattedDay}`, format).toDate();
   };
 
   public getDisplayDate = (date: string, format: string): string => {

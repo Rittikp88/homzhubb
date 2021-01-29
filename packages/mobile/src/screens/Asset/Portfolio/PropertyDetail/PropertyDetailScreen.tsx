@@ -41,7 +41,12 @@ import {
   IListingParam,
   IPropertyDetailPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  IBookVisitProps,
+  NavigationScreenProps,
+  ScreensKeys,
+  UpdatePropertyFormTypes,
+} from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
@@ -155,7 +160,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       this.handleAction(propertyData, payload, param);
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
-    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.OCCUPIED;
+    const isMenuIconVisible =
+      assetStatusInfo?.tag.label !== Filters.OCCUPIED && assetStatusInfo?.tag.label !== Filters.RENEWAL;
 
     return (
       <TouchableWithoutFeedback onPress={this.onCloseMenu}>
@@ -275,12 +281,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       t,
     } = this.props;
     const {
-      propertyData: {
-        id,
-        assetStatusInfo,
-        isManaged,
-        assetStatusInfo: { leaseListingId, saleListingId },
-      },
+      propertyData: { id, assetStatusInfo, isManaged },
     } = this.state;
 
     switch (route.key) {
@@ -306,7 +307,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       case Tabs.REVIEWS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 3)}>
-            <AssetReviews leaseListingId={leaseListingId} saleListingId={saleListingId} />
+            <AssetReviews
+              leaseListingId={assetStatusInfo?.leaseListingId ?? null}
+              saleListingId={assetStatusInfo?.saleListingId ?? null}
+            />
           </View>
         );
       case Tabs.SITE_VISITS:
@@ -449,6 +453,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         lastVisitedStep: {
           listing: { type },
         },
+        assetStatusInfo,
       },
     } = this.state;
     setSelectedPlan({ id, selectedPlan: type });
@@ -467,11 +472,20 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
 
     if (value === MenuItems.EDIT_PROPERTY) {
+      let params;
       setEditPropertyFlow(true);
-      toggleEditPropertyFlowBottomSheet(true);
+      if (assetStatusInfo && assetStatusInfo.status) {
+        params = {
+          status: assetStatusInfo.status,
+        };
+        if (assetStatusInfo.status === 'APPROVED') {
+          toggleEditPropertyFlowBottomSheet(true);
+        }
+      }
       // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.PostAssetDetails,
+        ...(params && { params }),
       });
     }
 
@@ -482,12 +496,12 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
-  private navigateToBookVisit = (isNew?: boolean, userId?: number): void => {
+  private navigateToBookVisit = (param: IBookVisitProps, isNew?: boolean): void => {
     const { navigation } = this.props;
     // @ts-ignore
     navigation.navigate(ScreensKeys.BookVisit, {
       isReschedule: !isNew,
-      ...(userId && { userId }),
+      ...param,
     });
   };
 

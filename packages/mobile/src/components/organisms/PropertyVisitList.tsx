@@ -52,7 +52,7 @@ interface IProps {
   handleAction: (id: number, action: VisitActions) => void;
   handleUserView?: (id: number) => void;
   handleConfirmation?: (id: number) => void;
-  handleReschedule: (id: number, userId?: number) => void;
+  handleReschedule: (asset: AssetVisit, userId?: number) => void;
   handleDropdown?: (value: string | number, visitType: Tabs) => void;
   containerStyle?: StyleProp<ViewStyle>;
   pillars?: Pillar[];
@@ -188,7 +188,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
 
     const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
 
-    const onReschedule = (): void => handleReschedule(id, user.id);
+    const onReschedule = (): void => handleReschedule(item, user.id);
     const onPressIcon = (): void => handleUserView && handleUserView(user.id);
 
     return (

@@ -31,11 +31,12 @@ import {
   IUpdateVisitPayload,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
+import { IBookVisitProps } from '@homzhub/mobile/src/navigation/interfaces';
 import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IDispatchProps {
@@ -49,7 +50,7 @@ interface IStateProps {
 }
 
 interface IProps {
-  onReschedule: (isNew?: boolean) => void;
+  onReschedule: (param: IBookVisitProps, isNew?: boolean) => void;
   selectedAssetId: number;
 }
 
@@ -270,11 +271,18 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     });
   };
 
-  private handleSchedule = (id: number): void => {
+  private handleSchedule = (asset: AssetVisit): void => {
     const { onReschedule, setVisitIds, getAssetVisit } = this.props;
+    const { id, leaseListing, saleListing } = asset;
+
+    const param = {
+      ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
+      ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
+    };
+
     setVisitIds([id]);
     getAssetVisit({ id });
-    onReschedule(false);
+    onReschedule(param, false);
     this.onCloseProfile();
   };
 
@@ -421,9 +429,14 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     results.forEach((visit) => {
       visitIds.push(visit.id);
     });
+    const { leaseListing, saleListing } = results[0];
+    const param = {
+      ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
+      ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
+    };
 
     setVisitIds(visitIds);
-    onReschedule();
+    onReschedule(param);
   };
 }
 

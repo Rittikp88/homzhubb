@@ -24,7 +24,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import EventWithProfile from '@homzhub/mobile/src/components/molecules/EventWithProfile';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
 import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
-import { IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IAssetVisitPayload,
@@ -32,7 +32,7 @@ import {
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IBookVisitProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRoutes, Tabs, VisitRoutes } from '@homzhub/common/src/constants/Tabs';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -58,7 +58,7 @@ type NavigationType =
 
 interface IProps {
   isFromProperty?: boolean;
-  onReschedule: (isNew?: boolean, userId?: number) => void;
+  onReschedule: (param: IBookVisitProps, isNew?: boolean) => void;
   selectedAssetId?: number;
   isViewChanged?: boolean;
   navigation?: NavigationType;
@@ -193,7 +193,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
               dropdownValue={dropdownValue}
               isLoading={isLoading}
               handleAction={this.handleVisitActions}
-              handleReschedule={(id): void => this.handleRescheduleVisit(id, Tabs.UPCOMING)}
+              handleReschedule={(item): void => this.handleRescheduleVisit(item, Tabs.UPCOMING)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
             />
@@ -210,7 +210,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
               dropdownValue={dropdownValue}
               dropdownData={dropdownData}
               handleAction={this.handleVisitActions}
-              handleReschedule={(id): void => this.handleRescheduleVisit(id, Tabs.MISSED)}
+              handleReschedule={(item): void => this.handleRescheduleVisit(item, Tabs.MISSED)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
             />
@@ -227,7 +227,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
               dropdownValue={dropdownValue}
               dropdownData={dropdownData}
               handleAction={this.handleVisitActions}
-              handleReschedule={(id, userId): void => this.handleRescheduleVisit(id, Tabs.COMPLETED, userId)}
+              handleReschedule={(item, userId): void => this.handleRescheduleVisit(item, Tabs.COMPLETED, userId)}
               handleDropdown={this.handleDropdownSelection}
               handleUserView={this.onShowProfile}
               pillars={pillars}
@@ -289,14 +289,18 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
       });
   };
 
-  private handleRescheduleVisit = (id: number, key: Tabs, userId?: number): void => {
+  private handleRescheduleVisit = (asset: AssetVisit, key: Tabs, userId?: number): void => {
     const { onReschedule, setVisitIds } = this.props;
+    const { id, leaseListing, saleListing } = asset;
     setVisitIds([id]);
-    console.log(key, userId);
+    const param = {
+      ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
+      ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
+    };
     if (key === Tabs.COMPLETED) {
-      onReschedule(true, userId);
+      onReschedule({ ...param, userId }, true);
     } else {
-      onReschedule(false);
+      onReschedule(param, false);
     }
   };
 
@@ -347,11 +351,17 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private handleSchedule = (id: number): void => {
+  private handleSchedule = (visit: AssetVisit): void => {
     const { onReschedule, setVisitIds, getAssetVisit } = this.props;
+    const { id, leaseListing, saleListing } = visit;
     setVisitIds([id]);
     getAssetVisit({ id });
-    onReschedule(false);
+
+    const param = {
+      ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
+      ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
+    };
+    onReschedule(param, false);
     this.onCloseProfile();
   };
 

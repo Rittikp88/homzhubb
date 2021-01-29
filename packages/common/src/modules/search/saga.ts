@@ -45,13 +45,16 @@ export function* getPropertiesDetails() {
       count = data.count;
       yield put(SearchActions.getPropertiesSuccess(data));
     }
+    const historyPayload = AssetService.getSearchHistoryPayload(assetFilters, count);
+    yield call(SearchRepository.addSearchHistory, historyPayload);
 
+    // Analytics
     yield call(AnalyticsService.track, EventType.SearchSuccess, trackData);
     if (count === 0) {
       yield call(AnalyticsService.track, EventType.ZeroSearchResult, trackData);
     }
   } catch (e) {
-    const error = ErrorUtils.getErrorMessage(e.details);
+    const error = ErrorUtils.getErrorMessage(e.details, true);
     trackData = {
       ...trackData,
       error,
@@ -81,7 +84,10 @@ export function* getPropertiesListViewDetails() {
       count = data.count;
       yield put(SearchActions.getPropertiesListViewSuccess(data));
     }
+    const historyPayload = AssetService.getSearchHistoryPayload(assetFilters, count);
+    yield call(SearchRepository.addSearchHistory, historyPayload);
 
+    // Analytics
     yield call(AnalyticsService.track, EventType.SearchSuccess, trackData);
     if (count === 0) {
       yield call(AnalyticsService.track, EventType.ZeroSearchResult, trackData);

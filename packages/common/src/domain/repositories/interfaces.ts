@@ -291,20 +291,21 @@ export interface IUpdateAssetParams {
   furnishing?: string;
   is_subleased?: boolean;
   is_managed?: boolean;
+  change_status?: boolean;
 }
 
 // ASSET - END
 
 // Property Search
 export interface IPropertySearchPayload {
-  asset_group: number;
-  price__gte: number;
-  price__lte: number;
-  latitude: number;
-  longitude: number;
-  limit: number;
-  offset: number;
-  bathroom__gte: number;
+  asset_group?: number;
+  price__gte?: number;
+  price__lte?: number;
+  latitude?: number;
+  longitude?: number;
+  limit?: number;
+  offset?: number;
+  bathroom__gte?: number;
   move_in_date__gte?: string;
   furnishing__in?: string;
   facing__in?: string;

@@ -1,11 +1,11 @@
-import { remove, cloneDeep, groupBy } from 'lodash';
+import { cloneDeep, groupBy, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { IFormData, LeaseFormKeys } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
 import { IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
-import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { DeviceType, IFilter, ISearchHistoryPayload } from '@homzhub/common/src/domain/models/Search';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -40,7 +40,11 @@ class AssetService {
       area_unit,
       currency_code,
       sort_by,
-      miscellaneous: {
+      miscellaneous,
+    } = filter;
+    let miscellaneousData;
+    if (miscellaneous) {
+      const {
         show_verified,
         agent_listed,
         search_radius,
@@ -51,10 +55,29 @@ class AssetService {
         facing,
         furnishing,
         propertyAmenity,
-      },
-    } = filter;
+      } = miscellaneous;
+
+      miscellaneousData = {
+        // move_in_date__gte: expected_move_in_date,
+        ...(furnishing.length > 0 ? { furnishing__in: furnishing.toString() } : {}),
+        ...(facing.length > 0 ? { facing__in: facing.toString() } : {}),
+        ...(propertyAmenity.length > 0 ? { amenities__in: propertyAmenity.toString() } : {}),
+        ...(rent_free_period.id !== -1 ? { rent_free_period: rent_free_period.id } : {}),
+        ...(show_verified ? { is_verified: show_verified } : {}),
+        ...(agent_listed ? { agent_listed } : {}),
+        // ...{property_age.id !== -1 && { age__gte: PROPERTY_AGE[property_age.id - 1] } },
+        ...(search_radius.id === -1
+          ? { search_radius: SEARCH_RADIUS_KILO_METRE[0] }
+          : { search_radius: SEARCH_RADIUS_KILO_METRE[search_radius.id - 1] }),
+        ...(date_added.id !== -1 ? { date_added__gte: DATE_ADDED[date_added.id - 1] } : {}),
+      };
+    }
     const bedroomCount = cloneDeep(room_count);
-    remove(bedroomCount, (count: number) => count === -1);
+
+    if (bedroomCount) {
+      remove(bedroomCount, (count: number) => count === -1);
+    }
+
     const finalPayload = {
       asset_group,
       price__gte: min_price,
@@ -66,27 +89,16 @@ class AssetService {
       currency_code,
       ...(sort_by && { sort_by }),
       bathroom__gte: bath_count,
-      // move_in_date__gte: expected_move_in_date,
-      ...(furnishing.length > 0 ? { furnishing__in: furnishing.toString() } : {}),
-      ...(facing.length > 0 ? { facing__in: facing.toString() } : {}),
-      ...(propertyAmenity.length > 0 ? { amenities__in: propertyAmenity.toString() } : {}),
-      ...(rent_free_period !== -1 ? { rent_free_period } : {}),
-      ...(show_verified ? { is_verified: show_verified } : {}),
-      ...(agent_listed ? { agent_listed } : {}),
-      // ...{ age__gte: PROPERTY_AGE[property_age - 1] },
-      ...(search_radius === -1
-        ? { search_radius: SEARCH_RADIUS_KILO_METRE[0] }
-        : { search_radius: SEARCH_RADIUS_KILO_METRE[search_radius - 1] }),
-      ...(date_added !== -1 ? { date_added__gte: DATE_ADDED[date_added - 1] } : {}),
+      ...miscellaneousData,
     };
-    if (asset_type.length > 0) {
+    if (asset_type && asset_type.length > 0) {
       Object.assign(finalPayload, { asset_type__in: asset_type.toString() });
     }
-    if (bedroomCount.includes(5)) {
+    if (bedroomCount && bedroomCount.includes(5)) {
       Object.assign(finalPayload, { bedroom__gte: 5 });
       remove(bedroomCount, (count: number) => count === 5);
     }
-    if (bedroomCount.length > 0) {
+    if (bedroomCount && bedroomCount.length > 0) {
       Object.assign(finalPayload, { bedroom__in: bedroomCount.toString() });
     }
     if (asset_group === 2) {
@@ -152,6 +164,66 @@ class AssetService {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       return [];
     }
+  };
+
+  public getSearchHistoryPayload = (filter: IFilter, count: number): ISearchHistoryPayload => {
+    const {
+      asset_group,
+      asset_transaction_type,
+      max_price,
+      min_price,
+      currency_code,
+      search_latitude,
+      search_longitude,
+      asset_type,
+      bath_count,
+      room_count,
+      miscellaneous,
+      user_location_longitude,
+      user_location_latitude,
+    } = filter;
+    let miscellaneous_search_criteria;
+
+    if (miscellaneous) {
+      const {
+        property_age,
+        date_added,
+        search_radius,
+        rent_free_period,
+        agent_listed,
+        expected_move_in_date,
+        facing,
+        furnishing,
+      } = miscellaneous;
+      miscellaneous_search_criteria = {
+        ...(property_age && property_age.id > 0 && { property_age }),
+        ...(date_added && date_added.id > 0 && { date_added }),
+        ...(search_radius && search_radius.id > 0 && { search_radius }),
+        ...(rent_free_period && rent_free_period.id > 0 && { rent_free_period }),
+        ...(facing.length > 0 && { facing }),
+        ...(furnishing.length > 0 && { furnishing_status: furnishing }),
+        agent_listed,
+        expected_move_in_date,
+      };
+    }
+    // TODO: Add Device Id
+    return {
+      device_type: DeviceType.MOBILE,
+      results_count: count,
+      currency: currency_code,
+      asset_group,
+      search_latitude,
+      search_longitude,
+      min_price,
+      max_price,
+      ...(bath_count && bath_count > 0 && { bath_count }),
+      ...(room_count && room_count.length > 0 && room_count[0] > 0 && { room_count }),
+      asset_type,
+      user_location_latitude,
+      user_location_longitude,
+      asset_transaction_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
+      miscellaneous_search_criteria,
+    };
   };
 }
 

@@ -157,8 +157,8 @@ class PropertyUtils {
 
     return {
       asset_id: id,
-      listing_id: leaseUnitId ?? leaseListingId ?? saleListingId ?? 0,
-      assetType: leaseUnitId ? LEASE_UNIT : leaseListingId ? LEASE_LISTING : saleListingId ? SALE_LISTING : ASSET,
+      listing_id: leaseListingId ?? leaseUnitId ?? saleListingId ?? 0,
+      assetType: leaseListingId ? LEASE_LISTING : leaseUnitId ? LEASE_UNIT : saleListingId ? SALE_LISTING : ASSET,
       lease_listing_id: leaseListingId,
       sale_listing_id: saleListingId,
     };

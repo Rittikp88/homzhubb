@@ -75,6 +75,10 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     }
   }
 
+  public componentWillUnmount = (): void => {
+    this.onFocusSubscription();
+  };
+
   public render = (): React.ReactElement => {
     const { isLoading } = this.props;
     const { isLocalViewLoading } = this.state;

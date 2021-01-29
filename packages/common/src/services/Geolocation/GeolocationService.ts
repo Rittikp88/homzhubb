@@ -33,7 +33,6 @@ class GeolocationService {
     const permission = await PermissionsService.checkPermission(PERMISSION_TYPE.location);
     let deviceCountry = 'IN';
     if (permission) {
-      // console.log('PlatfromUtils => ', PlatformUtils.isWeb());
       this.getCurrentPosition(
         async (data: GeolocationResponse): Promise<void> => {
           const { latitude: lat, longitude: lng } = data.coords;
@@ -49,6 +48,8 @@ class GeolocationService {
               SearchActions.setFilter({
                 search_latitude: lat,
                 search_longitude: lng,
+                user_location_latitude: lat,
+                user_location_longitude: lng,
                 search_address: deviceLocation.formatted_address,
               })
             );
