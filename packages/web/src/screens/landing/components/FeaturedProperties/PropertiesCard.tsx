@@ -89,9 +89,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 42 },
     shadowOpacity: 0.8,
     shadowRadius: 120,
+    marginBottom: 42,
+    marginLeft: 15,
+    marginRight: 15,
   },
   cardMobile: {
-    marginRight: undefined,
+    marginRight: 0,
+    marginLeft: 0,
   },
   image: {
     flex: 1,
@@ -115,7 +119,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginTop: 16,
     marginHorizontal: 20,
-    marginBottom: 0,
     minHeight: '200',
   },
   propertyRating: {

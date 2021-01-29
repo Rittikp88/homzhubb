@@ -14,30 +14,32 @@ export const FooterWithSocialMedia: FC = () => {
   const socialMediaLinks: imageType[] = ['instagram', 'twitter', 'youtube', 'linkedin', 'facebook'];
 
   return (
-    <View style={[styles.footerContainer, !isMobile && styles.footerContainerDesktop]}>
-      <View style={styles.copyrightTextContainer}>
-        <Typography variant="label" size="regular" style={styles.copyrightText}>
-          {t('copyrightContent')}
-        </Typography>
-        <Typography variant="label" size="regular" fontWeight="semiBold" style={styles.copyrightText}>
-          {t('homzhubLink')}
-        </Typography>
-      </View>
-      <View style={styles.socialMediaIcons}>
-        <Typography size="small" style={styles.socialMediaText}>
-          {t('common:footerSocialMediaText')}
-        </Typography>
-        {socialMediaLinks.map((icon) => {
-          return (
-            <StoreButton
-              key={`social-media-icon-${icon}`}
-              store={icon}
-              containerStyle={styles.icons}
-              imageIconStyle={styles.imageIconStyle}
-              mobileImageIconStyle={styles.mobileImageIconStyle}
-            />
-          );
-        })}
+    <View style={[styles.footerContainer]}>
+      <View style={[styles.contentMobile, !isMobile && styles.content]}>
+        <View style={styles.copyrightTextContainer}>
+          <Typography variant="label" size="regular" style={styles.copyrightText}>
+            {t('copyrightContent')}
+          </Typography>
+          <Typography variant="label" size="regular" fontWeight="semiBold" style={styles.copyrightText}>
+            {t('homzhubLink')}
+          </Typography>
+        </View>
+        <View style={styles.socialMediaIcons}>
+          <Typography size="small" style={styles.socialMediaText}>
+            {t('common:footerSocialMediaText')}
+          </Typography>
+          {socialMediaLinks.map((icon) => {
+            return (
+              <StoreButton
+                key={`social-media-icon-${icon}`}
+                store={icon}
+                containerStyle={styles.icons}
+                imageIconStyle={styles.imageIconStyle}
+                mobileImageIconStyle={styles.mobileImageIconStyle}
+              />
+            );
+          })}
+        </View>
       </View>
     </View>
   );
@@ -48,16 +50,21 @@ export default FooterWithSocialMedia;
 const styles = StyleSheet.create({
   footerContainer: {
     backgroundColor: theme.colors.footerBlue,
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingVertical: 10,
     alignItems: 'center',
   },
-
-  footerContainerDesktop: {
+  content: {
     flexDirection: 'row',
-    paddingHorizontal: '10%',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: theme.layout.dashboardWidth,
   },
-
+  contentMobile: {
+    width: theme.layout.dashboardMobileWidth,
+    alignContent: 'center',
+    justifyContent: 'center',
+  },
   copyrightTextContainer: {
     flexDirection: 'row',
   },

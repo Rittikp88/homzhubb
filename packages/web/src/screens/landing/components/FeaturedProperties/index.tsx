@@ -47,7 +47,7 @@ const featuredPropertiesStyle = (): StyleSheet.NamedStyles<ITestimonialStyle> =>
       flexDirection: 'column',
       alignItems: 'center',
       width: '100%',
-      backgroundColor: theme.colors.white,
+      backgroundColor: theme.colors.grey5,
     },
     titleText: {
       color: theme.colors.lightGreen,

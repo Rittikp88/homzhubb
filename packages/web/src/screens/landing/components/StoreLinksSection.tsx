@@ -13,11 +13,12 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 export const StoreLinkSection: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const notDesktop = useDown(deviceBreakpoint.TABLET);
   return (
     <View style={styles.container}>
       <GradientBackground>
         <View style={styles.content}>
-          <Typography variant="title" size="large" fontWeight="semiBold" style={styles.title}>
+          <Typography variant={notDesktop ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.title}>
             {t('giveTry')}
           </Typography>
           <Typography variant="text" size="small" style={styles.title}>

@@ -133,6 +133,7 @@ const styles = StyleSheet.create({
     width: theme.layout.dashboardMobileWidth,
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
   },
   privacyPolicy: {
     marginLeft: 36,
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
   },
   emailInputBoxMobile: {
     alignSelf: 'center',
+    marginTop: 30,
   },
   subscribeBtnTxt: {
     marginVertical: 6,

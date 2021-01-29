@@ -12,8 +12,8 @@ const AboutHomzhub: FC = () => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
+    <View style={[styles.container, isMobile && styles.containerMobile]}>
+      <View style={[styles.subContainer, isMobile && styles.subContainerMobile]}>
         <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.title}>
           {t('aboutHomzhub')}
         </Typography>
@@ -43,17 +43,27 @@ const AboutHomzhub: FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginLeft: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 50,
-  },
-  title: {
-    color: theme.colors.darkTint4,
-    width: 'auto',
+    marginBottom: 50,
   },
   subContainer: {
     flex: 1,
     flexDirection: 'column',
-    width: '100%',
+    justifyContent: 'space-between',
+    width: theme.layout.dashboardWidth,
+  },
+  containerMobile: {
+    marginBottom: 35,
+  },
+  subContainerMobile: {
+    width: theme.layout.dashboardMobileWidth,
+    alignItems: 'center',
+  },
+  title: {
+    color: theme.colors.darkTint4,
+    width: 'auto',
   },
   text: {
     width: '58%',
@@ -71,7 +81,6 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    marginRight: 50,
     marginBottom: 20,
     width: '20%',
   },

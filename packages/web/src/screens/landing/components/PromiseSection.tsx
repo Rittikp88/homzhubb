@@ -15,12 +15,12 @@ const PromiseSection: FC = () => {
     <View style={styles.container}>
       <View style={styles.content}>
         <View>
-          <Typography variant="text" size="small" style={styles.title}>
-            ADIPISCING
+          <Typography variant="text" size="regular" style={styles.title}>
+            {t('values')}
           </Typography>
         </View>
         <View>
-          <Typography variant="title" size="large" fontWeight="semiBold" style={styles.header}>
+          <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.header}>
             {t('ourPromise')}
           </Typography>
         </View>

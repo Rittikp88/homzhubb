@@ -85,7 +85,12 @@ const LandingFeatures: FC = () => {
             </Typography>
           )
         ) : (
-          <Typography variant="title" size="large" fontWeight="semiBold" style={styles.subHeadingMobile}>
+          <Typography
+            variant={isMobile ? 'text' : 'title'}
+            size="large"
+            fontWeight="semiBold"
+            style={styles.subHeadingMobile}
+          >
             {t('landing:mobileDescription')}
           </Typography>
         )}

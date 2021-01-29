@@ -24,7 +24,7 @@ interface IProps {
 
 const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const {
-    platformPlans: { name, servicePlanBundle, servicePlanPricing },
+    platformPlans: { name, label, servicePlanBundle, servicePlanPricing },
   } = props;
   const { t } = useTranslation();
 
@@ -54,7 +54,7 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
         {name}
       </Typography>
       <Typography size="small" variant="text" style={styles.headerLabel}>
-        Placerat ut morbi rhoncus Multiple Properties
+        {label}
       </Typography>
       {servicePlanPricing && (
         <View style={styles.billingAmount}>

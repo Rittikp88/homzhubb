@@ -1,12 +1,14 @@
 import React, { useState, FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ToggleButtons from '@homzhub/web/src/components/molecules/ToggleButtons';
 import PlatformPlanSection from '@homzhub/web/src/screens/landing/components/PlansSection/PlatformPlanSection';
 import ServicePlansCard from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansCard';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const PlansSection: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
@@ -17,13 +19,14 @@ const PlansSection: FC = () => {
   const toggleServicePlans = (): void => {
     setIsServicePlans(true);
   };
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
     <>
       <View style={styles.plansTextContainer}>
         <Typography variant="label" size="large" fontWeight="semiBold" style={styles.plansTitle}>
           {t('plansSectionTitle')}
         </Typography>
-        <Typography variant="title" size="large" fontWeight="semiBold" style={styles.plansHeader}>
+        <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.plansHeader}>
           {t('plansSectionHeader')}
         </Typography>
       </View>

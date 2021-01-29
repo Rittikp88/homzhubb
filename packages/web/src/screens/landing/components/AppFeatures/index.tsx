@@ -1,15 +1,17 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ToggleButtons from '@homzhub/web/src/components/molecules/ToggleButtons';
 import FeatureCard from '@homzhub/web/src/screens/landing/components/AppFeatures/FeatureCard';
 import MobileImage from '@homzhub/web/src/screens/landing/components/AppFeatures/MobileImage';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const AppFeatures: FC = () => {
   const { t } = useTranslation();
-
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [image, setImage] = useState('Picture1');
   const [isOwner, setIsOwner] = useState(true);
   const relativeImage = (data: string): void => {
@@ -29,7 +31,7 @@ const AppFeatures: FC = () => {
           {t('landing:appFeatures')}
         </Typography>
 
-        <Typography variant="title" size="large" fontWeight="semiBold" style={styles.subHeading}>
+        <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.subHeading}>
           {t('landing:appFeatureTitle')}
         </Typography>
       </View>
