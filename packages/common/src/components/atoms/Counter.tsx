@@ -174,5 +174,6 @@ const styles = StyleSheet.create({
   counterValue: {
     flex: 1,
     textAlign: 'center',
+    padding: 0,
   },
 });
