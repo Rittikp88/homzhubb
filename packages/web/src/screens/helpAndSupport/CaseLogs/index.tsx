@@ -5,9 +5,9 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import LogsCards from '@homzhub/web/src/screens/helpAndSupport/CaseLogs/LogsCards';
+import HaveAnyQuestionsForm from '@homzhub/web/src/screens/helpAndSupport/HaveAnyQuestionsForm';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import LogsCards from 'screens/helpAndSupport/CaseLogs/LogsCards';
-import HaveAnyQuestionsForm from '@homzhub/web/src/screens/helpAndSupportForm/HaveAnyQuestionsForm';
 
 const CaseLogsCard = (): React.ReactElement => {
   const { t } = useTranslation();

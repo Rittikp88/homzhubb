@@ -23,7 +23,7 @@ import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const Dashboard: FC = () => {
-  const notMobile = useUp(deviceBreakpoint.MOBILE);
+  const notMobile = useUp(deviceBreakpoint.TABLET);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const selectedCountry: number = useSelector(UserSelector.getUserCountryCode);

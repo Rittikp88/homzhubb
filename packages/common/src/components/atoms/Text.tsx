@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { Text as RNText, StyleSheet, TextProps, StyleProp, TextStyle } from 'react-native';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 
-type TextFieldType = 'label' | 'text';
+type TextFieldType = 'label' | 'text' | 'title';
 type TextSizeType = 'small' | 'regular' | 'large';
 type FontWeightType = 'light' | 'regular' | 'semiBold' | 'bold' | 'extraBold';
 
@@ -37,6 +37,7 @@ const fontLineHeights = {
   },
   title: {
     regular: 41,
+    large: 54,
   },
 };
 
@@ -183,14 +184,36 @@ const Text = ({
   );
 };
 
-const Title = ({ type, style, children, textType, testID, maxLength, ...props }: IProps): ReactElement<RNText> => {
+const Title = ({
+  type = 'regular',
+  style,
+  children,
+  textType,
+  testID,
+  maxLength,
+  ...props
+}: IProps): ReactElement<RNText> => {
+  let defaultStyle: object = {};
+  const fontStyle: StyleProp<TextStyle> = fontSelection[textType ?? 'regular'];
+  switch (type) {
+    case 'regular':
+      defaultStyle = styles.titleRegular;
+      break;
+    case 'large':
+      defaultStyle = styles.titleLarge;
+      break;
+    case 'small':
+    default:
+      defaultStyle = styles.titleSmall;
+      break;
+  }
   const slicedText =
     maxLength && children && children.toString().length > maxLength
       ? `${children.toString().substring(0, maxLength)}...`
       : children;
 
   return (
-    <RNText style={[styles.titleRegular, fontSelection.semiBold, style]} {...props} testID={testID}>
+    <RNText style={[defaultStyle, fontStyle, style]} {...props} testID={testID}>
       {slicedText || children}
     </RNText>
   );
@@ -247,10 +270,26 @@ const styles = StyleSheet.create({
     lineHeight: fontLineHeights.text.large,
     textAlign: 'left',
   },
+  titleSmall: {
+    fontSize: I18nService.select<number>({
+      rtl: 26,
+      ltr: 26,
+    }),
+    lineHeight: fontLineHeights.title.regular,
+    textAlign: 'left',
+  },
   titleRegular: {
     fontSize: I18nService.select<number>({
       rtl: 30,
       ltr: 30,
+    }),
+    lineHeight: fontLineHeights.title.regular,
+    textAlign: 'left',
+  },
+  titleLarge: {
+    fontSize: I18nService.select<number>({
+      rtl: 34,
+      ltr: 34,
     }),
     lineHeight: fontLineHeights.title.regular,
     textAlign: 'left',

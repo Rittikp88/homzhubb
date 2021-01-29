@@ -46,7 +46,7 @@ function useBetween(firstScreenSize: IDeviceScreenLimits, secondScreeSize: IDevi
 // useUp(tablet) => '@media (min-width: 768px)'
 function useUp(screenSize: IDeviceScreenLimits): boolean {
   const screenWidth = useViewPort().width;
-  return screenWidth > screenSize.up;
+  return screenWidth >= screenSize.down;
 }
 
 // useDown(tablet) => '@media (max-width: 991.98px)'
@@ -56,8 +56,8 @@ function useDown(screenSize: IDeviceScreenLimits): boolean {
 }
 
 interface IWithMediaQuery {
-  isMobile: boolean;
-  isTablet: boolean;
+  isMobile?: boolean;
+  isTablet?: boolean;
 }
 
 const withMediaQuery = <P extends {}>(

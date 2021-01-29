@@ -10,7 +10,11 @@ import { SocialAuthProvider } from '@homzhub/common/src/domain/models/SocialAuth
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { ISupportPayload, IMarketTrendParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IMarketTrendParams,
+  ISubscribeToNewsletterPayload,
+  ISupportPayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { SocialAuthProviders } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 const ENDPOINTS = {
@@ -23,8 +27,9 @@ const ENDPOINTS = {
   supportContact: 'client-support/contacts/',
   clientSupport: 'client-support/',
   getMarketTrends: 'market-trends/',
-  updateMarketTrends: (id: number): string => `market-trends/${id}/`,
   getPillars: 'pillars/',
+  subscribeToNewsLetter: 'newslettters/subscriptions/',
+  updateMarketTrends: (id: number): string => `market-trends/${id}/`,
 };
 
 class CommonRepository {
@@ -71,6 +76,10 @@ class CommonRepository {
   public getSupportContacts = async (): Promise<User> => {
     const response = await this.apiClient.get(ENDPOINTS.supportContact);
     return ObjectMapper.deserialize(User, response);
+  };
+
+  public subscribeToNewsLetter = async (payload: ISubscribeToNewsletterPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.subscribeToNewsLetter, payload);
   };
 
   public postClientSupport = async (payload: ISupportPayload): Promise<void> => {

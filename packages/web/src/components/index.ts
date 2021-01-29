@@ -11,5 +11,6 @@ export { default as BreadCrumbs } from '@homzhub/web/src/components/molecules/Br
 
 // HOC
 export { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
+export { StickyHeader } from '@homzhub/web/src/components/hoc/StickyHeader';
 
 // organisms

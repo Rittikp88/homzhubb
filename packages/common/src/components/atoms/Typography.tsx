@@ -1,6 +1,13 @@
 import React, { ReactElement } from 'react';
 import { Text as RNText, TextProps } from 'react-native';
-import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import {
+  FontWeightType,
+  Label,
+  Text,
+  TextFieldType,
+  TextSizeType,
+  Title,
+} from '@homzhub/common/src/components/atoms/Text';
 
 export interface ITypographyProps extends TextProps {
   children?: string | React.ReactNode;
@@ -25,6 +32,9 @@ export const Typography = ({
 
   if (variant === 'label') {
     TextField = Label;
+  }
+  if (variant === 'title') {
+    TextField = Title;
   }
 
   return (

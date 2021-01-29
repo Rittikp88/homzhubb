@@ -155,6 +155,7 @@ export const icons = {
   sort: 'sort',
   reply: 'reply',
   flag: 'flag',
+  filledTick: 'filled-tick',
 
   // COMMUTE
   train: 'train',
@@ -206,4 +207,11 @@ export const icons = {
   lock: 'lock',
   communication: 'communication',
   hand: 'hand',
+
+  // landing-page
+  quoteUp: 'quote-up',
+  quoteDown: 'quote-down',
+  longArrowLeft: 'long-arrow-left',
+  longArrowRight: 'long-arrow-right',
+  scrollDown: 'scroll-down',
 };

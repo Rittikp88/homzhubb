@@ -9,7 +9,8 @@ const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/ind
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
 
 export const MainRouter = (): React.ReactElement => {
-  const { DASHBOARD, ADD_PROPERTY, APP_BASE, FINANCIALS, HELP_SUPPORT } = RouteNames.protectedRoutes;
+  const { DASHBOARD, ADD_PROPERTY, FINANCIALS, HELP_SUPPORT } = RouteNames.protectedRoutes;
+  const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
 
   return (

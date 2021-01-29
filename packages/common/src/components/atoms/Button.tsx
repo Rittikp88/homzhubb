@@ -12,7 +12,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
-export type ButtonType = 'primary' | 'secondary' | 'secondaryOutline';
+export type ButtonType = 'primary' | 'secondary' | 'secondaryOutline' | 'text';
 
 export interface IButtonProps {
   type: ButtonType;
@@ -94,6 +94,10 @@ export class Button extends React.PureComponent<IButtonProps> {
     if (type === 'secondaryOutline' && !disabled) {
       themedStyle = styles.secondaryOutline;
     }
+
+    if (type === 'text' && !disabled) {
+      themedStyle = styles.textButton;
+    }
     return StyleSheet.flatten([styles.container, themedStyle, containerStyle]);
   };
 
@@ -102,6 +106,9 @@ export class Button extends React.PureComponent<IButtonProps> {
     let themedStyle = {};
     if (type === 'secondary' && !disabled) {
       themedStyle = { color: theme.colors.active };
+    }
+    if (type === 'text' && !disabled) {
+      themedStyle = { color: theme.colors.darkTint2 };
     }
     return StyleSheet.flatten([styles.textStyle, themedStyle, titleStyle]);
   };
@@ -132,5 +139,8 @@ const styles = StyleSheet.create({
   secondaryOutline: {
     borderWidth: 0.5,
     borderColor: theme.colors.white,
+  },
+  textButton: {
+    borderWidth: 0,
   },
 });

@@ -1,4 +1,25 @@
-export const InvestmentMockData = [
+export interface IInvestmentMockData {
+  id: number;
+  investmentStatus: string;
+  project_name: string;
+  address: string;
+  status: number;
+  asset_group: IAssetGroup;
+  asset_type: IAssetGroup;
+  spaces: IAssetSpaces[];
+}
+
+interface IAssetGroup {
+  id: number;
+  name: string;
+}
+interface IAssetSpaces {
+  id: number;
+  name: string;
+  count: number;
+}
+
+export const InvestmentMockData: IInvestmentMockData[] = [
   {
     id: 1,
     investmentStatus: 'New',

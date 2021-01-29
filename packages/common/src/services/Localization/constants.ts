@@ -44,6 +44,7 @@ enum namespacesKey {
   assetFinancial = 'assetFinancial',
   assetMore = 'assetMore',
   moreSettings = 'moreSettings',
+  landing = 'landing',
   moreProfile = 'moreProfile',
 }
 const namespaces = Object.values(namespacesKey);

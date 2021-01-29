@@ -1,11 +1,15 @@
 export const RouteNames = {
   publicRoutes: {
+    APP_BASE: '/',
     ABOUT: '/about',
+    FEATURED: '/featured',
+    PRICING: '/pricing',
     LOGIN: '/login',
+    TERMS_CONDITION: '/terms&Condition',
+    PRIVACY_POLICY: '/privacyPolicy',
   },
   protectedRoutes: {
     /* Mention protected route names here */
-    APP_BASE: '/',
     DASHBOARD: '/dashboard',
     FINANCIALS: '/dashboard/financial',
     PORTFOLIO: '/dashboard/portfolio',

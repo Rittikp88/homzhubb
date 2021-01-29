@@ -5,6 +5,7 @@ const namedColors = {
   informational: '#58C2f1',
   lowPriority: '#78B7FA',
   blue: '#0084F8',
+  footerBlue: '#147AEE',
   completed: '#47C2B1',
   green: '#2CBA67',
   incomeGreen: '#61D773',
@@ -27,6 +28,7 @@ const namedColors = {
   notificationRed: '#E93F33',
   lightBlue: '#C2E4FF',
   lightGrayishBlue: '#F7FAFC',
+  darkGrayishBlue: '#0A79DA',
   expense: '#FFC5BE',
   income: '#85DACF',
   blueDonut: '#A2D2FD',
@@ -39,6 +41,7 @@ const namedColors = {
   lightGreen: '#4FA800',
   alertInfo: '#52616B',
   divider: '#E5E8EC',
+  maroon: '#FD689A',
 };
 
 const tintColors = {
@@ -84,11 +87,14 @@ const gradientColors = {
   headerGradientA: namedColors.blue,
   headerGradientB: '#2DC8C3',
   headerGradientC: '#32CFBE',
+  landingCarouselGradientA: 'rgba(0, 13, 26, 0)',
+  landingCarouselGradientB: 'rgba(0, 15, 30, 0.54)',
 };
 
 // rgba functions for opacity
 const opacity = {
   whiteOpacity: 'rgba(255, 255, 255, 0.1)',
+  cardOpacity: 'rgba(255, 255, 255, 0.2)',
   crossIconContainer: 'rgba(0, 0, 0, 0.2)',
   overlay: 'rgba(0, 0, 0, 0.25)',
   imageThumbnailBackground: 'rgba(0, 27, 54, 0.6)',
@@ -100,6 +106,7 @@ const opacity = {
   ratingHigh: 'rgba(71, 194, 178, 0.12)',
   reminderBackground: 'rgba(0, 132, 248, 0.1)',
   greenOpacity: '#DDF4E7',
+  greenLightOpacity: 'rgba(44,186,103,0.12)',
   blueOpacity: 'rgba(0, 132, 248, 0.1)',
   reviewCardOpacity: 'rgba(44, 186, 103, 0.1)',
   disabledOpacity: 'rgba(153, 164, 175, 0.1)',
@@ -107,12 +114,17 @@ const opacity = {
   boxShadow: 'rgba(0, 0, 0, 0.24)',
   alertOpacity: '#FDF5F5',
   subHeader: 'rgba(255, 255, 255, 0.16)',
+  backgroundOpacity: 'rgba(240,245,249,0.5)',
+  landingCardShadow: 'rgba(0, 0, 0, 0.08)',
+  cardShadowDark: 'rgba(0, 0, 0, 0.3)',
 };
 
 const grayShades = {
   grey1: '#F9FCFE',
   gray2: '#4F4F4F',
   gray3: '#828282',
+  grey4: '#D3D3D3',
+  grey5: '#FDFDFD',
 };
 
 const chartColors = {

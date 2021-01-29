@@ -7,7 +7,7 @@ import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import FAQCards from '@homzhub/web/src/screens/helpAndSupport/FAQComponent/FAQCards';
-import HaveAnyQuestionsForm from '@homzhub/web/src/screens/helpAndSupportForm/HaveAnyQuestionsForm';
+import HaveAnyQuestionsForm from '@homzhub/web/src/screens/helpAndSupport/HaveAnyQuestionsForm';
 
 const FAQComponent = (): React.ReactElement => {
   const { t } = useTranslation();

@@ -9,7 +9,7 @@
 7. theme, images, icons
 8. Components (atoms, molecules, organisms, templates)
 9. Domain models
-10. Constants, mocks
+10. Constants, mocks, interfaces
 
 #### Within each of them, you could sort them alphabetically
 #### why: Easier to identify dependencies for the class across application layers

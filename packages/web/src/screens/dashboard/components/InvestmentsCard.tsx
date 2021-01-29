@@ -15,10 +15,7 @@ import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-// TODO (LAKSHIT) - change dummy data with actual api data
 interface IProps {
-  // todo (LAKSHIT) - change dummy data with actual api data
-  // investmentData: PropertyInvestment;
   investmentData: any;
 }
 

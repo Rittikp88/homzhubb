@@ -388,7 +388,6 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     const { getAssetVisit, asset, isFromProperty = false, selectedAssetId, setVisitPayload, visitId } = this.props;
     const { currentIndex, dropdownValue, isFromNav } = this.state;
     const currentRoute = VisitRoutes[currentIndex];
-
     let payload: IAssetVisitPayload | null;
     if (isFromNav && visitId) {
       payload = {

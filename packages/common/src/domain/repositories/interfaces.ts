@@ -535,6 +535,10 @@ export interface ISupportPayload {
   attachments: number[];
 }
 
+export interface ISubscribeToNewsletterPayload {
+  email: string;
+}
+
 export interface IUpdateUserPreferences {
   [name: string]: SelectedPreferenceType;
 }
