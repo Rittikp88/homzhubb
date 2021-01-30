@@ -21,7 +21,7 @@ const PlansSection: FC = () => {
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
-    <>
+    <View>
       <View style={styles.plansTextContainer}>
         <Typography variant="label" size="large" fontWeight="semiBold" style={styles.plansTitle}>
           {t('plansSectionTitle')}
@@ -37,7 +37,7 @@ const PlansSection: FC = () => {
         toggleButton2={toggleServicePlans}
       />
       {isServicePlans ? <ServicePlansCard /> : <PlatformPlanSection />}
-    </>
+    </View>
   );
 };
 export default PlansSection;
