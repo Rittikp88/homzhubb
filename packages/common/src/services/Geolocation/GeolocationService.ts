@@ -19,6 +19,11 @@ const defaultPositionOptions: GeolocationOptions = {
   timeout: 5000,
 };
 
+interface ICords {
+  latValue: number;
+  lngValue: number;
+}
+
 class GeolocationService {
   public getCurrentPosition = (
     success: ((position: GeolocationResponse) => void) | ((position: GeolocationResponse) => Promise<void>),
@@ -43,13 +48,20 @@ class GeolocationService {
 
           const country = deviceLocation.address_components.find((address) => address.types.includes('country'));
           deviceCountry = country?.short_name ?? deviceCountry;
+
+          const { lngValue, latValue } = this.getFormattedCords(lat, lng);
+          store.dispatch(
+            SearchActions.setFilter({
+              user_location_latitude: latValue,
+              user_location_longitude: lngValue,
+            })
+          );
+
           if (isLoggedIn && !searchAddress) {
             store.dispatch(
               SearchActions.setFilter({
-                search_latitude: lat,
-                search_longitude: lng,
-                user_location_latitude: lat,
-                user_location_longitude: lng,
+                search_latitude: latValue,
+                search_longitude: lngValue,
                 search_address: deviceLocation.formatted_address,
               })
             );
@@ -59,6 +71,16 @@ class GeolocationService {
       );
     }
     store.dispatch(CommonActions.setDeviceCountry(deviceCountry));
+  };
+
+  public getFormattedCords = (lat: number, lng: number): ICords => {
+    const formattedLat = lat.toString().replace('.', '');
+    const formattedLng = lng.toString().replace('.', '');
+
+    return {
+      latValue: formattedLat.length > 11 ? Number(lat.toPrecision(11)) : lat,
+      lngValue: formattedLng.length > 11 ? Number(lng.toPrecision(11)) : lng,
+    };
   };
 }
 

@@ -340,9 +340,9 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
   - React-jsinspector (0.62.2)
-  - react-native-config (1.4.1):
-    - react-native-config/App (= 1.4.1)
-  - react-native-config/App (1.4.1):
+  - react-native-config (1.4.2):
+    - react-native-config/App (= 1.4.2)
+  - react-native-config/App (1.4.2):
     - React-Core
   - react-native-document-picker (3.5.4):
     - React
@@ -382,7 +382,7 @@ PODS:
     - react-native-video/Video (= 4.4.5)
   - react-native-video/Video (4.4.5):
     - React
-  - react-native-viewpager (4.2.1):
+  - react-native-viewpager (4.2.2):
     - React-Core
   - react-native-webview (10.10.2):
     - React-Core
@@ -483,7 +483,7 @@ PODS:
     - React-Core
   - RNReanimated (1.13.2):
     - React-Core
-  - RNScreens (2.16.1):
+  - RNScreens (2.17.1):
     - React-Core
   - RNSVG (12.1.0):
     - React
@@ -789,7 +789,7 @@ SPEC CHECKSUMS:
   React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
-  react-native-config: d8b45133fd13d4f23bd2064b72f6e2c08b2763ed
+  react-native-config: c98128a72bc2c3a1ca72caec0b021f0fa944aa29
   react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-geolocation-service: f33626f1ae12381ca2ae60f98b2f5edd676bf95a
@@ -801,7 +801,7 @@ SPEC CHECKSUMS:
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   react-native-video: eee541262ada11bc7ffe8ec5508e6a877937c462
-  react-native-viewpager: 40876e00dbd7bcee4c627cf5a9640e6593a019b4
+  react-native-viewpager: ea945e2881ce9a4a8bcdc84de4ec65ff23c90f6e
   react-native-webview: 0aa2cde4ee7e3e1c5fffdf64dbce9c709aa18155
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
@@ -826,7 +826,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 54e5ea3d0e298ed51e1441a2fa0a0e7c90ee256d
   RNPermissions: 5df468064df661a4c8c017e2791ce90d7695eea5
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
+  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   TOCropViewController: 20a14b6a7a098308bf369e7c8d700dc983a974e6

@@ -196,7 +196,7 @@ export class AssetCard extends Component<Props> {
           <>
             <Divider containerStyles={styles.divider} />
             <Avatar
-              fullName={user.fullName}
+              fullName={user.name}
               image={user.profilePicture}
               designation={isFromTenancies ? t('property:owner') : t('property:tenant')}
             />

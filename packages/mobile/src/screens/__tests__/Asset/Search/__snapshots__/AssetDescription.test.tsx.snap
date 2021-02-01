@@ -77,7 +77,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
                 "currency_symbol": "",
               }
             }
-            price={NaN}
+            price={0}
             unit="mo"
           />
         </View>
@@ -204,7 +204,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              30 Jan 2021
+              01 Feb 2021
             </Label>
           </View>
           <View

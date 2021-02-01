@@ -20,6 +20,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, ButtonType } from '@homzhub/common/src/components/atoms/Button';
@@ -569,10 +570,11 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
         const { formatted_address } = locData;
         const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
         this.setState({ searchString: `${primaryAddress} ${secondaryAddress}`, isSearchBarFocused: false });
+        const { lngValue, latValue } = GeolocationService.getFormattedCords(latitude, longitude);
         setFilter({
           search_address: `${primaryAddress} ${secondaryAddress}`,
-          search_latitude: latitude,
-          search_longitude: longitude,
+          search_latitude: latValue,
+          search_longitude: lngValue,
         });
       })
       .catch(this.displayError);
@@ -583,10 +585,12 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
         this.setSearchedPropertyCurrency(placeDetail);
+        const { lat, lng } = placeDetail.geometry.location;
+        const { lngValue, latValue } = GeolocationService.getFormattedCords(lat, lng);
         setFilter({
           search_address: place.description,
-          search_latitude: placeDetail.geometry.location.lat,
-          search_longitude: placeDetail.geometry.location.lng,
+          search_latitude: latValue,
+          search_longitude: lngValue,
           offset: 0,
         });
         getProperties();

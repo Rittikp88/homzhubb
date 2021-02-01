@@ -324,16 +324,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (saleTerm && saleTerm.currency) {
       currencyData = saleTerm.currency;
     }
+    const salePrice = saleTerm && Number(saleTerm.expectedPrice) > 0 ? Number(saleTerm.expectedPrice) : 0;
+    const price = leaseTerm && leaseTerm.expectedPrice > 0 ? leaseTerm.expectedPrice : salePrice;
 
     return (
       <View style={styles.headerContainer}>
         <ShieldGroup propertyType={propertyType} text={description} isInfoRequired />
         <View style={styles.apartmentContainer}>
-          <PricePerUnit
-            price={(Number(leaseTerm?.expectedPrice) || Number(saleTerm?.expectedPrice)) ?? 0}
-            currency={currencyData}
-            unit={asset_transaction_type === 0 ? 'mo' : ''}
-          />
+          <PricePerUnit price={price} currency={currencyData} unit={asset_transaction_type === 0 ? 'mo' : ''} />
           {appPermissions?.addListingVisit && (
             <TouchableOpacity style={styles.textIcon} disabled={isPreview} onPress={this.onBookVisit}>
               <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />

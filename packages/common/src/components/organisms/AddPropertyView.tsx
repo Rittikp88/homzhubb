@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -57,6 +58,7 @@ interface IStateProps {
   lastVisitedStep: ILastVisitedStep | null;
   selectedImages: AssetGallery[];
   editPropertyFlowDetails: IEditPropertyFlow;
+  assetPayload: ISetAssetPayload;
 }
 
 interface IDispatchProps {
@@ -277,6 +279,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
       scrollToTop,
       onNavigateToDetail,
       onNavigateToPlanSelection,
+      assetPayload,
     } = this.props;
 
     this.setState({ isNextStep: true });
@@ -288,7 +291,10 @@ class AddPropertyView extends Component<Props, IScreenState> {
         scrollToTop();
       }
     } else {
-      this.handleCurrentAsset();
+      if (!assetPayload) {
+        this.handleCurrentAsset();
+      }
+
       if (isEditPropertyFlow) {
         resetState();
         onNavigateToDetail();
@@ -308,6 +314,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
       scrollToTop,
       onNavigateToDetail,
       onNavigateToPlanSelection,
+      assetPayload,
     } = this.props;
     if (currentIndex < AddPropertyRoutes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
@@ -315,7 +322,10 @@ class AddPropertyView extends Component<Props, IScreenState> {
         scrollToTop();
       }
     } else {
-      this.handleCurrentAsset();
+      if (!assetPayload) {
+        this.handleCurrentAsset();
+      }
+
       if (isEditPropertyFlow) {
         resetState();
         onNavigateToDetail();
@@ -351,6 +361,8 @@ const mapStateToProps = (state: IState): IStateProps => {
     getEditPropertyFlowDetails,
   } = RecordAssetSelectors;
 
+  const { getCurrentAssetPayload } = PortfolioSelectors;
+
   return {
     assetId: getCurrentAssetId(state),
     spaceTypes: getSpaceTypes(state),
@@ -358,6 +370,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     lastVisitedStep: getLastVisitedStep(state),
     selectedImages: getSelectedImages(state),
     editPropertyFlowDetails: getEditPropertyFlowDetails(state),
+    assetPayload: getCurrentAssetPayload(state),
   };
 };
 
