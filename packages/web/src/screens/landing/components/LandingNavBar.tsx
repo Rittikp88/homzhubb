@@ -1,17 +1,15 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
-import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { StickyHeader } from '@homzhub/web/src/components';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -20,6 +18,7 @@ const LandingNavBar: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navBarStyle(isMobile);
+  const menuOpen = true;
 
   return (
     <StickyHeader>
@@ -31,24 +30,28 @@ const LandingNavBar: FC = () => {
             </View>
             {isLaptop && <RenderNavItems />}
           </View>
-          {isLaptop ? (
+          {isLaptop && (
             <View style={styles.subContainer}>
               <Button type="text" fontType="regular" title={t('login')} />
               <Button type="primary" title={t('signUp')} />
             </View>
-          ) : (
-            <Button type="text" icon={icons.hamburgerMenu} iconSize={30} iconColor={theme.colors.darkTint2} />
           )}
         </View>
       </View>
+      {!isLaptop && (
+        <SideBar open={menuOpen}>
+          <RenderNavItems />
+        </SideBar>
+      )}
     </StickyHeader>
   );
 };
 
 const RenderNavItems = (): React.ReactElement => {
-  const [isSelected, setIsSelected] = useState(-1);
+  const [isSelected, setIsSelected] = useState(0);
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
-  const history = useHistory();
+  const isLaptop = useUp(deviceBreakpoint.LAPTOP);
+  const styles = navItemStyle(isLaptop, false);
   const navItems = [
     {
       text: t('home'),
@@ -63,13 +66,33 @@ const RenderNavItems = (): React.ReactElement => {
       url: RouteNames.publicRoutes.PRICING,
     },
   ];
+  const login = [
+    {
+      text: t('Login'),
+      url: RouteNames.publicRoutes.LOGIN,
+    },
+    {
+      text: t('signUp'),
+      url: RouteNames.publicRoutes.SIGNUP,
+    },
+  ];
+  const menuItems = isLaptop ? navItems : [...navItems, ...login];
+
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
-    NavigationUtils.navigate(history, { path: navItems[index].url });
+    // TODO: uncomment when links have respective component
+    //  NavigationUtils.navigate(history, { path: navItems[index].url });
   };
   return (
     <>
-      {navItems.map((item, index) => (
+      {!isLaptop && (
+        <View style={styles.container}>
+          <Typography variant="text" size="small" fontWeight="regular" style={styles.header}>
+            {t('menu')}
+          </Typography>
+        </View>
+      )}
+      {menuItems.map((item, index) => (
         <NavItem
           key={item.text}
           text={item.text}
@@ -90,17 +113,23 @@ interface INavItem {
 }
 
 const NavItem: FC<INavItem> = ({ text, index, isActive, onNavItemPress }: INavItem) => {
-  const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const styles = navItemStyle(isMobile, isActive);
+  const isLaptop = useUp(deviceBreakpoint.LAPTOP);
+  const styles = navItemStyle(isLaptop, isActive);
   const itemPressed = (): void => {
     onNavItemPress(index);
   };
   return (
     <TouchableOpacity onPress={itemPressed} style={styles.container}>
-      <Typography variant="text" size="small" fontWeight="regular" minimumFontScale={0.5} style={styles.text}>
+      <Typography
+        variant="text"
+        size="small"
+        fontWeight="regular"
+        minimumFontScale={0.5}
+        style={[styles.text, !isLaptop && styles.mobileText]}
+      >
         {text}
       </Typography>
-      <Divider containerStyles={styles.activeNavItemBar} />
+      <Divider containerStyles={[styles.activeNavItemBar, !isLaptop && styles.mobileActiveItem]} />
     </TouchableOpacity>
   );
 };
@@ -144,15 +173,18 @@ const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
 interface INavItemStyle {
   container: ViewStyle;
   activeNavItemBar: ViewStyle;
+  mobileActiveItem: ViewStyle;
   text: TextStyle;
+  mobileText: TextStyle;
+  header: ViewStyle;
 }
 
-const navItemStyle = (isMobile: boolean, isActive: boolean): StyleSheet.NamedStyles<INavItemStyle> =>
+const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedStyles<INavItemStyle> =>
   StyleSheet.create<INavItemStyle>({
     container: {
-      marginTop: 8,
-      marginLeft: isMobile ? 0 : 30,
-      alignItems: 'center',
+      marginTop: isLaptop ? 8 : 0,
+      marginLeft: !isLaptop ? 0 : 30,
+      alignItems: isLaptop ? 'center' : 'flex-start',
     },
     text: {
       color: isActive ? theme.colors.primaryColor : theme.colors.darkTint4,
@@ -163,6 +195,26 @@ const navItemStyle = (isMobile: boolean, isActive: boolean): StyleSheet.NamedSty
       borderColor: theme.colors.primaryColor,
       opacity: isActive ? 1 : 0,
     },
+    mobileActiveItem: {
+      borderColor: theme.colors.darkTint12,
+      opacity: 1,
+    },
+    header: {
+      backgroundColor: theme.colors.gray6,
+      color: theme.colors.gray7,
+      lineHeight: 80,
+      paddingLeft: 18,
+      textTransform: 'uppercase',
+      letterSpacing: 1,
+      width: '100%',
+      alignItems: 'center',
+    },
+    mobileText: {
+      lineHeight: 64,
+      height: 64,
+      paddingLeft: 16,
+      color: theme.colors.darkTint4,
+    },
   });
 
-export default LandingNavBar;
+export default React.memo(LandingNavBar);

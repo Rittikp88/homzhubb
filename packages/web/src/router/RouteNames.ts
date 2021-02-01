@@ -5,6 +5,7 @@ export const RouteNames = {
     FEATURED: '/featured',
     PRICING: '/pricing',
     LOGIN: '/login',
+    SIGNUP: '/signup',
     TERMS_CONDITION: '/terms&Condition',
     PRIVACY_POLICY: '/privacyPolicy',
   },

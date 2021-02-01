@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet, View, ImageStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Family from '@homzhub/common/src/assets/images/familyPana.svg';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -11,11 +11,12 @@ const PromiseSection: FC = () => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <View>
-          <Typography variant="text" size="regular" style={styles.title}>
+          <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.title}>
             {t('values')}
           </Typography>
         </View>
@@ -30,23 +31,47 @@ const PromiseSection: FC = () => {
           <Family style={imageStyles()} />
         </View>
         <View style={styles.text}>
-          <Typography size="small" fontWeight="semiBold" style={styles.contentHeader}>
+          <Typography
+            size="small"
+            fontWeight="semiBold"
+            style={[styles.contentHeader, !isLaptop && styles.mobileHeader]}
+          >
             {t('integrity')}
           </Typography>
-          <Typography variant="text" size="small" style={styles.para}>
+          <Typography
+            variant="text"
+            size="small"
+            style={[styles.para, isTablet && styles.tabletPara, isMobile && styles.para]}
+          >
             {t('integrityDescription')}
           </Typography>
 
-          <Typography size="small" fontWeight="semiBold" style={styles.contentHeader}>
+          <Typography
+            size="small"
+            fontWeight="semiBold"
+            style={[styles.contentHeader, !isLaptop && styles.mobileHeader]}
+          >
             {t('trust')}
           </Typography>
-          <Typography variant="text" size="small" style={styles.para}>
+          <Typography
+            variant="text"
+            size="small"
+            style={[styles.para, isTablet && styles.tabletPara, isMobile && styles.para]}
+          >
             {t('trustDescription')}
           </Typography>
-          <Typography size="small" fontWeight="semiBold" style={styles.contentHeader}>
+          <Typography
+            size="small"
+            fontWeight="semiBold"
+            style={[styles.contentHeader, !isLaptop && styles.mobileHeader]}
+          >
             {t('transparency')}
           </Typography>
-          <Typography variant="text" size="small" style={styles.para}>
+          <Typography
+            variant="text"
+            size="small"
+            style={[styles.para, isTablet && styles.tabletPara, isMobile && styles.para]}
+          >
             {t('transparencyDescription')}
           </Typography>
         </View>
@@ -58,6 +83,7 @@ const PromiseSection: FC = () => {
 const imageStyles = (): ImageStyle => {
   return {
     maxWidth: '100%',
+    height: '100%',
   };
 };
 
@@ -69,6 +95,7 @@ const styles = StyleSheet.create({
   mobileContainer: {
     flexDirection: 'column',
     justifyContent: 'space-evenly',
+    marginHorizontal: 0,
   },
   content: {
     alignItems: 'center',
@@ -98,18 +125,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     flexShrink: 2,
-    marginLeft: 30,
     marginTop: 40,
   },
   para: {
     marginBottom: 42,
     color: theme.colors.darkTint5,
+    alignContent: 'center',
+    marginHorizontal: '15px',
   },
 
   contentHeader: {
     fontWeight: '500',
     marginBottom: 12,
     color: theme.colors.dark,
+    marginHorizontal: 15,
+  },
+  mobileHeader: {
+    textAlign: 'center',
+  },
+  tabletPara: {
+    marginHorizontal: 140,
   },
 });
 

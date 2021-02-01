@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -19,19 +19,31 @@ interface ICardprops {
 
 const FeatureCard: FC<ICardprops> = (props: ICardprops) => {
   const { onDataPress, isOwner } = props;
+  const [selected, setSelected] = useState(new Array(4).fill(false));
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const styles = cardStyles(isMobile, isTablet);
   const data = isOwner ? OwnerFeatureData : TenantFeatureData;
 
+  useEffect(() => {
+    setSelected(new Array(4).fill(false));
+  }, [data]);
   return (
     <View style={[styles.card, !isOwner && styles.cardTenant]}>
-      {data.map((item: IFeatureDataProps, index) => {
+      {data.map((item: IFeatureDataProps) => {
         const onSelect = (): void => {
           onDataPress(item.image);
+          setSelected((prevState) => {
+            return prevState.map((_, index) => {
+              if (item.id === index) {
+                return true;
+              }
+              return false;
+            });
+          });
         };
         return (
-          <View key={index}>
+          <View key={item.id}>
             <Hoverable onHoverIn={onSelect}>
               {(isHovered: boolean): React.ReactNode => (
                 <TouchableOpacity onPress={onSelect}>
@@ -44,14 +56,31 @@ const FeatureCard: FC<ICardprops> = (props: ICardprops) => {
                         {item.description}
                       </Typography>
                     </View>
-                    {isHovered && (isOwner ? <HoveredTickOwner /> : <HoveredTickTenant />)}
-                    {!isHovered && (isOwner ? <TickOwnwer /> : <TickTenant />)}
+
+                    {isTablet || isMobile ? (
+                      selected[item.id] ? (
+                        isOwner ? (
+                          <HoveredTickOwner />
+                        ) : (
+                          <HoveredTickTenant />
+                        )
+                      ) : isOwner ? (
+                        <TickOwnwer />
+                      ) : (
+                        <TickTenant />
+                      )
+                    ) : (
+                      <View>
+                        {isHovered && (isOwner ? <HoveredTickOwner /> : <HoveredTickTenant />)}
+                        {!isHovered && (isOwner ? <TickOwnwer /> : <TickTenant />)}
+                      </View>
+                    )}
                   </View>
                 </TouchableOpacity>
               )}
             </Hoverable>
 
-            {index < 3 && <Divider />}
+            {item.id < 3 && <Divider />}
           </View>
         );
       })}
@@ -73,10 +102,8 @@ const cardStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyle
   StyleSheet.create<ICardStyles>({
     card: {
       backgroundColor: theme.colors.grey5,
-      minHeight: 530,
       borderRadius: 8,
-      maxWidth: !isMobile ? (isTablet ? '80%' : '45%') : '90%',
-      marginLeft: !isMobile ? (isTablet ? '13%' : '6%') : '4%',
+      width: !isMobile ? (!isTablet ? '43%' : '72%') : '90%',
       borderTopColor: theme.colors.completed,
       borderTopWidth: 4,
       padding: 24,
@@ -87,7 +114,6 @@ const cardStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyle
     },
     cardTenant: {
       borderTopColor: theme.colors.primaryColor,
-      marginLeft: !isMobile ? (isTablet ? '11%' : '18%') : '6%',
     },
 
     cardTitle: {
@@ -105,6 +131,6 @@ const cardStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyle
       justifyContent: 'center',
     },
     textContainer: {
-      width: '95%',
+      width: '94%',
     },
   });

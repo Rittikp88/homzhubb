@@ -40,10 +40,10 @@ export default ServicePlansCard;
 const styles = StyleSheet.create({
   servicePlansContainer: {
     backgroundColor: theme.colors.background,
+    marginBottom: 120,
   },
   servicePlansCardsContainer: {
     flexDirection: 'row',
-
     width: '92%',
   },
 });

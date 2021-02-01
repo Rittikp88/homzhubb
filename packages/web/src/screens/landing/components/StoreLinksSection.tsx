@@ -3,13 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { GradientBackground } from '@homzhub/web/src/screens/landing/components/GradientBackground';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import StoreButton from '@homzhub/web/src/components/molecules/MobileStoreButton';
+import { GradientBackground } from '@homzhub/web/src/screens/landing/components/GradientBackground';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-// todo replace dummy data
 
+// todo replace dummy data
 export const StoreLinkSection: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -25,12 +25,12 @@ export const StoreLinkSection: FC = () => {
             Download our apps to experience vestibulum nam eu orci. Gravida arcu proin rhoncus platea libero libero, sed
             tortor urna.
           </Typography>
-          <View style={[styles.buttonContainer, isMobile && styles.mobileContainer]}>
+          <View style={[styles.buttonContainer, notDesktop && styles.tabContainer, isMobile && styles.mobileContainer]}>
             <StoreButton
               store="appleLarge"
               containerStyle={styles.button}
               imageIconStyle={styles.imageIconStyle}
-              mobileImageIconStyle={styles.mobileImageIconStyle}
+              mobileImageIconStyle={styles.appImageIconStyle}
             />
             <StoreButton
               store="googleLarge"
@@ -46,7 +46,6 @@ export const StoreLinkSection: FC = () => {
 };
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     minHeight: 372,
@@ -65,7 +64,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row',
-    width: '32%',
+    width: '35%',
     height: 20,
   },
   button: {
@@ -81,8 +80,8 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   mobileContainer: {
-    width: '98%',
-    alignSelf: 'flex-start',
+    width: '100%',
+    justifyContent: 'center',
   },
   imageIconStyle: {
     width: '100%',
@@ -91,6 +90,13 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   mobileImageIconStyle: {
+    width: '70%',
+  },
+  appImageIconStyle: {
+    marginLeft: 'auto',
+    width: '70%',
+  },
+  tabContainer: {
     width: '50%',
   },
 });

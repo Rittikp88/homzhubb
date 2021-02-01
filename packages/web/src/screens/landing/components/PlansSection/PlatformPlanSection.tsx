@@ -47,8 +47,7 @@ const styles = StyleSheet.create({
   platformPage: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 30,
-    marginBottom: 150,
+    marginBottom: 120,
     width: '100%',
     paddingHorizontal: '20%',
     alignItems: 'stretch',

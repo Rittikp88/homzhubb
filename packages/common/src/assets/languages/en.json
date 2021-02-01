@@ -179,9 +179,11 @@
     "transparency": "Transparency",
     "footerSocialMediaText": "Follow us on: ",
     "aboutHomzhub": "About Homzhub",
-    "aboutDescription": "There are a lot of investors, like us, who while living abroad, want to invest in real estate across one or more investment grade cities around the world or in their native countries. We realized that we werestruggling to manage investment properties remotely while meeting the demands of a full-time job.",
+    "aboutDescription": "There are a lot of investors, like us, who while living abroad, want to invest in real estate across one or more investment grade cities around the world or in their native countries. We realized that we were struggling to manage investment properties remotely while meeting the demands of a full-time job.",
     "plansSectionTitle": "PRICING",
-    "plansSectionHeader": "Find the Right plan for your Property"
+    "plansSectionHeader": "Find the Right plan for your Property",
+    "from": "From",
+    "menu": "Menu"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -826,15 +828,19 @@
     "freedom": "*Free, forever. No credit card required",
     "premium": "*No credit card required",
     "pro": "Credit card required",
-    "testimonials": "Testimonials",
+    "testimonials": "TESTIMONIALS",
     "successStories": "Customer Success Stories",
+    "features": "FEATURES",
     "appFeatures": "APP FEATURES",
     "featuredTitle": "Our Featured Properties",
-    "recent": "Recent",
+    "recent": "RECENT",
     "enterEmail": "Enter your E-mail",
     "subscribe": "Subscribe",
     "subscribed": "Subscribed",
     "ourServices": "Our Services",
-    "subscribeEmailDesc": "Subscribe for real estate trends and insights"
+    "subscribeEmailDesc": "Subscribe for real estate trends and insights",
+    "introToHomzhub": "Introduction to Homzhub",
+    "platformPlans": "Platform Plans",
+    "servicePlans": "Service Plans"
   }
 }

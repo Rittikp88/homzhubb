@@ -2,7 +2,7 @@ import React, { FC, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -38,8 +38,8 @@ export const LandingYoutubeSection: FC = () => {
             }}
           >
             <Button type="secondary" containerStyle={styles.playBtn}>
-              <Icon name={icons.play} color={theme.colors.primaryColor} />
-              <Typography variant="label" size="small" style={styles.playBtnTxt}>
+              <Icon name={icons.play} size={20} color={theme.colors.primaryColor} />
+              <Typography variant="text" size="small" style={styles.playBtnTxt}>
                 {t('watchVideo')}
               </Typography>
             </Button>
@@ -51,16 +51,26 @@ export const LandingYoutubeSection: FC = () => {
 };
 
 const HomzhubIntroVideo = (): React.ReactElement => {
+  const youtubeSize = useViewPort().width;
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const { t } = useTranslation();
+  const scaleX = isMobile ? 0.8 : 0.5;
+  const scaleY = isMobile ? 0.5 : 0.3;
+  const videoStyle = {
+    width: youtubeSize * scaleX,
+    height: youtubeSize * scaleY,
+  };
   return (
-    <iframe
-      title="Introduction to Homzhub"
-      width="560"
-      height="315"
-      src="https://www.youtube.com/embed/JE4I4I78Gl4"
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-    />
+    <View>
+      <iframe
+        title={t('introToHomzhub')}
+        style={videoStyle}
+        src="https://www.youtube.com/embed/JE4I4I78Gl4"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </View>
   );
 };
 

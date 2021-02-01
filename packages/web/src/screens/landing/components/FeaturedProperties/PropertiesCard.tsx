@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { IFeaturedProperties } from '@homzhub/common/src/domain/repositories/GraphQLRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -23,6 +24,7 @@ const PropertiesCard = (props: IProps): React.ReactElement => {
     { id: 1, order: 1, label: 'Type', value: typesAvailable },
     { id: 2, order: 2, label: 'Possession', value: possessionDate },
   ];
+  const { t } = useTranslation();
   return (
     <View style={[styles.card, isMobile && styles.cardMobile]}>
       <View>
@@ -50,7 +52,7 @@ const PropertiesCard = (props: IProps): React.ReactElement => {
         />
         <View>
           <Typography variant="text" size="small" fontWeight="semiBold" style={styles.propertyValue}>
-            {priceRange}
+            {t('from')} {priceRange}
           </Typography>
         </View>
         <Divider />
@@ -132,27 +134,6 @@ const styles = StyleSheet.create({
   propertyType: {
     color: theme.colors.primaryColor,
   },
-  propertyInfo: {
-    marginRight: 16,
-    color: theme.colors.darkTint3,
-  },
-  propertyInfoBox: {
-    justifyContent: 'space-around',
-    marginRight: 16,
-  },
-  cardIcon: {
-    marginRight: 8,
-  },
-  propertyBadge: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    paddingVertical: 2,
-    paddingHorizontal: 6,
-    position: 'absolute',
-    height: 25,
-    marginLeft: 24,
-    marginTop: 24,
-  },
   addressTextStyle: {
     fontSize: 14,
     fontWeight: '600',
@@ -166,11 +147,13 @@ const styles = StyleSheet.create({
   amenitiesContainer: {
     paddingVertical: 16,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   utilityItem: {
     marginRight: 20,
     marginLeft: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
@@ -47,6 +47,12 @@ const HeroSection: FC = () => {
       ${theme.colors.landingCarouselGradientA} 0%,
       ${theme.colors.landingCarouselGradientB} 80.21%)`,
   };
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const scaleY = isMobile ? 0.5 : 0.87;
+  const imageStyle = {
+    minWidth: useViewPort().width,
+    minHeight: useViewPort().height * scaleY,
+  };
 
   return (
     <View onLayout={onLayout} style={styles.container}>
@@ -54,8 +60,8 @@ const HeroSection: FC = () => {
         {HeroSectionData.map((item) => (
           <View key={item.title}>
             <ImageSquare
-              style={styles.image}
-              size={50}
+              style={[styles.image, imageStyle]}
+              size={30}
               source={{
                 uri: item.image,
               }}
@@ -113,7 +119,7 @@ const CarouselControlSection = ({ next, previous }: ButtonGroupProps): React.Rea
           {HeroSectionData[currentSlide].description}
         </Typography>
       </View>
-      <View style={styles.arrow}>
+      <View style={[styles.arrows, isMobile && styles.arrowsMobile]}>
         <NextPrevBtn
           leftBtnProps={{
             icon: icons.longArrowLeft,
@@ -157,8 +163,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     position: 'relative',
-    minWidth: '100%',
-    minHeight: '86vh',
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
@@ -175,7 +179,7 @@ const styles = StyleSheet.create({
     marginTop: '8vh',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '75vh',
+    height: '80%',
   },
   title: {
     color: theme.colors.white,
@@ -186,8 +190,11 @@ const styles = StyleSheet.create({
   description: {
     color: theme.colors.white,
   },
-  arrow: {
+  arrows: {
     flexDirection: 'row',
+  },
+  arrowsMobile: {
+    paddingLeft: 30,
   },
   arrowMobile: {
     flexDirection: 'row',

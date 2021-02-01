@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { GraphQLRepository, IFeaturedProperties } from '@homzhub/common/src/domain/repositories/GraphQLRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import PropertiesCarousel from '@homzhub/web/src/components/molecules/PropertiesCarousel';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import '@homzhub/web/src/screens/landing/components/FeaturedProperties/FeaturedProperties.scss';
 
 const FeaturedProperties: React.FC = () => {
   const { t } = useTranslation();
@@ -17,14 +20,15 @@ const FeaturedProperties: React.FC = () => {
   useEffect(() => {
     getFeaturedProperties().then();
   }, []);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
     <View style={styles.container}>
-      <Text type="regular" style={styles.titleText}>
+      <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.titleText}>
         {t('landing:recent')}
-      </Text>
-      <Text type="large" style={styles.subTitleText}>
+      </Typography>
+      <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.subTitleText}>
         {t('landing:featuredTitle')}
-      </Text>
+      </Typography>
       <View style={styles.carouselContainer}>
         <PropertiesCarousel featuredProperties={featuredProperties} />
       </View>

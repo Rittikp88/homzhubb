@@ -1,5 +1,5 @@
-import React, { useState, FC } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { FC, useState } from 'react';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 
@@ -8,13 +8,20 @@ interface IProps {
   toggleButton2Text: string;
   toggleButton1: () => void;
   toggleButton2: () => void;
+  containerStyle?: StyleProp<ViewStyle>;
+  buttonStyle: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<ViewStyle>;
 }
+
 // TODO: Replace this component with SelectionPicker
 export const ToggleButtons: FC<IProps> = ({
   toggleButton1Text,
   toggleButton2Text,
   toggleButton1,
   toggleButton2,
+  containerStyle,
+  buttonStyle,
+  titleStyle = {},
 }: IProps) => {
   const [selectedButton, setSelectedButton] = useState(1);
   const switchButton1 = (): void => {
@@ -26,21 +33,27 @@ export const ToggleButtons: FC<IProps> = ({
     toggleButton2();
   };
   return (
-    <View style={styles.toggleButtonsContainer}>
+    <View style={[styles.toggleButtonsContainer, containerStyle]}>
       <Button
         type="primary"
-        containerStyle={[styles.toggleButtons, selectedButton === 1 && styles.toggleButton1Selected]}
+        containerStyle={[styles.toggleButtons, buttonStyle, selectedButton === 1 && styles.toggleButton1Selected]}
+        title={toggleButton1Text}
+        titleStyle={[styles.unselectedText, titleStyle, selectedButton === 1 && styles.selectedText]}
+        textSize="small"
+        textType="text"
+        fontType="regular"
         onPress={switchButton1}
-      >
-        {toggleButton1Text}
-      </Button>
+      />
       <Button
         type="primary"
-        containerStyle={[styles.toggleButtons, selectedButton === 2 && styles.toggleButton2Selected]}
+        containerStyle={[styles.toggleButtons, buttonStyle, selectedButton === 2 && styles.toggleButton2Selected]}
+        title={toggleButton2Text}
+        titleStyle={[styles.unselectedText, titleStyle, selectedButton === 2 && styles.selectedText]}
+        textSize="small"
+        textType="text"
+        fontType="regular"
         onPress={switchButton2}
-      >
-        {toggleButton2Text}
-      </Button>
+      />
     </View>
   );
 };
@@ -51,7 +64,7 @@ const styles = StyleSheet.create({
   toggleButtonsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: theme.colors.background,
+    backgroundColor: theme.colors.white,
     width: 'fit-content',
     alignSelf: 'center',
     padding: 4,
@@ -59,18 +72,25 @@ const styles = StyleSheet.create({
   },
   toggleButtons: {
     backgroundColor: theme.colors.transparent,
-    paddingHorizontal: 36,
-    paddingVertical: 12,
     textAlign: 'center',
-    color: theme.colors.darkTint5,
     borderRadius: 4,
   },
   toggleButton1Selected: {
     backgroundColor: theme.colors.completed,
-    color: theme.colors.white,
   },
   toggleButton2Selected: {
     backgroundColor: theme.colors.blue,
+  },
+  unselectedText: {
+    color: theme.colors.darkTint5,
+  },
+  selectedText: {
+    color: theme.colors.white,
+  },
+  toggleButtonText: {
+    color: theme.colors.darkTint5,
+  },
+  toggleButtonTextSelected: {
     color: theme.colors.white,
   },
 });

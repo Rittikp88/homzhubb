@@ -29,7 +29,7 @@ const OurServicesSection: FC = () => {
           <Typography
             variant="label"
             size="large"
-            fontWeight="regular"
+            fontWeight="semiBold"
             style={[styles.text, isMobile && styles.textMobile]}
           >
             {t('landing:ourServices')}
@@ -97,13 +97,13 @@ const Newsletter = (): React.ReactElement => {
         <TextInput
           placeholder={t('landing:enterEmail')}
           placeholderTextColor={theme.colors.darkTint10}
-          style={styles.emailInput}
+          style={[styles.emailInput, isMobile && styles.emailInputMobile]}
           value={email}
           onChangeText={setEmail}
         />
         <Button
           type="secondary"
-          containerStyle={styles.subscribeBtn}
+          containerStyle={[styles.subscribeBtn, isMobile && styles.subscribeBtnMobile]}
           title={didSubscribe ? t('landing:subscribed') : t('landing:subscribe')}
           textType="label"
           textSize="large"
@@ -150,6 +150,10 @@ const styles = StyleSheet.create({
   emailInput: {
     color: theme.colors.white,
     padding: 12,
+    width: 'fit-content',
+  },
+  emailInputMobile: {
+    width: '100%',
   },
   emailInputBox: {
     borderRadius: 4,
@@ -160,12 +164,16 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkGrayishBlue,
   },
   emailInputBoxMobile: {
+    width: '100%',
     alignSelf: 'center',
     marginTop: 30,
   },
   subscribeBtnTxt: {
     marginVertical: 6,
     marginHorizontal: 16,
+  },
+  subscribeBtnMobile: {
+    margin: 4,
   },
   subscribeBtn: {
     margin: 6,

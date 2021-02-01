@@ -1,5 +1,5 @@
-import React, { useState, FC } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { FC, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -23,7 +23,7 @@ const PlansSection: FC = () => {
   return (
     <View>
       <View style={styles.plansTextContainer}>
-        <Typography variant="label" size="large" fontWeight="semiBold" style={styles.plansTitle}>
+        <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.plansTitle}>
           {t('plansSectionTitle')}
         </Typography>
         <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.plansHeader}>
@@ -31,10 +31,13 @@ const PlansSection: FC = () => {
         </Typography>
       </View>
       <ToggleButtons
-        toggleButton1Text="Platform Plans"
-        toggleButton2Text="Service Plans"
+        toggleButton1Text={t('landing:platformPlans')}
+        toggleButton2Text={t('landing:servicePlans')}
         toggleButton1={togglePlatformPlans}
         toggleButton2={toggleServicePlans}
+        containerStyle={styles.toggleContainerStyle}
+        buttonStyle={[styles.buttonStyle, isMobile && styles.buttonStyleMobile]}
+        titleStyle={styles.titleStyle}
       />
       {isServicePlans ? <ServicePlansCard /> : <PlatformPlanSection />}
     </View>
@@ -50,10 +53,25 @@ const styles = StyleSheet.create({
   plansHeader: {
     color: theme.colors.darkTint2,
     textAlign: 'center',
+    width: '90%',
     paddingVertical: 12,
   },
   plansTextContainer: {
     alignItems: 'center',
     paddingVertical: 60,
+  },
+  toggleContainerStyle: {
+    backgroundColor: theme.colors.white,
+    marginBottom: 50,
+  },
+  buttonStyle: {
+    width: 170,
+  },
+  buttonStyleMobile: {
+    width: 130,
+  },
+  titleStyle: {
+    marginVertical: 12,
+    marginHorizontal: 30,
   },
 });

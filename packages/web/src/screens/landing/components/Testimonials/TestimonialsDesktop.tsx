@@ -1,25 +1,29 @@
 import React from 'react';
 import { View, ViewStyle, StyleSheet, TextStyle, ImageStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 import { ITestimonialProps } from '@homzhub/web/src/screens/landing/components/Testimonials';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const TestimonialsDesktop: React.FC<ITestimonialProps> = (props: ITestimonialProps) => {
   const { onLeftNavClick, onRightNavClick, data, testimonialIndex } = props;
   const { t } = useTranslation();
   const styles = testimonialStyle();
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
     <View style={styles.container}>
-      <Text type="regular" style={styles.titleText}>
+      <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.titleText}>
         {t('landing:testimonials')}
-      </Text>
-      <Text type="large" style={styles.subTitleText}>
+      </Typography>
+      <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.subTitleText}>
         {t('landing:successStories')}
-      </Text>
+      </Typography>
       <View style={styles.cardContainer}>
         <View style={styles.cardImage}>
           <View style={styles.cardImageContainer}>

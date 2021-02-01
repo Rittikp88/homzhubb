@@ -71,7 +71,9 @@ class LinkingService {
 
   public getUrl = (type: imageType): string => {
     switch (type) {
-      case Images.APPLE || Images.APPLELARGE:
+      case Images.APPLE:
+        return URLs.appStore;
+      case Images.APPLELARGE:
         return URLs.appStore;
       case Images.GOOGLE:
         return URLs.playStore;

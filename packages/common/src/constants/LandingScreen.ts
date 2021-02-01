@@ -1,4 +1,5 @@
 export interface IFeatureDataProps {
+  id: number;
   title: string;
   description: string;
   image: string;
@@ -49,16 +50,19 @@ export const TestimonialData = [
 
 export const HeroSectionData: IFeatureDataProps[] = [
   {
+    id: 0,
     title: 'Be in total control!',
     description: 'Arrange site visits, negotiations and tenant verifications with ease',
     image: require('@homzhub/common/src/assets/images/landingBackground1.jpg'),
   },
   {
+    id: 1,
     title: 'Your House. Your Rules!',
     description: 'Get the desired rent and tenant on our app',
     image: require('@homzhub/common/src/assets/images/landingBackground2.jpg'),
   },
   {
+    id: 2,
     title: 'Prime Locations for you Primary Needs',
     description: 'Rent directly from Owners at the best locations',
     image: require('@homzhub/common/src/assets/images/landingBackground3.jpg'),
@@ -67,46 +71,54 @@ export const HeroSectionData: IFeatureDataProps[] = [
 
 export const OwnerFeatureData: IFeatureDataProps[] = [
   {
+    id: 0,
     title: 'Your property is in your hands',
     description: 'Manage your properties remotely from anywhere, anytime',
-    image: 'Picture1',
+    image: require('@homzhub/common/src/assets/images/splashScreen.gif'),
   },
   {
+    id: 1,
     title: 'It’s all here',
     description: 'Arrange site visits, tenant verification and legal formalities',
-    image: 'Picture2',
+    image: require('@homzhub/common/src/assets/images/manageSiteVisits.gif'),
   },
   {
+    id: 2,
     title: 'With You All the Way',
     description: 'From on-boarding your tenant to helping you re-rent your property',
-    image: 'Picture3',
+    image: require('@homzhub/common/src/assets/images/addProperty.gif'),
   },
   {
+    id: 3,
     title: 'Get Started for Free',
     description: 'Get ready to rent or sell in a few clicks. Signup and get started',
-    image: 'Picture4',
+    image: require('@homzhub/common/src/assets/images/propertyListing.gif'),
   },
 ];
 
 export const TenantFeatureData: IFeatureDataProps[] = [
   {
+    id: 0,
     title: 'Your Key to Your home',
     description: 'Locate, rent and manage your home and everything that comes with it',
-    image: 'Tenant Picture1',
+    image: require('@homzhub/common/src/assets/images/searchProperty.gif'),
   },
   {
+    id: 1,
     title: 'Stay in Control',
     description: 'Save rent receipts, raise concerns and track your rental journey in one app',
-    image: 'Tenant Picture2',
+    image: require('@homzhub/common/src/assets/images/rentReceipt.gif'),
   },
   {
+    id: 2,
     title: 'Finely Curated Listings for You',
     description: 'Rent verified properties directly from owners',
-    image: 'Tenant Picture3',
+    image: require('@homzhub/common/src/assets/images/splashScreen.gif'),
   },
   {
+    id: 3,
     title: 'Create History',
     description: 'Back up your rental journey - from your old property to new',
-    image: 'Tenant Picture4',
+    image: require('@homzhub/common/src/assets/images/ownerMail.gif'),
   },
 ];

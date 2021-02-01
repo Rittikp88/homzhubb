@@ -11,26 +11,27 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 const AboutHomzhub: FC = () => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const notDesktop = useDown(deviceBreakpoint.TABLET);
   return (
-    <View style={[styles.container, isMobile && styles.containerMobile]}>
-      <View style={[styles.subContainer, isMobile && styles.subContainerMobile]}>
+    <View style={styles.container}>
+      <View style={[styles.subContainer, notDesktop && styles.subContainerMobile]}>
         <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.title}>
           {t('aboutHomzhub')}
         </Typography>
-        <Text style={[styles.text, isMobile && styles.mobileText]} type="small">
+        <Text style={[styles.text, notDesktop && styles.mobileText]} type="small">
           {t('aboutDescription')}
         </Text>
-        <View style={[styles.buttonContainer, isMobile && styles.mobileContainer]}>
+        <View style={[styles.buttonContainer, notDesktop && styles.tabContainer, isMobile && styles.mobileContainer]}>
           <StoreButton
             store="apple"
-            containerStyle={styles.button}
+            containerStyle={[styles.button, isMobile && styles.mobileButton]}
             imageIconStyle={styles.imageIconStyle}
             mobileImageIconStyle={styles.mobileImageIconStyle}
           />
 
           <StoreButton
             store="google"
-            containerStyle={styles.googleButton}
+            containerStyle={[styles.googleButton, isMobile && styles.googleMobileIcon]}
             imageIconStyle={styles.imageIconStyle}
             mobileImageIconStyle={styles.mobileImageIconStyle}
           />
@@ -44,8 +45,8 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
-    marginBottom: 50,
+    paddingVertical: 50,
+    backgroundColor: theme.colors.white,
   },
   subContainer: {
     flex: 1,
@@ -53,12 +54,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: theme.layout.dashboardWidth,
   },
-  containerMobile: {
-    marginBottom: 35,
-  },
+
   subContainerMobile: {
     width: theme.layout.dashboardMobileWidth,
     alignItems: 'center',
+    marginHorizontal: 16,
   },
   title: {
     color: theme.colors.darkTint4,
@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     width: '58%',
     marginTop: 16,
     color: theme.colors.darkTint4,
+    textAlign: 'justify',
     lineHeight: 20,
     flexWrap: 'wrap',
   },
@@ -76,22 +77,23 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    maxWidth: '100%',
+  },
+  mobileButton: {
+    marginLeft: 50,
   },
   buttonContainer: {
     flexDirection: 'row',
     marginBottom: 20,
-    width: '20%',
+    width: '22%',
   },
   googleButton: {
     width: '100%',
     maxWidth: '100%',
     marginLeft: 20,
   },
-
   mobileContainer: {
+    textAlign: 'center',
     width: '100%',
-    alignSelf: 'center',
   },
   imageIconStyle: {
     width: '100%',
@@ -100,7 +102,14 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   mobileImageIconStyle: {
-    width: '50%',
+    width: '90%',
+  },
+  tabContainer: {
+    width: '40%',
+  },
+  googleMobileIcon: {
+    marginLeft: 0,
+    marginRight: '40px',
   },
 });
 

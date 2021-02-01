@@ -80,7 +80,6 @@ const TestimonialsMobile: React.FC<ITestimonialProps> = (props: ITestimonialProp
     </View>
   );
 };
-
 interface ITestimonialMobileStyle {
   container: ViewStyle;
   cardImageContainer: ViewStyle;
@@ -98,7 +97,6 @@ interface ITestimonialMobileStyle {
   quotesDown: ViewStyle;
   quoteDownGreen: ViewStyle;
 }
-
 const testimonialMobileStyle = (): StyleSheet.NamedStyles<ITestimonialMobileStyle> =>
   StyleSheet.create<ITestimonialMobileStyle>({
     container: {

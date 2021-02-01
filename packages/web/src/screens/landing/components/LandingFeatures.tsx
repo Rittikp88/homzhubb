@@ -71,8 +71,8 @@ const LandingFeatures: FC = () => {
   return (
     <View style={styles.containers}>
       <View style={styles.content}>
-        <Typography variant="text" size="small" style={styles.title}>
-          FEATURES
+        <Typography variant="text" size="small" fontWeight="semiBold" style={styles.title}>
+          {t('landing:features')}
         </Typography>
         {!isMobile ? (
           !isTablet ? (
@@ -128,10 +128,11 @@ const styles = StyleSheet.create({
   },
   cardMobile: {
     marginBottom: '16px',
-    width: '320px',
+    width: '280px',
     height: '190px',
     backgroundColor: theme.colors.cardOpacity,
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
   },
 
@@ -175,7 +176,6 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.lightGreen,
-    marginTop: '100px',
   },
   content: {
     alignItems: 'center',
