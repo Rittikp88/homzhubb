@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { GraphQLRepository, IFeaturedProperties } from '@homzhub/common/src/domain/repositories/GraphQLRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -21,12 +21,23 @@ const FeaturedProperties: React.FC = () => {
     getFeaturedProperties().then();
   }, []);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   return (
     <View style={styles.container}>
-      <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.titleText}>
+      <Typography
+        variant={!isMobile ? 'text' : 'label'}
+        size={!isMobile ? 'small' : 'large'}
+        fontWeight="semiBold"
+        style={styles.titleText}
+      >
         {t('landing:recent')}
       </Typography>
-      <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.subTitleText}>
+      <Typography
+        variant={isMobile ? 'text' : 'title'}
+        size={onlyTablet ? 'regular' : 'large'}
+        fontWeight="semiBold"
+        style={styles.subTitleText}
+      >
         {t('landing:featuredTitle')}
       </Typography>
       <View style={styles.carouselContainer}>

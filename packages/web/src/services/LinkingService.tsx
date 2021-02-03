@@ -11,7 +11,7 @@ type imageType =
   | 'linkedin'
   | 'facebook';
 
-const URLs = {
+export const URLs = {
   appStore: 'https://apps.apple.com/gb/app/homzhub-property-management/id1516772395',
   playStore: 'https://play.google.com/store/apps/details?id=com.homzhub',
   instagram: 'https://www.instagram.com/homzhub/',
@@ -19,6 +19,8 @@ const URLs = {
   youtube: ' https://www.youtube.com/channel/UCA1rqRgmez8a8gTaPYm-dxQ',
   linkedin: 'https://www.linkedin.com/company/homzhubpropertymanagement',
   facebook: 'https://www.facebook.com/HomzHub',
+  featuredPropertiesSearch: 'https://www.homzhub.com/search',
+  featuredProperties: 'https://www.homzhub.com/properties',
 };
 
 const imagePath = {
@@ -92,15 +94,18 @@ class LinkingService {
     }
   };
 
-  public redirect = (URL: string): void => {
-    Linking.canOpenURL(URL).then((supported) => {
+  public redirect = (link: string): void => {
+    Linking.canOpenURL(link).then((supported) => {
       if (supported) {
-        Linking.openURL(URL);
+        Linking.openURL(link).then();
       }
     });
+  };
+
+  public redirectInNewTab = (link: string): void => {
+    window.open(link);
   };
 }
 
 const linkingService = new LinkingService();
-
 export { linkingService as LinkingService };

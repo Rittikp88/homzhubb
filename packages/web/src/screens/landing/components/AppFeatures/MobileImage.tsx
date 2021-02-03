@@ -15,12 +15,12 @@ const MobileImage: FC<IMobileImageProps> = (props: IMobileImageProps) => {
   const styles = imageStyles(isMobile, isTablet);
 
   const styleGifs: CSSProperties = {
-    width: isMobile ? 126 : 169,
-    height: isMobile ? 265 : 364,
+    width: isMobile ? 110.5 : 173.5,
+    height: isMobile ? 231 : 364.5,
     position: 'absolute',
-    left: '38.5%',
-    borderRadius: 20,
-    top: isMobile ? '18.5%' : '11%',
+    left: '38%',
+    borderRadius: isMobile ? 16 : 24,
+    top: isMobile ? '19.2%' : '11%',
   };
   return (
     <View style={[styles.viewGif, !isOwner && !isMobile && !isTablet && styles.tenantViewGif]}>

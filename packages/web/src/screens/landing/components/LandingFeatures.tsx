@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -43,7 +43,7 @@ const LandingFeatures: FC = () => {
       <View key={item.text}>
         <Hoverable key={item.text}>
           {(isHovered: boolean): React.ReactNode => (
-            <TouchableOpacity
+            <View
               style={[
                 styles.card,
                 isMobile && styles.cardMobile,
@@ -61,7 +61,7 @@ const LandingFeatures: FC = () => {
                   </Typography>
                 </View>
               </View>
-            </TouchableOpacity>
+            </View>
           )}
         </Hoverable>
       </View>
@@ -71,7 +71,12 @@ const LandingFeatures: FC = () => {
   return (
     <View style={styles.containers}>
       <View style={styles.content}>
-        <Typography variant="text" size="small" fontWeight="semiBold" style={styles.title}>
+        <Typography
+          variant={!isMobile ? 'text' : 'label'}
+          size={!isMobile ? 'small' : 'large'}
+          fontWeight="semiBold"
+          style={styles.title}
+        >
           {t('landing:features')}
         </Typography>
         {!isMobile ? (
@@ -80,7 +85,7 @@ const LandingFeatures: FC = () => {
               {t('landing:featureDescription')}
             </Typography>
           ) : (
-            <Typography variant="title" size="large" fontWeight="semiBold" style={styles.subHeadingTab}>
+            <Typography variant="title" size="regular" fontWeight="semiBold" style={styles.subHeadingTab}>
               {t('landing:mobileDescription')}
             </Typography>
           )

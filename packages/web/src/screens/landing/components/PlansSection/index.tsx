@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ToggleButtons from '@homzhub/web/src/components/molecules/ToggleButtons';
 import PlatformPlanSection from '@homzhub/web/src/screens/landing/components/PlansSection/PlatformPlanSection';
-import ServicePlansCard from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansCard';
+import ServicePlansSection from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansSection';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
@@ -20,13 +20,24 @@ const PlansSection: FC = () => {
     setIsServicePlans(true);
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   return (
     <View>
       <View style={styles.plansTextContainer}>
-        <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.plansTitle}>
+        <Typography
+          variant={!isMobile ? 'text' : 'label'}
+          size={!isMobile ? 'small' : 'large'}
+          fontWeight="semiBold"
+          style={styles.plansTitle}
+        >
           {t('plansSectionTitle')}
         </Typography>
-        <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.plansHeader}>
+        <Typography
+          variant={isMobile ? 'text' : 'title'}
+          size={onlyTablet ? 'regular' : 'large'}
+          fontWeight="semiBold"
+          style={styles.plansHeader}
+        >
           {t('plansSectionHeader')}
         </Typography>
       </View>
@@ -39,7 +50,7 @@ const PlansSection: FC = () => {
         buttonStyle={[styles.buttonStyle, isMobile && styles.buttonStyleMobile]}
         titleStyle={styles.titleStyle}
       />
-      {isServicePlans ? <ServicePlansCard /> : <PlatformPlanSection />}
+      {isServicePlans ? <ServicePlansSection /> : <PlatformPlanSection />}
     </View>
   );
 };
@@ -65,7 +76,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   buttonStyle: {
-    width: 170,
+    width: 175,
   },
   buttonStyleMobile: {
     width: 130,

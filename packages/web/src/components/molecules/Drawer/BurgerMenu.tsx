@@ -10,7 +10,6 @@ interface IProps {
 interface IState {
   menuOpen: boolean;
 }
-
 export default class SideBar extends React.PureComponent<IProps, IState> {
   public state = {
     menuOpen: false,

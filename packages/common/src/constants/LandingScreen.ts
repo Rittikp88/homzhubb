@@ -9,7 +9,7 @@ export const TestimonialData = [
   {
     name: 'Milind',
     designation: 'Kuwait',
-    review: 'Excellent Application',
+    review: 'Excellent real estate services',
     description:
       'I very much appreciate the excellent real estate services offered by Homzhub. You have talented professionals in your team. We are happy that in Nagpur we have a professionally managed company which takes care of all the activities related to property matters and manages everything under one roof.',
     image: require('@homzhub/web/src/screens/landing/components/Testimonials/images/Milind.jpg'),
@@ -17,7 +17,7 @@ export const TestimonialData = [
   {
     name: 'Mandar',
     designation: 'Mumbai',
-    review: 'Excellent Application',
+    review: 'Personal touch shown by Homzhub',
     description:
       'I am extremely happy and satisfied with the quality of service and professional conduct along with Personal Touch shown by the Homzhub representatives and Team. The fact that they take complete responsibility for all and any issue that arises in the property, makes my task of trusting them easier.',
     image: require('@homzhub/web/src/screens/landing/components/Testimonials/images/Mandar.jpg'),
@@ -25,26 +25,10 @@ export const TestimonialData = [
   {
     name: 'Nirav',
     designation: 'Nagpur',
-    review: 'Excellent Application',
+    review: 'Professional team to assist you',
     description:
       'Anyone who has searched for a house for rent knows how nerve-racking the process can be. It really helps to have a professional team to assist you in this. I highly recommend Homzhub.',
     image: require('@homzhub/web/src/screens/landing/components/Testimonials/images/Nirav.jpeg'),
-  },
-  {
-    name: 'Gunjan',
-    designation: 'Patna',
-    review: 'Excellent Application',
-    description:
-      'I had a great experience with Homzhub. What I really liked about them is the promptness with which they solved the maintenance issues with the property',
-    image: require('@homzhub/web/src/screens/landing/components/Testimonials/images/Smita.jpg'),
-  },
-  {
-    name: 'Rajat',
-    designation: 'Gondia',
-    review: 'Excellent Application',
-    description:
-      'I moved to Nagpur recently and I was searching for a property to rent asap. I did not expect to find something to my liking on such short notice. However, Homzhub put in a lot of effort to help me find a home for myself. 10/10 service by the team!',
-    image: require('@homzhub/web/src/screens/landing/components/Testimonials/images/Jayantm.jpeg'),
   },
 ];
 
@@ -113,7 +97,7 @@ export const TenantFeatureData: IFeatureDataProps[] = [
     id: 2,
     title: 'Finely Curated Listings for You',
     description: 'Rent verified properties directly from owners',
-    image: require('@homzhub/common/src/assets/images/splashScreen.gif'),
+    image: require('@homzhub/common/src/assets/images/verification.gif'),
   },
   {
     id: 3,

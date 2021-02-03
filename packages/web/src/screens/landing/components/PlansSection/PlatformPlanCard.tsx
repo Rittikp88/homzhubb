@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -41,9 +41,10 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
     return duration === 12 ? '1 year' : `${duration} months`;
   };
   const isMobile = useDown(deviceBreakpoint.TABLET);
+  const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const shouldDisplayPopularBanner = !!(servicePlanPricing && servicePlanPricing[0].banner);
   return (
-    <View style={[styles.card, isMobile && styles.cardMobile]}>
+    <View style={[styles.card, isMobile && styles.cardMobile, onlyTablet && styles.cardTablet]}>
       <View style={[styles.freeTierView, !shouldDisplayPopularBanner && styles.noBannerStyle]}>
         <Typography size="large" fontWeight="semiBold" variant="label" style={styles.mostPopularTag}>
           {servicePlanPricing[0].banner}
@@ -99,11 +100,12 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.colors.white,
     paddingHorizontal: 28,
-    paddingVertical: 20,
+    paddingTop: 25,
+    paddingBottom: 20,
     width: 270,
     borderRadius: 8,
     alignItems: 'center',
-    marginHorizontal: 15,
+    marginHorizontal: 20,
     shadowColor: theme.colors.shadow,
     shadowOpacity: 0.08,
     shadowOffset: {
@@ -115,7 +117,10 @@ const styles = StyleSheet.create({
   cardMobile: {
     width: 290,
     paddingHorizontal: 28,
-    marginHorizontal: 8,
+    marginHorizontal: 15,
+  },
+  cardTablet: {
+    marginHorizontal: 20,
   },
   headerText: {
     alignItems: 'center',

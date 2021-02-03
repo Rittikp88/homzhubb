@@ -1,49 +1,26 @@
-import React, { useState, useEffect, FC } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
-import { theme } from '@homzhub/common/src/styles/theme';
+import React, { FC } from 'react';
+import { View, ViewStyle } from 'react-native';
 import CardWithIcon from '@homzhub/web/src/components/atoms/CardWithIcon';
 import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
 
-const ServicePlansCard: FC = () => {
-  const [servicePlansList, setServicePlansList] = useState([] as ServicePlans[]);
-  useEffect(() => {
-    ServiceRepository.getServicePlans()
-      .then((response) => {
-        setServicePlansList(response);
-      })
-      .catch((e) => {
-        const error = ErrorUtils.getErrorMessage(e.details);
-        AlertHelper.error({ message: error });
-      });
-  }, []);
+interface IProps {
+  servicePlansList: ServicePlans[];
+  servicePlansCardStyle: ViewStyle;
+}
 
+const ServicePlansCard: FC<IProps> = (props: IProps) => {
+  const { servicePlansList, servicePlansCardStyle } = props;
   return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.servicePlansContainer}>
-      <View style={styles.servicePlansCardsContainer}>
-        {servicePlansList.map((plans) => (
-          <CardWithIcon
-            cardImage={plans.attachment.link}
-            cardTitle={plans.label}
-            cardDescription={plans.description}
-            key={`service-plan-${plans.id}`}
-          />
-        ))}
-      </View>
-    </ScrollView>
+    <View style={servicePlansCardStyle}>
+      {servicePlansList.map((plans) => (
+        <CardWithIcon
+          cardImage={plans.attachment.link}
+          cardTitle={plans.label}
+          cardDescription={plans.description}
+          key={`service-plan-${plans.id}`}
+        />
+      ))}
+    </View>
   );
 };
 export default ServicePlansCard;
-
-const styles = StyleSheet.create({
-  servicePlansContainer: {
-    backgroundColor: theme.colors.background,
-    marginBottom: 120,
-  },
-  servicePlansCardsContainer: {
-    flexDirection: 'row',
-    width: '92%',
-  },
-});

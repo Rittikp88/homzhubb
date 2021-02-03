@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ToggleButtons from '@homzhub/web/src/components/molecules/ToggleButtons';
@@ -13,6 +13,7 @@ const AppFeatures: FC = () => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const [image, setImage] = useState(require('@homzhub/common/src/assets/images/defaultMobileBackground.svg'));
   const [isOwner, setIsOwner] = useState(true);
   const styles = containerStyles(isMobile);
@@ -31,11 +32,20 @@ const AppFeatures: FC = () => {
   return (
     <View style={styles.containers}>
       <View style={styles.content}>
-        <Typography variant="text" size="small" style={styles.title} fontWeight="semiBold">
+        <Typography
+          variant={!isMobile ? 'text' : 'label'}
+          size={!isMobile ? 'small' : 'large'}
+          style={styles.title}
+          fontWeight="semiBold"
+        >
           {t('landing:appFeatures')}
         </Typography>
-
-        <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.subHeading}>
+        <Typography
+          variant={isMobile ? 'text' : 'title'}
+          size={onlyTablet ? 'regular' : 'large'}
+          fontWeight="semiBold"
+          style={styles.subHeading}
+        >
           {t('landing:appFeatureTitle')}
         </Typography>
       </View>

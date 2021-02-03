@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   mobileButton: {
-    marginLeft: 50,
+    marginLeft: '10%',
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
   googleButton: {
     width: '100%',
     maxWidth: '100%',
-    marginLeft: 20,
+    marginLeft: '12%',
   },
   mobileContainer: {
     textAlign: 'center',
@@ -97,19 +97,19 @@ const styles = StyleSheet.create({
   },
   imageIconStyle: {
     width: '100%',
-    height: 100,
+    height: 90,
     resizeMode: 'stretch',
     maxWidth: '100%',
   },
   mobileImageIconStyle: {
-    width: '90%',
+    width: '106px',
   },
   tabContainer: {
     width: '40%',
   },
   googleMobileIcon: {
     marginLeft: 0,
-    marginRight: '40px',
+    marginRight: '10%',
   },
 });
 

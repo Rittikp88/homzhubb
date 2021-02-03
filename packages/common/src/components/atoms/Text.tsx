@@ -272,24 +272,24 @@ const styles = StyleSheet.create({
   },
   titleSmall: {
     fontSize: I18nService.select<number>({
-      rtl: 26,
-      ltr: 26,
-    }),
-    lineHeight: fontLineHeights.title.regular,
-    textAlign: 'left',
-  },
-  titleRegular: {
-    fontSize: I18nService.select<number>({
       rtl: 30,
       ltr: 30,
     }),
     lineHeight: fontLineHeights.title.regular,
     textAlign: 'left',
   },
+  titleRegular: {
+    fontSize: I18nService.select<number>({
+      rtl: 32,
+      ltr: 32,
+    }),
+    lineHeight: fontLineHeights.title.regular,
+    textAlign: 'left',
+  },
   titleLarge: {
     fontSize: I18nService.select<number>({
-      rtl: 34,
-      ltr: 34,
+      rtl: 36,
+      ltr: 36,
     }),
     lineHeight: fontLineHeights.title.regular,
     textAlign: 'left',

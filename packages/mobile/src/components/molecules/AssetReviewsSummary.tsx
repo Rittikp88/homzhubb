@@ -62,7 +62,7 @@ const AssetReviewsSummary = ({
           </Label>
         )}
         <View style={styles.overallContainer}>
-          <Title>{rating}</Title>
+          <Title type="small">{rating}</Title>
           {rating && <Rating value={rating} />}
           <Label style={styles.basedOn}>{t('property:basedOn', { count: reviewCount })}</Label>
         </View>

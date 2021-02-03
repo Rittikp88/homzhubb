@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { IFeaturedProperties } from '@homzhub/common/src/domain/repositories/GraphQLRepository';
+import { LinkingService, URLs } from '@homzhub/web/src/services/LinkingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -19,46 +20,63 @@ interface IProps {
 const PropertiesCard = (props: IProps): React.ReactElement => {
   const { investmentData } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const { address, category, coverImage, priceRange, projectName, possessionDate, typesAvailable } = investmentData;
+  const {
+    address,
+    category,
+    coverImage,
+    priceRange,
+    projectName,
+    possessionDate,
+    typesAvailable,
+    slug,
+  } = investmentData;
   const amenitiesGroup: IUnit[] = [
     { id: 1, order: 1, label: 'Type', value: typesAvailable },
     { id: 2, order: 2, label: 'Possession', value: possessionDate },
   ];
   const { t } = useTranslation();
+  const onPressCard = (): void => {
+    const baseUrl = URLs.featuredProperties;
+    const backSlash = '/';
+    const url = baseUrl.concat(backSlash).concat(slug);
+    LinkingService.redirect(url);
+  };
   return (
-    <View style={[styles.card, isMobile && styles.cardMobile]}>
-      <View>
-        <ImageSquare
-          style={styles.image}
-          size={50}
-          source={{
-            uri: coverImage.url,
-          }}
-        />
-      </View>
-      <View style={styles.mainBody}>
-        <View style={styles.propertyRating}>
-          <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
-            {category}
-          </Typography>
-        </View>
-        <PropertyAddress
-          isIcon={false}
-          primaryAddress={projectName}
-          primaryAddressStyle={styles.addressTextStyle}
-          subAddressStyle={styles.subAddressTextStyle}
-          subAddress={address}
-          containerStyle={styles.propertyAddress}
-        />
+    <TouchableOpacity onPress={onPressCard}>
+      <View style={[styles.card, isMobile && styles.cardMobile]}>
         <View>
-          <Typography variant="text" size="small" fontWeight="semiBold" style={styles.propertyValue}>
-            {t('from')} {priceRange}
-          </Typography>
+          <ImageSquare
+            style={styles.image}
+            size={50}
+            source={{
+              uri: coverImage.url,
+            }}
+          />
         </View>
-        <Divider />
-        <View style={styles.amenitiesContainer}>{renderPropertyAmenities(amenitiesGroup)}</View>
+        <View style={styles.mainBody}>
+          <View style={styles.propertyRating}>
+            <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
+              {category}
+            </Typography>
+          </View>
+          <PropertyAddress
+            isIcon={false}
+            primaryAddress={projectName}
+            primaryAddressStyle={styles.addressTextStyle}
+            subAddressStyle={styles.subAddressTextStyle}
+            subAddress={address}
+            containerStyle={styles.propertyAddress}
+          />
+          <View>
+            <Typography variant="text" size="small" fontWeight="semiBold" style={styles.propertyValue}>
+              {t('from')} {priceRange}
+            </Typography>
+          </View>
+          <Divider />
+          <View style={styles.amenitiesContainer}>{renderPropertyAmenities(amenitiesGroup)}</View>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -71,7 +89,7 @@ const renderPropertyAmenities = (data: IUnit[]): React.ReactElement => {
             <Label type="large" textType="regular" style={{ color: theme.colors.darkTint4 }}>
               {item.label}
             </Label>
-            <Label type="large" textType="semiBold" style={{ color: theme.colors.darkTint2 }}>
+            <Label type="large" textType="regular" style={{ color: theme.colors.darkTint2 }}>
               {item.value}
             </Label>
           </View>

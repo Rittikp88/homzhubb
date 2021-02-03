@@ -14,9 +14,9 @@ const TestimonialsMobile: React.FC<ITestimonialProps> = (props: ITestimonialProp
   const styles = testimonialMobileStyle();
   return (
     <View style={styles.container}>
-      <Text type="regular" style={styles.titleText}>
+      <Label type="large" style={styles.titleText}>
         {t('landing:testimonials')}
-      </Text>
+      </Label>
       <Text type="large" style={styles.subTitleText}>
         {t('landing:successStories')}
       </Text>

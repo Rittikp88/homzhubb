@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { LinkingService, URLs } from '@homzhub/web/src/services/LinkingService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
@@ -59,7 +60,7 @@ const RenderNavItems = (): React.ReactElement => {
     },
     {
       text: t('featuredProperties'),
-      url: RouteNames.publicRoutes.FEATURED,
+      url: URLs.featuredProperties,
     },
     {
       text: t('pricing'),
@@ -68,11 +69,11 @@ const RenderNavItems = (): React.ReactElement => {
   ];
   const login = [
     {
-      text: t('Login'),
+      text: t('common:login'),
       url: RouteNames.publicRoutes.LOGIN,
     },
     {
-      text: t('signUp'),
+      text: t('common:signUp'),
       url: RouteNames.publicRoutes.SIGNUP,
     },
   ];
@@ -80,6 +81,9 @@ const RenderNavItems = (): React.ReactElement => {
 
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
+    if (navItems[index].text === t('featuredProperties')) {
+      LinkingService.redirect(URLs.featuredPropertiesSearch);
+    }
     // TODO: uncomment when links have respective component
     //  NavigationUtils.navigate(history, { path: navItems[index].url });
   };
@@ -167,6 +171,8 @@ const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
     },
     logo: {
       marginRight: 16,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
   });
 

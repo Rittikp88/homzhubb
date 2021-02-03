@@ -90,11 +90,11 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   mobileImageIconStyle: {
-    width: '70%',
+    width: '108px',
   },
   appImageIconStyle: {
     marginLeft: 'auto',
-    width: '70%',
+    width: '106px',
   },
   tabContainer: {
     width: '50%',

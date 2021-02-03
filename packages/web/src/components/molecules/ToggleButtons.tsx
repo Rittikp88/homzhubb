@@ -41,7 +41,7 @@ export const ToggleButtons: FC<IProps> = ({
         titleStyle={[styles.unselectedText, titleStyle, selectedButton === 1 && styles.selectedText]}
         textSize="small"
         textType="text"
-        fontType="regular"
+        fontType="semiBold"
         onPress={switchButton1}
       />
       <Button
@@ -51,7 +51,7 @@ export const ToggleButtons: FC<IProps> = ({
         titleStyle={[styles.unselectedText, titleStyle, selectedButton === 2 && styles.selectedText]}
         textSize="small"
         textType="text"
-        fontType="regular"
+        fontType="semiBold"
         onPress={switchButton2}
       />
     </View>
@@ -73,7 +73,9 @@ const styles = StyleSheet.create({
   toggleButtons: {
     backgroundColor: theme.colors.transparent,
     textAlign: 'center',
+    justifyContent: 'center',
     borderRadius: 4,
+    width: 'fit-content',
   },
   toggleButton1Selected: {
     backgroundColor: theme.colors.completed,

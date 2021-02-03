@@ -34,7 +34,7 @@ function useViewPort(): IScaledSize {
 // useOnly(tablet) => '@media (min-width: 768px) and (max-width: 991.98px)'
 function useOnly(screenSize: IDeviceScreenLimits): boolean {
   const screenWidth = useViewPort().width;
-  return screenWidth > screenSize.down && screenWidth < screenSize.up;
+  return screenWidth >= screenSize.down && screenWidth < screenSize.up;
 }
 
 // useBetween(tablet, desktop) => '@media (min-width: 768px) and (max-width: 1199.98px)'
@@ -53,6 +53,12 @@ function useUp(screenSize: IDeviceScreenLimits): boolean {
 function useDown(screenSize: IDeviceScreenLimits): boolean {
   const screenWidth = useViewPort().width;
   return screenWidth < screenSize.up;
+}
+
+function useIsIpadPro(): boolean {
+  const screenWidth = useViewPort().width;
+  const screenHeight = useViewPort().height;
+  return screenWidth === 1024 && screenHeight === 1366;
 }
 
 interface IWithMediaQuery {
@@ -74,4 +80,4 @@ const withMediaQuery = <P extends {}>(
   };
 };
 
-export { useViewPort, useOnly, useBetween, useUp, useDown, withMediaQuery, IWithMediaQuery };
+export { useViewPort, useOnly, useBetween, useUp, useDown, useIsIpadPro, withMediaQuery, IWithMediaQuery };

@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
-import { useDown, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useViewPort, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
@@ -25,6 +25,8 @@ const defaultResponsive = {
 // todo remove dummy image
 const HeroSection: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isIpadPro = useIsIpadPro();
   let scrollLength = 0;
   const onLayout = (e: LayoutChangeEvent): void => {
     scrollLength = e.nativeEvent.layout.height;
@@ -47,8 +49,7 @@ const HeroSection: FC = () => {
       ${theme.colors.landingCarouselGradientA} 0%,
       ${theme.colors.landingCarouselGradientB} 80.21%)`,
   };
-  const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const scaleY = isMobile ? 0.5 : 0.87;
+  const scaleY = isTablet || isIpadPro ? (isMobile ? 0.37 : 0.6) : 0.87;
   const imageStyle = {
     minWidth: useViewPort().width,
     minHeight: useViewPort().height * scaleY,
@@ -103,7 +104,7 @@ const CarouselControlSection = ({ next, previous }: ButtonGroupProps): React.Rea
     <View style={[styles.slideInfo, isMobile && styles.slideInfoMobile]}>
       <View>
         <Typography
-          variant="title"
+          variant={isMobile ? 'text' : 'title'}
           size="large"
           fontWeight="bold"
           style={[styles.title, isMobile && styles.centerText]}
@@ -112,7 +113,7 @@ const CarouselControlSection = ({ next, previous }: ButtonGroupProps): React.Rea
         </Typography>
         <Typography
           variant="text"
-          size="regular"
+          size={isMobile ? 'small' : 'regular'}
           fontWeight="regular"
           style={[styles.description, isMobile && styles.centerText]}
         >
@@ -188,6 +189,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   description: {
+    marginTop: 8,
     color: theme.colors.white,
   },
   arrows: {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ViewStyle, StyleSheet, TextStyle, ImageStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -16,12 +16,23 @@ const TestimonialsDesktop: React.FC<ITestimonialProps> = (props: ITestimonialPro
   const { t } = useTranslation();
   const styles = testimonialStyle();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   return (
     <View style={styles.container}>
-      <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.titleText}>
+      <Typography
+        variant={!isMobile ? 'text' : 'label'}
+        size={!isMobile ? 'small' : 'large'}
+        fontWeight="semiBold"
+        style={styles.titleText}
+      >
         {t('landing:testimonials')}
       </Typography>
-      <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.subTitleText}>
+      <Typography
+        variant={isMobile ? 'text' : 'title'}
+        size={onlyTablet ? 'regular' : 'large'}
+        fontWeight="semiBold"
+        style={styles.subTitleText}
+      >
         {t('landing:successStories')}
       </Typography>
       <View style={styles.cardContainer}>

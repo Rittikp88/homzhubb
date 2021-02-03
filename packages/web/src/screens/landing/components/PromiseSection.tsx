@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { StyleSheet, View, ImageStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Family from '@homzhub/common/src/assets/images/familyPana.svg';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -12,16 +12,27 @@ const PromiseSection: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
+  const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   return (
     <View style={styles.container}>
       <View style={styles.content}>
         <View>
-          <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.title}>
+          <Typography
+            variant={!isMobile ? 'text' : 'label'}
+            size={!isMobile ? 'small' : 'large'}
+            fontWeight="semiBold"
+            style={styles.title}
+          >
             {t('values')}
           </Typography>
         </View>
         <View>
-          <Typography variant={isMobile ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.header}>
+          <Typography
+            variant={isMobile ? 'text' : 'title'}
+            size={onlyTablet ? 'regular' : 'large'}
+            fontWeight="semiBold"
+            style={styles.header}
+          >
             {t('ourPromise')}
           </Typography>
         </View>
@@ -145,6 +156,7 @@ const styles = StyleSheet.create({
   },
   tabletPara: {
     marginHorizontal: 140,
+    textAlign: 'center',
   },
 });
 

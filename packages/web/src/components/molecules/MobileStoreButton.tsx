@@ -27,7 +27,7 @@ class MobileStoreButton extends React.PureComponent<IProps> {
   public render(): ReactElement {
     const { store, isMobile, containerStyle, imageIconStyle, mobileImageIconStyle = {} } = this.props;
     const clickHandler = (): void => {
-      LinkingService.redirect(redirectUrl);
+      LinkingService.redirectInNewTab(redirectUrl);
     };
     const url = LinkingService.getImage(store);
     const redirectUrl = LinkingService.getUrl(store);
@@ -40,7 +40,6 @@ class MobileStoreButton extends React.PureComponent<IProps> {
 }
 
 const StoreButton = withMediaQuery<IProps>(MobileStoreButton);
-
 export default StoreButton;
 
 const styles = StyleSheet.create({

@@ -6,6 +6,7 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -27,8 +28,8 @@ const OurServicesSection: FC = () => {
       <View style={[styles.content, isMobile && styles.contentMobile]}>
         <View>
           <Typography
-            variant="label"
-            size="large"
+            variant="text"
+            size="small"
             fontWeight="semiBold"
             style={[styles.text, isMobile && styles.textMobile]}
           >
@@ -72,7 +73,7 @@ const Newsletter = (): React.ReactElement => {
     if (didSubscribe) {
       subscribedTimer = setTimeout(() => {
         setDidSubscribe(false);
-      }, 2000);
+      }, 3000);
     }
     return (): void => {
       clearTimeout(subscribedTimer);
@@ -103,14 +104,22 @@ const Newsletter = (): React.ReactElement => {
         />
         <Button
           type="secondary"
-          containerStyle={[styles.subscribeBtn, isMobile && styles.subscribeBtnMobile]}
+          containerStyle={[
+            styles.subscribeBtn,
+            isMobile && styles.subscribeBtnMobile,
+            didSubscribe && styles.subscribedBtn,
+          ]}
           title={didSubscribe ? t('landing:subscribed') : t('landing:subscribe')}
           textType="label"
           textSize="large"
           fontType="regular"
-          titleStyle={styles.subscribeBtnTxt}
+          titleStyle={[styles.subscribeBtnTxt, didSubscribe && styles.subscribedBtnText]}
           onPress={subscribeToNewsLetter}
-        />
+        >
+          {didSubscribe && (
+            <Icon name={icons.circularCheckFilled} color={theme.colors.green} size={18} style={styles.icon} />
+          )}
+        </Button>
       </View>
     </View>
   );
@@ -150,7 +159,7 @@ const styles = StyleSheet.create({
   emailInput: {
     color: theme.colors.white,
     padding: 12,
-    width: 'fit-content',
+    maxWidth: '70%',
   },
   emailInputMobile: {
     width: '100%',
@@ -159,9 +168,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 12,
     width: 'fit-content',
-    alignSelf: 'flex-end',
     flexDirection: 'row',
     backgroundColor: theme.colors.darkGrayishBlue,
+    flex: 1,
   },
   emailInputBoxMobile: {
     width: '100%',
@@ -175,13 +184,24 @@ const styles = StyleSheet.create({
   subscribeBtnMobile: {
     margin: 4,
   },
+  subscribedBtn: {
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+  },
+  subscribedBtnText: {
+    color: theme.colors.green,
+    marginRight: 16,
+    marginLeft: 0,
+  },
   subscribeBtn: {
     margin: 6,
   },
   newsletterContainer: {
-    alignItems: undefined,
+    minWidth: 380,
+    alignItems: 'flex-start',
   },
   newsletterContainerMobile: {
+    minWidth: undefined,
     marginTop: 36,
     alignItems: 'center',
   },
@@ -192,6 +212,11 @@ const styles = StyleSheet.create({
   },
   linksRowMobile: {
     justifyContent: 'center',
+  },
+  icon: {
+    justifyContent: 'center',
+    marginRight: 12,
+    marginLeft: 18,
   },
 });
 

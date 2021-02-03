@@ -155,7 +155,6 @@ export const icons = {
   sort: 'sort',
   reply: 'reply',
   flag: 'flag',
-  filledTick: 'filled-tick',
 
   // COMMUTE
   train: 'train',
