@@ -99,3 +99,8 @@ body.bm-menu {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}

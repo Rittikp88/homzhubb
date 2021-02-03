@@ -42,7 +42,7 @@ export default class SideBar extends React.PureComponent<IProps, IState> {
     const { menuOpen } = this.state;
     this.setState({ menuOpen: !menuOpen });
     if (menuOpen) {
-      window.addEventListener('scroll', this.noScroll);
-    } else window.removeEventListener('scroll', this.noScroll);
+      document.body.classList.add('stop-scrolling');
+    } else document.body.classList.remove('stop-scrolling');
   };
 }
