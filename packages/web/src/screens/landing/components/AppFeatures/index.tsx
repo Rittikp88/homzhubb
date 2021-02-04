@@ -14,7 +14,7 @@ const AppFeatures: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
-  const [image, setImage] = useState(require('@homzhub/common/src/assets/images/defaultMobileBackground.svg'));
+  const [image, setImage] = useState('');
   const [isOwner, setIsOwner] = useState(true);
   const styles = containerStyles(isMobile);
   const relativeImage = (data: string): void => {
@@ -22,11 +22,11 @@ const AppFeatures: FC = () => {
   };
   const toggleOwner = (): void => {
     setIsOwner(true);
-    setImage(require('@homzhub/common/src/assets/images/defaultMobileBackground.svg'));
+    setImage('');
   };
   const toggleTenant = (): void => {
     setIsOwner(false);
-    setImage(require('@homzhub/common/src/assets/images/defaultMobileBackground.svg'));
+    setImage('');
   };
 
   return (
