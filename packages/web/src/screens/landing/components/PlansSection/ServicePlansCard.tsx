@@ -1,7 +1,9 @@
 import React, { FC } from 'react';
-import { View, ViewStyle } from 'react-native';
+import { View, ViewStyle, StyleSheet } from 'react-native';
+import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import CardWithIcon from '@homzhub/web/src/components/atoms/CardWithIcon';
 import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   servicePlansList: ServicePlans[];
@@ -10,6 +12,8 @@ interface IProps {
 
 const ServicePlansCard: FC<IProps> = (props: IProps) => {
   const { servicePlansList, servicePlansCardStyle } = props;
+  const isDesktop = useUp(deviceBreakpoint.DESKTOP);
+
   return (
     <View style={servicePlansCardStyle}>
       {servicePlansList.map((plans) => (
@@ -18,9 +22,19 @@ const ServicePlansCard: FC<IProps> = (props: IProps) => {
           cardTitle={plans.label}
           cardDescription={plans.description}
           key={`service-plan-${plans.id}`}
+          cardStyle={isDesktop ? styles.servicePlansCard : styles.servicePlansCardMobile}
         />
       ))}
     </View>
   );
 };
 export default ServicePlansCard;
+
+const styles = StyleSheet.create({
+  servicePlansCard: {
+    width: '20%',
+  },
+  servicePlansCardMobile: {
+    width: 270,
+  },
+});

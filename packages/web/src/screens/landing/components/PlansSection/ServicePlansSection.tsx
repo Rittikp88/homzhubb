@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   servicePlansContainerDesktop: {
     flexDirection: 'row',
-    marginHorizontal: 'auto',
+    marginHorizontal: '5%',
     flexWrap: 'wrap',
     width: '90%',
   },

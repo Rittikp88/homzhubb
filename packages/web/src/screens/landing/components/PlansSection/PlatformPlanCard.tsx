@@ -18,6 +18,7 @@ const disclaimerSectionText: IDisclaimer = {
   FREEDOM: 'landing:freedom',
   PREMIUM: 'landing:premium',
   PRO: 'landing:pro',
+  ENTERPRISE: 'landing:enterprise',
 };
 
 interface IProps {
@@ -132,6 +133,7 @@ const styles = StyleSheet.create({
       width: 0,
     },
     shadowRadius: 120,
+    position: 'relative',
   },
   cardMobile: {
     width: 290,
@@ -196,10 +198,15 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     lineHeight: 16,
   },
+  plansOrderedList: {
+    marginBottom: 20,
+  },
   disclaimerText: {
     textAlign: 'center',
     color: theme.colors.darkTint4,
     marginTop: 40,
+    position: 'absolute',
+    bottom: 20,
   },
   noBannerView: {
     height: 30,
@@ -213,7 +220,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   getStartedButton: { width: 240, marginTop: 12 },
-  planList: { marginTop: 12 },
+  planList: { marginTop: 12, marginBottom: 70 },
 });
 
 export default PlatformPlanCard;

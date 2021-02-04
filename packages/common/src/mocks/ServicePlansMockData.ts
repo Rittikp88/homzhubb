@@ -71,8 +71,8 @@ export const ServicePlansData = [
   },
   {
     id: 7,
-    name: 'Tenant BG check',
-    label: 'Tenant BG check',
+    name: 'Tenant Background check',
+    label: 'Tenant Background check',
     description: 'Trust your tenants with your property, just not blindly',
     display_order: 8,
     attachment: {

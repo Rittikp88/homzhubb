@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, ViewStyle, StyleSheet, Image } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 
@@ -7,12 +7,13 @@ interface IProps {
   cardImage: string;
   cardTitle: string;
   cardDescription: string;
+  cardStyle: ViewStyle;
 }
 const CardWithIcon: FC<IProps> = (props: IProps) => {
-  const { cardTitle, cardDescription, cardImage } = props;
+  const { cardTitle, cardDescription, cardImage, cardStyle } = props;
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, cardStyle]}>
       <Image source={{ uri: cardImage }} style={styles.imageStyle} />
       <Typography size="regular" style={styles.cardTitle} fontWeight="semiBold">
         {cardTitle}
@@ -29,10 +30,8 @@ export default CardWithIcon;
 const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.colors.white,
-    height: 218,
     borderRadius: 8,
-    width: 270,
-    marginHorizontal: 15,
+    marginLeft: 40,
     marginBottom: 40,
     padding: 24,
     shadowColor: theme.colors.landingCardShadow,
