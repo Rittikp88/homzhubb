@@ -183,7 +183,14 @@
     "plansSectionTitle": "PRICING",
     "plansSectionHeader": "Find the Right plan for your Property",
     "from": "From",
-    "menu": "Menu"
+    "menu": "Menu",
+    "signUpItsFree": "Sign Up, It's Free",
+    "contactSales": "Contact Sales",
+    "free": "Free",
+    "custom": "Custom",
+    "perYear": "/year",
+    "freeFor": "Free for ",
+    "oneYear": "1 Year"
   },
   "auth": {
     "verifyNumber": "Verify your number",

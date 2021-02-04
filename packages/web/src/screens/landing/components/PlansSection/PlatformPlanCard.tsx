@@ -26,7 +26,7 @@ interface IProps {
 
 const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const {
-    platformPlans: { name, label, servicePlanBundle, servicePlanPricing },
+    platformPlans: { name, label, description, servicePlanBundle, servicePlanPricing },
   } = props;
   const { t } = useTranslation();
 
@@ -38,11 +38,26 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
 
   const getFreeSubscriptionPeriod = (): string => {
     const duration = servicePlanPricing[0]?.freeTrialDuration ?? 0;
-    return duration === 12 ? '1 year' : `${duration} months`;
+    return duration === 12 ? t('oneYear') : `${duration} ${t('months')}`;
   };
   const isMobile = useDown(deviceBreakpoint.TABLET);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const shouldDisplayPopularBanner = !!(servicePlanPricing && servicePlanPricing[0].banner);
+  const servicePlansPricingInUSD = servicePlanPricing[1];
+
+  const setPlanPricingText = (pricing: number): string => {
+    if (pricing === 0) return t('free');
+    if (pricing === -1) return t('custom');
+    return pricing.toString();
+  };
+
+  const getButtonText = (pricing: number): string => {
+    if (pricing === 0) return t('signUpItsFree');
+    if (pricing === -1) return t('contactSales');
+    return t('getStarted');
+  };
+  const isFreeOrCustom = !!(servicePlansPricingInUSD.actualPrice === 0 || servicePlansPricingInUSD.actualPrice === -1);
+
   return (
     <View style={[styles.card, isMobile && styles.cardMobile, onlyTablet && styles.cardTablet]}>
       <View style={[styles.freeTierView, !shouldDisplayPopularBanner && styles.noBannerStyle]}>
@@ -51,32 +66,36 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
         </Typography>
       </View>
       <Typography size="large" fontWeight="semiBold" variant="label" style={styles.headerText}>
-        {name}
+        {label}
       </Typography>
       <Typography size="small" variant="text" style={styles.headerLabel}>
-        {label}
+        {description}
       </Typography>
       {servicePlanPricing && (
         <View style={styles.billingAmount}>
           <Typography size="regular" variant="title" fontWeight="semiBold" style={styles.amount}>
-            {servicePlanPricing[0].currency.currencySymbol}
-            {servicePlanPricing[0].actualPrice}
+            {isFreeOrCustom ? null : servicePlansPricingInUSD.currency.currencySymbol}
+            {setPlanPricingText(servicePlansPricingInUSD.actualPrice)}
           </Typography>
           <Typography size="small" variant="text" style={styles.perYearText}>
-            / year
+            {isFreeOrCustom ? null : t('perYear')}
           </Typography>
         </View>
       )}
       {servicePlanPricing && servicePlanPricing[0].freeTrialDuration ? (
         <View style={styles.freeTierView}>
           <Typography size="large" variant="label" fontWeight="semiBold" style={styles.freeTierText}>
-            {`Free for ${getFreeSubscriptionPeriod()}`}
+            {`${t('freeFor')}${getFreeSubscriptionPeriod()}`}
           </Typography>
         </View>
       ) : (
         <View style={styles.noBadge} />
       )}
-      <Button title="Get Started" type="primary" containerStyle={styles.getStartedButton} />
+      <Button
+        title={getButtonText(servicePlansPricingInUSD.actualPrice)}
+        type="primary"
+        containerStyle={styles.getStartedButton}
+      />
       <View style={styles.planList}>
         {sortData()}
         {serviceBundles &&
@@ -130,6 +149,7 @@ const styles = StyleSheet.create({
   },
   headerLabel: {
     textAlign: 'center',
+    minHeight: 60,
   },
   billingAmount: {
     flexDirection: 'row',

@@ -13,6 +13,9 @@ export class PlatformPlans {
   @JsonProperty('label', String)
   private _label = '';
 
+  @JsonProperty('description', String)
+  private _description = '';
+
   @JsonProperty('tier', Number)
   private _tier = '';
 
@@ -44,6 +47,10 @@ export class PlatformPlans {
 
   get label(): string {
     return this._label;
+  }
+
+  get description(): string {
+    return this._description;
   }
 
   get tier(): string {

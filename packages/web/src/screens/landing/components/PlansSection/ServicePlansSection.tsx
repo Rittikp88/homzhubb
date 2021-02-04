@@ -1,25 +1,18 @@
 import React, { useState, useEffect, FC } from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import ServicePlansCard from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansCard';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { ServicePlansData } from '@homzhub/common/src/mocks/ServicePlansMockData';
 
 const ServicePlansSection: FC = () => {
   const [servicePlansList, setServicePlansList] = useState([] as ServicePlans[]);
+  // TODO Get this data from API.
   useEffect(() => {
-    ServiceRepository.getServicePlans()
-      .then((response) => {
-        setServicePlansList(response);
-      })
-      .catch((e) => {
-        const error = ErrorUtils.getErrorMessage(e.details);
-        AlertHelper.error({ message: error });
-      });
+    setServicePlansList(ObjectMapper.deserializeArray(ServicePlans, ServicePlansData));
   }, []);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
 
