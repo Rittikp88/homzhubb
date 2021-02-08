@@ -20,7 +20,7 @@
     "test:mobile": "yarn workspace @homzhub/mobile run test",
     "test:web": "yarn workspace @homzhub/web run test",
     "build:web": "yarn workspace @homzhub/web run build:dev",
-    "build:web:staging": "yarn workspace @homzhub/web run build:staging",
+    "build:web:stag": "yarn workspace @homzhub/web run build:staging",
     "android": "jetify && yarn workspace @homzhub/mobile run android",
     "android:build": "jetify && yarn workspace @homzhub/mobile run android:build",
     "android:build:prod": "jetify && yarn workspace @homzhub/mobile run android:build:prod",
