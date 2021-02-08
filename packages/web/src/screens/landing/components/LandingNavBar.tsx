@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { LinkingService, URLs } from '@homzhub/web/src/services/LinkingService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -21,6 +22,7 @@ const LandingNavBar: FC = () => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navBarStyle(isMobile);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const isReleaseMode = ConfigHelper.getAppMode() !== AppModes.DEBUG;
   const onMenuClose = (): void => {
     setIsMenuOpen(false);
   };
@@ -39,8 +41,8 @@ const LandingNavBar: FC = () => {
           </View>
           {isLaptop ? (
             <View style={styles.subContainer}>
-              <Button type="text" fontType="regular" title={t('login')} />
-              <Button type="primary" title={t('signUp')} />
+              <Button disabled={isReleaseMode} type="text" fontType="regular" title={t('login')} />
+              <Button disabled={isReleaseMode} type="primary" title={t('signUp')} />
             </View>
           ) : (
             <Button
@@ -68,28 +70,34 @@ const RenderNavItems = (): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navItemStyle(isLaptop, false);
+  const isReleaseMode = ConfigHelper.getAppMode() !== AppModes.DEBUG;
   const navItems = [
     {
       text: t('home'),
       url: RouteNames.publicRoutes.APP_BASE,
+      disabled: false,
     },
     {
       text: t('featuredProperties'),
       url: URLs.featuredProperties,
+      disabled: false,
     },
     {
       text: t('pricing'),
       url: RouteNames.publicRoutes.PRICING,
+      disabled: isReleaseMode,
     },
   ];
   const login = [
     {
       text: t('common:login'),
       url: RouteNames.publicRoutes.LOGIN,
+      disabled: isReleaseMode,
     },
     {
       text: t('common:signUp'),
       url: RouteNames.publicRoutes.SIGNUP,
+      disabled: isReleaseMode,
     },
   ];
   const menuItems = isLaptop ? navItems : [...navItems, ...login];
@@ -114,6 +122,7 @@ const RenderNavItems = (): React.ReactElement => {
         <NavItem
           key={item.text}
           text={item.text}
+          isDisabled={item.disabled}
           isActive={isSelected === index}
           onNavItemPress={onNavItemPress}
           index={index}
@@ -126,22 +135,23 @@ interface INavItem {
   text: string;
   index: number;
   isActive: boolean;
+  isDisabled: boolean;
   onNavItemPress: (index: number) => void;
 }
-const NavItem: FC<INavItem> = ({ text, index, isActive, onNavItemPress }: INavItem) => {
+const NavItem: FC<INavItem> = ({ text, index, isDisabled, isActive, onNavItemPress }: INavItem) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navItemStyle(isLaptop, isActive);
   const itemPressed = (): void => {
     onNavItemPress(index);
   };
   return (
-    <TouchableOpacity onPress={itemPressed} style={styles.container}>
+    <TouchableOpacity disabled={isDisabled} onPress={itemPressed} style={styles.container}>
       <Typography
         variant="text"
         size="small"
         fontWeight="regular"
         minimumFontScale={0.5}
-        style={[styles.text, !isLaptop && styles.mobileText]}
+        style={[styles.text, !isLaptop && styles.mobileText, isDisabled && styles.textDisabled]}
       >
         {text}
       </Typography>
@@ -198,6 +208,7 @@ interface INavItemStyle {
   text: TextStyle;
   mobileText: TextStyle;
   header: ViewStyle;
+  textDisabled: TextStyle;
 }
 const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedStyles<INavItemStyle> =>
   StyleSheet.create<INavItemStyle>({
@@ -208,6 +219,9 @@ const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedSty
     },
     text: {
       color: isActive ? theme.colors.primaryColor : theme.colors.darkTint4,
+    },
+    textDisabled: {
+      color: theme.colors.darkTint8,
     },
     activeNavItemBar: {
       width: '100%',
