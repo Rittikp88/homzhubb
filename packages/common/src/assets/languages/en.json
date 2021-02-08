@@ -818,17 +818,17 @@
   },
   "landing": {
     "manageProperties": "Lease and manage properties",
-    "manageTenant": "Manage Tenants from anywhere, anytime",
+    "manageTenant": "Manage tenants from anywhere, anytime",
     "findHome": "Find and manage your dream home",
     "investmentDestination": "Browse new investment destinations ",
-    "maximizeReturns": "Maximise Return on investment",
-    "maintainRentalHistory": "Maintain your Rental history",
-    "mobileDescription": "Smarter Real Estate Experience for New Age Owners and Tenants",
+    "maximizeReturns": "Maximise return on investment",
+    "maintainRentalHistory": "Maintain your rental history",
+    "mobileDescription": "Smarter real estate experience for new age owners and tenants",
     "featureDescription": "Your property manager now fits in your pocket",
     "home": "Home",
     "watchVideo": "Watch Video",
-    "findNextProperty": "Find Your next Perfect Place to Live",
-    "giveTry": "So..Ready to give it a try?",
+    "findNextProperty": "Peace of mind with Homzhub",
+    "freeApp": "Homzhub app is completely free for now.",
     "featuredProperties": "Featured Properties",
     "pricing": "Pricing",
     "appFeatureTitle": "Explore a suite of virtual property management, renting and buying solutions for peace of mind. ",
@@ -849,6 +849,8 @@
     "subscribeEmailDesc": "Subscribe for real estate trends and insights",
     "introToHomzhub": "Introduction to Homzhub",
     "platformPlans": "Platform Plans",
-    "servicePlans": "Service Plans"
+    "servicePlans": "Service Plans",
+    "storeLinkDescription":"You heard it right. Download Homzhub app to start managing your property or to find a new property to rent.",
+    "youtubeDescription":"Learn how Homzhub helps non-resident home owners lease, manage, buy and sell their properties from wherever they are."
   }
 }

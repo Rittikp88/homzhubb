@@ -18,12 +18,11 @@ export const StoreLinkSection: FC = () => {
     <View style={styles.container}>
       <GradientBackground>
         <View style={styles.content}>
-          <Typography variant={notDesktop ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.title}>
-            {t('giveTry')}
+          <Typography variant={notDesktop ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.heading}>
+            {t('freeApp')}
           </Typography>
-          <Typography variant="text" size="small" style={styles.title}>
-            Download our apps to experience vestibulum nam eu orci. Gravida arcu proin rhoncus platea libero libero, sed
-            tortor urna.
+          <Typography variant="text" size="small" style={[styles.title, notDesktop && styles.titleMobile]}>
+            {t('storeLinkDescription')}
           </Typography>
           <View style={[styles.buttonContainer, notDesktop && styles.tabContainer, isMobile && styles.mobileContainer]}>
             <StoreButton
@@ -56,11 +55,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  heading: {
+    color: theme.colors.white,
+    marginBottom: 24,
+    marginHorizontal: 8,
+    textAlign: 'center',
+  },
   title: {
     color: theme.colors.white,
     marginBottom: 24,
     marginHorizontal: 8,
     textAlign: 'center',
+    width: '50%',
+  },
+  titleMobile: {
+    width: '95%',
   },
   buttonContainer: {
     flexDirection: 'row',

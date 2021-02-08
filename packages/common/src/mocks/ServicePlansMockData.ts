@@ -33,7 +33,7 @@ export const ServicePlansData = [
     id: 3,
     name: 'Assisted Selling',
     label: 'Assisted Selling',
-    description: ' Our experts run your marketing campaigns so that you get the best price for your property',
+    description: 'Our experts run your marketing campaigns so that you get the best price for your property',
     display_order: 4,
     attachment: {
       link: require('@homzhub/common/src/assets/images/AssistedSelling.svg'),
@@ -83,7 +83,7 @@ export const ServicePlansData = [
     id: 8,
     name: 'Registering Agreement',
     label: 'Registering Agreement',
-    description: ' Sign the agreement at your doorstep',
+    description: 'Sign the agreement at your doorstep',
     display_order: 9,
     attachment: {
       link: require('@homzhub/common/src/assets/images/AssistedBuying.svg'),

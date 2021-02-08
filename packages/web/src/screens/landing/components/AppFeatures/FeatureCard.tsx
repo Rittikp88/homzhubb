@@ -56,25 +56,26 @@ const FeatureCard: FC<ICardprops> = (props: ICardprops) => {
                         {item.description}
                       </Typography>
                     </View>
-
-                    {isTablet || isMobile ? (
-                      selected[item.id] ? (
-                        isOwner ? (
-                          <HoveredTickOwner />
+                    <View style={styles.icon}>
+                      {isTablet || isMobile ? (
+                        selected[item.id] ? (
+                          isOwner ? (
+                            <HoveredTickOwner />
+                          ) : (
+                            <HoveredTickTenant />
+                          )
+                        ) : isOwner ? (
+                          <TickOwnwer />
                         ) : (
-                          <HoveredTickTenant />
+                          <TickTenant />
                         )
-                      ) : isOwner ? (
-                        <TickOwnwer />
                       ) : (
-                        <TickTenant />
-                      )
-                    ) : (
-                      <View>
-                        {isHovered && (isOwner ? <HoveredTickOwner /> : <HoveredTickTenant />)}
-                        {!isHovered && (isOwner ? <TickOwnwer /> : <TickTenant />)}
-                      </View>
-                    )}
+                        <View>
+                          {isHovered && (isOwner ? <HoveredTickOwner /> : <HoveredTickTenant />)}
+                          {!isHovered && (isOwner ? <TickOwnwer /> : <TickTenant />)}
+                        </View>
+                      )}
+                    </View>
                   </View>
                 </TouchableOpacity>
               )}
@@ -97,6 +98,7 @@ interface ICardStyles {
   cardDescription: ViewStyle;
   list: ViewStyle;
   textContainer: ViewStyle;
+  icon: ViewStyle;
 }
 const cardStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyles<ICardStyles> =>
   StyleSheet.create<ICardStyles>({
@@ -128,9 +130,13 @@ const cardStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyle
     list: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'center',
+      width: '100%',
     },
     textContainer: {
-      width: '94%',
+      width: '90%',
+    },
+    icon: {
+      width: '10%',
+      paddingLeft: '5%',
     },
   });

@@ -16,25 +16,25 @@ const LandingFeatures: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
 
   const data = [
-    { icon: <Graph height={30} width={35} />, text: t('landing:manageProperties') },
+    { icon: <Graph />, text: t('landing:manageProperties') },
     {
-      icon: <ProfileTag height={32} width={42} />,
+      icon: <ProfileTag />,
       text: t('landing:manageTenant'),
     },
     {
-      icon: <Bell height={32} width={42} />,
+      icon: <Bell />,
       text: t('landing:findHome'),
     },
     {
-      icon: <Bell height={32} width={42} />,
+      icon: <Bell />,
       text: t('landing:investmentDestination'),
     },
     {
-      icon: <ProfileTag height={32} width={42} />,
+      icon: <ProfileTag />,
       text: t('landing:maximizeReturns'),
     },
     {
-      icon: <Graph height={30} width={35} />,
+      icon: <Graph />,
       text: t('landing:maintainRentalHistory'),
     },
   ];
@@ -111,19 +111,18 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   cardContent: {
-    marginVertical: 40,
-    marginHorizontal: 30,
+    marginVertical: 50,
+    marginHorizontal: 36,
   },
   cardContentMobile: {
     marginHorizontal: 16,
   },
   card: {
-    width: '310px',
-    height: '180px',
+    width: '350px',
+    height: '204px',
     backgroundColor: theme.colors.cardOpacity,
     margin: '15px',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   activeCard: {
     shadowColor: theme.colors.grey4,
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
   },
   cardMobile: {
     marginBottom: '16px',
-    width: '280px',
+    width: '290px',
     height: '190px',
     backgroundColor: theme.colors.cardOpacity,
     alignItems: 'center',
@@ -161,7 +160,7 @@ const styles = StyleSheet.create({
   },
   grid: {
     flexDirection: 'row',
-    marginHorizontal: '5%',
+    marginHorizontal: '70px',
     flexWrap: 'wrap',
     marginBottom: '7%',
     alignItems: 'center',

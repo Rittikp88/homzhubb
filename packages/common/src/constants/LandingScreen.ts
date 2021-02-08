@@ -41,14 +41,14 @@ export const HeroSectionData: IFeatureDataProps[] = [
   },
   {
     id: 1,
-    title: 'Your House. Your Rules!',
+    title: 'Your house. Your rules!',
     description: 'Get the desired rent and tenant on our app',
     image: require('@homzhub/common/src/assets/images/landingBackground2.jpg'),
   },
   {
     id: 2,
-    title: 'Prime Locations for you Primary Needs',
-    description: 'Rent directly from Owners at the best locations',
+    title: 'Prime Locations for your primary needs',
+    description: 'Rent directly from owners at the best locations',
     image: require('@homzhub/common/src/assets/images/landingBackground3.jpg'),
   },
 ];
@@ -68,13 +68,13 @@ export const OwnerFeatureData: IFeatureDataProps[] = [
   },
   {
     id: 2,
-    title: 'With You All the Way',
+    title: 'With you all the way',
     description: 'From on-boarding your tenant to helping you re-rent your property',
     image: require('@homzhub/common/src/assets/images/addProperty.gif'),
   },
   {
     id: 3,
-    title: 'Get Started for Free',
+    title: 'Get started for free',
     description: 'Get ready to rent or sell in a few clicks. Signup and get started',
     image: require('@homzhub/common/src/assets/images/propertyListing.gif'),
   },
@@ -83,25 +83,25 @@ export const OwnerFeatureData: IFeatureDataProps[] = [
 export const TenantFeatureData: IFeatureDataProps[] = [
   {
     id: 0,
-    title: 'Your Key to Your home',
+    title: 'Your key to your home',
     description: 'Locate, rent and manage your home and everything that comes with it',
     image: require('@homzhub/common/src/assets/images/searchProperty.gif'),
   },
   {
     id: 1,
-    title: 'Stay in Control',
+    title: 'Stay in control',
     description: 'Save rent receipts, raise concerns and track your rental journey in one app',
     image: require('@homzhub/common/src/assets/images/rentReceipt.gif'),
   },
   {
     id: 2,
-    title: 'Finely Curated Listings for You',
+    title: 'Finely curated listings for You',
     description: 'Rent verified properties directly from owners',
     image: require('@homzhub/common/src/assets/images/verification.gif'),
   },
   {
     id: 3,
-    title: 'Create History',
+    title: 'Nothing in the middle',
     description: 'Back up your rental journey - from your old property to new',
     image: require('@homzhub/common/src/assets/images/ownerMail.gif'),
   },
