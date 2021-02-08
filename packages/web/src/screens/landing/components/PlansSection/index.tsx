@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     width: 175,
   },
   buttonStyleMobile: {
-    width: 130,
+    width: 140,
   },
   titleStyle: {
     marginVertical: 12,

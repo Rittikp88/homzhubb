@@ -112,7 +112,7 @@ const containerStyles = (isMobile: boolean): StyleSheet.NamedStyles<IContainerSt
       justifyContent: 'center',
     },
     buttonContainer: {
-      width: isMobile ? 130 : 148,
+      width: isMobile ? 140 : 148,
       height: 46,
     },
   });
