@@ -50,8 +50,8 @@ const AppFeatures: FC = () => {
         </Typography>
       </View>
       <ToggleButtons
-        toggleButton1Text={t('property:owner')}
-        toggleButton2Text={t('property:tenant')}
+        toggleButton1Text={t('landing:homeOwner')}
+        toggleButton2Text={t('landing:tenantBuyer')}
         toggleButton1={toggleOwner}
         toggleButton2={toggleTenant}
         buttonStyle={styles.buttonContainer}
@@ -112,7 +112,7 @@ const containerStyles = (isMobile: boolean): StyleSheet.NamedStyles<IContainerSt
       justifyContent: 'center',
     },
     buttonContainer: {
-      width: isMobile ? 140 : 148,
+      width: isMobile ? 140 : 'fit-content',
       height: 46,
     },
   });

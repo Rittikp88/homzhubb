@@ -25,6 +25,7 @@ interface IProps {
   platformPlans: PlatformPlans;
 }
 
+// FixMe: (bishal -> mohak) sortData() usage needs to be changed.
 const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const {
     platformPlans: { name, label, description, servicePlanBundle, servicePlanPricing },
@@ -47,7 +48,6 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const servicePlansPricingInUSD = servicePlanPricing[1];
 
   const setPlanPricingText = (pricing: number): string => {
-    if (pricing === 0) return t('free');
     if (pricing === -1) return t('custom');
     return pricing.toString();
   };
@@ -57,7 +57,7 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
     if (pricing === -1) return t('contactSales');
     return t('getStarted');
   };
-  const isFreeOrCustom = !!(servicePlansPricingInUSD.actualPrice === 0 || servicePlansPricingInUSD.actualPrice === -1);
+  const isCustom = servicePlansPricingInUSD.actualPrice === -1;
 
   return (
     <View style={[styles.card, isMobile && styles.cardMobile, onlyTablet && styles.cardTablet]}>
@@ -75,11 +75,11 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
       {servicePlanPricing && (
         <View style={styles.billingAmount}>
           <Typography size="regular" variant="title" fontWeight="semiBold" style={styles.amount}>
-            {isFreeOrCustom ? null : servicePlansPricingInUSD.currency.currencySymbol}
+            {isCustom ? null : servicePlansPricingInUSD.currency.currencySymbol}
             {setPlanPricingText(servicePlansPricingInUSD.actualPrice)}
           </Typography>
           <Typography size="small" variant="text" style={styles.perYearText}>
-            {isFreeOrCustom ? null : t('perYear')}
+            {isCustom ? null : t('perYear')}
           </Typography>
         </View>
       )}

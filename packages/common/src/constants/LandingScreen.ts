@@ -42,7 +42,7 @@ export const HeroSectionData: IFeatureDataProps[] = [
   {
     id: 1,
     title: 'Your house. Your rules!',
-    description: 'Get the desired rent and tenant on our app',
+    description: 'Get the desired rent and tenant on our platform',
     image: require('@homzhub/common/src/assets/images/landingBackground2.jpg'),
   },
   {
@@ -95,7 +95,7 @@ export const TenantFeatureData: IFeatureDataProps[] = [
   },
   {
     id: 2,
-    title: 'Finely curated listings for You',
+    title: 'Finely curated listings for you',
     description: 'Rent verified properties directly from owners',
     image: require('@homzhub/common/src/assets/images/verification.gif'),
   },
