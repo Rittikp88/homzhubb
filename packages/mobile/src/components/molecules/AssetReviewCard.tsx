@@ -55,6 +55,13 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   const [showReportForm, setShowReportForm] = useState(false);
   const [isUnderReview, setIsUnderReview] = useState(isReported);
 
+  const isReportedData = {
+    date: 'Jan 11, 2021',
+    message1: 'Sit faucibus lectus volutpat amet, lectus enim enim, in sed lectus enim enim,',
+    message2:
+      'Et nibh pretium, fringilla tincidunt dui lacus, mattis. Dolor placerat proin enim aliquam lacus, sagittis convallis.',
+  };
+
   const enableReportForm = useCallback((): void => {
     setShowReportForm(true);
   }, [showReportForm]);
@@ -122,6 +129,33 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     setIsUnderReview(true);
     disableReportForm();
     AlertHelper.info({ message: t('reportSubmittedMessage') });
+  };
+
+  const renderRepotedReview = (): ReactElement => {
+    return (
+      <View style={styles.reportView}>
+        <Label textType="regular" type="large">
+          {t('common:youHaveAlreadyRepotedThisCommentOn')}
+        </Label>
+        <Label type="large" textType="bold">
+          {isReportedData.date}
+        </Label>
+        <Divider containerStyles={styles.divider} />
+
+        <Label textType="semiBold" type="large">
+          {t('common:comments')}
+        </Label>
+        <View style={styles.comment}>
+          <Avatar fullName="Admin" imageSize={50} designation="designation" date={new Date().toDateString()} />
+        </View>
+
+        <Label type="large" textType="light" style={styles.comment}>
+          {isReportedData.message1}
+          {'\n'}
+          {isReportedData.message2}
+        </Label>
+      </View>
+    );
   };
 
   const renderReplyComment = (): ReactElement => {
@@ -193,12 +227,16 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
         headerTitle={t('reportComment')}
         onCloseSheet={disableReportForm}
       >
-        <ReportReviewForm
-          reviewId={reviewId}
-          reportCategories={reportCategories ?? []}
-          onFormCancellation={disableReportForm}
-          onSuccessFullSubmit={onReportFormSubmit}
-        />
+        {isUnderReview ? (
+          renderRepotedReview()
+        ) : (
+          <ReportReviewForm
+            reviewId={reviewId}
+            reportCategories={reportCategories ?? []}
+            onFormCancellation={disableReportForm}
+            onSuccessFullSubmit={onReportFormSubmit}
+          />
+        )}
       </BottomSheet>
     );
   };
@@ -383,5 +421,12 @@ const styles = StyleSheet.create({
   },
   commentStyle: {
     marginStart: 8,
+  },
+  reportView: {
+    padding: 25,
+  },
+
+  comment: {
+    marginTop: 10,
   },
 });
