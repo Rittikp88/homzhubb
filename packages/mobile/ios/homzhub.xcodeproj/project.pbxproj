@@ -27,7 +27,6 @@
 		970565415EAE458C8CC2587D /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E8492EB7400E45288F69B5DA /* OpenSans-Bold.ttf */; };
 		A1B57CC04BC44394B448A2AE /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9683A370CCFB4BE9814CAA71 /* OpenSans-Regular.ttf */; };
 		A63A1F60FF1D014B3F36978E /* libPods-homzhub-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE6EE90681F73C0DF6D895A /* libPods-homzhub-tvOSTests.a */; };
-		A723D423258BB9CC00950011 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E84F86CF256550E300D3E651 /* GoogleService-Info.plist */; };
 		A7D73EAD247FBFF3006F9427 /* AIRDummyView.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D73E77247FBFF3006F9427 /* AIRDummyView.m */; };
 		A7D73EAE247FBFF3006F9427 /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D73E7B247FBFF3006F9427 /* AIRGoogleMapUrlTile.m */; };
 		A7D73EAF247FBFF3006F9427 /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D73E7E247FBFF3006F9427 /* AIRGoogleMapPolygonManager.m */; };
@@ -60,6 +59,7 @@
 		C8E39350344548D8B642F458 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35C9381915564BBDA4C55CC6 /* OpenSans-SemiBold.ttf */; };
 		D0B11F371B00388BA34ACC25 /* libPods-homzhub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */; };
 		E8D63B9C24C6BF1D009F18C9 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 008F07F21AC5B25A0029DE68 /* main.jsbundle */; };
+		E8FF722325CBD9D600E4FB55 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E8FF722225CBD9D600E4FB55 /* GoogleService-Info.plist */; };
 		EA5C6D9BD314961403BCDED7 /* libPods-homzhub-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE19622E89A68F902597012 /* libPods-homzhub-tvOS.a */; };
 /* End PBXBuildFile section */
 
@@ -189,7 +189,7 @@
 		E34190D8490D46B08059F25B /* Raleway-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Bold.ttf"; path = "../../common/src/assets/fonts/Raleway-Bold.ttf"; sourceTree = "<group>"; };
 		E65604151D322805A52BF218 /* Pods-homzhub-homzhubTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homzhub-homzhubTests.release.xcconfig"; path = "Target Support Files/Pods-homzhub-homzhubTests/Pods-homzhub-homzhubTests.release.xcconfig"; sourceTree = "<group>"; };
 		E8492EB7400E45288F69B5DA /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../../common/src/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		E84F86CF256550E300D3E651 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E8FF722225CBD9D600E4FB55 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
@@ -285,7 +285,6 @@
 		13B07FAE1A68108700A75B9A /* homzhub */ = {
 			isa = PBXGroup;
 			children = (
-				E84F86CF256550E300D3E651 /* GoogleService-Info.plist */,
 				A7A119A2250F4BF600A9DF99 /* homzhub.entitlements */,
 				A7D73E76247FBFF3006F9427 /* AirGoogleMaps */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -339,6 +338,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				E8FF722225CBD9D600E4FB55 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* homzhub */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* homzhubTests */,
@@ -580,8 +580,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A723D423258BB9CC00950011 /* GoogleService-Info.plist in Resources */,
 				E8D63B9C24C6BF1D009F18C9 /* main.jsbundle in Resources */,
+				E8FF722325CBD9D600E4FB55 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				970565415EAE458C8CC2587D /* OpenSans-Bold.ttf in Resources */,
@@ -707,10 +707,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-homzhub/Pods-homzhub-frameworks.sh",
 				"${PODS_ROOT}/razorpay-pod/Pod/Razorpay.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Razorpay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -863,10 +865,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-homzhub-homzhubTests/Pods-homzhub-homzhubTests-frameworks.sh",
 				"${PODS_ROOT}/razorpay-pod/Pod/Razorpay.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Razorpay.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1097,7 +1101,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = homzhub/homzhub.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Development: Harish Taori (KB2425WYJP)";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 9;
@@ -1188,7 +1192,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = homzhub/homzhub.entitlements;
-				CODE_SIGN_IDENTITY = "Apple Distribution: Homzhub Pte Ltd (9TKZH83J22)";
+				CODE_SIGN_IDENTITY = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
@@ -1265,7 +1269,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
 				PRODUCT_NAME = "Homzhub - Property Investment And Management";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution-Homzhub";
+				PROVISIONING_PROFILE_SPECIFIER = "Dev-homzhub";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

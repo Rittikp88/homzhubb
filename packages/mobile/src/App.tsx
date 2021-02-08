@@ -2,9 +2,10 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { Provider } from 'react-redux';
 import FlashMessage, { MessageComponentProps } from 'react-native-flash-message';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { configureStore } from '@homzhub/common/src/modules/store';
@@ -30,6 +31,7 @@ export default class App extends React.PureComponent<{}, IState> {
     await LinkingService.firebaseInit();
     await this.bootUp();
     await AnalyticsService.initMixpanel();
+    await NotificationService.init();
   };
 
   public render = (): React.ReactNode => {

@@ -8,6 +8,7 @@ export enum StorageKeys {
   IS_ONBOARDING_COMPLETED = '@is_onBoarding_completed',
   USER_SELECTED_LANGUAGE = '@user_selected_language',
   USER = '@user',
+  DEVICE_TOKEN = '@device_token',
 }
 
 export interface IUserTokens {

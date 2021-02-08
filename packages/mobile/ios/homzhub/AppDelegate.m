@@ -8,6 +8,7 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <React/RCTLinkingManager.h>
 #import "RNSplashScreen.h"
+#import <Firebase.h>
 
 
 @import Firebase;
