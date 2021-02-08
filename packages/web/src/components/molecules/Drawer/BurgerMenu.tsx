@@ -1,32 +1,23 @@
 import React from 'react';
-import { slide as Menu } from 'react-burger-menu';
+import { slide as Menu, State } from 'react-burger-menu';
 import '@homzhub/web/src/components/molecules/Drawer/BurgerMenu.scss';
 
 interface IProps {
   open: boolean;
+  onClose: () => void;
   children: JSX.Element;
 }
-
-interface IState {
-  menuOpen: boolean;
-}
-export default class SideBar extends React.PureComponent<IProps, IState> {
-  public state = {
-    menuOpen: false,
-  };
-
-  public componentWillUnmount(): void {
-    window.removeEventListener('scroll', this.noScroll);
-  }
-
+export default class SideBar extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { children } = this.props;
+    const { children, open } = this.props;
     return (
       <Menu
         pageWrapId="page-wrap"
         outerContainerId="outer-container"
+        customBurgerIcon={false}
         onStateChange={this.handleStateChange}
         width={280}
+        isOpen={open}
         right
       >
         {children}
@@ -34,14 +25,12 @@ export default class SideBar extends React.PureComponent<IProps, IState> {
     );
   }
 
-  private noScroll = (): void => {
-    window.scrollTo(0, 0);
-  };
-
-  private handleStateChange = (): void => {
-    const { menuOpen } = this.state;
-    this.setState({ menuOpen: !menuOpen });
-    if (menuOpen) {
+  private handleStateChange = (state: State): void => {
+    const { onClose } = this.props;
+    if (!state.isOpen) {
+      onClose();
+    }
+    if (state.isOpen) {
       document.body.classList.add('stop-scrolling');
     } else document.body.classList.remove('stop-scrolling');
   };

@@ -67,11 +67,6 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
 
   const badgeData = (): ILabelColor => {
     switch (selectedPan) {
-      case TypeOfPlan.RENT:
-        return {
-          label: t('forRental'),
-          color: rental,
-        };
       case TypeOfPlan.SELL:
         return {
           label: t('forSale'),
@@ -82,6 +77,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
           label: t('manage'),
           color: informational,
         };
+      case TypeOfPlan.RENT:
       default:
         return {
           label: t('forRental'),

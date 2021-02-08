@@ -13,14 +13,20 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { icons } from '@homzhub/common/src/assets/icon';
 
 const LandingNavBar: FC = () => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navBarStyle(isMobile);
-  const menuOpen = true;
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const onMenuClose = (): void => {
+    setIsMenuOpen(false);
+  };
+  const onMenuOpen = (): void => {
+    setIsMenuOpen(true);
+  };
   return (
     <StickyHeader>
       <View style={styles.container}>
@@ -31,16 +37,25 @@ const LandingNavBar: FC = () => {
             </View>
             {isLaptop && <RenderNavItems />}
           </View>
-          {isLaptop && (
+          {isLaptop ? (
             <View style={styles.subContainer}>
               <Button type="text" fontType="regular" title={t('login')} />
               <Button type="primary" title={t('signUp')} />
             </View>
+          ) : (
+            <Button
+              type="text"
+              icon={icons.hamburgerMenu}
+              iconSize={30}
+              iconColor={theme.colors.darkTint2}
+              onPress={onMenuOpen}
+              containerStyle={styles.hamburgerMenu}
+            />
           )}
         </View>
       </View>
       {!isLaptop && (
-        <SideBar open={menuOpen}>
+        <SideBar open={isMenuOpen} onClose={onMenuClose}>
           <RenderNavItems />
         </SideBar>
       )}
@@ -78,7 +93,6 @@ const RenderNavItems = (): React.ReactElement => {
     },
   ];
   const menuItems = isLaptop ? navItems : [...navItems, ...login];
-
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
     if (navItems[index].text === t('featuredProperties')) {
@@ -108,14 +122,12 @@ const RenderNavItems = (): React.ReactElement => {
     </>
   );
 };
-
 interface INavItem {
   text: string;
   index: number;
   isActive: boolean;
   onNavItemPress: (index: number) => void;
 }
-
 const NavItem: FC<INavItem> = ({ text, index, isActive, onNavItemPress }: INavItem) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navItemStyle(isLaptop, isActive);
@@ -143,6 +155,7 @@ interface INavBarStyle {
   subContainer: ViewStyle;
   content: ViewStyle;
   logo: ViewStyle;
+  hamburgerMenu: ViewStyle;
 }
 
 const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
@@ -162,6 +175,9 @@ const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
     subContainer: {
       flexDirection: 'row',
     },
+    hamburgerMenu: {
+      marginRight: 16,
+    },
     content: {
       width: isMobile ? theme.layout.dashboardMobileWidth : theme.layout.dashboardWidth,
       flexDirection: 'row',
@@ -175,7 +191,6 @@ const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
       justifyContent: 'space-between',
     },
   });
-
 interface INavItemStyle {
   container: ViewStyle;
   activeNavItemBar: ViewStyle;
@@ -184,7 +199,6 @@ interface INavItemStyle {
   mobileText: TextStyle;
   header: ViewStyle;
 }
-
 const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedStyles<INavItemStyle> =>
   StyleSheet.create<INavItemStyle>({
     container: {
@@ -222,5 +236,4 @@ const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedSty
       color: theme.colors.darkTint4,
     },
   });
-
 export default React.memo(LandingNavBar);

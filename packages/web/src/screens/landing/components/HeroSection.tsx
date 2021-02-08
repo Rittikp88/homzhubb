@@ -56,7 +56,7 @@ const HeroSection: FC = () => {
   };
 
   return (
-    <View onLayout={onLayout} style={styles.container}>
+    <View onLayout={onLayout} style={[styles.container, isTablet && styles.containerMobile]}>
       <MultiCarousel passedProps={carouselProps}>
         {HeroSectionData.map((item) => (
           <View key={item.title}>
@@ -82,6 +82,7 @@ const HeroSection: FC = () => {
 
 const CarouselControlSection = ({ next, previous }: ButtonGroupProps): React.ReactElement => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
   const [currentSlide, setCurrentSlide] = useState(0);
   const updateCarouselIndex = (updateIndexBy: number): void => {
     if (updateIndexBy === 1 && next) {
@@ -101,11 +102,11 @@ const CarouselControlSection = ({ next, previous }: ButtonGroupProps): React.Rea
     }
   };
   return (
-    <View style={[styles.slideInfo, isMobile && styles.slideInfoMobile]}>
+    <View style={[styles.slideInfo, isTablet && styles.slideInfoTablet, isMobile && styles.slideInfoMobile]}>
       <View>
         <Typography
           variant={isMobile ? 'text' : 'title'}
-          size="large"
+          size={isTablet ? 'regular' : 'large'}
           fontWeight="bold"
           style={[styles.title, isMobile && styles.centerText]}
         >
@@ -160,10 +161,13 @@ const styles = StyleSheet.create({
   container: {
     position: 'relative',
     marginBottom: 60,
+    marginTop: 92,
+  },
+  containerMobile: {
+    marginTop: 84,
   },
   image: {
     flex: 1,
-    position: 'relative',
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
@@ -176,8 +180,11 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 'fit-content',
   },
+  slideInfoTablet: {
+    marginTop: '15%',
+  },
   slideInfoMobile: {
-    marginTop: '8vh',
+    marginTop: '8%',
     justifyContent: 'space-between',
     alignItems: 'center',
     height: '80%',

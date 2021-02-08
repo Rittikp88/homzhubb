@@ -12,7 +12,7 @@
   z-index: 3000;
 }
 #outer-container {
-  height: '100vh';
+  height: 100vh;
 }
 
 /* Individual item */
@@ -23,6 +23,8 @@
   text-decoration: none;
   margin-bottom: 10px;
   color: #d1d1d1;
+  -webkit-transition: color 0.2s;
+  -o-transition: color 0.2s;
   transition: color 0.2s;
 }
 
@@ -53,7 +55,7 @@
   top: 20px !important;
   right: 20px !important;
   height: 100px;
-  width: '30%';
+  width: 30%;
 }
 .react-burger-cross-btn {
   top: 15px;

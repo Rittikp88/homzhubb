@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { CSSProperties, FC } from 'react';
 
 interface IProps {
   children: React.ReactElement | React.ReactNode;
 }
 
-const containerStyle = {
-  position: 'sticky' as 'sticky',
+const containerStyle: CSSProperties = {
+  position: 'fixed',
   top: 0,
   width: '100%',
   display: 'flex',
