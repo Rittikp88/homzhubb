@@ -23,7 +23,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { OptionTypes, SelectedPreferenceType, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
-import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
+import { SettingsData, SettingsDataNameKeys } from '@homzhub/common/src/domain/models/SettingsData';
 import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -134,14 +134,14 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
           <View style={styles.buttonContainer}>
             <Button
               type="secondary"
-              title={t('common:yes')}
+              title={t('common:continue')}
               titleStyle={styles.buttonTitle}
               onPress={this.updatePreferences}
               containerStyle={styles.editButton}
             />
             <Button
               type="primary"
-              title={t('common:no')}
+              title={t('common:cancel')}
               onPress={this.onSheetClose}
               titleStyle={styles.buttonTitle}
               containerStyle={styles.doneButton}
@@ -199,8 +199,8 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
   private renderOptionTypes = (title: string, options: SettingOptions): ReactElement => {
     let renderElement: ReactElement;
     let navigateToWebview: () => void;
-    const handleChange = (value?: SelectedPreferenceType): void =>
-      this.handlePreferenceUpdate(title, options.name, value || !options.selected);
+    const handleChange = (value: SelectedPreferenceType): void =>
+      this.handlePreferenceUpdate(title, options.name, value);
 
     switch (options.type) {
       case OptionTypes.Webview:
@@ -225,7 +225,10 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
         );
         break;
       default:
-        renderElement = <RNSwitch selected={options.selected as boolean} onToggle={handleChange} />;
+        if (title === SettingsDataNameKeys.communications)
+          renderElement = (<RNSwitch selected={options.selected as boolean} onToggle={handleChange} />);
+        else
+          renderElement = (<RNSwitch selected={!options.selected as boolean} onToggle={handleChange} />);
     }
 
     return renderElement;
@@ -249,17 +252,19 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
       EmailsText,
       MessagesText,
     } = UserPreferencesKeys;
+
     const enableBottomSheet =
       (key === IsEmailObfuscated ||
         key === IsLastNameObfuscated ||
-        key === IsMobileNumberObfuscated ||
-        key === PushNotifications ||
+        key === IsMobileNumberObfuscated)
+
+    const enableCommunicationsBottomSheet =
+      (key === PushNotifications ||
         key === EmailsText ||
-        key === MessagesText) &&
-      !value;
+        key === MessagesText) && !value
 
     let updatedValue = value;
-    if (key === IsMobileNumberObfuscated || key === IsLastNameObfuscated || key === IsEmailObfuscated) {
+    if (enableBottomSheet) {
       updatedValue = !value;
     }
 
@@ -267,18 +272,18 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
       (prevState) => ({
         ...prevState,
         updatePayload: { key, value: updatedValue },
-        ...(enableBottomSheet && { bottomSheetVisibility: true }),
-        ...(enableBottomSheet && { bottomSheetDetails: { title, message: this.getCautionMessageFor(key) } }),
+        ...((enableCommunicationsBottomSheet || enableBottomSheet) && { bottomSheetVisibility: true }),
+        ...((enableCommunicationsBottomSheet || enableBottomSheet) && { bottomSheetDetails: { title, message: this.getCautionMessageFor(key, value) } }),
       }),
       () => {
-        if (!enableBottomSheet) {
+        if (!enableBottomSheet && !enableCommunicationsBottomSheet) {
           this.updatePreferences();
         }
       }
     );
   };
 
-  private getCautionMessageFor = (key: string): string => {
+  private getCautionMessageFor = (key: string, value: SelectedPreferenceType): string => {
     const { t } = this.props;
     let message: string;
     switch (key) {
@@ -292,13 +297,13 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
         message = t('communicationsCautionText', { name: t('pushNotifications') });
         break;
       case UserPreferencesKeys.IsLastNameObfuscated:
-        message = t('dataPrivacyCautionText', { name: t('property:lastName') });
+        message = value ? t('dataPrivacyCautionTextWhenEnabling', { name: t('property:lastName') }) : t('dataPrivacyCautionTextWhenDisabling', { name: t('property:lastName') });
         break;
       case UserPreferencesKeys.IsMobileNumberObfuscated:
-        message = t('dataPrivacyCautionText', { name: t('common:mobileNumber') });
+        message = value ? t('dataPrivacyCautionTextWhenEnabling', { name: t('common:mobileNumber') }) : t('dataPrivacyCautionTextWhenDisabling', { name: t('common:mobileNumber') });
         break;
       case UserPreferencesKeys.IsEmailObfuscated:
-        message = t('dataPrivacyCautionText', { name: t('common:email') });
+        message = value ? t('dataPrivacyCautionTextWhenEnabling', { name: t('common:email') }) : t('dataPrivacyCautionTextWhenDisabling', { name: t('common:email') });
         break;
       default:
         message = '';

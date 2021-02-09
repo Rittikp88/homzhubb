@@ -149,7 +149,7 @@
     "save": "Save",
     "discard": "Discard",
     "sort": "Sort",
-    "wantToContinue": "Do you still want to continue?",
+    "wantToContinue": "Do you wish to continue?",
     "sms": "SMS",
     "mail": "Mail",
     "share": "Share",
@@ -771,7 +771,8 @@
     "releaseNotes": "Release Notes",
     "termsConditionsText": "Terms & Conditions",
     "privacyPolicyText": "Privacy Policy",
-    "dataPrivacyCautionText": "No user will be able to view your {{name}}, on the properties you post, site visits and offers.",
+    "dataPrivacyCautionTextWhenEnabling": "If you switch this on, users who see your listings and site visits request will also be able to see your {{name}}.",
+    "dataPrivacyCautionTextWhenDisabling": "No user will be able to view your {{name}}, on the properties you post, site visits and offers.",
     "communicationsCautionText": "You will not receive automated notifications from the app through {{name}}. However, Homzhub might still use {{name}} to communicate with you for important messages"
   },
   "moreProfile": {

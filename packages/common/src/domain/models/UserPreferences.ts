@@ -66,13 +66,13 @@ export class UserPreferences {
   private _theme = '';
 
   @JsonProperty('is_last_name_obfuscated', Boolean, true)
-  private _isLastNameObfuscated = false;
+  private _isLastNameObfuscated = true;
 
   @JsonProperty('is_mobile_number_obfuscated', Boolean, true)
-  private _isMobileNumberObfuscated = false;
+  private _isMobileNumberObfuscated = true;
 
   @JsonProperty('is_email_obfuscated', Boolean, true)
-  private _isEmailObfuscated = false;
+  private _isEmailObfuscated = true;
 
   @JsonProperty('is_push_notification_enabled', Boolean, true)
   private _pushNotifications = false;
@@ -104,15 +104,15 @@ export class UserPreferences {
   }
 
   get isLastNameObfuscated(): boolean {
-    return !this._isLastNameObfuscated;
+    return this._isLastNameObfuscated;
   }
 
   get isMobileNumberObfuscated(): boolean {
-    return !this._isMobileNumberObfuscated;
+    return this._isMobileNumberObfuscated;
   }
 
   get isEmailObfuscated(): boolean {
-    return !this._isEmailObfuscated;
+    return this._isEmailObfuscated;
   }
 
   get pushNotifications(): boolean {

@@ -5,7 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 
 interface ISwitchOptions {
   selected: boolean;
-  onToggle: () => void;
+  onToggle: (value: boolean) => void;
   disabled?: boolean;
 }
 
