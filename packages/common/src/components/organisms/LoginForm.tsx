@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   },
   forgotButtonStyleWeb: {
     position: 'absolute',
-    border: 'none',
+    borderWidth: 0,
     width: 'fit-content',
     right: 0,
     top: 15,
