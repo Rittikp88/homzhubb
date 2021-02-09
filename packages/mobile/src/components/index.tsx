@@ -47,7 +47,7 @@ export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetT
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export type { IMetricsData } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';
-export { LoginForm } from '@homzhub/mobile/src/components/organisms/LoginForm';
+export { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
 export { PropertyPayment } from '@homzhub/mobile/src/components/organisms/PropertyPayment';

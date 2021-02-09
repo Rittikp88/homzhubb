@@ -7,7 +7,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { LoginForm } from '@homzhub/mobile/src/components';
+import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { IState } from '@homzhub/common/src/modules/interfaces';

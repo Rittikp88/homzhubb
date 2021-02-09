@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef, RefObject } from 'react';
-import { StyleSheet, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -60,7 +60,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
                 title={t('login')}
                 containerStyle={styles.submitStyle}
               />
-              {isEmailFlow && (
+              {isEmailFlow && PlatformUtils.isMobile() && (
                 <Button
                   type="secondary"
                   title={t('auth:forgotPassword')}
@@ -79,7 +79,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
   }
 
   private renderLoginFields = (formProps: FormikProps<IFormData>): React.ReactElement => {
-    const { t } = this.props;
+    const { t, handleForgotPassword } = this.props;
     const { isEmailFlow } = this.state;
 
     const onPasswordFocus = (): void => this.password.current?.focus();
@@ -97,15 +97,28 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
               formProps={formProps}
               onSubmitEditing={onPasswordFocus}
             />
-            <FormTextInput
-              ref={this.password}
-              name="password"
-              label="Password"
-              inputType="password"
-              placeholder={t('auth:newPassword')}
-              isMandatory
-              formProps={formProps}
-            />
+            <View style={styles.webLoginPasswordField}>
+              {PlatformUtils.isWeb() && (
+                <Button
+                  type="secondary"
+                  title={t('auth:forgotPassword')}
+                  fontType="semiBold"
+                  textSize="small"
+                  onPress={handleForgotPassword}
+                  containerStyle={styles.forgotButtonStyleWeb}
+                  titleStyle={styles.forgotButtonTextStyle}
+                />
+              )}
+              <FormTextInput
+                ref={this.password}
+                name="password"
+                label="Password"
+                inputType="password"
+                placeholder={t('auth:newPassword')}
+                isMandatory
+                formProps={formProps}
+              />
+            </View>
           </>
         ) : (
           <FormTextInput
@@ -194,6 +207,20 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     flex: 0,
     marginTop: 16,
+  },
+  webLoginPasswordField: {
+    position: 'relative',
+  },
+  forgotButtonStyleWeb: {
+    position: 'absolute',
+    border: 'none',
+    width: 'fit-content',
+    right: 0,
+    top: 15,
+  },
+  forgotButtonTextStyle: {
+    marginHorizontal: 0,
+    marginVertical: 0,
   },
   flexOne: {
     flex: 1,

@@ -1,20 +1,22 @@
-import React, { FC, useRef } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Formik, FormikHelpers, FormikProps } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { History } from 'history';
+import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
+import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IEmailLoginPayload, ILoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IFormData {
   email: string;
@@ -36,8 +38,11 @@ interface IOwnProps {
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const Login: FC<IProps> = (props: IProps) => {
-  const { t } = useTranslation(LocaleConstants.namespacesKey.auth);
-  const password = useRef(null);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isDesktop = useUp(deviceBreakpoint.DESKTOP);
+  const styles = formStyles(isMobile, isDesktop);
+  const { t } = useTranslation(LocaleConstants.namespacesKey.common);
+
   const formData = {
     email: '',
     password: '',
@@ -45,11 +50,10 @@ const Login: FC<IProps> = (props: IProps) => {
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
-  const handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
+
+  const handleSubmitEmailLogin = (values: IFormData): void => {
     // TODO: remove .logoutUser after logout functionality is implemented
     StoreProviderService.logoutUser();
-
-    formActions.setSubmitting(true);
 
     const emailLoginData: IEmailLoginPayload = {
       action: LoginTypes.EMAIL,
@@ -64,56 +68,66 @@ const Login: FC<IProps> = (props: IProps) => {
       callback: navigateToHomeScreen,
     };
     props.login(loginPayload);
-    formActions.setSubmitting(false);
   };
+
+  const handleForgotPassword = (): void => {
+    // TODO: Add redirection logic for password reset.
+  };
+
   return (
-    <View style={styles.container}>
-      <Formik initialValues={formData} onSubmit={handleSubmit}>
-        {(formProps: FormikProps<IFormData>): React.ReactElement => (
-          <View>
-            <FormTextInput
-              name="email"
-              label="Email"
-              inputType="email"
-              placeholder={t('enterEmail')}
-              isMandatory
-              formProps={formProps}
-            />
-            <FormTextInput
-              ref={password}
-              name="password"
-              label="Password"
-              inputType="password"
-              placeholder={t('enterPassword')}
-              isMandatory
-              formProps={formProps}
-            />
-            <FormButton
-              // @ts-ignore
-              onPress={formProps.handleSubmit}
-              formProps={formProps}
-              type="primary"
-              title={t('common:login')}
-              containerStyle={styles.submitStyle}
-            />
-          </View>
-        )}
-      </Formik>
-    </View>
+    <UserValidationScreensTemplate
+      title={t('login')}
+      subTitle={t('auth:loginToAccessHomzhub')}
+      containerStyle={styles.container}
+      hasBackButton
+    >
+      <View style={styles.loginForm}>
+        <Formik initialValues={formData} onSubmit={handleSubmitEmailLogin}>
+          {(formProps: FormikProps<IFormData>): React.ReactElement => (
+            <View>
+              <LoginForm
+                isEmailLogin
+                onLoginSuccess={handleSubmitEmailLogin}
+                handleForgotPassword={handleForgotPassword}
+                testID="loginFormWeb"
+              />
+            </View>
+          )}
+        </Formik>
+      </View>
+    </UserValidationScreensTemplate>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  submitStyle: {
-    flex: 0,
-    marginTop: 30,
-  },
-});
+interface IFormStyles {
+  container: ViewStyle;
+  loginForm: ViewStyle;
+  logo: ViewStyle;
+  backButton: ViewStyle;
+}
+
+const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyles<IFormStyles> =>
+  StyleSheet.create<IFormStyles>({
+    container: {
+      flex: 1,
+      width: isDesktop ? '45%' : '100%',
+    },
+    loginForm: {
+      width: isMobile ? '90%' : '55%',
+      marginHorizontal: 'auto',
+    },
+    logo: {
+      width: '100%',
+      left: 0,
+    },
+    backButton: {
+      left: 0,
+      marginBottom: 25,
+      marginTop: 50,
+      borderWidth: 0,
+      width: 'fit-content',
+    },
+  });
 
 export const mapStateToProps = (state: IState): IStateProps => {
   return {
