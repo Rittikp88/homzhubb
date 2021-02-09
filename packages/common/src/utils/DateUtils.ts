@@ -13,6 +13,7 @@ export const DateFormats = {
   DDMMYYYY: 'DD-MM-YYYY',
   DDMMMYYYY: 'DD MMM YYYY',
   DoMMMYYYY: 'Do MMM YYYY',
+  DD_MMM_YYYY: 'DD/MMM/YYYY',
   MMM: 'MMM',
   MMMM: 'MMMM',
   MMMDDYYYYHMMA: 'MMM D YYYY - h:mm A',

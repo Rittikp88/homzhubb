@@ -16,6 +16,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
@@ -23,10 +24,15 @@ import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/mo
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { HeaderCard, Loader, UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
+import CaseLogs from '@homzhub/mobile/src/components/organisms/CaseLogs';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
+enum TabKeys {
+  newCase = "NEW_CASE",
+  caseLogs = "CASE_LOGS",
+}
 interface IFormData {
   subject: string;
   category: number;
@@ -41,6 +47,7 @@ interface IScreenState {
   isFormSubmitted: boolean;
   isClearAttachment: boolean;
   isLoading: boolean;
+  currentTab: TabKeys;
 }
 
 type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SupportScreen>;
@@ -60,6 +67,7 @@ export class Support extends Component<Props, IScreenState> {
     isFormSubmitted: false,
     isClearAttachment: false,
     isLoading: false,
+    currentTab: TabKeys.newCase,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -69,7 +77,7 @@ export class Support extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { t } = this.props;
-    const { isFormSubmitted, isLoading } = this.state;
+    const { isFormSubmitted, isLoading, currentTab } = this.state;
     return (
       <>
         <UserScreen title={t('assetMore:more')}>
@@ -81,7 +89,7 @@ export class Support extends Component<Props, IScreenState> {
             titleTextSize="small"
             renderItem={(): React.ReactElement | null => this.renderContent()}
             onIconPress={this.onGoBack}
-            onClearPress={this.clearForm}
+            onClearPress={currentTab === TabKeys.caseLogs ? undefined : this.clearForm}
           />
         </UserScreen>
         <BottomSheet visible={isFormSubmitted} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
@@ -94,26 +102,40 @@ export class Support extends Component<Props, IScreenState> {
 
   private renderContent = (): React.ReactElement | null => {
     const { t } = this.props;
-    const { contact } = this.state;
+    const { contact, currentTab } = this.state;
+    const count = 3; // mock data
     if (isEmpty(contact)) {
       return null;
     }
     return (
       <View style={styles.content}>
-        {/* TODO: Add selection picker once other flow is ready */}
-        <View style={styles.contactView}>
-          <Text type="small" textType="semiBold" style={styles.title}>
-            {t('youContacting')}
-          </Text>
-          <Avatar
-            fullName={contact.fullName}
-            designation={t('homzhubTeam')}
-            phoneCode={contact.countryCode}
-            phoneNumber={contact.phoneNumber}
-          />
-        </View>
-        <Divider />
-        {this.renderForm()}
+        <SelectionPicker
+          data={[
+            { title: t('assetMore:newCase'), value: TabKeys.newCase },
+            { title: t('assetMore:caseLogs', { count }), value: TabKeys.caseLogs },
+          ]}
+          selectedItem={[currentTab]}
+          onValueChange={this.onTabChange}
+        />
+        {currentTab === TabKeys.newCase ? (
+          <>
+            <View style={styles.contactView}>
+              <Text type="small" textType="semiBold" style={styles.title}>
+                {t('youContacting')}
+              </Text>
+              <Avatar
+                fullName={contact.fullName}
+                designation={t('homzhubTeam')}
+                phoneCode={contact.countryCode}
+                phoneNumber={contact.phoneNumber}
+              />
+            </View>
+            <Divider />
+            {this.renderForm()}
+          </>
+        ) : (
+          <CaseLogs />
+        )}
       </View>
     );
   };
@@ -203,6 +225,10 @@ export class Support extends Component<Props, IScreenState> {
         />
       </>
     );
+  };
+
+  private onTabChange = (tabId: TabKeys): void => {
+    this.setState({ currentTab: tabId });
   };
 
   private onCloseSheet = (): void => {
@@ -343,6 +369,7 @@ const styles = StyleSheet.create({
   },
   contactView: {
     marginBottom: 18,
+    marginTop: 24,
   },
   dropdownStyle: {
     paddingVertical: 12,

@@ -8,6 +8,7 @@ import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { SocialAuthProvider } from '@homzhub/common/src/domain/models/SocialAuthProvider';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { CaseLog } from '@homzhub/common/src/domain/models/CaseLog';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
@@ -76,6 +77,11 @@ class CommonRepository {
   public getSupportContacts = async (): Promise<User> => {
     const response = await this.apiClient.get(ENDPOINTS.supportContact);
     return ObjectMapper.deserialize(User, response);
+  };
+
+  public getClientSupport = async (): Promise<CaseLog[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.clientSupport);
+    return ObjectMapper.deserializeArray(CaseLog, response);
   };
 
   public subscribeToNewsLetter = async (payload: ISubscribeToNewsletterPayload): Promise<void> => {

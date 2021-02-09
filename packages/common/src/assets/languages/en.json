@@ -742,7 +742,9 @@
     "goBackCaution": "You will lose any unsaved changes if you do!",
     "selectedProperty": "Selected Property",
     "chooseAPropertyText": "Choose a property to buy the services",
-    "valueServicesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now."
+    "valueServicesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
+    "newCase": "New Case",
+    "caseLogs": "Case Logs ({{count}})"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
