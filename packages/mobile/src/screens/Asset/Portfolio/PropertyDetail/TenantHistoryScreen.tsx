@@ -10,11 +10,13 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
+import { LeaseProgress } from '@homzhub/mobile/src/components';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { LeaseProgress, Loader, SearchBar } from '@homzhub/mobile/src/components';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
 
 interface IStateProps {

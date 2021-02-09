@@ -17,11 +17,11 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import { Loader } from '@homzhub/mobile/src/components';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
 import { ReviewForm } from '@homzhub/mobile/src/components/molecules/ReviewForm';
 import {

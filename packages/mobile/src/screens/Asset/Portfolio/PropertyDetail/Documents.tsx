@@ -9,11 +9,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import {
-  AllowedAttachmentFormats,
-  AttachmentService,
-  AttachmentType,
-} from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -25,10 +21,13 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
-import { DocumentCard, Loader, SearchBar } from '@homzhub/mobile/src/components';
+import { DocumentCard } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 
 interface IStateProps {

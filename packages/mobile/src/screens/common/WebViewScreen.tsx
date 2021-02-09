@@ -6,7 +6,8 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Header, Loader } from '@homzhub/mobile/src/components';
+import { Header } from '@homzhub/mobile/src/components';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 

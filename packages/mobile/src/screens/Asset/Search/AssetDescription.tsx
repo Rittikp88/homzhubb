@@ -37,6 +37,7 @@ import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker'
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -48,7 +49,6 @@ import {
   AssetDetailsImageCarousel,
   CollapsibleSection,
   FullScreenAssetDetailsCarousel,
-  Loader,
   ShieldGroup,
 } from '@homzhub/mobile/src/components';
 import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';

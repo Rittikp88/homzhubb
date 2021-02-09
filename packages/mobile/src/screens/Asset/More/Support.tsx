@@ -14,6 +14,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import Check from '@homzhub/common/src/assets/images/check.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
@@ -22,7 +23,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { HeaderCard, Loader, UploadBoxComponent } from '@homzhub/mobile/src/components';
+import { HeaderCard, UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import CaseLogs from '@homzhub/mobile/src/components/organisms/CaseLogs';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';

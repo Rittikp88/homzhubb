@@ -2,7 +2,7 @@
 
 exports[`Markdown View should render snapshot 1`] = `
 <Fragment>
-  <Component
+  <Loader
     visible={false}
   />
 </Fragment>
@@ -10,7 +10,7 @@ exports[`Markdown View should render snapshot 1`] = `
 
 exports[`Markdown View should render snapshot with assetDetails 1`] = `
 <Fragment>
-  <Component
+  <Loader
     visible={false}
   />
   <Memo(HomzhubStatusBar)

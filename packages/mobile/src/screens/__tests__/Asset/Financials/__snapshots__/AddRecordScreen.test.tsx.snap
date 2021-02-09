@@ -14,7 +14,7 @@ exports[`Add Record Screen should render snapshot 1`] = `
       title="addRecords"
     />
   </Memo(AnimatedProfileHeader)>
-  <Component
+  <Loader
     visible={false}
   />
 </Fragment>

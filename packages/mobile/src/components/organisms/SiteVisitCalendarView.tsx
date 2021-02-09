@@ -20,7 +20,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader';
 import { CalendarComponent } from '@homzhub/mobile/src/components/atoms/CalendarComponent';
-import { Loader } from '@homzhub/mobile/src/components';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import EventWithProfile from '@homzhub/mobile/src/components/molecules/EventWithProfile';

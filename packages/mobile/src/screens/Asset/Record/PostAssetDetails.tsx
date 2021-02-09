@@ -17,10 +17,11 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import { Header, Loader, PropertyDetailsLocation } from '@homzhub/mobile/src/components';
+import { Header, PropertyDetailsLocation } from '@homzhub/mobile/src/components';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { AssetGroupSelection } from '@homzhub/common/src/components/molecules/AssetGroupSelection';

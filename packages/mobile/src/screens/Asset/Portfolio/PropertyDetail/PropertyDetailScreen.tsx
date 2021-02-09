@@ -17,9 +17,10 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import { FullScreenAssetDetailsCarousel, HeaderCard, Loader } from '@homzhub/mobile/src/components';
+import { FullScreenAssetDetailsCarousel, HeaderCard } from '@homzhub/mobile/src/components';
 import DropdownModal from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';

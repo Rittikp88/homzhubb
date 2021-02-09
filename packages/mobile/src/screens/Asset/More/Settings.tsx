@@ -226,9 +226,8 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
         break;
       default:
         if (title === SettingsDataNameKeys.communications)
-          renderElement = (<RNSwitch selected={options.selected as boolean} onToggle={handleChange} />);
-        else
-          renderElement = (<RNSwitch selected={!options.selected as boolean} onToggle={handleChange} />);
+          renderElement = <RNSwitch selected={options.selected as boolean} onToggle={handleChange} />;
+        else renderElement = <RNSwitch selected={!options.selected} onToggle={handleChange} />;
     }
 
     return renderElement;
@@ -254,14 +253,10 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
     } = UserPreferencesKeys;
 
     const enableBottomSheet =
-      (key === IsEmailObfuscated ||
-        key === IsLastNameObfuscated ||
-        key === IsMobileNumberObfuscated)
+      key === IsEmailObfuscated || key === IsLastNameObfuscated || key === IsMobileNumberObfuscated;
 
     const enableCommunicationsBottomSheet =
-      (key === PushNotifications ||
-        key === EmailsText ||
-        key === MessagesText) && !value
+      (key === PushNotifications || key === EmailsText || key === MessagesText) && !value;
 
     let updatedValue = value;
     if (enableBottomSheet) {
@@ -273,7 +268,9 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
         ...prevState,
         updatePayload: { key, value: updatedValue },
         ...((enableCommunicationsBottomSheet || enableBottomSheet) && { bottomSheetVisibility: true }),
-        ...((enableCommunicationsBottomSheet || enableBottomSheet) && { bottomSheetDetails: { title, message: this.getCautionMessageFor(key, value) } }),
+        ...((enableCommunicationsBottomSheet || enableBottomSheet) && {
+          bottomSheetDetails: { title, message: this.getCautionMessageFor(key, value) },
+        }),
       }),
       () => {
         if (!enableBottomSheet && !enableCommunicationsBottomSheet) {
@@ -297,13 +294,19 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
         message = t('communicationsCautionText', { name: t('pushNotifications') });
         break;
       case UserPreferencesKeys.IsLastNameObfuscated:
-        message = value ? t('dataPrivacyCautionTextWhenEnabling', { name: t('property:lastName') }) : t('dataPrivacyCautionTextWhenDisabling', { name: t('property:lastName') });
+        message = value
+          ? t('dataPrivacyCautionTextWhenEnabling', { name: t('property:lastName') })
+          : t('dataPrivacyCautionTextWhenDisabling', { name: t('property:lastName') });
         break;
       case UserPreferencesKeys.IsMobileNumberObfuscated:
-        message = value ? t('dataPrivacyCautionTextWhenEnabling', { name: t('common:mobileNumber') }) : t('dataPrivacyCautionTextWhenDisabling', { name: t('common:mobileNumber') });
+        message = value
+          ? t('dataPrivacyCautionTextWhenEnabling', { name: t('common:mobileNumber') })
+          : t('dataPrivacyCautionTextWhenDisabling', { name: t('common:mobileNumber') });
         break;
       case UserPreferencesKeys.IsEmailObfuscated:
-        message = value ? t('dataPrivacyCautionTextWhenEnabling', { name: t('common:email') }) : t('dataPrivacyCautionTextWhenDisabling', { name: t('common:email') });
+        message = value
+          ? t('dataPrivacyCautionTextWhenEnabling', { name: t('common:email') })
+          : t('dataPrivacyCautionTextWhenDisabling', { name: t('common:email') });
         break;
       default:
         message = '';

@@ -2,8 +2,8 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { ISettingsOptions, SettingOptions } from '@homzhub/common/src/domain/models/SettingOptions';
 
 export enum SettingsDataNameKeys {
-  communications="Communications",
-  dataAndPrivacy="Data & Privacy",
+  communications = 'Communications',
+  dataAndPrivacy = 'Data & Privacy',
 }
 export interface ISettingsData {
   name: string;
