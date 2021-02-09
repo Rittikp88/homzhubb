@@ -15,6 +15,7 @@ export const RouteNames = {
     FINANCIALS: '/dashboard/financial',
     PORTFOLIO: '/dashboard/portfolio',
     ADD_PROPERTY: '/dashboard/addProperty',
+    ADD_LISTING: '/dashboard/addListing',
     // WRITE YOUR routes here accordingly
     NOTIFICATIONS: '',
     TICKETS: '',

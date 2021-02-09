@@ -30,8 +30,8 @@ import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 enum TabKeys {
-  newCase = "NEW_CASE",
-  caseLogs = "CASE_LOGS",
+  newCase = 'NEW_CASE',
+  caseLogs = 'CASE_LOGS',
 }
 interface IFormData {
   subject: string;

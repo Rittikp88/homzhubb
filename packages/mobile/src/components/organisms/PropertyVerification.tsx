@@ -1,19 +1,14 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { WithTranslation, withTranslation } from 'react-i18next';
 import DocumentPicker from 'react-native-document-picker';
 import ImagePicker from 'react-native-image-crop-picker';
-import { cloneDeep, findIndex } from 'lodash';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import {
-  AllowedAttachmentFormats,
-  AttachmentError,
-  AttachmentService,
-  AttachmentType,
-} from '@homzhub/common/src/services/AttachmentService';
+import { IDocsProps, ListingService } from '@homzhub/common/src/services/Property/ListingService';
+import { AttachmentError, AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -27,6 +22,7 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -54,7 +50,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public componentDidMount = async (): Promise<void> => {
     const { propertyId } = this.props;
-    await this.getExistingDocuments(propertyId);
+    await ListingService.getExistingDocuments(propertyId, this.updateState);
   };
 
   public render(): React.ReactElement {
@@ -72,7 +68,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           existingDocuments={existingDocuments}
           localDocuments={localDocuments}
           handleUpload={this.handleVerificationDocumentUploads}
-          deleteDocument={this.deleteDocument}
+          deleteDocument={this.onDeleteDocument}
           handleTypes={this.handleVerificationTypes}
         />
         <Button
@@ -87,6 +83,24 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   }
 
   // HANDLERS START
+
+  public onDeleteDocument = async (
+    document: ExistingVerificationDocuments,
+    isLocalDocument?: boolean
+  ): Promise<void> => {
+    const { localDocuments, existingDocuments } = this.state;
+    const { propertyId } = this.props;
+    await ListingService.deleteDocument(
+      {
+        document,
+        localDocuments,
+        existingDocuments,
+        isLocalDocument,
+        propertyId,
+      },
+      this.updateState
+    );
+  };
 
   public handleVerificationTypes = (types: VerificationDocumentTypes[]): void => {
     this.setState({
@@ -160,24 +174,19 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     });
   };
 
+  public updateState = (data: IDocsProps): void => {
+    const { existingDocuments, localDocuments, clonedDocuments, key } = data;
+    this.setState((prevState) => ({
+      ...prevState,
+      ...(existingDocuments && { existingDocuments }),
+      ...(localDocuments && { localDocuments }),
+      ...(clonedDocuments && key && { [key]: clonedDocuments }),
+    }));
+  };
+
   // HANDLERS END
 
   // API'S START
-
-  public getExistingDocuments = async (propertyId: number): Promise<void> => {
-    try {
-      let existingDocuments: ExistingVerificationDocuments[] = [];
-      existingDocuments = await AssetRepository.getExistingVerificationDocuments(propertyId);
-      if (existingDocuments.length === 0) {
-        existingDocuments = await AssetRepository.getAssetIdentityDocuments();
-      }
-      this.setState({
-        existingDocuments,
-      });
-    } catch (error) {
-      AlertHelper.error({ message: error.message });
-    }
-  };
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
     const { propertyId, updateStep, t, lastVisitedStep, typeOfPlan } = this.props;
@@ -236,45 +245,13 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       this.setState({ isLoading: false });
 
       await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
-      await this.getExistingDocuments(propertyId);
+      await ListingService.getExistingDocuments(propertyId, this.updateState);
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
       updateStep();
     } catch (e) {
       this.setState({ isLoading: false });
       if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
         AlertHelper.error({ message: t('common:fileCorrupt') });
-      }
-    }
-  };
-
-  public deleteDocument = async (
-    document: ExistingVerificationDocuments,
-    isLocalDocument: boolean | null
-  ): Promise<void> => {
-    const { existingDocuments, localDocuments, verificationTypes, isLoading } = this.state;
-    const clonedDocuments = isLocalDocument ? cloneDeep(localDocuments) : cloneDeep(existingDocuments);
-    if (!document.id) {
-      const documentIndex = findIndex(clonedDocuments, (existingDocument: ExistingVerificationDocuments) => {
-        return existingDocument.verificationDocumentType.id === document.verificationDocumentType.id;
-      });
-      if (documentIndex !== -1) {
-        clonedDocuments.splice(documentIndex, 1);
-        const key = isLocalDocument ? 'localDocuments' : 'existingDocuments';
-        this.setState({
-          existingDocuments,
-          localDocuments,
-          verificationTypes,
-          [key]: clonedDocuments,
-          isLoading,
-        });
-      }
-    } else {
-      const { propertyId } = this.props;
-      try {
-        await AssetRepository.deleteVerificationDocument(propertyId, document.id);
-        await this.getExistingDocuments(propertyId);
-      } catch (error) {
-        AlertHelper.error({ message: error.message });
       }
     }
   };

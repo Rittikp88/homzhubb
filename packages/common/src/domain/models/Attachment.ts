@@ -1,5 +1,14 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export const AllowedAttachmentFormats = {
+  ImgJpeg: 'image/jpeg',
+  ImgJpg: 'image/jpg',
+  ImgPng: 'image/png',
+  ImgPublic: 'public.image',
+  AdobePdf: 'com.adobe.pdf',
+  AppPdf: 'application/pdf',
+};
+
 export interface IAttachment {
   id?: number;
   name?: string;

@@ -3,7 +3,7 @@ import { SafeAreaView, View, StyleProp, StyleSheet, ViewStyle } from 'react-nati
 import Animated, { Extrapolate } from 'react-native-reanimated';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PageHeader, IPageHeaderProps, TITLE_HEIGHT } from '@homzhub/mobile/src/components/atoms/PageHeader';
 import { Header, IHeaderProps } from '@homzhub/mobile/src/components/molecules/Header';
 

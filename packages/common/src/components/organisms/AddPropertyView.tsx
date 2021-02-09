@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
@@ -291,7 +292,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
         scrollToTop();
       }
     } else {
-      if (!assetPayload) {
+      if (!assetPayload || (assetPayload && isEmpty(assetPayload))) {
         this.handleCurrentAsset();
       }
 
@@ -322,7 +323,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
         scrollToTop();
       }
     } else {
-      if (!assetPayload) {
+      if (!assetPayload || (assetPayload && isEmpty(assetPayload))) {
         this.handleCurrentAsset();
       }
 

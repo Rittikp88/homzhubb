@@ -21,15 +21,6 @@ export enum AttachmentType {
   PROFILE_IMAGE = 'profile_images',
 }
 
-export const AllowedAttachmentFormats = {
-  ImgJpeg: 'image/jpeg',
-  ImgJpg: 'image/jpg',
-  ImgPng: 'image/png',
-  ImgPublic: 'public.image',
-  AdobePdf: 'com.adobe.pdf',
-  AppPdf: 'application/pdf',
-};
-
 const baseUrl = ConfigHelper.getBaseUrl();
 
 class AttachmentService {

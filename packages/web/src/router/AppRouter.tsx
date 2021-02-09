@@ -23,7 +23,7 @@ export const AppRouter = (): React.ReactElement => {
         {isDebugMode && (
           <>
             <Route exact path={LOGIN} component={Login} />
-            <Route exact path={DASHBOARD} component={AppLayout} />
+            <Route path={DASHBOARD} component={AppLayout} />
           </>
         )}
       </Switch>

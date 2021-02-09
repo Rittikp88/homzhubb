@@ -80,7 +80,7 @@ export enum ScreensKeys {
   PropertyDetailsScreen = 'PropertyDetails',
   AddProperty = 'AddProperty',
   AssetPlanSelection = 'AssetPlanSelection',
-  AssetLeaseListing = 'AssetLeaseListing',
+  AssetListing = 'AssetListing',
   MarkdownScreen = 'Markdown',
 
   // Search Stack

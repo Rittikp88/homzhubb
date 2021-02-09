@@ -465,7 +465,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     if (value === MenuItems.EDIT_LISTING) {
       // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
-        screen: ScreensKeys.AssetLeaseListing,
+        screen: ScreensKeys.AssetListing,
         params: { previousScreen: ScreensKeys.Dashboard, isEditFlow: true },
       });
       return;

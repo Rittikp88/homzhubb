@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 
 const createTestProps = (testProps: any): object => ({
   placeholder: 'Search',

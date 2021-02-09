@@ -1,16 +1,17 @@
 import React, { Component, ReactElement, ReactNode } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { findIndex } from 'lodash';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { AllowedAttachmentFormats } from '@homzhub/common/src/services/AttachmentService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
 import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import {
   ExistingVerificationDocuments,
   VerificationDocumentCategory,
@@ -23,7 +24,7 @@ interface IProps {
   existingDocuments: ExistingVerificationDocuments[];
   localDocuments: ExistingVerificationDocuments[];
   handleUpload: (verificationData: VerificationDocumentTypes) => void;
-  deleteDocument: (document: ExistingVerificationDocuments, isLocalDocument: boolean | null) => Promise<void>;
+  deleteDocument: (document: ExistingVerificationDocuments, isLocalDocument?: boolean) => Promise<void>;
   handleTypes?: (types: VerificationDocumentTypes[]) => void;
 }
 
@@ -53,7 +54,7 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
               </Text>
               {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
                 <>
-                  <Selfie style={styles.selfie} />
+                  {PlatformUtils.isWeb() ? <Selfie /> : <Selfie style={styles.selfie} />}
                   {selfieInstruction.map((instruction, i) => {
                     return (
                       <Label type="regular" textType="regular" style={styles.instruction} key={i}>
@@ -94,10 +95,9 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
       const fileType = currentDocument.document.link.split('/')?.pop()?.split('.');
 
       const onDeleteImageThumbnail = (): Promise<void> =>
-        deleteDocument(currentDocument, currentDocument.isLocalDocument);
+        deleteDocument(currentDocument, currentDocument.isLocalDocument || undefined);
 
       const { mimeType } = currentDocument.document;
-
       return mimeType === AllowedAttachmentFormats.AppPdf || !fileType || fileType[1] === 'pdf' ? (
         <View style={styles.pdfContainer}>
           <Text type="small" textType="regular" style={styles.pdfName}>

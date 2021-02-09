@@ -19,7 +19,7 @@ import {
   initialLeaseFormValues,
   LeaseFormSchema,
   LeaseTermForm,
-} from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
+} from '@homzhub/common/src/components/molecules/LeaseTermForm';
 import { FlowTypes, PropertySpaces } from '@homzhub/common/src/components/organisms/PropertySpaces';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';

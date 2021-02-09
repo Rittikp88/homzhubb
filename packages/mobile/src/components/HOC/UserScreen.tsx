@@ -10,7 +10,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IUserScreenProps {

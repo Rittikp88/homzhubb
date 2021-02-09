@@ -14,7 +14,7 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
+import { MaintenanceDetails } from '@homzhub/common/src/components/molecules/MaintenanceDetails';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';

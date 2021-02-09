@@ -11,7 +11,7 @@ exports[`Tenant History Screen should render snapshot 1`] = `
     }
   }
 >
-  <SearchBar
+  <Component
     containerStyle={
       Object {
         "marginBottom": 6,
@@ -22,7 +22,7 @@ exports[`Tenant History Screen should render snapshot 1`] = `
     value=""
   />
   <EmptyState />
-  <Loader
+  <Component
     visible={true}
   />
 </View>

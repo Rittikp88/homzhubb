@@ -11,7 +11,7 @@ import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlac
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
-import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { MarketTrendsResults, MarketTrendType } from '@homzhub/common/src/domain/models/MarketTrends';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 

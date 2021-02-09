@@ -9,7 +9,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text, FontWeightType } from '@homzhub/common/src/components/atoms/Text';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 

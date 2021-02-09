@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   textStyle: {
-    width: '62%',
+    width: PlatformUtils.isWeb() ? '100%' : '62%',
     color: theme.colors.darkTint2,
   },
   price: {

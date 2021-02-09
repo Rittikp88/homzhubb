@@ -8,7 +8,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import UserProfileForm, { IUserProfileForm } from '@homzhub/mobile/src/components/molecules/UserProfileForm';
 import EmergencyContactForm from '@homzhub/mobile/src/components/molecules/EmergencyContactForm';
 import WorkInfoForm from '@homzhub/mobile/src/components/molecules/WorkInfoForm';

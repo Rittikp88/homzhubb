@@ -12,7 +12,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { DocumentCard } from '@homzhub/mobile/src/components/molecules/DocumentCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

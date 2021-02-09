@@ -6,17 +6,18 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import {
   ILeaseFormData,
   SubLeaseUnit,
   initialLeaseFormData,
-} from '@homzhub/mobile/src/components/organisms/SubLeaseUnit';
+} from '@homzhub/common/src/components/organisms/SubLeaseUnit';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
@@ -117,8 +118,13 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   private renderTab = (): React.ReactNode => {
     const { currentIndex, routes, tabHeight } = this.state;
 
+    // TODO: Need to fix for web
+    if (PlatformUtils.isWeb() && routes.length < 1) {
+      return null;
+    }
     return (
       <TabView
+        initialLayout={theme.viewport}
         swipeEnabled={false}
         renderTabBar={this.renderTabBar}
         renderScene={this.renderScene}
@@ -132,7 +138,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     );
   };
 
-  private renderScene = ({ route }: { route: IRoute }): React.ReactNode => {
+  private renderScene = ({ route }: { route: IRoute }): React.ReactElement => {
     const { currencyData, assetGroupType, furnishing } = this.props;
     const { preferences, availableSpaces } = this.state;
 

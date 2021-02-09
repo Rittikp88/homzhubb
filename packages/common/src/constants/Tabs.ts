@@ -21,6 +21,11 @@ export enum Tabs {
   COMPLETED = 'Completed',
   CANCELLED = 'Cancelled',
   DECLINED = 'Declined',
+  ACTIONS = 'Actions',
+  VERIFICATIONS = 'Verification',
+  SERVICES = 'Services',
+  PAYMENT = 'Payment',
+  SERVICE_PAYMENT = 'Service & Payment',
 }
 
 // enum END
@@ -78,6 +83,25 @@ export const VisitRoutes: IRoutes[] = [
   { key: Tabs.UPCOMING, title: Tabs.UPCOMING, color: theme.colors.mediumPriority },
   { key: Tabs.MISSED, title: Tabs.MISSED, color: theme.colors.error },
   { key: Tabs.COMPLETED, title: Tabs.COMPLETED, color: theme.colors.green },
+];
+
+// Site Visit Tabs END
+
+// Listing Visit Tabs START
+
+// (MOBILE)
+export const ListingRoutes: IRoutes[] = [
+  { key: Tabs.ACTIONS, title: Tabs.ACTIONS },
+  { key: Tabs.VERIFICATIONS, title: Tabs.VERIFICATIONS },
+  { key: Tabs.SERVICES, title: Tabs.SERVICES },
+  { key: Tabs.PAYMENT, title: Tabs.PAYMENT },
+];
+
+// (WEB)
+export const ListingRoutesWeb: IRoutes[] = [
+  { key: Tabs.ACTIONS, title: Tabs.ACTIONS },
+  { key: Tabs.VERIFICATIONS, title: Tabs.VERIFICATIONS },
+  { key: Tabs.SERVICE_PAYMENT, title: Tabs.SERVICE_PAYMENT },
 ];
 
 // Site Visit Tabs END

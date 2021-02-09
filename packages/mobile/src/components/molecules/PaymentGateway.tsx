@@ -10,7 +10,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IPaymentParams, PaymentFailureResponse } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
 
 let options = {

@@ -3,13 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
+import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
 
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
 
 export const MainRouter = (): React.ReactElement => {
-  const { DASHBOARD, ADD_PROPERTY, FINANCIALS, HELP_SUPPORT } = RouteNames.protectedRoutes;
+  const { DASHBOARD, ADD_PROPERTY, FINANCIALS, HELP_SUPPORT, ADD_LISTING } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
 
@@ -20,6 +21,7 @@ export const MainRouter = (): React.ReactElement => {
         <Route exact path={FINANCIALS} component={Financials} />
         <Route exact path={ADD_PROPERTY} component={PostProperty} />
         <Route exact path={HELP_SUPPORT} component={HelpAndSupport} />
+        <Route exact path={ADD_LISTING} component={AddPropertyListing} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>
     </Suspense>

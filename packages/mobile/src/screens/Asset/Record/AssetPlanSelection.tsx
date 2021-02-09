@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Image, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -10,15 +10,15 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import Check from '@homzhub/common/src/assets/images/check.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
 import { AssetAdvertisement, AssetAdvertisementResults } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 import { AssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -53,10 +53,8 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
 
   public componentDidMount = async (): Promise<void> => {
     const {
-      getAssetPlanList,
       route: { params },
     } = this.props;
-    getAssetPlanList();
     await this.getAssetAdvertisements();
     if (!params) {
       setTimeout(() => {
@@ -72,8 +70,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
       <>
         <Header icon={icons.leftArrow} title={t('propertyPlan')} onIconPress={this.goBack} />
         <ScrollView style={styles.flexOne}>
-          <View style={styles.planContainer}>{this.renderPlans()}</View>
-          <View style={styles.carouselContainer}>{this.renderAdvertisements()}</View>
+          <PlanSelection carouselView={this.renderCarousel()} onSkip={this.onSkip} onSelectPlan={this.onSelectPlan} />
         </ScrollView>
         <BottomSheet visible={isSheetVisible} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
           {this.renderContinueView()}
@@ -82,21 +79,8 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     );
   }
 
-  public renderPlans = (): React.ReactElement => {
-    const { assetPlan, t } = this.props;
-    return (
-      <>
-        <View style={styles.header}>
-          <Text type="regular" textType="semiBold">
-            {t('propertyPlanTitle')}
-          </Text>
-          <Text type="small" textType="semiBold" onPress={this.onSkip} style={styles.skip}>
-            {t('common:skip')}
-          </Text>
-        </View>
-        {assetPlan.map(this.renderItem)}
-      </>
-    );
+  private renderCarousel = (): React.ReactElement => {
+    return <View style={styles.carouselContainer}>{this.renderAdvertisements()}</View>;
   };
 
   private renderContinueView = (): ReactElement => {
@@ -120,36 +104,6 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
           onPress={this.onCloseSheet}
         />
       </>
-    );
-  };
-
-  public renderItem = (item: AssetPlan, index: number): React.ReactElement => {
-    const { assetPlan, setSelectedPlan, navigation } = this.props;
-
-    const onPress = (): void => {
-      setSelectedPlan({ id: item.id, selectedPlan: item.name });
-      navigation.navigate(ScreensKeys.AssetLeaseListing);
-    };
-    const isLastIndex = assetPlan.length === index + 1;
-
-    return (
-      <View key={`${item.id}-${index}`}>
-        <TouchableOpacity onPress={onPress} style={styles.assetPlanItem} key={index}>
-          <View style={styles.flexRow}>
-            <Icon name={item.icon} size={25} color={theme.colors.primaryColor} />
-            <View style={styles.descriptionContainer}>
-              <Text type="small" textType="semiBold" style={styles.planName}>
-                {this.getPlanName(item.name)}
-              </Text>
-              <Label type="large" textType="regular" style={styles.description}>
-                {item.description}
-              </Label>
-            </View>
-          </View>
-          <Icon name={icons.rightArrow} size={22} color={theme.colors.primaryColor} />
-        </TouchableOpacity>
-        {!isLastIndex && <Divider />}
-      </View>
     );
   };
 
@@ -200,6 +154,11 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
       screen: ScreensKeys.Portfolio,
       params: { screen: ScreensKeys.PropertyDetailScreen, initial: false },
     });
+  };
+
+  private onSelectPlan = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.AssetListing);
   };
 
   private onCloseSheet = (): void => {
@@ -263,15 +222,6 @@ const styles = StyleSheet.create({
   flexOne: {
     flex: 1,
   },
-  planContainer: {
-    backgroundColor: theme.colors.white,
-    padding: theme.layout.screenPadding,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
   carouselContainer: {
     height: 350,
   },
@@ -289,33 +239,6 @@ const styles = StyleSheet.create({
     ...(theme.circleCSS(16) as object),
     backgroundColor: theme.colors.darkTint9,
     borderColor: theme.colors.transparent,
-  },
-  skip: {
-    flex: 0,
-    borderWidth: 0,
-    color: theme.colors.primaryColor,
-  },
-  assetPlanItem: {
-    flexDirection: 'row',
-    marginTop: 10,
-    paddingVertical: 15,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  planName: {
-    color: theme.colors.primaryColor,
-  },
-  description: {
-    color: theme.colors.darkTint5,
-    paddingTop: 10,
-  },
-  descriptionContainer: {
-    marginStart: 20,
-    flex: 1,
-  },
-  flexRow: {
-    flexDirection: 'row',
-    width: theme.viewport.width / 1.2,
   },
   sheetContent: {
     alignItems: 'center',

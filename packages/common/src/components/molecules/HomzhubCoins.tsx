@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Coin from '@homzhub/common/src/assets/images/coin.svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
 import { Coins } from '@homzhub/common/src/domain/models/OrderSummary';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IOwnProps {
   onToggle: () => void;
@@ -34,7 +35,7 @@ class HomzhubCoins extends PureComponent<Props> {
           <Text type="small" style={styles.title}>
             {t('balance')}
           </Text>
-          <Coin style={styles.image} />
+          {PlatformUtils.isWeb() ? <Coin /> : <Coin style={styles.image} />}
           <Text type="small" style={styles.title}>
             {coins?.currentBalance ?? 0}
           </Text>

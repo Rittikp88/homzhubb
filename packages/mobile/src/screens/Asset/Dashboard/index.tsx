@@ -193,7 +193,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     setAssetId(assetId);
     // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
-      screen: ScreensKeys.AssetLeaseListing,
+      screen: ScreensKeys.AssetListing,
       params: { previousScreen: ScreensKeys.Dashboard },
     });
   };

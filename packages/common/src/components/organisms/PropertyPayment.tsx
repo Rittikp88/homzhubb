@@ -4,16 +4,17 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { isEqual } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Loader } from '@homzhub/mobile/src/components/atoms/Loader';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import HomzhubCoins from '@homzhub/mobile/src/components/molecules/HomzhubCoins';
-import OrderSummary from '@homzhub/mobile/src/components/molecules/OrderSummary';
+import HomzhubCoins from '@homzhub/common/src/components/molecules/HomzhubCoins';
+import OrderSummary from '@homzhub/common/src/components/molecules/OrderSummary';
 import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
 import { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -77,6 +78,10 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     const { isCoinApplied, orderSummary, isPromoFailed, isLoading } = this.state;
     const { t } = this.props;
 
+    if (PlatformUtils.isWeb() && orderSummary.amountPayable < 1) {
+      return this.renderServices(true);
+    }
+
     return (
       <View style={styles.container}>
         {this.renderServices()}
@@ -114,17 +119,23 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     );
   }
 
-  private renderServices = (): React.ReactNode => {
+  // TODO: (WEB) - Fix empty view UI
+  private renderServices = (isEmpty?: boolean): React.ReactNode => {
     const { t, valueAddedServices } = this.props;
-
     return (
-      <View style={styles.servicesContainer}>
+      <View style={[styles.servicesContainer, isEmpty && styles.emptyView]}>
         <Text type="small" textType="semiBold" style={styles.serviceTitle}>
           {t('property:services')}
         </Text>
-        {valueAddedServices.map((item) => {
-          return this.renderItem(item);
-        })}
+        {isEmpty ? (
+          <Text type="small" textType="semiBold" style={styles.serviceTitle}>
+            {t('property:No Service Selected')}
+          </Text>
+        ) : (
+          valueAddedServices.map((item) => {
+            return this.renderItem(item);
+          })
+        )}
       </View>
     );
   };
@@ -311,5 +322,9 @@ const styles = StyleSheet.create({
   },
   divider: {
     borderColor: theme.colors.darkTint10,
+  },
+  emptyView: {
+    paddingHorizontal: 16,
+    backgroundColor: theme.colors.white,
   },
 });

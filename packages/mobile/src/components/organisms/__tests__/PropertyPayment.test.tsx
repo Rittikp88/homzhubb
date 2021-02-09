@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
+import PropertyPayment from '@homzhub/common/src/components/organisms/PropertyPayment';
 
 const mock = jest.fn();
 

@@ -15,7 +15,7 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { ButtonGroup } from '@homzhub/mobile/src/components/molecules/ButtonGroup';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { MaintenanceDetails } from '@homzhub/mobile/src/components/molecules/MaintenanceDetails';
+import { MaintenanceDetails } from '@homzhub/common/src/components/molecules/MaintenanceDetails';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';

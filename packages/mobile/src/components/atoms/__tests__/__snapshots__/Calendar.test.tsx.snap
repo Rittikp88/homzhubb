@@ -38,7 +38,7 @@ CalendarComponent {
   "renderListView": [Function],
   "setState": [Function],
   "state": Object {
-    "day": "04",
+    "day": "09",
     "isMonthView": false,
     "isYearView": false,
     "month": 6,
@@ -130,7 +130,7 @@ CalendarComponent {
             hideArrows={true}
             markedDates={
               Object {
-                "2021-02-04": Object {
+                "2021-02-09": Object {
                   "customStyles": Object {
                     "container": Object {
                       "backgroundColor": "#0084F8",
@@ -144,7 +144,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2021-02-04T15:01:34.347Z}
+            minDate={2021-02-09T12:38:29.752Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -211,7 +211,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2021-02-04T15:01:34.335Z}
+    minDate={2021-02-09T12:38:29.719Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={

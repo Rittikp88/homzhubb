@@ -3,7 +3,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { IFormData, LeaseFormKeys } from '@homzhub/mobile/src/components/molecules/LeaseTermForm';
+import { IFormData, LeaseFormKeys } from '@homzhub/common/src/components/molecules/LeaseTermForm';
 import { IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { DeviceType, IFilter, ISearchHistoryPayload } from '@homzhub/common/src/domain/models/Search';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';

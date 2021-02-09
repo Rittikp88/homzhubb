@@ -9,7 +9,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PdfView } from '@homzhub/mobile/src/components/atoms/PdfView';
-import { SearchBar } from '@homzhub/mobile/src/components/molecules/SearchBar';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { CaseLog } from '@homzhub/common/src/mocks/CaseLogs';
 
 interface IScreenState {
@@ -17,7 +17,7 @@ interface IScreenState {
 }
 
 interface ICaseDetails {
-  [key: string]: string
+  [key: string]: string;
   case_id: string;
   date: string;
   category: string;

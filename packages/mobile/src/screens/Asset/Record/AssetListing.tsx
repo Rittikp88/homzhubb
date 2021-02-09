@@ -8,29 +8,33 @@ import { CommonActions } from '@react-navigation/native';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
-import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
+import { IListingUpdate, ListingService } from '@homzhub/common/src/services/Property/ListingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
+import { Header } from '@homzhub/mobile/src/components';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { ActionController, Header, Loader } from '@homzhub/mobile/src/components';
-import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
+import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
+import { ActionController } from '@homzhub/common/src/components/organisms/ActionController';
+import PropertyPayment from '@homzhub/common/src/components/organisms/PropertyPayment';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
-import PropertyPayment from '@homzhub/mobile/src/components/organisms/PropertyPayment';
-import { ValueAddedServicesView } from '@homzhub/mobile/src/components/organisms/ValueAddedServicesView';
+import { ValueAddedServicesView } from '@homzhub/common/src/components/organisms/ValueAddedServicesView';
+import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
-import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IRoutes, ListingRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
   selectedAssetPlan: ISelectedAssetPlan;
@@ -46,13 +50,8 @@ interface IDispatchProps {
   setFilter: (payload: IFilter) => void;
 }
 
-type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetLeaseListing>;
+type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetListing>;
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
-
-interface IRoutes {
-  key: RouteKeys;
-  title: string;
-}
 
 interface IOwnState {
   currentIndex: number;
@@ -64,19 +63,13 @@ interface IOwnState {
   tabViewHeights: number[];
 }
 
-enum RouteKeys {
-  Actions = 'actions',
-  Verification = 'verification',
-  Services = 'services',
-  Payment = 'payment',
-}
 const { height, width } = theme.viewport;
 const TAB_LAYOUT = {
   width: width - theme.layout.screenPadding * 2,
   height,
 };
 
-class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
+class AssetListing extends React.PureComponent<Props, IOwnState> {
   private scrollRef = React.createRef<ScrollView>();
   public state = {
     currentIndex: 0,
@@ -157,10 +150,11 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
 
     const steps = this.getRoutes().map((route) => route.title);
+    const title = ListingService.getHeader(selectedPlan);
 
     return (
       <>
-        <Header icon={icons.leftArrow} title={this.getHeader()} onIconPress={this.goBack} />
+        <Header icon={icons.leftArrow} title={title} onIconPress={this.goBack} />
         <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
           <ScrollView
             style={styles.screen}
@@ -222,7 +216,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
     return (
       <View style={styles.tabHeader}>
-        {key === RouteKeys.Actions && selectedPlan === TypeOfPlan.RENT && (
+        {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
           <SelectionPicker
             data={[
               { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
@@ -237,16 +231,16 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
           <Text type="small" textType="semiBold">
             {title}
           </Text>
-          {[RouteKeys.Verification, RouteKeys.Services].includes(key) && (
+          {[Tabs.VERIFICATIONS, Tabs.SERVICES].includes(key) && (
             <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
               {t('common:skip')}
             </Text>
           )}
-          {key === RouteKeys.Actions && (
+          {key === Tabs.ACTIONS && (
             <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
           )}
         </View>
-        {key === RouteKeys.Verification && (
+        {key === Tabs.VERIFICATIONS && (
           <>
             <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
               {t('propertyVerificationSubTitle')}
@@ -311,7 +305,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
     if (!assetDetails) return null;
 
     switch (route.key) {
-      case RouteKeys.Verification:
+      case Tabs.VERIFICATIONS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 1)}>
             <PropertyVerification
@@ -322,7 +316,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             />
           </View>
         );
-      case RouteKeys.Services:
+      case Tabs.SERVICES:
         return (
           <View onLayout={(e): void => this.onLayout(e, isManage ? 1 : 2)}>
             <ValueAddedServicesView
@@ -335,7 +329,7 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
             />
           </View>
         );
-      case RouteKeys.Payment:
+      case Tabs.PAYMENT:
         return (
           <View onLayout={(e): void => this.onLayout(e, isManage ? 2 : 3)}>
             <PropertyPayment
@@ -419,36 +413,15 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
 
   public getRoutes = (): IRoutes[] => {
     const {
-      t,
       selectedAssetPlan: { selectedPlan },
     } = this.props;
-    const routes = [
-      { key: RouteKeys.Actions, title: t('actions') },
-      { key: RouteKeys.Verification, title: t('verification') },
-      { key: RouteKeys.Services, title: t('services') },
-      { key: RouteKeys.Payment, title: t('payment') },
-    ];
+    const routes = ListingRoutes;
 
     if (selectedPlan !== TypeOfPlan.MANAGE) {
       return routes;
     }
 
-    return routes.filter((route) => route.key !== RouteKeys.Verification);
-  };
-
-  public getHeader = (): string => {
-    const {
-      t,
-      selectedAssetPlan: { selectedPlan },
-    } = this.props;
-    switch (selectedPlan) {
-      case TypeOfPlan.RENT:
-        return t('rent');
-      case TypeOfPlan.SELL:
-        return t('sell');
-      default:
-        return t('manage');
-    }
+    return routes.filter((route) => route.key !== Tabs.VERIFICATIONS);
   };
 
   private goBack = (): void => {
@@ -541,39 +514,37 @@ class AssetLeaseListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private handleNextStep = (): void => {
-    const { currentIndex, isStepDone } = this.state;
+    const { currentIndex, isStepDone, isSheetVisible, isNextStep } = this.state;
     const {
-      getAssetById,
       assetDetails,
+      getAssetById,
       route: { params },
     } = this.props;
-    const newStepDone: boolean[] = isStepDone;
-    newStepDone[currentIndex] = true;
-
-    this.setState({
-      isStepDone: newStepDone,
-      isNextStep: true,
+    ListingService.handleListingStep({
+      currentIndex,
+      isStepDone,
+      getAssetById,
+      assetDetails,
+      isSheetVisible,
+      isNextStep,
+      scrollToTop: this.scrollToTop,
+      routes: this.getRoutes(),
+      updateState: this.updateState,
+      onPreview: this.navigateToPreview,
+      params,
     });
+  };
 
-    if (assetDetails) {
-      const {
-        isPropertyReady,
-        listing: { isPaymentDone },
-      } = assetDetails.lastVisitedStep;
-      if (currentIndex === 0 && params && params.isEditFlow) {
-        this.setState({ currentIndex: currentIndex + 1 });
-        getAssetById();
-        this.scrollToTop();
-      } else if ((currentIndex === 1 || isPropertyReady) && isPaymentDone) {
-        this.navigateToPreview(assetDetails);
-      } else if (currentIndex < this.getRoutes().length - 1) {
-        this.setState({ currentIndex: currentIndex + 1 });
-        getAssetById();
-        this.scrollToTop();
-      } else {
-        this.setState({ isSheetVisible: true });
-      }
-    }
+  private updateState = (data: IListingUpdate): void => {
+    const { isNextStep, isSheetVisible, currentIndex, isStepDone } = data;
+
+    this.setState((prevState) => ({
+      ...prevState,
+      ...(currentIndex && currentIndex >= 0 && { currentIndex }),
+      ...(isStepDone && { isStepDone }),
+      isNextStep: isNextStep ?? false,
+      isSheetVisible: isSheetVisible ?? false,
+    }));
   };
 
   private navigateToVerificationHelper = (): void => {
@@ -644,7 +615,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(AssetLeaseListing));
+)(withTranslation(LocaleConstants.namespacesKey.property)(AssetListing));
 
 const styles = StyleSheet.create({
   flexOne: {

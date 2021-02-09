@@ -2,12 +2,12 @@ import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { AllowedAttachmentFormats } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
+import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 
 export interface IDocumentSource {
   uri: string;
@@ -87,7 +87,6 @@ export class UploadBoxComponent extends React.PureComponent<IProps, IState> {
       const document = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-
       /* Check if the uploaded document is one of the allowed type */
       if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
         const documentSource = { uri: document.uri, type: document.type, name: document.name, ...(key && { key }) };

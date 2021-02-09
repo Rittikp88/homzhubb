@@ -3,12 +3,13 @@ import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import CardWithCheckbox from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
-import { SearchBar } from '@homzhub/mobile/src/components';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -55,7 +56,6 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
             updateValue={this.updateSearchString}
             containerStyle={styles.searchStyle}
           />
-
           {this.dynamicSearch().length > 0 ? (
             this.dynamicSearch().map((item: ValueAddedService) => {
               const {
@@ -94,13 +94,15 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
             </Text>
           )}
         </View>
-        <Button
-          disabled={valueAddedServices.filter((service) => service.value).length === 0}
-          type="primary"
-          title={t('common:continue')}
-          containerStyle={[styles.buttonStyle, buttonStyle]}
-          onPress={this.handleContinue}
-        />
+        {PlatformUtils.isMobile() && (
+          <Button
+            disabled={valueAddedServices.filter((service) => service.value).length === 0}
+            type="primary"
+            title={t('common:continue')}
+            containerStyle={[styles.buttonStyle, buttonStyle]}
+            onPress={this.handleContinue}
+          />
+        )}
       </>
     );
   };
@@ -148,6 +150,7 @@ export { valueAddedServicesView as ValueAddedServicesView };
 
 const styles = StyleSheet.create({
   container: {
+    flex: PlatformUtils.isWeb() ? 0.9 : 0,
     padding: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
   },
