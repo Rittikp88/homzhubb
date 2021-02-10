@@ -24,10 +24,9 @@ export const PdfView = ({ source, fileName, onCrossPress }: IPdfProps): React.Re
           color={theme.colors.white}
         />
       )}
-      {fileName && (
-        // TODO: Change the icon to pdf icon
+      {!!fileName && (
         <View style={styles.pdfNameContainer}>
-          <Icon style={styles.pdfIcon} name={icons.close} size={20} color={theme.colors.darkTint3} />
+          <Icon style={styles.pdfIcon} name={icons.pdf} size={20} color={theme.colors.darkTint3} />
           <Label type="large" textType="regular" style={styles.fileName}>
             {fileName}
           </Label>

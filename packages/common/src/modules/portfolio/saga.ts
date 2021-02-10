@@ -6,7 +6,7 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioActions, PortfolioActionTypes } from '@homzhub/common/src/modules/portfolio/actions';
 import {
-  IGetHistoryPayload,
+  IGetHistoryParam,
   IGetPropertiesPayload,
   IGetTenanciesPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -47,14 +47,14 @@ function* getProperties(action: IFluxStandardAction<IGetPropertiesPayload>) {
   }
 }
 
-function* getTenantHistory(action: IFluxStandardAction<IGetHistoryPayload>) {
+function* getTenantHistory(action: IFluxStandardAction<IGetHistoryParam>) {
   if (!action.payload) {
     AlertHelper.error({ message: 'Payload missing' });
     return;
   }
-  const { id, onCallback } = action.payload;
+  const { id, onCallback, data } = action.payload;
   try {
-    const response = yield call(PortfolioRepository.getTenantHistory, id);
+    const response = yield call(PortfolioRepository.getTenantHistory, id, data);
     yield put(PortfolioActions.getTenantHistorySuccess(response));
     onCallback({ status: true });
   } catch (err) {

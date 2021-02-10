@@ -8,7 +8,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
-import { IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IGetHistoryParam, IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { LeaseProgress } from '@homzhub/mobile/src/components';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -25,7 +25,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-  getTenantHistory: (payload: IGetHistoryPayload) => void;
+  getTenantHistory: (payload: IGetHistoryParam) => void;
 }
 
 interface IProps {
@@ -43,15 +43,18 @@ type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
 
 export class TenantHistoryScreen extends Component<Props, IScreenState> {
   private search = debounce(() => {
-    const { searchValue, tenantHistory } = this.state;
+    const { searchValue } = this.state;
+    const { tenantHistory } = this.props;
     const results: TenantHistory[] = [];
-    tenantHistory.forEach((item: TenantHistory) => {
-      const { tenantUser } = item;
-      if (tenantUser && tenantUser.fullName.toLowerCase().includes(searchValue.toLowerCase())) {
-        results.push(item);
-      }
-    });
-    this.setState({ tenantHistory: results, isLoading: false });
+    if (tenantHistory) {
+      tenantHistory.forEach((item: TenantHistory) => {
+        const { tenantUser } = item;
+        if (tenantUser && tenantUser.fullName.toLowerCase().includes(searchValue.toLowerCase())) {
+          results.push(item);
+        }
+      });
+      this.setState({ tenantHistory: results, isLoading: false });
+    }
   }, 1000);
 
   public state = {
@@ -159,7 +162,10 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
     const { assetId, getTenantHistory, isFromTenancies } = this.props;
     if (!isFromTenancies) {
       this.setState({ isLoading: true });
-      getTenantHistory({ id: assetId, onCallback: this.onHistoryCallback });
+      const data: IGetHistoryPayload = {
+        sort_by: '-created_at',
+      };
+      getTenantHistory({ id: assetId, onCallback: this.onHistoryCallback, data });
     }
   };
 }

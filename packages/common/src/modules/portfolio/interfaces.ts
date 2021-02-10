@@ -35,9 +35,14 @@ export interface IGetTenanciesPayload {
   onCallback: (params: ICallback) => void;
 }
 
-export interface IGetHistoryPayload {
+export interface IGetHistoryParam {
   id: number;
   onCallback: (params: ICallback) => void;
+  data?: IGetHistoryPayload;
+}
+
+export interface IGetHistoryPayload {
+  sort_by?: string;
 }
 
 export interface ISetAssetPayload {

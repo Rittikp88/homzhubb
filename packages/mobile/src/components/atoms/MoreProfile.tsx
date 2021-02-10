@@ -33,13 +33,13 @@ class MoreProfile extends Component<Props> {
           <Avatar
             isOnlyAvatar
             imageSize={60}
-            fullName={userProfile?.fullName ?? 'User'}
+            fullName={userProfile?.name ?? 'User'}
             initialsContainerStyle={styles.initialsContainer}
             image={userProfile?.profilePicture ?? ''}
           />
           <View style={styles.nameContainer}>
             <Text maxLength={14} type="regular" textType="semiBold">
-              {userProfile?.fullName ?? 'User'}
+              {userProfile?.name ?? 'User'}
             </Text>
             <Label type="large" textType="semiBold" style={styles.progressMsg}>
               {`${userProfile?.profileProgress}% Profile Completed`}

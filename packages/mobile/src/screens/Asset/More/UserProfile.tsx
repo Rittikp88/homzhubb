@@ -102,7 +102,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
     const {
       profileProgress,
-      fullName,
+      name,
       basicDetailsArray,
       emergencyContactArray,
       workInfoArray,
@@ -116,7 +116,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
             <View style={styles.profileImage}>
               <Avatar
                 isOnlyAvatar
-                fullName={fullName || ''}
+                fullName={name || ''}
                 imageSize={80}
                 onPressCamera={(): void => this.onUpdatePress(t('basicDetails'))}
                 image={profilePicture}

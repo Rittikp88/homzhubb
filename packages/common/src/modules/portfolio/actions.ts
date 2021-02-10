@@ -1,6 +1,6 @@
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
-  IGetHistoryPayload,
+  IGetHistoryParam,
   IGetPropertiesPayload,
   IGetTenanciesPayload,
   ISetAssetPayload,
@@ -76,7 +76,7 @@ const setCurrentAsset = (payload: ISetAssetPayload): IFluxStandardAction<ISetAss
   payload,
 });
 
-const getTenantHistory = (payload: IGetHistoryPayload): IFluxStandardAction<IGetHistoryPayload> => {
+const getTenantHistory = (payload: IGetHistoryParam): IFluxStandardAction<IGetHistoryParam> => {
   return {
     type: PortfolioActionTypes.GET.TENANT_HISTORY,
     payload,

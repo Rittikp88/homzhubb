@@ -57,7 +57,8 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   };
 
   private search = debounce(() => {
-    const { searchValue, documents } = this.state;
+    const { searchValue } = this.state;
+    const { documents } = this.props;
     const results: AssetDocument[] = [];
     documents.forEach((item: AssetDocument) => {
       const name = item.attachment.fileName.toLowerCase();

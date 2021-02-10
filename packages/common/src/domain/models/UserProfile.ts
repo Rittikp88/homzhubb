@@ -89,14 +89,14 @@ export class UserProfile extends User {
   }
 
   get basicDetailsArray(): IDetailsInfo[] | undefined {
-    if (!this.fullName && !this.phoneNumber && !this.email && !(this.userAddress && this.userAddress.length > 0)) {
+    if (!this.name && !this.phoneNumber && !this.email && !(this.userAddress && this.userAddress.length > 0)) {
       return undefined;
     }
 
     let detailsArray: IDetailsInfo[] = [];
 
     detailsArray = [
-      { icon: icons.filledUser, ...(this.fullName ? { text: this.fullName } : { helperText: 'Name' }) },
+      { icon: icons.filledUser, ...(this.name ? { text: this.name } : { helperText: 'Name' }) },
       {
         icon: icons.phone,
         ...(this.phoneNumber ? { text: `(${this.countryCode}) ${this.phoneNumber}` } : { helperText: 'Phone Number' }),
