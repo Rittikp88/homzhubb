@@ -10,7 +10,12 @@ import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PdfView } from '@homzhub/mobile/src/components/atoms/PdfView';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
-import { CaseLog } from '@homzhub/common/src/mocks/CaseLogs';
+import { MediaType } from '@homzhub/common/src/domain/models/Attachment';
+import { CaseLog, Status } from '@homzhub/common/src/domain/models/CaseLog';
+
+enum Key {
+  status = 'status',
+}
 
 interface IScreenState {
   searchQuery: string;
@@ -23,15 +28,17 @@ interface ICaseDetails {
   category: string;
   status: string;
 }
-
-type Props = WithTranslation;
+interface IProps {
+  caseLogs: CaseLog[];
+}
+type Props = WithTranslation & IProps;
 
 export class CaseLogs extends React.PureComponent<Props, IScreenState> {
   public state = {
     searchQuery: '',
   };
 
-  public render = (): React.ReactNode => {
+  public render = (): React.ReactElement => {
     const { t } = this.props;
     const { searchQuery } = this.state;
     return (
@@ -49,66 +56,70 @@ export class CaseLogs extends React.PureComponent<Props, IScreenState> {
 
   private renderCaseLogs = (): React.ReactNode => {
     const { searchQuery } = this.state;
-    const arrToDisplay = searchQuery
-      ? CaseLog.filter((item) => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
-      : CaseLog;
-    if (arrToDisplay.length <= 0) {
+    const { caseLogs } = this.props;
+    const logsToDisplay = searchQuery
+      ? caseLogs.filter((item: CaseLog) => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
+      : caseLogs;
+    if (logsToDisplay.length <= 0) {
       return <EmptyState />;
     }
-    return arrToDisplay.map((item) => {
-      const CaseDetails = {
-        case_id: item.ticket_number,
-        date: DateUtils.getUtcFormatted(item.raised_at, DateFormats.ISO24Format, DateFormats.DD_MMM_YYYY),
-        category: item.support_category.label,
-        status: item.status,
-      };
-
+    return logsToDisplay.map((item: CaseLog, index: number) => {
+      const { title, description, attachments } = item;
       return (
         <>
-          {item.title && (
+          {!!title && (
             <Label type="large" textType="semiBold" style={styles.title}>
-              {item.title}
+              {title}
             </Label>
           )}
-          {this.renderCaseLogDetails(CaseDetails)}
-          {item.description && (
+          {this.renderCaseLogDetails(item)}
+          {!!description && (
             <Label type="large" textType="regular" style={styles.description}>
-              {item.description}
+              {description}
             </Label>
           )}
-          {item.attachments &&
-            item.attachments.map((attachments) =>
-              attachments.media_type === 'IMAGE' ? (
+          {attachments &&
+            attachments.map((attachment) =>
+              attachment.mediaType === MediaType.image ? (
                 <View style={styles.imageContainer}>
                   <Image
                     source={{
-                      uri: attachments.link,
+                      uri: attachment.link,
                     }}
                     style={styles.image}
                   />
                 </View>
               ) : (
-                <>
-                  <PdfView source={{ uri: attachments.link }} fileName={attachments.file_name} />
-                </>
+                <View style={styles.pdfContainer}>
+                  <PdfView source={{ uri: attachment.link }} fileName={attachment.fileName} />
+                </View>
               )
             )}
-          <Divider containerStyles={styles.divider} />
+          {index !== logsToDisplay.length - 1 && <Divider containerStyles={styles.divider} />}
         </>
       );
     });
   };
 
-  private renderCaseLogDetails = (logs: ICaseDetails): React.ReactElement => {
+  private renderCaseLogDetails = (item: CaseLog): React.ReactElement => {
+    const { status, ticketNumber, raisedAt, supportCategory } = item;
+    const color = status === Status.open ? theme.colors.error : theme.colors.green;
+    const caseDetails: ICaseDetails = {
+      case_id: ticketNumber,
+      date: DateUtils.getUtcFormatted(raisedAt, DateFormats.ISO24Format, DateFormats.DD_MMM_YYYY),
+      category: supportCategory.label,
+      status,
+    };
+
     return (
       <View style={styles.detailsContainer}>
-        {Object.keys(logs).map((key, index: number) => (
+        {Object.keys(caseDetails).map((key, index: number) => (
           <View key={index} style={styles.detailsColumn}>
             <Label type="small" textType="regular" style={styles.details}>
               {StringUtils.toTitleCase(key.replace('_', ' '))}
             </Label>
-            <Label type="regular" textType="semiBold" style={styles.details}>
-              {logs[key]}
+            <Label type="regular" textType="semiBold" style={[styles.details, key === Key.status && { color }]}>
+              {StringUtils.toTitleCase(caseDetails[key])}
             </Label>
           </View>
         ))}
@@ -153,6 +164,11 @@ const styles = StyleSheet.create({
     width: 350,
     height: 160,
     alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pdfContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image: {
     width: '100%',

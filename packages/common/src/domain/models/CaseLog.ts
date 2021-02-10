@@ -1,6 +1,10 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Unit, IUnit } from '@homzhub/common/src/domain/models/Unit';
+import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 
+export enum Status {
+  open = 'OPEN',
+}
 export interface ICaseLog {
   id: number;
   ticket_number: string;
@@ -9,7 +13,7 @@ export interface ICaseLog {
   status?: string;
   raised_at?: string;
   support_category?: IUnit;
-  attachments?: number[];
+  attachments?: IAttachment[];
 }
 
 @JsonObject('CaseLog')
@@ -35,7 +39,7 @@ export class CaseLog {
   @JsonProperty('support_category', Unit, true)
   private _supportCategory = new Unit();
 
-  @JsonProperty('attachments', [Number], true)
+  @JsonProperty('attachments', [Attachment], true)
   private _attachments = [];
 
   get id(): number {
@@ -66,7 +70,7 @@ export class CaseLog {
     return this._supportCategory;
   }
 
-  get attachments(): number[] {
+  get attachments(): Attachment[] {
     return this._attachments;
   }
 }

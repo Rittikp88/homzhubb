@@ -1,5 +1,10 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export enum MediaType {
+  image = 'IMAGE',
+  video = 'VIDEO',
+  document = 'DOCUMENT',
+}
 export const AllowedAttachmentFormats = {
   ImgJpeg: 'image/jpeg',
   ImgJpg: 'image/jpg',

@@ -27,6 +27,7 @@ import { HeaderCard, UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import CaseLogs from '@homzhub/mobile/src/components/organisms/CaseLogs';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { CaseLog, Status } from '@homzhub/common/src/domain/models/CaseLog';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -49,6 +50,7 @@ interface IScreenState {
   isClearAttachment: boolean;
   isLoading: boolean;
   currentTab: TabKeys;
+  caseLogs: CaseLog[];
 }
 
 type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SupportScreen>;
@@ -69,11 +71,13 @@ export class Support extends Component<Props, IScreenState> {
     isClearAttachment: false,
     isLoading: false,
     currentTab: TabKeys.newCase,
+    caseLogs: [],
   };
 
   public componentDidMount = async (): Promise<void> => {
     await this.getCategories();
     await this.getContact();
+    await this.getCaseLogs();
   };
 
   public render(): React.ReactNode {
@@ -103,8 +107,9 @@ export class Support extends Component<Props, IScreenState> {
 
   private renderContent = (): React.ReactElement | null => {
     const { t } = this.props;
-    const { contact, currentTab } = this.state;
-    const count = 3; // mock data
+    const { contact, currentTab, caseLogs } = this.state;
+    const count = caseLogs.filter((item: CaseLog) => item.status.toLowerCase().includes(Status.open.toLowerCase()))
+      .length;
     if (isEmpty(contact)) {
       return null;
     }
@@ -135,7 +140,7 @@ export class Support extends Component<Props, IScreenState> {
             {this.renderForm()}
           </>
         ) : (
-          <CaseLogs />
+          <CaseLogs caseLogs={caseLogs} />
         )}
       </View>
     );
@@ -278,8 +283,7 @@ export class Support extends Component<Props, IScreenState> {
           value: item.id,
         };
       });
-      this.setState({ isLoading: false });
-      this.setState({ categories: formattedData });
+      this.setState({ isLoading: false, categories: formattedData });
     } catch (e) {
       this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -291,6 +295,17 @@ export class Support extends Component<Props, IScreenState> {
     try {
       const response: User = await CommonRepository.getSupportContacts();
       this.setState({ contact: response, isLoading: false });
+    } catch (e) {
+      this.setState({ isLoading: false });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
+  private getCaseLogs = async (): Promise<void> => {
+    this.setState({ isLoading: true });
+    try {
+      const response = await CommonRepository.getClientSupport();
+      this.setState({ isLoading: false, caseLogs: response });
     } catch (e) {
       this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
