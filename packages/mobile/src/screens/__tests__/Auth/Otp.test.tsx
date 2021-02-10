@@ -10,7 +10,7 @@ import { initialAssetState } from '@homzhub/common/src/modules/asset/reducer';
 import { initialPortfolioState } from '@homzhub/common/src/modules/portfolio/reducer';
 import { initialRecordAssetState } from '@homzhub/common/src/modules/recordAsset/reducer';
 import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
-import { OtpInputs } from '@homzhub/mobile/src/components';
+import { OtpInputs } from '@homzhub/common/src/components/molecules/OtpInputs';
 import { Otp, mapDispatchToProps, mapStateToProps } from '@homzhub/mobile/src/screens/Auth/Otp';
 
 const mock = jest.fn();

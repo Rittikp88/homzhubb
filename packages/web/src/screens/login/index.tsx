@@ -25,6 +25,7 @@ import {
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { SignupCarousal } from '@homzhub/web/src/components/organisms/signUpCarousal';
 
 interface IFormData {
   email: string;

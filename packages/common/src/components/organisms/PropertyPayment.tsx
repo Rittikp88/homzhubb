@@ -15,7 +15,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import HomzhubCoins from '@homzhub/common/src/components/molecules/HomzhubCoins';
 import OrderSummary from '@homzhub/common/src/components/molecules/OrderSummary';
-import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
+import PromoCode from '@homzhub/common/src/components/molecules/PromoCode';
 import { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';

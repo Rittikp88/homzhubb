@@ -23,8 +23,6 @@ export { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/m
 export { Header } from '@homzhub/mobile/src/components/molecules/Header';
 export { HeaderCard } from '@homzhub/mobile/src/components/molecules/HeaderCard';
 export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeaseProgress';
-export { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
-export { OtpTypes } from '@homzhub/mobile/src/components/molecules/OtpInputs';
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
@@ -46,7 +44,6 @@ export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/Financ
 export { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
-export { SignUpForm } from '@homzhub/mobile/src/components/organisms/SignUpForm';
 export { AuthenticationGateways } from '@homzhub/mobile/src/components/organisms/AuthenticationGateways';
 export { default as TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 

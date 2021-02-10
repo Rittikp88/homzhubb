@@ -6,6 +6,7 @@ import '@homzhub/web/src/components/molecules/MultiCarousel/MultiCarousel.scss';
 interface IProps {
   children?: React.ReactNode;
   passedProps?: CarouselProps;
+  forwardRef?: React.Ref<Carousel>;
 }
 
 const defaultResponsive = {
@@ -38,7 +39,7 @@ const defaultResponsive = {
 };
 
 const MultiCarousel: FC<IProps> = (props: IProps) => {
-  const { children, passedProps } = props;
+  const { children, passedProps, forwardRef } = props;
   const defaultProps = {
     arrows: false,
     autoPlay: false,
@@ -51,7 +52,11 @@ const MultiCarousel: FC<IProps> = (props: IProps) => {
     showDots: true,
   };
   const carouselProps = passedProps ?? defaultProps;
-  return <Carousel {...carouselProps}>{children ?? <></>}</Carousel>;
+  return (
+    <Carousel {...carouselProps} ref={forwardRef}>
+      {children ?? <></>}
+    </Carousel>
+  );
 };
 
 export default MultiCarousel;

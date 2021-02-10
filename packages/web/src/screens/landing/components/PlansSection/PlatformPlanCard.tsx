@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -57,6 +57,9 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
     if (pricing === -1) return t('contactSales');
     return t('getStarted');
   };
+  useEffect(() => {
+    sortData();
+  }, [serviceBundles]);
   const isCustom = servicePlansPricingInUSD.actualPrice === -1;
 
   return (
@@ -98,7 +101,6 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
         containerStyle={styles.getStartedButton}
       />
       <View style={styles.planList}>
-        {sortData()}
         {serviceBundles &&
           serviceBundles.map(
             (datum: any, index: number): React.ReactNode => {

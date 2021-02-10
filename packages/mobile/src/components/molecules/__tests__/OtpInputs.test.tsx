@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { OtpInputs } from '@homzhub/mobile/src/components/molecules/OtpInputs';
+import { OtpInputs } from '@homzhub/common/src/components/molecules/OtpInputs';
 
 let props: any;
 const mockFunction = jest.fn();

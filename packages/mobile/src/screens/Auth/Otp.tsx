@@ -16,7 +16,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
-import { OtpInputs, OtpTypes } from '@homzhub/mobile/src/components';
+import { OtpInputs, OtpTypes } from '@homzhub/common/src/components/molecules/OtpInputs';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';

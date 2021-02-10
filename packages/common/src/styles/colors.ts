@@ -42,6 +42,7 @@ const namedColors = {
   alertInfo: '#52616B',
   divider: '#E5E8EC',
   maroon: '#FD689A',
+  carousalBackground: '#f4f9fe',
 };
 
 const tintColors = {

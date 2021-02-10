@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import LandingNavBar from '@homzhub/web/src/screens/landing/components/LandingNavBar';
 import HeroSection from '@homzhub/web/src/screens/landing/components/HeroSection';
 import LandingFeatures from '@homzhub/web/src/screens/landing/components/LandingFeatures';
@@ -16,6 +18,13 @@ import OurServicesSection from '@homzhub/web/src/screens/landing/components/OurS
 import FooterWithSocialMedia from '@homzhub/web/src/screens/landing/components/FooterWithSocialMedia';
 
 const Landing: FC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(CommonActions.getCountries());
+    dispatch(CommonActions.setDeviceCountry('IN'));
+  }, []);
+
   return (
     <View style={styles.container}>
       <LandingNavBar />

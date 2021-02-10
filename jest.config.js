@@ -7,8 +7,9 @@ module.exports = {
   },
   setupFiles: ['<rootDir>/src/setupTests.js'],
   transformIgnorePatterns: [
-    'node_modules/(?!(jest-)?react-native|@react-native-community/google-signin|@react-native-community/picker)',
+    'node_modules/(?!(jest-)?react-native|@react-native-community/google-signin|@react-native-community/picker|reactjs-popup)',
   ],
+
   coveragePathIgnorePatterns: ['/node_modules/', '/jest', '/src/mocks/', '/src/assets/'],
   testPathIgnorePatterns: ['/dist/'], // ignores dist folder while running test cases
   coverageReporters: ['json', 'lcov', 'text'],

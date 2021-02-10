@@ -18,6 +18,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { DisallowedInputCharacters } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -27,7 +28,6 @@ import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFie
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 type SupportedInputType = 'email' | 'password' | 'number' | 'phone' | 'default' | 'name' | 'decimal';
 
@@ -38,6 +38,15 @@ interface IStateProps {
 
 interface IDispatchProps {
   getCountries: () => void;
+}
+
+export interface IWebProps {
+  fetchPhoneCodes: () => void;
+  fetchFlag: () => string;
+  inputPrefixText: string;
+  phoneCodes: IDropdownOption[];
+  isBottomSheetVisible: boolean;
+  onCloseDropDownWeb: (selectedOption: IDropdownOption) => void;
 }
 
 export interface IFormTextInputProps extends TextInputProps {
@@ -63,7 +72,8 @@ export interface IFormTextInputProps extends TextInputProps {
   editable?: boolean;
   onIconPress?: () => void;
   phoneFieldDropdownText?: string;
-  secondaryLabel?: React.ReactElement;
+  webGroupPrefix?: (params: IWebProps) => React.ReactElement;
+  secondaryLabel?: React.ReactNode;
 }
 
 interface IFormTextInputState {
@@ -95,7 +105,6 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     if (inputType !== 'phone' || countries.length <= 0 || formProps.values[phoneCodeKey]) {
       return;
     }
-
     formProps.setFieldValue(phoneCodeKey, defaultPhoneCode);
   };
 
@@ -119,13 +128,13 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       editable = true,
       maxLength = 40,
       phoneFieldDropdownText = '',
+      webGroupPrefix,
       secondaryLabel,
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
     const { values, setFieldTouched } = formProps;
     const { showPassword, isFocused, showCurrencySymbol, phoneCodes, isBottomSheetVisible } = this.state;
-
     const inputFieldStyles = {
       ...theme.form.input,
       // @ts-ignore
@@ -204,7 +213,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       case 'phone':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
         if (inputPrefixText.length > 0) {
-          inputGroupPrefix = (
+          inputGroupPrefix = PlatformUtils.isMobile() ? (
             <TouchableOpacity style={styles.inputGroupPrefix} onPress={this.fetchPhoneCodes}>
               <Image source={{ uri: this.fetchFlag() }} style={styles.flagStyle} />
               <Label type="regular" style={styles.inputPrefixText}>
@@ -212,6 +221,16 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
               </Label>
               <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={12} style={styles.iconStyle} />
             </TouchableOpacity>
+          ) : (
+            webGroupPrefix &&
+            webGroupPrefix({
+              fetchPhoneCodes: this.fetchPhoneCodes,
+              fetchFlag: this.fetchFlag,
+              inputPrefixText,
+              phoneCodes,
+              isBottomSheetVisible,
+              onCloseDropDownWeb: this.onCloseDropDownWeb,
+            })
           );
 
           const prefixFieldStyles = {
@@ -289,6 +308,11 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     this.setState({ isBottomSheetVisible: false });
   };
 
+  private onCloseDropDownWeb = (selectedOption: IDropdownOption): void => {
+    this.handleSelection(selectedOption.value);
+    this.setState({ isBottomSheetVisible: false });
+  };
+
   private fetchPhoneCodes = (): void => {
     const { isBottomSheetVisible, phoneCodes } = this.state;
     const { getCountries, countries } = this.props;
@@ -313,7 +337,6 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
         return countries[i].flag;
       }
     }
-
     return '';
   };
 

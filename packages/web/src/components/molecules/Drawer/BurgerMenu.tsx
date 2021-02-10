@@ -6,10 +6,17 @@ interface IProps {
   open: boolean;
   onClose: () => void;
   children: JSX.Element;
+  menuProps?: IMenuProps;
+}
+interface IMenuProps {
+  width?: number;
+  menuClassName?: string;
+  customBurgerIcon?: React.ReactElement;
+  burgerButtonClassName?: string;
 }
 export default class SideBar extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { children, open } = this.props;
+    const { children, open, menuProps = {} } = this.props;
     return (
       <Menu
         pageWrapId="page-wrap"
@@ -19,6 +26,7 @@ export default class SideBar extends React.PureComponent<IProps> {
         width={280}
         isOpen={open}
         right
+        {...menuProps}
       >
         {children}
       </Menu>

@@ -6,6 +6,7 @@ import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { LinkingService, URLs } from '@homzhub/web/src/services/LinkingService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -14,7 +15,6 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { icons } from '@homzhub/common/src/assets/icon';
 
 const LandingNavBar: FC = () => {
   const { t } = useTranslation();
@@ -64,7 +64,6 @@ const LandingNavBar: FC = () => {
     </StickyHeader>
   );
 };
-
 const RenderNavItems = (): React.ReactElement => {
   const [isSelected, setIsSelected] = useState(0);
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
@@ -159,7 +158,6 @@ const NavItem: FC<INavItem> = ({ text, index, isDisabled, isActive, onNavItemPre
     </TouchableOpacity>
   );
 };
-
 interface INavBarStyle {
   container: ViewStyle;
   subContainer: ViewStyle;
@@ -167,7 +165,6 @@ interface INavBarStyle {
   logo: ViewStyle;
   hamburgerMenu: ViewStyle;
 }
-
 const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
   StyleSheet.create<INavBarStyle>({
     container: {

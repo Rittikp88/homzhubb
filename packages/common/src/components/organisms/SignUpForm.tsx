@@ -5,19 +5,21 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { FormTextInput, IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
-import PromoCode from '@homzhub/mobile/src/components/molecules/PromoCode';
+import PromoCode from '@homzhub/common/src/components/molecules/PromoCode';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface ISignUpFormProps extends WithTranslation {
   testID?: string;
   onPressLink: () => void;
   onSubmitFormSuccess: (payload: ISignUpPayload) => void;
   referralCode?: string;
+  webGroupPrefix?: (params: IWebProps) => React.ReactElement;
 }
 interface IFormData {
   firstName: string;
@@ -61,7 +63,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
   }
 
   public render(): React.ReactNode {
-    const { t, testID, onPressLink, referralCode } = this.props;
+    const { t, testID, onPressLink, referralCode, webGroupPrefix } = this.props;
     return (
       <Formik<IFormData>
         initialValues={{ ...this.state }}
@@ -81,6 +83,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
                 inputType="name"
                 placeholder={t('auth:enterFirstName')}
                 formProps={formProps}
+                maxLength={PlatformUtils.isWeb() ? 50 : 40}
                 isMandatory
                 onSubmitEditing={onLastNameFocus}
               />
@@ -89,6 +92,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
                 name="lastName"
                 label="Last Name"
                 inputType="name"
+                maxLength={PlatformUtils.isWeb() ? 50 : 40}
                 placeholder={t('auth:enterLastName')}
                 formProps={formProps}
                 onSubmitEditing={onEmailFocus}
@@ -109,6 +113,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
                 label="Phone"
                 isMandatory
                 inputType="phone"
+                webGroupPrefix={webGroupPrefix}
                 inputPrefixText={formProps.values.phoneCode}
                 placeholder={t('auth:yourNumber')}
                 helpText={t('auth:otpVerification')}

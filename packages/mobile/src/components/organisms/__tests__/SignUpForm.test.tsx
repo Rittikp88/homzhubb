@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { SignUpForm } from '@homzhub/mobile/src/components';
+import { SignUpForm } from '@homzhub/common/src/components/organisms/SignUpForm';
 
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('@react-native-community/google-signin', () => {});

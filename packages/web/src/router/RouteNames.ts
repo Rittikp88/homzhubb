@@ -6,6 +6,7 @@ export const RouteNames = {
     PRICING: '/pricing',
     LOGIN: '/login',
     SIGNUP: '/signup',
+    OTP_VERIFICATION: '/otp',
     TERMS_CONDITION: '/terms&Condition',
     PRIVACY_POLICY: '/privacyPolicy',
   },
