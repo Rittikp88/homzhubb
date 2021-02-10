@@ -42,8 +42,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
   }
 
   public render(): React.ReactNode {
-    const { t, handleForgotPassword, testID } = this.props;
-    const { isEmailFlow } = this.state;
+    const { t, handleForgotPassword, isEmailLogin, testID } = this.props;
     const formData = { ...this.state };
 
     return (
@@ -60,7 +59,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
                 title={t('login')}
                 containerStyle={styles.submitStyle}
               />
-              {isEmailFlow && PlatformUtils.isMobile() && (
+              {isEmailLogin && PlatformUtils.isMobile() && (
                 <Button
                   type="secondary"
                   title={t('auth:forgotPassword')}
@@ -79,8 +78,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
   }
 
   private renderLoginFields = (formProps: FormikProps<IFormData>): React.ReactElement => {
-    const { t, handleForgotPassword } = this.props;
-    const { isEmailFlow } = this.state;
+    const { t, handleForgotPassword, isEmailLogin } = this.props;
 
     const onPasswordFocus = (): void => this.password.current?.focus();
 
@@ -98,7 +96,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
 
     return (
       <>
-        {isEmailFlow ? (
+        {isEmailLogin ? (
           <>
             <FormTextInput
               name="email"

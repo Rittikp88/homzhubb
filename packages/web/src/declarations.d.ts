@@ -22,6 +22,12 @@ declare interface IScriptProps {
   url: string;
 }
 
+declare module 'react-facebook-login/dist/facebook-login-render-props' {
+  import { ReactFacebookLoginProps } from 'react-facebook-login';
+
+  export = Content<ReactFacebookLoginProps>();
+}
+
 declare module 'react-load-script' {
   export = Content<IScriptProps>();
 }

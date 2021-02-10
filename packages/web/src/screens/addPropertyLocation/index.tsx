@@ -48,7 +48,7 @@ const SearchView: FC = () => {
     navigateScreen(AddPropertyStack.PropertyDetailsMapScreen);
   };
   const onFetchError = (error: GeolocationError): void => {
-    console.log('Error => ', error);
+    // empty
   };
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>

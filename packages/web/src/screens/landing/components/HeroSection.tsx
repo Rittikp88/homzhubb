@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
-import { useDown, useViewPort, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useIsIpadPro, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
@@ -22,7 +22,6 @@ const defaultResponsive = {
   },
 };
 
-// todo remove dummy image
 const HeroSection: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -49,14 +48,14 @@ const HeroSection: FC = () => {
       ${theme.colors.landingCarouselGradientA} 0%,
       ${theme.colors.landingCarouselGradientB} 80.21%)`,
   };
-  const scaleY = isTablet || isIpadPro ? (isMobile ? 0.37 : 0.6) : 0.87;
+  const scaleY = isTablet || isIpadPro ? (isMobile ? 0.37 : isIpadPro ? 0.4 : 0.7) : 0.87;
   const imageStyle = {
     minWidth: useViewPort().width,
     minHeight: useViewPort().height * scaleY,
   };
 
   return (
-    <View onLayout={onLayout} style={[styles.container, isTablet && styles.containerMobile]}>
+    <View onLayout={onLayout} style={styles.container}>
       <MultiCarousel passedProps={carouselProps}>
         {HeroSectionData.map((item) => (
           <View key={item.title}>
@@ -71,7 +70,7 @@ const HeroSection: FC = () => {
           </View>
         ))}
       </MultiCarousel>
-      {!isTablet && (
+      {!(isTablet || isIpadPro) && (
         <TouchableOpacity style={styles.downToggle} onPress={onScrollDownPress}>
           <Icon name={icons.scrollDown} size={36} color={theme.colors.white} />
         </TouchableOpacity>
@@ -102,7 +101,7 @@ const CarouselControlSection = ({ next, previous }: ButtonGroupProps): React.Rea
     }
   };
   return (
-    <View style={[styles.slideInfo, isTablet && styles.slideInfoTablet, isMobile && styles.slideInfoMobile]}>
+    <View style={[styles.slideInfo, isMobile && styles.slideInfoMobile]}>
       <View>
         <Typography
           variant={isMobile ? 'text' : 'title'}
@@ -161,10 +160,6 @@ const styles = StyleSheet.create({
   container: {
     position: 'relative',
     marginBottom: 60,
-    marginTop: 92,
-  },
-  containerMobile: {
-    marginTop: 84,
   },
   image: {
     flex: 1,
@@ -180,11 +175,8 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 'fit-content',
   },
-  slideInfoTablet: {
-    marginTop: '15%',
-  },
   slideInfoMobile: {
-    marginTop: '8%',
+    marginTop: '8vh',
     justifyContent: 'space-between',
     alignItems: 'center',
     height: '80%',

@@ -1,31 +1,23 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { ISocialLoginPayload, IVerifyAuthToken, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { SocialAuthUtils } from '@homzhub/common/src/utils/SocialAuthUtils';
 import { AuthService } from '@homzhub/mobile/src/services/AuthService';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { theme } from '@homzhub/common/src/styles/theme';
 import Google from '@homzhub/common/src/assets/images/google.svg';
-import Email from '@homzhub/common/src/assets/images/email.svg';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
 import LinkedIn from '@homzhub/common/src/assets/images/linkedin.svg';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import CommonAuthenticationHoc from '@homzhub/common/src/components/organisms/CommonAuthenticationHOC';
 import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { SocialAuthProvider } from '@homzhub/common/src/domain/models/SocialAuthProvider';
-import { User } from '@homzhub/common/src/domain/models/User';
-import { SocialAuthKeys, ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
+import { ISocialUserData, SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IDispatchProps {
   loginSuccess: (data: IUserTokens) => void;
@@ -38,6 +30,7 @@ interface IAuthenticationGatewayProps {
   navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
   toggleLoading?: (isLoading: boolean) => void;
 }
+
 type Props = IAuthenticationGatewayProps & WithTranslation & IDispatchProps;
 
 interface IOwnState {
@@ -50,34 +43,18 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
   };
 
   public componentDidMount(): void {
-    this.fetchSocialMedia();
+    SocialAuthUtils.fetchSocialMedia((response) => {
+      this.setState({ authProviders: response });
+    });
   }
 
   public render(): React.ReactNode {
-    const { t, onEmailLogin, isFromLogin } = this.props;
-    const titlePrefix = isFromLogin ? t('auth:socialButtonPrefixLogin') : t('auth:socialButtonPrefixSignUp');
+    const { onEmailLogin, isFromLogin } = this.props;
 
     return (
-      <View style={styles.buttonContainer}>
-        <View style={styles.lineContainer}>
-          <View style={styles.line} />
-          <Label style={styles.labelText} type="large" textType="regular">
-            or {titlePrefix}
-          </Label>
-          <View style={styles.line} />
-        </View>
-        <View style={styles.iconContainer}>
-          {onEmailLogin && (
-            <TouchableOpacity style={styles.alignToCenter} onPress={onEmailLogin}>
-              <Email height={24} width={24} />
-              <Label type="regular" textType="regular" style={styles.iconTextStyle}>
-                {t('emailText')}
-              </Label>
-            </TouchableOpacity>
-          )}
-          {this.renderSocialAuths()}
-        </View>
-      </View>
+      <CommonAuthenticationHoc isFromLogin={isFromLogin} onEmailLogin={onEmailLogin}>
+        {this.renderSocialAuths()}
+      </CommonAuthenticationHoc>
     );
   }
 
@@ -106,46 +83,19 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
 
   private onSocialAuthSuccess = async (userData: ISocialUserData): Promise<void> => {
     const { loginSuccess, navigation, isFromLogin } = this.props;
-    const { idToken, provider, user } = userData;
 
-    const authPayload: IVerifyAuthToken = {
-      provider,
-      id_token: idToken,
-    };
-
-    const trackData = {
-      source: provider,
-      email: user.email,
-    };
-
-    try {
-      const { is_new_user } = await UserRepository.verifyAuthToken(authPayload);
-      if (is_new_user) {
+    await SocialAuthUtils.onSocialAuthSuccess(
+      userData,
+      () => {
         navigation.navigate(ScreensKeys.MobileVerification, {
           isFromLogin,
           userData,
         });
-        return;
+      },
+      (response) => {
+        loginSuccess(response);
       }
-      const socialLoginPayload: ISocialLoginPayload = {
-        action: LoginTypes.SOCIAL_MEDIA,
-        payload: {
-          provider,
-          id_token: idToken,
-        },
-      };
-      const { refreshToken, accessToken } = await UserRepository.login(socialLoginPayload);
-
-      const tokens = { refresh_token: refreshToken, access_token: accessToken };
-      loginSuccess(tokens);
-      await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
-
-      AnalyticsService.track(EventType.LoginSuccess, trackData);
-      AnalyticsService.setUser(ObjectMapper.deserialize(User, user));
-    } catch (e) {
-      AnalyticsService.track(EventType.LoginFailure, { ...trackData, error: e.message });
-      AlertHelper.error({ message: e.message });
-    }
+    );
   };
 
   private initiateSocialAuthentication = async (key: string): Promise<void> => {
@@ -167,15 +117,6 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
     const { toggleLoading } = this.props;
     if (toggleLoading) {
       toggleLoading(isLoading);
-    }
-  };
-
-  private fetchSocialMedia = (): void => {
-    try {
-      const response = CommonRepository.getSocialMedia();
-      this.setState({ authProviders: response });
-    } catch (e) {
-      AlertHelper.error({ message: e.message });
     }
   };
 
@@ -210,29 +151,6 @@ const HOC = connect(
 export { HOC as AuthenticationGateways };
 
 const styles = StyleSheet.create({
-  buttonContainer: {
-    padding: theme.layout.screenPadding,
-  },
-  lineContainer: {
-    flexDirection: 'row',
-    marginTop: 10,
-    marginBottom: 24,
-  },
-  line: {
-    backgroundColor: theme.colors.darkTint9,
-    height: 1,
-    flex: 1,
-    alignSelf: 'center',
-  },
-  labelText: {
-    alignSelf: 'center',
-    paddingHorizontal: 5,
-    color: theme.colors.darkTint5,
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
   iconTextStyle: {
     marginTop: 4,
   },

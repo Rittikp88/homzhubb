@@ -178,7 +178,6 @@ class UserRepository {
   };
 
   public sendOrVerifyEmail = async (payload: IEmailVerification): Promise<void> => {
-    console.log('this is verification payload repo-> ', payload);
     await this.apiClient.patch(ENDPOINTS.sendOrVerifyEmail, payload);
   };
 

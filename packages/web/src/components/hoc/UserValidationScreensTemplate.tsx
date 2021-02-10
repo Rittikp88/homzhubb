@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
@@ -18,6 +18,7 @@ interface IProps {
   subTitle: string;
   containerStyle: ViewStyle;
   hasBackButton?: boolean;
+  backButtonPressed?: () => void;
   hasBackToLoginButton?: boolean;
   navigationPath?: string;
 }
@@ -29,6 +30,10 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
 
   const backButtonNavigation = (): void => {
+    const { backButtonPressed } = props;
+    if (backButtonPressed) {
+      backButtonPressed();
+    }
     if (navigationPath) NavigationUtils.navigate(history, { path: navigationPath });
   };
 

@@ -58,7 +58,7 @@ function useDown(screenSize: IDeviceScreenLimits): boolean {
 function useIsIpadPro(): boolean {
   const screenWidth = useViewPort().width;
   const screenHeight = useViewPort().height;
-  return screenWidth === 1024 && screenHeight === 1366;
+  return screenWidth >= 768 && screenHeight >= 1024;
 }
 
 interface IWithMediaQuery {

@@ -8,18 +8,19 @@ import { History } from 'history';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { SocialMediaGateway } from '@homzhub/web/src/components/organisms/SocialMediaGateway';
 import {
   IEmailLoginPayload,
+  ILoginFormData,
   ILoginPayload,
   LoginTypes,
-  ILoginFormData,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
@@ -78,6 +79,14 @@ const Login: FC<IProps> = (props: IProps) => {
     props.login(loginPayload);
   };
 
+  const handleEmailLogin = (): void => {
+    setIsEmailLogin(true);
+  };
+
+  const backToLoginWithPhone = (): void => {
+    setIsEmailLogin(false);
+  };
+
   const handleForgotPassword = (): void => {
     // TODO: Add redirection logic for password reset.
   };
@@ -92,7 +101,8 @@ const Login: FC<IProps> = (props: IProps) => {
       title={t('login')}
       subTitle={isEmailLogin ? t('auth:loginToAccessHomzhubEmail') : t('auth:loginToAccessHomzhubPhone')}
       containerStyle={styles.container}
-      hasBackButton
+      hasBackButton={isEmailLogin}
+      backButtonPressed={backToLoginWithPhone}
     >
       <View style={styles.loginForm}>
         <Formik initialValues={formData} onSubmit={handleSubmitEmailLogin}>
@@ -122,8 +132,8 @@ const Login: FC<IProps> = (props: IProps) => {
           </Typography>
         </View>
       </View>
+      <SocialMediaGateway onEmailLogin={handleEmailLogin} isFromLogin containerStyle={styles.socialMediaContainer} />
     </UserValidationScreensTemplate>
-    // TODO : Authentication gateways
   );
 };
 
@@ -134,6 +144,7 @@ interface IFormStyles {
   backButton: ViewStyle;
   newUser: ViewStyle;
   createAccount: ViewStyle;
+  socialMediaContainer: ViewStyle;
 }
 
 const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyles<IFormStyles> =>
@@ -141,6 +152,11 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
     container: {
       flex: 1,
       width: isDesktop ? '45%' : '100%',
+    },
+    socialMediaContainer: {
+      marginTop: 36,
+      alignSelf: 'center',
+      width: '50%',
     },
     loginForm: {
       width: isMobile ? '90%' : '55%',

@@ -15,6 +15,8 @@ const {
   REACT_APP_STORAGE_SECRET = '',
   REACT_APP_RAZOR_API_KEY = '',
   REACT_APP_YOUTUBE_API_KEY = '',
+  REACT_APP_GOOGLE_CLIENT_ID = '',
+  REACT_APP_FACEBOOK_CLIENT_ID = '',
   REACT_APP_MODE = AppModes.DEBUG,
 } = process.env;
 
@@ -45,6 +47,7 @@ class ConfigHelper {
   private readonly mixpanelKey: string | undefined;
   private readonly googleWebClientId: string | undefined;
   private readonly googleIosClientId: string | undefined;
+  private readonly facebookClientId: string | undefined;
 
   constructor() {
     this.baseUrl = REACT_APP_API_BASE_URL;
@@ -55,6 +58,8 @@ class ConfigHelper {
     this.razorPayApiKey = REACT_APP_RAZOR_API_KEY;
     this.youtubeApiKey = REACT_APP_YOUTUBE_API_KEY;
     this.youtubeApiKey = REACT_NATIVE_APP_MODE;
+    this.googleWebClientId = REACT_APP_GOOGLE_CLIENT_ID;
+    this.facebookClientId = REACT_APP_FACEBOOK_CLIENT_ID;
     this.appMode = REACT_APP_MODE as AppModes;
 
     if (PlatformUtils.isMobile()) {
@@ -93,6 +98,8 @@ class ConfigHelper {
   public getGoogleWebClientId = (): string => this.googleWebClientId || '';
 
   public getGoogleIosClientId = (): string => this.googleIosClientId || '';
+
+  public getFacebookClientId = (): string => this.facebookClientId || '';
 }
 
 const configHelper = new ConfigHelper();

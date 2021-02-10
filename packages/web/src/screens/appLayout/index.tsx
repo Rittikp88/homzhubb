@@ -6,7 +6,7 @@ import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import { MainRouter } from '@homzhub/web/src/router/MainRouter';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Navbar, NavigationInfo, StickyHeader } from '@homzhub/web/src/components';
+import { Navbar, NavigationInfo } from '@homzhub/web/src/components';
 import Footer from '@homzhub/web/src/screens/appLayout/Footer';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -30,9 +30,7 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   return (
     <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked }}>
       <View style={styles.container}>
-        <StickyHeader>
-          <Navbar />
-        </StickyHeader>
+        <Navbar />
         <NavigationInfo />
         <View>
           <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
