@@ -179,14 +179,13 @@ export class AssetCard extends Component<Props> {
         leaseListingId,
         saleListingId,
         leaseOwnerInfo,
-        leaseTransaction: { rent, securityDeposit, leasePeriod },
+        leaseTransaction: { rent, securityDeposit, totalSpendPeriod, leaseEndDate, leaseStartDate, currency },
       },
       listingVisits: { upcomingVisits, missedVisits, completedVisits },
       lastVisitedStep: { assetCreation },
       isVerificationDocumentUploaded,
     } = assetData;
 
-    const buttonAction = leasePeriod ? leasePeriod.action : action;
     const isListed = leaseListingId || saleListingId;
     const user: User = isFromTenancies ? leaseOwnerInfo : leaseTenantInfo;
 
@@ -205,32 +204,32 @@ export class AssetCard extends Component<Props> {
         {rent && securityDeposit && (
           <>
             <Divider containerStyles={styles.divider} />
-            <RentAndMaintenance rentData={rent} depositData={securityDeposit} />
+            <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
           </>
         )}
-        {(leasePeriod || (label === Filters.VACANT && assetCreation.percentage < 100)) && (
+        {label === Filters.VACANT && assetCreation.percentage < 100 && (
           <>
             <Divider containerStyles={styles.divider} />
             <LeaseProgress
-              progress={leasePeriod ? leasePeriod.totalSpendPeriod : assetCreation.percentage / 100}
-              fromDate={leasePeriod?.leaseStartDate}
-              toDate={leasePeriod?.leaseEndDate}
+              progress={totalSpendPeriod || assetCreation.percentage / 100}
+              fromDate={leaseStartDate}
+              toDate={leaseEndDate}
               isPropertyVacant={label === Filters.VACANT}
               assetCreation={assetCreation}
             />
-            {label !== Filters.OCCUPIED && assetCreation.percentage < 100 && !buttonAction && (
-              <Button
-                type="primary"
-                textType="label"
-                textSize="regular"
-                fontType="semiBold"
-                containerStyle={styles.buttonStyle}
-                title={t('complete')}
-                titleStyle={styles.buttonTitle}
-                onPress={this.onCompleteDetails}
-              />
-            )}
           </>
+        )}
+        {label !== Filters.OCCUPIED && assetCreation.percentage < 100 && !action && (
+          <Button
+            type="primary"
+            textType="label"
+            textSize="regular"
+            fontType="semiBold"
+            containerStyle={styles.buttonStyle}
+            title={t('complete')}
+            titleStyle={styles.buttonTitle}
+            onPress={this.onCompleteDetails}
+          />
         )}
         {isVerificationDocumentUploaded && isListed && (
           <OffersVisitsSection
@@ -243,7 +242,7 @@ export class AssetCard extends Component<Props> {
           />
         )}
         <View style={styles.buttonGroup}>
-          {buttonAction && (
+          {action && (
             <Button
               type="primary"
               textType="label"
@@ -251,11 +250,11 @@ export class AssetCard extends Component<Props> {
               fontType="semiBold"
               containerStyle={[
                 styles.buttonStyle,
-                { backgroundColor: buttonAction.color },
-                buttonAction.label === ActionType.CANCEL && styles.cancelButton,
+                { backgroundColor: action.color },
+                action.label === ActionType.CANCEL && styles.cancelButton,
               ]}
-              title={buttonAction.label}
-              titleStyle={[styles.buttonTitle, buttonAction.label === ActionType.CANCEL && styles.cancelTitle]}
+              title={action.label}
+              titleStyle={[styles.buttonTitle, action.label === ActionType.CANCEL && styles.cancelTitle]}
               onPress={this.onPressAction}
             />
           )}
@@ -279,7 +278,7 @@ export class AssetCard extends Component<Props> {
       const {
         action,
         leaseListingId,
-        leaseTransaction: { leasePeriod },
+        leaseTransaction: { id, leaseEndDate },
       } = assetStatusInfo;
       const type =
         action?.label === ActionType.CANCEL
@@ -294,8 +293,8 @@ export class AssetCard extends Component<Props> {
       };
       if (onHandleAction) {
         onHandleAction(payload, {
-          id: leasePeriod?.id,
-          endDate: leasePeriod?.leaseEndDate,
+          id,
+          endDate: leaseEndDate,
           hasTakeAction: action?.label === ActionType.ACTION,
         });
       }

@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { DateFormats } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 
 export interface ILabelColor {
   label: string;
@@ -29,10 +30,10 @@ export class Transaction {
   @JsonProperty('label', String)
   private _label = '';
 
-  @JsonProperty('currency_code', String)
+  @JsonProperty('currency_code', String, true)
   private _currencyCode = '';
 
-  @JsonProperty('currency_symbol', String)
+  @JsonProperty('currency_symbol', String, true)
   private _currencySymbol = '';
 
   @JsonProperty('amount', Number)
@@ -113,15 +114,15 @@ export class LeasePeriod {
 }
 
 @JsonObject('LeaseTransaction')
-export class LeaseTransaction {
+export class LeaseTransaction extends LeasePeriod {
+  @JsonProperty('currency', Currency, true)
+  private _currency = new Currency();
+
   @JsonProperty('rent', Transaction, true)
   private _rent: Transaction | null = null;
 
   @JsonProperty('security_deposit', Transaction, true)
   private _securityDeposit: Transaction | null = null;
-
-  @JsonProperty('lease_period', LeasePeriod, true)
-  private _leasePeriod: LeasePeriod | null = null;
 
   get rent(): Transaction | null {
     return this._rent;
@@ -131,7 +132,7 @@ export class LeaseTransaction {
     return this._securityDeposit;
   }
 
-  get leasePeriod(): LeasePeriod | null {
-    return this._leasePeriod;
+  get currency(): Currency {
+    return this._currency;
   }
 }

@@ -3,15 +3,18 @@ import { View, StyleSheet } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Transaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 
 interface IProps {
   rentData: Transaction;
   depositData: Transaction;
+  currency: Currency;
 }
 
-export const RentAndMaintenance = ({ rentData, depositData }: IProps): React.ReactElement => {
-  const { label, currencySymbol, amount } = rentData;
+export const RentAndMaintenance = ({ rentData, depositData, currency }: IProps): React.ReactElement => {
+  const { label, amount } = rentData;
+  const { currencySymbol } = currency;
   return (
     <View style={styles.container}>
       <View>
@@ -29,7 +32,7 @@ export const RentAndMaintenance = ({ rentData, depositData }: IProps): React.Rea
           <Label type="large">{depositData.label}</Label>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
-          {`${depositData.currencySymbol} ${depositData.amount}`}
+          {`${currencySymbol} ${depositData.amount}`}
         </Text>
       </View>
     </View>
