@@ -83,7 +83,8 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     const { isEmailFlow } = this.state;
 
     const onPasswordFocus = (): void => this.password.current?.focus();
-    const forgotPasswordButtonWeb = (
+
+    const forgotPasswordButtonWeb = (): React.ReactElement => (
       <Button
         type="secondary"
         title={t('auth:forgotPassword')}

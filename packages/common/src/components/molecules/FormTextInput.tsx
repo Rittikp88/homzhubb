@@ -63,7 +63,7 @@ export interface IFormTextInputProps extends TextInputProps {
   editable?: boolean;
   onIconPress?: () => void;
   phoneFieldDropdownText?: string;
-  secondaryLabel?: React.ReactNode;
+  secondaryLabel?: React.ReactElement;
 }
 
 interface IFormTextInputState {

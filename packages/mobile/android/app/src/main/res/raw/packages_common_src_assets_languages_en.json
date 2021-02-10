@@ -239,7 +239,8 @@
     "successResetPasswordDescription": "You can now use your new password to log in to your account.",
     "newAroundHere": "New Around Here?",
     "logInWithEmail": "Log In With Email",
-    "loginToAccessHomzhub": "Access the Homzhub platform using your",
+    "loginToAccessHomzhubEmail": "Access the Homzhub platform using your email and password.",
+    "loginToAccessHomzhubPhone": "Access the Homzhub platform using your mobile number.",
     "socialButtonPrefixLogin": "Log in with",
     "socialButtonPrefixSignUp": "Sign up with",
     "emailAlreadyExists": "Email already exists",
@@ -267,7 +268,9 @@
     "signInUnderProgress": "Sign in is in progress",
     "googlePlayServicesNotAvailable": "Google Play Services not available",
     "errorInFacebookSignIn": "Error in Facebook Sign in",
-    "fbEmailLinkingError": "Seems that you have not linked your email with Facebook, Please Sign up."
+    "fbEmailLinkingError": "Seems that you have not linked your email with Facebook, Please Sign up.",
+    "newOnPlatform": "New on our platform?  ",
+    "createAccout": "Create an account"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
