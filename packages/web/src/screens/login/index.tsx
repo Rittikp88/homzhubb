@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -8,12 +8,19 @@ import { History } from 'history';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IEmailLoginPayload, ILoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IEmailLoginPayload,
+  ILoginPayload,
+  LoginTypes,
+  ILoginFormData,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -42,6 +49,7 @@ const Login: FC<IProps> = (props: IProps) => {
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
+  const [isEmailLogin, setIsEmailLogin] = useState(false); // Requred for conditional rendering
 
   const formData = {
     email: '',
@@ -73,11 +81,16 @@ const Login: FC<IProps> = (props: IProps) => {
   const handleForgotPassword = (): void => {
     // TODO: Add redirection logic for password reset.
   };
-
+  const handleOtpLogin = (values: ILoginFormData): void => {
+    // TODO : Navigation to OTP
+  };
+  const handleNavigationToSignup = (): void => {
+    // TODO : Navigation to signup page
+  };
   return (
     <UserValidationScreensTemplate
       title={t('login')}
-      subTitle={t('auth:loginToAccessHomzhub')}
+      subTitle={isEmailLogin ? t('auth:loginToAccessHomzhubEmail') : t('auth:loginToAccessHomzhubPhone')}
       containerStyle={styles.container}
       hasBackButton
     >
@@ -86,16 +99,31 @@ const Login: FC<IProps> = (props: IProps) => {
           {(formProps: FormikProps<IFormData>): React.ReactElement => (
             <View>
               <LoginForm
-                isEmailLogin
-                onLoginSuccess={handleSubmitEmailLogin}
+                isEmailLogin={isEmailLogin}
+                onLoginSuccess={isEmailLogin ? handleOtpLogin : handleSubmitEmailLogin}
                 handleForgotPassword={handleForgotPassword}
                 testID="loginFormWeb"
               />
             </View>
           )}
         </Formik>
+        <View style={styles.newUser}>
+          <Typography variant="label" size="large">
+            {t('auth:newOnPlatform')}
+          </Typography>
+          <Typography
+            variant="label"
+            size="large"
+            fontWeight="semiBold"
+            onPress={handleNavigationToSignup}
+            style={styles.createAccount}
+          >
+            {t('auth:createAccout')}
+          </Typography>
+        </View>
       </View>
     </UserValidationScreensTemplate>
+    // TODO : Authentication gateways
   );
 };
 
@@ -104,6 +132,8 @@ interface IFormStyles {
   loginForm: ViewStyle;
   logo: ViewStyle;
   backButton: ViewStyle;
+  newUser: ViewStyle;
+  createAccount: ViewStyle;
 }
 
 const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyles<IFormStyles> =>
@@ -126,6 +156,13 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
       marginTop: 50,
       borderWidth: 0,
       width: 'fit-content',
+    },
+    newUser: {
+      flexDirection: 'row',
+      top: 30,
+    },
+    createAccount: {
+      color: theme.colors.primaryColor,
     },
   });
 
