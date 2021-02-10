@@ -63,6 +63,7 @@ export interface IFormTextInputProps extends TextInputProps {
   editable?: boolean;
   onIconPress?: () => void;
   phoneFieldDropdownText?: string;
+  secondaryLabel?: React.ReactNode;
 }
 
 interface IFormTextInputState {
@@ -118,6 +119,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       editable = true,
       maxLength = 40,
       phoneFieldDropdownText = '',
+      secondaryLabel,
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
@@ -244,12 +246,15 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     return (
       <>
         <WithFieldError error={error} hideError={hideError}>
-          {label && (
-            <Label type="regular" style={labelStyles}>
-              {label}
-              {isMandatory && <Text style={styles.asterix}> *</Text>}
-            </Label>
-          )}
+          <View style={styles.labels}>
+            {label && (
+              <Label type="regular" style={labelStyles}>
+                {label}
+                {isMandatory && <Text style={styles.asterix}> *</Text>}
+              </Label>
+            )}
+            {secondaryLabel && <View style={styles.secondaryLabel}>{secondaryLabel}</View>}
+          </View>
           <View style={containerStyle}>
             <RNTextInput ref={this.inputText} {...inputProps} />
             {children}
@@ -476,5 +481,14 @@ const styles = StyleSheet.create({
     color: theme.colors.error,
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  labels: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  secondaryLabel: {
+    marginTop: 16,
+    marginBottom: 6,
   },
 });

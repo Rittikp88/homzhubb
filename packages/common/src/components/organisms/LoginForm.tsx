@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef, RefObject } from 'react';
-import { StyleSheet, KeyboardAvoidingView, View } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -83,6 +83,17 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     const { isEmailFlow } = this.state;
 
     const onPasswordFocus = (): void => this.password.current?.focus();
+    const forgotPasswordButtonWeb = (
+      <Button
+        type="secondary"
+        title={t('auth:forgotPassword')}
+        fontType="semiBold"
+        textSize="small"
+        onPress={handleForgotPassword}
+        containerStyle={styles.forgotButtonStyleWeb}
+        titleStyle={styles.forgotButtonTextStyle}
+      />
+    );
 
     return (
       <>
@@ -97,28 +108,16 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
               formProps={formProps}
               onSubmitEditing={onPasswordFocus}
             />
-            <View style={styles.webLoginPasswordField}>
-              {PlatformUtils.isWeb() && (
-                <Button
-                  type="secondary"
-                  title={t('auth:forgotPassword')}
-                  fontType="semiBold"
-                  textSize="small"
-                  onPress={handleForgotPassword}
-                  containerStyle={styles.forgotButtonStyleWeb}
-                  titleStyle={styles.forgotButtonTextStyle}
-                />
-              )}
-              <FormTextInput
-                ref={this.password}
-                name="password"
-                label="Password"
-                inputType="password"
-                placeholder={t('auth:newPassword')}
-                isMandatory
-                formProps={formProps}
-              />
-            </View>
+            <FormTextInput
+              ref={this.password}
+              name="password"
+              label="Password"
+              inputType="password"
+              placeholder={t('auth:newPassword')}
+              isMandatory
+              formProps={formProps}
+              secondaryLabel={forgotPasswordButtonWeb}
+            />
           </>
         ) : (
           <FormTextInput
@@ -212,11 +211,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   forgotButtonStyleWeb: {
-    position: 'absolute',
     borderWidth: 0,
     width: 'fit-content',
-    right: 0,
-    top: 15,
   },
   forgotButtonTextStyle: {
     marginHorizontal: 0,
