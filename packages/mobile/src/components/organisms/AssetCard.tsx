@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -13,6 +13,8 @@ import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { LeaseProgress, RentAndMaintenance } from '@homzhub/mobile/src/components';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import { EditTenantDetails } from '@homzhub/mobile/src/components/molecules/EditTenantDetails';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
@@ -39,11 +41,27 @@ interface IListProps {
   onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
   onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  customDesignation?: TextStyle;
+}
+
+interface IState {
+  isBottomSheetVisible: boolean;
 }
 
 type Props = WithTranslation & IListProps;
+const userDetails = {
+  firstName: 'Naveen',
+  lastName: 'Gollavilli',
+  phone: '9502027748',
+  email: 'naveensaigollavilli@gmail.com',
+  phoneCode: '+91',
+};
 
-export class AssetCard extends Component<Props> {
+export class AssetCard extends Component<Props, IState> {
+  public state = {
+    isBottomSheetVisible: false,
+  };
+
   public render(): React.ReactElement {
     const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0, containerStyle } = this.props;
     const {
@@ -166,6 +184,21 @@ export class AssetCard extends Component<Props> {
     );
   };
 
+  public renderBottomSheet = (): React.ReactElement => {
+    const { isBottomSheetVisible } = this.state;
+    const { t } = this.props;
+    return (
+      <BottomSheet
+        visible={isBottomSheetVisible}
+        sheetHeight={theme.viewport.height * 0.85}
+        headerTitle={t('common:editInvite')}
+        onCloseSheet={this.onCloseBottomSheet}
+      >
+        <EditTenantDetails details={userDetails} />
+      </BottomSheet>
+    );
+  };
+
   private renderExpandedView = (): React.ReactNode => {
     const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
 
@@ -195,6 +228,8 @@ export class AssetCard extends Component<Props> {
           <>
             <Divider containerStyles={styles.divider} />
             <Avatar
+              isRightIcon
+              onPressRightIcon={this.onToggleBottomSheet}
               fullName={user.name}
               image={user.profilePicture}
               designation={isFromTenancies ? t('property:owner') : t('property:tenant')}
@@ -259,8 +294,18 @@ export class AssetCard extends Component<Props> {
             />
           )}
         </View>
+        {this.renderBottomSheet()}
       </>
     );
+  };
+
+  public onCloseBottomSheet = (): void => {
+    this.setState({ isBottomSheetVisible: false });
+  };
+
+  public onToggleBottomSheet = (): void => {
+    const { isBottomSheetVisible } = this.state;
+    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
   private onCompleteDetails = (): void => {

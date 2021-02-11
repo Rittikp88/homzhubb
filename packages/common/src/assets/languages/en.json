@@ -194,7 +194,10 @@
     "custom": "Custom",
     "perYear": "/Year",
     "freeFor": "Free for ",
-    "oneYear": "1 Year"
+    "oneYear": "1 Year",
+    "invitationSent": "Invitation Sent",
+    "update": "Update",
+    "editInvite":"Edit Invite"
   },
   "auth": {
     "verifyNumber": "Verify your number",

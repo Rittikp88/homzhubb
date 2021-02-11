@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
@@ -22,7 +22,10 @@ interface IProps {
   onPressCamera?: () => void;
   onPressRightIcon?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
+  customDesignation?: TextStyle;
   initialsContainerStyle?: StyleProp<ViewStyle>;
+  rightIconName?: string;
+  rightIconColor?: string;
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
@@ -30,6 +33,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     fullName,
     designation,
     containerStyle = {},
+    customDesignation = {},
     phoneNumber,
     rating,
     date,
@@ -41,6 +45,8 @@ const Avatar = (props: IProps): React.ReactElement => {
     imageSize = 42,
     onPressCamera,
     onPressRightIcon,
+    rightIconName = icons.rightArrow,
+    rightIconColor = theme.colors.blue,
   } = props;
 
   return (
@@ -75,11 +81,11 @@ const Avatar = (props: IProps): React.ReactElement => {
         </>
         {!isOnlyAvatar && (
           <View style={styles.nameContainer}>
-            <Label textType="regular" type="large" minimumFontScale={0.5} adjustsFontSizeToFit>
+            <Label textType="regular" type="large" minimumFontScale={0.8} adjustsFontSizeToFit>
               {fullName}
             </Label>
             <View style={styles.leftView}>
-              <Label textType="regular" type="regular" style={styles.designation}>
+              <Label textType="regular" type="regular" style={[styles.designation, customDesignation]}>
                 {designation}
               </Label>
               {phoneNumber && (
@@ -109,8 +115,8 @@ const Avatar = (props: IProps): React.ReactElement => {
         <View style={styles.rightView}>
           {isRightIcon && onPressRightIcon && (
             <Icon
-              name={icons.rightArrow}
-              color={theme.colors.blue}
+              name={rightIconName}
+              color={rightIconColor}
               size={20}
               style={styles.iconStyle}
               onPress={onPressRightIcon}

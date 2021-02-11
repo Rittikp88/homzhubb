@@ -144,7 +144,7 @@ CalendarComponent {
               }
             }
             markingType="custom"
-            minDate={2021-02-11T04:07:35.866Z}
+            minDate={2021-02-10T07:27:59.727Z}
             onDayPress={[Function]}
             renderHeader={[Function]}
             style={
@@ -211,7 +211,7 @@ exports[`CalendarComponent should match snapshot when isMonthView is true 1`] = 
       }
     }
     markingType="custom"
-    minDate={2021-02-11T04:07:35.855Z}
+    minDate={2021-02-10T07:27:59.714Z}
     onDayPress={[Function]}
     renderHeader={[Function]}
     style={
