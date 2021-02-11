@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ViewStyle, TextStyle, StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -8,7 +8,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { OtpInputs, OtpTypes } from '@homzhub/common/src/components/molecules/OtpInputs';
-import { SignupCarousal } from '@homzhub/web/src/components/organisms/signUpCarousal';
+import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
@@ -30,20 +30,20 @@ const MobileVerification: React.FC = () => {
   const onResendPress = FunctionUtils.noop;
   const { t } = useTranslation();
   const seconds = 5;
-  const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  const containerStyle = isDesktop
-    ? styles.formContainer
-    : isMobile
-    ? styles.formContainerMobile
-    : styles.formContainerTablet;
+
   return (
     <View style={styles.container}>
       <UserValidationScreensTemplate
         title={t('auth:verifyNumber')}
         subTitle={t('auth:enterOtpWeb')}
         hasBackButton
-        containerStyle={containerStyle}
+        containerStyle={[
+          styles.formContainer,
+          isTablet && styles.formContainerTablet,
+          isMobile && styles.formContainerMobile,
+        ]}
       >
         <View style={isMobile ? styles.mobileVerificationContainerMobile : styles.mobileVerificationContainer}>
           <View style={styles.numberContainer}>
@@ -85,10 +85,11 @@ const MobileVerification: React.FC = () => {
           <Button type="primary" title={t('auth:signup')} containerStyle={[styles.signupButtonStyle]} />
         </View>
       </UserValidationScreensTemplate>
-      <SignupCarousal />
+      <GetToKnowUsCarousel />
     </View>
   );
 };
+
 interface IVerificationStyle {
   container: ViewStyle;
   formContainer: ViewStyle;
@@ -107,6 +108,7 @@ interface IVerificationStyle {
   mobileVerificationContainer: ViewStyle;
   mobileVerificationContainerMobile: ViewStyle;
 }
+
 const mobileVerificationStyle = (): StyleSheet.NamedStyles<IVerificationStyle> =>
   StyleSheet.create<IVerificationStyle>({
     container: {
@@ -123,7 +125,6 @@ const mobileVerificationStyle = (): StyleSheet.NamedStyles<IVerificationStyle> =
     },
     formContainer: {
       width: '45vw',
-      flexDirection: 'column',
       alignItems: 'flex-start',
     },
     formContainerMobile: {
@@ -133,8 +134,10 @@ const mobileVerificationStyle = (): StyleSheet.NamedStyles<IVerificationStyle> =
       paddingTop: '20%',
     },
     formContainerTablet: {
-      paddingTop: '20%',
       width: '100%',
+      alignItems: undefined,
+      paddingHorizontal: undefined,
+      paddingTop: '20%',
     },
     carousalContainer: {
       width: '55vw',

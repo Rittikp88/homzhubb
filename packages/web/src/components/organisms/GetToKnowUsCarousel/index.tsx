@@ -7,11 +7,11 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
-import { SignupCarousalCard } from '@homzhub/web/src/components/organisms/signUpCarousal/SignupCarousalCard';
+import { SignupCarousalCard } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel/SignupCarousalCard';
 import { ImageData, IImageDataProps } from '@homzhub/common/src/constants/Signup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-export const SignupCarousal: FC = () => {
+export const GetToKnowUsCarousel: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
