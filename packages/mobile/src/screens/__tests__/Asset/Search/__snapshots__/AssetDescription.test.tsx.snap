@@ -5,6 +5,11 @@ exports[`Markdown View should render snapshot 1`] = `
   <Loader
     visible={false}
   />
+  <Memo(SocialMediaShareComp)
+    headerTitle="shareProperty"
+    onCloseSharing={[Function]}
+    visible={false}
+  />
 </Fragment>
 `;
 
@@ -619,5 +624,10 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
       />
     </View>
   </ParallaxScrollView>
+  <Memo(SocialMediaShareComp)
+    headerTitle="shareProperty"
+    onCloseSharing={[Function]}
+    visible={false}
+  />
 </Fragment>
 `;

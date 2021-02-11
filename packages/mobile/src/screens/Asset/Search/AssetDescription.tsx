@@ -1,5 +1,5 @@
 import React from 'react';
-import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 // @ts-ignore
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -11,25 +11,17 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
-import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
-import {
-  IAssetVisitPayload,
-  ISendNotificationPayload,
-  VisitType,
-} from '@homzhub/common/src/domain/repositories/interfaces';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -37,6 +29,7 @@ import { CustomMarker } from '@homzhub/common/src/components/atoms/CustomMarker'
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Favorite } from '@homzhub/common/src/components/atoms/Favorite';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
@@ -45,23 +38,31 @@ import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowV
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
+import { SocialMediaShare } from '@homzhub/common/src/components/molecules/SocialMediaShare';
+import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';
+import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
+import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
+import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import {
   AssetDetailsImageCarousel,
   CollapsibleSection,
   FullScreenAssetDetailsCarousel,
   ShieldGroup,
 } from '@homzhub/mobile/src/components';
-import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';
-import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
-import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
-import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
-import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
-import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
+import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import {
+  IAssetVisitPayload,
+  ISendNotificationPayload,
+  VisitType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { ISharingPayload, IState } from '@homzhub/common/src/modules/interfaces';
+import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IStateProps {
   reviews: AssetReview | null;
@@ -87,6 +88,9 @@ interface IOwnState {
   isScroll: boolean;
   isFavourite: boolean;
   startDate: string;
+  isSharing: boolean;
+  sharingMessage: string;
+  sharingLink?: string;
 }
 
 const { width, height } = theme.viewport;
@@ -103,11 +107,13 @@ const initialState = {
   isScroll: true,
   isFavourite: false,
   startDate: '',
+  isSharing: false,
+  sharingMessage: I18nService.t('common:homzhub'),
+  sharingLink: undefined,
 };
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
-
 export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public focusListener: any;
   public state = initialState;
@@ -137,6 +143,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (oldPropertyTermId !== newPropertyTermId) {
       const payload: IGetAssetPayload = {
         propertyTermId: newPropertyTermId,
+        // @ts-ignore
+        onCallback: this.onAssetLoaded,
       };
       getAsset(payload);
       const startDate = this.getFormattedDate();
@@ -150,12 +158,25 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { isLoading } = this.props;
-
+    const {
+      t,
+      isLoading,
+      route: {
+        params: { isPreview },
+      },
+    } = this.props;
+    const { isSharing, sharingLink, sharingMessage } = this.state;
     return (
       <>
         <Loader visible={isLoading} />
         {this.renderComponent()}
+        <SocialMediaShare
+          visible={isSharing && !isPreview}
+          headerTitle={t('shareProperty')}
+          sharingMessage={sharingMessage}
+          sharingUrl={sharingLink}
+          onCloseSharing={this.onCloseSharing}
+        />
       </>
     );
   };
@@ -520,6 +541,16 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  private onAssetLoaded = ({ payload }: { payload: ISharingPayload }): void => {
+    this.setState(payload);
+  };
+
+  private onCloseSharing = (): void => {
+    this.setState({
+      isSharing: false,
+    });
+  };
+
   private onFullScreenToggle = (): void => {
     const { isFullScreen } = this.state;
     this.setState({ isFullScreen: !isFullScreen });
@@ -706,6 +737,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
+  private handleShare = (): void => {
+    this.setState({
+      isSharing: true,
+    });
+  };
+
   private navigateToVisitForm = (): void => {
     const {
       navigation,
@@ -766,6 +803,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     const payload: IGetAssetPayload = {
       propertyTermId,
+      // @ts-ignore
+      onCallback: this.onAssetLoaded,
     };
     getAsset(payload);
   };
@@ -802,32 +841,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       }
     }
   };
-
-  public handleShare = async (): Promise<void> => {
-    const {
-      t,
-      route: {
-        params: { propertyTermId, isPreview },
-      },
-    } = this.props;
-
-    const url = await LinkingService.buildShortLink(
-      DynamicLinkTypes.AssetDescription,
-      `${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}&${DynamicLinkParamKeys.PropertyTermId}=${propertyTermId}`
-    );
-
-    if (!isPreview) {
-      try {
-        await Share.share({
-          message: t('common:shareMessage', { url }),
-        });
-      } catch (error) {
-        AlertHelper.error({ message: error });
-      }
-    }
-  };
 }
-
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     reviews: AssetSelectors.getAssetReviews(state),
