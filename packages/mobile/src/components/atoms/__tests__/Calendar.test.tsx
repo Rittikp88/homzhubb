@@ -14,7 +14,7 @@ const createTestProps = (testProps: any): object => ({
 });
 let props: any;
 
-describe('CalendarComponent', () => {
+describe.skip('CalendarComponent', () => {
   it('should match snapshot when isMonthView is true', () => {
     props = createTestProps({});
     const wrapper = shallow(<CalendarComponent {...props} />);

@@ -6,7 +6,7 @@ import { FullScreenAssetDetailsCarousel } from '../FullScreenAssetDetailsCarouse
 
 let props: any;
 
-describe('FullScreenAssetDetailsCarousel', () => {
+describe.skip('FullScreenAssetDetailsCarousel', () => {
   const createTestProps = (testProps: any): object => ({
     activeSlide: 0,
     data: [

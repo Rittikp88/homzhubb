@@ -14,7 +14,6 @@ interface IProps {
 
 export const RentAndMaintenance = ({ rentData, depositData, currency }: IProps): React.ReactElement => {
   const { label, amount } = rentData;
-  const { currencySymbol } = currency;
   return (
     <View style={styles.container}>
       <View>
@@ -23,7 +22,7 @@ export const RentAndMaintenance = ({ rentData, depositData, currency }: IProps):
           <Label type="large">{label}</Label>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
-          {`${currencySymbol} ${amount}`}
+          {`${currency?.currencySymbol} ${amount}`}
         </Text>
       </View>
       <View>
@@ -32,7 +31,7 @@ export const RentAndMaintenance = ({ rentData, depositData, currency }: IProps):
           <Label type="large">{depositData.label}</Label>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
-          {`${currencySymbol} ${depositData.amount}`}
+          {`${currency?.currencySymbol} ${depositData.amount}`}
         </Text>
       </View>
     </View>
