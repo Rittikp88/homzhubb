@@ -54,13 +54,14 @@ import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { DynamicLinkTypes, DynamicLinkParamKeys, RouteTypes } from '@homzhub/mobile/src/services/constants';
 import {
   IAssetVisitPayload,
   ISendNotificationPayload,
   VisitType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
-import { ISharingPayload, IState } from '@homzhub/common/src/modules/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -90,7 +91,6 @@ interface IOwnState {
   startDate: string;
   isSharing: boolean;
   sharingMessage: string;
-  sharingLink?: string;
 }
 
 const { width, height } = theme.viewport;
@@ -109,7 +109,6 @@ const initialState = {
   startDate: '',
   isSharing: false,
   sharingMessage: I18nService.t('common:homzhub'),
-  sharingLink: undefined,
 };
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
@@ -118,17 +117,22 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public focusListener: any;
   public state = initialState;
 
-  public componentDidMount = (): void => {
+  public componentDidMount = async (): Promise<void> => {
     const { navigation } = this.props;
     const startDate = this.getFormattedDate();
     this.setState({ startDate });
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetData();
     });
+    await this.setSharingMessage();
   };
 
   // TODO: Do we require a byId reducer here?
-  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>, snapshot?: any): void {
+  public async componentDidUpdate(
+    prevProps: Readonly<Props>,
+    prevState: Readonly<IOwnState>,
+    snapshot?: any
+  ): Promise<void> {
     const {
       route: {
         params: { propertyTermId: oldPropertyTermId },
@@ -143,10 +147,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (oldPropertyTermId !== newPropertyTermId) {
       const payload: IGetAssetPayload = {
         propertyTermId: newPropertyTermId,
-        // @ts-ignore
-        onCallback: this.onAssetLoaded,
       };
       getAsset(payload);
+      await this.setSharingMessage();
       const startDate = this.getFormattedDate();
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ ...initialState, startDate });
@@ -164,8 +167,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       route: {
         params: { isPreview },
       },
+      assetDetails,
     } = this.props;
-    const { isSharing, sharingLink, sharingMessage } = this.state;
+    const sharingLink = assetDetails?.attachments.length ? assetDetails?.attachments[0].link : undefined;
+    const { isSharing, sharingMessage } = this.state;
     return (
       <>
         <Loader visible={isLoading} />
@@ -237,8 +242,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
                     </TouchableOpacity>
                   </>
                 ) : (
-                  <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
-                )}
+                    <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
+                  )}
               </>
             </CollapsibleSection>
             {!isPreview && this.renderSimilarProperties()}
@@ -477,7 +482,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         activeSlide={activeSlide}
         data={assetDetails?.attachments ?? []}
         updateSlide={this.updateSlide}
-        onShare={this.handleShare}
+        onShare={this.onOpenSharing}
       />
     );
   };
@@ -522,7 +527,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             saleId={saleTerm?.id}
             fromScreen={ScreensKeys.PropertyAssetDescription}
           />
-          <Icon name={icons.share} size={22} color={color} onPress={this.handleShare} />
+          <Icon name={icons.share} size={22} color={color} onPress={this.onOpenSharing} />
         </View>
       </View>
     );
@@ -539,10 +544,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         </View>
       </WithShadowView>
     );
-  };
-
-  private onAssetLoaded = ({ payload }: { payload: ISharingPayload }): void => {
-    this.setState(payload);
   };
 
   private onCloseSharing = (): void => {
@@ -737,10 +738,30 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private handleShare = (): void => {
+  private onOpenSharing = (): void => {
     this.setState({
       isSharing: true,
     });
+  };
+
+  private getDynamicUrl = async (): Promise<string> => {
+    const {
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+    const { RouteType, PropertyTermId } = DynamicLinkParamKeys;
+    const url = LinkingService.buildShortLink(
+      DynamicLinkTypes.AssetDescription,
+      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${propertyTermId}`
+    );
+    return url;
+  };
+
+  private setSharingMessage = async (): Promise<void> => {
+    const url = await this.getDynamicUrl();
+    const sharingMessage = I18nService.t('common:shareMessage', { url });
+    this.setState({ sharingMessage });
   };
 
   private navigateToVisitForm = (): void => {
@@ -803,8 +824,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     const payload: IGetAssetPayload = {
       propertyTermId,
-      // @ts-ignore
-      onCallback: this.onAssetLoaded,
     };
     getAsset(payload);
   };

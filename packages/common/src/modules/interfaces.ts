@@ -10,16 +10,9 @@ export interface IFluxStandardAction<Payload = undefined, Error = string> {
   payload?: Payload;
   error?: Error;
 }
-
-export interface ISharingPayload {
-  sharingLink?: string;
-  sharingMessage: string;
-}
-
 export interface ICallback {
   status: boolean;
   message?: string;
-  payload?: ISharingPayload;
 }
 
 export interface IState {
