@@ -85,7 +85,7 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
                 {isTerminate && (
                   <FormCalendar
                     formProps={formProps}
-                    minDate={DateUtils.getFutureDate(30)}
+                    isCurrentDateEnable
                     maxDate={leaseEndDate && DateUtils.getUtcFormatted(leaseEndDate, DateFormats.DD_MM_YYYY)}
                     name="terminationDate"
                     textType="label"
