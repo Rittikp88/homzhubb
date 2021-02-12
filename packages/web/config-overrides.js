@@ -26,6 +26,7 @@ module.exports = function override(config, env) {
     require.resolve('@babel/plugin-transform-modules-commonjs'),
     require.resolve('babel-plugin-inline-react-svg'),
   ].concat(config.module.rules[2].oneOf[1].options.plugins);
+
   config.module.rules = config.module.rules.filter(Boolean);
   config.plugins.push(new webpack.DefinePlugin({ __DEV__: env !== 'production' }));
 

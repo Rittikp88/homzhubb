@@ -42,3 +42,8 @@ jest.mock('react-native-config', () => {
     REACT_NATIVE_APP_YOUTUBE_API_KEY: 'youtube',
   };
 });
+jest.mock('react-native-share', () => ({
+  Share: {
+    Social: {},
+  },
+}));

@@ -3,7 +3,6 @@ import { StyleProp, StyleSheet, Text as RNText, TextStyle, TouchableOpacity, Vie
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
@@ -87,6 +86,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
           {label || t('common:availableFrom')}
           {isMandatory && <RNText style={styles.asterix}> *</RNText>}
         </TextField>
+
         <TouchableOpacity
           testID="toCalenderInput"
           style={[styles.dateView, dateContainerStyle]}
@@ -102,27 +102,26 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
               {availableDate() || placeHolder}
             </Text>
           </View>
+
           <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} />
         </TouchableOpacity>
-        {PlatformUtils.isMobile() && (
-          <BottomSheet
-            visible={isCalendarVisible}
-            onCloseSheet={this.onCalendarClose}
-            headerTitle={calendarTitle ?? t('common:availableFrom')}
-            isShadowView
-            sheetHeight={580}
-          >
-            <CalendarComponent
-              allowPastDates={allowPastDates}
-              maxDate={maxDate}
-              minDate={minDate}
-              isOnlyYearView={isYearView}
-              onSelect={this.onDateSelected}
-              isCurrentDateEnable={isCurrentDateEnable}
-              selectedDate={selectedValue ?? formProps?.values[name]}
-            />
-          </BottomSheet>
-        )}
+        <BottomSheet
+          visible={isCalendarVisible}
+          onCloseSheet={this.onCalendarClose}
+          headerTitle={calendarTitle ?? t('common:availableFrom')}
+          isShadowView
+          sheetHeight={580}
+        >
+          <CalendarComponent
+            allowPastDates={allowPastDates}
+            maxDate={maxDate}
+            minDate={minDate}
+            isOnlyYearView={isYearView}
+            onSelect={this.onDateSelected}
+            isCurrentDateEnable={isCurrentDateEnable}
+            selectedDate={selectedValue ?? formProps?.values[name]}
+          />
+        </BottomSheet>
       </View>
     );
   }

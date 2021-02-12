@@ -1,4 +1,3 @@
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { put, takeEvery, call, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
@@ -7,9 +6,10 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AssetActions, AssetActionTypes } from '@homzhub/common/src/modules/asset/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
-import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 
 function* getAssetReviews(action: IFluxStandardAction<IGetListingReviews>) {
   try {

@@ -45,7 +45,6 @@ export interface IProps {
   fontWeight?: FontWeightType;
   isOutline?: boolean;
 }
-
 export const Dropdown = (props: IProps): React.ReactElement => {
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
   const { t } = useTranslation();
@@ -75,7 +74,6 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     iconSize = 16,
     iconColor = theme.colors.darkTint7,
   } = props;
-
   const onValueChange = (changedValue: string | number): void => {
     const selectedValue = changedValue === placeholder ? '' : changedValue;
     if (onDonePress) {
@@ -83,16 +81,12 @@ export const Dropdown = (props: IProps): React.ReactElement => {
       closeDropdown();
     }
   };
-
   const openDropdown = (): void => setDropdownVisible(true);
   const closeDropdown = (): void => setDropdownVisible(false);
-
   const selectedItem = data.find((d: PickerItemProps) => d.value === value);
   const label = selectedItem?.label;
   const placeholderColor = !label ? styles.placeholderColor : {};
-
   const disabledStyles = StyleSheet.flatten([disable && styles.disabled]);
-
   if (isOutline) {
     containerStyle = StyleSheet.flatten([
       containerStyle,
@@ -108,7 +102,6 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     iconSize = 20;
     iconColor = theme.colors.active;
   }
-
   return (
     <View pointerEvents={disable ? 'none' : 'auto'} style={[disabledStyles, parentContainerStyle]}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
@@ -146,7 +139,6 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',

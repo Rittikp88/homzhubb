@@ -143,7 +143,7 @@ const AddPropertyActionStyles = StyleSheet.create({
 const AddPropertyStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.background,
     flexDirection: 'row',
     marginBottom: 48,
     borderRadius: 4,

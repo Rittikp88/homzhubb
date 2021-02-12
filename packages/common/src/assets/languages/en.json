@@ -155,6 +155,10 @@
     "mail": "Mail",
     "share": "Share",
     "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "gmail": "Gmail",
+    "sharingUrlCopied": "Sharing URL copied to the clipboard",
     "abbreviatedMonthText": "mo",
     "unsupportedFormat": "Unsupported format",
     "pleaseTryAgain": "Please try again.",
@@ -197,7 +201,7 @@
     "oneYear": "1 Year",
     "invitationSent": "Invitation Sent",
     "update": "Update",
-    "editInvite":"Edit Invite"
+    "editInvite": "Edit Invite"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -620,7 +624,8 @@
     "customerReviews": "Customer Reviews",
     "mostRecent": "Most Recent",
     "positive": "Positive",
-    "critical": "Critical"
+    "critical": "Critical",
+    "shareProperty": "Share Property"
   },
   "assetDashboard": {
     "notification": "Notifications",
@@ -737,6 +742,7 @@
     "refWith": "Refer your friends with",
     "copiedCode": "Referral code copied to the clipboard",
     "clickCopy": "Click below to copy the code",
+    "copySharingUrl": "Copy sharing URL",
     "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
     "shareDoc": "Hey, I have shared this document with you from the Homzhub app. Please use the link to download.",

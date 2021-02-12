@@ -5,6 +5,11 @@ exports[`Markdown View should render snapshot 1`] = `
   <Loader
     visible={false}
   />
+  <Memo(SocialMediaShareComp)
+    headerTitle="shareProperty"
+    onCloseSharing={[Function]}
+    visible={false}
+  />
 </Fragment>
 `;
 
@@ -204,7 +209,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              11 Feb 2021
+              12 Feb 2021
             </Label>
           </View>
           <View
@@ -619,5 +624,11 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
       />
     </View>
   </ParallaxScrollView>
+  <Memo(SocialMediaShareComp)
+    headerTitle="shareProperty"
+    onCloseSharing={[Function]}
+    sharingUrl="https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg"
+    visible={false}
+  />
 </Fragment>
 `;

@@ -9,6 +9,10 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(jest-)?react-native|@react-native-community/google-signin|@react-native-community/picker|reactjs-popup)',
   ],
+  
+  moduleNameMapper: {
+    "\\.(css|scss)$": "@homzhub/common/__mocks__/StyleMock.js"
+  },
 
   coveragePathIgnorePatterns: ['/node_modules/', '/jest', '/src/mocks/', '/src/assets/'],
   testPathIgnorePatterns: ['/dist/'], // ignores dist folder while running test cases

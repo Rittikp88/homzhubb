@@ -90,7 +90,6 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
 
     // TODO: Update this logic once verification shield logic is on place
     const isVerificationDone = lastVisitedStep.listing ? lastVisitedStep.listing.is_verification_done : false;
-
     return (
       <>
         <Formik
@@ -267,7 +266,6 @@ const styles = StyleSheet.create({
     flex: 0,
     width: '30%',
     alignSelf: 'flex-end',
-    paddingHorizontal: 90,
     marginHorizontal: 16,
     marginTop: 16,
     marginBottom: 28,

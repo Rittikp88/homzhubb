@@ -10,7 +10,6 @@ export interface IFluxStandardAction<Payload = undefined, Error = string> {
   payload?: Payload;
   error?: Error;
 }
-
 export interface ICallback {
   status: boolean;
   message?: string;

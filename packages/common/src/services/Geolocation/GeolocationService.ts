@@ -69,7 +69,25 @@ class GeolocationService {
         },
         (error: GeolocationError) => {}
       );
+    } else {
+      const state = store.getState();
+      const { userProfile } = state.user;
+      if (userProfile && userProfile.user_address && userProfile.user_address.length > 0) {
+        const { user_address } = userProfile;
+        const response = await GooglePlacesService.getLocationData(undefined, user_address[0].postal_code);
+        const {
+          location: { lat, lng },
+        } = response.geometry;
+        const { lngValue, latValue } = this.getFormattedCords(lat, lng);
+        store.dispatch(
+          SearchActions.setFilter({
+            user_location_latitude: latValue,
+            user_location_longitude: lngValue,
+          })
+        );
+      }
     }
+
     store.dispatch(CommonActions.setDeviceCountry(deviceCountry));
   };
 

@@ -89,8 +89,15 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
   return (
     <View style={[styles.rowStyle, containerStyles]}>
       <View style={styles.imageContainer}>
-        {svgImage && PlatformUtils.isMobile() && (
+        {svgImage && PlatformUtils.isMobile() ? (
           <SVGUri height={24} width={24} uri={svgImage} style={styles.svgStyle} />
+        ) : (
+          <img
+            src="https://private-homzhub-bucket.s3.amazonaws.com/dfdf0446f679462b8a19e361f8341a9f.svg" // Todo Need to integrate data from API
+            alt=""
+            width={24}
+            height={24}
+          />
         )}
         {name && (
           <Text style={[styles.textStyle, name.titleStyle]} type="small">
@@ -99,12 +106,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
         )}
       </View>
       <View style={[styles.counterContainer, styles.rowStyle]}>
-        <View
-          style={[
-            { backgroundColor: isDecDisabled ? theme.colors.disabledOpacity : theme.colors.activeOpacity },
-            styles.iconContainer,
-          ]}
-        >
+        <View style={[customStyles.iconStyle(isDecDisabled), styles.iconContainer]}>
           <Icon
             name={icons.minus}
             color={isDecDisabled ? theme.colors.disabled : theme.colors.primaryColor}
@@ -113,12 +115,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
           />
         </View>
         <TextInput
-          style={[
-            {
-              color: isDecDisabled || isIncDisabled ? theme.colors.darkTint5 : theme.colors.primaryColor,
-            },
-            styles.counterValue,
-          ]}
+          style={[customStyles.textInputStyle(isDecDisabled, isIncDisabled), styles.counterValue]}
           keyboardType="number-pad"
           maxLength={2}
           defaultValue={defaultValue.toString()}
@@ -127,12 +124,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
           onEndEditing={onEndEditing}
           onFocus={onFocus}
         />
-        <View
-          style={[
-            { backgroundColor: isIncDisabled ? theme.colors.disabledOpacity : theme.colors.activeOpacity },
-            styles.iconContainer,
-          ]}
-        >
+        <View style={[customStyles.iconStyle(isIncDisabled), styles.iconContainer]}>
           <Icon
             name={icons.plus}
             color={isIncDisabled ? theme.colors.disabled : theme.colors.primaryColor}
@@ -172,8 +164,17 @@ const styles = StyleSheet.create({
     width: PlatformUtils.isMobile() ? 100 : '100%',
   },
   counterValue: {
-    flex: 1,
     textAlign: 'center',
     padding: 0,
+    width: 50,
   },
 });
+
+const customStyles = {
+  iconStyle: (isDecDisabled: boolean): StyleProp<ViewStyle> => ({
+    backgroundColor: isDecDisabled ? theme.colors.disabledOpacity : theme.colors.activeOpacity,
+  }),
+  textInputStyle: (isDecDisabled: boolean, isIncDisabled: boolean): StyleProp<TextStyle> => ({
+    color: isDecDisabled || isIncDisabled ? theme.colors.darkTint5 : theme.colors.primaryColor,
+  }),
+};
