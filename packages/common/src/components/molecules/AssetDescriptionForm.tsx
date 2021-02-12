@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
@@ -20,7 +21,8 @@ interface IProps {
 const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const styles = formStyles(isMobile);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
+  const styles = formStyles(isMobile, isTablet);
   return (
     <View style={styles.formFieldsContainer}>
       <View style={styles.formFieldsContainer}>
@@ -44,6 +46,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
               options={dropDownOptions.areaUnitDropdownValues}
               placeholder={t('selectAreaUnit')}
               formProps={formProps}
+              dropdownContainerStyle={styles.dropdownArea}
             />
           </View>
         </View>
@@ -54,15 +57,17 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
             options={dropDownOptions.facing}
             placeholder={t('propertySearch:selectFacing')}
             formProps={formProps}
+            dropdownContainerStyle={styles.formDropdown}
           />
         </View>
-        <View style={styles.formFields}>
+        <View style={styles.formFieldsFlooring}>
           <FormDropdown
             label={t('flooringType')}
             name="flooringType"
             options={dropDownOptions.typeOfFlooring}
             placeholder={t('selectFlooringType')}
             formProps={formProps}
+            dropdownContainerStyle={styles.formDropdown}
           />
         </View>
         <View style={styles.formFields}>
@@ -81,20 +86,23 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           />
         </View>
       </View>
-      <FormCounter
-        containerStyles={styles.formCounter}
-        name="totalFloors"
-        maxCount={1000}
-        label={t('numberOfFloorsText')}
-        formProps={formProps}
-      />
-      <FormCounter
-        containerStyles={styles.formCounter}
-        name="onFloorNumber"
-        label={t('onFloorText')}
-        formProps={formProps}
-        maxCount={formProps.values.totalFloors}
-      />
+      <View style={[styles.counter, isTablet && styles.counterTab, isMobile && styles.counterMobile]}>
+        <FormCounter
+          containerStyles={styles.formCounter}
+          name="totalFloors"
+          maxCount={1000}
+          label={t('numberOfFloorsText')}
+          formProps={formProps}
+        />
+        {!isMobile && <Divider containerStyles={styles.divider} />}
+        <FormCounter
+          containerStyles={styles.formCounter}
+          name="onFloorNumber"
+          label={t('onFloorText')}
+          formProps={formProps}
+          maxCount={formProps.values.totalFloors}
+        />
+      </View>
     </View>
   );
 };
@@ -111,9 +119,16 @@ interface IFormStyles {
   dateStyle: ViewStyle;
   dateContainerStyle: ViewStyle;
   placeHolderStyle: ViewStyle;
+  dropdownArea: ViewStyle;
+  formDropdown: ViewStyle;
+  formFieldsFlooring: ViewStyle;
+  counter: ViewStyle;
+  counterTab: ViewStyle;
+  counterMobile: ViewStyle;
+  divider: ViewStyle;
 }
 
-const formStyles = (isMobile: boolean): StyleSheet.NamedStyles<IFormStyles> =>
+const formStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyles<IFormStyles> =>
   StyleSheet.create<IFormStyles>({
     formFieldsContainer: {
       width: '100%',
@@ -134,10 +149,16 @@ const formStyles = (isMobile: boolean): StyleSheet.NamedStyles<IFormStyles> =>
     subContentView: {
       flex: 1,
       marginRight: 16,
+      width: !isMobile ? 160 : undefined,
     },
     formFields: {
       width: isMobile ? '100%' : undefined,
       marginLeft: isMobile ? 0 : 24,
+      justifyContent: 'center',
+    },
+    formFieldsFlooring: {
+      width: isMobile ? '100%' : undefined,
+      marginLeft: isTablet ? 0 : 24,
       justifyContent: 'center',
     },
     formCounter: {
@@ -146,6 +167,7 @@ const formStyles = (isMobile: boolean): StyleSheet.NamedStyles<IFormStyles> =>
     },
     flexOne: {
       flex: 1,
+      marginLeft: !isMobile ? 24 : undefined,
     },
     inputFieldStyle: {
       height: 40,
@@ -156,9 +178,36 @@ const formStyles = (isMobile: boolean): StyleSheet.NamedStyles<IFormStyles> =>
     dateContainerStyle: {
       paddingVertical: 8,
       marginTop: 0,
+      width: !isMobile ? 230 : undefined,
+      height: 45,
     },
     placeHolderStyle: {
       color: theme.colors.darkTint8,
+    },
+    dropdownArea: {
+      width: 130,
+      height: 45,
+    },
+    formDropdown: {
+      width: !isMobile ? 230 : undefined,
+      height: 45,
+      marginLeft: 0,
+    },
+    counter: {
+      flexDirection: 'row',
+      width: '31%',
+    },
+    counterTab: {
+      width: '48%',
+    },
+    counterMobile: {
+      width: '100%',
+      flexDirection: 'column',
+    },
+    divider: {
+      marginLeft: 20,
+      marginRight: 30,
+      marginTop: 20,
     },
   });
 

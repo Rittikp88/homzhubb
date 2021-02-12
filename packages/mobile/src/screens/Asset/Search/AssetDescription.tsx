@@ -242,8 +242,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
                     </TouchableOpacity>
                   </>
                 ) : (
-                    <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
-                  )}
+                  <EmptyState title={t('property:noPropertyReview')} icon={icons.reviews} />
+                )}
               </>
             </CollapsibleSection>
             {!isPreview && this.renderSimilarProperties()}

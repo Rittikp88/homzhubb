@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle, View } from 'react-native';
 import { FormikProps } from 'formik';
 import { Counter } from '@homzhub/common/src/components/atoms/Counter';
 
@@ -32,17 +32,23 @@ export const FormCounter = (props: IOwnProps): React.ReactElement => {
   };
 
   return (
-    <Counter
-      {...counterProps}
-      defaultValue={values[name]}
-      name={{ title: label, titleStyle: styles.textStyle }}
-      onValueChange={onValueChange}
-    />
+    <View style={styles.container}>
+      <Counter
+        {...counterProps}
+        defaultValue={values[name]}
+        name={{ title: label, titleStyle: styles.textStyle }}
+        onValueChange={onValueChange}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   textStyle: {
     marginLeft: 0,
+  },
+  container: {
+    justifyContent: 'space-between',
+    width: '100%',
   },
 });
