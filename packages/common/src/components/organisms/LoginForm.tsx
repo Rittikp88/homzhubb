@@ -1,5 +1,5 @@
-import React, { PureComponent, createRef, RefObject } from 'react';
-import { StyleSheet, KeyboardAvoidingView } from 'react-native';
+import React, { createRef, PureComponent, RefObject } from 'react';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -47,7 +47,11 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
 
     return (
       <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
-        <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
+        <Formik
+          initialValues={formData}
+          validate={FormUtils.validate(isEmailLogin ? this.loginEmailFormSchema : this.loginPhoneFormSchema)}
+          onSubmit={this.handleSubmit}
+        >
           {(formProps: FormikProps<IFormData>): React.ReactElement => (
             <>
               {this.renderLoginFields(formProps)}
@@ -76,6 +80,35 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
       </KeyboardAvoidingView>
     );
   }
+
+  public handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
+    const { onLoginSuccess, isEmailLogin, t } = this.props;
+    formActions.setSubmitting(true);
+
+    if (!isEmailLogin) {
+      try {
+        const phone = `${values.phoneCode}~${values.phone}`;
+        const isPhoneUsed = await UserRepository.phoneExists(phone);
+        if (!isPhoneUsed.is_exists) {
+          AlertHelper.error({ message: t('auth:phoneNotExists') });
+          return;
+        }
+      } catch (err) {
+        AlertHelper.error({ message: t('common:genericErrorMessage') });
+        return;
+      }
+    }
+
+    const loginFormData: ILoginFormData = {
+      email: values.email,
+      password: values.password,
+      phone_code: values.phoneCode,
+      phone_number: values.phone,
+    };
+
+    onLoginSuccess(loginFormData);
+    formActions.setSubmitting(false);
+  };
 
   private renderLoginFields = (formProps: FormikProps<IFormData>): React.ReactElement => {
     const { t, handleForgotPassword, isEmailLogin } = this.props;
@@ -135,60 +168,27 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     );
   };
 
-  public handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
-    const { onLoginSuccess, isEmailLogin, t } = this.props;
-    formActions.setSubmitting(true);
-
-    if (!isEmailLogin) {
-      try {
-        const phone = `${values.phoneCode}~${values.phone}`;
-        const isPhoneUsed = await UserRepository.phoneExists(phone);
-        if (!isPhoneUsed.is_exists) {
-          AlertHelper.error({ message: t('auth:phoneNotExists') });
-          return;
-        }
-      } catch (err) {
-        AlertHelper.error({ message: t('common:genericErrorMessage') });
-        return;
-      }
-    }
-
-    const loginFormData: ILoginFormData = {
-      email: values.email,
-      password: values.password,
-      phone_code: values.phoneCode,
-      phone_number: values.phone,
-    };
-
-    onLoginSuccess(loginFormData);
-    formActions.setSubmitting(false);
+  private loginPhoneFormSchema = (): yup.ObjectSchema<{
+    phone: string;
+  }> => {
+    const { t } = this.props;
+    return yup.object().shape({
+      phone: yup.string().required(t('moreProfile:fieldRequiredError')),
+    });
   };
 
-  private formSchema = (): yup.ObjectSchema<{
-    isEmailFlow: boolean;
+  private loginEmailFormSchema = (): yup.ObjectSchema<{
     email: string;
-    phone: string;
     password: string;
   }> => {
     const { t } = this.props;
     return yup.object().shape({
-      isEmailFlow: yup.boolean(),
-      email: yup.string().when('isEmailFlow', {
-        is: true,
-        then: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
-      }),
-      phone: yup.string().when('isEmailFlow', {
-        is: false,
-        then: yup.string().required(t('auth:numberRequired')),
-      }),
-      password: yup.string().when('isEmailFlow', {
-        is: true,
-        then: yup
-          .string()
-          .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
-          .min(8, t('auth:minimumCharacters'))
-          .required(t('auth:passwordRequired')),
-      }),
+      email: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
+      password: yup
+        .string()
+        .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
+        .min(8, t('auth:minimumCharacters'))
+        .required(t('auth:passwordRequired')),
     });
   };
 }
