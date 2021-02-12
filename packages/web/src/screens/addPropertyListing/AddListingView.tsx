@@ -1,9 +1,10 @@
 import React, { ReactElement } from 'react';
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -48,7 +49,7 @@ interface IProps {
   onUploadDocument: () => any;
 }
 
-type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
+type Props = WithTranslation & IStateProps & IDispatchProps & IProps & IWithMediaQuery;
 
 interface IOwnState {
   currentIndex: number;
@@ -80,7 +81,8 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   };
 
   public static getDerivedStateFromProps(props: Props, state: IOwnState): IOwnState | null {
-    const { assetDetails, params } = props;
+    const { assetDetails, params , isMobile} = props;
+console.log(isMobile)
     const { isNextStep } = state;
     if (assetDetails) {
       const {
@@ -194,26 +196,32 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       selectedAssetPlan: { selectedPlan },
+      isMobile,
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
-
+    //  const styles = AddListingStyles()
+console.log(isMobile)
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
-      <View style={styles.tabHeader}>
-        {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
-          <SelectionPicker
-            data={[
-              { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
-              { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
-            ]}
-            selectedItem={[leaseType]}
-            containerStyles={styles.switchTab}
-            onValueChange={this.onTabChange}
-          />
-        )}
-        <View style={styles.tabRows}>
+      <View style={[styles.tabHeader, isMobile && styles.mobileTabHeader]}>
+        <View>
+          {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
+            <SelectionPicker
+              data={[
+                { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
+                { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+              ]}
+              selectedItem={[leaseType]}
+              containerStyles={styles.switchTab}
+              onValueChange={this.onTabChange}
+              itemWidth={171}
+            />
+          )}
+        </View>
+
+        <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
           <Text type="small" textType="semiBold">
             {title}
           </Text>
@@ -223,7 +231,9 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             </Text>
           )}
           {key === Tabs.ACTIONS && (
-            <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+            <View style={[styles.tooltip, isMobile && styles.tooltipMobile]}>
+              <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+            </View>
           )}
         </View>
       </View>
@@ -239,6 +249,8 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         listing: { type },
       },
     } = assetDetails;
+    // const styles = AddListingStyles()
+
     const isReadyToPreview = type !== TypeOfPlan.MANAGE && !isVerificationRequired;
     const title = isReadyToPreview ? t('previewOwnProperty') : t('clickContinueToDashboard');
 
@@ -272,7 +284,9 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       setValueAddedServices,
       valueAddedServices,
       onUploadDocument,
+      isMobile,
     } = this.props;
+    //const styles = AddListingStyles()
 
     if (!assetDetails) return null;
 
@@ -446,6 +460,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     }, 100);
   };
 }
+const addListingView = withMediaQuery<Props>(AddListingView);
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getSelectedAssetPlan, getAssetDetails, getValueAddedServices } = RecordAssetSelectors;
@@ -475,8 +490,26 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(AddListingView));
+)(withTranslation(LocaleConstants.namespacesKey.property)(addListingView));
 
+// interface IAddListingStyle {
+// flexOne: ViewStyle;
+// screen:ViewStyle;
+// tabHeader:ViewStyle;
+// switchTab:ViewStyle;
+// tabRows:ViewStyle;
+// badgeStyle:ViewStyle;
+// skip:ViewStyle;
+// sheetContent:ViewStyle;
+// sheetTitle:ViewStyle;
+// image:ViewStyle;
+// continue:ViewStyle;
+// buttonStyle:ViewStyle;
+// screenContent:ViewStyle;
+// service:ViewStyle;
+// }
+
+//const AddListingStyles = (): StyleSheet.NamedStyles<IAddListingStyle> =>
 const styles = StyleSheet.create({
   flexOne: {
     flex: 1,
@@ -487,16 +520,30 @@ const styles = StyleSheet.create({
   },
   tabHeader: {
     paddingVertical: 16,
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
   },
+  mobileTabHeader: {},
   switchTab: {
-    marginBottom: 20,
-    marginTop: 4,
+    marginBottom: 4,
+    marginTop: 20,
   },
   tabRows: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginRight: 'auto',
   },
+  tabRowsMobile: {
+    top: '4%',
+  },
+  tooltip: {
+    left: 9,
+  },
+  tooltipMobile: {
+    left: 262,
+  },
+
   badgeStyle: {
     paddingVertical: 3,
     paddingHorizontal: 18,

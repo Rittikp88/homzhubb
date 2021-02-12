@@ -212,7 +212,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
           // @ts-ignore
           onSubmitPress(formProps.values, {}, false);
         };
-
+console.log(availableSpaces)
         return (
           <>
             {route && availableSpaces.length > 0 && (

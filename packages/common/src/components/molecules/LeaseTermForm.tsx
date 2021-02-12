@@ -6,6 +6,9 @@ import { TFunction } from 'i18next';
 import * as yup from 'yup';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -22,6 +25,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export interface IFormData {
   [LeaseFormKeys.showMore]: boolean;
@@ -101,6 +105,8 @@ const LeaseTermForm = ({
   const { setFieldValue, setFieldTouched, values } = formProps;
   const dispatch = useDispatch();
   const maintenanceUnits = useSelector(RecordAssetSelectors.getMaintenanceUnits);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
 
   // CONSTANTS
   const PAID_BY_OPTIONS = [
@@ -162,42 +168,79 @@ const LeaseTermForm = ({
       <AssetListingSection title={t('leaseTerms')}>
         <>
           {isFromManage && children}
-          <FormTextInput
-            inputType="number"
-            name={LeaseFormKeys.monthlyRent}
-            label={t('monthlyRent')}
-            placeholder={t('monthlyRentPlaceholder')}
-            maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
-            formProps={formProps}
-            inputPrefixText={currencyData.currencySymbol}
-            inputGroupSuffixText={currencyData.currencyCode}
-            isMandatory
-          />
-          <FormTextInput
-            inputType="number"
-            name={LeaseFormKeys.securityDeposit}
-            label={t('securityDeposit')}
-            placeholder={t('securityDepositPlaceholder')}
-            maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
-            formProps={formProps}
-            inputPrefixText={currencyData.currencySymbol}
-            inputGroupSuffixText={currencyData.currencyCode}
-            isMandatory
-          />
-          <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
-            {values.showMore ? t('showLess') : t('showMore')}
-          </Text>
-          {values.showMore && (
-            <FormTextInput
-              inputType="decimal"
-              name={LeaseFormKeys.annualIncrement}
-              label={t('annualIncrement')}
-              placeholder={t('annualIncrementPlaceholder')}
-              maxLength={4}
-              formProps={formProps}
-              inputGroupSuffixText={t('annualIncrementSuffix')}
-            />
-          )}
+          {PlatformUtils.isWeb() &&<Text type="small" textType="semiBold" style={styles.headerTitle}>
+            {t('rentAndSecurity')}
+          </Text>}
+          <View style={PlatformUtils.isWeb() && !isMobile && styles.leaseTerms}>
+            <View style={PlatformUtils.isWeb() && !isMobile && styles.textInput1}>
+              <FormTextInput
+                inputType="number"
+                name={LeaseFormKeys.monthlyRent}
+                label={t('monthlyRent')}
+                placeholder={t('monthlyRentPlaceholder')}
+                maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
+                formProps={formProps}
+                inputPrefixText={currencyData.currencySymbol}
+                inputGroupSuffixText={currencyData.currencyCode}
+                isMandatory
+                containerStyle={[
+                  PlatformUtils.isWeb() && !isMobile && styles.textInput,
+                  PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
+                ]}
+              />
+            </View>
+            <View
+              style={[
+                PlatformUtils.isWeb() && !isMobile && styles.textInput2,
+                PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab2,
+              ]}
+            >
+              <FormTextInput
+                inputType="number"
+                name={LeaseFormKeys.securityDeposit}
+                label={t('securityDeposit')}
+                placeholder={t('securityDepositPlaceholder')}
+                maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
+                formProps={formProps}
+                inputPrefixText={currencyData.currencySymbol}
+                inputGroupSuffixText={currencyData.currencyCode}
+                isMandatory
+                containerStyle={[
+                  PlatformUtils.isWeb() && !isMobile && styles.textInput,
+                  PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
+                ]}
+              />
+            </View>
+
+            {isMobile && (
+              <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
+                {values.showMore ? t('showLess') : t('showMore')}
+              </Text>
+            )}
+            {(!isMobile || (isMobile && values.showMore)) && (
+              <View
+                style={[
+                  PlatformUtils.isWeb() && !isMobile && styles.textInput3,
+                  PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab3,
+                ]}
+              >
+                <FormTextInput
+                  inputType="decimal"
+                  name={LeaseFormKeys.annualIncrement}
+                  label={t('annualIncrement')}
+                  placeholder={t('annualIncrementPlaceholder')}
+                  maxLength={4}
+                  formProps={formProps}
+                  inputGroupSuffixText={t('annualIncrementSuffix')}
+                  containerStyle={[
+                    PlatformUtils.isWeb() && !isMobile && styles.textInput,
+                    PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
+                  ]}
+                />
+              </View>
+            )}
+          </View>
+
           <Text type="small" textType="semiBold" style={styles.headerTitle}>
             {t('duration')}
           </Text>
@@ -211,8 +254,11 @@ const LeaseTermForm = ({
             textType="label"
             textSize="regular"
             isMandatory
+            containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput, PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab]}
           />
           <>
+          <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriod}>
+            <View>
             <Text type="small" textType="semiBold" style={styles.sliderTitle}>
               {t('minimumLeasePeriod')}
             </Text>
@@ -224,6 +270,8 @@ const LeaseTermForm = ({
               isLabelRequired
               labelText="Months"
             />
+            </View>
+        
             <Text type="small" textType="semiBold" style={styles.sliderTitle}>
               {t('maximumLeasePeriod')}
             </Text>
@@ -237,6 +285,8 @@ const LeaseTermForm = ({
                 labelText="Months"
               />
             </WithFieldError>
+          </View>
+           
             <Text type="small" textType="semiBold" style={styles.headerTitle}>
               {t('utilityBy')}
             </Text>
@@ -370,5 +420,29 @@ const styles = StyleSheet.create({
   },
   paddingTop: {
     paddingTop: 0,
+  },
+  leaseTerms: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  textInput: {
+    width: '344px',
+    //left:'5%'
+  },
+  textInputTab: {
+    width: '322px',
+  },
+  textInput1: {},
+  textInput2: {
+    left: '4%',
+  },
+  textInput3: {
+    left: '8%',
+  },
+  textInputTab3: {
+    left: 0,
+  },
+  textInputTab2: {
+    left: '2%',
   },
 });
