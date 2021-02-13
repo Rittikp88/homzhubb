@@ -28,7 +28,8 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
       <View style={styles.flexRow}>
-        <Image source={{ uri: countryFlag }} style={styles.flagStyle} />
+        {/** @ts-ignore * */}
+        <Image source={countryFlag} style={styles.flagStyle} />
         <Typography
           variant={primaryAddressTextStyles?.variant ?? 'text'}
           size={primaryAddressTextStyles?.size ?? 'regular'}

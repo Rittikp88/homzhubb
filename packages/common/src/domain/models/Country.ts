@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { flags } from '@homzhub/common/src/assets/flag';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { PhoneCode } from '@homzhub/common/src/domain/models/PhoneCode';
@@ -69,6 +70,7 @@ export class Country {
   }
 
   get flag(): string {
-    return `https://www.countryflags.io/${this.iso2Code}/flat/48.png`;
+    // @ts-ignore
+    return flags[this.iso2Code];
   }
 }

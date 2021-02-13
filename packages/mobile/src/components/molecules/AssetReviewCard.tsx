@@ -41,6 +41,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     pillarRatings: pillars,
     comments,
     isReported,
+    reviewReportId,
   } = review;
   const comment = comments.length > 0 ? comments[0].comment : '';
   const commentDate = comments.length > 0 ? comments[0].modifiedAt : undefined;
@@ -53,7 +54,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   const [replyMode, setReplyMode] = useState(false);
   const [reply, setReply] = useState(comment);
   const [showReportForm, setShowReportForm] = useState(false);
-  const [isUnderReview, setIsUnderReview] = useState(isReported);
+  const [isUnderReview, setIsUnderReview] = useState(isReported && !reviewReportId);
 
   const isReportedData = {
     date: 'Jan 11, 2021',
@@ -223,11 +224,11 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     return (
       <BottomSheet
         visible={showReportForm}
-        sheetHeight={theme.viewport.height * 0.85}
+        sheetHeight={theme.viewport.height * (reviewReportId ? 0.6 : 0.85)}
         headerTitle={t('reportComment')}
         onCloseSheet={disableReportForm}
       >
-        {isUnderReview ? (
+        {reviewReportId ? (
           renderRepotedReview()
         ) : (
           <ReportReviewForm

@@ -109,7 +109,8 @@ export const Dropdown = (props: IProps): React.ReactElement => {
           image === 'globe' ? (
             <Icon name={icons.earthFilled} size={22} color={theme.colors.active} />
           ) : (
-            <Image source={{ uri: image }} style={imageStyle} />
+            // @ts-ignore
+            <Image source={image} style={imageStyle} />
           )
         ) : (
           <Label

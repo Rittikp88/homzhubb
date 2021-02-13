@@ -42,6 +42,7 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
+import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 
@@ -100,6 +101,7 @@ const ENDPOINTS = {
   listingReviews: 'listing-reviews/',
   addReviewComment: (reviewId: number): string => `listing-reviews/${reviewId}/comments/`,
   reportReview: (reviewId: number): string => `listing-reviews/${reviewId}/reports/`,
+  reportReviewData: (reviewId: number, reportId: number): string => `listing-reviews/${reviewId}/reports/${reportId}`,
   editReviewComment: (reviewId: number, commentId: number): string =>
     `listing-reviews/${reviewId}/comments/${commentId}/`,
   listingReviewsSummary: 'listing-reviews/summary/',
@@ -382,6 +384,11 @@ class AssetRepository {
 
   public reportReview = async (reviewId: number, payload: IReportReview): Promise<void> => {
     return this.apiClient.post(ENDPOINTS.reportReview(reviewId), payload);
+  };
+
+  public getReportReviewData = async (reviewId: number, reportId: number): Promise<ReportReview> => {
+    const response = await this.apiClient.get(ENDPOINTS.reportReviewData(reviewId, reportId));
+    return ObjectMapper.deserialize(ReportReview, response);
   };
 }
 

@@ -17,7 +17,7 @@ export const AllowedAttachmentFormats = {
 export enum UploadFileType {
   IMAGE = 'image',
   PDF = 'pdf',
-};
+}
 
 export interface IAttachment {
   id?: number;
