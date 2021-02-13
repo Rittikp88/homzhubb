@@ -445,4 +445,8 @@ const styles = StyleSheet.create({
   textInputTab2: {
     left: '2%',
   },
+  leasePeriod:{
+    flexDirection:'row',
+    flexWrap:'wrap'
+  }
 });
