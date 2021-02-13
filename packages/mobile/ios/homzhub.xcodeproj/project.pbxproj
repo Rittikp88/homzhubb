@@ -60,7 +60,7 @@
 		C8E39350344548D8B642F458 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35C9381915564BBDA4C55CC6 /* OpenSans-SemiBold.ttf */; };
 		D0B11F371B00388BA34ACC25 /* libPods-homzhub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */; };
 		EA5C6D9BD314961403BCDED7 /* libPods-homzhub-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CE19622E89A68F902597012 /* libPods-homzhub-tvOS.a */; };
-		C015503A2E414B63B57E71A9 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0E487B4F835440538AD10919 /* icomoon.ttf */; };
+		9B0EE08D98784AE78765143F /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A20F1D41484D48F7AD2659F0 /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -191,7 +191,7 @@
 		E8492EB7400E45288F69B5DA /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-Bold.ttf"; path = "../../common/src/assets/fonts/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		0E487B4F835440538AD10919 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../../common/src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A20F1D41484D48F7AD2659F0 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../../common/src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,7 +277,7 @@
 				91EB2EB3156A4550A4A5A313 /* Raleway-Light.ttf */,
 				BF7AB555DA614F1CAC96AA3E /* Raleway-Medium.ttf */,
 				26F007504DE64EDBA2DAEF56 /* fonts.ts */,
-				0E487B4F835440538AD10919 /* icomoon.ttf */,
+				A20F1D41484D48F7AD2659F0 /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -593,7 +593,7 @@
 				3CE0B25D5D2242B9A4ACD16F /* Raleway-Light.ttf in Resources */,
 				15882547F49946668123D15D /* Raleway-Medium.ttf in Resources */,
 				92D18F0E040D4034BB8E3C75 /* fonts.ts in Resources */,
-				C015503A2E414B63B57E71A9 /* icomoon.ttf in Resources */,
+				9B0EE08D98784AE78765143F /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

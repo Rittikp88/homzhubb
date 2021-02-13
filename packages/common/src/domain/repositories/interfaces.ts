@@ -364,7 +364,7 @@ export interface IAddGeneralLedgerPayload {
   category: number;
   transaction_date: string;
   notes?: string | null;
-  attachment: number | null;
+  attachments: number[] | null;
   currency: string;
 }
 

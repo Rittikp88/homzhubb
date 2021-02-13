@@ -1,28 +1,28 @@
 import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
-import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
-import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { UploadBoxComponent, IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
-import { IDocumentSource, UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 enum FormType {
   Income = 1,
@@ -43,9 +43,14 @@ interface IState {
   ledgerCategories: LedgerCategory[];
   selectedFormType: FormType;
   formValues: IFormData;
-  attachment?: IDocumentSource;
+  attachments: IDocumentSource[];
   currencyCode: string;
   currencySymbol: string;
+}
+
+export interface IUploadAttachmentResponse {
+  id: string;
+  link: string;
 }
 
 interface IOwnProps extends WithTranslation {
@@ -73,7 +78,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     } = props;
     this.state = {
       selectedFormType: FormType.Income,
-      attachment: undefined,
+      attachments: [],
       currencyCode,
       currencySymbol,
       ledgerCategories: [],
@@ -113,8 +118,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
 
   public render(): ReactElement {
     const { containerStyles, t, assetId } = this.props;
-    const { selectedFormType, formValues, currencyCode, currencySymbol } = this.state;
-
+    const { selectedFormType, formValues, currencyCode, currencySymbol, attachments } = this.state;
     return (
       <View style={containerStyles}>
         <SelectionPicker
@@ -203,6 +207,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   onMessageChange={handleNotes}
                 />
                 <UploadBoxComponent
+                  attachments={attachments}
                   icon={icons.document}
                   header={t('common:uploadDocument')}
                   subHeader={t('common:uploadDocHelperText')}
@@ -279,37 +284,37 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     });
   };
 
-  private handleUpload = (attachment: IDocumentSource): void => {
-    this.setState({ attachment });
+  private handleUpload = (attachments: IDocumentSource[]): void => {
+    this.setState((prevState: IState) => {
+      return { attachments: [...prevState.attachments, ...attachments] };
+    });
   };
 
-  private handleDocumentDelete = (): void => {
-    this.setState({
-      attachment: {
-        uri: '',
-        type: '',
-        name: '',
-      },
+  private handleDocumentDelete = (uri: string): void => {
+    this.setState((prevState) => {
+      return { attachments: prevState.attachments.filter((file) => file.uri !== uri) };
     });
   };
 
   private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     const { property, label, tellerName, amount, category, notes, date } = values;
-    const { selectedFormType, attachment, currencyCode } = this.state;
+    const { selectedFormType, attachments, currencyCode } = this.state;
     const { toggleLoading } = this.props;
-    let attachmentId = 0;
+    let attachmentIds: Array<number> = [];
 
     toggleLoading(true);
 
     try {
-      if (attachment) {
+      if (attachments.length) {
         /* Make an API call for uploading the document and extract the doc Id */
         const formData = new FormData();
-        // @ts-ignore
-        formData.append('files[]', attachment);
+        attachments.forEach((attachment: IDocumentSource) => {
+          // @ts-ignore
+          formData.append('files[]', attachment);
+        });
         const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_RECORD);
         const { data } = response;
-        attachmentId = data[0].id;
+        attachmentIds = data.map((i: IUploadAttachmentResponse) => i.id);
       }
 
       formActions.setSubmitting(true);
@@ -326,10 +331,9 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         category: Number(category),
         transaction_date: date,
         ...(notes && { notes }),
-        attachment: attachmentId || null,
+        attachments: attachmentIds.length ? [...attachmentIds] : null,
         currency: currencyCode,
       };
-
       await LedgerRepository.postGeneralLedgers(payload);
       toggleLoading(false);
       formActions.setSubmitting(false);

@@ -78,6 +78,8 @@
     "clear": "Clear",
     "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
     "uploadDocument": "Upload Document",
+    "duplicateUpload": "Duplicate upload(s) found",
+    "completed": "Completed",
     "toastBack": "Click Back again to exit.",
     "optional": "Optional",
     "you": "You",

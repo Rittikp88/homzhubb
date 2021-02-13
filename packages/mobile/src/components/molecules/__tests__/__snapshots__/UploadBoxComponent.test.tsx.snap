@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UploadBoxComponent should match snapshot 1`] = `
-<UploadBoxComponent
+<Memo(UploadBoxComponent)
   header="Header"
   icon="left-arrow"
   onCapture={[MockFunction]}
@@ -11,8 +11,6 @@ exports[`UploadBoxComponent should match snapshot 1`] = `
   <UploadBox
     header="Header"
     icon="left-arrow"
-    onCapture={[MockFunction]}
-    onDelete={[MockFunction]}
     onPress={[Function]}
     subHeader="subHeader"
   >
@@ -364,5 +362,8 @@ exports[`UploadBoxComponent should match snapshot 1`] = `
       </TouchableOpacity>
     </ForwardRef>
   </UploadBox>
-</UploadBoxComponent>
+  <Memo(FileUpload)
+    onDelete={[MockFunction]}
+  />
+</Memo(UploadBoxComponent)>
 `;
