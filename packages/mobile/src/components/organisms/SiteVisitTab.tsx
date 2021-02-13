@@ -29,6 +29,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IAssetVisitPayload,
   IUpdateVisitPayload,
+  IVisitActionParam,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
@@ -291,17 +292,27 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
 
   private handleRescheduleVisit = (asset: AssetVisit, key: Tabs, userId?: number): void => {
     const { onReschedule, setVisitIds } = this.props;
-    const { id, leaseListing, saleListing } = asset;
+    const { id, leaseListing, saleListing, isValidVisit } = asset;
     setVisitIds([id]);
     const param = {
       ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
       ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
     };
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
     if (key === Tabs.COMPLETED) {
       onReschedule({ ...param, userId }, true);
     } else {
       onReschedule(param, false);
     }
+  };
+
+  private handleInvalidVisit = (): void => {
+    const { t } = this.props;
+    this.onCloseProfile();
+    AlertHelper.error({ message: t('property:inValidVisit') });
   };
 
   private handleIndexChange = (index: number): void => {
@@ -312,9 +323,17 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     this.setState({ currentIndex: index, dropdownValue: 1 }, this.getVisitsData);
   };
 
-  private handleVisitActions = async (visitId: number, action: VisitActions, isUserView?: boolean): Promise<void> => {
+  private handleVisitActions = async (param: IVisitActionParam): Promise<void> => {
+    const { action, isValidVisit, isUserView } = param;
+    if (!action) return;
+
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
+
     const payload: IUpdateVisitPayload = {
-      id: visitId,
+      id: param.id,
       data: {
         status: action,
       },
@@ -353,14 +372,17 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
 
   private handleSchedule = (visit: AssetVisit): void => {
     const { onReschedule, setVisitIds, getAssetVisit } = this.props;
-    const { id, leaseListing, saleListing } = visit;
-    setVisitIds([id]);
-    getAssetVisit({ id });
-
+    const { id, leaseListing, saleListing, isValidVisit } = visit;
     const param = {
       ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
       ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
     };
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
+    setVisitIds([id]);
+    getAssetVisit({ id });
     onReschedule(param, false);
     this.onCloseProfile();
   };
@@ -385,12 +407,25 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
     return null;
   };
 
-  private showConfirmation = (visitId: number): void => {
+  private showConfirmation = (param: IVisitActionParam): void => {
     const { t } = this.props;
+    const { isValidVisit, id, isUserView } = param;
+
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
+
     AlertHelper.alert({
       title: t('property:cancelVisit'),
       message: t('property:wantCancelVisit'),
-      onOkay: () => this.handleVisitActions(visitId, VisitActions.CANCEL, true).then(),
+      onOkay: () =>
+        this.handleVisitActions({
+          id,
+          action: VisitActions.CANCEL,
+          isValidVisit,
+          isUserView,
+        }).then(),
     });
   };
 

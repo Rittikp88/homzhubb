@@ -648,3 +648,10 @@ export interface IReportReview {
   category: number;
   report_comment?: string;
 }
+
+export interface IVisitActionParam {
+  id: number;
+  action?: VisitActions;
+  isValidVisit?: boolean;
+  isUserView?: boolean;
+}
