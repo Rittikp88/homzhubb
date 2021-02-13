@@ -43,6 +43,8 @@ export interface IGetHistoryParam {
 
 export interface IGetHistoryPayload {
   sort_by?: string;
+  lease_transaction_id?: number;
+  active?: boolean;
 }
 
 export interface ISetAssetPayload {

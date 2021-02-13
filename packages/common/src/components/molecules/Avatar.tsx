@@ -12,6 +12,7 @@ interface IProps {
   fullName: string;
   isOnlyAvatar?: boolean;
   image?: string;
+  icon?: string;
   designation?: string;
   phoneNumber?: string;
   phoneCode?: string;
@@ -41,6 +42,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     phoneCode,
     isOnlyAvatar = false,
     image,
+    icon,
     initialsContainerStyle,
     imageSize = 42,
     onPressCamera,
@@ -53,17 +55,22 @@ const Avatar = (props: IProps): React.ReactElement => {
     <View style={[styles.container, containerStyle]}>
       <View style={styles.leftView}>
         <>
-          {image ? (
-            <Image
-              source={{
-                uri: image,
-              }}
-              style={{
-                ...(theme.circleCSS(imageSize) as object),
-                borderColor: theme.colors.white,
-                borderWidth: 1,
-              }}
-            />
+          {image || icon ? (
+            <>
+              {!!image && (
+                <Image
+                  source={{
+                    uri: image,
+                  }}
+                  style={{
+                    ...(theme.circleCSS(imageSize) as object),
+                    borderColor: theme.colors.white,
+                    borderWidth: 1,
+                  }}
+                />
+              )}
+              {!!icon && <Icon name={icons.circularCheckFilled} size={imageSize} color={theme.colors.greenOpacity} />}
+            </>
           ) : (
             <View
               style={[styles.initialsContainer, { ...(theme.circleCSS(imageSize) as object) }, initialsContainerStyle]}
@@ -81,7 +88,7 @@ const Avatar = (props: IProps): React.ReactElement => {
         </>
         {!isOnlyAvatar && (
           <View style={styles.nameContainer}>
-            <Label textType="regular" type="large" minimumFontScale={0.8} adjustsFontSizeToFit>
+            <Label textType="regular" type="large" numberOfLines={1} minimumFontScale={0.8} adjustsFontSizeToFit>
               {fullName}
             </Label>
             <View style={styles.leftView}>

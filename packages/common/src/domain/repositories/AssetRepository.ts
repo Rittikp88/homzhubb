@@ -22,6 +22,8 @@ import {
   IGetListingReviews,
   IAddReviewComment,
   IReportReview,
+  IUpdateTenantParam,
+  IUserDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -105,6 +107,8 @@ const ENDPOINTS = {
   editReviewComment: (reviewId: number, commentId: number): string =>
     `listing-reviews/${reviewId}/comments/${commentId}/`,
   listingReviewsSummary: 'listing-reviews/summary/',
+  updateTenant: (param: IUpdateTenantParam): string =>
+    `assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}`,
 };
 
 class AssetRepository {
@@ -389,6 +393,14 @@ class AssetRepository {
   public getReportReviewData = async (reviewId: number, reportId: number): Promise<ReportReview> => {
     const response = await this.apiClient.get(ENDPOINTS.reportReviewData(reviewId, reportId));
     return ObjectMapper.deserialize(ReportReview, response);
+  };
+
+  public updateTenantDetails = async (param: IUpdateTenantParam, payload: IUserDetails): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.updateTenant(param), payload);
+  };
+
+  public deleteTenant = async (param: IUpdateTenantParam): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.updateTenant(param));
   };
 }
 

@@ -203,7 +203,8 @@
     "oneYear": "1 Year",
     "invitationSent": "Invitation Sent",
     "update": "Update",
-    "editInvite": "Edit Invite"
+    "editInvite": "Edit Invite",
+    "tenantDetailsAreUpdated": "Tenant Details are updated"
   },
   "auth": {
     "verifyNumber": "Verify your number",
