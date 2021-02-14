@@ -3,6 +3,9 @@ import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { FormikProps } from 'formik';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
@@ -10,6 +13,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   formProps: FormikProps<any>;
@@ -31,6 +35,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
     maintenanceUnitKey,
     assetGroupType,
   } = props;
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
 
   const scheduleOptions = [
     { label: t('monthly'), value: ScheduleTypes.MONTHLY },
@@ -45,7 +50,7 @@ export const MaintenanceDetails = (props: IProps): React.ReactElement => {
   }, [maintenanceUnits]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, PlatformUtils.isWeb() && !isMobile && styles.containerWeb]}>
       <View style={styles.fieldContainer}>
         <FormTextInput
           inputType="number"
@@ -94,6 +99,9 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 4,
     flexDirection: 'row',
+  },
+  containerWeb:{
+width:344
   },
   fieldContainer: {
     flex: 0.5,

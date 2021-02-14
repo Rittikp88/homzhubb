@@ -42,7 +42,7 @@ const Dashboard: FC = () => {
     getPropertyMetrics((response) => setPropertyMetrics(response)).then();
     getVacantPropertyDetails((response) => setVacantProperty(response)).then();
   }, [dispatch, isLoggedIn]);
-  console.log(pendingProperty)
+  console.log(pendingProperty);
   const PendingPropertyAndUserSubscriptionComponent = (): React.ReactElement => (
     <>
       <PendingPropertiesCard data={pendingProperty} />

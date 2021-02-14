@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, CSSProperties } from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle, TextInput } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -85,7 +85,9 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
     setPreviousCount(count);
     setCount(0);
   };
-
+  const imageStyle: CSSProperties = {
+    marginRight:'10%'
+  };
   return (
     <View style={[styles.rowStyle, containerStyles]}>
       <View style={styles.imageContainer}>
@@ -93,10 +95,11 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
           <SVGUri height={24} width={24} uri={svgImage} style={styles.svgStyle} />
         ) : (
           <img
-            src="https://private-homzhub-bucket.s3.amazonaws.com/dfdf0446f679462b8a19e361f8341a9f.svg" // Todo Need to integrate data from API
+            src={svgImage} 
             alt=""
             width={24}
             height={24}
+            style={imageStyle}
           />
         )}
         {name && (

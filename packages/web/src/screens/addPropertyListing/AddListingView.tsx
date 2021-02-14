@@ -81,8 +81,8 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   };
 
   public static getDerivedStateFromProps(props: Props, state: IOwnState): IOwnState | null {
-    const { assetDetails, params , isMobile} = props;
-console.log(isMobile)
+    const { assetDetails, params, isMobile } = props;
+    console.log(isMobile);
     const { isNextStep } = state;
     if (assetDetails) {
       const {
@@ -201,7 +201,7 @@ console.log(isMobile)
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
     //  const styles = AddListingStyles()
-console.log(isMobile)
+    console.log(isMobile);
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (

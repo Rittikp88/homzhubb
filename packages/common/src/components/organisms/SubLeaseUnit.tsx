@@ -6,6 +6,9 @@ import * as yup from 'yup';
 import { cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -30,6 +33,7 @@ import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { LeaseSpaceUnit } from '@homzhub/common/src/domain/models/LeaseSpaceUnit';
 import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 // CONSTANTS
 const LEASE_UNIT = 'Lease Unit';
@@ -77,6 +81,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
   const [tenantPreferences, setPreferences] = useState<ICheckboxGroupData[]>([]);
   const [spaces, setSpaces] = useState<SpaceType[]>([]);
   const [furnishingType, setFurnishingType] = useState(furnishing);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
 
   useEffect(() => {
     const toSet = preferences.map((detail: TenantPreference) => {
@@ -212,7 +217,6 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
           // @ts-ignore
           onSubmitPress(formProps.values, {}, false);
         };
-console.log(availableSpaces)
         return (
           <>
             {route && availableSpaces.length > 0 && (
@@ -240,14 +244,14 @@ console.log(availableSpaces)
                 </AssetListingSection>
               )}
             </LeaseTermForm>
-            <View style={styles.buttonContainer}>
+            <View style={[styles.buttonContainer, PlatformUtils.isWeb() && !isMobile &&styles.buttonContainerWeb]}>
               {route && (
                 <Button
                   type="primary"
                   title={t('saveUnit')}
                   titleStyle={styles.buttonTitle}
                   onPress={onAddUnit}
-                  containerStyle={[styles.continue, styles.saveUnit]}
+                  containerStyle={[styles.continue, styles.saveUnit, PlatformUtils.isWeb() &&  styles.continueWeb]}
                 />
               )}
               <FormButton
@@ -257,7 +261,7 @@ console.log(availableSpaces)
                 // @ts-ignore
                 onPress={formProps.handleSubmit}
                 titleStyle={styles.buttonTitle}
-                containerStyle={styles.continue}
+                containerStyle={[styles.continue , PlatformUtils.isWeb()  && styles.continueWeb]}
               />
             </View>
           </>
@@ -274,6 +278,9 @@ const styles = StyleSheet.create({
   continue: {
     marginTop: 20,
     marginBottom: 50,
+  },
+  continueWeb :{
+width:165
   },
   descriptionContainer: {
     marginTop: 16,
@@ -292,6 +299,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     paddingBottom: 12,
+    //width: 372
+  },
+  buttonContainerWeb:{
+  
   },
   saveUnit: {
     marginEnd: 16,

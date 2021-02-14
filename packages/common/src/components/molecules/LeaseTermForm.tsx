@@ -168,9 +168,11 @@ const LeaseTermForm = ({
       <AssetListingSection title={t('leaseTerms')}>
         <>
           {isFromManage && children}
-          {PlatformUtils.isWeb() &&<Text type="small" textType="semiBold" style={styles.headerTitle}>
-            {t('rentAndSecurity')}
-          </Text>}
+          {PlatformUtils.isWeb() && (
+            <Text type="small" textType="semiBold" style={styles.headerTitle}>
+              {t('rentAndSecurity')}
+            </Text>
+          )}
           <View style={PlatformUtils.isWeb() && !isMobile && styles.leaseTerms}>
             <View style={PlatformUtils.isWeb() && !isMobile && styles.textInput1}>
               <FormTextInput
@@ -254,39 +256,43 @@ const LeaseTermForm = ({
             textType="label"
             textSize="regular"
             isMandatory
-            containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput, PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab]}
+            containerStyle={[
+              PlatformUtils.isWeb() && !isMobile && styles.textInput,
+              PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
+            ]}
           />
           <>
-          <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriod}>
-            <View>
-            <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-              {t('minimumLeasePeriod')}
-            </Text>
-            <Slider
-              onSliderChange={onSliderChange}
-              minSliderRange={MINIMUM_LEASE_PERIOD}
-              maxSliderRange={MAXIMUM_LEASE_PERIOD}
-              minSliderValue={formProps.values[LeaseFormKeys.minimumLeasePeriod]}
-              isLabelRequired
-              labelText="Months"
-            />
+            <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriod}>
+              <View >
+                <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+                  {t('minimumLeasePeriod')}
+                </Text>
+                <Slider
+                  onSliderChange={onSliderChange}
+                  minSliderRange={MINIMUM_LEASE_PERIOD}
+                  maxSliderRange={MAXIMUM_LEASE_PERIOD}
+                  minSliderValue={formProps.values[LeaseFormKeys.minimumLeasePeriod]}
+                  isLabelRequired
+                  labelText="Months"
+                />
+              </View>
+              <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriodMax}>
+              <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+                {t('maximumLeasePeriod')}
+              </Text>
+              <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
+                <Slider
+                  onSliderChange={onTotalSliderChange}
+                  minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
+                  maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
+                  minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
+                  isLabelRequired
+                  labelText="Months"
+                />
+              </WithFieldError>
+              </View>
             </View>
-        
-            <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-              {t('maximumLeasePeriod')}
-            </Text>
-            <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
-              <Slider
-                onSliderChange={onTotalSliderChange}
-                minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
-                maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
-                minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
-                isLabelRequired
-                labelText="Months"
-              />
-            </WithFieldError>
-          </View>
-           
+
             <Text type="small" textType="semiBold" style={styles.headerTitle}>
               {t('utilityBy')}
             </Text>
@@ -294,7 +300,7 @@ const LeaseTermForm = ({
               data={PAID_BY_OPTIONS}
               onItemSelect={onUtilityChanged}
               selectedItem={values[LeaseFormKeys.utilityBy]}
-              containerStyle={styles.buttonGroup}
+              containerStyle={[styles.buttonGroup, PlatformUtils.isWeb() && !isMobile && styles.buttonGroupWeb]}
             />
             <View
               pointerEvents={isSplitAsUnits ? 'none' : undefined}
@@ -307,7 +313,7 @@ const LeaseTermForm = ({
                 data={PAID_BY_OPTIONS}
                 onItemSelect={onMaintenanceChanged}
                 selectedItem={values.maintenanceBy}
-                containerStyle={styles.buttonGroup}
+                containerStyle={[styles.buttonGroup,PlatformUtils.isWeb() && !isMobile && styles.buttonGroupWeb]}
               />
             </View>
           </>
@@ -407,6 +413,9 @@ const styles = StyleSheet.create({
   buttonGroup: {
     marginTop: 14,
   },
+  buttonGroupWeb:{
+width:344
+  },
   sliderTitle: {
     marginTop: 28,
     color: theme.colors.darkTint3,
@@ -445,8 +454,11 @@ const styles = StyleSheet.create({
   textInputTab2: {
     left: '2%',
   },
-  leasePeriod:{
-    flexDirection:'row',
-    flexWrap:'wrap'
+  leasePeriod: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  leasePeriodMax:{
+    left:24
   }
 });
