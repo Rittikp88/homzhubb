@@ -8,7 +8,7 @@ import SharingService from '@homzhub/mobile/src/services/SharingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
 import Google from '@homzhub/common/src/assets/images/google.svg';
-import Twitter from '@homzhub/common/src/assets/images/Twitter.svg';
+import Twitter from '@homzhub/common/src/assets/images/TwitterColor.svg';
 import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';

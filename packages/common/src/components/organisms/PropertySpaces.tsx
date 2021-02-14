@@ -248,10 +248,10 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
   },
   counter: {
-    width: '25%',
+    width: '29%',
+    justifyContent: 'space-between',
     marginLeft: 60,
     marginBottom: 24,
   },

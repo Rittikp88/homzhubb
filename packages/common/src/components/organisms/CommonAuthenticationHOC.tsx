@@ -29,7 +29,7 @@ const CommonAuthenticationHoc: FC<IProps> = ({ isFromLogin, onEmailLogin, contai
           <TouchableOpacity style={styles.alignToCenter} onPress={onEmailLogin}>
             <Email height={24} width={24} />
             <Label type="regular" textType="regular" style={styles.iconTextStyle}>
-              {t('emailText')}
+              {t('auth:emailText')}
             </Label>
           </TouchableOpacity>
         )}

@@ -47,6 +47,7 @@ export const icons = {
   idProof: 'id-proof',
   document: 'document',
   gallery: 'gallery',
+  imageFile: 'image-file',
   selfie: 'selfie',
   calendar: 'calendar',
   starFilled: 'filled-star',

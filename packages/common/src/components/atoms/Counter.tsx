@@ -1,5 +1,5 @@
-import React, { useEffect, useState, CSSProperties } from 'react';
-import { StyleProp, StyleSheet, TextStyle, View, ViewStyle, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle, TextInput, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -85,22 +85,14 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
     setPreviousCount(count);
     setCount(0);
   };
-  const imageStyle: CSSProperties = {
-    marginRight:'10%'
-  };
+ 
   return (
     <View style={[styles.rowStyle, containerStyles]}>
       <View style={styles.imageContainer}>
         {svgImage && PlatformUtils.isMobile() ? (
           <SVGUri height={24} width={24} uri={svgImage} style={styles.svgStyle} />
         ) : (
-          <img
-            src={svgImage} 
-            alt=""
-            width={24}
-            height={24}
-            style={imageStyle}
-          />
+          svgImage && <Image source={{ uri: svgImage }} style={styles.imageStyle} />
         )}
         {name && (
           <Text style={[styles.textStyle, name.titleStyle]} type="small">
@@ -170,6 +162,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 0,
     width: 50,
+  },
+  imageStyle: {
+    marginRight: 12,
+    width: 24,
+    height: 24,
   },
 });
 

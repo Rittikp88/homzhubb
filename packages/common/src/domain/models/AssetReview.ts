@@ -57,6 +57,9 @@ export class AssetReview {
   @JsonProperty('review_count', Number, true)
   private _reviewCount = 0;
 
+  @JsonProperty('review_report_id', Number, true)
+  private _reviewReportId = 0;
+
   get reviewCount(): number {
     return this._reviewCount;
   }
@@ -111,5 +114,9 @@ export class AssetReview {
 
   get modifiedAt(): string {
     return this._modifiedAt;
+  }
+
+  get reviewReportId(): number {
+    return this._reviewReportId;
   }
 }

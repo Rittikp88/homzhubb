@@ -7,8 +7,7 @@ import * as yup from 'yup';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -107,6 +106,7 @@ const LeaseTermForm = ({
   const maintenanceUnits = useSelector(RecordAssetSelectors.getMaintenanceUnits);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const isTabPro = useIsIpadPro();
 
   // CONSTANTS
   const PAID_BY_OPTIONS = [
@@ -194,7 +194,7 @@ const LeaseTermForm = ({
             <View
               style={[
                 PlatformUtils.isWeb() && !isMobile && styles.textInput2,
-                PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab2,
+                PlatformUtils.isWeb() && !isMobile && (isTablet || isTabPro) && styles.textInputTab2,
               ]}
             >
               <FormTextInput
@@ -223,7 +223,7 @@ const LeaseTermForm = ({
               <View
                 style={[
                   PlatformUtils.isWeb() && !isMobile && styles.textInput3,
-                  PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab3,
+                  PlatformUtils.isWeb() && !isMobile && (isTablet || isTabPro) && styles.textInputTab3,
                 ]}
               >
                 <FormTextInput
@@ -263,7 +263,7 @@ const LeaseTermForm = ({
           />
           <>
             <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriod}>
-              <View >
+              <View>
                 <Text type="small" textType="semiBold" style={styles.sliderTitle}>
                   {t('minimumLeasePeriod')}
                 </Text>
@@ -276,20 +276,20 @@ const LeaseTermForm = ({
                   labelText="Months"
                 />
               </View>
-              <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriodMax}>
-              <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-                {t('maximumLeasePeriod')}
-              </Text>
-              <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
-                <Slider
-                  onSliderChange={onTotalSliderChange}
-                  minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
-                  maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
-                  minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
-                  isLabelRequired
-                  labelText="Months"
-                />
-              </WithFieldError>
+              <View style={PlatformUtils.isWeb() && !isMobile && !isTablet && styles.leasePeriodMax}>
+                <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+                  {t('maximumLeasePeriod')}
+                </Text>
+                <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
+                  <Slider
+                    onSliderChange={onTotalSliderChange}
+                    minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
+                    maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
+                    minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
+                    isLabelRequired
+                    labelText="Months"
+                  />
+                </WithFieldError>
               </View>
             </View>
 
@@ -313,7 +313,7 @@ const LeaseTermForm = ({
                 data={PAID_BY_OPTIONS}
                 onItemSelect={onMaintenanceChanged}
                 selectedItem={values.maintenanceBy}
-                containerStyle={[styles.buttonGroup,PlatformUtils.isWeb() && !isMobile && styles.buttonGroupWeb]}
+                containerStyle={[styles.buttonGroup, PlatformUtils.isWeb() && !isMobile && styles.buttonGroupWeb]}
               />
             </View>
           </>
@@ -413,8 +413,8 @@ const styles = StyleSheet.create({
   buttonGroup: {
     marginTop: 14,
   },
-  buttonGroupWeb:{
-width:344
+  buttonGroupWeb: {
+    width: 344,
   },
   sliderTitle: {
     marginTop: 28,
@@ -458,7 +458,8 @@ width:344
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  leasePeriodMax:{
-    left:24
-  }
+  leasePeriodMax: {
+    left: 24,
+  },
+ 
 });

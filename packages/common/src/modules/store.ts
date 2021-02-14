@@ -9,7 +9,6 @@ import rootSaga from '@homzhub/common/src/modules/sagas';
 export const configureStore = (): Store<IState> => {
   // Redux middleware configurations
   const middleware = [];
-
   // Saga Middleware
   const sagaMiddleware = createSagaMiddleware();
 

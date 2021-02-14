@@ -34,12 +34,16 @@ const PropertyDetailsMap: FC = () => {
   };
   return (
     <View style={[styles.container, isTablet && styles.containerTablet]}>
-      {hasScriptLoaded && (
-        <GoogleMapView center={latLng} onMapLoadCallBack={handleOnMapLoad}>
-          <Marker position={latLng} draggable animation={google.maps.Animation.DROP} onDragEnd={onDragEnd} />
-        </GoogleMapView>
-      )}
-      <PropertyDetailsForm data={placeDetails} />
+      <View style={styles.subContainer}>
+        {hasScriptLoaded && (
+          <GoogleMapView center={latLng} onMapLoadCallBack={handleOnMapLoad}>
+            <Marker position={latLng} draggable animation={google.maps.Animation.DROP} onDragEnd={onDragEnd} />
+          </GoogleMapView>
+        )}
+      </View>
+      <View style={[styles.subContainer, isTablet && styles.formTablet]}>
+        <PropertyDetailsForm data={placeDetails} />
+      </View>
     </View>
   );
 };
@@ -50,12 +54,17 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     flexDirection: 'row',
     padding: 20,
-    marginBottom: 48,
     borderRadius: 4,
     width: '100%',
   },
   containerTablet: {
+    flex: 1,
     flexDirection: 'column',
+    minHeight: 'fit-content',
+    paddingBottom: 265,
+    height: 'auto',
   },
+  subContainer: { flex: 1 },
+  formTablet: { flex: 3 },
 });
 export default PropertyDetailsMap;

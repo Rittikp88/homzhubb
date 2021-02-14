@@ -4,6 +4,7 @@ import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PopupProps } from 'reactjs-popup/dist/types';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -44,6 +45,8 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     isCalendarVisible: false,
   };
 
+  private popupRef = React.createRef<PopupActions>();
+
   public render(): React.ReactNode {
     const {
       t,
@@ -67,7 +70,6 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       isYearView = false,
       isCurrentDateEnable = false,
     } = this.props;
-    const { isCalendarVisible } = this.state;
     const availableDate = (): string => {
       if (selectedValue) {
         return selectedValue;
@@ -82,7 +84,6 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       contentStyle: { minWidth: width, marginTop: '4px' },
       closeOnDocumentClick: true,
       children: undefined,
-      open: isCalendarVisible,
     });
 
     const labelStyles = { ...theme.form.formLabel };
@@ -112,6 +113,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
               />
             }
             popupProps={defaultDropDownProps('100px')}
+            forwardedRef={this.popupRef}
           >
             <TouchableOpacity
               testID="toCalenderInput"
@@ -145,6 +147,9 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     } else {
       formProps?.setFieldValue(name, day);
       formProps?.setFieldTouched(name);
+    }
+    if (this.popupRef && this.popupRef.current) {
+      this.popupRef.current?.close();
     }
   };
 

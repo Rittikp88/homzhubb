@@ -68,7 +68,6 @@ export enum ScreensKeys {
   PropertyDetailScreen = 'PropertyDetailScreen',
   PropertyDetailsNotifications = 'PropertyDetailsNotifications',
   UpdatePropertyScreen = 'UpdatePropertyScreen',
-
   // Financials Stack
   FinancialsLandingScreen = 'FinancialsLandingScreen',
   AddRecordScreen = 'AddRecordScreen',

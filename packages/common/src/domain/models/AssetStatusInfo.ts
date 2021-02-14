@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { AssetTenantInfo } from '@homzhub/common/src/domain/models/AssetTenantInfo';
 import { LabelColor, LeaseTransaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { User } from '@homzhub/common/src/domain/models/User';
 
@@ -13,8 +14,8 @@ export class AssetStatusInfo {
   @JsonProperty('tag', LabelColor, true)
   private _tag: LabelColor = new LabelColor();
 
-  @JsonProperty('lease_tenant_info', User, true)
-  private _leaseTenantInfo: User = new User();
+  @JsonProperty('lease_tenant_info', AssetTenantInfo, true)
+  private _leaseTenantInfo: AssetTenantInfo = new AssetTenantInfo();
 
   @JsonProperty('lease_owner_info', User, true)
   private _leaseOwnerInfo: User = new User();
@@ -56,7 +57,7 @@ export class AssetStatusInfo {
     return this._tag;
   }
 
-  get leaseTenantInfo(): User {
+  get leaseTenantInfo(): AssetTenantInfo {
     return this._leaseTenantInfo;
   }
 

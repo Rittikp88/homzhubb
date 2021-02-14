@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -81,8 +83,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   };
 
   public static getDerivedStateFromProps(props: Props, state: IOwnState): IOwnState | null {
-    const { assetDetails, params, isMobile } = props;
-    console.log(isMobile);
+    const { assetDetails, params } = props;
     const { isNextStep } = state;
     if (assetDetails) {
       const {
@@ -201,7 +202,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
     //  const styles = AddListingStyles()
-    console.log(isMobile);
+
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
@@ -214,17 +215,20 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
                 { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
               ]}
               selectedItem={[leaseType]}
-              containerStyles={styles.switchTab}
+              containerStyles={[styles.switchTab]}
               onValueChange={this.onTabChange}
-              itemWidth={171}
+              itemWidth={PlatformUtils.isWeb() && !isMobile ? 171 : 170}
             />
           )}
         </View>
 
         <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
-          <Text type="small" textType="semiBold">
-            {title}
-          </Text>
+          <View>
+            <Text type="small" textType="semiBold">
+              {title}
+            </Text>
+          </View>
+
           {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
             <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
               {t('common:skip')}
@@ -287,7 +291,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       isMobile,
     } = this.props;
     //const styles = AddListingStyles()
-
+    console.log(leaseType);
     if (!assetDetails) return null;
 
     switch (route.key) {
@@ -492,24 +496,6 @@ export default connect(
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(addListingView));
 
-// interface IAddListingStyle {
-// flexOne: ViewStyle;
-// screen:ViewStyle;
-// tabHeader:ViewStyle;
-// switchTab:ViewStyle;
-// tabRows:ViewStyle;
-// badgeStyle:ViewStyle;
-// skip:ViewStyle;
-// sheetContent:ViewStyle;
-// sheetTitle:ViewStyle;
-// image:ViewStyle;
-// continue:ViewStyle;
-// buttonStyle:ViewStyle;
-// screenContent:ViewStyle;
-// service:ViewStyle;
-// }
-
-//const AddListingStyles = (): StyleSheet.NamedStyles<IAddListingStyle> =>
 const styles = StyleSheet.create({
   flexOne: {
     flex: 1,
@@ -523,10 +509,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     flexWrap: 'wrap',
   },
-  mobileTabHeader: {},
   switchTab: {
     marginBottom: 4,
     marginTop: 20,
+  },
+  switchTabMobile: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabRows: {
     flexDirection: 'row',
@@ -535,13 +524,14 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
   },
   tabRowsMobile: {
-    top: '4%',
+    marginTop: '6%',
+    flex: 1,
   },
   tooltip: {
     left: 9,
   },
   tooltipMobile: {
-    left: 262,
+    left: 'auto',
   },
 
   badgeStyle: {

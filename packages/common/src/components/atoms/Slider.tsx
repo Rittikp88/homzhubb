@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, LayoutChangeEvent } from 'react-native';
 import MultiSlider, { MarkerProps, LabelProps } from '@ptomasroos/react-native-multi-slider';
+
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
@@ -28,7 +29,6 @@ export class Slider extends Component<ISliderProps, IOwnState> {
   public state = {
     width: 0,
   };
-
   public render(): React.ReactNode {
     const { isMultipleSlider } = this.props;
     return <>{isMultipleSlider ? this.renderMultipleSlider() : this.renderSingleSlider()}</>;
@@ -40,8 +40,10 @@ export class Slider extends Component<ISliderProps, IOwnState> {
     if (maxSliderValue && maxSliderValue <= 0) {
       maxSliderValue = maxSliderRange;
     }
+
     return (
-      <MultiSlider
+      <View>
+ <MultiSlider
         values={[minSliderValue, maxSliderValue]}
         sliderLength={SLIDER_LENGTH}
         onValuesChange={this.multiSliderValuesChange}
@@ -56,8 +58,9 @@ export class Slider extends Component<ISliderProps, IOwnState> {
         markerContainerStyle={styles.markerContainer}
         customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
         customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
-        containerStyle={styles.slider}
       />
+      </View>
+     
     );
   };
 
@@ -173,4 +176,5 @@ const styles = StyleSheet.create({
   slider: {
     paddingHorizontal: 4,
   },
+  
 });

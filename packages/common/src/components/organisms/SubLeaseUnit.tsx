@@ -244,14 +244,14 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                 </AssetListingSection>
               )}
             </LeaseTermForm>
-            <View style={[styles.buttonContainer, PlatformUtils.isWeb() && !isMobile &&styles.buttonContainerWeb]}>
+            <View style={[styles.buttonContainer, PlatformUtils.isWeb() && !isMobile && styles.buttonContainerWeb]}>
               {route && (
                 <Button
                   type="primary"
                   title={t('saveUnit')}
                   titleStyle={styles.buttonTitle}
                   onPress={onAddUnit}
-                  containerStyle={[styles.continue, styles.saveUnit, PlatformUtils.isWeb() &&  styles.continueWeb]}
+                  containerStyle={[styles.continue, styles.saveUnit, PlatformUtils.isWeb() && styles.continueWeb]}
                 />
               )}
               <FormButton
@@ -261,7 +261,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                 // @ts-ignore
                 onPress={formProps.handleSubmit}
                 titleStyle={styles.buttonTitle}
-                containerStyle={[styles.continue , PlatformUtils.isWeb()  && styles.continueWeb]}
+                containerStyle={[styles.continue, PlatformUtils.isWeb() && styles.continueWeb]}
               />
             </View>
           </>
@@ -279,8 +279,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 50,
   },
-  continueWeb :{
-width:165
+  continueWeb: {
+    width: 165,
   },
   descriptionContainer: {
     marginTop: 16,
@@ -299,15 +299,14 @@ width:165
   buttonContainer: {
     flexDirection: 'row',
     paddingBottom: 12,
-    //width: 372
   },
-  buttonContainerWeb:{
-  
+  buttonContainerWeb: {
+    marginLeft: 'auto',
   },
   saveUnit: {
     marginEnd: 16,
   },
   buttonTitle: {
     marginHorizontal: 0,
-  },
+  }
 });

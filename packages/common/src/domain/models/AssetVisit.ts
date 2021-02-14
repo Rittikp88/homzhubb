@@ -98,6 +98,9 @@ export class AssetVisit {
   @JsonProperty('is_asset_owner', Boolean, true)
   private _isAssetOwner = false;
 
+  @JsonProperty('is_valid_visit', Boolean, true)
+  private _isValidVisit = false;
+
   @JsonProperty('created_at', String)
   private _createdAt = '';
 
@@ -171,6 +174,10 @@ export class AssetVisit {
 
   get isAssetOwner(): boolean {
     return this._isAssetOwner;
+  }
+
+  get isValidVisit(): boolean {
+    return this._isValidVisit;
   }
 
   get updatedAt(): string {

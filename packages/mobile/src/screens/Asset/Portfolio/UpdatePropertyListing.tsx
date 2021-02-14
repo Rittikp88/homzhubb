@@ -82,11 +82,9 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
       route: { params },
     } = this.props;
     const { isSheetVisible, isLoading } = this.state;
-
     const {
       assetDetail: { projectName, address, country },
     } = params;
-
     return (
       <>
         <UserScreen

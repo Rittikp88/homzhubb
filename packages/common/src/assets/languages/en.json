@@ -78,6 +78,8 @@
     "clear": "Clear",
     "uploadDocHelperText": "Supports: JPG, JPEG, PNG, PDF",
     "uploadDocument": "Upload Document",
+    "duplicateUpload": "Duplicate upload(s) found",
+    "completed": "Completed",
     "toastBack": "Click Back again to exit.",
     "optional": "Optional",
     "you": "You",
@@ -201,7 +203,8 @@
     "oneYear": "1 Year",
     "invitationSent": "Invitation Sent",
     "update": "Update",
-    "editInvite": "Edit Invite"
+    "editInvite": "Edit Invite",
+    "tenantDetailsAreUpdated": "Tenant Details are updated"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -513,7 +516,8 @@
     "basedOn": "Based on {{count}} reviews",
     "noReview": "No Reviews Found",
     "totalReviews": "Reviews ({{total}})",
-    "noPropertyReview": "This property has not been reviewed yet"
+    "noPropertyReview": "This property has not been reviewed yet",
+    "inValidVisit": "This listing has been removed by the property owner."
   },
   "propertySearch": {
     "showProperties": "Show Properties",
