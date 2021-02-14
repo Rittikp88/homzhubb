@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from 'react-native';
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -206,7 +206,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
-      <View style={[styles.tabHeader, isMobile && styles.mobileTabHeader]}>
+      <View style={[styles.tabHeader]}>
         <View>
           {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
             <SelectionPicker
@@ -288,9 +288,8 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       setValueAddedServices,
       valueAddedServices,
       onUploadDocument,
-      isMobile,
     } = this.props;
-    //const styles = AddListingStyles()
+    // const styles = AddListingStyles()
     console.log(leaseType);
     if (!assetDetails) return null;
 

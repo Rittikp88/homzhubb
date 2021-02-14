@@ -4,7 +4,7 @@ import { PortfolioActionTypes, PortfolioPayloadTypes } from '@homzhub/common/src
 import { IPortfolioState, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 
 export const initialPortfolioState: IPortfolioState = {
   error: {
@@ -20,7 +20,7 @@ export const initialPortfolioState: IPortfolioState = {
   properties: null,
   tenancies: null,
   currentAsset: {} as ISetAssetPayload,
-  tenantHistory: null,
+  tenantHistory: [],
   currentFilter: Filters.ALL,
 };
 
@@ -76,7 +76,7 @@ export const portfolioReducer = (
     case PortfolioActionTypes.GET.TENANT_HISTORY_SUCCESS:
       return {
         ...state,
-        ['tenantHistory']: action.payload as TenantHistory[],
+        ['tenantHistory']: action.payload as TenantInfo[],
         ['loaders']: { ...state.loaders, ['history']: false },
       };
     case PortfolioActionTypes.GET.TENANT_HISTORY_FAILURE:

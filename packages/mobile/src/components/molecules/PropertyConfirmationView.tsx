@@ -1,35 +1,52 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 interface IProps {
-  propertyData: Asset;
+  propertyData?: Asset;
+  user?: User | null;
+  userRole?: string;
   description: string;
   message: string;
   onCancel: () => void;
   onContinue: () => void;
+  secondaryButtonTitle?: string;
+  secondaryTitleStyle?: TextStyle;
+  secondaryButtonStyle?: ViewStyle;
 }
 
 const PropertyConfirmationView = (props: IProps): React.ReactElement => {
+  const { t } = useTranslation();
   const {
-    propertyData: {
-      projectName,
-      address,
-      country: { flag },
-    },
+    propertyData,
+    user,
     description,
     message,
     onCancel,
     onContinue,
+    userRole,
+    secondaryButtonTitle = t('common:continue'),
+    secondaryButtonStyle,
+    secondaryTitleStyle,
   } = props;
   return (
     <View style={styles.container}>
-      <PropertyAddressCountry primaryAddress={projectName} subAddress={address} countryFlag={flag} />
+      {propertyData && (
+        <PropertyAddressCountry
+          primaryAddress={propertyData.projectName}
+          subAddress={propertyData.address}
+          countryFlag={propertyData.country.flag}
+        />
+      )}
+      {user && <Avatar fullName={user.name} designation={userRole} />}
       <Divider containerStyles={styles.divider} />
       <Text type="small">{description}</Text>
       <Text type="small" style={styles.message}>
@@ -38,14 +55,14 @@ const PropertyConfirmationView = (props: IProps): React.ReactElement => {
       <View style={styles.buttonContainer}>
         <Button
           type="secondary"
-          title="Continue"
-          titleStyle={styles.buttonTitle}
+          title={secondaryButtonTitle}
+          titleStyle={[styles.buttonTitle, secondaryTitleStyle]}
           onPress={onContinue}
-          containerStyle={styles.editButton}
+          containerStyle={[styles.editButton, secondaryButtonStyle]}
         />
         <Button
           type="primary"
-          title="Cancel"
+          title={t('common:cancel')}
           onPress={onCancel}
           titleStyle={styles.buttonTitle}
           containerStyle={styles.doneButton}

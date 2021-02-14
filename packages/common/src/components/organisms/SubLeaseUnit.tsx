@@ -32,8 +32,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { LeaseSpaceUnit } from '@homzhub/common/src/domain/models/LeaseSpaceUnit';
-import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
 
 // CONSTANTS
 const LEASE_UNIT = 'Lease Unit';
@@ -308,5 +308,5 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     marginHorizontal: 0,
-  }
+  },
 });

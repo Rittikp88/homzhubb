@@ -107,7 +107,7 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
     spaceFields?.push(
       <View style={!isMobile && styles.counterContainer}>
         {groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
-          console.log(space)
+          console.log(space);
           if (isMobile && space.isPrimary !== renderPrimary) {
             return null;
           }
@@ -126,7 +126,7 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
               ]}
               defaultValue={space.unitCount ? space.unitCount : space.isMandatory ? 1 : 0}
               name={{ title: space.name, id: space.id }}
-             svgImage={space.attachment && space.attachment.link}
+              svgImage={space.attachment && space.attachment.link}
               onValueChange={handleCounterChange}
               maxCount={flowType === FlowTypes.PostAssetFlow ? undefined : space.count}
               minCount={space.isMandatory ? 1 : 0}

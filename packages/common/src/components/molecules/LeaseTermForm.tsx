@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: '344px',
-    //left:'5%'
+    // left:'5%'
   },
   textInputTab: {
     width: '322px',
@@ -461,5 +461,4 @@ const styles = StyleSheet.create({
   leasePeriodMax: {
     left: 24,
   },
- 
 });

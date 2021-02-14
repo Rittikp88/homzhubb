@@ -4,7 +4,7 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
-import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 import { DetailType, IPropertyDetailPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
@@ -46,9 +46,9 @@ class PortfolioRepository {
     return ObjectMapper.deserializeArray(Asset, response);
   };
 
-  public getTenantHistory = async (id: number, data?: IGetHistoryPayload): Promise<TenantHistory[]> => {
+  public getTenantHistory = async (id: number, data?: IGetHistoryPayload): Promise<TenantInfo[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getTenantHistory(id), data);
-    return ObjectMapper.deserializeArray(TenantHistory, response);
+    return ObjectMapper.deserializeArray(TenantInfo, response);
   };
 
   public getPropertyDetail = async (payload: IPropertyDetailPayload): Promise<Asset> => {

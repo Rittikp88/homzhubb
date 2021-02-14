@@ -98,6 +98,7 @@ export class Button extends React.PureComponent<IButtonProps> {
     if (type === 'text') {
       themedStyle = styles.textButton;
     }
+
     return StyleSheet.flatten([styles.container, themedStyle, containerStyle]);
   };
 
@@ -113,6 +114,7 @@ export class Button extends React.PureComponent<IButtonProps> {
     if (type === 'text' && disabled) {
       themedStyle = { color: theme.colors.darkTint8 };
     }
+
     return StyleSheet.flatten([styles.textStyle, themedStyle, titleStyle]);
   };
 }

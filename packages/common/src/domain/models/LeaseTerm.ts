@@ -1,7 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LeaseUnit, ILeaseUnit } from '@homzhub/common/src/domain/models/LeaseUnit';
-import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { FurnishingTypes, PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 

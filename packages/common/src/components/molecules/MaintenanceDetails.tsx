@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
     marginTop: 4,
     flexDirection: 'row',
   },
-  containerWeb:{
-width:344
+  containerWeb: {
+    width: 344,
   },
   fieldContainer: {
     flex: 0.5,

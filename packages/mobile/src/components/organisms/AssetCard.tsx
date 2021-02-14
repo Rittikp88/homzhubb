@@ -31,7 +31,7 @@ import {
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
-import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 
 interface IListProps {
   assetData: Asset;
@@ -381,7 +381,7 @@ export class AssetCard extends Component<Props, IState> {
       active: true,
     };
     try {
-      const tenants: TenantHistory[] = await PortfolioRepository.getTenantHistory(id, data);
+      const tenants: TenantInfo[] = await PortfolioRepository.getTenantHistory(id, data);
       this.setState({ listOfTenant: tenants.length });
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });

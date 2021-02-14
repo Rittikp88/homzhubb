@@ -29,6 +29,7 @@ export class Slider extends Component<ISliderProps, IOwnState> {
   public state = {
     width: 0,
   };
+
   public render(): React.ReactNode {
     const { isMultipleSlider } = this.props;
     return <>{isMultipleSlider ? this.renderMultipleSlider() : this.renderSingleSlider()}</>;
@@ -43,24 +44,23 @@ export class Slider extends Component<ISliderProps, IOwnState> {
 
     return (
       <View>
- <MultiSlider
-        values={[minSliderValue, maxSliderValue]}
-        sliderLength={SLIDER_LENGTH}
-        onValuesChange={this.multiSliderValuesChange}
-        min={minSliderRange}
-        max={maxSliderRange}
-        step={maxSliderRange * 0.001}
-        snapped
-        enableLabel={isLabelRequired}
-        isMarkersSeparated
-        onValuesChangeFinish={onChangeFinish}
-        selectedStyle={styles.selectedStyle}
-        markerContainerStyle={styles.markerContainer}
-        customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
-        customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
-      />
+        <MultiSlider
+          values={[minSliderValue, maxSliderValue]}
+          sliderLength={SLIDER_LENGTH}
+          onValuesChange={this.multiSliderValuesChange}
+          min={minSliderRange}
+          max={maxSliderRange}
+          step={maxSliderRange * 0.001}
+          snapped
+          enableLabel={isLabelRequired}
+          isMarkersSeparated
+          onValuesChangeFinish={onChangeFinish}
+          selectedStyle={styles.selectedStyle}
+          markerContainerStyle={styles.markerContainer}
+          customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
+          customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
+        />
       </View>
-     
     );
   };
 
@@ -176,5 +176,4 @@ const styles = StyleSheet.create({
   slider: {
     paddingHorizontal: 4,
   },
-  
 });

@@ -2,7 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
-import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
 import { OrderSummary } from '@homzhub/common/src/domain/models/OrderSummary';
 import { IOrderSummaryPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';

@@ -85,7 +85,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
     setPreviousCount(count);
     setCount(0);
   };
- 
+
   return (
     <View style={[styles.rowStyle, containerStyles]}>
       <View style={styles.imageContainer}>

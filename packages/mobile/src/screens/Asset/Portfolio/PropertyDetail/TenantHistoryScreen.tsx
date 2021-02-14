@@ -17,11 +17,11 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
-import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 
 interface IStateProps {
   assetId: number;
-  tenantHistory: TenantHistory[] | null;
+  tenantHistory: TenantInfo[] | null;
 }
 
 interface IDispatchProps {
@@ -33,7 +33,7 @@ interface IProps {
 }
 
 interface IScreenState {
-  tenantHistory: TenantHistory[];
+  tenantHistory: TenantInfo[];
   searchValue: string;
   isLoading: boolean;
   showInMVP: boolean;
@@ -45,9 +45,9 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
   private search = debounce(() => {
     const { searchValue } = this.state;
     const { tenantHistory } = this.props;
-    const results: TenantHistory[] = [];
+    const results: TenantInfo[] = [];
     if (tenantHistory) {
-      tenantHistory.forEach((item: TenantHistory) => {
+      tenantHistory.forEach((item: TenantInfo) => {
         const { tenantUser } = item;
         if (tenantUser && tenantUser.fullName.toLowerCase().includes(searchValue.toLowerCase())) {
           results.push(item);
@@ -94,7 +94,7 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
     );
   }
 
-  private renderItem = ({ item }: { item: TenantHistory }): React.ReactElement => {
+  private renderItem = ({ item }: { item: TenantInfo }): React.ReactElement => {
     const { t } = this.props;
     const { showInMVP } = this.state;
     const { tenantUser, leaseTransaction } = item;
@@ -131,8 +131,8 @@ export class TenantHistoryScreen extends Component<Props, IScreenState> {
     return <Divider containerStyles={styles.divider} />;
   };
 
-  private renderKeyExtractor = (item: any, index: number): string => {
-    return `${item.name}-${index}`;
+  private renderKeyExtractor = (item: TenantInfo, index: number): string => {
+    return `${item.leaseTenantId}-${index}`;
   };
 
   private onSearch = (value: string): void => {
