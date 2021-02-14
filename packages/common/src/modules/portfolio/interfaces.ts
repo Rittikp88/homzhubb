@@ -1,6 +1,6 @@
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 import { DetailType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICallback } from '@homzhub/common/src/modules/interfaces';
 
@@ -12,7 +12,7 @@ export interface IPortfolioState {
   tenancies: IDataObject | null;
   properties: IDataObject | null;
   currentAsset: ISetAssetPayload;
-  tenantHistory: TenantHistory[] | null;
+  tenantHistory: TenantInfo[];
   currentFilter: Filters;
   error: {
     tenancies: string;

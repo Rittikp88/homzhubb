@@ -19,14 +19,14 @@ interface IProps {
   rating?: number;
   date?: string;
   isRightIcon?: boolean;
+  rightIconName?: string;
+  rightIconColor?: string;
   imageSize?: number;
   onPressCamera?: () => void;
   onPressRightIcon?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   customDesignation?: TextStyle;
   initialsContainerStyle?: StyleProp<ViewStyle>;
-  rightIconName?: string;
-  rightIconColor?: string;
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
@@ -80,6 +80,7 @@ const Avatar = (props: IProps): React.ReactElement => {
               </Text>
             </View>
           )}
+
           {onPressCamera && (
             <TouchableOpacity style={styles.editView} onPress={onPressCamera} activeOpacity={0.8}>
               <Icon name={icons.camera} size={14} color={theme.colors.white} />

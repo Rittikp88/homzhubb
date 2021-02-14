@@ -64,6 +64,7 @@ enum MenuItems {
   EDIT_LISTING = 'EDIT_LISTING',
   EDIT_PROPERTY = 'EDIT_PROPERTY',
   DELETE_PROPERTY = 'DELETE_PROPERTY',
+  MANAGE_TENANT = 'MANAGE_TENANT',
 }
 
 interface IStateProps {
@@ -145,7 +146,6 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
       route: { params },
     } = this.props;
     const { propertyData, isLoading, isMenuVisible, scrollEnabled, isDeleteProperty } = this.state;
-
     if (isLoading) {
       return <Loader visible />;
     }
@@ -155,14 +155,13 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
 
     const { assetStatusInfo } = propertyData;
-
-    const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false);
+    const isOccupied = assetStatusInfo?.tag.label === Filters.OCCUPIED;
+    const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false, isOccupied);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
       this.handleAction(propertyData, payload, param);
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
-    const isMenuIconVisible =
-      assetStatusInfo?.tag.label !== Filters.OCCUPIED && assetStatusInfo?.tag.label !== Filters.RENEWAL;
+    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.RENEWAL && menuItems.length > 0;
 
     return (
       <TouchableWithoutFeedback onPress={this.onCloseMenu}>
@@ -495,6 +494,13 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         isDeleteProperty: true,
       });
     }
+
+    if (value === MenuItems.MANAGE_TENANT) {
+      const { propertyData } = this.state;
+      navigation.navigate(ScreensKeys.ManageTenantScreen, {
+        assetDetail: propertyData,
+      });
+    }
   };
 
   private navigateToBookVisit = (param: IBookVisitProps, isNew?: boolean): void => {
@@ -540,9 +546,22 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
-  private getMenuList = (isListingCreated: boolean): PickerItemProps[] => {
-    const { t } = this.props;
-    const list = [
+  private getMenuList = (isListingCreated: boolean, isOccupied: boolean): PickerItemProps[] => {
+    const {
+      t,
+      route: { params },
+    } = this.props;
+    let list;
+    if (params && params.isFromTenancies) {
+      return [];
+    }
+
+    if (params && isOccupied) {
+      list = [{ label: t('property:manageTenants'), value: MenuItems.MANAGE_TENANT }];
+      return list;
+    }
+
+    list = [
       { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
       { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
     ];

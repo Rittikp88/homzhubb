@@ -7,7 +7,7 @@ import {
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 
 const actionTypePrefix = 'Portfolio/';
 
@@ -83,7 +83,7 @@ const getTenantHistory = (payload: IGetHistoryParam): IFluxStandardAction<IGetHi
   };
 };
 
-const getTenantHistorySuccess = (data: TenantHistory[]): IFluxStandardAction<TenantHistory[]> => {
+const getTenantHistorySuccess = (data: TenantInfo[]): IFluxStandardAction<TenantInfo[]> => {
   return {
     type: PortfolioActionTypes.GET.TENANT_HISTORY_SUCCESS,
     payload: data,
@@ -106,7 +106,7 @@ const setInitialState = (): IFluxStandardAction => ({
   type: PortfolioActionTypes.SET.INITIAL_STATE,
 });
 
-export type PortfolioPayloadTypes = string | ISetAssetPayload | Asset[] | undefined | TenantHistory[] | Filters;
+export type PortfolioPayloadTypes = string | ISetAssetPayload | Asset[] | undefined | TenantInfo[] | Filters;
 export const PortfolioActions = {
   getTenanciesDetails,
   getTenanciesDetailsSuccess,

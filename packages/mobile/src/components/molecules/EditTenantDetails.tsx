@@ -18,7 +18,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { User } from '@homzhub/common/src/domain/models/User';
 
 interface IProps {
-  details: User;
+  details: User | null;
   assetId: number;
   leaseTransaction: number;
   leaseTenantId: number;
@@ -65,13 +65,15 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
   };
 
   useEffect(() => {
-    setDetails({
-      firstName: details.firstName ?? '',
-      lastName: details.lastName ?? '',
-      email: details.email,
-      phoneCode: details.countryCode,
-      phoneNumber: details.phoneNumber,
-    });
+    if (details) {
+      setDetails({
+        firstName: details.firstName ?? '',
+        lastName: details.lastName ?? '',
+        email: details.email,
+        phoneCode: details.countryCode,
+        phoneNumber: details.phoneNumber,
+      });
+    }
   }, []);
 
   const onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
@@ -121,7 +123,7 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
           onPressRightIcon={deleteTenant}
           rightIconName={icons.close}
           rightIconColor={theme.colors.error}
-          fullName={details.email}
+          fullName={details?.email ?? ''}
           designation={t('common:invitationSent')}
           customDesignation={styles.designation}
         />

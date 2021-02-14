@@ -8,26 +8,47 @@ export interface IList {
   isSelected: boolean;
 }
 
-@JsonObject('TenantHistory')
-export class TenantHistory {
-  @JsonProperty('id', Number)
+@JsonObject('TenantInfo')
+export class TenantInfo {
+  @JsonProperty('id', Number, true)
   private _id = 0;
 
-  @JsonProperty('lease_listing_id', Number, true)
-  private _leaseListingId = 0;
+  @JsonProperty('is_invite_accepted', Boolean, true)
+  private _isInviteAccepted = true;
 
-  @JsonProperty('lease_transaction', LeasePeriod)
+  @JsonProperty('lease_tenant_id', Number, true)
+  private _leaseTenantId = 0;
+
+  @JsonProperty('lease_unit_id', Number, true)
+  private _leaseUnitId = 0;
+
+  @JsonProperty('lease_transaction', LeasePeriod, true)
   private _leaseTransaction: LeasePeriod | null = null;
 
-  @JsonProperty('tenant_user', User)
-  private _tenantUser: User | null = null;
+  @JsonProperty('tenant_user', User, true)
+  private _tenantUser: User = new User();
+
+  @JsonProperty('user', User, true)
+  private _user: User = new User();
+
+  get isInviteAccepted(): boolean {
+    return this._isInviteAccepted;
+  }
+
+  get leaseTenantId(): number {
+    return this._leaseTenantId;
+  }
+
+  get user(): User {
+    return this._user;
+  }
 
   get id(): number {
     return this._id;
   }
 
-  get leaseListingId(): number {
-    return this._leaseListingId;
+  get leaseUnitId(): number {
+    return this._leaseUnitId;
   }
 
   get leaseTransaction(): LeasePeriod | null {

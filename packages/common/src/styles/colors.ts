@@ -118,6 +118,7 @@ const opacity = {
   backgroundOpacity: 'rgba(240,245,249,0.5)',
   landingCardShadow: 'rgba(0, 0, 0, 0.08)',
   cardShadowDark: 'rgba(0, 0, 0, 0.3)',
+  primaryOpacity: 'rgba(0, 132, 248, 0.05)',
 };
 
 const grayShades = {
