@@ -242,7 +242,7 @@ export class AssetCard extends Component<Props, IState> {
     const designationStyle = isInviteAccepted ? undefined : styles.designation;
     return (
       <>
-        {!!name && (
+        {!!userData.fullName && (
           <>
             <Divider containerStyles={styles.divider} />
             <Avatar
