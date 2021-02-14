@@ -206,7 +206,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
-      <View style={[styles.tabHeader]}>
+      <View style={styles.tabHeader}>
         <View>
           {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
             <SelectionPicker
