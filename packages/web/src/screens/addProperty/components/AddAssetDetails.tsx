@@ -128,7 +128,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       >
         {(formProps: FormikProps<FormikValues>): React.ReactNode => {
           return (
-            <>
+            <View style={styles.subContainer}>
               <PostAssetForm formProps={formProps} isVerificationDone={asset?.isVerificationDocumentUploaded} />
               <AssetGroupSelection
                 isDisabled={assetGroupSelectionDisabled}
@@ -142,12 +142,12 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
                 disabled={assetGroupTypeId === -1}
                 type="primary"
                 title={t('common:submit')}
-                containerStyle={[styles.buttonStyle]}
+                containerStyle={styles.buttonStyle}
                 // @ts-ignore
                 onPress={formProps.handleSubmit}
                 formProps={formProps}
               />
-            </>
+            </View>
           );
         }}
       </Formik>
@@ -319,8 +319,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.white,
   },
+  subContainer: {
+    width: '100%',
+  },
   buttonStyle: {
-    flex: 0,
+    flex: 1,
     width: 'fit-content',
     margin: 16,
     alignSelf: 'flex-end',

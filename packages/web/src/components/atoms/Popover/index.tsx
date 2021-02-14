@@ -16,7 +16,6 @@ interface IProps {
  */
 const Popover: FC<IProps> = (props: IProps) => {
   const { content, children, popupProps, forwardedRef } = props;
-
   return (
     <Popup ref={forwardedRef} trigger={<div>{children}</div>} {...popupProps}>
       {content}

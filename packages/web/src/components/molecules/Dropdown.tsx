@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, LayoutChangeEvent } from 'react-native';
 import { PopupProps } from 'reactjs-popup/dist/types';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 
@@ -23,9 +24,17 @@ const DropDown = ({ data, valueChange, dropdownVisible, content }: IDropdownProp
     contentStyle: { minWidth: width, marginTop: '4px', alignItems: 'stretch' },
     closeOnDocumentClick: true,
     children: undefined,
-    open: dropdownVisible,
   });
   const [width, setWidth] = useState(0);
+  const popupRef = useRef<PopupActions>(null);
+
+  useEffect(() => {
+    if (!dropdownVisible) {
+      if (popupRef && popupRef.current) {
+        popupRef.current?.close();
+      }
+    }
+  }, [dropdownVisible]);
 
   const onLayout = (e: LayoutChangeEvent): void => {
     setWidth(e.nativeEvent.layout.width);
@@ -33,6 +42,7 @@ const DropDown = ({ data, valueChange, dropdownVisible, content }: IDropdownProp
 
   return (
     <Popover
+      forwardedRef={popupRef}
       content={<PopupMenuOptions options={data} onMenuOptionPress={valueChange} />}
       popupProps={defaultDropDownProps(width)}
     >
