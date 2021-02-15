@@ -107,7 +107,6 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
     spaceFields?.push(
       <View style={!isMobile && styles.counterContainer}>
         {groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
-          console.log(space);
           if (isMobile && space.isPrimary !== renderPrimary) {
             return null;
           }

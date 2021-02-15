@@ -201,7 +201,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
-    //  const styles = AddListingStyles()
 
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
@@ -253,7 +252,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         listing: { type },
       },
     } = assetDetails;
-    // const styles = AddListingStyles()
 
     const isReadyToPreview = type !== TypeOfPlan.MANAGE && !isVerificationRequired;
     const title = isReadyToPreview ? t('previewOwnProperty') : t('clickContinueToDashboard');
@@ -289,8 +287,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       valueAddedServices,
       onUploadDocument,
     } = this.props;
-    // const styles = AddListingStyles()
-    console.log(leaseType);
     if (!assetDetails) return null;
 
     switch (route.key) {

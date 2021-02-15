@@ -106,13 +106,46 @@ const LeaseTermForm = ({
   const maintenanceUnits = useSelector(RecordAssetSelectors.getMaintenanceUnits);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
-  const isTabPro = useIsIpadPro();
 
   // CONSTANTS
   const PAID_BY_OPTIONS = [
     { title: t('owner'), value: PaidByTypes.OWNER },
     { title: t('tenant'), value: PaidByTypes.TENANT },
   ];
+  const leaseAndSecurityData = [{
+    inputType:"number",
+
+    name:LeaseFormKeys.monthlyRent,
+    label:t('monthlyRent'),
+    placeholder:t('monthlyRentPlaceholder'),
+    maxLength:formProps.values.monthlyRent.includes('.') ? 13 : 12,
+    inputPrefixText:currencyData.currencySymbol,
+    inputGroupSuffixText:currencyData.currencyCode,
+    isMandatory:true
+   },
+  {
+    inputType:"number",
+    name:LeaseFormKeys.securityDeposit,
+    label:t('securityDeposit'),
+    placeholder:t('securityDepositPlaceholder'),
+    maxLength:formProps.values.securityDeposit.includes('.') ? 13 : 12,
+    inputPrefixText:currencyData.currencySymbol,
+    inputGroupSuffixText:currencyData.currencyCode,
+    isMandatory:true
+
+  },
+  {
+    inputType:"decimal",
+    name:LeaseFormKeys.annualIncrement,
+    label:t('annualIncrement'),
+    placeholder:t('annualIncrementPlaceholder'),
+    maxLength:4,
+    inputPrefixText:'',
+    inputGroupSuffixText:t('annualIncrementSuffix'),
+    isMandatory:false
+  }];
+
+
 
   let dateLabel;
   let minDate;
@@ -163,6 +196,7 @@ const LeaseTermForm = ({
   }, []);
   // INTERACTION HANDLERS END
 
+  
   return (
     <>
       <AssetListingSection title={t('leaseTerms')}>
@@ -173,8 +207,43 @@ const LeaseTermForm = ({
               {t('rentAndSecurity')}
             </Text>
           )}
+       
           <View style={PlatformUtils.isWeb() && !isMobile && styles.leaseTerms}>
-            <View style={PlatformUtils.isWeb() && !isMobile && styles.textInput1}>
+          {isMobile && (
+              <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
+                {values.showMore ? t('showLess') : t('showMore')}
+              </Text>
+            )}
+          {leaseAndSecurityData.map((item ,index)=>{
+          return(
+            <View
+            style={[
+              PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+              PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
+            ]}
+          >
+            <FormTextInput
+              inputType={item.inputType}
+              name={item.name}
+              label={item.label}
+              placeholder={item.placeholder}
+              maxLength={item.maxLength}
+              formProps={formProps}
+              inputPrefixText={item.inputPrefixText}
+              inputGroupSuffixText={item.inputGroupSuffixText}
+              isMandatory={item.isMandatory}
+              containerStyle={[PlatformUtils.isWeb() &&  styles.textInput]}
+            />
+          </View>
+         
+          )
+        })}
+            {/* <View
+              style={[
+                PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+                PlatformUtils.isWeb() && isTablet && styles.textInputTab1,
+              ]}
+            >
               <FormTextInput
                 inputType="number"
                 name={LeaseFormKeys.monthlyRent}
@@ -185,16 +254,14 @@ const LeaseTermForm = ({
                 inputPrefixText={currencyData.currencySymbol}
                 inputGroupSuffixText={currencyData.currencyCode}
                 isMandatory
-                containerStyle={[
-                  PlatformUtils.isWeb() && !isMobile && styles.textInput,
-                  PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
-                ]}
+                containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
               />
             </View>
+           
             <View
               style={[
-                PlatformUtils.isWeb() && !isMobile && styles.textInput2,
-                PlatformUtils.isWeb() && !isMobile && (isTablet || isTabPro) && styles.textInputTab2,
+                PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+                PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
               ]}
             >
               <FormTextInput
@@ -207,10 +274,7 @@ const LeaseTermForm = ({
                 inputPrefixText={currencyData.currencySymbol}
                 inputGroupSuffixText={currencyData.currencyCode}
                 isMandatory
-                containerStyle={[
-                  PlatformUtils.isWeb() && !isMobile && styles.textInput,
-                  PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
-                ]}
+                containerStyle={PlatformUtils.isWeb() && !isMobile && styles.textInput}
               />
             </View>
 
@@ -222,8 +286,8 @@ const LeaseTermForm = ({
             {(!isMobile || (isMobile && values.showMore)) && (
               <View
                 style={[
-                  PlatformUtils.isWeb() && !isMobile && styles.textInput3,
-                  PlatformUtils.isWeb() && !isMobile && (isTablet || isTabPro) && styles.textInputTab3,
+                  PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+                  PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
                 ]}
               >
                 <FormTextInput
@@ -234,33 +298,37 @@ const LeaseTermForm = ({
                   maxLength={4}
                   formProps={formProps}
                   inputGroupSuffixText={t('annualIncrementSuffix')}
-                  containerStyle={[
-                    PlatformUtils.isWeb() && !isMobile && styles.textInput,
-                    PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
-                  ]}
+                  containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
                 />
               </View>
-            )}
+            )} */}
+          </View>
+          <View
+            style={[
+              PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+              PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
+            ]}
+          >
+            <Text type="small" textType="semiBold" style={styles.headerTitle}>
+              {t('duration')}
+            </Text>
+            <FormCalendar
+              formProps={formProps}
+              label={dateLabel}
+              allowPastDates={isFromManage}
+              maxDate={maxDate}
+              minDate={minDate}
+              name={LeaseFormKeys.availableFrom}
+              textType="label"
+              textSize="regular"
+              isMandatory
+              containerStyle={[
+                PlatformUtils.isWeb() && !isMobile && styles.textInput,
+                //   PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
+              ]}
+            />
           </View>
 
-          <Text type="small" textType="semiBold" style={styles.headerTitle}>
-            {t('duration')}
-          </Text>
-          <FormCalendar
-            formProps={formProps}
-            label={dateLabel}
-            allowPastDates={isFromManage}
-            maxDate={maxDate}
-            minDate={minDate}
-            name={LeaseFormKeys.availableFrom}
-            textType="label"
-            textSize="regular"
-            isMandatory
-            containerStyle={[
-              PlatformUtils.isWeb() && !isMobile && styles.textInput,
-              PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
-            ]}
-          />
           <>
             <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriod}>
               <View>
@@ -433,27 +501,20 @@ const styles = StyleSheet.create({
   leaseTerms: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    display: 'flex',
+    flex: 1,
+    gap: 28,
   },
   textInput: {
-    width: '344px',
-    // left:'5%'
+    width: '100%',
   },
-  textInputTab: {
-    width: '322px',
+  textInput1: {
+    width: '31.5%',
   },
-  textInput1: {},
-  textInput2: {
-    left: '4%',
+  textInputTab1: {
+    width: '47.5%',
   },
-  textInput3: {
-    left: '8%',
-  },
-  textInputTab3: {
-    left: 0,
-  },
-  textInputTab2: {
-    left: '2%',
-  },
+
   leasePeriod: {
     flexDirection: 'row',
     flexWrap: 'wrap',
