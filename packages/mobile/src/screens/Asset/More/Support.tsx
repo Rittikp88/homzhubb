@@ -349,6 +349,7 @@ export class Support extends Component<Props, IScreenState> {
         attachments: attachmentIds,
       };
       await CommonRepository.postClientSupport(payload);
+      await this.getCaseLogs();
       this.setState({
         isFormSubmitted: true,
         attachments: [],
