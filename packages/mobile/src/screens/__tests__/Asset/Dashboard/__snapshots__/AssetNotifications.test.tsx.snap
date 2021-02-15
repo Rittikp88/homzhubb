@@ -19,7 +19,7 @@ exports[`Asset Notifications Screen should render snapshot 1`] = `
       ]
     }
   >
-    <Component
+    <SearchBar
       containerStyle={
         Object {
           "margin": 16,
@@ -63,7 +63,7 @@ exports[`Asset Notifications Screen should render snapshot with empty notificati
       ]
     }
   >
-    <Component
+    <SearchBar
       containerStyle={
         Object {
           "margin": 16,

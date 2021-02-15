@@ -12,7 +12,7 @@ import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions'
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
-import { SearchBar } from '@homzhub/mobile/src/components';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import {
   AssetNotifications,

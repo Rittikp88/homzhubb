@@ -1,7 +1,9 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import { Provider } from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
 import FlashMessage, { MessageComponentProps } from 'react-native-flash-message';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
@@ -23,16 +25,24 @@ StoreProviderService.init(configureStore);
 const store = StoreProviderService.getStore();
 
 export default class App extends React.PureComponent<{}, IState> {
+  public listener: any;
   public state = {
     booting: true,
   };
 
   public componentDidMount = async (): Promise<void> => {
+    this.listener = NetInfo.addEventListener((state) => {
+      this.handleConnectivityChange(state.isConnected);
+    });
     await LinkingService.firebaseInit();
     await this.bootUp();
     await AnalyticsService.initMixpanel();
     await NotificationService.init();
   };
+
+  public componentWillUnmount(): void {
+    this.listener();
+  }
 
   public render = (): React.ReactNode => {
     const { booting } = this.state;
@@ -46,6 +56,14 @@ export default class App extends React.PureComponent<{}, IState> {
   };
 
   private renderToast = (props: MessageComponentProps): React.ReactElement => <Toast {...props} />;
+
+  private handleConnectivityChange = (isConnected: boolean): void => {
+    if (!isConnected) {
+      AlertHelper.error({
+        message: I18nService.t('common:serverError'),
+      });
+    }
+  };
 
   private bootUp = async (): Promise<void> => {
     // FETCH COUNTRY OF THE DEVICE

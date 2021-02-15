@@ -11,4 +11,6 @@ export enum EventType {
   SearchSuccess = 'successful_search',
   SearchFailure = 'unsuccessful_search',
   ZeroSearchResult = 'zero_search_result',
+  AddListingSuccess = 'successfully_listing_added',
+  AddListingFailure = 'listing_creation_unsuccessful',
 }

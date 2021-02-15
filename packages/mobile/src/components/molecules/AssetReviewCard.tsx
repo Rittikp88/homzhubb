@@ -232,7 +232,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
       <BottomSheet
         visible={showReportForm}
         sheetHeight={theme.viewport.height * (reviewReportId ? 0.6 : 0.85)}
-        headerTitle={t('reportComment')}
+        headerTitle={reviewReportId ? t('property:reportStatus') : t('reportComment')}
         onCloseSheet={disableReportForm}
       >
         {reviewReportId ? (
