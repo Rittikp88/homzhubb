@@ -720,6 +720,7 @@
     "attachmentName": "Attachment name",
     "paidToText": "Paid to",
     "invoice": "Invoice",
+    "invoices": "Invoices",
     "paidTo": "Paid To",
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg: Tenant",

@@ -53,8 +53,8 @@ export class FinancialRecords {
   @JsonProperty('currency', Currency)
   private _currency: Currency = new Currency();
 
-  @JsonProperty('attachment', Attachment, true)
-  private _attachment: Attachment = new Attachment();
+  @JsonProperty('attachments', [Attachment], true)
+  private _attachments: Attachment[] = [new Attachment()];
 
   get id(): number {
     return this._id;
@@ -100,8 +100,8 @@ export class FinancialRecords {
     return this._asset?.projectName || '';
   }
 
-  get attachmentDetails(): Attachment {
-    return this._attachment;
+  get attachmentDetails(): Attachment[] {
+    return this._attachments;
   }
 
   get asset(): Asset | null {
@@ -112,8 +112,8 @@ export class FinancialRecords {
     return this._currency;
   }
 
-  get attachment(): Attachment {
-    return this._attachment;
+  get attachments(): Attachment[] {
+    return this._attachments;
   }
 }
 
