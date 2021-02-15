@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, StyleProp, TextInput } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import YoutubeSVG from '@homzhub/common/src/assets/images/youtube.svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   isToggled: boolean;
@@ -70,7 +71,8 @@ const styles = StyleSheet.create({
   },
   youtubeContainer: {
     justifyContent: 'space-around',
-    alignItems: 'center',
+    alignItems: PlatformUtils.isWeb() ? 'flex-start' : 'center',
+    paddingLeft: PlatformUtils.isWeb() ? 20 : undefined,
     backgroundColor: theme.colors.white,
     minHeight: 150,
   },

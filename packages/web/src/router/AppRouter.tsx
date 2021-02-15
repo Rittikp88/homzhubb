@@ -21,7 +21,6 @@ export const AppRouter = (): React.ReactElement => {
       <Switch>
         <Route exact path={APP_BASE} component={Landing} />
         <Route exact path={OTP_VERIFICATION} component={MobileVerification} />
-
         <Route exact path={SIGNUP} component={SignUp} />
         <Route exact path={TERMS_CONDITION} component={TermsAndCondition} />
         <Route exact path={PRIVACY_POLICY} component={PrivacyPolicy} />

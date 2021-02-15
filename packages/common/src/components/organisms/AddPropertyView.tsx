@@ -16,7 +16,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
 import { AddPropertyDetails } from '@homzhub/common/src/components/organisms/AddPropertyDetails';
 import AssetHighlights from '@homzhub/common/src/components/organisms/AssetHighlights';
-import PropertyImages from '@homzhub/common/src/components/organisms/PropertyImages';
+import { PropertyImages } from '@homzhub/common/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
@@ -38,7 +38,7 @@ interface IScreenState {
 }
 
 interface IProps {
-  onUploadImage: () => void;
+  onUploadImage: (files?: File[]) => void;
   onEditPress: () => void;
   scrollToTop?: () => void;
   onNavigateToDetail: () => void;

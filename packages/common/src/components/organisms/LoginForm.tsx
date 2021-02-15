@@ -1,5 +1,5 @@
-import React, { PureComponent, createRef, RefObject } from 'react';
-import { StyleSheet, KeyboardAvoidingView } from 'react-native';
+import React, { createRef, PureComponent, RefObject } from 'react';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -47,7 +47,11 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
 
     return (
       <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
-        <Formik initialValues={formData} validate={FormUtils.validate(this.formSchema)} onSubmit={this.handleSubmit}>
+        <Formik
+          initialValues={formData}
+          validate={FormUtils.validate(isEmailLogin ? this.loginEmailFormSchema : this.loginPhoneFormSchema)}
+          onSubmit={this.handleSubmit}
+        >
           {(formProps: FormikProps<IFormData>): React.ReactElement => (
             <>
               {this.renderLoginFields(formProps)}
@@ -164,31 +168,27 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     formActions.setSubmitting(false);
   };
 
-  private formSchema = (): yup.ObjectSchema<{
-    isEmailFlow: boolean;
-    email: string;
+  private loginPhoneFormSchema = (): yup.ObjectSchema<{
     phone: string;
+  }> => {
+    const { t } = this.props;
+    return yup.object().shape({
+      phone: yup.string().required(t('moreProfile:fieldRequiredError')),
+    });
+  };
+
+  private loginEmailFormSchema = (): yup.ObjectSchema<{
+    email: string;
     password: string;
   }> => {
     const { t } = this.props;
     return yup.object().shape({
-      isEmailFlow: yup.boolean(),
-      email: yup.string().when('isEmailFlow', {
-        is: true,
-        then: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
-      }),
-      phone: yup.string().when('isEmailFlow', {
-        is: false,
-        then: yup.string().required(t('auth:numberRequired')),
-      }),
-      password: yup.string().when('isEmailFlow', {
-        is: true,
-        then: yup
-          .string()
-          .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
-          .min(8, t('auth:minimumCharacters'))
-          .required(t('auth:passwordRequired')),
-      }),
+      email: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
+      password: yup
+        .string()
+        .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
+        .min(8, t('auth:minimumCharacters'))
+        .required(t('auth:passwordRequired')),
     });
   };
 }

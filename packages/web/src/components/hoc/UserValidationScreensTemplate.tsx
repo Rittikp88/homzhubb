@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
@@ -16,7 +16,7 @@ interface IProps {
   children: React.ReactElement | React.ReactNode;
   title: string;
   subTitle: string;
-  containerStyle: ViewStyle;
+  containerStyle: StyleProp<ViewStyle>;
   hasBackButton?: boolean;
   backButtonPressed?: () => void;
   hasBackToLoginButton?: boolean;

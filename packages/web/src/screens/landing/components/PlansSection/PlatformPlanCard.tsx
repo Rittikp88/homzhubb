@@ -25,7 +25,6 @@ interface IProps {
   platformPlans: PlatformPlans;
 }
 
-// FixMe: (bishal -> mohak) sortData() usage needs to be changed.
 const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const {
     platformPlans: { name, label, description, servicePlanBundle, servicePlanPricing },
@@ -57,9 +56,11 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
     if (pricing === -1) return t('contactSales');
     return t('getStarted');
   };
+
   useEffect(() => {
     sortData();
   }, [serviceBundles]);
+
   const isCustom = servicePlansPricingInUSD.actualPrice === -1;
 
   return (

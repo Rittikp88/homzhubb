@@ -19,8 +19,8 @@ export const URLs = {
   youtube: ' https://www.youtube.com/channel/UCA1rqRgmez8a8gTaPYm-dxQ',
   linkedin: 'https://www.linkedin.com/company/homzhubpropertymanagement',
   facebook: 'https://www.facebook.com/HomzHub',
-  featuredPropertiesSearch: 'https://www.homzhub.com/search',
-  featuredProperties: 'https://www.homzhub.com/properties',
+  featuredPropertiesSearch: 'https://homzhub.netlify.app/search',
+  featuredProperties: 'https://homzhub.netlify.app/properties',
 };
 
 const imagePath = {

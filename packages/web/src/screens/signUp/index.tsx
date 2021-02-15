@@ -13,7 +13,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
-import { SignupCarousal } from '@homzhub/web/src/components/organisms/signUpCarousal/index';
+import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
 import { SignUpForm } from '@homzhub/common/src/components/organisms/SignUpForm';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -73,18 +73,13 @@ const SignUp: FC<IProps> = (props: IProps) => {
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
   };
-  const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  const containerStyle = isDesktop
-    ? styles.containerStyle
-    : isMobile
-    ? styles.containerStyleMobile
-    : styles.containerStyleTablet;
   return (
     <View style={styles.container}>
       <UserValidationScreensTemplate
         hasBackButton={false}
-        containerStyle={containerStyle}
+        containerStyle={[styles.containerStyle, isTablet && styles.containerStyleTablet]}
         title={t('common:signUp')}
         subTitle={t('common:createAccount')}
       >
@@ -98,7 +93,7 @@ const SignUp: FC<IProps> = (props: IProps) => {
           />
         </View>
       </UserValidationScreensTemplate>
-      <SignupCarousal />
+      <GetToKnowUsCarousel />
     </View>
   );
 };
@@ -111,9 +106,6 @@ const styles = StyleSheet.create({
   containerStyle: {
     backgroundColor: theme.colors.white,
     width: '45%',
-  },
-  containerStyleMobile: {
-    width: '100%',
   },
   containerStyleTablet: {
     width: '100%',

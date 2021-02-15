@@ -9,6 +9,7 @@ export const RouteNames = {
     OTP_VERIFICATION: '/otp',
     TERMS_CONDITION: '/terms&Condition',
     PRIVACY_POLICY: '/privacyPolicy',
+    UPLOAD: '/upload',
   },
   protectedRoutes: {
     /* Mention protected route names here */
