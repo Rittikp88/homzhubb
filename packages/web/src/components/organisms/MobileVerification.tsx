@@ -17,22 +17,13 @@ import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePref
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import {
-  IEmailLoginPayload,
-  ILoginFormData,
-  ILoginPayload,
-  LoginTypes,
-} from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILoginFormData, ILoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { OtpNavTypes } from './OtpVerification';
-
-interface IFormData {
-  email: string;
-  password: string;
-}
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
+import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 
 interface IStateProps {
   isLoading: boolean;
@@ -47,6 +38,9 @@ interface IOwnProps {
   title: string;
   subTitle: string;
   buttonTitle: string;
+  underlineDesc: string;
+  socialUserData?: ISocialUserData;
+  isFromLogin?: boolean;
 }
 
 type IProps = IStateProps & IDispatchProps & IOwnProps;
@@ -58,7 +52,7 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const [isEmailLogin, setIsEmailLogin] = useState(false);
-  const { title, subTitle, buttonTitle } = props;
+  const { title, subTitle, buttonTitle, underlineDesc } = props;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -69,42 +63,24 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
-
-  const handleSubmitEmailLogin = (values: IFormData): void => {
-    // TODO: remove .logoutUser after logout functionality is implemented
-    StoreProviderService.logoutUser();
-    const emailLoginData: IEmailLoginPayload = {
-      action: LoginTypes.EMAIL,
-      payload: {
-        email: values.email,
-        password: values.password,
-      },
-    };
-
-    const loginPayload: ILoginPayload = {
-      data: emailLoginData,
-      callback: navigateToHomeScreen,
-    };
-    props.login(loginPayload);
-  };
-
   const backToLoginWithPhone = (): void => {
     setIsEmailLogin(false);
   };
-
   const handleForgotPassword = (): void => {
     // TODO: Add redirection logic for password reset.
   };
   const handleOtpLogin = (values: ILoginFormData): void => {
     const { phone_code, phone_number } = values;
-    const compProps = { phoneCode: phone_code, otpSentTo: phone_number, type: OtpNavTypes.Login };
+    const compProps = {
+      phoneCode: phone_code,
+      otpSentTo: phone_number,
+      type: OtpNavTypes.Login,
+      onCallback: navigateToHomeScreen,
+    };
     NavigationUtils.navigate(props.history, {
       path: RouteNames.publicRoutes.OTP_VERIFICATION,
       params: { ...compProps },
     });
-  };
-  const handleNavigationToSignup = (): void => {
-    // TODO : Navigation to signup page
   };
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
@@ -118,7 +94,7 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
         hasBackButton={isEmailLogin}
         backButtonPressed={backToLoginWithPhone}
         isUnderlineDesc
-        underlineDesc={t('auth:authDesc')}
+        underlineDesc={underlineDesc}
       >
         <View style={styles.loginForm}>
           <LoginForm
@@ -130,20 +106,6 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
             subTitle={subTitle}
             buttonTitle={buttonTitle}
           />
-          <View style={styles.newUser}>
-            <Typography variant="label" size="large">
-              {t('auth:newOnPlatform')}
-            </Typography>
-            <Typography
-              variant="label"
-              size="large"
-              fontWeight="semiBold"
-              onPress={handleNavigationToSignup}
-              style={styles.createAccount}
-            >
-              {t('auth:createAccout')}
-            </Typography>
-          </View>
         </View>
       </UserValidationScreensTemplate>
       <GetToKnowUsCarousel />

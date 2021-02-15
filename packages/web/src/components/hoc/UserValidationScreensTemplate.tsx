@@ -53,7 +53,9 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
   const navigateToLogin = (): void => {
     NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.LOGIN });
   };
-
+  const navigateToScreen = (path: string): void => {
+    NavigationUtils.navigate(history, { path });
+  };
   return (
     <View style={containerStyle}>
       <View style={isMobile ? styles.userValidationCommonContentMobile : styles.userValidationCommonContent}>
@@ -90,6 +92,33 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
           onPress={navigateToLogin}
         />
       )}
+      <View style={styles.footer}>
+        <View style={[styles.linksRow]}>
+          <Button
+            type="text"
+            title={t('moreSettings:termsConditionsText')}
+            textType="label"
+            textSize="large"
+            fontType="regular"
+            titleStyle={[styles.linkText]}
+            onPress={(): void => navigateToScreen(RouteNames.publicRoutes.TERMS_CONDITION)}
+          />
+          <Button
+            type="text"
+            title={t('moreSettings:privacyPolicyText')}
+            textType="label"
+            textSize="large"
+            fontType="regular"
+            titleStyle={[styles.linkText]}
+            onPress={(): void => navigateToScreen(RouteNames.publicRoutes.PRIVACY_POLICY)}
+          />
+        </View>
+        <View style={styles.copyrightContainer}>
+          <Typography variant="label" size="large" style={styles.copyrightText}>
+            {t('copyrightContent')}
+          </Typography>
+        </View>
+      </View>
     </View>
   );
 };
@@ -132,5 +161,22 @@ const styles = StyleSheet.create({
   },
   underlineDesc: {
     marginTop: '3%',
+  },
+  footer: {
+    alignSelf: 'center',
+  },
+  linksRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  linkText: {
+    color: theme.colors.blue,
+  },
+  copyrightContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  copyrightText: {
+    color: theme.colors.darkTint4,
   },
 });

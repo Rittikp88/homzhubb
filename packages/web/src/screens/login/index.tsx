@@ -27,6 +27,7 @@ import { StoreProviderService } from '@homzhub/common/src/services/StoreProvider
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
 
 interface IFormData {
   email: string;
@@ -48,6 +49,7 @@ interface IOwnProps {
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const Login: FC<IProps> = (props: IProps) => {
+  const { history } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
@@ -88,8 +90,16 @@ const Login: FC<IProps> = (props: IProps) => {
     // TODO: Add redirection logic for password reset.
   };
   const handleOtpLogin = (values: ILoginFormData): void => {
-    console.log('values => ', values);
-    // TODO : Navigation to OTP
+    const { phone_code, phone_number } = values;
+    const compProps = {
+      phoneCode: phone_code,
+      otpSentTo: phone_number,
+      type: OtpNavTypes.Login,
+    };
+    NavigationUtils.navigate(props.history, {
+      path: RouteNames.publicRoutes.OTP_VERIFICATION,
+      params: { ...compProps },
+    });
   };
   const handleNavigationToSignup = (): void => {
     // TODO : Navigation to signup page
@@ -139,12 +149,13 @@ const Login: FC<IProps> = (props: IProps) => {
           </View>
         </View>
         {isEmailLogin ? (
-          <SocialMediaGateway isFromLogin containerStyle={styles.socialMediaContainer} />
+          <SocialMediaGateway isFromLogin containerStyle={styles.socialMediaContainer} history={history}/>
         ) : (
           <SocialMediaGateway
             onEmailLogin={handleEmailLogin}
             isFromLogin
             containerStyle={styles.socialMediaContainer}
+            history={history}
           />
         )}
       </UserValidationScreensTemplate>

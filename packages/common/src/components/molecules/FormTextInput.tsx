@@ -101,12 +101,10 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
   };
 
   public componentDidMount = (): void => {
-    const { formProps, inputType, phoneCodeKey = PHONE_CODE, defaultPhoneCode, countries } = this.props;
-    console.log('props FormTextInput=> ', this.props);
+    const { formProps, inputType, phoneCodeKey = PHONE_CODE, defaultPhoneCode } = this.props;
     if (inputType !== 'phone' || formProps.values[phoneCodeKey]) {
       return;
     }
-    console.log('Surpassed IF', defaultPhoneCode);
     formProps.setFieldValue(phoneCodeKey, defaultPhoneCode);
   };
 

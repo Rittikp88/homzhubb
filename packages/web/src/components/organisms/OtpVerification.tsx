@@ -4,12 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -27,7 +30,6 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 
 export enum OtpNavTypes {
   Login = 'Login',
@@ -35,7 +37,7 @@ export enum OtpNavTypes {
   SocialMedia = 'SocialMedia',
   UpdateProfileByEmailPhoneOtp = 'UpdateProfileByEmailPhoneOtp',
   UpdateProfileByOtp = 'UpdateProfileByOtp',
-} // todos Required for integration of diffrent type of signin flows
+}
 interface IDispatchProps {
   login?: (payload: ILoginPayload) => void;
   loginSuccess?: (data: IUserTokens) => void;
@@ -53,10 +55,7 @@ type IProps = IDispatchProps & IOtpProps;
 
 const OtpVerification: React.FC<IProps> = (props: IProps) => {
   useEffect(() => {
-    const fetchDataAsync = async (): Promise<void> => {
-      await fetchOtp();
-    };
-    fetchDataAsync();
+    fetchOtp().then();
   }, []);
   const history = useHistory<IOtpProps>();
   const { location } = history;
@@ -68,23 +67,12 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
   const [userOtp, setOtp] = useState('');
   const handleOtpVerification = async (otp: string, otpType?: OtpTypes): Promise<void> => {
     setOtp(otp);
-    await verifyOtp(otp); // Required handler for primary field of verification form
   };
   const [errorState, toggleErrorState] = useState(true);
   const toggleError = (): void => {
     toggleErrorState(false);
   };
-  const verifyOtp = async (otp: string): Promise<void> => {
-    try {
-      await UserService.verifyOtp(otp, otpSentTo, phoneCode);
-      if (type === OtpNavTypes.SignUp) {
-        await signUp();
-      }
-    } catch (e) {
-      toggleErrorState(true);
-    }
-  };
-  const onRequestAuth = async (): Promise<void> => {
+  const verifyOtp = async (): Promise<void> => {
     if (type === OtpNavTypes.Login) {
       loginOtp(userOtp ?? '');
       return;
@@ -93,6 +81,17 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
     if (type === OtpNavTypes.SocialMedia) {
       await socialSignUp(userOtp);
     }
+    try {
+      await UserService.verifyOtp(userOtp, otpSentTo, phoneCode);
+      if (type === OtpNavTypes.SignUp) {
+        await signUp();
+      }
+    } catch (e) {
+      toggleErrorState(true);
+    }
+  };
+  const navigateToHomeScreen = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
   const signUp = async (): Promise<void> => {
     if (!userData) {
@@ -110,7 +109,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
       const loginPayload: ILoginPayload = {
         data: loginData,
         is_referral: !!userData.signup_referral_code,
-        ...(onCallback && { callback: onCallback }),
+        callback: navigateToHomeScreen,
       };
       dispatch(UserActions.login(loginPayload));
     } catch (e) {
@@ -137,7 +136,6 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
       AlertHelper.error({ message: e.message });
     }
   };
-
   const loginOtp = (otp: string): void => {
     const loginData: IOtpLoginPayload = {
       action: LoginTypes.OTP,
@@ -149,7 +147,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
     };
     const loginPayload: ILoginPayload = {
       data: loginData,
-      callback: onCallback,
+      callback: navigateToHomeScreen,
     };
     dispatch(UserActions.login(loginPayload));
   };
@@ -196,7 +194,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
             />
           </View>
           <View>
-            <OtpInputs bubbleOtp={handleOtpVerification} toggleError={toggleError} />
+            <OtpInputs bubbleOtp={handleOtpVerification} toggleError={toggleError}/>
           </View>
           <View style={styles.resendTextContainer}>
             <Typography variant="label" size="large" fontWeight="regular" style={styles.notReceiveOtpText}>
@@ -220,8 +218,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
             type="primary"
             title={t('auth:signup')}
             containerStyle={[styles.signupButtonStyle]}
-            disabled={errorState}
-            onPress={onRequestAuth}
+            onPress={verifyOtp}
           />
         </View>
       </UserValidationScreensTemplate>

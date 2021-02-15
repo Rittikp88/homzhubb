@@ -1,13 +1,17 @@
 import React from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import { WithTranslation, withTranslation } from 'react-i18next';
 import { ReactFacebookLoginInfo, ReactFacebookLoginProps } from 'react-facebook-login';
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { SocialAuthUtils } from '@homzhub/common/src/utils/SocialAuthUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
 import Google from '@homzhub/common/src/assets/images/google.svg';
@@ -22,13 +26,14 @@ interface IOwnProps {
   isFromLogin: boolean;
   onEmailLogin?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
+  history: History;
 }
 
 interface IDispatchProps {
   loginSuccess: (data: IUserTokens) => void;
 }
 
-type IProps = IOwnProps & IDispatchProps;
+type IProps = IOwnProps & IDispatchProps & WithTranslation;
 
 interface IState {
   authProviders: SocialAuthProvider[];
@@ -104,11 +109,34 @@ class SocialMediaGateway extends React.PureComponent<IProps, IState> {
   };
 
   private authenticateSocialData = (result: ISocialUserData): void => {
-    const { loginSuccess } = this.props;
+    const { loginSuccess, history, isFromLogin, t } = this.props;
     SocialAuthUtils.onSocialAuthSuccess(
       result,
       () => {
-        // todo navigation Here
+        let compProps;
+        if (isFromLogin) {
+          compProps = {
+            socialUserData: result,
+            title: t('auth:loginWithGoogle'),
+            subTitle: result.user.email,
+            buttonTitle: t('common:login'),
+            underlineDesc: t('auth:authDescLogin', { username: result.user.first_name }),
+            isFromLogin,
+          };
+        } else {
+          compProps = {
+            socialUserData: result,
+            title: t('auth:signUpWithGoogle'),
+            subTitle: result.user.email,
+            buttonTitle: t('common:signUp'),
+            underlineDesc: t('auth:authDescSignUp', { username: result.user.first_name }),
+            isFromLogin,
+          };
+        }
+        NavigationUtils.navigate(history, {
+          path: RouteNames.publicRoutes.MOBILE_VERIFICATION,
+          params: { ...compProps },
+        });
       },
       (tokens) => {
         loginSuccess(tokens);
@@ -183,7 +211,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-const HOC = connect(null, mapDispatchToProps)(SocialMediaGateway);
+const HOC = connect(null, mapDispatchToProps)(withTranslation()(SocialMediaGateway));
 export { HOC as SocialMediaGateway };
 
 const styles = StyleSheet.create({
