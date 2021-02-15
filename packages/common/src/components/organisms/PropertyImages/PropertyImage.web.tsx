@@ -71,8 +71,11 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     return (
       <>
         <View style={containerStyle}>
-          <View style={!isMobile && styles.uploadView}>
-            <AssetListingSection title={t('property:images')} containerStyles={styles.section}>
+          <View style={isMobile ? styles.uploadViewMobile : styles.uploadView}>
+            <AssetListingSection
+              title={t('property:images')}
+              containerStyles={isMobile ? styles.sectionMobile : styles.section}
+            >
               <>
                 <UploadBox
                   icon={icons.gallery}
@@ -89,7 +92,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
           <Button
             type="primary"
             title={t('common:continue')}
-            containerStyle={styles.buttonStyle}
+            containerStyle={isMobile ? styles.buttonStyleMobile : styles.buttonStyle}
             onPress={this.postAttachmentsForProperty}
           />
         </View>
@@ -406,6 +409,9 @@ const styles = StyleSheet.create({
     width: '30%',
     alignSelf: 'flex-end',
   },
+  buttonStyleMobile: {
+    marginVertical: 20,
+  },
   bottomSheetContainer: {
     margin: theme.layout.screenPadding,
   },
@@ -416,8 +422,15 @@ const styles = StyleSheet.create({
   uploadView: {
     flexDirection: 'row',
   },
+  uploadViewMobile: {
+    width: '100%',
+  },
   section: {
     flex: 1,
     marginRight: 24,
+  },
+  sectionMobile: {
+    marginTop: 30,
+    marginBottom: 20,
   },
 });

@@ -95,7 +95,7 @@ export class AssetHighlights extends Component<Props, IState> {
     if (!isWebMobile) continueButtonStyleWeb = styles.continueButtonStyleDesktop;
 
     return (
-      <View style={styles.container}>
+      <View style={PlatformUtils.isMobile() && styles.container}>
         {this.renderAmenities()}
         {this.renderOtherDetails()}
         {this.renderOtherHighlights()}
