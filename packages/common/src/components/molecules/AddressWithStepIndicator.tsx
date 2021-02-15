@@ -1,6 +1,8 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { useDown, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { IBadgeInfo } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -12,6 +14,7 @@ import { IAmenitiesData, PropertyAmenities } from '@homzhub/common/src/component
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   steps: string[];
@@ -34,9 +37,6 @@ interface IProps {
   primaryAddressTextStyles?: ITypographyProps;
   subAddressTextStyles?: ITypographyProps;
 }
-const {
-  viewport: { width },
-} = theme;
 
 export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
   const {
@@ -61,8 +61,11 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     primaryAddressTextStyles,
   } = props;
 
+  const { width } = useViewPort();
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
+  const numberOfSteps = steps.length;
   const { rental, sell, informational, blue, green, darkTint7 } = theme.colors;
 
   const badgeData = (): ILabelColor => {
@@ -109,16 +112,18 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         isDone = isStepDone[index];
       }
     });
+
+    const calculateSeparatorWidth = (): number => {
+      if (PlatformUtils.isMobile()) return (width - 220) / numberOfSteps;
+      if (isMobile) return (width - 170) / numberOfSteps;
+      if (isTablet) return (width - 230) / numberOfSteps;
+      return (width - 600) / numberOfSteps;
+    };
+
+    const separatorWidth = { width: calculateSeparatorWidth() };
+
     return (
-      <View
-        style={[
-          styles.separator,
-          isDone && styles.doneSeparator,
-          // eslint-disable-next-line react/prop-types
-          { width: (width - 220) / steps.length },
-          stepIndicatorSeparatorStyle,
-        ]}
-      />
+      <View style={[styles.separator, isDone && styles.doneSeparator, separatorWidth, stepIndicatorSeparatorStyle]} />
     );
   };
 

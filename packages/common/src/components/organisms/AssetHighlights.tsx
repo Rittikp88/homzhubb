@@ -1,16 +1,18 @@
 import React, { Component, ReactElement } from 'react';
-import { View, StyleSheet, TextInput } from 'react-native';
+import { View, StyleSheet, TextInput, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { cloneDeep, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
-import AssetHighlightCard from '@homzhub/common/src/components/molecules/AssetHighlightCard';
+import { AssetHighlightCard } from '@homzhub/common/src/components/molecules/AssetHighlightCard';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { Amenity, AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -53,7 +55,7 @@ interface IHighlightProps {
   ) => ReactElement;
 }
 
-type Props = IHighlightProps & WithTranslation;
+type Props = IHighlightProps & WithTranslation & IWithMediaQuery;
 
 export class AssetHighlights extends Component<Props, IState> {
   public state = {
@@ -64,6 +66,8 @@ export class AssetHighlights extends Component<Props, IState> {
     selectedDetails: [],
     isSelected: false,
   };
+
+  private MAX_ADDITIONAL_HIGHLIGHTS = 5;
 
   public componentDidMount = async (): Promise<void> => {
     const { propertyDetail } = this.props;
@@ -81,10 +85,15 @@ export class AssetHighlights extends Component<Props, IState> {
   };
 
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const { t, isMobile } = this.props;
     const { selectedAmenity, selectedDetails, propertyHighlight } = this.state;
     const highlights = propertyHighlight.filter((item) => item);
     const isButtonDisabled = selectedAmenity.length <= 0 && selectedDetails.length <= 0 && highlights.length <= 0;
+    const isWebMobile = PlatformUtils.isWeb() && isMobile;
+
+    let continueButtonStyleWeb: ViewStyle = {};
+    if (!isWebMobile) continueButtonStyleWeb = styles.continueButtonStyleDesktop;
+
     return (
       <View style={styles.container}>
         {this.renderAmenities()}
@@ -94,7 +103,7 @@ export class AssetHighlights extends Component<Props, IState> {
           type="primary"
           title={t('continue')}
           disabled={isButtonDisabled}
-          containerStyle={styles.buttonStyle}
+          containerStyle={[styles.buttonStyle, continueButtonStyleWeb]}
           onPress={this.handleContinue}
         />
       </View>
@@ -104,6 +113,7 @@ export class AssetHighlights extends Component<Props, IState> {
   private renderAmenities = (): React.ReactElement[] => {
     const { renderCarousel } = this.props;
     const { assetAmenity, selectedAmenity } = this.state;
+
     return assetAmenity.map((item: AssetAmenity) => {
       const title = this.getAmenitiesTitle(item.name);
       return (
@@ -132,13 +142,32 @@ export class AssetHighlights extends Component<Props, IState> {
 
   private renderOtherHighlights = (): React.ReactElement => {
     const { propertyHighlight } = this.state;
-    const { t } = this.props;
+    const { t, isMobile, isTablet } = this.props;
+    let highlightsContainerDeviceStyle: ViewStyle = {};
+    let textInputContainerDeviceStyle: ViewStyle = {};
+    let textInputDeviceStyle: ViewStyle = {};
+    let addButtonDeviceStyle: ViewStyle = {};
+    if (isMobile) {
+      textInputDeviceStyle = styles.textInputAndAddButtonMobile;
+      highlightsContainerDeviceStyle = styles.highlightsContainerMobile;
+      textInputContainerDeviceStyle = styles.textInputContainerMobile;
+      addButtonDeviceStyle = styles.addButtonWrapperMobile;
+    } else if (isTablet) textInputDeviceStyle = styles.textInputAndAddButtonTablet;
+    else textInputDeviceStyle = styles.textInputAndAddButtonDesktop;
     return (
       <AssetListingSection title={t('property:propertyHighlights')} containerStyles={styles.card}>
-        <View style={styles.highlightsContainer}>
+        <View style={[styles.highlightsContainer, highlightsContainerDeviceStyle]}>
           {propertyHighlight.map((item, index) => {
             return (
-              <View style={styles.textInputContainer} key={index}>
+              <View
+                style={[
+                  styles.textInputContainer,
+                  textInputContainerDeviceStyle,
+                  styles.textInputWrapper,
+                  textInputDeviceStyle,
+                ]}
+                key={index}
+              >
                 <TextInput
                   placeholder={t('property:highlightPlaceholder')}
                   autoCorrect={false}
@@ -162,10 +191,17 @@ export class AssetHighlights extends Component<Props, IState> {
               </View>
             );
           })}
-          {propertyHighlight.length !== 5 && (
-            <Button type="secondary" title={t('add')} containerStyle={styles.addButton} onPress={this.handleNext} />
-          )}
         </View>
+        {propertyHighlight.length !== this.MAX_ADDITIONAL_HIGHLIGHTS && (
+          <View style={[styles.addButtonWrapper, addButtonDeviceStyle]}>
+            <Button
+              type="secondary"
+              title={t('add')}
+              containerStyle={[styles.addButton, textInputDeviceStyle]}
+              onPress={this.handleNext}
+            />
+          </View>
+        )}
       </AssetListingSection>
     );
   };
@@ -329,8 +365,9 @@ export class AssetHighlights extends Component<Props, IState> {
     }
   };
 }
+const assetHighlights = withMediaQuery<Props>(AssetHighlights);
 
-export default withTranslation()(AssetHighlights);
+export default withTranslation()(assetHighlights);
 
 const styles = StyleSheet.create({
   container: {
@@ -346,25 +383,63 @@ const styles = StyleSheet.create({
   iconButton: {
     flex: 0,
     backgroundColor: theme.colors.secondaryColor,
+    marginRight: 14,
   },
   textInputContainer: {
-    borderWidth: 1,
-    borderRadius: 4,
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
     padding: 12,
     marginVertical: 8,
     borderColor: theme.colors.darkTint10,
   },
   highlightsContainer: {
     padding: 14,
+    flexDirection: 'row',
+    overflow: 'hidden',
+    flexWrap: 'wrap',
+  },
+  textInputContainerMobile: {
+    padding: 0,
+  },
+  highlightsContainerMobile: {
+    padding: 0,
+  },
+  textInputWrapper: {
+    borderWidth: 1,
+    borderRadius: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    justifyContent: 'space-between',
   },
   textInput: {
-    flex: 1,
+    width: '90%',
+  },
+  textInputAndAddButtonDesktop: {
+    flexBasis: '31%',
+    marginHorizontal: 12,
+    marginVertical: 12,
+  },
+  textInputAndAddButtonTablet: {
+    flexBasis: '45%',
+    marginHorizontal: 12,
+    marginVertical: 12,
+  },
+  textInputAndAddButtonMobile: {
+    flexBasis: '100%',
+  },
+  addButtonWrapper: {
+    flex: 0,
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+  },
+  addButtonWrapperMobile: {
+    paddingHorizontal: 0,
   },
   addButton: {
-    flex: 0,
-    marginTop: 8,
     borderStyle: 'dashed',
+  },
+  continueButtonStyleDesktop: {
+    width: 250,
+    alignSelf: 'flex-end',
   },
 });

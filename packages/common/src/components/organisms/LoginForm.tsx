@@ -93,7 +93,7 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
         fontType="semiBold"
         textSize="small"
         onPress={handleForgotPassword}
-        containerStyle={styles.forgotButtonStyleWeb}
+        containerStyle={PlatformUtils.isWeb() && styles.forgotButtonStyleWeb}
         titleStyle={styles.forgotButtonTextStyle}
       />
     );
