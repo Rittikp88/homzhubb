@@ -281,7 +281,8 @@
     "errorInFacebookSignIn": "Error in Facebook Sign in",
     "fbEmailLinkingError": "Seems that you have not linked your email with Facebook, Please Sign up.",
     "newOnPlatform": "New on our platform?  ",
-    "createAccout": "Create an account"
+    "createAccout": "Create an account",
+    "authDesc": "Hi Vedant, You are logging in for the first time on Homzhub. Enter your phone number to complete your profile. "
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",

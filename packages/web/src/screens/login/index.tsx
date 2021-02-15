@@ -25,6 +25,8 @@ import {
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 
 interface IFormData {
   email: string;
@@ -52,7 +54,6 @@ const Login: FC<IProps> = (props: IProps) => {
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const [isEmailLogin, setIsEmailLogin] = useState(false);
-
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
@@ -87,10 +88,14 @@ const Login: FC<IProps> = (props: IProps) => {
     // TODO: Add redirection logic for password reset.
   };
   const handleOtpLogin = (values: ILoginFormData): void => {
+    console.log('values => ', values);
     // TODO : Navigation to OTP
   };
   const handleNavigationToSignup = (): void => {
     // TODO : Navigation to signup page
+  };
+  const handleWebView = (params: IWebProps): React.ReactElement => {
+    return <PhoneCodePrefix {...params} />;
   };
   return (
     <View style={styles.container}>
@@ -111,9 +116,11 @@ const Login: FC<IProps> = (props: IProps) => {
             />
           ) : (
             <LoginForm
+              isEmailLogin={false}
               onLoginSuccess={handleOtpLogin}
               handleForgotPassword={handleForgotPassword}
               testID="loginFormWeb"
+              webGroupPrefix={handleWebView}
             />
           )}
           <View style={styles.newUser}>

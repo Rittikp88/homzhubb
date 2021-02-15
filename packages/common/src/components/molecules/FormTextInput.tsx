@@ -102,9 +102,11 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
 
   public componentDidMount = (): void => {
     const { formProps, inputType, phoneCodeKey = PHONE_CODE, defaultPhoneCode, countries } = this.props;
-    if (inputType !== 'phone' || countries.length <= 0 || formProps.values[phoneCodeKey]) {
+    console.log('props FormTextInput=> ', this.props);
+    if (inputType !== 'phone' || formProps.values[phoneCodeKey]) {
       return;
     }
+    console.log('Surpassed IF', defaultPhoneCode);
     formProps.setFieldValue(phoneCodeKey, defaultPhoneCode);
   };
 
@@ -142,7 +144,6 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       ...(inputGroupSuffixText && { paddingRight: inputGroupSuffixText.length * 10 + 5 }),
     };
     let labelStyles = { ...theme.form.formLabel };
-
     let inputProps = {
       value: values[name],
       placeholder,

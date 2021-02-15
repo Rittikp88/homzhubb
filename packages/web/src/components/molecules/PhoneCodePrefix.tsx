@@ -10,6 +10,7 @@ import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInpu
 
 type Props = IWebProps;
 const PhoneCodePrefix: FC<Props> = (props: Props) => {
+  console.log('props => ', props);
   const { phoneCodes, fetchFlag, fetchPhoneCodes, inputPrefixText, isBottomSheetVisible, onCloseDropDownWeb } = props;
   const defaultDropDownProps = (isOpen: boolean, width: string): PopupProps => ({
     position: 'bottom right' as 'bottom right',

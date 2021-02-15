@@ -9,14 +9,18 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { FormTextInput, IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { connect } from 'react-redux';
+import { CommonSelectors } from '../../modules/common/selectors';
 
 interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
   handleForgotPassword?: () => void;
   onLoginSuccess: (payload: ILoginFormData) => void;
   testID?: string;
+  webGroupPrefix?: (params: IWebProps) => React.ReactElement;
 }
 
 interface IFormData {
@@ -26,11 +30,21 @@ interface IFormData {
   isEmailFlow: boolean;
   phoneCode: string;
 }
+interface IStateProps {
+  defaultPhoneCode: string;
+}
 
-class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
+interface IProps {
+  title?: string;
+  subTitle?: string;
+  buttonTitle?: string;
+}
+
+type Props = ILoginFormProps & IStateProps & IProps;
+class LoginForm extends PureComponent<Props, IFormData> {
   public password: RefObject<any> = createRef();
 
-  public constructor(props: ILoginFormProps) {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       email: '',
@@ -41,14 +55,28 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     };
   }
 
+  public componentDidMount(): void {
+    const { defaultPhoneCode } = this.props;
+    this.setState({ phoneCode: defaultPhoneCode });
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IFormData>): void {
+    const { defaultPhoneCode: prevDefaultPhoneCode } = prevProps;
+    const { defaultPhoneCode } = this.props;
+    if (prevDefaultPhoneCode !== defaultPhoneCode) {
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({ phoneCode: defaultPhoneCode });
+    }
+  }
+
   public render(): React.ReactNode {
     const { t, handleForgotPassword, isEmailLogin, testID } = this.props;
     const formData = { ...this.state };
-
     return (
       <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
         <Formik
           initialValues={formData}
+          enableReinitialize
           validate={FormUtils.validate(isEmailLogin ? this.loginEmailFormSchema : this.loginPhoneFormSchema)}
           onSubmit={this.handleSubmit}
         >
@@ -81,37 +109,8 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     );
   }
 
-  public handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
-    const { onLoginSuccess, isEmailLogin, t } = this.props;
-    formActions.setSubmitting(true);
-
-    if (!isEmailLogin) {
-      try {
-        const phone = `${values.phoneCode}~${values.phone}`;
-        const isPhoneUsed = await UserRepository.phoneExists(phone);
-        if (!isPhoneUsed.is_exists) {
-          AlertHelper.error({ message: t('auth:phoneNotExists') });
-          return;
-        }
-      } catch (err) {
-        AlertHelper.error({ message: t('common:genericErrorMessage') });
-        return;
-      }
-    }
-
-    const loginFormData: ILoginFormData = {
-      email: values.email,
-      password: values.password,
-      phone_code: values.phoneCode,
-      phone_number: values.phone,
-    };
-
-    onLoginSuccess(loginFormData);
-    formActions.setSubmitting(false);
-  };
-
   private renderLoginFields = (formProps: FormikProps<IFormData>): React.ReactElement => {
-    const { t, handleForgotPassword, isEmailLogin } = this.props;
+    const { t, handleForgotPassword, isEmailLogin, webGroupPrefix } = this.props;
 
     const onPasswordFocus = (): void => this.password.current?.focus();
 
@@ -162,10 +161,37 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
             phoneFieldDropdownText={t('auth:countryRegion')}
             isMandatory
             formProps={formProps}
+            webGroupPrefix={webGroupPrefix}
           />
         )}
       </>
     );
+  };
+
+  public handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
+    const { onLoginSuccess, isEmailLogin, t } = this.props;
+    formActions.setSubmitting(true);
+    if (!isEmailLogin) {
+      try {
+        const phone = `${values.phoneCode}~${values.phone}`;
+        const isPhoneUsed = await UserRepository.phoneExists(phone);
+        if (!isPhoneUsed.is_exists) {
+          AlertHelper.error({ message: t('auth:phoneNotExists') });
+          return;
+        }
+      } catch (err) {
+        AlertHelper.error({ message: t('common:genericErrorMessage') });
+        return;
+      }
+    }
+    const loginFormData: ILoginFormData = {
+      email: values.email,
+      password: values.password,
+      phone_code: values.phoneCode,
+      phone_number: values.phone,
+    };
+    onLoginSuccess(loginFormData);
+    formActions.setSubmitting(false);
   };
 
   private loginPhoneFormSchema = (): yup.ObjectSchema<{
@@ -192,8 +218,12 @@ class LoginForm extends PureComponent<ILoginFormProps, IFormData> {
     });
   };
 }
-
-const HOC = withTranslation()(LoginForm);
+const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    defaultPhoneCode: CommonSelectors.getDefaultPhoneCode(state),
+  };
+};
+const HOC = withTranslation()(connect(mapStateToProps)(LoginForm));
 export { HOC as LoginForm };
 
 const styles = StyleSheet.create({
