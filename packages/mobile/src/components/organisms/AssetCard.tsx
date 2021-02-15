@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle, TextStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
@@ -19,7 +22,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IGetHistoryPayload, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 import {
@@ -28,38 +31,33 @@ import {
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 
 interface IListProps {
   assetData: Asset;
-  onViewProperty?: (data: ISetAssetPayload, key?: Tabs) => void;
-  isDetailView?: boolean;
   expandedId?: number;
+  isDetailView?: boolean;
   isFromTenancies?: boolean;
+  customDesignation?: string;
   onPressArrow?: (id: number) => void;
-  enterFullScreen?: (attachments: Attachment[]) => void;
   onCompleteDetails: (id: number) => void;
-  onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
   onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
-  customDesignation?: TextStyle;
+  enterFullScreen?: (attachments: Attachment[]) => void;
+  onViewProperty?: (data: ISetAssetPayload, key?: Tabs) => void;
+  onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
 }
 
 interface IState {
   isBottomSheetVisible: boolean;
+  listOfTenant: number;
 }
 
 type Props = WithTranslation & IListProps;
-const userDetails = {
-  firstName: 'Naveen',
-  lastName: 'Gollavilli',
-  phone: '9502027748',
-  email: 'naveensaigollavilli@gmail.com',
-  phoneCode: '+91',
-};
-
 export class AssetCard extends Component<Props, IState> {
   public state = {
     isBottomSheetVisible: false,
+    listOfTenant: 0,
   };
 
   public render(): React.ReactElement {
@@ -77,7 +75,6 @@ export class AssetCard extends Component<Props, IState> {
       country: { flag },
     } = assetData;
     let detailPayload: ISetAssetPayload;
-
     if (assetStatusInfo) {
       detailPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
     }
@@ -184,31 +181,46 @@ export class AssetCard extends Component<Props, IState> {
     );
   };
 
-  public renderBottomSheet = (): React.ReactElement => {
-    const { isBottomSheetVisible } = this.state;
-    const { t } = this.props;
+  public renderBottomSheet = (): React.ReactNode => {
+    const { isBottomSheetVisible, listOfTenant } = this.state;
+    const { t, assetData } = this.props;
+    if (!assetData || !assetData.assetStatusInfo) return null;
+    const {
+      id,
+      assetStatusInfo: { leaseTenantInfo, leaseTransaction, action },
+    } = assetData;
+    const isActive = action ? action.label === 'Terminate' : false;
     return (
       <BottomSheet
         visible={isBottomSheetVisible}
-        sheetHeight={theme.viewport.height * 0.85}
+        sheetHeight={theme.viewport.height * 0.75}
         headerTitle={t('common:editInvite')}
         onCloseSheet={this.onCloseBottomSheet}
       >
-        <EditTenantDetails details={userDetails} />
+        <EditTenantDetails
+          onHandleActionProp={this.onPressAction}
+          numberOfTenants={listOfTenant}
+          details={leaseTenantInfo.user}
+          assetId={id}
+          isActive={isActive}
+          endDate={leaseTransaction?.leaseEndDate ?? ''}
+          leaseTransaction={leaseTransaction.id}
+          leaseTenantId={leaseTenantInfo.leaseTenantId}
+          onCloseSheet={this.onCloseBottomSheet}
+        />
       </BottomSheet>
     );
   };
 
   private renderExpandedView = (): React.ReactNode => {
     const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
-
     if (!assetData || !assetData.assetStatusInfo) return null;
 
     const {
       assetStatusInfo: {
         action,
         tag: { label },
-        leaseTenantInfo,
+        leaseTenantInfo: { user, isInviteAccepted },
         leaseListingId,
         saleListingId,
         leaseOwnerInfo,
@@ -220,19 +232,29 @@ export class AssetCard extends Component<Props, IState> {
     } = assetData;
 
     const isListed = leaseListingId || saleListingId;
-    const user: User = isFromTenancies ? leaseOwnerInfo : leaseTenantInfo;
-
+    const userData: User = isFromTenancies ? leaseOwnerInfo : user;
+    const icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
+    const name = isInviteAccepted ? userData.name : userData.email;
+    const image = isInviteAccepted ? userData.profilePicture : undefined;
+    const designation = isInviteAccepted
+      ? isFromTenancies
+        ? t('property:owner')
+        : t('property:tenant')
+      : t('common:invitationSent');
+    const designationStyle = isInviteAccepted ? undefined : styles.designation;
     return (
       <>
-        {!!user.fullName && (
+        {!!userData.fullName && (
           <>
             <Divider containerStyles={styles.divider} />
             <Avatar
-              isRightIcon
+              isRightIcon={!isInviteAccepted}
               onPressRightIcon={this.onToggleBottomSheet}
-              fullName={user.name}
-              image={user.profilePicture}
-              designation={isFromTenancies ? t('property:owner') : t('property:tenant')}
+              icon={icon}
+              fullName={name}
+              image={image}
+              designation={designation}
+              customDesignation={designationStyle}
             />
           </>
         )}
@@ -306,6 +328,7 @@ export class AssetCard extends Component<Props, IState> {
   public onToggleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+    this.activeTenantList().then();
   };
 
   private onCompleteDetails = (): void => {
@@ -343,6 +366,27 @@ export class AssetCard extends Component<Props, IState> {
           hasTakeAction: action?.label === ActionType.ACTION,
         });
       }
+    }
+  };
+
+  public activeTenantList = async (): Promise<void> => {
+    const {
+      assetData: { id, assetStatusInfo },
+    } = this.props;
+
+    if (!assetStatusInfo) return;
+
+    const { leaseTransaction } = assetStatusInfo;
+
+    const data: IGetHistoryPayload = {
+      lease_transaction_id: leaseTransaction.id,
+      active: true,
+    };
+    try {
+      const tenants: TenantInfo[] = await PortfolioRepository.getTenantHistory(id, data);
+      this.setState({ listOfTenant: tenants.length });
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
   };
 }
@@ -432,5 +476,8 @@ const styles = StyleSheet.create({
   cancelTitle: {
     marginVertical: 10,
     color: theme.colors.error,
+  },
+  designation: {
+    color: theme.colors.green,
   },
 });

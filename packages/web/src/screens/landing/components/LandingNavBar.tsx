@@ -30,38 +30,40 @@ const LandingNavBar: FC = () => {
     setIsMenuOpen(true);
   };
   return (
-    <StickyHeader>
-      <View style={styles.container}>
-        <View style={styles.content}>
-          <View style={styles.subContainer}>
-            <View style={styles.logo}>
-              <NavLogo />
-            </View>
-            {isLaptop && <RenderNavItems />}
-          </View>
-          {isLaptop ? (
+    <>
+      <StickyHeader>
+        <View style={styles.container}>
+          <View style={styles.content}>
             <View style={styles.subContainer}>
-              <Button disabled={isReleaseMode} type="text" fontType="regular" title={t('login')} />
-              <Button disabled={isReleaseMode} type="primary" title={t('signUp')} />
+              <View style={styles.logo}>
+                <NavLogo />
+              </View>
+              {isLaptop && <RenderNavItems />}
             </View>
-          ) : (
-            <Button
-              type="text"
-              icon={icons.hamburgerMenu}
-              iconSize={30}
-              iconColor={theme.colors.darkTint2}
-              onPress={onMenuOpen}
-              containerStyle={styles.hamburgerMenu}
-            />
-          )}
+            {isLaptop ? (
+              <View style={styles.subContainer}>
+                <Button disabled={isReleaseMode} type="text" fontType="regular" title={t('login')} />
+                <Button disabled={isReleaseMode} type="primary" title={t('signUp')} />
+              </View>
+            ) : (
+              <Button
+                type="text"
+                icon={icons.hamburgerMenu}
+                iconSize={30}
+                iconColor={theme.colors.darkTint2}
+                onPress={onMenuOpen}
+                containerStyle={styles.hamburgerMenu}
+              />
+            )}
+          </View>
         </View>
-      </View>
+      </StickyHeader>
       {!isLaptop && (
         <SideBar open={isMenuOpen} onClose={onMenuClose}>
           <RenderNavItems />
         </SideBar>
       )}
-    </StickyHeader>
+    </>
   );
 };
 const RenderNavItems = (): React.ReactElement => {

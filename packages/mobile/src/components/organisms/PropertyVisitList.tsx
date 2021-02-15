@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -32,7 +33,7 @@ import {
   VisitActions,
 } from '@homzhub/common/src/domain/models/AssetVisit';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
-import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IVisitActionParam, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
@@ -49,9 +50,9 @@ interface IProps {
   isFromProperty?: boolean;
   dropdownValue?: number;
   isUserView?: boolean;
-  handleAction: (id: number, action: VisitActions) => void;
+  handleAction: (param: IVisitActionParam) => void;
   handleUserView?: (id: number) => void;
-  handleConfirmation?: (id: number) => void;
+  handleConfirmation?: (param: IVisitActionParam) => void;
   handleReschedule: (asset: AssetVisit, userId?: number) => void;
   handleDropdown?: (value: string | number, visitType: Tabs) => void;
   containerStyle?: StyleProp<ViewStyle>;
@@ -122,7 +123,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
               icon={icons.downArrow}
               textStyle={{ color: theme.colors.blue }}
               iconColor={theme.colors.blue}
-              onDonePress={(value): void => handleDropdown(value, visitType)}
+              onDonePress={(value: string | number): void => handleDropdown(value, visitType)}
               containerStyle={styles.dropdownStyle}
             />
           </View>
@@ -225,7 +226,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   };
 
   private renderUpcomingView = (item: AssetVisit): React.ReactElement => {
-    const { actions, status, id } = item;
+    const { actions, status, id, isValidVisit } = item;
     const visitStatus = this.getVisitStatus(status);
     const isSmallerView = (visitStatus?.title?.length ?? 0) > 16 && theme.viewport.width < 350;
 
@@ -245,7 +246,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
             />
           )}
           {actions.map((action: string, index: number): React.ReactElement | null => {
-            const actionData = this.getActions(action);
+            const actionData = this.getActions(action, isValidVisit);
             if (!actionData) return null;
             const onPressButton = (): void => actionData.action && actionData.action(id);
             return (
@@ -352,7 +353,10 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     const { handleAction } = this.props;
     const { currentVisitId } = this.state;
     if (item === 'Yes') {
-      handleAction(currentVisitId, VisitActions.CANCEL);
+      handleAction({
+        id: currentVisitId,
+        action: VisitActions.CANCEL,
+      });
     }
     this.onCancelSheet();
   };
@@ -384,7 +388,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private getActions = (action: string): IVisitActions | null => {
+  private getActions = (action: string, isValidVisit: boolean): IVisitActions | null => {
     const { handleAction, t, handleConfirmation } = this.props;
     const { APPROVE, REJECT, CANCEL } = VisitActions;
     switch (action) {
@@ -393,20 +397,31 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
           title: t('common:accept'),
           color: theme.colors.green,
           icon: icons.circularCheckFilled,
-          action: (id): void => handleAction(id, VisitActions.APPROVE),
+          action: (id): void =>
+            handleAction({
+              id,
+              action: VisitActions.APPROVE,
+              isValidVisit,
+            }),
         };
       case REJECT:
         return {
           title: t('common:reject'),
           color: theme.colors.error,
           icon: icons.circularCrossFilled,
-          action: (id): void => handleAction(id, VisitActions.REJECT),
+          action: (id): void =>
+            handleAction({
+              id,
+              action: VisitActions.REJECT,
+              isValidVisit,
+            }),
         };
       case CANCEL:
         return {
           title: t('common:cancel'),
           color: theme.colors.error,
-          action: (id): void => (handleConfirmation ? handleConfirmation(id) : this.handleVisitCancel(id)),
+          action: (id): void =>
+            handleConfirmation ? handleConfirmation({ id, isValidVisit }) : this.handleVisitCancel(id, isValidVisit),
         };
       default:
         return null;
@@ -474,7 +489,13 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private handleVisitCancel = (id: number): void => {
+  private handleVisitCancel = (id: number, isValidVisit: boolean): void => {
+    const { t } = this.props;
+    if (!isValidVisit) {
+      AlertHelper.error({ message: t('property:inValidVisit') });
+      return;
+    }
+
     this.setState({
       isCancelSheet: true,
       currentVisitId: id,

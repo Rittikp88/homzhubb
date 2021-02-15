@@ -160,7 +160,6 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       },
       ...rest,
     };
-
     switch (inputType) {
       case 'email':
         inputProps = { ...inputProps, ...{ keyboardType: 'email-address', autoCapitalize: 'none' } };
@@ -214,7 +213,8 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
         if (inputPrefixText.length > 0) {
           inputGroupPrefix = PlatformUtils.isMobile() ? (
             <TouchableOpacity style={styles.inputGroupPrefix} onPress={this.fetchPhoneCodes}>
-              <Image source={{ uri: this.fetchFlag() }} style={styles.flagStyle} />
+              {/** @ts-ignore * */}
+              <Image source={this.fetchFlag()} style={styles.flagStyle} />
               <Label type="regular" style={styles.inputPrefixText}>
                 {inputPrefixText}
               </Label>

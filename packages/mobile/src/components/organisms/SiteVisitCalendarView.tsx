@@ -29,6 +29,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IAssetVisitPayload,
   IUpdateVisitPayload,
+  IVisitActionParam,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IBookVisitProps } from '@homzhub/mobile/src/navigation/interfaces';
@@ -262,18 +263,41 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     );
   };
 
-  private showConfirmation = (visitId: number): void => {
+  private showConfirmation = (param: IVisitActionParam): void => {
     const { t } = this.props;
+    const { id, isValidVisit, isUserView } = param;
+
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
+
     AlertHelper.alert({
       title: t('cancelVisit'),
       message: t('wantCancelVisit'),
-      onOkay: () => this.handleVisitActions(visitId, VisitActions.CANCEL).then(),
+      onOkay: () =>
+        this.handleVisitActions({
+          id,
+          action: VisitActions.CANCEL,
+          isValidVisit,
+          isUserView,
+        }).then(),
     });
+  };
+
+  private handleInvalidVisit = (): void => {
+    const { t } = this.props;
+    this.onCloseProfile();
+    AlertHelper.error({ message: t('property:inValidVisit') });
   };
 
   private handleSchedule = (asset: AssetVisit): void => {
     const { onReschedule, setVisitIds, getAssetVisit } = this.props;
-    const { id, leaseListing, saleListing } = asset;
+    const { id, leaseListing, saleListing, isValidVisit } = asset;
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
 
     const param = {
       ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
@@ -286,14 +310,20 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     this.onCloseProfile();
   };
 
-  private handleVisitActions = async (visitId: number, action: VisitActions): Promise<void> => {
+  private handleVisitActions = async (param: IVisitActionParam): Promise<void> => {
+    const { action, isValidVisit } = param;
     const {
       userDetail: {
         user: { id },
       },
     } = this.state;
+    if (!action) return;
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
     const payload: IUpdateVisitPayload = {
-      id: visitId,
+      id: param.id,
       data: {
         status: action,
       },
@@ -429,12 +459,15 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
     results.forEach((visit) => {
       visitIds.push(visit.id);
     });
-    const { leaseListing, saleListing } = results[0];
+    const { leaseListing, saleListing, isValidVisit } = results[0];
     const param = {
       ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
       ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
     };
-
+    if (!isValidVisit) {
+      this.handleInvalidVisit();
+      return;
+    }
     setVisitIds(visitIds);
     onReschedule(param);
   };

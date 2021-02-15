@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
-import { IWithMediaQuery, withMediaQuery } from '../../utils/MediaQueryUtils';
 
 export interface ICheckboxGroupData {
   id: number | string;
@@ -24,7 +24,7 @@ class CheckboxGroup extends React.PureComponent<IProps, {}> {
   public render = (): React.ReactNode => {
     const { data, containerStyle = {}, isMobile } = this.props;
     const styles = checkBoxGrpStyles(isMobile);
-    return (
+    return isMobile ? (
       <View style={[styles.container, containerStyle]}>
         <View style={styles.col}>
           {data.filter((item, index) => index % 2 === 0).map((item) => this.renderCheckbox(item))}
@@ -33,6 +33,8 @@ class CheckboxGroup extends React.PureComponent<IProps, {}> {
           {data.filter((item, index) => index % 2 !== 0).map((item) => this.renderCheckbox(item))}
         </View>
       </View>
+    ) : (
+      <View style={styles.checkboxStyle}>{data.map((item) => this.renderCheckbox(item))}</View>
     );
   };
 
@@ -65,6 +67,7 @@ interface ICheckBoxGrpStyle {
   col: ViewStyle;
   disabled: ViewStyle;
   checkboxContainer: ViewStyle;
+  checkboxStyle: ViewStyle;
 }
 
 const checkBoxGrpStyles = (isMobile: boolean): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
@@ -83,5 +86,10 @@ const checkBoxGrpStyles = (isMobile: boolean): StyleSheet.NamedStyles<ICheckBoxG
     checkboxContainer: {
       marginRight: isMobile ? undefined : 40,
       marginVertical: 12,
+    },
+    checkboxStyle: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      width: '100%',
     },
   });

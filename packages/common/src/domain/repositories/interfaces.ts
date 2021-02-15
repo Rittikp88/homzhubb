@@ -364,7 +364,7 @@ export interface IAddGeneralLedgerPayload {
   category: number;
   transaction_date: string;
   notes?: string | null;
-  attachment: number | null;
+  attachments: number[] | null;
   currency: string;
 }
 
@@ -647,4 +647,25 @@ export interface IAddReviewComment {
 export interface IReportReview {
   category: number;
   report_comment?: string;
+}
+
+export interface IUpdateTenantParam {
+  assetId: number;
+  leaseTransactionId: number;
+  leaseTenantId: number;
+}
+
+export interface IUserDetails {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_code: string;
+  phone_number: string;
+}
+
+export interface IVisitActionParam {
+  id: number;
+  action?: VisitActions;
+  isValidVisit?: boolean;
+  isUserView?: boolean;
 }

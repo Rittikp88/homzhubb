@@ -134,9 +134,13 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
   };
 
   const renderButtonGroup = (asset: Asset): ReactElement => {
-    const { nextVisit, leaseTerm, saleTerm } = asset;
+    const { nextVisit, leaseTerm, saleTerm, isActive } = asset;
     const onScheduleVisitPress = (): void => {
-      navigateToPropertyVisit(leaseTerm?.id, saleTerm?.id);
+      if (isActive) {
+        navigateToPropertyVisit(leaseTerm?.id, saleTerm?.id);
+      } else {
+        AlertHelper.error({ message: t('property:inValidVisit') });
+      }
     };
 
     return (

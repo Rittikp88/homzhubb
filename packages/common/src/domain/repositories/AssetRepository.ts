@@ -22,6 +22,8 @@ import {
   IGetListingReviews,
   IAddReviewComment,
   IReportReview,
+  IUpdateTenantParam,
+  IUserDetails,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -42,6 +44,7 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
+import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 
@@ -100,9 +103,12 @@ const ENDPOINTS = {
   listingReviews: 'listing-reviews/',
   addReviewComment: (reviewId: number): string => `listing-reviews/${reviewId}/comments/`,
   reportReview: (reviewId: number): string => `listing-reviews/${reviewId}/reports/`,
+  reportReviewData: (reviewId: number, reportId: number): string => `listing-reviews/${reviewId}/reports/${reportId}`,
   editReviewComment: (reviewId: number, commentId: number): string =>
     `listing-reviews/${reviewId}/comments/${commentId}/`,
   listingReviewsSummary: 'listing-reviews/summary/',
+  updateTenant: (param: IUpdateTenantParam): string =>
+    `assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}`,
 };
 
 class AssetRepository {
@@ -382,6 +388,19 @@ class AssetRepository {
 
   public reportReview = async (reviewId: number, payload: IReportReview): Promise<void> => {
     return this.apiClient.post(ENDPOINTS.reportReview(reviewId), payload);
+  };
+
+  public getReportReviewData = async (reviewId: number, reportId: number): Promise<ReportReview> => {
+    const response = await this.apiClient.get(ENDPOINTS.reportReviewData(reviewId, reportId));
+    return ObjectMapper.deserialize(ReportReview, response);
+  };
+
+  public updateTenantDetails = async (param: IUpdateTenantParam, payload: IUserDetails): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.updateTenant(param), payload);
+  };
+
+  public deleteTenant = async (param: IUpdateTenantParam): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.updateTenant(param));
   };
 }
 

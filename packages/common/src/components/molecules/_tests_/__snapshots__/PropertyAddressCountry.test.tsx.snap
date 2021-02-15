@@ -21,11 +21,7 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
     }
   >
     <Image
-      source={
-        Object {
-          "uri": "",
-        }
-      }
+      source=""
       style={
         Object {
           "borderRadius": 2,

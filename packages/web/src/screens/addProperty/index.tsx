@@ -1,20 +1,29 @@
-import React, { FC, useContext, useState, useEffect } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Script from 'react-load-script';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { useDispatch, useSelector } from 'react-redux';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import AddPropertyLocation from '@homzhub/web/src/screens/addPropertyLocation';
 import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropertyView';
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
-import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/VerificationDocuments';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 
 interface IComponentMap {
   component: AddPropertyStack;
@@ -42,7 +51,11 @@ export const AddPropertyActionsGrp: FC = () => {
     </Button>
   );
 };
+
 const AddProperty: FC = () => {
+  const dispatch = useDispatch();
+  const assetId = useSelector(RecordAssetSelectors.getCurrentAssetId);
+  const selectedImages = useSelector(RecordAssetSelectors.getSelectedImages);
   const { goBackClicked, setGoBackClicked } = useContext(AppLayoutContext);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
@@ -50,12 +63,14 @@ const AddProperty: FC = () => {
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
   const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
+
   useEffect(() => {
     if (goBackClicked) {
       goBack();
       setGoBackClicked(false);
     }
   }, [goBackClicked]);
+
   const navigateScreen = (comp: AddPropertyStack): void => {
     setCurrentScreen(comp);
   };
@@ -63,6 +78,51 @@ const AddProperty: FC = () => {
     if (currentScreen !== AddPropertyStack.AddPropertyLocationScreen) {
       const activeIndex = compArray.findIndex((value) => value.component === currentScreen);
       setCurrentScreen(compArray[activeIndex - 1].component);
+    }
+  };
+  const handleEditSelection = (): void => {
+    setCurrentScreen(AddPropertyStack.PropertyDetailsMapScreen);
+  };
+
+  const onImageSelection = async (files?: File[]): Promise<void> => {
+    if (!files) {
+      return;
+    }
+    try {
+      const formData = new FormData();
+      files.forEach((image: File) => {
+        formData.append('files[]', image);
+      });
+      try {
+        const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
+
+        const { data } = response;
+        const localSelectedImages: IPropertySelectedImages[] = [];
+        data.forEach((item: any) => {
+          localSelectedImages.push({
+            id: null,
+            description: '',
+            is_cover_image: false,
+            asset: assetId,
+            attachment: item.id,
+            link: item.link,
+            file_name: 'localImage',
+            isLocalImage: true,
+          });
+        });
+        if (selectedImages.length === 0) {
+          localSelectedImages[0].is_cover_image = true;
+        }
+        dispatch(
+          RecordAssetActions.setSelectedImages(
+            selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages))
+          )
+        );
+      } catch (e) {
+        AlertHelper.error({ message: e.message });
+      }
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
     }
   };
   const compArray: IComponentMap[] = [
@@ -82,8 +142,8 @@ const AddProperty: FC = () => {
         return (
           <View style={styles.flexOne}>
             <AddPropertyView
-              onUploadImage={FunctionUtils.noop}
-              onEditPress={FunctionUtils.noop}
+              onUploadImage={onImageSelection}
+              onEditPress={handleEditSelection}
               onNavigateToPlanSelection={FunctionUtils.noop}
               onNavigateToDetail={FunctionUtils.noop}
             />
@@ -143,7 +203,7 @@ const AddPropertyActionStyles = StyleSheet.create({
 const AddPropertyStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.background,
     flexDirection: 'row',
     marginBottom: 48,
     borderRadius: 4,

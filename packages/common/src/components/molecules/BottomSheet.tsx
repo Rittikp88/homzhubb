@@ -7,7 +7,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 
 export interface IBottomSheetProps {
-  children: React.ReactElement;
+  children: React.ReactElement | null;
   visible: boolean;
   headerTitle?: string;
   isShadowView?: boolean;

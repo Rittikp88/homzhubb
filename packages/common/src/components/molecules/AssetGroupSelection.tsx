@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
@@ -10,7 +11,7 @@ import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-interface IProps extends WithTranslation {
+interface IAssetGroupProps extends WithTranslation {
   assetGroups: AssetGroup[];
   selectedAssetGroupType: number;
   selectedAssetGroupId: number;
@@ -28,6 +29,8 @@ enum Type {
   AssetGroup = 'AssetGroup',
   AssetType = 'AssetType',
 }
+
+type IProps = IAssetGroupProps & IWithMediaQuery;
 
 class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
   public state = {
@@ -84,13 +87,16 @@ class AssetGroupSelection extends React.PureComponent<IProps, IOwnState> {
 
   private renderItem = (type: Type, item: AssetGroup | Unit, index: number): React.ReactNode => {
     const { selectedAssetGroup } = this.state;
-    const { onAssetGroupSelected, selectedAssetGroupType, scrollRef } = this.props;
+    const { onAssetGroupSelected, selectedAssetGroupType, scrollRef, isMobile } = this.props;
+    const groupStyling = [
+      styles.subItemContainer,
+      PlatformUtils.isMobile() && { marginEnd: index % 2 === 0 ? marginEnd : 0 },
+      isMobile && styles.mobileSubItemContainer,
+    ];
 
     const conditionalSelectedItem = type === Type.AssetGroup ? selectedAssetGroup : selectedAssetGroupType;
     const conditionalContainerStyle =
-      type === Type.AssetGroup
-        ? styles.itemContainer
-        : [styles.subItemContainer, PlatformUtils.isMobile() && { marginEnd: index % 2 === 0 ? marginEnd : 0 }];
+      type === Type.AssetGroup ? [styles.itemContainer, isMobile && styles.mobileItemContainer] : groupStyling;
 
     let color = theme.colors.darkTint4;
     let backgroundColor;
@@ -150,12 +156,17 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     alignItems: 'center',
-    marginEnd: 12,
+    marginHorizontal: 6,
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 4,
     borderWidth: 1,
     borderColor: theme.colors.disabled,
+  },
+  mobileItemContainer: {
+    width: PlatformUtils.isWeb() ? 95 : undefined,
+    height: PlatformUtils.isWeb() ? 54 : undefined,
+    justifyContent: 'center',
   },
   subItemContainer: {
     width: PlatformUtils.isWeb() ? '30%' : (width - (screenPadding * 2 + marginEnd)) / 2,
@@ -167,6 +178,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: theme.colors.disabled,
+  },
+  mobileSubItemContainer: {
+    width: PlatformUtils.isWeb() ? '41%' : (width - (screenPadding * 2 + marginEnd)) / 2,
   },
   assetGroupName: {
     textAlign: 'center',
@@ -180,4 +194,7 @@ const styles = StyleSheet.create({
 });
 
 const HOC = withTranslation(LocaleConstants.namespacesKey.property)(AssetGroupSelection);
-export { HOC as AssetGroupSelection };
+
+const assetGroupSelection = withMediaQuery<any>(HOC);
+
+export { assetGroupSelection as AssetGroupSelection };

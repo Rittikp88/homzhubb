@@ -28,7 +28,7 @@ exports[`AddRecordForm should match snapshot 1`] = `
       Object {
         "amount": "",
         "category": 0,
-        "date": "2021-02-11",
+        "date": "2021-02-15",
         "label": "",
         "notes": "",
         "property": -1,

@@ -7,13 +7,14 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import PropertyVisitList from '@homzhub/mobile/src/components/organisms/PropertyVisitList';
-import { AssetVisit, IVisitByKey, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
+import { IVisitActionParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps extends WithTranslation {
   detail: UserInteraction;
-  handleVisitAction: (visitId: number, action: VisitActions, isUserView?: boolean) => void;
-  handleConfirmation: (id: number) => void;
+  handleVisitAction: (param: IVisitActionParam) => void;
+  handleConfirmation: (param: IVisitActionParam) => void;
   handleReschedule: (asset: AssetVisit) => void;
 }
 
@@ -71,9 +72,10 @@ class EventWithProfile extends Component<IProps> {
     });
   };
 
-  private handleAction = (visitId: number, action: VisitActions): void => {
+  private handleAction = (param: IVisitActionParam): void => {
     const { handleVisitAction } = this.props;
-    handleVisitAction(visitId, action, true);
+    const { id, action, isValidVisit } = param;
+    handleVisitAction({ id, action, isValidVisit });
   };
 }
 

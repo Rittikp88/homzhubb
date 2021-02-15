@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Counter } from '@homzhub/common/src/components/atoms/Counter';
@@ -10,7 +11,6 @@ import { UncontrolledCheckboxGroup } from '@homzhub/common/src/components/molecu
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
-import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 
 interface IGroupedSpaceType {
   [SpaceFieldTypes.Counter]?: SpaceType[];
@@ -65,17 +65,15 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
   public render(): React.ReactNode {
     const { showMore, groupedSpaceTypes } = this.state;
     const { flowType, spacesTypes, isMobile, t } = this.props;
-
     const moreItems = spacesTypes.findIndex((space) => !space.isPrimary);
     if (!groupedSpaceTypes) {
       return null;
     }
-
     const shouldRenderSwitch = isMobile && (flowType !== FlowTypes.LeaseFlow || moreItems > -1);
 
     return (
-      <View style={styles.containerStyle}>
-        {this.renderSpaces(true)}
+      <View style={[styles.mobileContainer, !isMobile && styles.containerStyle]}>
+        {isMobile && this.renderSpaces(true)}
 
         {shouldRenderSwitch && (
           <View style={[styles.rowStyle, styles.marginBottom]}>
@@ -86,14 +84,15 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
             <RNSwitch selected={showMore} onToggle={this.toggleMoreSwitch} />
           </View>
         )}
-
-        {!isMobile ? this.renderSpaces(false) : !showMore ? null : this.renderSpaces(false)}
+        <View style={styles.subContainer}>
+          {!isMobile ? this.renderSpaces(false) : !showMore ? null : this.renderSpaces(false)}
+        </View>
       </View>
     );
   }
 
   private renderSpaces = (renderPrimary: boolean): React.ReactNode => {
-    const { t, flowType, isVerificationDone, isMobile } = this.props;
+    const { t, flowType, isVerificationDone, isMobile, isTablet } = this.props;
     const { groupedSpaceTypes } = this.state;
     const handleCounterChange = (count: number, id?: number): void => {
       this.handleSpacesChange(id || -1, count);
@@ -102,17 +101,15 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
     const handleCheckboxGroupToggle = (id: number | string, isSelected: boolean): void => {
       this.handleSpacesChange(id as number, isSelected ? 1 : 0);
     };
-
     /* This part of the method renders Counters */
     const counterLength = groupedSpaceTypes[SpaceFieldTypes.Counter]?.length ?? 0;
     const spaceFields = [];
     spaceFields?.push(
       <View style={!isMobile && styles.counterContainer}>
         {groupedSpaceTypes[SpaceFieldTypes.Counter]?.map((space, index) => {
-          if (space.isPrimary !== renderPrimary) {
+          if (isMobile && space.isPrimary !== renderPrimary) {
             return null;
           }
-
           return (
             <Counter
               key={index}
@@ -121,6 +118,10 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
                 index % 3 === 0 && styles.noMarginLeft,
                 isMobile && styles.counterMobile,
                 isMobile && index !== counterLength - 1 && styles.counterLast,
+                isTablet && styles.counterTab,
+                isTablet && index % 2 === 0 && styles.noMarginLeft,
+                isMobile && index % 2 === 1 && styles.noMarginLeft,
+                isMobile && styles.mobileCounter,
               ]}
               defaultValue={space.unitCount ? space.unitCount : space.isMandatory ? 1 : 0}
               name={{ title: space.name, id: space.id }}
@@ -137,7 +138,7 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
 
     /* This part of the method renders Checkbox */
     spaceFields?.push(
-      <View style={{}}>
+      <View style={styles.subContainer}>
         <UncontrolledCheckboxGroup
           key="UncontrolledCheckboxGroup"
           containerStyle={[!isMobile && styles.uncontrolledCheckbox]}
@@ -183,7 +184,6 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
   private loadCheckboxData = (renderPrimary: boolean): ICheckboxGroupData[] => {
     const { groupedSpaceTypes } = this.state;
     const checkboxData: any = [];
-
     groupedSpaceTypes[SpaceFieldTypes.CheckBox]?.forEach((space) => {
       if (space.isPrimary === renderPrimary) {
         checkboxData.push({
@@ -224,8 +224,14 @@ export { propertySpaces as PropertySpaces };
 
 const styles = StyleSheet.create({
   containerStyle: {
+    flexWrap: 'wrap',
+  },
+  mobileContainer: {
     backgroundColor: theme.colors.white,
     paddingHorizontal: theme.layout.screenPadding,
+  },
+  subContainer: {
+    flexWrap: 'wrap',
   },
   rowStyle: {
     flexDirection: 'row',
@@ -241,16 +247,20 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
   },
   counter: {
-    width: '25%',
+    width: '29%',
+    justifyContent: 'space-between',
     marginLeft: 60,
     marginBottom: 24,
   },
   counterMobile: {
     width: undefined,
     marginLeft: undefined,
+  },
+  counterTab: {
+    width: '45%',
+    marginLeft: 60,
   },
   counterLast: {
     marginBottom: 24,
@@ -264,9 +274,13 @@ const styles = StyleSheet.create({
   uncontrolledCheckbox: {
     flex: 0.16,
     marginTop: 16,
+    flexWrap: 'wrap',
   },
   moreText: {
     marginStart: 12,
     flex: 1,
+  },
+  mobileCounter: {
+    width: undefined,
   },
 });

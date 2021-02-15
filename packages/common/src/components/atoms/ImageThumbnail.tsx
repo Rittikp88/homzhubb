@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, ImageBackground, TouchableOpacity, StyleProp, ViewStyle, ImageStyle } from 'react-native';
+import { ImageBackground, ImageStyle, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 
-export interface IProps {
+export interface IOwnProps {
   imageUrl: null | string;
   onIconPress?: () => void;
   dataLength?: number;
@@ -22,7 +25,9 @@ export interface IProps {
   markFavorite?: () => void;
 }
 
-export class ImageThumbnail extends React.PureComponent<IProps, {}> {
+type IProps = WithTranslation & IOwnProps;
+
+class ImageThumbnail extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
     const {
       imageUrl,
@@ -39,18 +44,28 @@ export class ImageThumbnail extends React.PureComponent<IProps, {}> {
       isFavorite = false,
       coverPhotoTitle = 'Cover Photo',
       markFavorite,
+      t,
     } = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
         {imageUrl && (
           <ImageBackground
+            resizeMode={PlatformUtils.isWeb() ? 'contain' : undefined}
             source={{ uri: imageUrl }}
             imageStyle={[styles.imageStyle, imageContainerStyle]}
             style={[styles.imageWrapper, imageWrapperStyle]}
           >
             {isIconVisible && (
-              <TouchableOpacity style={styles.iconContainer} onPress={this.handleIconPress}>
+              <TouchableOpacity
+                style={PlatformUtils.isWeb() ? styles.iconContainerWeb : styles.iconContainer}
+                onPress={this.handleIconPress}
+              >
                 <Icon name={icons.close} size={iconSize || 22} color={iconColor || theme.colors.white} />
+                {PlatformUtils.isWeb() && (
+                  <Typography variant="label" size="large" style={styles.removeTxt}>
+                    {t('remove')}
+                  </Typography>
+                )}
               </TouchableOpacity>
             )}
             {isCoverPhotoContainer && (
@@ -91,6 +106,8 @@ export class ImageThumbnail extends React.PureComponent<IProps, {}> {
   };
 }
 
+export default withTranslation()(ImageThumbnail);
+
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
@@ -112,6 +129,23 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 0,
     backgroundColor: theme.colors.crossIconContainer,
+  },
+  iconContainerWeb: {
+    width: 'fit-content',
+    height: 30,
+    flexDirection: 'row',
+    borderRadius: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    paddingHorizontal: 8,
+    top: 10,
+    right: 10,
+    bottom: 0,
+    backgroundColor: theme.colors.crossIconContainerWeb,
+  },
+  removeTxt: {
+    color: 'white',
   },
   touchableContainer: {
     position: 'absolute',

@@ -183,8 +183,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
       this.onViewProperty({ ...data, dataType: type }, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
-    const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
+    const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
       this.handleActions(item, payload, param);
+    };
     return (
       <AssetCard
         assetData={item}

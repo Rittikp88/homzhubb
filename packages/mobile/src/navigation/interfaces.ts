@@ -68,6 +68,7 @@ export enum ScreensKeys {
   PropertyDetailScreen = 'PropertyDetailScreen',
   PropertyDetailsNotifications = 'PropertyDetailsNotifications',
   UpdatePropertyScreen = 'UpdatePropertyScreen',
+  ManageTenantScreen = 'ManageTenantScreen',
 
   // Financials Stack
   FinancialsLandingScreen = 'FinancialsLandingScreen',
@@ -229,6 +230,10 @@ export interface IUpdatePropertyProps {
   formType: UpdatePropertyFormTypes;
   payload: IClosureReasonPayload;
   param?: IListingParam;
+  assetDetail: Asset;
+}
+
+export interface IManageTenantProps {
   assetDetail: Asset;
 }
 

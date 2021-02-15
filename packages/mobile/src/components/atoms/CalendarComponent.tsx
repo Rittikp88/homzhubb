@@ -4,6 +4,7 @@ import { View, FlatList, TouchableOpacity, StyleSheet, StyleProp, TextStyle, Vie
 import moment from 'moment';
 import { groupBy } from 'lodash';
 import { DateFormats, DateUtils, MonthNames } from '@homzhub/common/src/utils/DateUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import CalendarHeader from '@homzhub/common/src/components/atoms/CalendarHeader';
@@ -134,11 +135,12 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const onPressItem = (): void => (isMonthView ? this.onSelectMonth(item, index) : this.onSelectYear(item, index));
     const yearView = isOnlyYearView ? Number(selectedDate) === Number(item) : month === index;
     const isSelected = isYearView ? year === item : yearView;
+    const isMobile = PlatformUtils.isAndroid();
 
     return (
       <TouchableOpacity
         key={index}
-        style={StyleSheet.flatten([customStyles.renderItemView(isSelected)])}
+        style={StyleSheet.flatten([customStyles.renderItemView(isSelected, isMobile)])}
         onPress={onPressItem}
       >
         <Label type="large" style={StyleSheet.flatten([customStyles.renderItemTitle(isSelected)])}>
@@ -373,8 +375,8 @@ const customStyles = {
   headerTitle: (isMonthView: boolean): StyleProp<TextStyle> => ({
     color: isMonthView ? theme.colors.darkTint2 : theme.colors.primaryColor,
   }),
-  renderItemView: (isSelected: boolean): StyleProp<ViewStyle> => ({
-    width: theme.viewport.width * 0.24,
+  renderItemView: (isSelected: boolean, isMobile: boolean): StyleProp<ViewStyle> => ({
+    width: isMobile ? theme.viewport.width * 0.24 : 60,
     marginVertical: 12,
     alignItems: 'center',
     backgroundColor: isSelected ? theme.colors.primaryColor : theme.colors.white,

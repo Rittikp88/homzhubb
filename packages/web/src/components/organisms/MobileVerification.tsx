@@ -11,7 +11,6 @@ import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
@@ -23,7 +22,6 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
 import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 
 interface IStateProps {
   isLoading: boolean;
@@ -137,6 +135,9 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
     },
     containerStyleTablet: {
       width: '100%',
+      alignItems: undefined,
+      paddingHorizontal: undefined,
+      paddingTop: '20%',
     },
     socialMediaContainer: {
       marginTop: 36,

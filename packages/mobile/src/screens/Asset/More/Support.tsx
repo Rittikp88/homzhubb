@@ -26,6 +26,7 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import { HeaderCard, UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import CaseLogs from '@homzhub/mobile/src/components/organisms/CaseLogs';
+import { IUploadAttachmentResponse } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { CaseLog, Status } from '@homzhub/common/src/domain/models/CaseLog';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -45,9 +46,8 @@ interface IScreenState {
   formData: IFormData;
   categories: IDropdownOption[];
   contact: User;
-  attachment?: IDocumentSource;
+  attachments: IDocumentSource[];
   isFormSubmitted: boolean;
-  isClearAttachment: boolean;
   isLoading: boolean;
   currentTab: TabKeys;
   caseLogs: CaseLog[];
@@ -66,9 +66,8 @@ export class Support extends Component<Props, IScreenState> {
     },
     categories: [],
     contact: {} as User,
-    attachment: undefined,
+    attachments: [],
     isFormSubmitted: false,
-    isClearAttachment: false,
     isLoading: false,
     currentTab: TabKeys.newCase,
     caseLogs: [],
@@ -148,7 +147,7 @@ export class Support extends Component<Props, IScreenState> {
 
   private renderForm = (): React.ReactElement => {
     const { t } = this.props;
-    const { formData, categories, isClearAttachment } = this.state;
+    const { formData, categories, attachments } = this.state;
     return (
       <Formik
         onSubmit={this.handleFormSubmit}
@@ -189,11 +188,11 @@ export class Support extends Component<Props, IScreenState> {
                 onMessageChange={handleDescription}
               />
               <UploadBoxComponent
+                attachments={attachments}
                 icon={icons.document}
                 header={t('uploadDocument')}
                 subHeader={t('uploadDocHelperText')}
                 onCapture={this.handleUpload}
-                isClear={isClearAttachment}
                 onDelete={this.handleDocumentDelete}
                 containerStyle={styles.content}
               />
@@ -257,8 +256,7 @@ export class Support extends Component<Props, IScreenState> {
     if (this.resetForm) {
       this.resetForm();
       this.setState({
-        isClearAttachment: true,
-        attachment: undefined,
+        attachments: [],
       });
     }
   };
@@ -312,35 +310,35 @@ export class Support extends Component<Props, IScreenState> {
     }
   };
 
-  private handleUpload = (attachment: IDocumentSource): void => {
-    this.setState({ attachment, isClearAttachment: false });
+  private handleUpload = (attachments: IDocumentSource[]): void => {
+    this.setState((prevState: IScreenState) => {
+      return { attachments: [...prevState.attachments, ...attachments] };
+    });
   };
 
-  private handleDocumentDelete = (): void => {
-    this.setState({
-      attachment: {
-        uri: '',
-        type: '',
-        name: '',
-      },
+  private handleDocumentDelete = (uri: string): void => {
+    this.setState((prevState) => {
+      return { attachments: prevState.attachments.filter((file) => file.uri !== uri) };
     });
   };
 
   private handleFormSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
-    const { attachment } = this.state;
+    const { attachments } = this.state;
     const { subject, description, category } = values;
-    let attachmentId = 0;
+    let attachmentIds: Array<number> = [];
 
     try {
       // @ts-ignore
-      if (attachment && !!attachment.uri) {
+      if (attachments.length) {
         /* Make an API call for uploading the document and extract the doc Id */
         const formData = new FormData();
-        // @ts-ignore
-        formData.append('files[]', attachment);
+        attachments.forEach((attachment: IDocumentSource) => {
+          // @ts-ignore
+          formData.append('files[]', attachment);
+        });
         const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_DOCUMENT);
         const { data } = response;
-        attachmentId = data[0].id;
+        attachmentIds = data.map((i: IUploadAttachmentResponse) => i.id);
       }
       formActions.setSubmitting(true);
 
@@ -348,13 +346,13 @@ export class Support extends Component<Props, IScreenState> {
         support_category: Number(category),
         title: subject,
         description,
-        attachments: attachmentId > 0 ? [attachmentId] : [],
+        attachments: attachmentIds,
       };
       await CommonRepository.postClientSupport(payload);
+      await this.getCaseLogs();
       this.setState({
         isFormSubmitted: true,
-        isClearAttachment: true,
-        attachment: undefined,
+        attachments: [],
       });
       formActions.resetForm({});
     } catch (e) {

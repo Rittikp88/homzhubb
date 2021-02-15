@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 import { StyleProp, StyleSheet, TextInput, View, ViewStyle, LayoutChangeEvent } from 'react-native';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   forwardRef?: React.Ref<TextInput>;
@@ -20,11 +22,12 @@ export const SearchField: FC<IProps> = (props: IProps) => {
     const { updateValue } = props;
     updateValue(changedValue);
   };
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
     <View style={[styles.container, containerStyle]} onLayout={onLayoutChange}>
       <TextInput
         ref={forwardRef}
-        style={styles.textInput}
+        style={[styles.textInput, isMobile && styles.textInputMobile]}
         value={value}
         placeholder={placeholder}
         placeholderTextColor={theme.colors.darkTint7}
@@ -57,9 +60,13 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint10,
     backgroundColor: theme.colors.secondaryColor,
   },
+
   textInput: {
     flex: 1,
     marginRight: 8,
+  },
+  textInputMobile: {
+    width: '70%',
   },
   iconButton: {
     backgroundColor: theme.colors.secondaryColor,

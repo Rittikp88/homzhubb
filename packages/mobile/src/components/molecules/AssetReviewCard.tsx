@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -18,6 +19,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import ReportReviewForm from '@homzhub/mobile/src/components/molecules/ReportReviewForm';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
+import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -41,6 +43,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     pillarRatings: pillars,
     comments,
     isReported,
+    reviewReportId,
   } = review;
   const comment = comments.length > 0 ? comments[0].comment : '';
   const commentDate = comments.length > 0 ? comments[0].modifiedAt : undefined;
@@ -52,18 +55,21 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   const [showMoreReply, setShowMoreReply] = useState(false);
   const [replyMode, setReplyMode] = useState(false);
   const [reply, setReply] = useState(comment);
+  const [reportData, setReportData] = useState<ReportReview>();
   const [showReportForm, setShowReportForm] = useState(false);
-  const [isUnderReview, setIsUnderReview] = useState(isReported);
-
-  const isReportedData = {
-    date: 'Jan 11, 2021',
-    message1: 'Sit faucibus lectus volutpat amet, lectus enim enim, in sed lectus enim enim,',
-    message2:
-      'Et nibh pretium, fringilla tincidunt dui lacus, mattis. Dolor placerat proin enim aliquam lacus, sagittis convallis.',
-  };
+  const [isUnderReview, setIsUnderReview] = useState(isReported && !reviewReportId);
 
   const enableReportForm = useCallback((): void => {
     setShowReportForm(true);
+    if (reviewReportId) {
+      AssetRepository.getReportReviewData(reviewId, reviewReportId)
+        .then((res) => {
+          setReportData(res);
+        })
+        .catch((err) => {
+          AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+        });
+    }
   }, [showReportForm]);
 
   const disableReportForm = useCallback((): void => {
@@ -131,28 +137,30 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     AlertHelper.info({ message: t('reportSubmittedMessage') });
   };
 
-  const renderRepotedReview = (): ReactElement => {
+  const renderReportedReview = (): ReactElement | null => {
+    if (!reportData) return null;
     return (
       <View style={styles.reportView}>
         <Label textType="regular" type="large">
-          {t('common:youHaveAlreadyRepotedThisCommentOn')}
+          {t('property:youHaveAlreadyReportedThisCommentOn')}
         </Label>
         <Label type="large" textType="bold">
-          {isReportedData.date}
+          {TimeUtils.getLocaltimeDifference(reportData.reviewedAt)}
         </Label>
         <Divider containerStyles={styles.divider} />
-
         <Label textType="semiBold" type="large">
           {t('common:comments')}
         </Label>
         <View style={styles.comment}>
-          <Avatar fullName="Admin" imageSize={50} designation="designation" date={new Date().toDateString()} />
+          <Avatar
+            fullName={reportData.reviewedBy.name}
+            imageSize={50}
+            designation={t('common:admin')}
+            date={new Date().toDateString()}
+          />
         </View>
-
         <Label type="large" textType="light" style={styles.comment}>
-          {isReportedData.message1}
-          {'\n'}
-          {isReportedData.message2}
+          {reportData.reviewComment}
         </Label>
       </View>
     );
@@ -223,12 +231,12 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     return (
       <BottomSheet
         visible={showReportForm}
-        sheetHeight={theme.viewport.height * 0.85}
-        headerTitle={t('reportComment')}
+        sheetHeight={theme.viewport.height * (reviewReportId ? 0.6 : 0.85)}
+        headerTitle={reviewReportId ? t('property:reportStatus') : t('reportComment')}
         onCloseSheet={disableReportForm}
       >
-        {isUnderReview ? (
-          renderRepotedReview()
+        {reviewReportId ? (
+          renderReportedReview()
         ) : (
           <ReportReviewForm
             reviewId={reviewId}

@@ -1,6 +1,6 @@
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { TenantHistory } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
@@ -68,11 +68,11 @@ const getAssetById = (state: IState): Asset | null => {
   return properties[currentAsset.asset_id];
 };
 
-const getTenantHistory = (state: IState): TenantHistory[] | null => {
+const getTenantHistory = (state: IState): TenantInfo[] => {
   const {
     portfolio: { tenantHistory },
   } = state;
-  if (!tenantHistory) return null;
+  if (!tenantHistory) return [];
   return tenantHistory;
 };
 

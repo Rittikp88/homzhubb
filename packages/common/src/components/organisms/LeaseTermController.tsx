@@ -19,7 +19,7 @@ import {
   initialLeaseFormData,
 } from '@homzhub/common/src/components/organisms/SubLeaseUnit';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { TenantPreference } from '@homzhub/common/src/domain/models/Tenant';
+import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { LeaseTypes } from '@homzhub/common/src/domain/models/Asset';

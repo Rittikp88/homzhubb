@@ -15,7 +15,7 @@ const PlatformPlanSection: FC = () => {
   useEffect(() => {
     ServiceRepository.getPlatformPlans()
       .then((response) => {
-        setPlatformPlanList(response);
+        setPlatformPlanList(response.sort((a, b) => Number(a.tier) - Number(b.tier)));
       })
       .catch((e) => {
         const error = ErrorUtils.getErrorMessage(e.details);

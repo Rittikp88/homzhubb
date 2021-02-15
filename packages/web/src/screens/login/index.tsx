@@ -12,6 +12,8 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { SocialMediaGateway } from '@homzhub/web/src/components/organisms/SocialMediaGateway';
 import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
@@ -26,8 +28,6 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
-import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
-import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
 
 interface IFormData {
   email: string;
@@ -149,7 +149,7 @@ const Login: FC<IProps> = (props: IProps) => {
           </View>
         </View>
         {isEmailLogin ? (
-          <SocialMediaGateway isFromLogin containerStyle={styles.socialMediaContainer} history={history}/>
+          <SocialMediaGateway isFromLogin containerStyle={styles.socialMediaContainer} history={history} />
         ) : (
           <SocialMediaGateway
             onEmailLogin={handleEmailLogin}
