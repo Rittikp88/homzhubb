@@ -27,9 +27,7 @@ type Props = IProps & WithTranslation;
 export class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
     const { properties, t, favIds, handleToggle, handleSortToggle } = this.props;
-    if (properties.count === 0) {
-      return null;
-    }
+
     return (
       <View>
         <FlatList

@@ -146,6 +146,8 @@ class ManageTenantsScreen extends Component<Props, IScreenState> {
     const { isSheetVisible, tenantsList, selectedTenant } = this.state;
     if (isEmpty(selectedTenant)) return null;
     const { isInviteAccepted, leaseTransaction, id } = selectedTenant;
+    const { assetStatusInfo } = assetDetail;
+    const isActive = assetStatusInfo && assetStatusInfo.action ? assetStatusInfo.action.label === 'Terminate' : false;
     return (
       <BottomSheet
         visible={isSheetVisible}
@@ -159,6 +161,8 @@ class ManageTenantsScreen extends Component<Props, IScreenState> {
             assetId={assetDetail.id}
             leaseTransaction={leaseTransaction?.id ?? 0}
             leaseTenantId={id}
+            isActive={isActive}
+            endDate={leaseTransaction?.leaseEndDate ?? ''}
             onCloseSheet={this.onCloseSheet}
             details={selectedTenant.tenantUser}
           />
@@ -199,10 +203,24 @@ class ManageTenantsScreen extends Component<Props, IScreenState> {
   };
 
   private handleIconPress = (item: TenantInfo): void => {
-    this.setState({
-      selectedTenant: item,
-      isSheetVisible: true,
-    });
+    const {
+      t,
+      route: {
+        params: { assetDetail },
+      },
+    } = this.props;
+    const { leaseTransaction, isInviteAccepted } = item;
+    const { assetStatusInfo } = assetDetail;
+    const date = leaseTransaction?.leaseEndDate;
+    const isActive = assetStatusInfo && assetStatusInfo.action ? assetStatusInfo.action.label === 'Terminate' : false;
+    if (!isInviteAccepted || (isInviteAccepted && isActive)) {
+      this.setState({
+        selectedTenant: item,
+        isSheetVisible: true,
+      });
+    } else {
+      AlertHelper.error({ message: t('property:tenantRemoveDate', { date }) });
+    }
   };
 
   private handleAction = async (): Promise<void> => {

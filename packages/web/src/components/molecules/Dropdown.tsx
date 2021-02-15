@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, LayoutChangeEvent } from 'react-native';
-import { PopupProps } from 'reactjs-popup/dist/types';
-import { PopupActions } from 'reactjs-popup/dist/types';
+import { PopupProps, PopupActions } from 'reactjs-popup/dist/types';
+
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 

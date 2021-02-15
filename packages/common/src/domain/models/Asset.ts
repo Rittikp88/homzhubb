@@ -328,6 +328,9 @@ export class Asset {
   @JsonProperty('corner_property', Boolean, true)
   private _cornerProperty = false;
 
+  @JsonProperty('is_active', Boolean, true)
+  private _isActive = false;
+
   @JsonProperty('all_day_access', Boolean, true)
   private _allDayAccess = false;
 
@@ -677,5 +680,9 @@ export class Asset {
 
   get nextVisit(): NextVisit | null {
     return this._nextVisit;
+  }
+
+  get isActive(): boolean {
+    return this._isActive;
   }
 }

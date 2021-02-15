@@ -187,9 +187,9 @@ export class AssetCard extends Component<Props, IState> {
     if (!assetData || !assetData.assetStatusInfo) return null;
     const {
       id,
-      assetStatusInfo: { leaseTenantInfo, leaseTransaction },
+      assetStatusInfo: { leaseTenantInfo, leaseTransaction, action },
     } = assetData;
-
+    const isActive = action ? action.label === 'Terminate' : false;
     return (
       <BottomSheet
         visible={isBottomSheetVisible}
@@ -202,6 +202,8 @@ export class AssetCard extends Component<Props, IState> {
           numberOfTenants={listOfTenant}
           details={leaseTenantInfo.user}
           assetId={id}
+          isActive={isActive}
+          endDate={leaseTransaction?.leaseEndDate ?? ''}
           leaseTransaction={leaseTransaction.id}
           leaseTenantId={leaseTenantInfo.leaseTenantId}
           onCloseSheet={this.onCloseBottomSheet}
