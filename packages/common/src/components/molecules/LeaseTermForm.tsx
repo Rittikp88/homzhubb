@@ -121,6 +121,7 @@ const LeaseTermForm = ({
     minDate = DateUtils.getPreviousYearStartDate(5);
     dateLabel = t('common:startingFrom');
   }
+
   // CONSTANTS END
 
   // EFFECT
@@ -239,15 +240,16 @@ const LeaseTermForm = ({
               </View>
             )}
           </View>
+
+          <Text type="small" textType="semiBold" style={styles.headerTitle}>
+            {t('duration')}
+          </Text>
           <View
             style={[
               PlatformUtils.isWeb() && !isMobile && styles.textInput1,
               PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
             ]}
           >
-            <Text type="small" textType="semiBold" style={styles.headerTitle}>
-              {t('duration')}
-            </Text>
             <FormCalendar
               formProps={formProps}
               label={dateLabel}
@@ -436,18 +438,18 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     display: 'flex',
     flex: 1,
-    gap: 28,
   },
   textInput: {
     width: '100%',
   },
   textInput1: {
     width: '31.5%',
+    margin: 10,
   },
   textInputTab1: {
     width: '47.5%',
+    margin: 8,
   },
-
   leasePeriod: {
     flexDirection: 'row',
     flexWrap: 'wrap',
