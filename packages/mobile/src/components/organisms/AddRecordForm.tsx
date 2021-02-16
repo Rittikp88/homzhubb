@@ -331,7 +331,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         category: Number(category),
         transaction_date: date,
         ...(notes && { notes }),
-        attachments: attachmentIds.length ? [...attachmentIds] : null,
+        attachments: attachmentIds,
         currency: currencyCode,
       };
       await LedgerRepository.postGeneralLedgers(payload);

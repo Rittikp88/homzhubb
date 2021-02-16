@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
-import { IWithMediaQuery, withMediaQuery } from '../../utils/MediaQueryUtils';
 
 export interface ICheckboxGroupData {
   id: number | string;

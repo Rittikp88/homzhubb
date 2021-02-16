@@ -3,8 +3,8 @@ import { StyleProp, StyleSheet, Text as RNText, TextStyle, TouchableOpacity, Vie
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { PopupProps } from 'reactjs-popup/dist/types';
-import { PopupActions } from 'reactjs-popup/dist/types';
+import { PopupProps, PopupActions } from 'reactjs-popup/dist/types';
+
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';

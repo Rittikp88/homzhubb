@@ -7,8 +7,10 @@ export const RouteNames = {
     LOGIN: '/login',
     SIGNUP: '/signup',
     OTP_VERIFICATION: '/otp',
+    MOBILE_VERIFICATION: '/mobileVerification',
     TERMS_CONDITION: '/terms&Condition',
     PRIVACY_POLICY: '/privacyPolicy',
+    UPLOAD: '/upload',
   },
   protectedRoutes: {
     /* Mention protected route names here */

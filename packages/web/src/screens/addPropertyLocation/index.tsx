@@ -36,7 +36,10 @@ const SearchView: FC = () => {
     backgroundColor: theme.colors.carouselCardOpacity,
     backdropFilter: 'blur(8px)',
     width: '100%',
-    height: '100%',
+    height: !isMobile ? '100%' : 162,
+    marginTop: isMobile ? '20%' : '',
+    justifyContent: 'center',
+    alignItems: 'center',
   };
   const { setUpdatedLatLng, navigateScreen } = useContext(AddPropertyContext);
   const onPressAutoDetect = (): void => {
@@ -53,7 +56,7 @@ const SearchView: FC = () => {
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
       <div style={blurBackgroundStyle} />
-      <View style={styles.innerContainer}>
+      <View style={[styles.innerContainer, isMobile && styles.innerContainerMobile]}>
         <Typography size="regular" style={styles.title}>
           {t('findProperty')}
         </Typography>
@@ -75,6 +78,7 @@ interface ISearchViewStyles {
   title: ViewStyle;
   buttonTitle: ViewStyle;
   buttonContainer: ViewStyle;
+  innerContainerMobile: ViewStyle;
 }
 const searchViewStyles = (): StyleSheet.NamedStyles<ISearchViewStyles> =>
   StyleSheet.create<ISearchViewStyles>({
@@ -93,6 +97,11 @@ const searchViewStyles = (): StyleSheet.NamedStyles<ISearchViewStyles> =>
       marginHorizontal: 24,
       alignSelf: 'stretch',
     },
+    innerContainerMobile: {
+      marginTop: '20%',
+      marginHorizontal: 8,
+    },
+
     title: {
       color: theme.colors.white,
       marginVertical: 24,
@@ -127,6 +136,7 @@ const AddPropertyLocationStyles = StyleSheet.create({
   },
   containerMobile: {
     padding: 4,
+    minHeight: 680,
   },
 });
 

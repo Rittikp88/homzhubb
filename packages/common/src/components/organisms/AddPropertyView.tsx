@@ -6,6 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { isEmpty } from 'lodash';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
@@ -16,7 +17,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
 import { AddPropertyDetails } from '@homzhub/common/src/components/organisms/AddPropertyDetails';
 import AssetHighlights from '@homzhub/common/src/components/organisms/AssetHighlights';
-import PropertyImages from '@homzhub/common/src/components/organisms/PropertyImages';
+import { PropertyImages } from '@homzhub/common/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
@@ -29,8 +30,6 @@ import { IEditPropertyFlow } from '@homzhub/common/src/modules/recordAsset/inter
 import { AddPropertyRoutes, AddPropertySteps, IRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
-const { height } = theme.viewport;
-
 interface IScreenState {
   currentIndex: number;
   isNextStep: boolean;
@@ -38,7 +37,7 @@ interface IScreenState {
 }
 
 interface IProps {
-  onUploadImage: () => void;
+  onUploadImage: (files?: File[]) => void;
   onEditPress: () => void;
   scrollToTop?: () => void;
   onNavigateToDetail: () => void;
@@ -71,13 +70,13 @@ interface IDispatchProps {
   setSelectedImages: (payload: AssetGallery[]) => void;
 }
 
-type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
+type Props = WithTranslation & IStateProps & IDispatchProps & IProps & IWithMediaQuery;
 
 class AddPropertyView extends Component<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
-    const { getAssetById, getAssetGroups, previousScreen } = this.props;
-
+    const { getAssetById, getAssetGroups, previousScreen, screenHeight } = this.props;
+    const height = screenHeight as number;
     if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
       getAssetGroups();
     }
@@ -109,7 +108,8 @@ class AddPropertyView extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { heights, currentIndex } = this.state;
-    const { assetDetail, onEditPress } = this.props;
+    const { assetDetail, onEditPress, screenHeight, screenWidth } = this.props;
+    const initialLayout = { height: screenHeight, width: screenWidth };
     if (!assetDetail) return null;
     const {
       projectName,
@@ -132,12 +132,12 @@ class AddPropertyView extends Component<Props, IScreenState> {
           currentIndex={currentIndex}
           isStepDone={stepList}
           onEditPress={onEditPress}
-          containerStyle={styles.addressCard}
+          containerStyle={PlatformUtils.isMobile() && styles.addressCard}
           onPressSteps={this.handlePreviousStep}
         />
         {this.renderTabHeader()}
         <TabView
-          initialLayout={theme.viewport}
+          initialLayout={initialLayout}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}
           renderTabBar={(): null => null}
@@ -146,7 +146,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
             index: currentIndex,
             routes: AddPropertyRoutes,
           }}
-          style={PlatformUtils.isMobile() && { height: heights[currentIndex] }}
+          style={{ height: heights[currentIndex] }}
         />
       </>
     );
@@ -181,6 +181,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
       setSelectedImages,
       renderCarousel,
       editPropertyFlowDetails: { isEditPropertyFlow },
+      isMobile,
     } = this.props;
 
     if (!lastVisitedStep) return null;
@@ -221,7 +222,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
               lastVisitedStep={lastVisitedStep}
               onUploadImage={onUploadImage}
               setSelectedImages={setSelectedImages}
-              containerStyle={styles.propertyImagesContainer}
+              containerStyle={isMobile ? styles.propertyImagesContainerMobile : styles.propertyImagesContainer}
             />
           </View>
         );
@@ -233,7 +234,6 @@ class AddPropertyView extends Component<Props, IScreenState> {
   // region HANDLERS START
 
   private onLayout = (e: LayoutChangeEvent, index: number): void => {
-    if (!PlatformUtils.isMobile()) return;
     const { heights } = this.state;
     const { height: newHeight } = e.nativeEvent.layout;
     const arrayToUpdate = [...heights];
@@ -249,6 +249,9 @@ class AddPropertyView extends Component<Props, IScreenState> {
     this.setState({ currentIndex: index });
     if (PlatformUtils.isMobile() && scrollToTop) {
       scrollToTop();
+    }
+    if (PlatformUtils.isWeb()) {
+      window.scrollTo(0, 0);
     }
   };
 
@@ -384,7 +387,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddPropertyView));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(withMediaQuery<Props>(AddPropertyView)));
 
 const styles = StyleSheet.create({
   tabHeader: {
@@ -404,5 +407,8 @@ const styles = StyleSheet.create({
   },
   propertyImagesContainer: {
     margin: theme.layout.screenPadding,
+  },
+  propertyImagesContainerMobile: {
+    flex: 1,
   },
 });

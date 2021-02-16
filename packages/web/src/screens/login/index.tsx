@@ -3,9 +3,8 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { Formik, FormikProps } from 'formik';
 import { History } from 'history';
-import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -13,9 +12,13 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SocialMediaGateway } from '@homzhub/web/src/components/organisms/SocialMediaGateway';
+import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IEmailLoginPayload,
   ILoginFormData,
@@ -25,7 +28,6 @@ import {
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { SignupCarousal } from '@homzhub/web/src/components/organisms/signUpCarousal';
 
 interface IFormData {
   email: string;
@@ -47,16 +49,13 @@ interface IOwnProps {
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const Login: FC<IProps> = (props: IProps) => {
+  const { history } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
-  const [isEmailLogin, setIsEmailLogin] = useState(false); // Requred for conditional rendering
-
-  const formData = {
-    email: '',
-    password: '',
-  };
+  const [isEmailLogin, setIsEmailLogin] = useState(false);
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
@@ -64,7 +63,6 @@ const Login: FC<IProps> = (props: IProps) => {
   const handleSubmitEmailLogin = (values: IFormData): void => {
     // TODO: remove .logoutUser after logout functionality is implemented
     StoreProviderService.logoutUser();
-
     const emailLoginData: IEmailLoginPayload = {
       action: LoginTypes.EMAIL,
       payload: {
@@ -92,54 +90,84 @@ const Login: FC<IProps> = (props: IProps) => {
     // TODO: Add redirection logic for password reset.
   };
   const handleOtpLogin = (values: ILoginFormData): void => {
-    // TODO : Navigation to OTP
+    const { phone_code, phone_number } = values;
+    const compProps = {
+      phoneCode: phone_code,
+      otpSentTo: phone_number,
+      type: OtpNavTypes.Login,
+    };
+    NavigationUtils.navigate(props.history, {
+      path: RouteNames.publicRoutes.OTP_VERIFICATION,
+      params: { ...compProps },
+    });
   };
   const handleNavigationToSignup = (): void => {
     // TODO : Navigation to signup page
   };
+  const handleWebView = (params: IWebProps): React.ReactElement => {
+    return <PhoneCodePrefix {...params} />;
+  };
   return (
-    <UserValidationScreensTemplate
-      title={t('login')}
-      subTitle={isEmailLogin ? t('auth:loginToAccessHomzhubEmail') : t('auth:loginToAccessHomzhubPhone')}
-      containerStyle={styles.container}
-      hasBackButton={isEmailLogin}
-      backButtonPressed={backToLoginWithPhone}
-    >
-      <View style={styles.loginForm}>
-        <Formik initialValues={formData} onSubmit={handleSubmitEmailLogin}>
-          {(formProps: FormikProps<IFormData>): React.ReactElement => (
-            <View>
-              <LoginForm
-                isEmailLogin={isEmailLogin}
-                onLoginSuccess={isEmailLogin ? handleOtpLogin : handleSubmitEmailLogin}
-                handleForgotPassword={handleForgotPassword}
-                testID="loginFormWeb"
-              />
-            </View>
+    <View style={styles.container}>
+      <UserValidationScreensTemplate
+        title={t('login')}
+        subTitle={isEmailLogin ? t('auth:loginToAccessHomzhubEmail') : t('auth:loginToAccessHomzhubPhone')}
+        containerStyle={[styles.containerStyle, isTablet && styles.containerStyleTablet]}
+        hasBackButton={isEmailLogin}
+        backButtonPressed={backToLoginWithPhone}
+      >
+        <View style={styles.loginForm}>
+          {isEmailLogin ? (
+            <LoginForm
+              isEmailLogin
+              onLoginSuccess={handleSubmitEmailLogin}
+              handleForgotPassword={handleForgotPassword}
+              testID="loginFormWeb"
+            />
+          ) : (
+            <LoginForm
+              isEmailLogin={false}
+              onLoginSuccess={handleOtpLogin}
+              handleForgotPassword={handleForgotPassword}
+              testID="loginFormWeb"
+              webGroupPrefix={handleWebView}
+            />
           )}
-        </Formik>
-        <View style={styles.newUser}>
-          <Typography variant="label" size="large">
-            {t('auth:newOnPlatform')}
-          </Typography>
-          <Typography
-            variant="label"
-            size="large"
-            fontWeight="semiBold"
-            onPress={handleNavigationToSignup}
-            style={styles.createAccount}
-          >
-            {t('auth:createAccout')}
-          </Typography>
+          <View style={styles.newUser}>
+            <Typography variant="label" size="large">
+              {t('auth:newOnPlatform')}
+            </Typography>
+            <Typography
+              variant="label"
+              size="large"
+              fontWeight="semiBold"
+              onPress={handleNavigationToSignup}
+              style={styles.createAccount}
+            >
+              {t('auth:createAccout')}
+            </Typography>
+          </View>
         </View>
-      </View>
-      <SocialMediaGateway onEmailLogin={handleEmailLogin} isFromLogin containerStyle={styles.socialMediaContainer} />
-    </UserValidationScreensTemplate>
+        {isEmailLogin ? (
+          <SocialMediaGateway isFromLogin containerStyle={styles.socialMediaContainer} history={history} />
+        ) : (
+          <SocialMediaGateway
+            onEmailLogin={handleEmailLogin}
+            isFromLogin
+            containerStyle={styles.socialMediaContainer}
+            history={history}
+          />
+        )}
+      </UserValidationScreensTemplate>
+      <GetToKnowUsCarousel />
+    </View>
   );
 };
 
 interface IFormStyles {
   container: ViewStyle;
+  containerStyle: ViewStyle;
+  containerStyleTablet: ViewStyle;
   loginForm: ViewStyle;
   logo: ViewStyle;
   backButton: ViewStyle;
@@ -152,7 +180,14 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
   StyleSheet.create<IFormStyles>({
     container: {
       flex: 1,
-      width: isDesktop ? '45%' : '100%',
+      flexDirection: 'row',
+    },
+    containerStyle: {
+      backgroundColor: theme.colors.white,
+      width: '45%',
+    },
+    containerStyleTablet: {
+      width: '100%',
     },
     socialMediaContainer: {
       marginTop: 36,

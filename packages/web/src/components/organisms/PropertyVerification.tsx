@@ -17,7 +17,6 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
   existingDocuments: ExistingVerificationDocuments[];
@@ -67,21 +66,21 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             deleteDocument={this.onDeleteDocument}
             handleTypes={FunctionUtils.noop}
           />
-         { !isTablet && 
-           <>
-          <Divider containerStyles={styles.divider} />
-          <View style={styles.contentView}>
-            <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
-              {t('propertyVerificationSubTitle')}
-            </Label>
-            <Label type="large" textType="semiBold" style={styles.helperText}>
-              {t('helperNavigationText')}
-            </Label>
-          </View>
-          </>
-  }
+          {!isTablet && (
+            <>
+              <Divider containerStyles={styles.divider} />
+              <View style={styles.contentView}>
+                <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
+                  {t('propertyVerificationSubTitle')}
+                </Label>
+                <Label type="large" textType="semiBold" style={styles.helperText}>
+                  {t('helperNavigationText')}
+                </Label>
+              </View>
+            </>
+          )}
         </View>
-         
+
         <Button
           type="primary"
           title={t('common:continue')}
@@ -134,7 +133,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
 const translatedpPropertyVerification = withTranslation(LocaleConstants.namespacesKey.property)(PropertyVerification);
 
-export default withMediaQuery<any>(translatedpPropertyVerification) ;
+export default withMediaQuery<any>(translatedpPropertyVerification);
 
 const styles = StyleSheet.create({
   container: {

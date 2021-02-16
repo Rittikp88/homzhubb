@@ -7,6 +7,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -100,7 +101,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
             return (
               <>
-                <View style={styles.containerStyle}>
+                <View style={PlatformUtils.isMobile() && styles.containerStyle}>
                   <AssetListingSection contentContainerStyles={styles.paddingStyle} title={t('property:spacesText')}>
                     <PropertySpaces
                       flowType={FlowTypes.PostAssetFlow}

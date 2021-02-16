@@ -8,7 +8,7 @@ exports[`UploadBoxComponent should match snapshot 1`] = `
   onDelete={[MockFunction]}
   subHeader="subHeader"
 >
-  <UploadBox
+  <UploadBtn
     header="Header"
     icon="left-arrow"
     onPress={[Function]}
@@ -361,7 +361,7 @@ exports[`UploadBoxComponent should match snapshot 1`] = `
         </ForwardRef(AnimatedComponentWrapper)>
       </TouchableOpacity>
     </ForwardRef>
-  </UploadBox>
+  </UploadBtn>
   <Memo(FileUpload)
     onDelete={[MockFunction]}
   />

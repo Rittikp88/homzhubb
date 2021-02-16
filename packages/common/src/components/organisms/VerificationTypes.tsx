@@ -29,14 +29,13 @@ interface IVerificationProps {
   handleTypes?: (types: VerificationDocumentTypes[]) => void;
 }
 
-
 interface IVerificationState {
   verificationTypes: VerificationDocumentTypes[];
 }
 
 type IProps = IVerificationProps & IWithMediaQuery;
 
- class VerificationTypes extends Component<IProps, IVerificationState> {
+class VerificationTypes extends Component<IProps, IVerificationState> {
   public state = {
     verificationTypes: [],
   };
@@ -47,8 +46,9 @@ type IProps = IVerificationProps & IWithMediaQuery;
 
   public render(): ReactNode {
     const { verificationTypes } = this.state;
+    const { isMobile } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, isMobile && styles.mobileUploadBox]}>
         {verificationTypes.map((verificationType: VerificationDocumentTypes, index: number) => {
           const data: VerificationDocumentTypes = verificationType;
           return (
@@ -85,7 +85,7 @@ type IProps = IVerificationProps & IWithMediaQuery;
   }
 
   private renderImageOrUploadBox = (currentData: VerificationDocumentTypes): ReactElement => {
-    const { handleUpload, existingDocuments, localDocuments, deleteDocument, isMobile } = this.props;
+    const { handleUpload, existingDocuments, localDocuments, deleteDocument } = this.props;
     const onPress = (): void => handleUpload(currentData);
 
     const totalDocuments = existingDocuments.concat(localDocuments);
@@ -122,7 +122,7 @@ type IProps = IVerificationProps & IWithMediaQuery;
         header={currentData.label}
         subHeader={currentData.helpText}
         onPress={onPress}
-        containerStyle={[styles.uploadBox, isMobile && styles.mobileUploadBox]}
+        containerStyle={styles.uploadBox}
       />
     );
   };
@@ -146,11 +146,11 @@ type IProps = IVerificationProps & IWithMediaQuery;
   };
 }
 
-export default withMediaQuery<any>(VerificationTypes)
+export default withMediaQuery<any>(VerificationTypes);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 8,
     marginTop: 4,
     backgroundColor: theme.colors.white,
   },
@@ -160,13 +160,9 @@ const styles = StyleSheet.create({
   },
   uploadBox: {
     marginTop: 20,
-    width:'auto',
-    height:'auto'
   },
-  mobileUploadBox:{
-     width: PlatformUtils.isWeb() ? 311 : 'auto',
-     height: PlatformUtils.isWeb() ? 80 : 'auto',
-     alignItems:'center'
+  mobileUploadBox: {
+    width: PlatformUtils.isWeb() ? 305 : 'auto',
   },
   title: {
     color: theme.colors.darkTint4,

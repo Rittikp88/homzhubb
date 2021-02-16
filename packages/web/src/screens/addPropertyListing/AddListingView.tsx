@@ -195,7 +195,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       selectedAssetPlan: { selectedPlan },
-      isTablet
+      isTablet,
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
@@ -228,17 +228,12 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
           )}
         </View>
-        {isTablet &&
-        key === Tabs.VERIFICATIONS && (
+        {isTablet && key === Tabs.VERIFICATIONS && (
           <>
             <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
               {t('propertyVerificationSubTitle')}
             </Label>
-            <Label
-              type="large"
-              textType="semiBold"
-              style={styles.helperText}
-            >
+            <Label type="large" textType="semiBold" style={styles.helperText}>
               {t('helperNavigationText')}
             </Label>
           </>
@@ -489,7 +484,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-const translatedAddListingView =  connect(
+const translatedAddListingView = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(AddListingView));

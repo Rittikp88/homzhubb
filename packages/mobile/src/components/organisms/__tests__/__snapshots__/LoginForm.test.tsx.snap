@@ -12,8 +12,9 @@ exports[`Test cases for LoginForm should render snapshot 1`] = `
 exports[`Test cases for LoginForm should render snapshot for dropdown selection 1`] = `
 LoginForm {
   "context": Object {},
-  "formSchema": [Function],
   "handleSubmit": [Function],
+  "loginEmailFormSchema": [Function],
+  "loginPhoneFormSchema": [Function],
   "password": Object {
     "current": null,
   },

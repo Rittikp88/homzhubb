@@ -97,6 +97,7 @@ const opacity = {
   whiteOpacity: 'rgba(255, 255, 255, 0.1)',
   cardOpacity: 'rgba(255, 255, 255, 0.2)',
   crossIconContainer: 'rgba(0, 0, 0, 0.2)',
+  crossIconContainerWeb: 'rgba(242, 60, 6, 0.6)',
   overlay: 'rgba(0, 0, 0, 0.25)',
   imageThumbnailBackground: 'rgba(0, 27, 54, 0.6)',
   markerOpacity: 'rgba(0, 132, 248, 0.3)',
