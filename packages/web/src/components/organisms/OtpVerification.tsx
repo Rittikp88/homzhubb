@@ -194,7 +194,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
             />
           </View>
           <View>
-            <OtpInputs bubbleOtp={handleOtpVerification} toggleError={toggleError}/>
+            <OtpInputs bubbleOtp={handleOtpVerification} toggleError={toggleError} />
           </View>
           <View style={styles.resendTextContainer}>
             <Typography variant="label" size="large" fontWeight="regular" style={styles.notReceiveOtpText}>

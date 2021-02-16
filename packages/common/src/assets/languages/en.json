@@ -354,6 +354,7 @@
     "showLess": "Show less",
     "annualIncrement": "Increment %",
     "duration": "Duration",
+    "rentAndSecurity": "Rent and security deposit",
     "minimumLeasePeriod": "Minimum Lock-in period",
     "maximumLeasePeriod": "Total lease period",
     "maximumLeaseError": "Total lease period should be greater than the minimum lock in",

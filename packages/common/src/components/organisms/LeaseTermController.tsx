@@ -93,7 +93,6 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   public render = (): React.ReactNode => {
     const { leaseType, currencyData, assetGroupType, furnishing } = this.props;
     const { preferences, availableSpaces, singleLeaseUnitKey, singleLeaseInitValues, loading } = this.state;
-
     return (
       <>
         {leaseType === LeaseTypes.Shared ? (

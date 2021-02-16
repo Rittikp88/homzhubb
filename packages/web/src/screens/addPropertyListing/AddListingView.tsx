@@ -4,6 +4,9 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -48,7 +51,7 @@ interface IProps {
   onUploadDocument: () => any;
 }
 
-type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
+type Props = WithTranslation & IStateProps & IDispatchProps & IProps & IWithMediaQuery;
 
 interface IOwnState {
   currentIndex: number;
@@ -194,6 +197,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       selectedAssetPlan: { selectedPlan },
+      isMobile,
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
@@ -202,28 +206,37 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
 
     return (
       <View style={styles.tabHeader}>
-        {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
-          <SelectionPicker
-            data={[
-              { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
-              { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
-            ]}
-            selectedItem={[leaseType]}
-            containerStyles={styles.switchTab}
-            onValueChange={this.onTabChange}
-          />
-        )}
-        <View style={styles.tabRows}>
-          <Text type="small" textType="semiBold">
-            {title}
-          </Text>
+        <View>
+          {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
+            <SelectionPicker
+              data={[
+                { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
+                { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+              ]}
+              selectedItem={[leaseType]}
+              containerStyles={[styles.switchTab]}
+              onValueChange={this.onTabChange}
+              itemWidth={PlatformUtils.isWeb() && !isMobile ? 171 : 170}
+            />
+          )}
+        </View>
+
+        <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
+          <View>
+            <Text type="small" textType="semiBold">
+              {title}
+            </Text>
+          </View>
+
           {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
             <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
               {t('common:skip')}
             </Text>
           )}
           {key === Tabs.ACTIONS && (
-            <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+            <View style={[styles.tooltip, isMobile && styles.tooltipMobile]}>
+              <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+            </View>
           )}
         </View>
       </View>
@@ -239,6 +252,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         listing: { type },
       },
     } = assetDetails;
+
     const isReadyToPreview = type !== TypeOfPlan.MANAGE && !isVerificationRequired;
     const title = isReadyToPreview ? t('previewOwnProperty') : t('clickContinueToDashboard');
 
@@ -273,7 +287,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       valueAddedServices,
       onUploadDocument,
     } = this.props;
-
     if (!assetDetails) return null;
 
     switch (route.key) {
@@ -446,6 +459,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     }, 100);
   };
 }
+const addListingView = withMediaQuery<Props>(AddListingView);
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getSelectedAssetPlan, getAssetDetails, getValueAddedServices } = RecordAssetSelectors;
@@ -475,7 +489,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.property)(AddListingView));
+)(withTranslation(LocaleConstants.namespacesKey.property)(addListingView));
 
 const styles = StyleSheet.create({
   flexOne: {
@@ -487,16 +501,34 @@ const styles = StyleSheet.create({
   },
   tabHeader: {
     paddingVertical: 16,
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
   },
   switchTab: {
-    marginBottom: 20,
-    marginTop: 4,
+    marginBottom: 4,
+    marginTop: 20,
+  },
+  switchTabMobile: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   tabRows: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginRight: 'auto',
   },
+  tabRowsMobile: {
+    marginTop: '6%',
+    flex: 1,
+  },
+  tooltip: {
+    left: 9,
+  },
+  tooltipMobile: {
+    left: 'auto',
+  },
+
   badgeStyle: {
     paddingVertical: 3,
     paddingHorizontal: 18,
