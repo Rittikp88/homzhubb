@@ -15,6 +15,9 @@ import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
+import { useDispatch } from 'react-redux';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+
 
 interface IComponentMap {
   component: AddPropertyStack;
@@ -49,13 +52,14 @@ const AddProperty: FC = () => {
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
+  const dispatch = useDispatch();
   const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
-
   useEffect(() => {
     if (goBackClicked) {
       goBack();
       setGoBackClicked(false);
     }
+
   }, [goBackClicked]);
   const navigateScreen = (comp: AddPropertyStack): void => {
     setCurrentScreen(comp);

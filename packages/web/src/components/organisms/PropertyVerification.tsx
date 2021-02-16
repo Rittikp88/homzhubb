@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { IDocsProps, ListingService } from '@homzhub/common/src/services/Property/ListingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -15,6 +16,7 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -31,7 +33,7 @@ interface IProps {
   onUploadDocument: () => any;
 }
 
-type Props = WithTranslation & IProps;
+type Props = WithTranslation & IProps & IWithMediaQuery;
 
 export class PropertyVerification extends React.PureComponent<Props, IPropertyVerificationState> {
   public state = {
@@ -47,7 +49,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public render(): React.ReactElement {
-    const { t, typeOfPlan } = this.props;
+    const { t, typeOfPlan, isTablet } = this.props;
     const { existingDocuments, localDocuments, isLoading, verificationTypes } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
@@ -65,7 +67,8 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             deleteDocument={this.onDeleteDocument}
             handleTypes={FunctionUtils.noop}
           />
-
+         { !isTablet && 
+           <>
           <Divider containerStyles={styles.divider} />
           <View style={styles.contentView}>
             <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
@@ -75,7 +78,10 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
               {t('helperNavigationText')}
             </Label>
           </View>
+          </>
+  }
         </View>
+         
         <Button
           type="primary"
           title={t('common:continue')}
@@ -126,7 +132,9 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   // HANDLERS END
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyVerification);
+const translatedpPropertyVerification = withTranslation(LocaleConstants.namespacesKey.property)(PropertyVerification);
+
+export default withMediaQuery<any>(translatedpPropertyVerification) ;
 
 const styles = StyleSheet.create({
   container: {

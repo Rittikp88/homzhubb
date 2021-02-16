@@ -11,7 +11,6 @@ import { UncontrolledCheckboxGroup } from '@homzhub/common/src/components/molecu
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { InputWithCheckbox } from '@homzhub/common/src/components/molecules/InputWithCheckbox';
 import { SpaceFieldTypes, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
-
 interface IGroupedSpaceType {
   [SpaceFieldTypes.Counter]?: SpaceType[];
   [SpaceFieldTypes.CheckBox]?: SpaceType[];
@@ -111,6 +110,7 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
             return null;
           }
           return (
+            
             <Counter
               key={index}
               containerStyles={[
@@ -131,6 +131,7 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
               minCount={space.isMandatory ? 1 : 0}
               disabled={isVerificationDone && space.isPrimary}
             />
+         
           );
         })}
       </View>

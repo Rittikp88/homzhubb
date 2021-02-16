@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -19,7 +20,7 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
 
-interface IProps {
+interface IVerificationProps {
   typeOfPlan: TypeOfPlan;
   existingDocuments: ExistingVerificationDocuments[];
   localDocuments: ExistingVerificationDocuments[];
@@ -28,11 +29,14 @@ interface IProps {
   handleTypes?: (types: VerificationDocumentTypes[]) => void;
 }
 
+
 interface IVerificationState {
   verificationTypes: VerificationDocumentTypes[];
 }
 
-export default class VerificationTypes extends Component<IProps, IVerificationState> {
+type IProps = IVerificationProps & IWithMediaQuery;
+
+ class VerificationTypes extends Component<IProps, IVerificationState> {
   public state = {
     verificationTypes: [],
   };
@@ -81,7 +85,7 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
   }
 
   private renderImageOrUploadBox = (currentData: VerificationDocumentTypes): ReactElement => {
-    const { handleUpload, existingDocuments, localDocuments, deleteDocument } = this.props;
+    const { handleUpload, existingDocuments, localDocuments, deleteDocument, isMobile } = this.props;
     const onPress = (): void => handleUpload(currentData);
 
     const totalDocuments = existingDocuments.concat(localDocuments);
@@ -118,7 +122,7 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
         header={currentData.label}
         subHeader={currentData.helpText}
         onPress={onPress}
-        containerStyle={styles.uploadBox}
+        containerStyle={[styles.uploadBox, isMobile && styles.mobileUploadBox]}
       />
     );
   };
@@ -142,6 +146,8 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
   };
 }
 
+export default withMediaQuery<any>(VerificationTypes)
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
@@ -154,6 +160,13 @@ const styles = StyleSheet.create({
   },
   uploadBox: {
     marginTop: 20,
+    width:'auto',
+    height:'auto'
+  },
+  mobileUploadBox:{
+     width: PlatformUtils.isWeb() ? 311 : 'auto',
+     height: PlatformUtils.isWeb() ? 80 : 'auto',
+     alignItems:'center'
   },
   title: {
     color: theme.colors.darkTint4,

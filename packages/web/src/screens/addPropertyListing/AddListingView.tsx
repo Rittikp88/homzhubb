@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -48,7 +49,7 @@ interface IProps {
   onUploadDocument: () => any;
 }
 
-type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
+type Props = WithTranslation & IStateProps & IDispatchProps & IProps & IWithMediaQuery;
 
 interface IOwnState {
   currentIndex: number;
@@ -70,7 +71,7 @@ const isFixRequired = true;
 
 class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
-    currentIndex: 0,
+    currentIndex: 2,
     isStepDone: [],
     tabViewHeights: [height, height, height, height * 0.5],
     isActionSheetToggled: false,
@@ -194,6 +195,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       selectedAssetPlan: { selectedPlan },
+      isTablet
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
@@ -226,6 +228,21 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
           )}
         </View>
+        {isTablet &&
+        key === Tabs.VERIFICATIONS && (
+          <>
+            <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
+              {t('propertyVerificationSubTitle')}
+            </Label>
+            <Label
+              type="large"
+              textType="semiBold"
+              style={styles.helperText}
+            >
+              {t('helperNavigationText')}
+            </Label>
+          </>
+        )}
       </View>
     );
   };
@@ -472,10 +489,12 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(
+const translatedAddListingView =  connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(AddListingView));
+
+export default withMediaQuery<any>(translatedAddListingView);
 
 const styles = StyleSheet.create({
   flexOne: {
@@ -491,6 +510,9 @@ const styles = StyleSheet.create({
   switchTab: {
     marginBottom: 20,
     marginTop: 4,
+  },
+  helperText: {
+    color: theme.colors.primaryColor,
   },
   tabRows: {
     flexDirection: 'row',
@@ -531,5 +553,9 @@ const styles = StyleSheet.create({
   service: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  verificationSubtitle: {
+    marginTop: 12,
+    marginBottom: 8,
   },
 });
