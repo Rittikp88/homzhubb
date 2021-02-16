@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import LogoWithName from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -16,15 +17,27 @@ interface IProps {
   children: React.ReactElement | React.ReactNode;
   title: string;
   subTitle: string;
-  containerStyle: ViewStyle;
+  containerStyle: StyleProp<ViewStyle>;
   hasBackButton?: boolean;
   backButtonPressed?: () => void;
   hasBackToLoginButton?: boolean;
   navigationPath?: string;
+  isUnderlineDesc?: boolean;
+  underlineDesc?: string;
 }
 
 const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
-  const { children, title, subTitle, containerStyle, hasBackToLoginButton, hasBackButton, navigationPath } = props;
+  const {
+    children,
+    title,
+    subTitle,
+    containerStyle,
+    hasBackToLoginButton,
+    hasBackButton,
+    navigationPath,
+    isUnderlineDesc,
+    underlineDesc,
+  } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const history = useHistory();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -40,7 +53,9 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
   const navigateToLogin = (): void => {
     NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.LOGIN });
   };
-
+  const navigateToScreen = (path: string): void => {
+    NavigationUtils.navigate(history, { path });
+  };
   return (
     <View style={containerStyle}>
       <View style={isMobile ? styles.userValidationCommonContentMobile : styles.userValidationCommonContent}>
@@ -55,9 +70,17 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
         <Typography variant="text" size="regular" fontWeight="semiBold">
           {title}
         </Typography>
-        <Typography variant="label" size="large">
+        <Typography variant="label" size="large" style={styles.subTitle}>
           {subTitle}
         </Typography>
+        {isUnderlineDesc && (
+          <View>
+            <View style={styles.underline} />
+            <Typography variant="label" size="large" style={styles.underlineDesc}>
+              {underlineDesc}
+            </Typography>
+          </View>
+        )}
       </View>
       {children}
       {hasBackToLoginButton && (
@@ -69,6 +92,33 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
           onPress={navigateToLogin}
         />
       )}
+      <View style={styles.footer}>
+        <View style={[styles.linksRow]}>
+          <Button
+            type="text"
+            title={t('moreSettings:termsConditionsText')}
+            textType="label"
+            textSize="large"
+            fontType="regular"
+            titleStyle={[styles.linkText]}
+            onPress={(): void => navigateToScreen(RouteNames.publicRoutes.TERMS_CONDITION)}
+          />
+          <Button
+            type="text"
+            title={t('moreSettings:privacyPolicyText')}
+            textType="label"
+            textSize="large"
+            fontType="regular"
+            titleStyle={[styles.linkText]}
+            onPress={(): void => navigateToScreen(RouteNames.publicRoutes.PRIVACY_POLICY)}
+          />
+        </View>
+        <View style={styles.copyrightContainer}>
+          <Typography variant="label" size="large" style={styles.copyrightText}>
+            {t('copyrightContent')}
+          </Typography>
+        </View>
+      </View>
     </View>
   );
 };
@@ -101,5 +151,32 @@ const styles = StyleSheet.create({
   backToLoginButtonText: {
     marginHorizontal: 0,
     marginVertical: 0,
+  },
+  subTitle: {
+    marginBottom: '2%',
+  },
+  underline: {
+    height: '1px',
+    backgroundColor: theme.colors.darkTint9,
+  },
+  underlineDesc: {
+    marginTop: '3%',
+  },
+  footer: {
+    alignSelf: 'center',
+  },
+  linksRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  linkText: {
+    color: theme.colors.blue,
+  },
+  copyrightContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  copyrightText: {
+    color: theme.colors.darkTint4,
   },
 });

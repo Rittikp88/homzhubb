@@ -8,7 +8,7 @@ interface IProps {
   icon: string;
   header: string;
   subHeader: string;
-  onPress: () => void;
+  onPress?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
   headerStyle?: StyleProp<ViewStyle>;
   subHeaderStyle?: StyleProp<ViewStyle>;
@@ -16,7 +16,7 @@ interface IProps {
   iconColor?: string;
 }
 
-export const UploadBox = (props: IProps): React.ReactElement => {
+export const UploadBtn = <T extends IProps>(props: T): React.ReactElement => {
   const { icon, header, subHeader, onPress, containerStyle, headerStyle, subHeaderStyle, iconSize, iconColor } = props;
   return (
     <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>

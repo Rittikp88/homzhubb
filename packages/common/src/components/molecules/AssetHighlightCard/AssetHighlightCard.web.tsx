@@ -1,13 +1,14 @@
 import React, { Component, ReactElement } from 'react';
-import { StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, Image, View } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
+import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 
-interface IProps {
+interface IOwnProps {
   title: string;
   data: Amenity[];
   selectedAmenity: number[];
@@ -24,59 +25,65 @@ interface IState {
   activeSlide: number;
 }
 
-class AssetHighlightCard extends Component<IProps, IState> {
-  public state = {
-    activeSlide: 0,
-  };
+type IProps = IOwnProps & IWithMediaQuery;
 
+class AssetHighlightCard extends Component<IProps, IState> {
   public render(): React.ReactNode {
-    const { title, renderCarousel } = this.props;
-    const { activeSlide } = this.state;
+    const { title, isMobile } = this.props;
     const formattedData = this.getFormattedData();
+
     return (
       <AssetListingSection title={title} containerStyles={styles.container}>
-        {PlatformUtils.isWeb() ? (
-          <>
-            {formattedData.map((item) => {
-              return this.renderCarouselItem(item);
-            })}
-          </>
-        ) : (
-          <>
-            {renderCarousel
-              ? renderCarousel(formattedData, this.renderCarouselItem, activeSlide, this.onSnapToItem)
-              : null}
-          </>
-        )}
+        <>
+          {isMobile ? (
+            <View style={styles.snapCarouselWeb}>
+              <MultiCarousel>
+                {formattedData.map((item) => {
+                  return this.renderCarouselItem(item);
+                })}
+              </MultiCarousel>
+            </View>
+          ) : (
+            this.renderAmenitiesListWeb()
+          )}
+        </>
       </AssetListingSection>
     );
   }
 
   private renderCarouselItem = (item: Amenity[]): React.ReactElement => {
+    const { isMobile } = this.props;
     return (
       <FlatList
         data={item}
-        numColumns={PlatformUtils.isMobile() ? 3 : 10}
+        numColumns={PlatformUtils.isMobile() || isMobile ? 3 : 10}
         renderItem={this.renderListItem}
         contentContainerStyle={styles.listContainer}
       />
     );
   };
 
-  private renderListItem = ({ item }: { item: Amenity }): React.ReactElement => {
-    const { selectedAmenity, onAmenityPress } = this.props;
-    const isSelected = selectedAmenity.includes(item.id);
+  private renderAmenitiesListWeb = (): React.ReactElement => {
+    const { data } = this.props;
+
     return (
-      <TouchableOpacity style={styles.amenityItem} onPress={(): void => onAmenityPress(item.id)}>
-        {PlatformUtils.isMobile() && (
-          <SVGUri
-            uri={item.attachment.link}
-            height={30}
-            width={30}
-            stroke={isSelected ? theme.colors.active : undefined}
-            strokeWidth={isSelected ? 0.5 : undefined}
-          />
-        )}
+      <View style={styles.amenitiesListWebConatiner}>
+        {data.map((amenity) => (
+          <View key={amenity.id}>{this.renderListItem({ item: amenity })}</View>
+        ))}
+      </View>
+    );
+  };
+
+  private renderListItem = ({ item }: { item: Amenity }): React.ReactElement => {
+    const { selectedAmenity, onAmenityPress, isMobile } = this.props;
+    const isSelected = selectedAmenity.includes(item.id);
+    const amenityPress = (): void => {
+      onAmenityPress(item.id);
+    };
+    return (
+      <TouchableOpacity style={[isMobile ? styles.amenityItemWebMobile : styles.amenityItem]} onPress={amenityPress}>
+        <Image source={{ uri: item.attachment.link }} style={styles.amenitiesIcon} />
         <Label type="regular" textType="regular" style={[styles.label, isSelected && { color: theme.colors.blue }]}>
           {item.name}
         </Label>
@@ -84,12 +91,9 @@ class AssetHighlightCard extends Component<IProps, IState> {
     );
   };
 
-  private onSnapToItem = (slideNumber: number): void => {
-    this.setState({ activeSlide: slideNumber });
-  };
-
   private getFormattedData = (): Amenity[][] => {
     const { data } = this.props;
+
     let index;
     const arrayLength = data.length;
     const tempArray = [];
@@ -102,8 +106,8 @@ class AssetHighlightCard extends Component<IProps, IState> {
   };
 }
 
-export default AssetHighlightCard;
-
+const assetHighlightCard = withMediaQuery<IProps>(AssetHighlightCard);
+export { assetHighlightCard as AssetHighlightCard };
 const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
@@ -111,12 +115,28 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingTop: 16,
   },
+  amenitiesListWebConatiner: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   amenityItem: {
-    width: PlatformUtils.isMobile() ? (theme.viewport.width - 32) / 3 : 120,
+    width: 120,
     alignItems: 'center',
-    marginBottom: 16,
+    marginVertical: 16,
+  },
+  amenityItemWebMobile: {
+    width: '33%',
+    alignItems: 'center',
+    marginVertical: 20,
   },
   label: {
     textAlign: 'center',
+  },
+  amenitiesIcon: {
+    width: 25,
+    height: 25,
+  },
+  snapCarouselWeb: {
+    width: '78vw',
   },
 });

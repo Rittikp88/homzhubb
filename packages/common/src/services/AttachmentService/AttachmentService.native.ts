@@ -8,17 +8,10 @@ import { PermissionsService } from '@homzhub/common/src/services/Permissions/Per
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { PERMISSION_TYPE } from '@homzhub/common/src/constants/PermissionTypes';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 export enum AttachmentError {
   UPLOAD_IMAGE_ERROR = 'File is corrupted',
-}
-
-export enum AttachmentType {
-  ASSET_IMAGE = 'asset_images',
-  ASSET_DOCUMENT = 'asset_documents',
-  ASSET_VERIFICATION = 'verification_documents',
-  ASSET_RECORD = 'financial_record',
-  PROFILE_IMAGE = 'profile_images',
 }
 
 const baseUrl = ConfigHelper.getBaseUrl();

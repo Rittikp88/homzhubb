@@ -25,6 +25,8 @@ interface IProps {
   onCloseSheet: () => void;
   numberOfTenants: number;
   onHandleActionProp: () => void;
+  isActive: boolean;
+  endDate: string;
 }
 
 interface IFormData {
@@ -53,6 +55,8 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
     onCloseSheet,
     numberOfTenants,
     onHandleActionProp,
+    isActive = true,
+    endDate,
   } = props;
   const [userDetails, setDetails] = useState(initialState);
   const [isLoading, setLoading] = useState(false);
@@ -103,6 +107,11 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
 
   const deleteTenant = async (): Promise<void> => {
     onCloseSheet();
+    const date = endDate;
+    if (!isActive) {
+      AlertHelper.error({ message: t('property:tenantRemoveDate', { date }) });
+      return;
+    }
     if (numberOfTenants === 1) {
       onHandleActionProp();
     } else {

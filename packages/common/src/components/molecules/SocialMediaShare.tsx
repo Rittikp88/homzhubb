@@ -86,7 +86,7 @@ const SocialMediaShareComp = (props: ISocialMediaProps): React.ReactElement => {
     <BottomSheet
       headerTitle={headerTitle}
       onCloseSheet={onCloseSharing}
-      sheetHeight={theme.viewport.height / 2}
+      sheetHeight={theme.viewport.height / 2.5}
       visible={visible}
     >
       <>
@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginHorizontal: 16,
     marginBottom: 20,
+    height: 50,
     backgroundColor: theme.colors.blueOpacity,
   },
   sharingText: {

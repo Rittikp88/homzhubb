@@ -38,7 +38,7 @@ export const NextPrevBtn: FC<IProps> = ({
     leftBtnProps = passedLeftBtnProps;
   }
   let rightBtnProps: ICustomIconProps = {
-    icon: icons.leftArrow,
+    icon: icons.rightArrow,
     iconSize: 18,
     iconColor: theme.colors.primaryColor,
     containerStyle: styles.nextBtn,

@@ -16,6 +16,7 @@ interface IProps extends WithTranslation {
   isExpanded: boolean;
   handleDownload: (refKey: string, fileName: string) => void;
   onCardPress: (height: number) => void;
+  key: string;
 }
 
 interface IOwnState {
@@ -31,16 +32,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
     const { height } = this.state;
     const {
       isExpanded,
-      transaction: {
-        transactionDate,
-        category,
-        label,
-        assetName,
-        amount,
-        currency,
-        entryType,
-        attachmentDetails: { fileName },
-      },
+      transaction: { transactionDate, category, label, assetName, amount, currency, entryType, attachmentDetails },
       onCardPress,
     } = this.props;
     const textLength = theme.viewport.width / 20;
@@ -72,7 +64,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
               <Label type="regular" numberOfLines={1}>
                 {category}
               </Label>
-              {fileName ? <Icon name={icons.attachment} size={12} /> : null}
+              {attachmentDetails.length ? <Icon name={icons.attachment} size={12} /> : null}
             </View>
             <Label maxLength={textLength} type="large" textType="bold" numberOfLines={1}>
               {label}
@@ -102,15 +94,12 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
     const {
       t,
       handleDownload,
-      transaction: {
-        entryType,
-        notes,
-        tellerName,
-        attachmentDetails: { fileName, presignedReferenceKey },
-      },
+      transaction: { entryType, notes, tellerName, attachmentDetails },
     } = this.props;
 
-    if (!tellerName && !fileName && !notes) {
+    const hasAttachments = attachmentDetails.length > 0;
+
+    if (!tellerName && !hasAttachments && !notes) {
       return (
         <Label style={styles.noDescriptionText} type="large">
           {t('noDescriptionText')}
@@ -118,11 +107,45 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
       );
     }
 
-    const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
     let nameLabel = t('paidToText');
     if (entryType === LedgerTypes.credit) {
       nameLabel = t('receivedFrom');
     }
+
+    const RenderAttachments = (): React.ReactElement | null => {
+      const attachmentName = (name: string, extension: string): string =>
+        name.length > 20 ? `${name.slice(0, 20)}...${extension}` : name;
+      const { key } = this.props;
+
+      if (hasAttachments) {
+        const title = attachmentDetails.length === 1 ? t('invoice') : t('invoices');
+        return (
+          <>
+            <Label type="regular" style={styles.label}>
+              {title}
+            </Label>
+            {attachmentDetails.map((file) => {
+              const { fileName, presignedReferenceKey } = file;
+              const extension = fileName.split('.').reverse()[0];
+              const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
+              const isLast = attachmentDetails.indexOf(file) === attachmentDetails.length - 1;
+              const attachmentKey = `${key}:[${attachmentDetails.indexOf(file)}]`;
+              return (
+                <View style={!isLast ? styles.attachment : styles.commonMarginStyle} key={attachmentKey}>
+                  <TouchableOpacity onPress={onDownload} style={styles.commonAlignStyle}>
+                    <Label style={styles.attachmentStyles} type="large">
+                      {attachmentName(fileName, extension)}
+                    </Label>
+                    <Icon name={icons.download} size={20} color={theme.colors.primaryColor} />
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+          </>
+        );
+      }
+      return null;
+    };
 
     return (
       <View style={styles.transactionDetailContainer}>
@@ -134,19 +157,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
             <Label type="large">{tellerName}</Label>
           </View>
         </View>
-        {!!fileName && (
-          <View style={styles.commonMarginStyle}>
-            <Label type="regular" style={styles.label}>
-              {t('invoice')}
-            </Label>
-            <TouchableOpacity onPress={onDownload} style={styles.commonAlignStyle}>
-              <Label style={styles.attachmentStyles} type="large">
-                {fileName}
-              </Label>
-              <Icon name={icons.download} size={20} color={theme.colors.primaryColor} />
-            </TouchableOpacity>
-          </View>
-        )}
+        <RenderAttachments />
         {!!notes && (
           <View>
             <Label type="regular" style={styles.label}>
@@ -219,5 +230,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: theme.colors.darkTint5,
+  },
+  attachment: {
+    marginBottom: 20,
   },
 });

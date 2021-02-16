@@ -7,7 +7,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
@@ -22,6 +22,7 @@ import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IScreenState {
   currentIndex: number;

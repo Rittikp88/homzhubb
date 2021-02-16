@@ -24,7 +24,7 @@ export const FinancialTransaction = {
         id: 1,
         project_name: 'akn',
       },
-      attachment: null,
+      attachments: [],
     },
     {
       id: 2,
@@ -45,10 +45,12 @@ export const FinancialTransaction = {
         id: 1,
         project_name: 'Godrej Prime',
       },
-      attachment: {
-        id: 1,
-        file_name: 'Foobar.jpg',
-      },
+      attachments: [
+        {
+          id: 1,
+          file_name: 'Foobar.jpg',
+        },
+      ],
     },
     {
       id: 3,
@@ -69,10 +71,12 @@ export const FinancialTransaction = {
         id: 1,
         project_name: 'Godrej Prime',
       },
-      attachment: {
-        id: 1,
-        file_name: 'Foobar.jpg',
-      },
+      attachments: [
+        {
+          id: 1,
+          file_name: 'Foobar.jpg',
+        },
+      ],
     },
     {
       id: 4,
@@ -93,10 +97,12 @@ export const FinancialTransaction = {
         id: 1,
         project_name: 'Godrej Prime',
       },
-      attachment: {
-        id: 1,
-        file_name: 'Foobar.jpg',
-      },
+      attachments: [
+        {
+          id: 1,
+          file_name: 'Foobar.jpg',
+        },
+      ],
     },
     {
       id: 5,
@@ -117,10 +123,12 @@ export const FinancialTransaction = {
         id: 1,
         project_name: 'Godrej Prime',
       },
-      attachment: {
-        id: 1,
-        file_name: 'Foobar.jpg',
-      },
+      attachments: [
+        {
+          id: 1,
+          file_name: 'Foobar.jpg',
+        },
+      ],
     },
     {
       id: 6,
@@ -141,10 +149,12 @@ export const FinancialTransaction = {
         id: 1,
         project_name: 'Godrej Prime',
       },
-      attachment: {
-        id: 1,
-        file_name: 'Foobar.jpg',
-      },
+      attachments: [
+        {
+          id: 1,
+          file_name: 'Foobar.jpg',
+        },
+      ],
     },
     {
       id: 7,
@@ -165,10 +175,12 @@ export const FinancialTransaction = {
         id: 1,
         project_name: 'Godrej Prime',
       },
-      attachment: {
-        id: 1,
-        file_name: 'Foobar.jpg',
-      },
+      attachments: [
+        {
+          id: 1,
+          file_name: 'Foobar.jpg',
+        },
+      ],
     },
   ],
 };

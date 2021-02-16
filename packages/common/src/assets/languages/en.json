@@ -193,7 +193,6 @@
     "menu": "Menu",
     "signupCarouselTitle": "We are Reinventing Renting!",
     "signupCarouselDescription": "Especially for Tenants. Search, Locate, Negotiate and Rent on our app",
-    "youHaveAlreadyRepotedThisCommentOn": "You have already repoted this comment on",
     "comments": "Comments",
     "signUpItsFree": "Sign Up, It's Free",
     "contactSales": "Contact Sales",
@@ -201,10 +200,14 @@
     "perYear": "/Year",
     "freeFor": "Free for ",
     "oneYear": "1 Year",
+    "uploadTitle": "Upload Document",
+    "uploadSubTitle": "Supports: JPG, JPEG, PNG, PDF",
     "invitationSent": "Invitation Sent",
     "update": "Update",
     "editInvite": "Edit Invite",
-    "tenantDetailsAreUpdated": "Tenant Details are updated"
+    "tenantDetailsAreUpdated": "Tenant Details are updated",
+    "admin": "Admin",
+    "serverError": "We are having trouble connecting to our servers, please check back in some time"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -284,7 +287,9 @@
     "errorInFacebookSignIn": "Error in Facebook Sign in",
     "fbEmailLinkingError": "Seems that you have not linked your email with Facebook, Please Sign up.",
     "newOnPlatform": "New on our platform?  ",
-    "createAccout": "Create an account"
+    "createAccout": "Create an account",
+    "authDescLogin": "Hi {{username}}, You are logging in for the first time on Homzhub. Enter your phone number to complete your profile. ",
+    "authDescSignUp": "Hello {{username}}, Enter your phone number to complete your profile."
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -390,6 +395,7 @@
     "supportedImageFormats": "Only upload .jpg, .jpeg, .png file types",
     "addMore": "Upload more images",
     "uploadedImages": "Uploaded Images",
+    "uploadImagesTxtWeb": "Upload Photos or drag it here",
     "coverPhoto": "Cover photo",
     "addCoverPhoto": "Make cover photo",
     "previewProperty": "Preview your property",
@@ -523,7 +529,10 @@
     "noReview": "No Reviews Found",
     "totalReviews": "Reviews ({{total}})",
     "noPropertyReview": "This property has not been reviewed yet",
-    "inValidVisit": "This listing has been removed by the property owner."
+    "inValidVisit": "This listing has been removed by the property owner.",
+    "youHaveAlreadyReportedThisCommentOn": "You have already reported this comment on",
+    "tenantRemoveDate": "This tenant will be removed from the lease on {{date}}",
+    "reportStatus": "Report status"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -721,6 +730,7 @@
     "attachmentName": "Attachment name",
     "paidToText": "Paid to",
     "invoice": "Invoice",
+    "invoices": "Invoices",
     "paidTo": "Paid To",
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg: Tenant",

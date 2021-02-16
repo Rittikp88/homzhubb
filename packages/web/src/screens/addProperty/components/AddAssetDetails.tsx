@@ -6,6 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -64,7 +65,7 @@ interface IOwnProps {
   onSubmitPress: () => void;
 }
 
-type Props = WithTranslation & IDispatchProps & IStateProps & IOwnProps;
+type Props = WithTranslation & IDispatchProps & IStateProps & IOwnProps & IWithMediaQuery;
 
 class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   public state = {
@@ -115,7 +116,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
   }
 
   private renderForm = (): React.ReactNode => {
-    const { t, assetGroups, asset } = this.props;
+    const { t, assetGroups, asset, isMobile } = this.props;
     const { formData, assetGroupTypeId, assetGroupId, assetGroupSelectionDisabled } = this.state;
     return (
       <Formik
@@ -142,7 +143,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
                 disabled={assetGroupTypeId === -1}
                 type="primary"
                 title={t('common:submit')}
-                containerStyle={styles.buttonStyle}
+                containerStyle={[styles.buttonStyle, isMobile && styles.mobileButton]}
                 // @ts-ignore
                 onPress={formProps.handleSubmit}
                 formProps={formProps}
@@ -329,6 +330,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     paddingHorizontal: '10%',
   },
+  mobileButton: {
+    alignSelf: 'auto',
+    width: 'auto',
+  },
   sheetStyle: {
     paddingHorizontal: theme.layout.screenPadding,
   },
@@ -374,7 +379,9 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(
+const translatedAddAssetDetails = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(AddAssetDetails));
+
+export default withMediaQuery<any>(translatedAddAssetDetails);

@@ -1,15 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, FlatList, ScrollView, StyleProp, ViewStyle } from 'react-native';
+import { FlatList, ScrollView, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { findIndex, cloneDeep } from 'lodash';
+import { cloneDeep, findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+import ImageThumbnail from '@homzhub/common/src/components/atoms/ImageThumbnail';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { AddYoutubeUrl } from '@homzhub/common/src/components/molecules/AddYoutubeUrl';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
@@ -23,7 +22,7 @@ import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/
 interface IProps {
   propertyId: number;
   onPressContinue: () => void;
-  onUploadImage: () => void;
+  onUploadImage: (files?: File[]) => void;
   selectedImages: AssetGallery[];
   lastVisitedStep: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
@@ -59,8 +58,8 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     return (
       <>
         <View style={containerStyle}>
-          <View style={PlatformUtils.isWeb() && styles.uploadView}>
-            <AssetListingSection title={t('property:images')} containerStyles={PlatformUtils.isWeb() && styles.section}>
+          <View>
+            <AssetListingSection title={t('property:images')}>
               <>
                 <UploadBox
                   icon={icons.gallery}
@@ -80,17 +79,15 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
             onPress={this.postAttachmentsForProperty}
           />
         </View>
-        {PlatformUtils.isMobile() && (
-          <BottomSheet
-            isShadowView
-            sheetHeight={650}
-            headerTitle={t('property:propertyImages')}
-            visible={isBottomSheetVisible}
-            onCloseSheet={this.onCloseBottomSheet}
-          >
-            <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
-          </BottomSheet>
-        )}
+        <BottomSheet
+          isShadowView
+          sheetHeight={650}
+          headerTitle={t('property:propertyImages')}
+          visible={isBottomSheetVisible}
+          onCloseSheet={this.onCloseBottomSheet}
+        >
+          <ScrollView style={styles.scrollView}>{this.renderBottomSheetForPropertyImages()}</ScrollView>
+        </BottomSheet>
       </>
     );
   }
@@ -146,25 +143,6 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     );
   };
 
-  private renderImagesList = ({ item, index }: { item: AssetGallery; index: number }): React.ReactElement => {
-    const { selectedImages } = this.props;
-    const extraDataLength = selectedImages.length > 6 ? selectedImages.length - 7 : selectedImages.length;
-    const isLastThumbnail = index === 5 && extraDataLength > 0;
-    const onPressLastThumbnail = (): void => this.onToggleBottomSheet();
-    return (
-      <ImageThumbnail
-        imageUrl={item.link}
-        key={`container-${index}`}
-        isIconVisible={false}
-        isLastThumbnail={isLastThumbnail}
-        dataLength={extraDataLength}
-        onPressLastThumbnail={onPressLastThumbnail}
-        containerStyle={styles.thumbnailContainer}
-        imageWrapperStyle={styles.imageWrapper}
-      />
-    );
-  };
-
   public renderBottomSheetForPropertyImages = (): React.ReactNode => {
     const { t, selectedImages } = this.props;
     const { isSortImage } = this.state;
@@ -205,6 +183,25 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         onToggle={onToggleVideo}
         onUpdateUrl={onUpdateVideoUrl}
         containerStyle={styles.videoContainer}
+      />
+    );
+  };
+
+  private renderImagesList = ({ item, index }: { item: AssetGallery; index: number }): React.ReactElement => {
+    const { selectedImages } = this.props;
+    const extraDataLength = selectedImages.length > 6 ? selectedImages.length - 7 : selectedImages.length;
+    const isLastThumbnail = index === 5 && extraDataLength > 0;
+    const onPressLastThumbnail = (): void => this.onToggleBottomSheet();
+    return (
+      <ImageThumbnail
+        imageUrl={item.link}
+        key={`container-${index}`}
+        isIconVisible={false}
+        isLastThumbnail={isLastThumbnail}
+        dataLength={extraDataLength}
+        onPressLastThumbnail={onPressLastThumbnail}
+        containerStyle={styles.thumbnailContainer}
+        imageWrapperStyle={styles.imageWrapper}
       />
     );
   };
@@ -352,8 +349,8 @@ const styles = StyleSheet.create({
     margin: theme.layout.screenPadding,
   },
   videoContainer: {
-    marginVertical: PlatformUtils.isMobile() ? 20 : 0,
-    flex: PlatformUtils.isWeb() ? 1 : 0,
+    marginVertical: 20,
+    flex: 0,
   },
   uploadView: {
     flexDirection: 'row',
