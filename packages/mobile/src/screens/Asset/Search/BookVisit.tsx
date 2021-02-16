@@ -3,9 +3,11 @@ import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -22,10 +24,9 @@ import { CollapsibleSection, Header, StateAwareComponent, TimeSlotGroup } from '
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetVisit, ISlotItem } from '@homzhub/common/src/domain/models/AssetVisit';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
-import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
-import { VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -35,9 +36,13 @@ import {
   IUpcomingVisitPayload,
   VisitType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
+import { VisitTypeData } from '@homzhub/common/src/mocks/BookVisit';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
   isLoggedIn: boolean;
+  assetDetails: Asset | null;
   visitDetail: AssetVisit;
   visitIds: number[];
 }
@@ -83,7 +88,6 @@ export class BookVisit extends Component<Props, IVisitState> {
   public componentDidMount = async (): Promise<void> => {
     await this.getVisitorType();
     await this.getUpcomingVisits();
-
     this.getExistingData();
   };
 
@@ -369,7 +373,9 @@ export class BookVisit extends Component<Props, IVisitState> {
       t,
       route: { params },
       visitIds,
+      assetDetails,
     } = this.props;
+    let trackData;
 
     let start_date = '';
     let end_date = '';
@@ -408,17 +414,35 @@ export class BookVisit extends Component<Props, IVisitState> {
       end_date,
       ...(message && { comments: message }),
     };
+    if (assetDetails) {
+      trackData = {
+        start_date,
+        end_date,
+        ...AnalyticsHelper.getPropertyTrackData(assetDetails),
+      };
+    }
 
     try {
       if (params?.isReschedule) {
         await AssetRepository.reschedulePropertyVisit(reschedulePayload);
+        if (trackData) {
+          AnalyticsService.track(EventType.VisitRescheduleSuccess, trackData);
+        }
       } else {
         await AssetRepository.propertyVisit(payload);
         AlertHelper.success({ message: t('property:scheduleVisit') });
+        if (trackData) {
+          AnalyticsService.track(EventType.VisitCreatedSuccess, trackData);
+        }
       }
       this.setState({ isLoading: false });
       this.goBack();
     } catch (e) {
+      if (params?.isReschedule && trackData) {
+        AnalyticsService.track(EventType.VisitRescheduleFailure, trackData);
+      } else if (trackData) {
+        AnalyticsService.track(EventType.VisitCreatedFailure, trackData);
+      }
       this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
@@ -434,6 +458,7 @@ export class BookVisit extends Component<Props, IVisitState> {
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     isLoggedIn: UserSelector.isLoggedIn(state),
+    assetDetails: AssetSelectors.getAsset(state),
     visitDetail: AssetSelectors.getVisitById(state),
     visitIds: AssetSelectors.getVisitIds(state),
   };

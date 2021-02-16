@@ -5,6 +5,9 @@ export enum Filters {
   OCCUPIED = 'OCCUPIED',
   VACANT = 'VACANT',
   FOR_SALE = 'FOR_SALE',
+  FOR_RENT = 'FOR_RENT',
+  FOR__RENT = 'FOR RENT',
+  FOR__SALE = 'FOR SALE',
   RENEWAL = 'RENEWAL',
 }
 

@@ -128,10 +128,11 @@ class ManageTenantsScreen extends Component<Props, IScreenState> {
         isRightIcon
         icon={!isInviteAccepted ? icons.circularCheckFilled : undefined}
         imageSize={40}
-        rightIconColor={!isInviteAccepted ? theme.colors.green : undefined}
+        rightIconName={isInviteAccepted ? icons.close : undefined}
+        rightIconColor={isInviteAccepted ? theme.colors.error : theme.colors.green}
         onPressRightIcon={(): void => this.handleIconPress(item)}
         containerStyle={styles.avatar}
-        customDesignation={styles.designation}
+        customDesignation={isInviteAccepted ? undefined : styles.designation}
       />
     );
   };
@@ -147,12 +148,12 @@ class ManageTenantsScreen extends Component<Props, IScreenState> {
     if (isEmpty(selectedTenant)) return null;
     const { isInviteAccepted, leaseTransaction, id } = selectedTenant;
     const { assetStatusInfo } = assetDetail;
-    const isActive = assetStatusInfo && assetStatusInfo.action ? assetStatusInfo.action.label === 'Terminate' : false;
+    const isActive = assetStatusInfo && assetStatusInfo.action ? assetStatusInfo.action.label === 'TERMINATE' : false;
     return (
       <BottomSheet
         visible={isSheetVisible}
         headerTitle={isInviteAccepted ? t('property:removeTenant') : t('common:editInvite')}
-        sheetHeight={theme.viewport.height * (isInviteAccepted ? 0.5 : 0.75)}
+        sheetHeight={theme.viewport.height * (isInviteAccepted ? 0.55 : 0.75)}
       >
         {!isInviteAccepted ? (
           <EditTenantDetails
@@ -212,7 +213,7 @@ class ManageTenantsScreen extends Component<Props, IScreenState> {
     const { leaseTransaction, isInviteAccepted } = item;
     const { assetStatusInfo } = assetDetail;
     const date = leaseTransaction?.leaseEndDate;
-    const isActive = assetStatusInfo && assetStatusInfo.action ? assetStatusInfo.action.label === 'Terminate' : false;
+    const isActive = assetStatusInfo && assetStatusInfo.action ? assetStatusInfo.action.label === 'TERMINATE' : false;
     if (!isInviteAccepted || (isInviteAccepted && isActive)) {
       this.setState({
         selectedTenant: item,

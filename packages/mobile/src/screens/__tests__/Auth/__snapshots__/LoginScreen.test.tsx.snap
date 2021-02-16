@@ -20,7 +20,7 @@ exports[`Login Screen should render login screen 1`] = `
     }
   }
 >
-  <withI18nextTranslation(LoginForm)
+  <withI18nextTranslation(Connect(LoginForm))
     onLoginSuccess={[Function]}
     testID="loginForm"
   />

@@ -29,10 +29,11 @@ export interface IContactOwnerEvent {
   property_address: string;
 }
 
-export interface IPropertyOpenEvent {
+export interface IPropertyEvent {
+  project_name: string;
   property_address: string;
-  listing_type: ListingType;
   asset_group_type: string;
+  listing_type?: ListingType;
   price: number;
   bedroom?: number;
   bathroom?: number;
@@ -50,9 +51,26 @@ export interface ISearchEvent {
   error?: string;
 }
 
+export interface IReferEvent {
+  source: string;
+  code: string;
+}
+
+export interface IPropertyShareEvent extends IPropertyEvent {
+  source: string;
+}
+
+export interface IVisitEvent extends IPropertyEvent {
+  start_date: string;
+  end_date: string;
+}
+
 export type EventDataType =
   | IAuthenticationEvent
   | IAddPropertyEvent
   | IContactOwnerEvent
-  | IPropertyOpenEvent
-  | ISearchEvent;
+  | IPropertyEvent
+  | ISearchEvent
+  | IReferEvent
+  | IPropertyShareEvent
+  | IVisitEvent;

@@ -207,7 +207,8 @@
     "editInvite": "Edit Invite",
     "tenantDetailsAreUpdated": "Tenant Details are updated",
     "admin": "Admin",
-    "serverError": "We are having trouble connecting to our servers, please check back in some time"
+    "serverError": "We are having trouble connecting to our servers, please check back in some time",
+    "codeCopy": "Code copy"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -762,7 +763,7 @@
     "refWith": "Refer your friends with",
     "copiedCode": "Referral code copied to the clipboard",
     "clickCopy": "Click below to copy the code",
-    "copySharingUrl": "Copy sharing URL",
+    "copyUrl": "Copy URL",
     "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
     "shareDoc": "Hey, I have shared this document with you from the Homzhub app. Please use the link to download.",

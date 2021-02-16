@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -32,6 +32,14 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
+
+interface IUserInfo {
+  name: string;
+  icon?: string;
+  image?: string;
+  designation: string;
+  designationStyle?: TextStyle;
+}
 
 interface IListProps {
   assetData: Asset;
@@ -189,11 +197,11 @@ export class AssetCard extends Component<Props, IState> {
       id,
       assetStatusInfo: { leaseTenantInfo, leaseTransaction, action },
     } = assetData;
-    const isActive = action ? action.label === 'Terminate' : false;
+    const isActive = action ? action.label === 'TERMINATE' : false;
     return (
       <BottomSheet
         visible={isBottomSheetVisible}
-        sheetHeight={theme.viewport.height * 0.75}
+        sheetHeight={theme.viewport.height * 0.7}
         headerTitle={t('common:editInvite')}
         onCloseSheet={this.onCloseBottomSheet}
       >
@@ -233,15 +241,10 @@ export class AssetCard extends Component<Props, IState> {
 
     const isListed = leaseListingId || saleListingId;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
-    const icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
-    const name = isInviteAccepted ? userData.name : userData.email;
-    const image = isInviteAccepted ? userData.profilePicture : undefined;
-    const designation = isInviteAccepted
-      ? isFromTenancies
-        ? t('property:owner')
-        : t('property:tenant')
-      : t('common:invitationSent');
-    const designationStyle = isInviteAccepted ? undefined : styles.designation;
+    const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
+
+    const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
+
     return (
       <>
         {!!userData.fullName && (
@@ -250,11 +253,11 @@ export class AssetCard extends Component<Props, IState> {
             <Avatar
               isRightIcon={!isInviteAccepted}
               onPressRightIcon={this.onToggleBottomSheet}
-              icon={icon}
-              fullName={name}
-              image={image}
-              designation={designation}
-              customDesignation={designationStyle}
+              icon={userInfo.icon}
+              fullName={userInfo.name}
+              image={userInfo.image}
+              designation={userInfo.designation}
+              customDesignation={userInfo.designationStyle}
             />
           </>
         )}
@@ -264,19 +267,19 @@ export class AssetCard extends Component<Props, IState> {
             <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
           </>
         )}
-        {label === Filters.VACANT && assetCreation.percentage < 100 && (
+        {((isVacant && assetCreation.percentage < 100) || !isVacant) && (
           <>
             <Divider containerStyles={styles.divider} />
             <LeaseProgress
               progress={totalSpendPeriod || assetCreation.percentage / 100}
               fromDate={leaseStartDate}
               toDate={leaseEndDate}
-              isPropertyVacant={label === Filters.VACANT}
+              isPropertyVacant={isVacant}
               assetCreation={assetCreation}
             />
           </>
         )}
-        {label !== Filters.OCCUPIED && assetCreation.percentage < 100 && !action && (
+        {isVacant && assetCreation.percentage < 100 && !action && (
           <Button
             type="primary"
             textType="label"
@@ -328,7 +331,9 @@ export class AssetCard extends Component<Props, IState> {
   public onToggleBottomSheet = (): void => {
     const { isBottomSheetVisible } = this.state;
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
-    this.activeTenantList().then();
+    if (!isBottomSheetVisible) {
+      this.activeTenantList().then();
+    }
   };
 
   private onCompleteDetails = (): void => {
@@ -367,6 +372,31 @@ export class AssetCard extends Component<Props, IState> {
         });
       }
     }
+  };
+
+  private getFormattedInfo = (user: User, isInviteAccepted: boolean): IUserInfo => {
+    const { t, isFromTenancies = false } = this.props;
+    let icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
+    let name = isInviteAccepted ? user.name : user.email;
+    let image = isInviteAccepted ? user.profilePicture : undefined;
+    let designation = isInviteAccepted ? t('property:tenant') : t('common:invitationSent');
+    let designationStyle = isInviteAccepted ? undefined : styles.designation;
+
+    if (isFromTenancies) {
+      icon = undefined;
+      name = user.name;
+      image = user.profilePicture;
+      designation = t('property:owner');
+      designationStyle = undefined;
+    }
+
+    return {
+      name,
+      designation,
+      icon,
+      image,
+      designationStyle,
+    };
   };
 
   public activeTenantList = async (): Promise<void> => {

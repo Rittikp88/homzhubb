@@ -2,8 +2,12 @@ import React, { useCallback } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import Share from 'react-native-share';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import SharingService from '@homzhub/mobile/src/services/SharingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
@@ -13,6 +17,7 @@ import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface ISocialMediaProps {
   headerTitle: string;
@@ -34,8 +39,17 @@ const { Social } = Share;
 const SocialMediaShareComp = (props: ISocialMediaProps): React.ReactElement => {
   const { headerTitle, onCloseSharing, visible, sharingMessage, sharingUrl } = props;
   const { t } = useTranslation();
+  const assetData = useSelector(AssetSelectors.getAsset);
+
   const handleOnPress = (medium: Share.Social): void => {
-    SharingService.Share(medium, sharingMessage, sharingUrl);
+    SharingService.Share(medium, sharingMessage, sharingUrl).then();
+    if (assetData) {
+      const trackData = AnalyticsHelper.getPropertyTrackData(assetData);
+      AnalyticsService.track(EventType.PropertyShare, {
+        ...trackData,
+        source: medium,
+      });
+    }
     onCloseSharing();
   };
   const shareData: ISocialMedium[] = [
@@ -86,7 +100,7 @@ const SocialMediaShareComp = (props: ISocialMediaProps): React.ReactElement => {
     <BottomSheet
       headerTitle={headerTitle}
       onCloseSheet={onCloseSharing}
-      sheetHeight={theme.viewport.height / 2.5}
+      sheetHeight={theme.viewport.height / 2}
       visible={visible}
     >
       <>
@@ -97,7 +111,7 @@ const SocialMediaShareComp = (props: ISocialMediaProps): React.ReactElement => {
           keyExtractor={keyExtractor}
         />
         <Button
-          title={t('assetMore:copySharingUrl')}
+          title={t('assetMore:copyUrl')}
           type="text"
           onPress={onCopyToClipboard}
           testID="shareUrlCopy"

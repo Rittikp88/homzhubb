@@ -16,7 +16,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { OtpInputs, OtpTypes } from '@homzhub/common/src/components/molecules/OtpInputs';
+import { OtpInputs } from '@homzhub/common/src/components/molecules/OtpInputs';
 import { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
 import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
@@ -38,6 +38,7 @@ export enum OtpNavTypes {
   UpdateProfileByEmailPhoneOtp = 'UpdateProfileByEmailPhoneOtp',
   UpdateProfileByOtp = 'UpdateProfileByOtp',
 }
+
 interface IDispatchProps {
   login?: (payload: ILoginPayload) => void;
   loginSuccess?: (data: IUserTokens) => void;
@@ -54,24 +55,32 @@ interface IOtpProps {
 type IProps = IDispatchProps & IOtpProps;
 
 const OtpVerification: React.FC<IProps> = (props: IProps) => {
+  const history = useHistory<IOtpProps>();
+  const dispatch = useDispatch();
+
+  // TODO: Remove lint once errorState in use
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
+  const [errorState, toggleErrorState] = useState(true);
+  const [userOtp, setOtp] = useState('');
+
+  const { location } = history;
+  const styles = mobileVerificationStyle();
+
+  const {
+    state: { phoneCode, otpSentTo, type, userData, socialUserData },
+  } = location;
+
   useEffect(() => {
     fetchOtp().then();
   }, []);
-  const history = useHistory<IOtpProps>();
-  const { location } = history;
-  const {
-    state: { phoneCode, otpSentTo, type, userData, onCallback, socialUserData },
-  } = location;
-  const dispatch = useDispatch();
-  const styles = mobileVerificationStyle();
-  const [userOtp, setOtp] = useState('');
-  const handleOtpVerification = async (otp: string, otpType?: OtpTypes): Promise<void> => {
+
+  const handleOtpVerification = (otp: string): void => {
     setOtp(otp);
   };
-  const [errorState, toggleErrorState] = useState(true);
   const toggleError = (): void => {
     toggleErrorState(false);
   };
+
   const verifyOtp = async (): Promise<void> => {
     if (type === OtpNavTypes.Login) {
       loginOtp(userOtp ?? '');
@@ -90,9 +99,11 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
       toggleErrorState(true);
     }
   };
+
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
+
   const signUp = async (): Promise<void> => {
     if (!userData) {
       return;
@@ -136,6 +147,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
       AlertHelper.error({ message: e.message });
     }
   };
+
   const loginOtp = (otp: string): void => {
     const loginData: IOtpLoginPayload = {
       action: LoginTypes.OTP,
@@ -167,6 +179,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
       });
     }
   };
+
   return (
     <View style={styles.container}>
       <UserValidationScreensTemplate

@@ -13,4 +13,11 @@ export enum EventType {
   ZeroSearchResult = 'zero_search_result',
   AddListingSuccess = 'successfully_listing_added',
   AddListingFailure = 'listing_creation_unsuccessful',
+  VisitCreatedSuccess = 'successfully_visit_created',
+  VisitCreatedFailure = 'visit_creation_unsuccessful',
+  VisitRescheduleSuccess = 'successfully_reschedule_visit',
+  VisitRescheduleFailure = 'reschedule_visit_unsuccessful',
+  ClickSimilarProperty = 'click_similar_property',
+  PropertyShare = 'property_share',
+  Refer = 'refer',
 }
