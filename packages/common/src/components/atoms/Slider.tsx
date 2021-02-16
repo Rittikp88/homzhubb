@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, LayoutChangeEvent } from 'react-native';
 import MultiSlider, { MarkerProps, LabelProps } from '@ptomasroos/react-native-multi-slider';
+
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
@@ -40,24 +41,26 @@ export class Slider extends Component<ISliderProps, IOwnState> {
     if (maxSliderValue && maxSliderValue <= 0) {
       maxSliderValue = maxSliderRange;
     }
+
     return (
-      <MultiSlider
-        values={[minSliderValue, maxSliderValue]}
-        sliderLength={SLIDER_LENGTH}
-        onValuesChange={this.multiSliderValuesChange}
-        min={minSliderRange}
-        max={maxSliderRange}
-        step={maxSliderRange * 0.001}
-        snapped
-        enableLabel={isLabelRequired}
-        isMarkersSeparated
-        onValuesChangeFinish={onChangeFinish}
-        selectedStyle={styles.selectedStyle}
-        markerContainerStyle={styles.markerContainer}
-        customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
-        customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
-        containerStyle={styles.slider}
-      />
+      <View>
+        <MultiSlider
+          values={[minSliderValue, maxSliderValue]}
+          sliderLength={SLIDER_LENGTH}
+          onValuesChange={this.multiSliderValuesChange}
+          min={minSliderRange}
+          max={maxSliderRange}
+          step={maxSliderRange * 0.001}
+          snapped
+          enableLabel={isLabelRequired}
+          isMarkersSeparated
+          onValuesChangeFinish={onChangeFinish}
+          selectedStyle={styles.selectedStyle}
+          markerContainerStyle={styles.markerContainer}
+          customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
+          customMarkerRight={(e): React.ReactElement => this.customMarkerRight(e)}
+        />
+      </View>
     );
   };
 

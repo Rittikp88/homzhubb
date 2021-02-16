@@ -6,6 +6,8 @@ import { TFunction } from 'i18next';
 import * as yup from 'yup';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -22,6 +24,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export interface IFormData {
   [LeaseFormKeys.showMore]: boolean;
@@ -101,6 +104,8 @@ const LeaseTermForm = ({
   const { setFieldValue, setFieldTouched, values } = formProps;
   const dispatch = useDispatch();
   const maintenanceUnits = useSelector(RecordAssetSelectors.getMaintenanceUnits);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
 
   // CONSTANTS
   const PAID_BY_OPTIONS = [
@@ -116,6 +121,7 @@ const LeaseTermForm = ({
     minDate = DateUtils.getPreviousYearStartDate(5);
     dateLabel = t('common:startingFrom');
   }
+
   // CONSTANTS END
 
   // EFFECT
@@ -162,81 +168,134 @@ const LeaseTermForm = ({
       <AssetListingSection title={t('leaseTerms')}>
         <>
           {isFromManage && children}
-          <FormTextInput
-            inputType="number"
-            name={LeaseFormKeys.monthlyRent}
-            label={t('monthlyRent')}
-            placeholder={t('monthlyRentPlaceholder')}
-            maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
-            formProps={formProps}
-            inputPrefixText={currencyData.currencySymbol}
-            inputGroupSuffixText={currencyData.currencyCode}
-            isMandatory
-          />
-          <FormTextInput
-            inputType="number"
-            name={LeaseFormKeys.securityDeposit}
-            label={t('securityDeposit')}
-            placeholder={t('securityDepositPlaceholder')}
-            maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
-            formProps={formProps}
-            inputPrefixText={currencyData.currencySymbol}
-            inputGroupSuffixText={currencyData.currencyCode}
-            isMandatory
-          />
-          <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
-            {values.showMore ? t('showLess') : t('showMore')}
-          </Text>
-          {values.showMore && (
-            <FormTextInput
-              inputType="decimal"
-              name={LeaseFormKeys.annualIncrement}
-              label={t('annualIncrement')}
-              placeholder={t('annualIncrementPlaceholder')}
-              maxLength={4}
-              formProps={formProps}
-              inputGroupSuffixText={t('annualIncrementSuffix')}
-            />
+          {PlatformUtils.isWeb() && (
+            <Text type="small" textType="semiBold" style={styles.headerTitle}>
+              {t('rentAndSecurity')}
+            </Text>
           )}
+
+          <View style={PlatformUtils.isWeb() && !isMobile && styles.leaseTerms}>
+            <View
+              style={[
+                PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+                PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
+              ]}
+            >
+              <FormTextInput
+                inputType="number"
+                name={LeaseFormKeys.monthlyRent}
+                label={t('monthlyRent')}
+                placeholder={t('monthlyRentPlaceholder')}
+                maxLength={formProps.values.monthlyRent.includes('.') ? 13 : 12}
+                formProps={formProps}
+                inputPrefixText={currencyData.currencySymbol}
+                inputGroupSuffixText={currencyData.currencyCode}
+                isMandatory
+                containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
+              />
+            </View>
+
+            <View
+              style={[
+                PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+                PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
+              ]}
+            >
+              <FormTextInput
+                inputType="number"
+                name={LeaseFormKeys.securityDeposit}
+                label={t('securityDeposit')}
+                placeholder={t('securityDepositPlaceholder')}
+                maxLength={formProps.values.securityDeposit.includes('.') ? 13 : 12}
+                formProps={formProps}
+                inputPrefixText={currencyData.currencySymbol}
+                inputGroupSuffixText={currencyData.currencyCode}
+                isMandatory
+                containerStyle={PlatformUtils.isWeb() && !isMobile && styles.textInput}
+              />
+            </View>
+
+            {isMobile && (
+              <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
+                {values.showMore ? t('showLess') : t('showMore')}
+              </Text>
+            )}
+            {(!isMobile || (isMobile && values.showMore)) && (
+              <View
+                style={[
+                  PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+                  PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
+                ]}
+              >
+                <FormTextInput
+                  inputType="decimal"
+                  name={LeaseFormKeys.annualIncrement}
+                  label={t('annualIncrement')}
+                  placeholder={t('annualIncrementPlaceholder')}
+                  maxLength={4}
+                  formProps={formProps}
+                  inputGroupSuffixText={t('annualIncrementSuffix')}
+                  containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
+                />
+              </View>
+            )}
+          </View>
+
           <Text type="small" textType="semiBold" style={styles.headerTitle}>
             {t('duration')}
           </Text>
-          <FormCalendar
-            formProps={formProps}
-            label={dateLabel}
-            allowPastDates={isFromManage}
-            maxDate={maxDate}
-            minDate={minDate}
-            name={LeaseFormKeys.availableFrom}
-            textType="label"
-            textSize="regular"
-            isMandatory
-          />
-          <>
-            <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-              {t('minimumLeasePeriod')}
-            </Text>
-            <Slider
-              onSliderChange={onSliderChange}
-              minSliderRange={MINIMUM_LEASE_PERIOD}
-              maxSliderRange={MAXIMUM_LEASE_PERIOD}
-              minSliderValue={formProps.values[LeaseFormKeys.minimumLeasePeriod]}
-              isLabelRequired
-              labelText="Months"
+          <View
+            style={[
+              PlatformUtils.isWeb() && !isMobile && styles.textInput1,
+              PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
+            ]}
+          >
+            <FormCalendar
+              formProps={formProps}
+              label={dateLabel}
+              allowPastDates={isFromManage}
+              maxDate={maxDate}
+              minDate={minDate}
+              name={LeaseFormKeys.availableFrom}
+              textType="label"
+              textSize="regular"
+              isMandatory
+              containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
             />
-            <Text type="small" textType="semiBold" style={styles.sliderTitle}>
-              {t('maximumLeasePeriod')}
-            </Text>
-            <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
-              <Slider
-                onSliderChange={onTotalSliderChange}
-                minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
-                maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
-                minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
-                isLabelRequired
-                labelText="Months"
-              />
-            </WithFieldError>
+          </View>
+
+          <>
+            <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriod}>
+              <View>
+                <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+                  {t('minimumLeasePeriod')}
+                </Text>
+                <Slider
+                  onSliderChange={onSliderChange}
+                  minSliderRange={MINIMUM_LEASE_PERIOD}
+                  maxSliderRange={MAXIMUM_LEASE_PERIOD}
+                  minSliderValue={formProps.values[LeaseFormKeys.minimumLeasePeriod]}
+                  isLabelRequired
+                  labelText="Months"
+                />
+              </View>
+              <View style={PlatformUtils.isWeb() && !isMobile && !isTablet && styles.leasePeriodMax}>
+                <Text type="small" textType="semiBold" style={styles.sliderTitle}>
+                  {t('maximumLeasePeriod')}
+                </Text>
+                <WithFieldError error={formProps.errors[LeaseFormKeys.maximumLeasePeriod]}>
+                  <Slider
+                    onSliderChange={onTotalSliderChange}
+                    minSliderRange={MINIMUM_TOTAL_LEASE_PERIOD}
+                    maxSliderRange={MAXIMUM_TOTAL_LEASE_PERIOD}
+                    minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
+                    isLabelRequired
+                    labelText="Months"
+                  />
+                </WithFieldError>
+              </View>
+            </View>
+
             <Text type="small" textType="semiBold" style={styles.headerTitle}>
               {t('utilityBy')}
             </Text>
@@ -244,7 +303,7 @@ const LeaseTermForm = ({
               data={PAID_BY_OPTIONS}
               onItemSelect={onUtilityChanged}
               selectedItem={values[LeaseFormKeys.utilityBy]}
-              containerStyle={styles.buttonGroup}
+              containerStyle={[styles.buttonGroup, PlatformUtils.isWeb() && !isMobile && styles.buttonGroupWeb]}
             />
             <View
               pointerEvents={isSplitAsUnits ? 'none' : undefined}
@@ -257,7 +316,7 @@ const LeaseTermForm = ({
                 data={PAID_BY_OPTIONS}
                 onItemSelect={onMaintenanceChanged}
                 selectedItem={values.maintenanceBy}
-                containerStyle={styles.buttonGroup}
+                containerStyle={[styles.buttonGroup, PlatformUtils.isWeb() && !isMobile && styles.buttonGroupWeb]}
               />
             </View>
           </>
@@ -357,6 +416,9 @@ const styles = StyleSheet.create({
   buttonGroup: {
     marginTop: 14,
   },
+  buttonGroupWeb: {
+    width: 344,
+  },
   sliderTitle: {
     marginTop: 28,
     color: theme.colors.darkTint3,
@@ -370,5 +432,29 @@ const styles = StyleSheet.create({
   },
   paddingTop: {
     paddingTop: 0,
+  },
+  leaseTerms: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    display: 'flex',
+    flex: 1,
+  },
+  textInput: {
+    width: '100%',
+  },
+  textInput1: {
+    width: '31.5%',
+    margin: 10,
+  },
+  textInputTab1: {
+    width: '47.5%',
+    margin: 8,
+  },
+  leasePeriod: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  leasePeriodMax: {
+    left: 24,
   },
 });

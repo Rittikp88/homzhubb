@@ -13,7 +13,7 @@ interface IProps<T> {
   data: ISelectionPicker<T>[];
   selectedItem: T[];
   onValueChange: (selectedValue: T) => void;
-  itemWidth?: number;
+  itemWidth?: number | string;
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
 }
