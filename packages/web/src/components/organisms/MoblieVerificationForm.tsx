@@ -46,7 +46,6 @@ class MobileVerificationForm extends PureComponent<ILoginFormProps, IFormData> {
   public render(): React.ReactNode {
     const { t, buttonTitle } = this.props;
     const formData = { ...this.state };
-    console.log('called');
     return (
       <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
         <Formik
@@ -92,7 +91,6 @@ class MobileVerificationForm extends PureComponent<ILoginFormProps, IFormData> {
   };
 
   private handleWebView = (params: IWebProps): React.ReactElement => {
-    console.log('CALLED');
     return <PhoneCodePrefix {...params} />;
   };
 
@@ -101,7 +99,7 @@ class MobileVerificationForm extends PureComponent<ILoginFormProps, IFormData> {
     return (
       <FormTextInput
         name="phone"
-        label="Phone"
+        label={t('common:phone')}
         isMandatory
         inputType="phone"
         webGroupPrefix={this.handleWebView}

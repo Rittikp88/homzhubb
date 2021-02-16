@@ -17,6 +17,7 @@ import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePref
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { SocialMediaGateway } from '@homzhub/web/src/components/organisms/SocialMediaGateway';
 import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IEmailLoginPayload,
@@ -27,7 +28,6 @@ import {
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 
 interface IFormData {
   email: string;

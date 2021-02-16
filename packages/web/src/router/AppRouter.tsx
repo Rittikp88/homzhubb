@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Route, Switch } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import AppLayout from '@homzhub/web/src/screens/appLayout';
 import Login from '@homzhub/web/src/screens/login';
@@ -12,7 +13,6 @@ import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerificati
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
-import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 
 export const AppRouter = (): React.ReactElement => {
   const dispatch = useDispatch();

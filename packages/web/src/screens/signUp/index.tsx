@@ -17,10 +17,10 @@ import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetTo
 import { SignUpForm } from '@homzhub/common/src/components/organisms/SignUpForm';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
 
 interface IOwnProps {
   history: History;

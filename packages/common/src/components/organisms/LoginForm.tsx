@@ -1,19 +1,19 @@
 import React, { createRef, PureComponent, RefObject } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput, IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { ILoginFormData } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { connect } from 'react-redux';
-import { CommonSelectors } from '../../modules/common/selectors';
 
 interface ILoginFormProps extends WithTranslation {
   isEmailLogin?: boolean;
