@@ -16,6 +16,7 @@ jest.mock('react-native-progress', () => {});
 jest.mock('rn-fetch-blob', () => {});
 jest.mock('react-native-tab-view', () => {});
 jest.mock('mixpanel-react-native', () => {});
+jest.mock('react-native-device-info', () => {});
 jest.mock('reactjs-popup', () => {});
 jest.mock('@react-navigation/material-top-tabs', () => {
   return {
