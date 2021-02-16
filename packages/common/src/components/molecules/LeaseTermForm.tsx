@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -112,40 +112,6 @@ const LeaseTermForm = ({
     { title: t('owner'), value: PaidByTypes.OWNER },
     { title: t('tenant'), value: PaidByTypes.TENANT },
   ];
-  const leaseAndSecurityData = [{
-    inputType:"number",
-
-    name:LeaseFormKeys.monthlyRent,
-    label:t('monthlyRent'),
-    placeholder:t('monthlyRentPlaceholder'),
-    maxLength:formProps.values.monthlyRent.includes('.') ? 13 : 12,
-    inputPrefixText:currencyData.currencySymbol,
-    inputGroupSuffixText:currencyData.currencyCode,
-    isMandatory:true
-   },
-  {
-    inputType:"number",
-    name:LeaseFormKeys.securityDeposit,
-    label:t('securityDeposit'),
-    placeholder:t('securityDepositPlaceholder'),
-    maxLength:formProps.values.securityDeposit.includes('.') ? 13 : 12,
-    inputPrefixText:currencyData.currencySymbol,
-    inputGroupSuffixText:currencyData.currencyCode,
-    isMandatory:true
-
-  },
-  {
-    inputType:"decimal",
-    name:LeaseFormKeys.annualIncrement,
-    label:t('annualIncrement'),
-    placeholder:t('annualIncrementPlaceholder'),
-    maxLength:4,
-    inputPrefixText:'',
-    inputGroupSuffixText:t('annualIncrementSuffix'),
-    isMandatory:false
-  }];
-
-
 
   let dateLabel;
   let minDate;
@@ -196,7 +162,6 @@ const LeaseTermForm = ({
   }, []);
   // INTERACTION HANDLERS END
 
-  
   return (
     <>
       <AssetListingSection title={t('leaseTerms')}>
@@ -207,41 +172,12 @@ const LeaseTermForm = ({
               {t('rentAndSecurity')}
             </Text>
           )}
-       
+
           <View style={PlatformUtils.isWeb() && !isMobile && styles.leaseTerms}>
-          {isMobile && (
-              <Text type="small" textType="semiBold" style={styles.showMore} onPress={onShowMorePress}>
-                {values.showMore ? t('showLess') : t('showMore')}
-              </Text>
-            )}
-          {leaseAndSecurityData.map((item ,index)=>{
-          return(
             <View
-            style={[
-              PlatformUtils.isWeb() && !isMobile && styles.textInput1,
-              PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
-            ]}
-          >
-            <FormTextInput
-              inputType={item.inputType}
-              name={item.name}
-              label={item.label}
-              placeholder={item.placeholder}
-              maxLength={item.maxLength}
-              formProps={formProps}
-              inputPrefixText={item.inputPrefixText}
-              inputGroupSuffixText={item.inputGroupSuffixText}
-              isMandatory={item.isMandatory}
-              containerStyle={[PlatformUtils.isWeb() &&  styles.textInput]}
-            />
-          </View>
-         
-          )
-        })}
-            {/* <View
               style={[
                 PlatformUtils.isWeb() && !isMobile && styles.textInput1,
-                PlatformUtils.isWeb() && isTablet && styles.textInputTab1,
+                PlatformUtils.isWeb() && isTablet && !isMobile && styles.textInputTab1,
               ]}
             >
               <FormTextInput
@@ -257,7 +193,7 @@ const LeaseTermForm = ({
                 containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
               />
             </View>
-           
+
             <View
               style={[
                 PlatformUtils.isWeb() && !isMobile && styles.textInput1,
@@ -301,7 +237,7 @@ const LeaseTermForm = ({
                   containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
                 />
               </View>
-            )} */}
+            )}
           </View>
           <View
             style={[
@@ -322,10 +258,7 @@ const LeaseTermForm = ({
               textType="label"
               textSize="regular"
               isMandatory
-              containerStyle={[
-                PlatformUtils.isWeb() && !isMobile && styles.textInput,
-                //   PlatformUtils.isWeb() && !isMobile && isTablet && styles.textInputTab,
-              ]}
+              containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
             />
           </View>
 
