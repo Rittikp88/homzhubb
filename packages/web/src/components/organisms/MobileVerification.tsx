@@ -1,88 +1,109 @@
-import React from 'react';
-import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import React, { FC, useState, useEffect } from 'react';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { connect, useDispatch } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import { History } from 'history';
+import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { OtpInputs, OtpTypes } from '@homzhub/common/src/components/molecules/OtpInputs';
-import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
+import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
+import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ILoginFormData, ILoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
+import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
 
-enum OtpNavTypes {
-  Login = 'Login',
-  SignUp = 'SignUp',
-  SocialMedia = 'SocialMedia',
-  UpdateProfileByEmailPhoneOtp = 'UpdateProfileByEmailPhoneOtp',
-  UpdateProfileByOtp = 'UpdateProfileByOtp',
-} // todos Required for integration of diffrent type of signin flows
-const MobileVerification: React.FC = () => {
-  const styles = mobileVerificationStyle();
-  const handleOtpVerification = async (otp: string, otpType?: OtpTypes): Promise<void> => {
-    //   await verifyOtp(otp); //Required handler for primary field of verification form
-  };
-  const toggleError = FunctionUtils.noop;
-  const verifyOtp = FunctionUtils.noop;
-  const onIconPress = FunctionUtils.noop;
-  const onResendPress = FunctionUtils.noop;
-  const { t } = useTranslation();
-  const seconds = 5;
+interface IStateProps {
+  isLoading: boolean;
+}
+
+interface IDispatchProps {
+  login: (payload: ILoginPayload) => void;
+}
+
+interface IOwnProps {
+  history: History;
+  title: string;
+  subTitle: string;
+  buttonTitle: string;
+  underlineDesc: string;
+  socialUserData?: ISocialUserData;
+  isFromLogin?: boolean;
+}
+
+type IProps = IStateProps & IDispatchProps & IOwnProps;
+
+const MobileVerification: FC<IProps> = (props: IProps) => {
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
-  const isMobile = useOnly(deviceBreakpoint.MOBILE);
+  const isDesktop = useUp(deviceBreakpoint.DESKTOP);
+  const styles = formStyles(isMobile, isDesktop);
+  const { t } = useTranslation(LocaleConstants.namespacesKey.common);
+  const [isEmailLogin, setIsEmailLogin] = useState(false);
+  const { title, subTitle, buttonTitle, underlineDesc } = props;
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(CommonActions.getCountries());
+    dispatch(CommonActions.setDeviceCountry('IN'));
+  }, []);
+
+  const navigateToHomeScreen = (): void => {
+    NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
+  };
+  const backToLoginWithPhone = (): void => {
+    setIsEmailLogin(false);
+  };
+  const handleForgotPassword = (): void => {
+    // TODO: Add redirection logic for password reset.
+  };
+  const handleOtpLogin = (values: ILoginFormData): void => {
+    const { phone_code, phone_number } = values;
+    const compProps = {
+      phoneCode: phone_code,
+      otpSentTo: phone_number,
+      type: OtpNavTypes.Login,
+      onCallback: navigateToHomeScreen,
+    };
+    NavigationUtils.navigate(props.history, {
+      path: RouteNames.publicRoutes.OTP_VERIFICATION,
+      params: { ...compProps },
+    });
+  };
+  const handleWebView = (params: IWebProps): React.ReactElement => {
+    return <PhoneCodePrefix {...params} />;
+  };
   return (
     <View style={styles.container}>
       <UserValidationScreensTemplate
-        title={t('auth:verifyNumber')}
-        subTitle={t('auth:enterOtpWeb')}
-        hasBackButton
-        containerStyle={[
-          styles.formContainer,
-          isTablet && styles.formContainerTablet,
-          isMobile && styles.formContainerMobile,
-        ]}
+        title={title || t('login')}
+        subTitle={subTitle || t('auth:loginToAccessHomzhubPhone')}
+        containerStyle={[styles.containerStyle, isTablet && styles.containerStyleTablet]}
+        hasBackButton={isEmailLogin}
+        backButtonPressed={backToLoginWithPhone}
+        isUnderlineDesc
+        underlineDesc={underlineDesc}
       >
-        <View style={isMobile ? styles.mobileVerificationContainerMobile : styles.mobileVerificationContainer}>
-          <View style={styles.numberContainer}>
-            <Typography variant="text" size="small" fontWeight="semiBold">
-              9898989898
-            </Typography>
-            <Icon
-              name={icons.noteBook}
-              size={18}
-              color={theme.colors.active}
-              onPress={onIconPress}
-              style={styles.editIcon}
-              testID="icnEdit"
-            />
-          </View>
-          <View>
-            <OtpInputs bubbleOtp={handleOtpVerification} toggleError={toggleError} />
-          </View>
-          <View style={styles.resendTextContainer}>
-            <Typography variant="label" size="large" fontWeight="regular" style={styles.notReceiveOtpText}>
-              {`${t('auth:receiveOtp')} `}
-              {seconds > 0 ? (
-                <Typography variant="label" size="large" fontWeight="semiBold">
-                  {t('auth:resendIn', { sec: seconds })}
-                </Typography>
-              ) : (
-                <Typography
-                  variant="label"
-                  size="large"
-                  fontWeight="semiBold"
-                  style={styles.resendText}
-                  onPress={onResendPress}
-                >
-                  {t('auth:resend')}
-                </Typography>
-              )}
-            </Typography>
-          </View>
-          <Button type="primary" title={t('auth:signup')} containerStyle={[styles.signupButtonStyle]} />
+        <View style={styles.loginForm}>
+          <LoginForm
+            onLoginSuccess={handleOtpLogin}
+            handleForgotPassword={handleForgotPassword}
+            testID="loginFormWeb"
+            webGroupPrefix={handleWebView}
+            title={title}
+            subTitle={subTitle}
+            buttonTitle={buttonTitle}
+          />
         </View>
       </UserValidationScreensTemplate>
       <GetToKnowUsCarousel />
@@ -90,88 +111,80 @@ const MobileVerification: React.FC = () => {
   );
 };
 
-interface IVerificationStyle {
+interface IFormStyles {
   container: ViewStyle;
-  formContainer: ViewStyle;
-  carousalContainer: ViewStyle;
+  containerStyle: ViewStyle;
+  containerStyleTablet: ViewStyle;
+  loginForm: ViewStyle;
   logo: ViewStyle;
-  verifyText: TextStyle;
-  otpText: TextStyle;
-  numberContainer: ViewStyle;
-  editIcon: ViewStyle;
-  resendTextContainer: ViewStyle;
-  notReceiveOtpText: TextStyle;
-  resendText: TextStyle;
-  signupButtonStyle: ViewStyle;
-  formContainerMobile: ViewStyle;
-  formContainerTablet: ViewStyle;
-  mobileVerificationContainer: ViewStyle;
-  mobileVerificationContainerMobile: ViewStyle;
+  backButton: ViewStyle;
+  newUser: ViewStyle;
+  createAccount: ViewStyle;
+  socialMediaContainer: ViewStyle;
 }
 
-const mobileVerificationStyle = (): StyleSheet.NamedStyles<IVerificationStyle> =>
-  StyleSheet.create<IVerificationStyle>({
+const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyles<IFormStyles> =>
+  StyleSheet.create<IFormStyles>({
     container: {
+      flex: 1,
       flexDirection: 'row',
-      width: '100vw',
-      height: '100vh',
     },
-    mobileVerificationContainer: {
-      marginHorizontal: 'auto',
-      width: '55%',
+    containerStyle: {
+      backgroundColor: theme.colors.white,
+      width: '45%',
     },
-    mobileVerificationContainerMobile: {
-      width: '90%',
-    },
-    formContainer: {
-      width: '45vw',
-      alignItems: 'flex-start',
-    },
-    formContainerMobile: {
-      width: '100vw',
-      alignItems: 'center',
-      paddingHorizontal: 20,
-      paddingTop: '20%',
-    },
-    formContainerTablet: {
+    containerStyleTablet: {
       width: '100%',
       alignItems: undefined,
       paddingHorizontal: undefined,
       paddingTop: '20%',
     },
-    carousalContainer: {
-      width: '55vw',
-      backgroundColor: theme.colors.grey1,
+    socialMediaContainer: {
+      marginTop: 36,
+      alignSelf: 'center',
+      width: '50%',
+    },
+    loginForm: {
+      width: isMobile ? '90%' : '55%',
+      marginHorizontal: 'auto',
     },
     logo: {
-      marginBottom: '4%',
+      width: '100%',
+      left: 0,
     },
-    verifyText: {
-      marginTop: '2%',
+    backButton: {
+      left: 0,
+      marginBottom: 25,
+      marginTop: 50,
+      borderWidth: 0,
+      width: 'fit-content',
     },
-    otpText: {
-      color: theme.colors.darkTint3,
-    },
-    numberContainer: {
+    newUser: {
       flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: '2%',
+      top: 30,
     },
-    editIcon: {
-      marginLeft: '1%',
-    },
-    resendTextContainer: {
-      flexDirection: 'row',
-      marginTop: '2%',
-    },
-    notReceiveOtpText: {
-      color: theme.colors.darkTint4,
-    },
-    resendText: {
-      color: theme.colors.active,
-    },
-    signupButtonStyle: {
-      marginTop: '7%',
+    createAccount: {
+      color: theme.colors.primaryColor,
     },
   });
-export default MobileVerification;
+
+export const mapStateToProps = (state: IState): IStateProps => {
+  return {
+    isLoading: UserSelector.getLoadingState(state),
+  };
+};
+
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { login } = UserActions;
+  return bindActionCreators(
+    {
+      login,
+    },
+    dispatch
+  );
+};
+
+export default connect<IStateProps, IDispatchProps, {}, IState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(MobileVerification);

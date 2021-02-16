@@ -17,6 +17,7 @@ import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetTo
 import { SignUpForm } from '@homzhub/common/src/components/organisms/SignUpForm';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -59,7 +60,25 @@ const SignUp: FC<IProps> = (props: IProps) => {
           return;
         }
       }
-
+      const userData = {
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        email: formData.email,
+        phone_code: formData.phone_code,
+        phone_number: formData.phone_number,
+        password: formData.password,
+        signup_referral_code: formData.signup_referral_code,
+      };
+      const compProps = {
+        phoneCode: formData.phone_code,
+        otpSentTo: formData.phone_number,
+        type: OtpNavTypes.SignUp,
+        userData,
+      };
+      NavigationUtils.navigate(props.history, {
+        path: RouteNames.publicRoutes.OTP_VERIFICATION,
+        params: { ...compProps },
+      });
       // TODO: ONCE THE DATA IS VALIDATED NAVIGATE TO OTP SCREEN
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });

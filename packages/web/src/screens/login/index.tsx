@@ -12,9 +12,12 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
+import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { SocialMediaGateway } from '@homzhub/web/src/components/organisms/SocialMediaGateway';
 import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IEmailLoginPayload,
@@ -46,13 +49,13 @@ interface IOwnProps {
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const Login: FC<IProps> = (props: IProps) => {
+  const { history } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const [isEmailLogin, setIsEmailLogin] = useState(false);
-
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
@@ -87,10 +90,22 @@ const Login: FC<IProps> = (props: IProps) => {
     // TODO: Add redirection logic for password reset.
   };
   const handleOtpLogin = (values: ILoginFormData): void => {
-    // TODO : Navigation to OTP
+    const { phone_code, phone_number } = values;
+    const compProps = {
+      phoneCode: phone_code,
+      otpSentTo: phone_number,
+      type: OtpNavTypes.Login,
+    };
+    NavigationUtils.navigate(props.history, {
+      path: RouteNames.publicRoutes.OTP_VERIFICATION,
+      params: { ...compProps },
+    });
   };
   const handleNavigationToSignup = (): void => {
     // TODO : Navigation to signup page
+  };
+  const handleWebView = (params: IWebProps): React.ReactElement => {
+    return <PhoneCodePrefix {...params} />;
   };
   return (
     <View style={styles.container}>
@@ -111,9 +126,11 @@ const Login: FC<IProps> = (props: IProps) => {
             />
           ) : (
             <LoginForm
+              isEmailLogin={false}
               onLoginSuccess={handleOtpLogin}
               handleForgotPassword={handleForgotPassword}
               testID="loginFormWeb"
+              webGroupPrefix={handleWebView}
             />
           )}
           <View style={styles.newUser}>
@@ -132,12 +149,13 @@ const Login: FC<IProps> = (props: IProps) => {
           </View>
         </View>
         {isEmailLogin ? (
-          <SocialMediaGateway isFromLogin containerStyle={styles.socialMediaContainer} />
+          <SocialMediaGateway isFromLogin containerStyle={styles.socialMediaContainer} history={history} />
         ) : (
           <SocialMediaGateway
             onEmailLogin={handleEmailLogin}
             isFromLogin
             containerStyle={styles.socialMediaContainer}
+            history={history}
           />
         )}
       </UserValidationScreensTemplate>
