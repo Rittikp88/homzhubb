@@ -106,7 +106,6 @@ const LeaseTermForm = ({
   const maintenanceUnits = useSelector(RecordAssetSelectors.getMaintenanceUnits);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
-
   // CONSTANTS
   const PAID_BY_OPTIONS = [
     { title: t('owner'), value: PaidByTypes.OWNER },
@@ -320,40 +319,50 @@ const LeaseTermForm = ({
               />
             </View>
           </>
-          {values.maintenanceBy === PaidByTypes.TENANT && (
-            <MaintenanceDetails
-              formProps={formProps}
-              currencyData={currencyData}
-              assetGroupType={assetGroupType}
-              maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
-              maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
-              maintenanceUnitKey={LeaseFormKeys.maintenanceUnit}
-            />
-          )}
-          {assetGroupType === AssetGroupTypes.COM && (
-            <FormTextInput
-              inputType="number"
-              name={LeaseFormKeys.rentFreePeriod}
-              label={t('rentFreePeriod')}
-              placeholder={t('common:enter')}
-              maxLength={2}
-              formProps={formProps}
-              inputGroupSuffixText={t('common:days')}
-            />
-          )}
+          <View style={PlatformUtils.isWeb && !isMobile && styles.maintenanceStyle}>
+            {values.maintenanceBy === PaidByTypes.TENANT && (
+              <View style={PlatformUtils.isWeb && !isMobile && styles.maintenanceDetails}>
+                <MaintenanceDetails
+                  formProps={formProps}
+                  currencyData={currencyData}
+                  assetGroupType={assetGroupType}
+                  maintenanceAmountKey={LeaseFormKeys.maintenanceAmount}
+                  maintenanceScheduleKey={LeaseFormKeys.maintenanceSchedule}
+                  maintenanceUnitKey={LeaseFormKeys.maintenanceUnit}
+                />
+              </View>
+            )}
+            {assetGroupType === AssetGroupTypes.COM && (
+              <View
+                style={[
+                  PlatformUtils.isWeb && !isMobile && styles.rentFreeStyle,
+                  PlatformUtils.isWeb && !isMobile && isTablet && styles.rentFreeStyleTab,
+                ]}
+              >
+                <FormTextInput
+                  inputType="number"
+                  name={LeaseFormKeys.rentFreePeriod}
+                  label={t('rentFreePeriod')}
+                  placeholder={t('common:enter')}
+                  maxLength={2}
+                  formProps={formProps}
+                  inputGroupSuffixText={t('common:days')}
+                  containerStyle={[PlatformUtils.isWeb() && !isMobile && styles.textInput]}
+                />
+              </View>
+            )}
+          </View>
         </>
       </AssetListingSection>
       {!isFromManage && children}
-      <AssetListingSection
-        title={t('assetDescription:description')}
-        containerStyles={styles.descriptionContainer}
-        contentContainerStyles={styles.paddingTop}
-      >
+      <AssetListingSection title={t('assetDescription:description')} contentContainerStyles={styles.paddingTop}>
         <TextArea
           value={formProps.values[LeaseFormKeys.description]}
           wordCountLimit={MAX_DESCRIPTION_LENGTH}
           placeholder={isFromManage ? t('property:manageFlowFormDescription') : t('property:rentFlowFormDescription')}
           onMessageChange={onDescriptionChange}
+          containerStyle={styles.descriptionContainer}
+          inputContainerStyle={PlatformUtils.isWeb() && styles.textAreaStyle}
         />
       </AssetListingSection>
     </>
@@ -455,6 +464,23 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   leasePeriodMax: {
-    left: 24,
+    left: 30,
+  },
+  textAreaStyle: {
+    height: 200,
+  },
+  maintenanceStyle: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  rentFreeStyle: {
+    top: 4,
+    width: '31.5%',
+  },
+  rentFreeStyleTab: {
+    width: '45%',
+  },
+  maintenanceDetails: {
+    paddingRight: 15,
   },
 });
