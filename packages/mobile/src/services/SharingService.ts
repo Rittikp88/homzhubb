@@ -116,6 +116,8 @@ class SharingService {
         return 'mailto://';
       case Share.Social.TWITTER:
         return 'twitter://user?';
+      case Share.Social.FACEBOOK:
+        return 'fb://';
       default:
         return `${social}://`;
     }

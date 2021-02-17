@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { History } from 'history';
-import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -51,7 +51,7 @@ type IProps = IStateProps & IDispatchProps & IOwnProps;
 const Login: FC<IProps> = (props: IProps) => {
   const { history } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const isTablet = useOnly(deviceBreakpoint.TABLET);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
@@ -95,14 +95,16 @@ const Login: FC<IProps> = (props: IProps) => {
       phoneCode: phone_code,
       otpSentTo: phone_number,
       type: OtpNavTypes.Login,
+      buttonTitle: t('common:login'),
+      navigationPath: RouteNames.publicRoutes.LOGIN,
     };
     NavigationUtils.navigate(props.history, {
       path: RouteNames.publicRoutes.OTP_VERIFICATION,
       params: { ...compProps },
     });
   };
-  const handleNavigationToSignup = (): void => {
-    // TODO : Navigation to signup page
+  const navigateToScreen = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.SIGNUP });
   };
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
@@ -137,15 +139,11 @@ const Login: FC<IProps> = (props: IProps) => {
             <Typography variant="label" size="large">
               {t('auth:newOnPlatform')}
             </Typography>
-            <Typography
-              variant="label"
-              size="large"
-              fontWeight="semiBold"
-              onPress={handleNavigationToSignup}
-              style={styles.createAccount}
-            >
-              {t('auth:createAccout')}
-            </Typography>
+            <TouchableOpacity onPress={navigateToScreen}>
+              <Typography variant="label" size="large" fontWeight="semiBold" style={styles.createAccount}>
+                {t('auth:createAccount')}
+              </Typography>
+            </TouchableOpacity>
           </View>
         </View>
         {isEmailLogin ? (
@@ -181,6 +179,7 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
     container: {
       flex: 1,
       flexDirection: 'row',
+      minHeight: '100vh',
     },
     containerStyle: {
       backgroundColor: theme.colors.white,
@@ -192,7 +191,7 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
     socialMediaContainer: {
       marginTop: 36,
       alignSelf: 'center',
-      width: '50%',
+      width: isMobile ? '100%' : '50%',
     },
     loginForm: {
       width: isMobile ? '90%' : '55%',

@@ -206,7 +206,8 @@
     "update": "Update",
     "editInvite": "Edit Invite",
     "tenantDetailsAreUpdated": "Tenant Details are updated",
-    "admin": "Admin"
+    "admin": "Admin",
+    "serverError": "We are having trouble connecting to our servers, please check back in some time"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -527,7 +528,8 @@
     "noPropertyReview": "This property has not been reviewed yet",
     "inValidVisit": "This listing has been removed by the property owner.",
     "youHaveAlreadyReportedThisCommentOn": "You have already reported this comment on",
-    "tenantRemoveDate": "This tenant will be removed from the lease on {{date}}"
+    "tenantRemoveDate": "This tenant will be removed from the lease on {{date}}",
+    "reportStatus": "Report status"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

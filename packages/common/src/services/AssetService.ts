@@ -1,6 +1,7 @@
 import { cloneDeep, groupBy, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { IFormData, LeaseFormKeys } from '@homzhub/common/src/components/molecules/LeaseTermForm';
@@ -206,8 +207,9 @@ class AssetService {
         expected_move_in_date,
       };
     }
-    // TODO: Add Device Id
+
     return {
+      device_id: DeviceUtils.getDeviceId(),
       device_type: DeviceType.MOBILE,
       results_count: count,
       currency: currency_code,

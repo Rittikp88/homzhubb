@@ -1,5 +1,7 @@
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
-import { ISearchEvent, ListingType } from '@homzhub/common/src/services/Analytics/interfaces';
+import { IPropertyEvent, ISearchEvent, ListingType } from '@homzhub/common/src/services/Analytics/interfaces';
+import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 
 class AnalyticsHelper {
   public getSearchTrackData = (filter: IFilter): ISearchEvent => {
@@ -28,6 +30,38 @@ class AnalyticsHelper {
       ...((minArea > 0 || maxArea > 0) && { price_range: `${minArea} - ${maxArea}` }),
       ...(bath_count && bath_count > 0 && { bathroom: bath_count }),
       ...(room_count && room_count[0] > 0 && { bathroom: room_count[0] }),
+    };
+  };
+
+  public getPropertyTrackData = (details: Asset): IPropertyEvent => {
+    const { projectName, address, assetGroup, leaseTerm, saleTerm, carpetArea, spaces } = details;
+    const price = leaseTerm?.expectedPrice ?? Number(saleTerm?.expectedPrice);
+
+    let space = {
+      ...(carpetArea && { area: carpetArea }),
+    };
+    spaces.forEach((item) => {
+      if (item.name === SpaceAvailableTypes.BEDROOM) {
+        space = {
+          ...space,
+          bedroom: item.count,
+        };
+      }
+      if (item.name === SpaceAvailableTypes.BATHROOM) {
+        space = {
+          ...space,
+          bathroom: item.count,
+        };
+      }
+    });
+
+    return {
+      project_name: projectName,
+      property_address: address,
+      asset_group_type: assetGroup.name,
+      listing_type: leaseTerm ? ListingType.RENT : ListingType.SELL,
+      price,
+      ...space,
     };
   };
 }

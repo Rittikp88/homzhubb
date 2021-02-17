@@ -245,7 +245,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
         },
         data: {
           cancel_reason: reasonId,
-          cancel_date: DateUtils.getCurrentDateISO(),
+          cancel_date: DateUtils.getCurrentDateISO(), // TODO: Remove
           ...(description && { cancel_description: description }),
         },
       };

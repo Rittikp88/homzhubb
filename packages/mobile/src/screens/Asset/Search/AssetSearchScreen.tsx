@@ -6,6 +6,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -35,16 +36,14 @@ import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResult
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
 import PropertySearchMap from '@homzhub/mobile/src/components/organisms/PropertySearchMap';
-import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
-import { ListingType } from '@homzhub/common/src/services/Analytics/interfaces';
-import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export enum OnScreenFilters {
   TYPE = 'TYPE',
@@ -669,42 +668,11 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
   public navigateToAssetDetails = (asset: Asset): void => {
     const { navigation } = this.props;
-    const {
-      address,
-      leaseTerm,
-      saleTerm,
-      id,
-      spaces,
-      assetGroup: { name },
-      carpetArea,
-    } = asset;
+    const { leaseTerm, saleTerm, id } = asset;
 
     // For Analytics
-    let space = {
-      ...(carpetArea && { area: carpetArea }),
-    };
-    spaces.forEach((item) => {
-      if (item.name === SpaceAvailableTypes.BEDROOM) {
-        space = {
-          ...space,
-          bedroom: item.count,
-        };
-      }
-      if (item.name === SpaceAvailableTypes.BATHROOM) {
-        space = {
-          ...space,
-          bathroom: item.count,
-        };
-      }
-    });
-
-    AnalyticsService.track(EventType.SearchPropertyOpen, {
-      property_address: address,
-      asset_group_type: name,
-      listing_type: leaseTerm ? ListingType.RENT : ListingType.SELL,
-      price: leaseTerm ? leaseTerm.expectedPrice : Number(saleTerm?.expectedPrice) ?? 0,
-      ...space,
-    });
+    const trackData = AnalyticsHelper.getPropertyTrackData(asset);
+    AnalyticsService.track(EventType.SearchPropertyOpen, trackData);
 
     // For Navigation
     navigation.navigate(ScreensKeys.PropertyAssetDescription, {

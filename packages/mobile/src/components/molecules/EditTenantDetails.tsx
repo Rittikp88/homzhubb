@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -140,11 +141,11 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
         <Text type="small" textType="regular">
           {t('property:tenantDetails')}
         </Text>
-        <Formik onSubmit={onSubmit} initialValues={{ ...userDetails }} enableReinitialize>
-          {(formProps: FormikProps<IFormData>): React.ReactNode => {
-            return (
-              <>
-                <ScrollView>
+        <KeyboardAwareScrollView>
+          <Formik onSubmit={onSubmit} initialValues={{ ...userDetails }} enableReinitialize>
+            {(formProps: FormikProps<IFormData>): React.ReactNode => {
+              return (
+                <>
                   <View style={styles.contentView}>
                     <View style={styles.subContentView}>
                       <FormTextInput
@@ -194,11 +195,11 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
                     title={t('common:update')}
                     containerStyle={styles.buttonStyle}
                   />
-                </ScrollView>
-              </>
-            );
-          }}
-        </Formik>
+                </>
+              );
+            }}
+          </Formik>
+        </KeyboardAwareScrollView>
       </View>
       <Loader visible={isLoading} />
     </>

@@ -1,21 +1,23 @@
-import React, { useRef, useCallback, useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Share } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-community/clipboard';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import ReferEarnIcon from '@homzhub/common/src/assets/images/referEarn.svg';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 type Props = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ReferEarn>;
 
@@ -43,6 +45,7 @@ const ReferEarn = (props: Props): React.ReactElement => {
   const onCopyToClipboard = useCallback((): void => {
     Clipboard.setString(code);
     AlertHelper.info({ message: t('copiedCode') });
+    trackEvent(t('common:codeCopy'));
   }, [code, t]);
 
   const onShare = useCallback(async (): Promise<void> => {
@@ -50,16 +53,26 @@ const ReferEarn = (props: Props): React.ReactElement => {
   }, []);
 
   const onMail = useCallback(async (): Promise<void> => {
+    trackEvent(t('common:mail'));
     await LinkingService.openEmail({ body: url.current, subject: t('shareHomzhubSubject') });
   }, [t]);
 
   const onSms = useCallback(async (): Promise<void> => {
+    trackEvent(t('common:sms'));
     await LinkingService.openSMS({ message: url.current });
   }, []);
 
   const onWhatsapp = useCallback(async (): Promise<void> => {
+    trackEvent(t('common:whatsapp'));
     await LinkingService.openWhatsapp(url.current);
   }, []);
+
+  const trackEvent = (source: string): void => {
+    AnalyticsService.track(EventType.Refer, {
+      source,
+      code,
+    });
+  };
 
   const data = useRef([
     {

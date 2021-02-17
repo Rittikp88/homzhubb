@@ -131,7 +131,8 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
     },
     containerStyle: {
       backgroundColor: theme.colors.white,
-      width: '45%',
+      width: isDesktop ? '45%' : '90%',
+      marginHorizontal: 'auto',
     },
     containerStyleTablet: {
       width: '100%',

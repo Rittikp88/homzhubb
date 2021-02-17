@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { CommonActions } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
@@ -705,7 +706,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     setSelectedPlan({ id: 1, selectedPlan });
     getAssetById();
     navigation.navigate(ScreensKeys.PropertyPostStack, {
-      screen: ScreensKeys.AssetLeaseListing,
+      screen: ScreensKeys.AssetListing,
       params: {
         previousScreen: ScreensKeys.PropertyAssetDescription,
         isEditFlow: true,
@@ -808,7 +809,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   public loadSimilarProperty = (propertyTermId: number, propertyId: number): void => {
-    const { navigation } = this.props;
+    const { navigation, assetDetails } = this.props;
+
+    if (assetDetails) {
+      const data = AnalyticsHelper.getPropertyTrackData(assetDetails);
+      AnalyticsService.track(EventType.ClickSimilarProperty, data);
+    }
     navigation.navigate(ScreensKeys.PropertyAssetDescription, {
       propertyTermId,
       propertyId,

@@ -108,7 +108,7 @@ const ENDPOINTS = {
     `listing-reviews/${reviewId}/comments/${commentId}/`,
   listingReviewsSummary: 'listing-reviews/summary/',
   updateTenant: (param: IUpdateTenantParam): string =>
-    `assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}`,
+    `assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}/`,
 };
 
 class AssetRepository {
