@@ -20,16 +20,6 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
       }
     }
   >
-    <Image
-      source=""
-      style={
-        Object {
-          "borderRadius": 2,
-          "height": 24,
-          "width": 24,
-        }
-      }
-    />
     <Typography
       fontWeight="semiBold"
       numberOfLines={1}

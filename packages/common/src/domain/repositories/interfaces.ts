@@ -613,7 +613,6 @@ export interface ICancelListingPayload {
   param: ICancelListingParam;
   data: {
     cancel_reason: number;
-    cancel_date: string;
     cancel_description?: string;
   };
 }

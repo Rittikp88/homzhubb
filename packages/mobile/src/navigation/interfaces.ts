@@ -254,5 +254,5 @@ export interface IServicesForSelectAssetParams {
   assetType: string;
   projectName: string;
   address: string;
-  flag: string;
+  flag: React.ReactElement;
 }

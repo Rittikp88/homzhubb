@@ -1,7 +1,6 @@
 import React, { PureComponent, createRef, RefObject } from 'react';
 import {
   View,
-  Image,
   Text,
   TextInput as RNTextInput,
   TouchableOpacity,
@@ -42,7 +41,7 @@ interface IDispatchProps {
 
 export interface IWebProps {
   fetchPhoneCodes: () => void;
-  fetchFlag: () => string;
+  fetchFlag: () => React.ReactElement | null;
   inputPrefixText: string;
   phoneCodes: IDropdownOption[];
   isBottomSheetVisible: boolean;
@@ -213,8 +212,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
         if (inputPrefixText.length > 0) {
           inputGroupPrefix = PlatformUtils.isMobile() ? (
             <TouchableOpacity style={styles.inputGroupPrefix} onPress={this.fetchPhoneCodes}>
-              {/** @ts-ignore * */}
-              <Image source={this.fetchFlag()} style={styles.flagStyle} />
+              {this.fetchFlag()}
               <Label type="regular" style={styles.inputPrefixText}>
                 {inputPrefixText}
               </Label>
@@ -329,14 +327,14 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
-  private fetchFlag = (): string => {
+  private fetchFlag = (): React.ReactElement | null => {
     const { formProps, countries, phoneCodeKey = PHONE_CODE } = this.props;
     for (let i = 0; i < countries.length; i++) {
       if (countries[i].phoneCodes[0].phoneCode.includes(formProps.values[phoneCodeKey])) {
         return countries[i].flag;
       }
     }
-    return '';
+    return null;
   };
 
   private fetchPhoneLength = (isMax?: boolean): number => {
@@ -474,6 +472,7 @@ const styles = StyleSheet.create({
   },
   inputPrefixText: {
     color: theme.colors.darkTint4,
+    marginStart: 8,
   },
   inputGroupSuffix: {
     position: 'absolute',
