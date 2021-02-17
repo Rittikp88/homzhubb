@@ -206,7 +206,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
-      <View style={[styles.tabHeader, PlatformUtils.isWeb() && isMobile && styles.tabHeaderMobile]}>
+      <View style={[styles.tabHeader, isMobile && styles.tabHeaderMobile]}>
         <View
           style={[
             PlatformUtils.isWeb() && isMobile && styles.switchTabContainer,
