@@ -140,6 +140,9 @@ class SocialMediaGateway extends React.PureComponent<IProps, IState> {
       },
       (tokens) => {
         loginSuccess(tokens);
+        NavigationUtils.navigate(history, {
+          path: RouteNames.protectedRoutes.DASHBOARD,
+        });
       }
     ).then();
   };
