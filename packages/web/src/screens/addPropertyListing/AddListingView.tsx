@@ -513,8 +513,8 @@ const styles = StyleSheet.create({
   },
   tabHeader: {
     paddingVertical: 16,
-    flexDirection: 'row-reverse',
-    flexWrap: 'wrap',
+    // flexDirection: 'row-reverse',
+    // flexWrap: 'wrap',
   },
   switchTab: {
     marginBottom: 4,
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginRight: 'auto',
+    // marginRight: 'auto',
   },
   tabRowsMobile: {
     marginTop: '6%',

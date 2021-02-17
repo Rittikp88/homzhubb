@@ -58,7 +58,7 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
               </Text>
               {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
                 <>
-                  {PlatformUtils.isWeb() ? <Selfie /> : <Selfie style={styles.selfie} />}
+                  {PlatformUtils.isWeb() ? <View style={styles.webSelfie}><Selfie  /></View> : <Selfie style={styles.selfie} />}
                   {selfieInstruction.map((instruction, i) => {
                     return (
                       <Label type="regular" textType="regular" style={styles.instruction} key={i}>
@@ -150,7 +150,7 @@ export default withMediaQuery<any>(VerificationTypes);
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
     marginTop: 4,
     backgroundColor: theme.colors.white,
   },
@@ -163,6 +163,7 @@ const styles = StyleSheet.create({
   },
   mobileUploadBox: {
     width: PlatformUtils.isWeb() ? 305 : 'auto',
+    paddingHorizontal: PlatformUtils.isWeb()? 8 : 16
   },
   title: {
     color: theme.colors.darkTint4,
@@ -204,4 +205,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 12,
   },
+  webSelfie:{
+    marginLeft:70,
+    marginTop:20
+  }
 });
