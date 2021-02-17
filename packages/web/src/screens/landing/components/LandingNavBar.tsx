@@ -1,7 +1,9 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { LinkingService, URLs } from '@homzhub/web/src/services/LinkingService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -17,6 +19,7 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const LandingNavBar: FC = () => {
+  const history = useHistory();
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
@@ -28,6 +31,9 @@ const LandingNavBar: FC = () => {
   };
   const onMenuOpen = (): void => {
     setIsMenuOpen(true);
+  };
+  const navigateToScreen = (path: string): void => {
+    NavigationUtils.navigate(history, { path });
   };
   return (
     <>
@@ -42,8 +48,19 @@ const LandingNavBar: FC = () => {
             </View>
             {isLaptop ? (
               <View style={styles.subContainer}>
-                <Button disabled={isReleaseMode} type="text" fontType="regular" title={t('login')} />
-                <Button disabled={isReleaseMode} type="primary" title={t('signUp')} />
+                <Button
+                  disabled={isReleaseMode}
+                  type="text"
+                  fontType="regular"
+                  title={t('login')}
+                  onPress={(): void => navigateToScreen(RouteNames.publicRoutes.LOGIN)}
+                />
+                <Button
+                  disabled={isReleaseMode}
+                  type="primary"
+                  title={t('signUp')}
+                  onPress={(): void => navigateToScreen(RouteNames.publicRoutes.SIGNUP)}
+                />
               </View>
             ) : (
               <Button

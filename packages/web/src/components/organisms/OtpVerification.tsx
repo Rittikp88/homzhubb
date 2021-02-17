@@ -3,7 +3,6 @@ import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -51,23 +50,21 @@ interface IOtpProps {
   userData?: ISignUpPayload | undefined;
   onCallback?: (() => void) | undefined;
   socialUserData?: ISocialUserData | undefined;
+  buttonTitle?: string;
+  navigationPath?: string;
 }
 type IProps = IDispatchProps & IOtpProps;
 
 const OtpVerification: React.FC<IProps> = (props: IProps) => {
   const history = useHistory<IOtpProps>();
   const dispatch = useDispatch();
-
-  // TODO: Remove lint once errorState in use
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
   const [errorState, toggleErrorState] = useState(true);
   const [userOtp, setOtp] = useState('');
-
   const { location } = history;
   const styles = mobileVerificationStyle();
 
   const {
-    state: { phoneCode, otpSentTo, type, userData, socialUserData },
+    state: { phoneCode, otpSentTo, type, userData, socialUserData, buttonTitle, navigationPath },
   } = location;
 
   useEffect(() => {
@@ -78,7 +75,9 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
     setOtp(otp);
   };
   const toggleError = (): void => {
-    toggleErrorState(false);
+    if (errorState) {
+      toggleErrorState(false);
+    }
   };
 
   const verifyOtp = async (): Promise<void> => {
@@ -164,8 +163,10 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
     dispatch(UserActions.login(loginPayload));
   };
 
-  const onIconPress = FunctionUtils.noop;
-  const onResendPress = FunctionUtils.noop;
+  const onIconPress = (): void => {
+    if (navigationPath) NavigationUtils.navigate(history, { path: navigationPath });
+    else history.goBack();
+  };
   const { t } = useTranslation();
   const seconds = 5;
   const isTablet = useOnly(deviceBreakpoint.TABLET);
@@ -191,6 +192,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
           isTablet && styles.formContainerTablet,
           isMobile && styles.formContainerMobile,
         ]}
+        navigationPath={type === OtpNavTypes.Login ? RouteNames.publicRoutes.LOGIN : RouteNames.publicRoutes.SIGNUP}
       >
         <View style={isMobile ? styles.mobileVerificationContainerMobile : styles.mobileVerificationContainer}>
           <View style={styles.numberContainer}>
@@ -220,7 +222,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
                   size="large"
                   fontWeight="semiBold"
                   style={styles.resendText}
-                  onPress={onResendPress}
+                  onPress={fetchOtp}
                 >
                   {t('auth:resend')}
                 </Typography>
@@ -229,7 +231,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
           </View>
           <Button
             type="primary"
-            title={t('auth:signup')}
+            title={buttonTitle || t('common:login')}
             containerStyle={[styles.signupButtonStyle]}
             onPress={verifyOtp}
           />
@@ -272,6 +274,7 @@ const mobileVerificationStyle = (): StyleSheet.NamedStyles<IVerificationStyle> =
     },
     mobileVerificationContainerMobile: {
       width: '90%',
+      marginHorizontal: 'auto',
     },
     formContainer: {
       width: '45vw',
