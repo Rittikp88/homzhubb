@@ -48,7 +48,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public render(): React.ReactElement {
-    const { t, typeOfPlan, isTablet } = this.props;
+    const { t, typeOfPlan, isTablet, isIpadPro } = this.props;
     const { existingDocuments, localDocuments, isLoading, verificationTypes } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
@@ -66,7 +66,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             deleteDocument={this.onDeleteDocument}
             handleTypes={FunctionUtils.noop}
           />
-          {!isTablet && (
+          {!isTablet && !isIpadPro && (
             <>
               <Divider containerStyles={styles.divider} />
               <View style={styles.contentView}>

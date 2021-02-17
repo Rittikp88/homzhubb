@@ -6,6 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -196,84 +197,68 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       selectedAssetPlan: { selectedPlan },
-      isTablet,
       isMobile,
+      isTablet,
+      isIpadPro,
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
-
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
-      <View style={[styles.tabHeader, PlatformUtils.isWeb() && isMobile && styles.tabHeaderMobile]}>
-        <View
-          style={[
-            PlatformUtils.isWeb() && isMobile && styles.switchTabContainer,
-            PlatformUtils.isWeb() && !isMobile && !isTablet && styles.switchTabContainerWeb,
-            PlatformUtils.isWeb() && isTablet && !isMobile && styles.switchTabContainerTab,
-          ]}
-        >
-          {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
-            <SelectionPicker
-              data={[
-                { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
-                { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+      <View>
+        {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
+          <View style={[styles.tabHeader, isMobile && styles.tabHeaderMobile]}>
+            <View
+              style={[
+                PlatformUtils.isWeb() && isMobile && styles.switchTabContainer,
+                PlatformUtils.isWeb() && !isMobile && !isTablet && styles.switchTabContainerWeb,
+                PlatformUtils.isWeb() && isTablet && !isMobile && styles.switchTabContainerTab,
               ]}
-              selectedItem={[leaseType]}
-              containerStyles={[styles.switchTab, PlatformUtils.isWeb() && isMobile && styles.switchTabMobile]}
-              onValueChange={this.onTabChange}
-            />
-            
-          )}
-              
-        </View>
-        <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
-          <View>
-            <Text type="small" textType="semiBold">
-              {title}
-            </Text>
-          </View>
-          {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
-            <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
-              {t('common:skip')}
-            </Text>
-          )}
-          {key === Tabs.ACTIONS && (
-            <View style={[styles.tooltip, isMobile && styles.tooltipMobile]}>
-              <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+            >
+              <SelectionPicker
+                data={[
+                  { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
+                  { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+                ]}
+                selectedItem={[leaseType]}
+                containerStyles={[styles.switchTab, PlatformUtils.isWeb() && isMobile && styles.switchTabMobile]}
+                onValueChange={this.onTabChange}
+              />
             </View>
-          )}
-        </View>
-
-        {/* <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
-          <View>
-            <Text type="small" textType="semiBold">
-              {title}
-            </Text>
-          </View>
-
-          {key === Tabs.ACTIONS && (
-            <View style={[styles.tooltip, isMobile && styles.tooltipMobile]}>
-              <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+            <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
+              <Text type="small" textType="semiBold">
+                {title}
+              </Text>
+              <View style={[styles.tooltip, isMobile && styles.tooltipMobile]}>
+                <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+              </View>
             </View>
-          )}
+          </View>
+        )}
 
-          {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
-            <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
-              {t('common:skip')}
-            </Text>
-          )}
-      
-        </View> */}
-        {isTablet && key === Tabs.VERIFICATIONS && (
-          <>
-            <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
-              {t('propertyVerificationSubTitle')}
-            </Label>
-            <Label type="large" textType="semiBold" style={styles.helperText}>
-              {t('helperNavigationText')}
-            </Label>
-          </>
+        {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
+          <View style={styles.tabHeaderVerification}>
+            <View style={[styles.verification]}>
+              <Text type="small" textType="semiBold">
+                {title}
+              </Text>
+              <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
+                {t('common:skip')}
+              </Text>
+            </View>
+
+            {(isTablet || isIpadPro) && key === Tabs.VERIFICATIONS && (
+              <>
+                <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
+                  {t('propertyVerificationSubTitle')}
+                </Label>
+                <Label type="large" textType="semiBold" style={styles.helperText}>
+                  {t('helperNavigationText')}
+                </Label>
+              </>
+            )}
+          </View>
         )}
       </View>
     );
@@ -522,12 +507,10 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-const translatedAddListingView = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.property)(addListingView));
-
-export default withMediaQuery<any>(translatedAddListingView);
 
 const styles = StyleSheet.create({
   flexOne: {
@@ -539,12 +522,15 @@ const styles = StyleSheet.create({
   },
   tabHeader: {
     paddingVertical: 16,
-    // flexDirection: 'row-reverse',
-    // flexWrap: 'wrap',
+    flexDirection: 'row-reverse',
+    flexWrap: 'wrap',
   },
   tabHeaderMobile: {
     paddingVertical: 16,
     flexDirection: 'column',
+  },
+  tabHeaderVerification: {
+    paddingVertical: 16,
   },
   switchTab: {
     marginBottom: 4,
@@ -559,9 +545,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  helperText: {
-    color: theme.colors.primaryColor,
-  },
   switchTabContainerWeb: {
     width: '30%',
   },
@@ -572,7 +555,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // marginRight: 'auto',
+    marginRight: 'auto',
   },
   tabRowsMobile: {
     marginTop: '6%',
@@ -623,5 +606,13 @@ const styles = StyleSheet.create({
   verificationSubtitle: {
     marginTop: 12,
     marginBottom: 8,
+  },
+  helperText: {
+    color: theme.colors.primaryColor,
+  },
+  verification: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
