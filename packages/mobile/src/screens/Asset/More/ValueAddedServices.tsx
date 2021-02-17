@@ -185,7 +185,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
     assetType: string,
     projectName: string,
     address: string,
-    flag: string,
+    flag: React.ReactElement,
     serviceByIds: IGetServicesByIds,
     badgeInfo: IBadgeInfo,
     amenities: IAmenitiesIcons[]

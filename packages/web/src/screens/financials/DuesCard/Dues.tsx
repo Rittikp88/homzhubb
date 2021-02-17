@@ -8,6 +8,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import { flags } from '@homzhub/common/src/components/atoms/Flag';
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 
 const Dues = (): React.ReactElement => {
@@ -31,7 +32,7 @@ const Dues = (): React.ReactElement => {
         <View style={styles.propertyDetails}>
           <PropertyAddressCountry
             primaryAddress="2BHK - Godrej Prime"
-            countryFlag="https://www.countryflags.io/IN/flat/48.png"
+            countryFlag={flags.IN}
             primaryAddressTextStyles={addressTextStyle}
             subAddressTextStyles={subAddressTextStyle}
             subAddress="Sindhi Society, Chembur, Mumbai- 400071"

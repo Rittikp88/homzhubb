@@ -1,12 +1,12 @@
 import React from 'react';
-import { Image, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ITypographyProps, Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 interface IProps {
   primaryAddress: string;
   subAddress: string;
-  countryFlag: string;
+  countryFlag: React.ReactElement | null;
   primaryAddressTextStyles?: ITypographyProps;
   subAddressTextStyles?: ITypographyProps;
   primaryAddressStyle?: StyleProp<TextStyle>;
@@ -28,8 +28,7 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
       <View style={styles.flexRow}>
-        {/** @ts-ignore * */}
-        <Image source={countryFlag} style={styles.flagStyle} />
+        {countryFlag}
         <Typography
           variant={primaryAddressTextStyles?.variant ?? 'text'}
           size={primaryAddressTextStyles?.size ?? 'regular'}

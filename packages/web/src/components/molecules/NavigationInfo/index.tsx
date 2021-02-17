@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
@@ -117,7 +117,7 @@ const DashBoardActionsGrp: FC = () => {
   };
   const styles = dashBoardActionStyles;
   const selectedCountryIndex = countryList.findIndex((data) => data.id === selectedCountry);
-  const countryImage = selectedCountry !== 0 ? countryList[selectedCountryIndex].flag : 'globe';
+  const countryImage = (): React.ReactElement => countryList[selectedCountryIndex].flag;
   const countryName = selectedCountry !== 0 ? countryList[selectedCountryIndex].name : t('common:all');
 
   return (
@@ -128,12 +128,11 @@ const DashBoardActionsGrp: FC = () => {
         popupProps={defaultDropDownProps('100px')}
       >
         <Button type="secondaryOutline" containerStyle={[styles.button, isMobile && styles.countryBtnMobile]}>
-          {countryImage &&
-            (countryImage === 'globe' ? (
-              <Icon name={icons.earthFilled} size={22} color={theme.colors.white} style={styles.flagStyle} />
-            ) : (
-              <Image source={{ uri: countryImage }} style={styles.flagStyle} />
-            ))}
+          {selectedCountry === 0 ? (
+            <Icon name={icons.earthFilled} size={22} color={theme.colors.white} style={styles.flagStyle} />
+          ) : (
+            countryImage()
+          )}
           {!isMobile && (
             <Typography variant="label" size="large" style={styles.buttonTitle}>
               {countryName}
@@ -243,7 +242,7 @@ const dashBoardActionStyles = StyleSheet.create({
   },
   buttonTitle: {
     color: theme.colors.white,
-    marginRight: 8,
+    marginHorizontal: 6,
   },
   buttonBlueTitle: {
     color: theme.colors.primaryColor,

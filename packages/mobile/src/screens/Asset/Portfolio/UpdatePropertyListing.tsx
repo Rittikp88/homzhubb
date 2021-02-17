@@ -4,7 +4,6 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
@@ -245,7 +244,6 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
         },
         data: {
           cancel_reason: reasonId,
-          cancel_date: DateUtils.getCurrentDateISO(), // TODO: Remove
           ...(description && { cancel_description: description }),
         },
       };
