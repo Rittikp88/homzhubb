@@ -54,6 +54,7 @@ import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/U
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
+import { Messages } from '@homzhub/mobile/src/screens/Asset/More/Messages';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -102,6 +103,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.KYC]: undefined;
   [ScreensKeys.ValueAddedServices]: undefined;
   [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
+  [ScreensKeys.Messages]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -182,6 +184,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
       <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
       <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
+      <MoreStackNavigator.Screen name={ScreensKeys.Messages} component={Messages} />
     </MoreStackNavigator.Navigator>
   );
 };

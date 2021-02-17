@@ -140,6 +140,9 @@ export class More extends React.PureComponent<Props> {
       case MoreScreenTypes.VALUE_ADDED_SERVICES:
         navigation.navigate(ScreensKeys.ValueAddedServices);
         break;
+      case MoreScreenTypes.MESSAGES:
+        navigation.navigate(ScreensKeys.Messages);
+        break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         break;
