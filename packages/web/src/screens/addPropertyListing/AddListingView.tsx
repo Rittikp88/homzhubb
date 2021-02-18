@@ -73,7 +73,7 @@ const isFixRequired = true;
 
 class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
-    currentIndex: 2,
+    currentIndex: 0,
     isStepDone: [],
     tabViewHeights: [height, height, height, height * 0.5],
     isActionSheetToggled: false,
@@ -206,7 +206,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
-      <View>
+      <>
         {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
           <View style={[styles.tabHeader, isMobile && styles.tabHeaderMobile]}>
             <View
@@ -260,7 +260,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             )}
           </View>
         )}
-      </View>
+      </>
     );
   };
 
