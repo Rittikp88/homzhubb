@@ -64,6 +64,7 @@ function useIsIpadPro(): boolean {
 interface IWithMediaQuery {
   isMobile?: boolean;
   isTablet?: boolean;
+  isIpadPro?: boolean;
   screenHeight?: number;
   screenWidth?: number;
 }
@@ -76,6 +77,7 @@ const withMediaQuery = <P extends {}>(
       <WrappedComponent
         isMobile={useDown(deviceBreakpoint.MOBILE)}
         isTablet={useDown(deviceBreakpoint.TABLET)}
+        isIpadPro={useIsIpadPro()}
         screenHeight={useViewPort()?.height ?? 0}
         screenWidth={useViewPort()?.width ?? 0}
         {...props}
