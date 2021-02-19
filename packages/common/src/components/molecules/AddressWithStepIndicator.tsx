@@ -22,7 +22,7 @@ interface IProps {
   isStepDone: boolean[];
   primaryAddress: string;
   subAddress: string;
-  countryFlag: string;
+  countryFlag: React.ReactElement;
   propertyType: string;
   icon?: string;
   onEditPress?: () => void;

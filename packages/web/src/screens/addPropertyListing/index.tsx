@@ -17,7 +17,7 @@ const AddPropertyListing = (): React.ReactElement => {
   const dispatch = useDispatch();
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(695));
+    dispatch(RecordAssetActions.setAssetId(483));
   });
 
   const renderScene = (): React.ReactElement | null => {

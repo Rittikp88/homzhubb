@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { TouchableOpacity, Image, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import { PopupProps } from 'reactjs-popup/dist/types';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -27,7 +27,7 @@ const PhoneCodePrefix: FC<Props> = (props: Props) => {
         popupProps={defaultDropDownProps(isBottomSheetVisible, 'fit-content')}
       >
         <TouchableOpacity style={styles.inputGroupPrefix} onPress={fetchPhoneCodes}>
-          <Image source={{ uri: fetchFlag() }} style={styles.flagStyle} />
+          {fetchFlag()}
           <Label type="regular" style={styles.inputPrefixText}>
             {inputPrefixText}
           </Label>
@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
   },
   inputPrefixText: {
     color: theme.colors.darkTint4,
+    marginStart: 8,
   },
   flagStyle: {
     borderRadius: 2,

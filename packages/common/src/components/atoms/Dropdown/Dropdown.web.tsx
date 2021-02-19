@@ -8,7 +8,6 @@ import {
   ImageStyle,
   TouchableOpacity,
   TextStyle,
-  Image,
 } from 'react-native';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -21,7 +20,7 @@ export interface IProps {
   value: number | string;
   onDonePress: (value: any) => void;
   showImage?: boolean;
-  image?: string;
+  image?: string | React.ReactElement;
   icon?: string;
   listTitle?: string;
   listHeight?: number;
@@ -55,7 +54,6 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     placeholder = '',
     onDonePress,
     parentContainerStyle = {},
-    imageStyle = {},
     image,
     fontSize = 'large',
     showImage = false,
@@ -103,6 +101,9 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     iconColor = theme.colors.active;
   }
 
+  // @ts-ignore
+  const RenderFlagSvg = (): React.ReactElement => image;
+
   const DropDownView = (): React.ReactElement => {
     return (
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
@@ -110,7 +111,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
           image === 'globe' ? (
             <Icon name={icons.earthFilled} size={22} color={theme.colors.active} />
           ) : (
-            <Image source={{ uri: image }} style={imageStyle} />
+            <RenderFlagSvg />
           )
         ) : (
           <Label
