@@ -32,6 +32,7 @@ export const DateFormats = {
   YYYYMMDD_HM: 'YYYY-MM-DD hh:mm',
   MMM_YYYY: 'MMM YYYY',
   DDMMMYYYY_H: 'DD MMM YYYY, h A',
+  DDMM: 'DD MMM',
 };
 
 class DateUtils {
@@ -299,6 +300,10 @@ class DateUtils {
 
   public getCurrentDate24Format = (): string => {
     return moment().format(DateFormats.ISO24Format);
+  };
+
+  public getDayMonth = (date: string): string => {
+    return moment(date).format(DateFormats.DDMM);
   };
 
   public getISOWeekNumber = (date: Date): number => moment(date).isoWeek();
