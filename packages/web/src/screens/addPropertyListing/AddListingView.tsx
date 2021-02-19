@@ -198,48 +198,69 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       t,
       selectedAssetPlan: { selectedPlan },
       isMobile,
+      isTablet,
+      isIpadPro,
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
-
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
     return (
-      <View style={styles.tabHeader}>
-        <View>
-          {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
-            <SelectionPicker
-              data={[
-                { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
-                { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+      <>
+        {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
+          <View style={[styles.tabHeader, isMobile && styles.tabHeaderMobile]}>
+            <View
+              style={[
+                PlatformUtils.isWeb() && isMobile && styles.switchTabContainer,
+                PlatformUtils.isWeb() && !isMobile && !isTablet && styles.switchTabContainerWeb,
+                PlatformUtils.isWeb() && isTablet && !isMobile && styles.switchTabContainerTab,
               ]}
-              selectedItem={[leaseType]}
-              containerStyles={[styles.switchTab]}
-              onValueChange={this.onTabChange}
-              itemWidth={PlatformUtils.isWeb() && !isMobile ? 171 : 170}
-            />
-          )}
-        </View>
-
-        <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
-          <View>
-            <Text type="small" textType="semiBold">
-              {title}
-            </Text>
-          </View>
-
-          {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
-            <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
-              {t('common:skip')}
-            </Text>
-          )}
-          {key === Tabs.ACTIONS && (
-            <View style={[styles.tooltip, isMobile && styles.tooltipMobile]}>
-              <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+            >
+              <SelectionPicker
+                data={[
+                  { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
+                  { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+                ]}
+                selectedItem={[leaseType]}
+                containerStyles={[styles.switchTab, PlatformUtils.isWeb() && isMobile && styles.switchTabMobile]}
+                onValueChange={this.onTabChange}
+              />
             </View>
-          )}
-        </View>
-      </View>
+            <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
+              <Text type="small" textType="semiBold">
+                {title}
+              </Text>
+              <View style={[styles.tooltip, isMobile && styles.tooltipMobile]}>
+                <Icon name={icons.tooltip} color={theme.colors.blue} size={26} onPress={toggleActionSheet} />
+              </View>
+            </View>
+          </View>
+        )}
+
+        {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
+          <View style={styles.tabHeaderVerification}>
+            <View style={[styles.verification]}>
+              <Text type="small" textType="semiBold">
+                {title}
+              </Text>
+              <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
+                {t('common:skip')}
+              </Text>
+            </View>
+
+            {(isTablet || isIpadPro) && key === Tabs.VERIFICATIONS && (
+              <>
+                <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
+                  {t('propertyVerificationSubTitle')}
+                </Label>
+                <Label type="large" textType="semiBold" style={styles.helperText}>
+                  {t('helperNavigationText')}
+                </Label>
+              </>
+            )}
+          </View>
+        )}
+      </>
     );
   };
 
@@ -504,13 +525,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     flexWrap: 'wrap',
   },
+  tabHeaderMobile: {
+    paddingVertical: 16,
+    flexDirection: 'column',
+  },
+  tabHeaderVerification: {
+    paddingVertical: 16,
+  },
   switchTab: {
     marginBottom: 4,
     marginTop: 20,
   },
   switchTabMobile: {
+    marginHorizontal: 'auto',
+    flex: 1,
+  },
+  switchTabContainer: {
+    width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  switchTabContainerWeb: {
+    width: '30%',
+  },
+  switchTabContainerTab: {
+    width: '50%',
   },
   tabRows: {
     flexDirection: 'row',
@@ -520,7 +559,7 @@ const styles = StyleSheet.create({
   },
   tabRowsMobile: {
     marginTop: '6%',
-    flex: 1,
+    width: '100%',
   },
   tooltip: {
     left: 9,
@@ -563,5 +602,17 @@ const styles = StyleSheet.create({
   service: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  verificationSubtitle: {
+    marginTop: 12,
+    marginBottom: 8,
+  },
+  helperText: {
+    color: theme.colors.primaryColor,
+  },
+  verification: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

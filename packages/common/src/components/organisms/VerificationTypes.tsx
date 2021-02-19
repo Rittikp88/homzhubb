@@ -3,11 +3,12 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
-import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+import  ImageThumbnail  from '@homzhub/common/src/components/atoms/ImageThumbnail';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -19,7 +20,7 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
 
-interface IProps {
+interface IVerificationProps {
   typeOfPlan: TypeOfPlan;
   existingDocuments: ExistingVerificationDocuments[];
   localDocuments: ExistingVerificationDocuments[];
@@ -32,7 +33,9 @@ interface IVerificationState {
   verificationTypes: VerificationDocumentTypes[];
 }
 
-export default class VerificationTypes extends Component<IProps, IVerificationState> {
+type IProps = IVerificationProps & IWithMediaQuery;
+
+class VerificationTypes extends Component<IProps, IVerificationState> {
   public state = {
     verificationTypes: [],
   };
@@ -43,8 +46,9 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
 
   public render(): ReactNode {
     const { verificationTypes } = this.state;
+    const { isMobile } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, isMobile && styles.mobileUploadBox]}>
         {verificationTypes.map((verificationType: VerificationDocumentTypes, index: number) => {
           const data: VerificationDocumentTypes = verificationType;
           return (
@@ -54,7 +58,13 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
               </Text>
               {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
                 <>
-                  {PlatformUtils.isWeb() ? <Selfie /> : <Selfie style={styles.selfie} />}
+                  {PlatformUtils.isWeb() ? (
+                    <View style={styles.webSelfie}>
+                      <Selfie />
+                    </View>
+                  ) : (
+                    <Selfie style={styles.selfie} />
+                  )}
                   {selfieInstruction.map((instruction, i) => {
                     return (
                       <Label type="regular" textType="regular" style={styles.instruction} key={i}>
@@ -142,6 +152,8 @@ export default class VerificationTypes extends Component<IProps, IVerificationSt
   };
 }
 
+export default withMediaQuery<any>(VerificationTypes);
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
@@ -154,6 +166,10 @@ const styles = StyleSheet.create({
   },
   uploadBox: {
     marginTop: 20,
+  },
+  mobileUploadBox: {
+    width: PlatformUtils.isWeb() ? 305 : 'auto',
+    paddingHorizontal: PlatformUtils.isWeb() ? 8 : 16,
   },
   title: {
     color: theme.colors.darkTint4,
@@ -194,5 +210,9 @@ const styles = StyleSheet.create({
   selfie: {
     alignSelf: 'center',
     marginVertical: 12,
+  },
+  webSelfie: {
+    marginLeft: 70,
+    marginTop: 20,
   },
 });

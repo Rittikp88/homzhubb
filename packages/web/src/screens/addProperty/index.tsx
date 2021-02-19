@@ -63,7 +63,6 @@ const AddProperty: FC = () => {
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
   const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
-
   useEffect(() => {
     if (goBackClicked) {
       goBack();

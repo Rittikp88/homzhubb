@@ -8,7 +8,6 @@ import {
   ImageStyle,
   TouchableOpacity,
   TextStyle,
-  Image,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -22,7 +21,7 @@ export interface IProps {
   value: number | string;
   onDonePress: (value: string | number) => void;
   showImage?: boolean;
-  image?: string;
+  image?: React.ReactElement | string;
   icon?: string;
   listTitle?: string;
   listHeight?: number;
@@ -58,7 +57,6 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     placeholder = '',
     onDonePress,
     parentContainerStyle = {},
-    imageStyle = {},
     image,
     fontSize = 'large',
     testID,
@@ -102,6 +100,10 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     iconSize = 20;
     iconColor = theme.colors.active;
   }
+
+  // @ts-ignore
+  const RenderFlag = (): React.ReactElement => image;
+
   return (
     <View pointerEvents={disable ? 'none' : 'auto'} style={[disabledStyles, parentContainerStyle]}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
@@ -109,8 +111,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
           image === 'globe' ? (
             <Icon name={icons.earthFilled} size={22} color={theme.colors.active} />
           ) : (
-            // @ts-ignore
-            <Image source={image} style={imageStyle} />
+            <RenderFlag />
           )
         ) : (
           <Label

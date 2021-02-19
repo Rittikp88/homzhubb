@@ -1,5 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { flags } from '@homzhub/common/src/assets/flag';
+import { flags } from '@homzhub/common/src/components/atoms/Flag';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { PhoneCode } from '@homzhub/common/src/domain/models/PhoneCode';
@@ -69,7 +69,7 @@ export class Country {
     return countryCodeOptions;
   }
 
-  get flag(): string {
+  get flag(): React.ReactElement {
     // @ts-ignore
     return flags[this.iso2Code];
   }

@@ -15,10 +15,9 @@ enum ComponentName {
 const AddPropertyListing = (): React.ReactElement => {
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
   const dispatch = useDispatch();
-
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(323));
+    dispatch(RecordAssetActions.setAssetId(483));
   });
 
   const renderScene = (): React.ReactElement | null => {

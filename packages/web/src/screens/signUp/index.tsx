@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { History } from 'history';
-import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useOnly, useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -74,6 +74,8 @@ const SignUp: FC<IProps> = (props: IProps) => {
         otpSentTo: formData.phone_number,
         type: OtpNavTypes.SignUp,
         userData,
+        buttonTitle: t('auth:signup'),
+        navigationPath: RouteNames.publicRoutes.SIGNUP,
       };
       NavigationUtils.navigate(props.history, {
         path: RouteNames.publicRoutes.OTP_VERIFICATION,
@@ -92,10 +94,11 @@ const SignUp: FC<IProps> = (props: IProps) => {
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
   };
-  const isTablet = useOnly(deviceBreakpoint.TABLET);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
+  const isIPadPro = useIsIpadPro();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isTablet && styles.tabletContainer, isIPadPro && styles.iPadContainer]}>
       <UserValidationScreensTemplate
         hasBackButton={false}
         containerStyle={[styles.containerStyle, isTablet && styles.containerStyleTablet]}
@@ -121,6 +124,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
+    minHeight: '150vh',
+  },
+  tabletContainer: {
+    minHeight: '100vh',
   },
   containerStyle: {
     backgroundColor: theme.colors.white,
@@ -139,6 +146,9 @@ const styles = StyleSheet.create({
   },
   formContainerMobile: {
     width: '90%',
+  },
+  iPadContainer: {
+    minHeight: '100vh',
   },
 });
 

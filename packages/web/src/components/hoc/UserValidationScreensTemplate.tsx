@@ -24,6 +24,7 @@ interface IProps {
   navigationPath?: string;
   isUnderlineDesc?: boolean;
   underlineDesc?: string;
+  routePath?: string;
 }
 
 const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
@@ -37,6 +38,7 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
     navigationPath,
     isUnderlineDesc,
     underlineDesc,
+    routePath,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const history = useHistory();
@@ -50,48 +52,48 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
     if (navigationPath) NavigationUtils.navigate(history, { path: navigationPath });
   };
 
-  const navigateToLogin = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.LOGIN });
-  };
-  const navigateToScreen = (path: string): void => {
+  const navigateToScreen = (path: string = RouteNames.publicRoutes.LOGIN): void => {
     NavigationUtils.navigate(history, { path });
   };
   return (
-    <View style={containerStyle}>
-      <View style={isMobile ? styles.userValidationCommonContentMobile : styles.userValidationCommonContent}>
-        <View style={styles.logo}>
-          <LogoWithName />
-        </View>
-        {hasBackButton && (
-          <Button type="secondary" onPress={backButtonNavigation} containerStyle={styles.backButton}>
-            <Icon name={icons.longArrowLeft} />
-          </Button>
-        )}
-        <Typography variant="text" size="regular" fontWeight="semiBold">
-          {title}
-        </Typography>
-        <Typography variant="label" size="large" style={styles.subTitle}>
-          {subTitle}
-        </Typography>
-        {isUnderlineDesc && (
-          <View>
-            <View style={styles.underline} />
-            <Typography variant="label" size="large" style={styles.underlineDesc}>
-              {underlineDesc}
-            </Typography>
+    <View style={[styles.baseContainerStyle, containerStyle]}>
+      <View style={styles.subContainer}>
+        <View style={isMobile ? styles.userValidationCommonContentMobile : styles.userValidationCommonContent}>
+          <View style={styles.logo}>
+            <LogoWithName />
           </View>
+          {hasBackButton && (
+            <Button type="secondary" onPress={backButtonNavigation} containerStyle={styles.backButton}>
+              <Icon name={icons.longArrowLeft} />
+            </Button>
+          )}
+          <Typography variant="text" size="regular" fontWeight="semiBold">
+            {title}
+          </Typography>
+          <Typography variant="label" size="large" style={styles.subTitle}>
+            {subTitle}
+          </Typography>
+          {isUnderlineDesc && (
+            <View>
+              <View style={styles.underline} />
+              <Typography variant="label" size="large" style={styles.underlineDesc}>
+                {underlineDesc}
+              </Typography>
+            </View>
+          )}
+        </View>
+
+        {children}
+        {hasBackToLoginButton && (
+          <Button
+            type="secondary"
+            title={t('auth:backToLogin')}
+            containerStyle={styles.backToLoginButton}
+            titleStyle={styles.backToLoginButtonText}
+            onPress={(): void => navigateToScreen(routePath)}
+          />
         )}
       </View>
-      {children}
-      {hasBackToLoginButton && (
-        <Button
-          type="secondary"
-          title={t('auth:backToLogin')}
-          containerStyle={styles.backToLoginButton}
-          titleStyle={styles.backToLoginButtonText}
-          onPress={navigateToLogin}
-        />
-      )}
       <View style={styles.footer}>
         <View style={[styles.linksRow]}>
           <Button
@@ -126,6 +128,12 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
 export default UserValidationScreensTemplate;
 
 const styles = StyleSheet.create({
+  baseContainerStyle: {
+    justifyContent: 'space-between',
+  },
+  subContainer: {
+    width: '100%',
+  },
   logo: {
     marginVertical: 50,
   },
@@ -164,6 +172,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     alignSelf: 'center',
+    marginBottom: 54,
   },
   linksRow: {
     flexDirection: 'row',

@@ -10,7 +10,7 @@ import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
 import { SignupCarousalCard } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel/SignupCarousalCard';
 import { ImageData, IImageDataProps } from '@homzhub/common/src/constants/Signup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-
+// Gettoknow
 export const GetToKnowUsCarousel: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginRight: -16,
     backgroundColor: theme.colors.carousalBackground,
-    height: '100vh',
+    height: '100%',
   },
   buttonContainer: {
     position: 'absolute',

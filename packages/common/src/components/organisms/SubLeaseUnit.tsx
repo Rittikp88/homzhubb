@@ -244,14 +244,25 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                 </AssetListingSection>
               )}
             </LeaseTermForm>
-            <View style={[styles.buttonContainer, PlatformUtils.isWeb() && !isMobile && styles.buttonContainerWeb]}>
+            <View
+              style={[
+                styles.buttonContainer,
+                PlatformUtils.isWeb() && !isMobile && styles.buttonContainerWeb,
+                PlatformUtils.isWeb() && isMobile && styles.buttonContainerMobile,
+              ]}
+            >
               {route && (
                 <Button
                   type="primary"
                   title={t('saveUnit')}
                   titleStyle={styles.buttonTitle}
                   onPress={onAddUnit}
-                  containerStyle={[styles.continue, styles.saveUnit, PlatformUtils.isWeb() && styles.continueWeb]}
+                  containerStyle={[
+                    styles.continue,
+                    styles.saveUnit,
+                    PlatformUtils.isWeb() && !isMobile && styles.continueWeb,
+                    PlatformUtils.isWeb() && isMobile && styles.continueMobile,
+                  ]}
                 />
               )}
               <FormButton
@@ -261,7 +272,12 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                 // @ts-ignore
                 onPress={formProps.handleSubmit}
                 titleStyle={styles.buttonTitle}
-                containerStyle={[styles.continue, PlatformUtils.isWeb() && styles.continueWeb]}
+                containerStyle={[
+                  styles.continue,
+                  PlatformUtils.isWeb() && !isMobile && styles.continueWeb,
+                  route && PlatformUtils.isWeb() && isMobile && styles.continueMobile,
+                  !route && PlatformUtils.isWeb() && isMobile && styles.continueMobileEntire,
+                ]}
               />
             </View>
           </>
@@ -281,6 +297,12 @@ const styles = StyleSheet.create({
   },
   continueWeb: {
     width: 165,
+  },
+  continueMobile: {
+    width: '48%',
+  },
+  continueMobileEntire: {
+    width: '100%',
   },
   descriptionContainer: {
     marginTop: 16,
@@ -302,6 +324,10 @@ const styles = StyleSheet.create({
   },
   buttonContainerWeb: {
     marginLeft: 'auto',
+  },
+  buttonContainerMobile: {
+    width: '100%',
+    alignItems: 'center',
   },
   saveUnit: {
     marginEnd: 16,
