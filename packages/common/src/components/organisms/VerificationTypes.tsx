@@ -8,7 +8,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Selfie from '@homzhub/common/src/assets/images/selfie.svg';
-import { ImageThumbnail } from '@homzhub/common/src/components/atoms/ImageThumbnail';
+import  ImageThumbnail  from '@homzhub/common/src/components/atoms/ImageThumbnail';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
