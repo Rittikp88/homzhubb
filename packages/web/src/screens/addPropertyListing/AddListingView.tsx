@@ -6,7 +6,6 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
