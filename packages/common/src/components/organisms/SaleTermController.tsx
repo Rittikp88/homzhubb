@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -45,9 +47,10 @@ interface IOwnState {
   currentTermId: number;
 }
 
+type Props = IProps & IWithMediaQuery;
 const MAX_DESCRIPTION_LENGTH = 600;
 
-class SaleTermController extends React.PureComponent<IProps, IOwnState> {
+class SaleTermController extends React.PureComponent<Props, IOwnState> {
   public state = {
     formData: {
       expectedPrice: '',
@@ -91,7 +94,7 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { t, currencyData, assetGroupType } = this.props;
+    const { t, currencyData, assetGroupType, isMobile, isTablet } = this.props;
     const { description, formData } = this.state;
 
     return (
@@ -106,35 +109,66 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
             <>
               <AssetListingSection title={t('resaleTerms')}>
                 <>
-                  <FormTextInput
-                    inputType="number"
-                    name="expectedPrice"
-                    label={t('expectedPrice')}
-                    placeholder={t('expectedPricePlaceholder')}
-                    maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
-                    formProps={formProps}
-                    inputPrefixText={currencyData.currencySymbol}
-                    inputGroupSuffixText={currencyData.currencyCode}
-                    isMandatory
-                  />
-                  <FormTextInput
-                    inputType="number"
-                    name="bookingAmount"
-                    label={t('bookingAmount')}
-                    placeholder={t('bookingAmountPlaceholder')}
-                    maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
-                    formProps={formProps}
-                    inputPrefixText={currencyData.currencySymbol}
-                    inputGroupSuffixText={currencyData.currencyCode}
-                    isMandatory
-                  />
-                  <FormCalendar
-                    formProps={formProps}
-                    name="availableFrom"
-                    textType="label"
-                    textSize="regular"
-                    isMandatory
-                  />
+                  {PlatformUtils.isWeb() && (
+                    <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                      {t('headerTitle')}
+                    </Text>
+                  )}
+                  <View style={PlatformUtils.isWeb() && !isMobile && styles.detailsContainer}>
+                    <View
+                      style={[
+                        PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+                        PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
+                      ]}
+                    >
+                      <FormTextInput
+                        inputType="number"
+                        name="expectedPrice"
+                        label={t('expectedPrice')}
+                        placeholder={t('expectedPricePlaceholder')}
+                        maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
+                        formProps={formProps}
+                        inputPrefixText={currencyData.currencySymbol}
+                        inputGroupSuffixText={currencyData.currencyCode}
+                        isMandatory
+                        containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
+                      />
+                    </View>
+                    <View
+                      style={[
+                        PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+                        PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
+                      ]}
+                    >
+                      <FormTextInput
+                        inputType="number"
+                        name="bookingAmount"
+                        label={t('bookingAmount')}
+                        placeholder={t('bookingAmountPlaceholder')}
+                        maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
+                        formProps={formProps}
+                        inputPrefixText={currencyData.currencySymbol}
+                        inputGroupSuffixText={currencyData.currencyCode}
+                        isMandatory
+                        containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
+                      />
+                    </View>
+                    <View
+                      style={[
+                        PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+                        PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
+                      ]}
+                    >
+                      <FormCalendar
+                        formProps={formProps}
+                        name="availableFrom"
+                        textType="label"
+                        textSize="regular"
+                        isMandatory
+                        containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
+                      />
+                    </View>
+                  </View>
                   <Text type="small" textType="semiBold" style={styles.headerTitle}>
                     {t('maintenance')}
                   </Text>
@@ -157,16 +191,19 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
                   wordCountLimit={MAX_DESCRIPTION_LENGTH}
                   placeholder={t('property:sellFlowFormDescription')}
                   onMessageChange={this.onDescriptionChange}
+                  inputContainerStyle={styles.description}
                 />
               </AssetListingSection>
-              <FormButton
-                title={t('common:continue')}
-                type="primary"
-                formProps={formProps}
-                // @ts-ignore
-                onPress={formProps.handleSubmit}
-                containerStyle={styles.continue}
-              />
+              <View style={PlatformUtils.isWeb && !isMobile && styles.buttonContainer}>
+                <FormButton
+                  title={t('common:continue')}
+                  type="primary"
+                  formProps={formProps}
+                  // @ts-ignore
+                  onPress={formProps.handleSubmit}
+                  containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
+                />
+              </View>
             </>
           );
         }}
@@ -249,12 +286,16 @@ class SaleTermController extends React.PureComponent<IProps, IOwnState> {
 }
 
 const HOC = withTranslation(LocaleConstants.namespacesKey.property)(SaleTermController);
-export { HOC as SaleTermController };
+const saleTermController = withMediaQuery<any>(HOC);
+export { saleTermController as SaleTermController };
 
 const styles = StyleSheet.create({
   continue: {
     flex: 0,
     marginTop: 20,
+  },
+  continueWeb: {
+    width: 251,
   },
   headerTitle: {
     marginTop: 28,
@@ -262,5 +303,29 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     marginTop: 16,
+  },
+  detailsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  inputContainer: {
+    width: '31.5%',
+    margin: 10,
+  },
+  inputContainerTab: {
+    width: '47%',
+    margin: 9,
+  },
+
+  input: {
+    width: '100%',
+  },
+  description: {
+    height: 200,
+  },
+  buttonContainer: {
+    alignItems: 'flex-end',
   },
 });

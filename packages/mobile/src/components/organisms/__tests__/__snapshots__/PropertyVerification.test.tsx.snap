@@ -2,7 +2,7 @@
 
 exports[`PropertyVerification should match snapshot 1`] = `
 <Fragment>
-  <VerificationTypes
+  <Component
     deleteDocument={[Function]}
     existingDocuments={Array []}
     handleTypes={[Function]}
