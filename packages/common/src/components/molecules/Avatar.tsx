@@ -3,13 +3,14 @@ import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewSt
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
-  fullName: string;
+  fullName?: string;
   isOnlyAvatar?: boolean;
   image?: string;
   icon?: string;
@@ -27,11 +28,13 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   customDesignation?: TextStyle;
   initialsContainerStyle?: StyleProp<ViewStyle>;
+  customText?: string;
+  customTextStyle?: StyleProp<TextStyle>;
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
   const {
-    fullName,
+    fullName = I18nService.t('common:user'),
     designation,
     containerStyle = {},
     customDesignation = {},
@@ -49,7 +52,24 @@ const Avatar = (props: IProps): React.ReactElement => {
     onPressRightIcon,
     rightIconName = icons.rightArrow,
     rightIconColor = theme.colors.blue,
+    customText,
+    customTextStyle = {},
   } = props;
+
+  const renderText = (): React.ReactElement => {
+    if (customText?.length) {
+      return (
+        <Text type="regular" textType="semiBold" style={[styles.customText, customTextStyle]}>
+          {customText}
+        </Text>
+      )
+    }
+    return (
+      <Text type="small" textType="regular" style={[styles.initials, customTextStyle]}>
+        {StringUtils.getInitials(fullName)}
+      </Text>
+    )
+  }
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -72,14 +92,12 @@ const Avatar = (props: IProps): React.ReactElement => {
               {!!icon && <Icon name={icons.circularCheckFilled} size={imageSize} color={theme.colors.greenOpacity} />}
             </>
           ) : (
-            <View
-              style={[styles.initialsContainer, { ...(theme.circleCSS(imageSize) as object) }, initialsContainerStyle]}
-            >
-              <Text type="small" textType="regular" style={styles.initials}>
-                {StringUtils.getInitials(fullName)}
-              </Text>
-            </View>
-          )}
+              <View
+                style={[styles.initialsContainer, { ...(theme.circleCSS(imageSize) as object) }, initialsContainerStyle]}
+              >
+                {renderText()}
+              </View>
+            )}
 
           {onPressCamera && (
             <TouchableOpacity style={styles.editView} onPress={onPressCamera} activeOpacity={0.8}>
@@ -166,6 +184,9 @@ const styles = StyleSheet.create({
   },
   initials: {
     color: theme.colors.white,
+  },
+  customText: {
+    color: theme.colors.darkTint4
   },
   nameContainer: {
     marginLeft: 12,
