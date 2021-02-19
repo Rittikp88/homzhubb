@@ -22,10 +22,12 @@ interface IProps {
   asset: VisitAssetDetail;
   ratingCategories: Pillar[];
   onClose: (reset?: boolean) => void;
+  deleted: () => void;
+  editReview?: boolean;
 }
 
 const ReviewForm = (props: IProps): React.ReactElement => {
-  const { asset, onClose, ratingCategories, saleListingId, leaseListingId } = props;
+  const { asset, onClose, ratingCategories, saleListingId, leaseListingId, deleted, editReview } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
 
   const [overallRating, setOverallRating] = useState(0);
@@ -65,6 +67,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
       AlertHelper.error({ message: t('common:genericErrorMessage') });
     }
   }, [description, overallRating, categoryRatings, leaseListingId, saleListingId, onClose, t]);
+  const onPress = (): void => (editReview ? deleted() : onClose());
 
   return (
     <>
@@ -104,16 +107,17 @@ const ReviewForm = (props: IProps): React.ReactElement => {
         />
         <View style={styles.buttonContainer}>
           <Button
-            onPress={(): void => onClose()}
+            onPress={onPress}
             type="secondary"
-            title={t('common:notNow')}
-            titleStyle={styles.buttonTitle}
+            title={editReview ? t('common:delete') : t('common:notNow')}
+            titleStyle={editReview ? styles.buttonTitle : styles.buttonTitleText}
+            containerStyle={editReview ? styles.deleteButton : undefined}
           />
           <Button
             onPress={onSubmit}
-            disabled={overallRating === 0}
+            disabled={editReview ? false : overallRating === 0}
             type="primary"
-            title={t('common:submit')}
+            title={editReview ? t('common:update') : t('common:submit')}
             containerStyle={styles.submitButton}
           />
         </View>
@@ -160,5 +164,13 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     marginHorizontal: 0,
+    color: theme.colors.error,
+  },
+  buttonTitleText: {
+    marginHorizontal: 0,
+    color: theme.colors.active,
+  },
+  deleteButton: {
+    borderColor: theme.colors.error,
   },
 });

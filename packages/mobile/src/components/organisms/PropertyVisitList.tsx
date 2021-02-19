@@ -39,9 +39,7 @@ import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 // CONSTANTS
 const confirmation = ['Yes', 'No'];
-
 // END CONSTANTS
-
 interface IProps {
   visitType?: Tabs;
   visitData: IVisitByKey[];
@@ -65,6 +63,7 @@ interface IProps {
 interface IScreenState {
   isCancelSheet: boolean;
   showReviewForm: boolean;
+  showDeleteForm: boolean;
   reviewAsset: AssetVisit | null;
   currentVisitId: number;
   height: number;
@@ -76,6 +75,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   public state = {
     isCancelSheet: false,
     showReviewForm: false,
+    showDeleteForm: false,
     reviewAsset: null,
     currentVisitId: 0,
     height: theme.viewport.height,
@@ -161,6 +161,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         <Loader visible={isLoading ?? false} />
         {this.renderCancelConfirmation()}
         {this.renderReviewForm()}
+        {this.deleteForm()}
       </View>
     );
   }
@@ -289,7 +290,9 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
               </Label>
             </TouchableOpacity>
           ) : (
-            <Rating isOverallRating value={item.review.rating ?? 0} />
+            <TouchableOpacity style={styles.writeReviewButton} onPress={onPress}>
+              <Rating isOverallRating value={item.review.rating ?? 0} />
+            </TouchableOpacity>
           )}
         </View>
       </>
@@ -330,7 +333,6 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
 
     if (reviewAsset === null) return null;
     const { asset, leaseListing, saleListing } = (reviewAsset as unknown) as AssetVisit;
-
     return (
       <BottomSheet
         visible={showReviewForm}
@@ -339,6 +341,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         onCloseSheet={this.onCancelReview}
       >
         <ReviewForm
+          deleted={this.delete}
           onClose={this.onCancelReview}
           asset={asset}
           ratingCategories={pillars ?? []}
@@ -386,6 +389,47 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     if (newHeight === height) {
       this.setState({ height: newHeight });
     }
+  };
+
+  private delete = (): void => {
+    const { showDeleteForm } = this.state;
+    this.setState({ showDeleteForm: !showDeleteForm });
+  };
+
+  private closeBottomSheet = (): void => {
+    const { showDeleteForm, showReviewForm } = this.state;
+    this.setState({ showDeleteForm: !showDeleteForm, showReviewForm: !showReviewForm });
+  };
+
+  private deleteForm = (): React.ReactElement => {
+    const { showDeleteForm } = this.state;
+    const { t } = this.props;
+    return (
+      <BottomSheet
+        visible={showDeleteForm}
+        headerTitle={t('common:deleteReview')}
+        onCloseSheet={this.onCancelSheet}
+        sheetHeight={theme.viewport.height * 0.4}
+      >
+        <View style={styles.deleteView}>
+          <Text type="small">{t('common:deleteReviewText')}</Text>
+
+          <View style={styles.deleteViewText}>
+            <Text type="small">{t('common:doYouWantToRemove')}</Text>
+          </View>
+
+          <View style={styles.buttonContaine}>
+            <Button
+              onPress={this.closeBottomSheet}
+              type="secondary"
+              title={t('common:no')}
+              titleStyle={styles.buttonTitle}
+            />
+            <Button onPress={this.delete} type="primary" title={t('common:yes')} containerStyle={styles.submitButton} />
+          </View>
+        </View>
+      </BottomSheet>
+    );
   };
 
   private getActions = (action: string, isValidVisit: boolean): IVisitActions | null => {
@@ -627,5 +671,23 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginHorizontal: 12,
+  },
+
+  buttonContaine: {
+    marginTop: 16,
+    flexDirection: 'row',
+    marginBottom: 12,
+  },
+  submitButton: {
+    marginStart: 16,
+  },
+  buttonTitle: {
+    marginHorizontal: 0,
+  },
+  deleteView: {
+    margin: 10,
+  },
+  deleteViewText: {
+    marginVertical: 10,
   },
 });
