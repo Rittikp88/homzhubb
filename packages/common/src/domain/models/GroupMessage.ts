@@ -16,8 +16,8 @@ export class GroupMessage {
   @JsonProperty('last_message_at', String, true)
   private _lastMessage = '';
 
-  @JsonProperty('unread_count', String)
-  private _unreadCount = '';
+  @JsonProperty('unread_count', Number)
+  private _unreadCount = 0;
 
   get id(): number {
     return this._id;
@@ -35,7 +35,7 @@ export class GroupMessage {
     return this._lastMessage;
   }
 
-  get unreadCount(): string {
+  get unreadCount(): number {
     return this._unreadCount;
   }
 
