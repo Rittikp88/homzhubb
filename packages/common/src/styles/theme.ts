@@ -1,9 +1,9 @@
+import { StyleProp, ViewStyle } from 'react-native';
 import { colors } from '@homzhub/common/src/styles/colors';
 import { layout } from '@homzhub/common/src/styles/layout';
 import { constants } from '@homzhub/common/src/styles/constants';
 import { viewport } from '@homzhub/common/src/styles/viewport';
 import { form } from '@homzhub/common/src/styles/form';
-import { StyleProp, ViewStyle } from 'react-native';
 
 export interface ITheme {
   colors: Record<string, string>;

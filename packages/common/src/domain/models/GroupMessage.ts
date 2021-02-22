@@ -1,6 +1,7 @@
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 
 @JsonObject('GroupMessage')
 export class GroupMessage {
@@ -64,13 +65,13 @@ export class GroupMessage {
     const isLessThanAWeek = dayDifference > 1 && dayDifference <= 7;
 
     if (isFewMomentAgo) {
-      return ' a few moments ago';
+      return I18nService.t('assetMore:fewMomentAgo');
     }
     if (isMoreThanAHour) {
       return dayDifference.toString();
     }
     if (isLessThanAWeek) {
-      return `${dayDifference} day ago`;
+      return I18nService.t('assetMore:daysAgo', { day: dayDifference });
     }
 
     return DateUtils.getDayMonth(lastMessageDate.toString());

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, ImageStyle, TextStyle, TouchableOpacity } from 'react-native';
-import { ITheme, theme } from '@homzhub/common/src/styles/theme';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
@@ -15,7 +15,6 @@ const GroupChat = (props: IProps): React.ReactElement => {
     chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate },
     onChatPress,
   } = props;
-  const styles = getStyles(theme);
 
   // TODO: (Shivam: 22/2/21: replace image with avatar component)
   return (
@@ -55,48 +54,42 @@ interface IScreenStyles {
   unreadCountContainer: ViewStyle;
 }
 
-const getStyles = (appTheme: ITheme): IScreenStyles => {
-  const {
-    colors: { darkTint5, blue, white, background },
-  } = appTheme;
-
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      borderRadius: 4,
-      borderWidth: 1,
-      borderColor: background,
-    },
-    avatar: {
-      marginEnd: 12,
-    },
-    justifyContent: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    heading: {
-      marginBottom: 5,
-    },
-    tintColor: {
-      color: darkTint5,
-    },
-    unreadCountContainer: {
-      minWidth: 18,
-      paddingHorizontal: 6,
-      borderRadius: 12,
-      backgroundColor: blue,
-      alignContent: 'center',
-    },
-    unreadCount: {
-      color: white,
-      alignSelf: 'center',
-    },
-  });
-};
+const styles: IScreenStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: theme.colors.background,
+  },
+  avatar: {
+    marginEnd: 12,
+  },
+  justifyContent: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  heading: {
+    marginBottom: 5,
+  },
+  tintColor: {
+    color: theme.colors.darkTint5,
+  },
+  unreadCountContainer: {
+    minWidth: 18,
+    paddingHorizontal: 6,
+    borderRadius: 12,
+    backgroundColor: theme.colors.blue,
+    alignContent: 'center',
+  },
+  unreadCount: {
+    color: theme.colors.white,
+    alignSelf: 'center',
+  },
+});
 
 export default React.memo(GroupChat);
