@@ -311,6 +311,31 @@ class DateUtils {
   };
 
   public getISOWeekNumber = (date: Date): number => moment(date).isoWeek();
+
+  public getDateDifferenceMessage = (lastDate: string): string => {
+    const currentDate = new Date();
+    const lastMessageDate = new Date(lastDate);
+
+    const millisecondDifference = Math.abs(currentDate.getTime() - lastMessageDate.getTime());
+    const hoursDifference = millisecondDifference / 36e5;
+    const dayDifference = Math.ceil(millisecondDifference / (1000 * 60 * 60 * 24));
+
+    const isFewMomentAgo = hoursDifference < 1;
+    const isMoreThanAHour = hoursDifference > 1 && dayDifference <= 1;
+    const isLessThanAWeek = dayDifference > 1 && dayDifference <= 7;
+
+    if (isFewMomentAgo) {
+      return I18nService.t('assetMore:fewMomentAgo');
+    }
+    if (isMoreThanAHour) {
+      return dayDifference.toString();
+    }
+    if (isLessThanAWeek) {
+      return I18nService.t('assetMore:daysAgo', { day: dayDifference });
+    }
+
+    return moment(lastMessageDate.toString()).format(DateFormats.DDMM);
+  };
 }
 
 const dateUtils = new DateUtils();

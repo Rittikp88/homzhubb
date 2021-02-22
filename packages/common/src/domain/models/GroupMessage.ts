@@ -1,4 +1,3 @@
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -53,27 +52,6 @@ export class GroupMessage {
   }
 
   get getDate(): string {
-    const currentDate = new Date();
-    const lastMessageDate = new Date(this.lastMessage);
-
-    const millisecondDifference = Math.abs(currentDate.getTime() - lastMessageDate.getTime());
-    const hoursDifference = millisecondDifference / 36e5;
-    const dayDifference = Math.ceil(millisecondDifference / (1000 * 60 * 60 * 24));
-
-    const isFewMomentAgo = hoursDifference < 1;
-    const isMoreThanAHour = hoursDifference > 1 && dayDifference <= 1;
-    const isLessThanAWeek = dayDifference > 1 && dayDifference <= 7;
-
-    if (isFewMomentAgo) {
-      return I18nService.t('assetMore:fewMomentAgo');
-    }
-    if (isMoreThanAHour) {
-      return dayDifference.toString();
-    }
-    if (isLessThanAWeek) {
-      return I18nService.t('assetMore:daysAgo', { day: dayDifference });
-    }
-
-    return DateUtils.getDayMonth(lastMessageDate.toString());
+    return DateUtils.getDateDifferenceMessage(this.lastMessage);
   }
 }
