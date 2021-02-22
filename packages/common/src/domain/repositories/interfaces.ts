@@ -668,3 +668,15 @@ export interface IVisitActionParam {
   isValidVisit?: boolean;
   isUserView?: boolean;
 }
+
+export interface IGetMessageParam {
+  groupId: number;
+  count?: number;
+  cursor?: string;
+}
+
+export interface IMessagePayload {
+  groupId: number;
+  message: string;
+  attachments: number[];
+}

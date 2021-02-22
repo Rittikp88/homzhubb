@@ -18,12 +18,11 @@ interface IProps {
   onPressAvatar?: () => void;
 }
 
-
 const GroupChatAvatar = (props: IProps): React.ReactElement => {
   // Deserializing data
   const mockFaces = ObjectMapper.deserializeArray(User, mockUsers); // TODO:Praharsh : Remove mock
 
-  const { faces = mockFaces, isHeader = true, containerStyle = {}, onPressAvatar = (): void => { } } = props;
+  const { faces = mockFaces, isHeader = true, containerStyle = {}, onPressAvatar = (): void => {} } = props;
   const faceDisplayCount = isHeader ? MAX_DISPLAY_COUNT_HEADER : MAX_DISPLAY_COUNT_CHAT;
   const shouldShowOverflow = faces.length > faceDisplayCount;
   const overflow = faces.length - faceDisplayCount;
@@ -55,7 +54,7 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
         const returnStyle = (): ViewStyle =>
           !isFirst
             ? { marginLeft: isHeader ? -16 : -circleSize / 3.5, ...liftUp() }
-            : { marginRight: isHeader ? 0 : -14 }; 
+            : { marginRight: isHeader ? 0 : -14 };
 
         return (
           <TouchableOpacity key={index} onPress={onPress} style={{ ...(isFirst && !isHeader && { zIndex: 10 }) }}>

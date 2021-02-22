@@ -2,12 +2,16 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
+import { Messages } from '@homzhub/common/src/domain/models/Message';
+import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const actionTypePrefix = 'Common/';
 export const CommonActionTypes = {
   GET: {
     COUNTRIES: `${actionTypePrefix}COUNTRIES`,
     COUNTRIES_SUCCESS: `${actionTypePrefix}COUNTRIES_SUCCESS`,
+    MESSAGES: `${actionTypePrefix}MESSAGES`,
+    MESSAGES_SUCCESS: `${actionTypePrefix}MESSAGES_SUCCESS`,
   },
   SET: {
     DEVICE_COUNTRY: `${actionTypePrefix}DEVICE_COUNTRY`,
@@ -34,10 +38,23 @@ const setRedirectionDetails = (payload: IRedirectionDetails): IFluxStandardActio
   payload,
 });
 
-export type CommonActionPayloadTypes = ICountry[] | IRedirectionDetails | string;
+const getMessages = (payload: IGetMessageParam): IFluxStandardAction<IGetMessageParam> => ({
+  type: CommonActionTypes.GET.MESSAGES,
+  payload,
+});
+
+const getMessagesSuccess = (payload: Messages): IFluxStandardAction<Messages> => ({
+  type: CommonActionTypes.GET.MESSAGES_SUCCESS,
+  payload,
+});
+
+export type CommonActionPayloadTypes = ICountry[] | IRedirectionDetails | IGetMessageParam | Messages | string | number;
+
 export const CommonActions = {
   getCountries,
   getCountriesSuccess,
   setDeviceCountry,
   setRedirectionDetails,
+  getMessages,
+  getMessagesSuccess,
 };
