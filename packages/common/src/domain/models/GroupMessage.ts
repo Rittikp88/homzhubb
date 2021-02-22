@@ -48,7 +48,7 @@ export class GroupMessage {
       userNames.push(name);
     });
 
-    return userNames.sort().join(',');
+    return userNames.sort().join(', ');
   }
 
   get getDate(): string {
