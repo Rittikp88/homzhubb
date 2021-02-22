@@ -318,17 +318,17 @@ class DateUtils {
 
     const millisecondDifference = Math.abs(currentDate.getTime() - lastMessageDate.getTime());
     const hoursDifference = millisecondDifference / 36e5;
-    const dayDifference = Math.ceil(millisecondDifference / (1000 * 60 * 60 * 24));
+    const dayDifference = Math.trunc(millisecondDifference / (1000 * 60 * 60 * 24));
 
     const isFewMomentAgo = hoursDifference < 1;
-    const isMoreThanAHour = hoursDifference > 1 && dayDifference <= 1;
-    const isLessThanAWeek = dayDifference > 1 && dayDifference <= 7;
+    const isMoreThanAHour = hoursDifference > 1 && dayDifference < 1;
+    const isLessThanAWeek = dayDifference >= 1 && dayDifference <= 7;
 
     if (isFewMomentAgo) {
       return I18nService.t('assetMore:fewMomentAgo');
     }
     if (isMoreThanAHour) {
-      return dayDifference.toString();
+      return hoursDifference.toString();
     }
     if (isLessThanAWeek) {
       return I18nService.t('assetMore:daysAgo', { day: dayDifference });
