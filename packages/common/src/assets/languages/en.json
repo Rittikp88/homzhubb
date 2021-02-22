@@ -791,7 +791,8 @@
     "newCase": "New Case",
     "caseLogs": "Case Logs ({{count}})",
     "fewMomentAgo": "a few moments ago",
-    "daysAgo": "{{day}} day ago"
+    "daysAgo": "{{day}} day ago",
+    "chats": "Chats"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
