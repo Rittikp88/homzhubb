@@ -33,16 +33,16 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
   const circleSize = isHeader ? CIRCLE_SIZE_HEADER : CIRCLE_SIZE_CHAT;
 
   const ExtraCount = (): React.ReactElement | null => {
-    const styles = getStyles(circleSize, isHeader);
+    const customStyle = getStyles(circleSize, isHeader);
     if (shouldShowOverflow) {
       return (
         <Avatar
           isOnlyAvatar
-          containerStyle={styles.extraCountContainer}
+          containerStyle={customStyle.extraCountContainer}
           imageSize={circleSize}
           customText={`+${overflow.toString()}`}
-          initialsContainerStyle={styles.initialsContainerStyle}
-          customTextStyle={styles.customText}
+          initialsContainerStyle={customStyle.initialsContainerStyle}
+          customTextStyle={customStyle.customText}
         />
       );
     }
@@ -56,15 +56,16 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
           const isFirst = facesToShow.indexOf(face) === 0;
           const index = facesToShow.indexOf(face);
           const { name, profilePicture } = face;
-          const styles = getStyles(circleSize, isHeader, isFirst, index);
+          const faceStyle = getStyles(circleSize, isHeader, isFirst, index);
           return (
             <Avatar
+              key={index}
               isOnlyAvatar
-              containerStyle={styles.imageAvatarContainer}
+              containerStyle={faceStyle.imageAvatarContainer}
               imageSize={circleSize}
               fullName={name}
               image={profilePicture || undefined}
-              customTextStyle={styles.customText}
+              customTextStyle={faceStyle.customText}
             />
           );
         })}

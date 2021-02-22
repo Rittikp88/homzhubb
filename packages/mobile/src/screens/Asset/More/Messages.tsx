@@ -17,7 +17,7 @@ export class Messages extends React.PureComponent {
           data={data}
           renderItem={this.renderItem}
           style={styles.chatList}
-          ItemSeparatorComponent={this.renderItemSeperator}
+          ItemSeparatorComponent={this.renderItemSeparator}
           keyExtractor={this.keyExtractor}
           scrollEnabled={false}
         />
@@ -29,7 +29,7 @@ export class Messages extends React.PureComponent {
     return <GroupChat chatData={item} onChatPress={FunctionUtils.noop} />;
   };
 
-  private renderItemSeperator = (): React.ReactElement => {
+  private renderItemSeparator = (): React.ReactElement => {
     return <View style={styles.separator} />;
   };
 
