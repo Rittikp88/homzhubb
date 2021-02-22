@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, ImageStyle, TextStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, ImageStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { ITheme, theme } from '@homzhub/common/src/styles/theme';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -7,17 +7,19 @@ import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 interface IProps {
   chatData: GroupMessage;
+  onChatPress: () => void;
 }
 
 const GroupChat = (props: IProps): React.ReactElement => {
   const {
     chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate },
+    onChatPress,
   } = props;
   const styles = getStyles(theme);
 
   // TODO: (Shivam: 22/2/21: replace image with avatar component)
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onChatPress}>
       <Image source={{ uri: '' }} style={styles.avatar} width={50} height={50} />
       <View style={{ flex: 1 }}>
         <View style={[styles.justifyContent, styles.heading]}>
@@ -39,7 +41,7 @@ const GroupChat = (props: IProps): React.ReactElement => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
