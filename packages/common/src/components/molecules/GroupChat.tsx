@@ -30,7 +30,7 @@ const GroupChat = (props: IProps): React.ReactElement => {
           </Label>
         </View>
         <View style={styles.justifyContent}>
-          <Label type="regular" textType="regular" style={styles.tintColor}>
+          <Label numberOfLines={1} type="regular" textType="regular" style={[styles.tintColor, styles.userNames]}>
             {getAlphabeticalSortedUserNames}
           </Label>
           <View style={styles.unreadCountContainer}>
@@ -52,6 +52,7 @@ interface IScreenStyles {
   justifyContent: ViewStyle;
   tintColor: TextStyle;
   unreadCount: TextStyle;
+  userNames: TextStyle;
   unreadCountContainer: ViewStyle;
 }
 
@@ -91,8 +92,12 @@ const styles: IScreenStyles = StyleSheet.create({
     alignContent: 'center',
   },
   unreadCount: {
+    flex: 1,
     color: theme.colors.white,
     alignSelf: 'center',
+  },
+  userNames: {
+    flex: 2,
   },
 });
 
