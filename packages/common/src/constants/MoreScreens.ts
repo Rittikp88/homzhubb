@@ -19,6 +19,7 @@ export enum MoreScreenTypes {
   NOTIFICATIONS = 'notifications',
   TICKETS = 'tickets',
   KYC_DOCUMENTS = 'kycDocuments',
+  MESSAGES = 'messages',
   SAVED_PROPERTIES = 'savedProperties',
   PROPERTY_VISITS = 'propertyVisits',
   NEW_LAUNCHES = 'newLaunches',
@@ -60,6 +61,14 @@ export const MORE_SCREENS: IMoreScreens = {
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.KYC_DOCUMENTS,
+    },
+    {
+      id: 4,
+      title: `${translationKey}:messages`,
+      icon: icons.documents,
+      iconColor: ICON_COLOR,
+      textColor: TEXT_COLOR,
+      type: MoreScreenTypes.MESSAGES,
     },
   ],
   sectionB: [
