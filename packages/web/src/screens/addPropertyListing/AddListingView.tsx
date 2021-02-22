@@ -15,6 +15,9 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
+
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { ActionController } from '@homzhub/common/src/components/organisms/ActionController';
@@ -206,25 +209,27 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
 
     return (
       <>
-        {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
+        {key === Tabs.ACTIONS && (
           <View style={[styles.tabHeader, isMobile && styles.tabHeaderMobile]}>
-            <View
-              style={[
-                PlatformUtils.isWeb() && isMobile && styles.switchTabContainer,
-                PlatformUtils.isWeb() && !isMobile && !isTablet && styles.switchTabContainerWeb,
-                PlatformUtils.isWeb() && isTablet && !isMobile && styles.switchTabContainerTab,
-              ]}
-            >
-              <SelectionPicker
-                data={[
-                  { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
-                  { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+            {selectedPlan === TypeOfPlan.RENT && (
+              <View
+                style={[
+                  PlatformUtils.isWeb() && isMobile && styles.switchTabContainer,
+                  PlatformUtils.isWeb() && !isMobile && !isTablet && styles.switchTabContainerWeb,
+                  PlatformUtils.isWeb() && isTablet && !isMobile && styles.switchTabContainerTab,
                 ]}
-                selectedItem={[leaseType]}
-                containerStyles={[styles.switchTab, PlatformUtils.isWeb() && isMobile && styles.switchTabMobile]}
-                onValueChange={this.onTabChange}
-              />
-            </View>
+              >
+                <SelectionPicker
+                  data={[
+                    { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },
+                    { title: t(LeaseTypes.Shared), value: LeaseTypes.Shared },
+                  ]}
+                  selectedItem={[leaseType]}
+                  containerStyles={[styles.switchTab, PlatformUtils.isWeb() && isMobile && styles.switchTabMobile]}
+                  onValueChange={this.onTabChange}
+                />
+              </View>
+            )}
             <View style={[styles.tabRows, isMobile && styles.tabRowsMobile]}>
               <Text type="small" textType="semiBold">
                 {title}
@@ -308,7 +313,9 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       onUploadDocument,
     } = this.props;
     if (!assetDetails) return null;
-
+    const handleWebView = (params: IWebProps): React.ReactElement => {
+      return <PhoneCodePrefix {...params} />;
+    };
     switch (route.key) {
       case Tabs.VERIFICATIONS:
         return (
@@ -353,6 +360,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
               onNextStep={this.handleNextStep}
               scrollToTop={this.scrollToTop}
               onLeaseTypeChange={this.onTabChange}
+              webGroupPrefix={handleWebView}
             />
           </View>
         );

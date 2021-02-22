@@ -68,10 +68,9 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
             />
           );
         })}
-
       </>
-    )
-  }
+    );
+  };
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -89,11 +88,10 @@ interface IScreenStyles {
   extraCount: ViewStyle;
   imageAvatarContainer: ViewStyle;
   customText: TextStyle;
-  extraCountContainer: ViewStyle
+  extraCountContainer: ViewStyle;
 }
 
 const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, isFirst = false, index = 0) => {
-
   // To lift item up on chat head
   const liftUp = (): { marginBottom: number } => {
     const shift = isHeader ? (circleSize / 2) * index : circleSize * index + 7;
