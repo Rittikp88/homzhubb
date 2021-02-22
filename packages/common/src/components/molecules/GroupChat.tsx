@@ -20,7 +20,7 @@ const GroupChat = (props: IProps): React.ReactElement => {
   return (
     <TouchableOpacity style={styles.container} onPress={onChatPress}>
       <Image source={{ uri: '' }} style={styles.avatar} width={50} height={50} />
-      <View style={{ flex: 1 }}>
+      <View style={styles.subContainer}>
         <View style={[styles.justifyContent, styles.heading]}>
           <Label type="large" textType="bold">
             {name}
@@ -46,6 +46,7 @@ const GroupChat = (props: IProps): React.ReactElement => {
 
 interface IScreenStyles {
   container: ViewStyle;
+  subContainer: ViewStyle;
   heading: ViewStyle;
   avatar: ImageStyle;
   justifyContent: ViewStyle;
@@ -64,6 +65,9 @@ const styles: IScreenStyles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: theme.colors.background,
+  },
+  subContainer: {
+    flex: 1,
   },
   avatar: {
     marginEnd: 12,
