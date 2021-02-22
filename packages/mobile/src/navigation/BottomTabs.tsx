@@ -48,13 +48,14 @@ import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
+import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
+import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
+import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
+import { Messages } from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
-import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
-import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
-import { Messages } from '@homzhub/mobile/src/screens/Asset/More/Messages';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -104,6 +105,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ValueAddedServices]: undefined;
   [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
   [ScreensKeys.Messages]: undefined;
+  [ScreensKeys.ChatScreen]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -185,6 +187,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
       <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
       <MoreStackNavigator.Screen name={ScreensKeys.Messages} component={Messages} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -205,6 +208,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.PropertyFilters,
       ScreensKeys.PropertyPostStack,
       ScreensKeys.AssetNeighbourhood,
+      ScreensKeys.ChatScreen,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };

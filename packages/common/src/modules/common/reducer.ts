@@ -1,12 +1,20 @@
+import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { CommonActionPayloadTypes, CommonActionTypes } from '@homzhub/common/src/modules/common/actions';
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
+import { Links } from '@homzhub/common/src/domain/models/Links';
+import { Messages } from '@homzhub/common/src/domain/models/Message';
 
 export const initialCommonState: ICommonState = {
   countries: [],
   deviceCountry: '',
+  messages: {
+    count: 10,
+    links: new Links(),
+    messageResult: [],
+  },
   redirectionDetails: {
     redirectionLink: '',
     shouldRedirect: false,
@@ -37,6 +45,17 @@ export const commonReducer = (
       return {
         ...state,
         ['redirectionDetails']: action.payload as IRedirectionDetails,
+      };
+    case CommonActionTypes.GET.MESSAGES_SUCCESS:
+      // eslint-disable-next-line no-case-declarations
+      const payload = action.payload as Messages;
+      return {
+        ...state,
+        messages: {
+          count: payload.count,
+          links: payload.links,
+          messageResult: ReducerUtils.formatMessages(action.payload as Messages),
+        },
       };
     default:
       return {

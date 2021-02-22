@@ -4,7 +4,6 @@ export enum UserRole {
   OWNER = 'OWNER',
   TENANT = 'TENANT',
 }
-
 export interface IUser {
   id?: number;
   full_name: string;
@@ -17,8 +16,8 @@ export interface IUser {
   refresh_token: string;
   profile_picture?: string;
   rating?: number;
+  is_asset_owner?: boolean;
 }
-
 @JsonObject('User')
 export class User {
   @JsonProperty('id', Number, true)
@@ -53,6 +52,9 @@ export class User {
 
   @JsonProperty('rating', Number, true)
   private _rating = 0;
+
+  @JsonProperty('is_asset_owner', Boolean, true)
+  private _isAssetOwner = false;
 
   get refreshToken(): string {
     return this._refreshToken;
@@ -100,5 +102,9 @@ export class User {
 
   get profilePicture(): string {
     return this._profilePicture;
+  }
+
+  get isAssetOwner(): boolean {
+    return this._isAssetOwner;
   }
 }

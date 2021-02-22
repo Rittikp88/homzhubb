@@ -196,7 +196,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
     });
   }, [t]);
   // FORM VALIDATIONS END
-
+  console.log(spaces);
   return (
     <Formik
       enableReinitialize
@@ -296,7 +296,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   continueWeb: {
-    width: 165,
+    width: 251,
   },
   continueMobile: {
     width: '48%',

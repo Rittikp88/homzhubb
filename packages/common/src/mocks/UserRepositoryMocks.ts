@@ -55,3 +55,52 @@ export const loginPayload = {
 export const loginWithCallback = {
   data: loginPayload,
 };
+
+export const mockUsers = [
+  {
+    id: 1,
+    first_name: 'John',
+    last_name: 'Doe',
+    email: 'johndoe@mail.com',
+    phone_code: '+91',
+    phone_number: '9597773556',
+    profile_picture:
+      'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/c1a1aac4-5108-11eb-8e84-0242ac110004IMG_0002.JPG',
+    rating: 3,
+    is_asset_owner: true,
+  },
+  {
+    id: 2,
+    first_name: 'John',
+    last_name: 'Doe',
+    email: 'johndoe@mail.com',
+    phone_code: '+91',
+    phone_number: '9597773556',
+    profile_picture: null,
+    rating: 3,
+    is_asset_owner: true,
+  },
+  {
+    id: 3,
+    first_name: 'John',
+    last_name: 'Doe',
+    email: 'johndoe@mail.com',
+    phone_code: '+91',
+    phone_number: '9597773556',
+    profile_picture:
+      'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/c1a1aac4-5108-11eb-8e84-0242ac110004IMG_0002.JPG',
+    rating: 3,
+    is_asset_owner: true,
+  },
+  {
+    id: 4,
+    first_name: 'John',
+    last_name: 'Doe',
+    email: 'johndoe@mail.com',
+    phone_code: '+91',
+    phone_number: '9597773556',
+    profile_picture: null,
+    rating: 3,
+    is_asset_owner: true,
+  },
+];

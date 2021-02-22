@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { StyleProp, StyleSheet, Text as RNText, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  StyleSheet,
+  Text as RNText,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+  LayoutChangeEvent,
+} from 'react-native';
 import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -38,11 +47,13 @@ interface IFormCalendarProps extends WithTranslation {
 
 interface IFormCalendarState {
   isCalendarVisible: boolean;
+  width: number | string;
 }
 
 class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   public state = {
     isCalendarVisible: false,
+    width: 0,
   };
 
   private popupRef = React.createRef<PopupActions>();
@@ -70,6 +81,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       isYearView = false,
       isCurrentDateEnable = false,
     } = this.props;
+    const { width } = this.state;
     const availableDate = (): string => {
       if (selectedValue) {
         return selectedValue;
@@ -77,11 +89,11 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       return formProps?.values[name] === moment().format('YYYY-MM-DD') ? 'Today' : formProps?.values[name];
     };
 
-    const defaultDropDownProps = (width: string): PopupProps => ({
+    const defaultDropDownProps = (width_dropdown: string | number): PopupProps => ({
       position: 'bottom left',
       on: 'click',
       arrow: false,
-      contentStyle: { minWidth: width, marginTop: '4px' },
+      contentStyle: { minWidth: width_dropdown, marginTop: '4px' },
       closeOnDocumentClick: true,
       children: undefined,
     });
@@ -91,6 +103,9 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     if (textType === 'label') {
       TextField = Label;
     }
+    const onLayout = (e: LayoutChangeEvent): void => {
+      this.setState({ width: e.nativeEvent.layout.width });
+    };
     const isPlaceholderStyle = selectedValue === '' || !availableDate();
     return (
       <View style={containerStyle}>
@@ -112,27 +127,29 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
                 selectedDate={selectedValue ?? formProps?.values[name]}
               />
             }
-            popupProps={defaultDropDownProps('100px')}
+            popupProps={defaultDropDownProps(width)}
             forwardedRef={this.popupRef}
           >
-            <TouchableOpacity
-              testID="toCalenderInput"
-              style={[styles.dateView, dateContainerStyle]}
-              onPress={this.onCalendarOpen}
-            >
-              <View style={styles.dateLeft}>
-                {!isYearView && <Icon name={icons.calendar} color={iconColor || theme.colors.darkTint5} size={18} />}
-                <Text
-                  type="small"
-                  textType="regular"
-                  style={[styles.dateText, isPlaceholderStyle && placeHolderStyle, dateStyle]}
-                >
-                  {availableDate() || placeHolder}
-                </Text>
-              </View>
+            <View onLayout={onLayout}>
+              <TouchableOpacity
+                testID="toCalenderInput"
+                style={[styles.dateView, dateContainerStyle]}
+                onPress={this.onCalendarOpen}
+              >
+                <View style={styles.dateLeft}>
+                  {!isYearView && <Icon name={icons.calendar} color={iconColor || theme.colors.darkTint5} size={18} />}
+                  <Text
+                    type="small"
+                    textType="regular"
+                    style={[styles.dateText, isPlaceholderStyle && placeHolderStyle, dateStyle]}
+                  >
+                    {availableDate() || placeHolder}
+                  </Text>
+                </View>
 
-              <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} />
-            </TouchableOpacity>
+                <Icon name={icons.downArrowFilled} color={theme.colors.darkTint7} size={16} />
+              </TouchableOpacity>
+            </View>
           </Popover>
         )}
       </View>
@@ -168,12 +185,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.disabled,
     flexDirection: 'row',
-    paddingVertical: 12,
+    paddingVertical: 13,
     paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
     borderRadius: 4,
-    marginTop: 6,
   },
   dateLeft: {
     flexDirection: 'row',
