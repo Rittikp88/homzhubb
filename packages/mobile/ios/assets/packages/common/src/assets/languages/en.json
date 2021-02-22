@@ -207,7 +207,8 @@
     "editInvite": "Edit Invite",
     "tenantDetailsAreUpdated": "Tenant Details are updated",
     "admin": "Admin",
-    "serverError": "We are having trouble connecting to our servers, please check back in some time"
+    "serverError": "We are having trouble connecting to our servers, please check back in some time",
+    "codeCopy": "Code copy"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -287,7 +288,9 @@
     "errorInFacebookSignIn": "Error in Facebook Sign in",
     "fbEmailLinkingError": "Seems that you have not linked your email with Facebook, Please Sign up.",
     "newOnPlatform": "New on our platform?  ",
-    "createAccout": "Create an account"
+    "createAccount": "Create an account",
+    "authDescLogin": "Hi {{username}}, You are logging in for the first time on Homzhub. Enter your phone number to complete your profile. ",
+    "authDescSignUp": "Hello {{username}}, Enter your phone number to complete your profile."
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -352,6 +355,7 @@
     "showLess": "Show less",
     "annualIncrement": "Increment %",
     "duration": "Duration",
+    "rentAndSecurity": "Rent and security deposit",
     "minimumLeasePeriod": "Minimum Lock-in period",
     "maximumLeasePeriod": "Total lease period",
     "maximumLeaseError": "Total lease period should be greater than the minimum lock in",
@@ -759,7 +763,7 @@
     "refWith": "Refer your friends with",
     "copiedCode": "Referral code copied to the clipboard",
     "clickCopy": "Click below to copy the code",
-    "copySharingUrl": "Copy sharing URL",
+    "copyUrl": "Copy URL",
     "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
     "shareDoc": "Hey, I have shared this document with you from the Homzhub app. Please use the link to download.",

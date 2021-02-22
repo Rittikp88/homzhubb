@@ -32,6 +32,7 @@ export const DateFormats = {
   YYYYMMDD_HM: 'YYYY-MM-DD hh:mm',
   MMM_YYYY: 'MMM YYYY',
   DDMMMYYYY_H: 'DD MMM YYYY, h A',
+  DDMM: 'DD MMM',
 };
 
 class DateUtils {
@@ -51,6 +52,10 @@ class DateUtils {
 
   public getDisplayDate = (date: string, format: string): string => {
     return moment(date).format(format);
+  };
+
+  public getUtcDisplayDate = (date: string, format: string): string => {
+    return moment.utc(date).format(format);
   };
 
   public getDateFromISO = (selectedDate: string, format: string): string => {
@@ -301,7 +306,36 @@ class DateUtils {
     return moment().format(DateFormats.ISO24Format);
   };
 
+  public getDayMonth = (date: string): string => {
+    return moment(date).format(DateFormats.DDMM);
+  };
+
   public getISOWeekNumber = (date: Date): number => moment(date).isoWeek();
+
+  public getDateDifferenceMessage = (lastDate: string): string => {
+    const currentDate = new Date();
+    const lastMessageDate = new Date(lastDate);
+
+    const millisecondDifference = Math.abs(currentDate.getTime() - lastMessageDate.getTime());
+    const hoursDifference = millisecondDifference / 36e5;
+    const dayDifference = Math.trunc(millisecondDifference / (1000 * 60 * 60 * 24));
+
+    const isFewMomentAgo = hoursDifference < 1;
+    const isMoreThanAHour = hoursDifference > 1 && dayDifference < 1;
+    const isLessThanAWeek = dayDifference >= 1 && dayDifference <= 7;
+
+    if (isFewMomentAgo) {
+      return I18nService.t('assetMore:fewMomentAgo');
+    }
+    if (isMoreThanAHour) {
+      return hoursDifference.toString();
+    }
+    if (isLessThanAWeek) {
+      return I18nService.t('assetMore:daysAgo', { day: dayDifference });
+    }
+
+    return moment(lastMessageDate.toString()).format(DateFormats.DDMM);
+  };
 }
 
 const dateUtils = new DateUtils();

@@ -111,6 +111,8 @@ export enum ScreensKeys {
   KYC = 'KYC',
   ValueAddedServices = 'ValueAddedServices',
   ServicesForSelectedAsset = 'ServicesForSelectedAsset',
+  Messages = 'Messages',
+  ChatScreen = 'ChatScreen',
 }
 
 export enum OtpNavTypes {

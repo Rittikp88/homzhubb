@@ -62,14 +62,14 @@ const Avatar = (props: IProps): React.ReactElement => {
         <Text type="regular" textType="semiBold" style={[styles.customText, customTextStyle]}>
           {customText}
         </Text>
-      )
+      );
     }
     return (
       <Text type="small" textType="regular" style={[styles.initials, customTextStyle]}>
         {StringUtils.getInitials(fullName)}
       </Text>
-    )
-  }
+    );
+  };
 
   return (
     <View style={[styles.container, containerStyle]}>
@@ -92,12 +92,12 @@ const Avatar = (props: IProps): React.ReactElement => {
               {!!icon && <Icon name={icons.circularCheckFilled} size={imageSize} color={theme.colors.greenOpacity} />}
             </>
           ) : (
-              <View
-                style={[styles.initialsContainer, { ...(theme.circleCSS(imageSize) as object) }, initialsContainerStyle]}
-              >
-                {renderText()}
-              </View>
-            )}
+            <View
+              style={[styles.initialsContainer, { ...(theme.circleCSS(imageSize) as object) }, initialsContainerStyle]}
+            >
+              {renderText()}
+            </View>
+          )}
 
           {onPressCamera && (
             <TouchableOpacity style={styles.editView} onPress={onPressCamera} activeOpacity={0.8}>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
   },
   customText: {
-    color: theme.colors.darkTint4
+    color: theme.colors.darkTint4,
   },
   nameContainer: {
     marginLeft: 12,

@@ -6,13 +6,15 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { withMediaQuery, IWithMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { FormTextInput, IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import {
   IFormData,
@@ -34,23 +36,22 @@ interface IFormFields extends IFormData {
   phone: string;
   phoneCode: string;
 }
-
 interface IOwnState {
   currentTermId: number;
   isPropertyOccupied: boolean;
   formData: IFormFields;
 }
-
 interface IProps extends WithTranslation {
   currencyData: Currency;
   phoneCode: string;
   assetGroupType: AssetGroupTypes;
   currentAssetId: number;
   onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams) => Promise<void>;
+  webGroupPrefix?: (params: IWebProps) => React.ReactElement;
 }
-
-class ManageTermController extends React.PureComponent<IProps, IOwnState> {
-  public constructor(props: IProps) {
+type Props = IProps & IWithMediaQuery;
+class ManageTermController extends React.PureComponent<Props, IOwnState> {
+  public constructor(props: Props) {
     super(props);
     this.state = {
       isPropertyOccupied: false,
@@ -68,26 +69,27 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
 
   public render = (): React.ReactNode => {
     const { isPropertyOccupied } = this.state;
-    const { t } = this.props;
-
+    const { t, isMobile } = this.props;
     return (
       <>
         {this.renderCard()}
         {this.renderForm()}
         {!isPropertyOccupied && (
-          <Button
-            type="primary"
-            title={t('common:continue')}
-            containerStyle={styles.buttonStyle}
-            onPress={this.onNextStep}
-          />
+          <View style={PlatformUtils.isWeb && !isMobile && styles.buttonContainer}>
+            <Button
+              type="primary"
+              title={t('common:continue')}
+              containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
+              onPress={this.onNextStep}
+            />
+          </View>
         )}
       </>
     );
   };
 
   private renderCard = (): React.ReactNode => {
-    const { t } = this.props;
+    const { t, isMobile } = this.props;
     const { isPropertyOccupied } = this.state;
     return (
       <View style={styles.card}>
@@ -102,7 +104,10 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
             { title: t('common:yes'), isSelected: isPropertyOccupied },
             { title: t('common:no'), isSelected: !isPropertyOccupied },
           ].map(({ title, isSelected }) => (
-            <View style={styles.option} key={title}>
+            <View
+              style={[(!PlatformUtils.isWeb() || isMobile) && styles.option, PlatformUtils.isWeb() && styles.optionWeb]}
+              key={title}
+            >
               <TouchableOpacity onPress={this.onOccupancyChanged}>
                 <Icon
                   name={isSelected ? icons.circleFilled : icons.circleOutline}
@@ -121,7 +126,7 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   private renderForm = (): React.ReactNode => {
-    const { t, currencyData, assetGroupType } = this.props;
+    const { t, currencyData, assetGroupType, isMobile } = this.props;
     const { isPropertyOccupied, formData } = this.state;
     return (
       <Formik
@@ -142,14 +147,16 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
                 >
                   {this.renderTenantForm(formProps)}
                 </LeaseTermForm>
-                <FormButton
-                  title={t('common:continue')}
-                  type="primary"
-                  formProps={formProps}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  containerStyle={styles.continue}
-                />
+                <View style={PlatformUtils.isWeb && !isMobile && styles.buttonContainer}>
+                  <FormButton
+                    title={t('common:continue')}
+                    type="primary"
+                    formProps={formProps}
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
+                  />
+                </View>
               </>
             );
           }
@@ -161,54 +168,98 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   private renderTenantForm = (formProps: FormikProps<IFormFields>): React.ReactNode => {
-    const { t } = this.props;
+    const { t, isMobile, isTablet, webGroupPrefix } = this.props;
+
     return (
       <>
         <Text type="small" textType="semiBold" style={styles.headerTitle}>
           {t('tenantDetails')}
         </Text>
-        <View style={styles.optionContainer}>
-          <View style={styles.firstName}>
+        <View style={PlatformUtils.isWeb() && !isMobile && styles.tenantDetail}>
+          {(!PlatformUtils.isWeb() || isMobile) && (
+            <View style={styles.optionContainer}>
+              <View style={styles.firstName}>
+                <FormTextInput
+                  name="firstName"
+                  inputType="name"
+                  label={t('firstName')}
+                  placeholder={t('firstName')}
+                  formProps={formProps}
+                  isMandatory
+                />
+              </View>
+              <View style={styles.lastName}>
+                <FormTextInput
+                  name="lastName"
+                  inputType="name"
+                  label={t('lastName')}
+                  placeholder={t('lastName')}
+                  formProps={formProps}
+                />
+              </View>
+            </View>
+          )}
+          {PlatformUtils.isWeb() && !isMobile && (
+            <>
+              <View style={[styles.inputContainer, isTablet && styles.inputContainerTab]}>
+                <FormTextInput
+                  name="firstName"
+                  inputType="name"
+                  label={t('firstName')}
+                  placeholder={t('firstName')}
+                  formProps={formProps}
+                  isMandatory
+                  containerStyle={styles.input}
+                />
+              </View>
+              <View style={[styles.inputContainer, isTablet && styles.inputContainerTab]}>
+                <FormTextInput
+                  name="lastName"
+                  inputType="name"
+                  label={t('lastName')}
+                  placeholder={t('lastName')}
+                  formProps={formProps}
+                  containerStyle={styles.input}
+                />
+              </View>
+            </>
+          )}
+          <View
+            style={[
+              PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+              PlatformUtils.isWeb() && !isMobile && isTablet && styles.inputContainerTab,
+            ]}
+          >
             <FormTextInput
-              name="firstName"
-              inputType="name"
-              label={t('firstName')}
-              placeholder={t('firstName')}
+              name="email"
+              label={t('common:email')}
+              placeholder={t('tenantEmail')}
+              inputType="email"
               formProps={formProps}
               isMandatory
+              containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
             />
           </View>
-          <View style={styles.lastName}>
+          <View
+            style={[
+              PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+              PlatformUtils.isWeb() && !isMobile && isTablet && styles.inputContainerTab,
+            ]}
+          >
             <FormTextInput
-              name="lastName"
-              inputType="name"
-              label={t('lastName')}
-              placeholder={t('lastName')}
+              name="phone"
+              label={t('common:phone')}
+              placeholder={t('tenantPhone')}
+              inputType="phone"
+              isMandatory
+              inputPrefixText={formProps.values.phoneCode}
+              phoneFieldDropdownText={t('auth:countryRegion')}
               formProps={formProps}
+              containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
+              webGroupPrefix={webGroupPrefix}
             />
           </View>
         </View>
-        <FormTextInput
-          name="email"
-          label={t('common:email')}
-          placeholder={t('tenantEmail')}
-          inputType="email"
-          formProps={formProps}
-          isMandatory
-        />
-        <FormTextInput
-          name="phone"
-          label={t('common:phone')}
-          placeholder={t('tenantPhone')}
-          inputType="phone"
-          isMandatory
-          inputPrefixText={formProps.values.phoneCode}
-          phoneFieldDropdownText={t('auth:countryRegion')}
-          formProps={formProps}
-        />
-        <Text type="small" textType="semiBold" style={styles.headerTitle}>
-          {t('rentAndDeposit')}
-        </Text>
       </>
     );
   };
@@ -222,7 +273,6 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     formActions.setSubmitting(true);
     const { onNextStep, currentAssetId, assetGroupType } = this.props;
     const { currentTermId } = this.state;
-
     const params: IManageTerm = {
       first_name: values.firstName,
       last_name: values.lastName,
@@ -231,7 +281,6 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
       phone_number: values.phone,
       ...AssetService.extractLeaseParams(values, assetGroupType),
     };
-
     try {
       if (currentTermId <= -1) {
         const id = await AssetRepository.createManageTerm(currentAssetId, params);
@@ -243,7 +292,6 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
-
     formActions.setSubmitting(false);
   };
 
@@ -272,7 +320,8 @@ class ManageTermController extends React.PureComponent<IProps, IOwnState> {
 }
 
 const HOC = withTranslation(LocaleConstants.namespacesKey.property)(ManageTermController);
-export { HOC as ManageTermController };
+const manageTermController = withMediaQuery<any>(HOC);
+export { manageTermController as ManageTermController };
 
 const styles = StyleSheet.create({
   card: {
@@ -304,6 +353,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 50,
   },
+  continueWeb: {
+    width: 251,
+  },
   firstName: {
     flex: 0.5,
   },
@@ -311,12 +363,33 @@ const styles = StyleSheet.create({
     flex: 0.5,
     marginStart: 16,
   },
-  buttonStyle: {
-    flex: 0,
-  },
+
   headerTitle: {
     marginTop: 20,
     marginBottom: 8,
     color: theme.colors.darkTint3,
+  },
+  inputContainer: {
+    width: '31.5%',
+    margin: 10,
+  },
+  input: {
+    width: '100%',
+  },
+  tenantDetail: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  inputContainerTab: {
+    width: '47.5%',
+    margin: 8,
+  },
+  optionWeb: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginEnd: 121,
+  },
+  buttonContainer: {
+    alignItems: 'flex-end',
   },
 });

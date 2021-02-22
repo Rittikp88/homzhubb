@@ -6,6 +6,7 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import LeaseTermController from '@homzhub/common/src/components/organisms/LeaseTermController';
 import { SaleTermController } from '@homzhub/common/src/components/organisms/SaleTermController';
 import { ManageTermController } from '@homzhub/common/src/components/organisms/ManageTermController';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
@@ -18,6 +19,7 @@ interface IProps {
   onNextStep: () => void;
   scrollToTop: () => void;
   onLeaseTypeChange: (leaseType: LeaseTypes) => void;
+  webGroupPrefix?: (params: IWebProps) => React.ReactElement;
 }
 
 interface IDispatchProps {
@@ -51,6 +53,7 @@ class ActionController extends React.PureComponent<Props, {}> {
       typeOfPlan,
       scrollToTop,
       onLeaseTypeChange,
+      webGroupPrefix,
     } = this.props;
 
     return (
@@ -83,6 +86,7 @@ class ActionController extends React.PureComponent<Props, {}> {
             currencyData={currencies[0]}
             phoneCode={phoneCodes[0].phoneCode}
             onNextStep={this.onNextStep}
+            webGroupPrefix={webGroupPrefix}
           />
         )}
       </>

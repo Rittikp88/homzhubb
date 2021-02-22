@@ -157,6 +157,9 @@ export const icons = {
   reply: 'reply',
   flag: 'flag',
   pdf: 'pdf',
+  filledGallery: 'filled-gallery',
+  circularPlus: 'circular-plus',
+  circularArrow: 'circular-arrow',
 
   // COMMUTE
   train: 'train',
