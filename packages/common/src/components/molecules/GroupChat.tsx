@@ -1,87 +1,60 @@
 import React from 'react';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { View, StyleSheet, ViewStyle, ImageStyle } from 'react-native';
+import { ITheme, theme } from '@homzhub/common/src/styles/theme';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-
-interface IUser {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  isAssetOwner: boolean;
-}
-// TODO: (Shivam: 19/2/21: use model)
-interface IChatData {
-  id: number;
-  name: string;
-  users: IUser[];
-  lastMessageAt: string;
-  unreadCount: number;
-}
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 interface IProps {
-  chatData: IChatData;
+  chatData: GroupMessage;
 }
 
 const GroupChat = (props: IProps): React.ReactElement => {
   const {
-    chatData: { name, users, lastMessageAt, unreadCount },
+    chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate },
   } = props;
-  const userNames = getAlphabeticalSortedUserNames(users);
-  const date = getDate(lastMessageAt);
+  const styles = getStyles(theme);
 
   return (
-    <>
-      <Image source={{ uri: '' }} />
-      <>
+    <View style={styles.container}>
+      <Image source={{ uri: '' }} style={styles.avatar} />
+      <View style={[styles.justifyContent, styles.heading]}>
         <Text>{name}</Text>
-        <Text>{date}</Text>
-      </>
-      <>
-        <Text>{userNames}</Text>
+        <Text>{getDate}</Text>
+      </View>
+      <View style={styles.justifyContent}>
+        <Text>{getAlphabeticalSortedUserNames}</Text>
         <Text>{unreadCount}</Text>
-      </>
-    </>
+      </View>
+    </View>
   );
 };
 
-// TODO: (shivam: 19/2/21: move logic to model)
-const getAlphabeticalSortedUserNames = (users: IUser[]): string => {
-  const userNames: string[] = [];
-  users.forEach((user: IUser) => {
-    const { firstName, lastName } = user;
-    const name = `${firstName} ${lastName}`;
+interface IScreenStyles {
+  container: ViewStyle;
+  heading: ViewStyle;
+  avatar: ImageStyle;
+  justifyContent: ViewStyle;
+}
 
-    userNames.push(name);
+const getStyles = (appTheme: ITheme): IScreenStyles => {
+  return StyleSheet.create({
+    container: {
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+    },
+    avatar: {
+      marginEnd: 12,
+    },
+    justifyContent: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    heading: {
+      marginBottom: 5,
+    },
   });
-
-  return userNames.sort().join(',');
-};
-
-// TODO: (shivam: 19/2/21: move logic to model)
-const getDate = (date: string): string => {
-  const currentDate = new Date();
-  const lastMessageDate = new Date(date);
-
-  const millisecondDifference = Math.abs(currentDate.getTime() - lastMessageDate.getTime());
-  const hoursDifference = millisecondDifference / 36e5;
-  const dayDifference = Math.ceil(millisecondDifference / (1000 * 60 * 60 * 24));
-
-  const isFewMomentAgo = hoursDifference < 1;
-  const isMoreThanAHour = hoursDifference > 1 && dayDifference <= 1;
-  const isLessThanAWeek = dayDifference > 1 && dayDifference <= 7;
-
-  if (isFewMomentAgo) {
-    return ' a few moments ago';
-  }
-  if (isMoreThanAHour) {
-    return dayDifference.toString();
-  }
-  if (isLessThanAWeek) {
-    return `${dayDifference} day ago`;
-  }
-
-  return DateUtils.getDayMonth(lastMessageDate.toString());
 };
 
 export default React.memo(GroupChat);
