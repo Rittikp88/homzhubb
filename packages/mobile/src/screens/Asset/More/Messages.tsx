@@ -55,7 +55,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       t,
       groupMessages,
     } = this.props;
-    console.log(groupMessages, 'groupMessages$$$');
+
     return (
       <UserScreen title={t('assetMore:more')} scrollEnabled onBackPress={goBack} pageTitle={t('assetMore:messages')}>
         <View style={styles.container}>
