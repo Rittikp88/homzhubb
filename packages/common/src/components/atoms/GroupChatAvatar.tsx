@@ -10,24 +10,30 @@ const MAX_DISPLAY_COUNT_HEADER = 3;
 const MAX_DISPLAY_COUNT_CHAT = 2;
 const CIRCLE_SIZE_HEADER = 55;
 const CIRCLE_SIZE_CHAT = 30;
+
 interface IProps {
   faces: User[];
   isHeader: boolean;
   containerStyle?: ViewStyle;
 }
+
 type getStyles = (circleSize?: number, isHeader?: boolean, isFirst?: boolean, index?: number) => IScreenStyles;
+
 const GroupChatAvatar = (props: IProps): React.ReactElement => {
   // Deserializing data
   const mockFaces = ObjectMapper.deserializeArray(User, mockUsers); // TODO:Praharsh : Remove mock
   const styles = getStyles();
   const { faces = mockFaces, isHeader = true, containerStyle = {} } = props;
+
   const faceDisplayCount = isHeader ? MAX_DISPLAY_COUNT_HEADER : MAX_DISPLAY_COUNT_CHAT;
   const shouldShowOverflow = faces.length > faceDisplayCount;
   const overflow = faces.length - faceDisplayCount;
+
   const facesToShow = faces
     .sort((a: User, b: User) => a.firstName.localeCompare(b.firstName))
     .slice(0, faceDisplayCount);
   const circleSize = isHeader ? CIRCLE_SIZE_HEADER : CIRCLE_SIZE_CHAT;
+
   const ExtraCount = (): React.ReactElement | null => {
     const extraCountStyle = getStyles(circleSize, isHeader);
     if (shouldShowOverflow) {
@@ -44,6 +50,7 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
     }
     return null;
   };
+
   const Faces = (): React.ReactElement => {
     return (
       <>
