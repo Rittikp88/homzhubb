@@ -15,7 +15,6 @@ export const CommonActionTypes = {
     MESSAGES_SUCCESS: `${actionTypePrefix}MESSAGES_SUCCESS`,
     GROUP_MESSAGES: `${actionTypePrefix}GROUP_MESSAGES`,
     GROUP_MESSAGES_SUCCESS: `${actionTypePrefix}GROUP_MESSAGES_SUCCESS`,
-    GROUP_MESSAGES_ERROR: `${actionTypePrefix}GROUP_MESSAGES_ERROR`,
   },
   SET: {
     DEVICE_COUNTRY: `${actionTypePrefix}DEVICE_COUNTRY`,
@@ -62,11 +61,6 @@ const getGroupMessageSuccess = (groupMessages: GroupMessage[]): IFluxStandardAct
   payload: ObjectMapper.serializeArray(groupMessages),
 });
 
-const getGroupMessageError = (error: string): IFluxStandardAction => ({
-  type: CommonActionTypes.GET.GROUP_MESSAGES_ERROR,
-  error,
-});
-
 export type CommonActionPayloadTypes =
   | ICountry[]
   | IRedirectionDetails
@@ -85,5 +79,4 @@ export const CommonActions = {
   getMessagesSuccess,
   getGroupMessage,
   getGroupMessageSuccess,
-  getGroupMessageError,
 };

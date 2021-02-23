@@ -83,16 +83,6 @@ const getGroupMessagesLoading = (state: IState): boolean => {
   return groupMessages;
 };
 
-const getGroupMessagesError = (state: IState): string => {
-  const {
-    common: {
-      error: { groupMessages },
-    },
-  } = state;
-
-  return groupMessages;
-};
-
 export const CommonSelectors = {
   getCountryList,
   getDefaultPhoneCode,
@@ -102,5 +92,4 @@ export const CommonSelectors = {
   getMessages,
   getGroupMessages,
   getGroupMessagesLoading,
-  getGroupMessagesError,
 };

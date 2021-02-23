@@ -22,7 +22,6 @@ interface IScreenState {
 
 interface IStateToProps {
   groupMessages: GroupMessage[] | null;
-  groupMessagesError: string;
   groupMessagesLoading: boolean;
 }
 
@@ -100,7 +99,6 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
 const mapStateToProps = (state: IState): IStateToProps => {
   return {
     groupMessages: CommonSelectors.getGroupMessages(state),
-    groupMessagesError: CommonSelectors.getGroupMessagesError(state),
     groupMessagesLoading: CommonSelectors.getGroupMessagesLoading(state),
   };
 };

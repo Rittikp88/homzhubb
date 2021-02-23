@@ -24,9 +24,6 @@ export const initialCommonState: ICommonState = {
   loaders: {
     groupMessages: false,
   },
-  error: {
-    groupMessages: '',
-  },
 };
 
 export const commonReducer = (
@@ -76,12 +73,6 @@ export const commonReducer = (
       return {
         ...state,
         ['groupMessages']: action.payload as GroupMessage[],
-        ['loaders']: { ...state.loaders, ['groupMessages']: false },
-      };
-    case CommonActionTypes.GET.GROUP_MESSAGES_ERROR:
-      return {
-        ...state,
-        ['error']: { ...state.error, ['groupMessages']: action.error as string },
         ['loaders']: { ...state.loaders, ['groupMessages']: false },
       };
     default:

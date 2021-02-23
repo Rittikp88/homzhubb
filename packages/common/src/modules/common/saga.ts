@@ -39,7 +39,7 @@ function* getGroupMessages() {
     yield put(CommonActions.getGroupMessageSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    yield put(CommonActions.getGroupMessageError(error));
+    AlertHelper.error({ message: error });
   }
 }
 

@@ -12,7 +12,4 @@ export interface ICommonState {
   loaders: {
     groupMessages: boolean;
   };
-  error: {
-    groupMessages: string;
-  };
 }
