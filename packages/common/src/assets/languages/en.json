@@ -792,7 +792,8 @@
     "caseLogs": "Case Logs ({{count}})",
     "fewMomentAgo": "a few moments ago",
     "daysAgo": "{{day}} day ago",
-    "chats": "Chats"
+    "chats": "Chats",
+    "searchByNameOrProperty": "Search by name or property"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

@@ -25,7 +25,7 @@ interface IVerificationProps {
   typeOfPlan: TypeOfPlan;
   existingDocuments: ExistingVerificationDocuments[];
   localDocuments: ExistingVerificationDocuments[];
-  handleUpload: (verificationData: VerificationDocumentTypes, Files?:File[]) => void;
+  handleUpload: (verificationData: VerificationDocumentTypes, Files?: File[]) => void;
   deleteDocument: (document: ExistingVerificationDocuments, isLocalDocument?: boolean) => Promise<void>;
   handleTypes?: (types: VerificationDocumentTypes[]) => void;
 }
@@ -92,17 +92,9 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
   }
 
   private renderImageOrUploadBox = (currentData: VerificationDocumentTypes): ReactElement => {
-    const {
-      handleUpload,
-      existingDocuments,
-      localDocuments,
-      deleteDocument,
-      isMobile,
-      isOnlyTablet,
-      t,
-    } = this.props;
+    const { handleUpload, existingDocuments, localDocuments, deleteDocument, isMobile, isOnlyTablet, t } = this.props;
     const onPress = (): void => {
-     handleUpload(currentData);
+      handleUpload(currentData);
     };
     const imageSelection = (files?: File[]): void => {
       if (files) {
