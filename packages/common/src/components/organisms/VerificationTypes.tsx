@@ -1,5 +1,6 @@
 import React, { Component, ReactElement, ReactNode } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -24,7 +25,7 @@ interface IVerificationProps {
   typeOfPlan: TypeOfPlan;
   existingDocuments: ExistingVerificationDocuments[];
   localDocuments: ExistingVerificationDocuments[];
-  handleUpload: (verificationData: VerificationDocumentTypes) => void;
+  handleUpload: (verificationData: VerificationDocumentTypes, Files?:File[]) => void;
   deleteDocument: (document: ExistingVerificationDocuments, isLocalDocument?: boolean) => Promise<void>;
   handleTypes?: (types: VerificationDocumentTypes[]) => void;
 }
@@ -33,7 +34,7 @@ interface IVerificationState {
   verificationTypes: VerificationDocumentTypes[];
 }
 
-type IProps = IVerificationProps & IWithMediaQuery;
+type IProps = IVerificationProps & IWithMediaQuery & WithTranslation;
 
 class VerificationTypes extends Component<IProps, IVerificationState> {
   public state = {
@@ -91,19 +92,35 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
   }
 
   private renderImageOrUploadBox = (currentData: VerificationDocumentTypes): ReactElement => {
-    const { handleUpload, existingDocuments, localDocuments, deleteDocument } = this.props;
-    const onPress = (): void => handleUpload(currentData);
-
+    const {
+      handleUpload,
+      existingDocuments,
+      localDocuments,
+      deleteDocument,
+      isMobile,
+      isOnlyTablet,
+      t,
+    } = this.props;
+    const onPress = (): void => {
+     handleUpload(currentData);
+    };
+    const imageSelection = (files?: File[]): void => {
+      if (files) {
+        handleUpload(currentData, files);
+      }
+    };
     const totalDocuments = existingDocuments.concat(localDocuments);
     const thumbnailIndex = findIndex(totalDocuments, (document: ExistingVerificationDocuments) => {
       return currentData.id === document.verificationDocumentType.id;
     });
+    const onDropRejection = (): void => {
+      AlertHelper.error({ message: t('unsupportedFormat') });
+    };
 
     if (thumbnailIndex !== -1) {
       const currentDocument: ExistingVerificationDocuments = totalDocuments[thumbnailIndex];
       const thumbnailImage = currentDocument.document.link;
       const fileType = currentDocument.document.link.split('/')?.pop()?.split('.');
-
       const onDeleteImageThumbnail = (): Promise<void> =>
         deleteDocument(currentDocument, currentDocument.isLocalDocument || undefined);
 
@@ -118,17 +135,41 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
           </TouchableOpacity>
         </View>
       ) : (
-        <ImageThumbnail imageUrl={thumbnailImage} onIconPress={onDeleteImageThumbnail} />
+        <View
+          style={[
+            styles.imageContainer,
+            isMobile && styles.imageContainerMobile,
+            isOnlyTablet && styles.imageContainerTablet,
+          ]}
+        >
+          <ImageThumbnail
+            imageUrl={thumbnailImage}
+            onIconPress={onDeleteImageThumbnail}
+            imageWrapperStyle={PlatformUtils.isWeb() && !isMobile && styles.imageWrapper}
+            imageContainerStyle={isOnlyTablet && styles.imageContainerTablet}
+          />
+        </View>
       );
     }
 
-    return (
+    return PlatformUtils.isMobile() ? (
       <UploadBox
         icon={currentData.icon}
         header={currentData.label}
         subHeader={currentData.helpText}
         onPress={onPress}
         containerStyle={styles.uploadBox}
+      />
+    ) : (
+      <UploadBox
+        icon={currentData.icon}
+        header={currentData.label}
+        subHeader={currentData.helpText}
+        onPress={onPress}
+        containerStyle={styles.uploadBox}
+        webOnDropAccepted={imageSelection}
+        webOnDropRejected={onDropRejection}
+        multipleUpload={false}
       />
     );
   };
@@ -151,8 +192,9 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
     }
   };
 }
+const translatedVerificationTypes = withTranslation()(VerificationTypes);
 
-export default withMediaQuery<any>(VerificationTypes);
+export default withMediaQuery<any>(translatedVerificationTypes);
 
 const styles = StyleSheet.create({
   container: {
@@ -168,7 +210,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   mobileUploadBox: {
-    width: PlatformUtils.isWeb() ? 305 : 'auto',
+    width: PlatformUtils.isWeb() ? 'calc(100% - 24px)' : 'auto',
     paddingHorizontal: PlatformUtils.isWeb() ? 8 : 16,
   },
   title: {
@@ -214,5 +256,17 @@ const styles = StyleSheet.create({
   webSelfie: {
     marginLeft: 70,
     marginTop: 20,
+  },
+  imageContainer: {
+    marginRight: 100,
+  },
+  imageContainerMobile: {
+    marginRight: undefined,
+  },
+  imageWrapper: {
+    height: 280,
+  },
+  imageContainerTablet: {
+    width: 650,
   },
 });

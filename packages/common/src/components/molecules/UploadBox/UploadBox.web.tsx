@@ -15,15 +15,18 @@ interface IUploadProps {
   iconColor?: string;
   webOnDropAccepted?: (files: File[]) => void;
   webOnDropRejected?: (fileRejections: FileRejection[]) => void;
+  multipleUpload: boolean;
 }
 
 export const UploadBox: React.FC<IUploadProps> = (props: IUploadProps) => {
-  const { webOnDropAccepted, webOnDropRejected } = props;
+  const { webOnDropAccepted, webOnDropRejected, multipleUpload } = props;
   const { getRootProps, getInputProps } = useDropzone({
     accept: '.jpg,.jpeg,.png,.pdf',
     onDropAccepted: webOnDropAccepted,
     onDropRejected: webOnDropRejected,
+    multiple: multipleUpload,
   });
+
   return (
     <div {...getRootProps()}>
       <input {...getInputProps()} />

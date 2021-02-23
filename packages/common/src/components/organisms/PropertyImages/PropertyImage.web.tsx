@@ -83,6 +83,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
                   subHeader={t('property:supportedImageFormats')}
                   webOnDropAccepted={onUploadImage}
                   webOnDropRejected={onDropRejection}
+                  multipleUpload
                 />
                 {this.renderImages()}
               </>
@@ -260,6 +261,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
         onPressLastThumbnail={onPressLastThumbnail}
         containerStyle={styles.thumbnailContainer}
         imageWrapperStyle={styles.imageWrapper}
+        galleryView
       />
     );
   };
