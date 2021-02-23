@@ -19,7 +19,7 @@ const GroupChat = (props: IProps): React.ReactElement => {
   // TODO: (Shivam: 22/2/21: replace image with avatar component)
   return (
     <TouchableOpacity style={styles.container} onPress={onChatPress}>
-      <GroupChatAvatar faces={users} isHeader facesCount={2} avatarSize={30} containerStyle={styles.avatar} />
+      <GroupChatAvatar faces={users} isHeader={false} containerStyle={styles.avatar} />
       <View style={styles.subContainer}>
         <View style={[styles.justifyContent, styles.heading]}>
           <Label type="large" textType="bold">
@@ -73,6 +73,8 @@ const styles: IScreenStyles = StyleSheet.create({
   avatar: {
     marginEnd: 12,
     justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: -20,
   },
   justifyContent: {
     flex: 1,
