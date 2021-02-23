@@ -22,6 +22,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { AssetReviewCard } from '@homzhub/mobile/src/components/molecules/AssetReviewCard';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
 import { ReviewForm } from '@homzhub/mobile/src/components/molecules/ReviewForm';
@@ -36,6 +37,7 @@ import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IVisitActionParam, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import { editReview } from '@homzhub/common/src/mocks/EditReview';
 
 // CONSTANTS
 const confirmation = ['Yes', 'No'];
@@ -67,6 +69,7 @@ interface IScreenState {
   reviewAsset: AssetVisit | null;
   currentVisitId: number;
   height: number;
+  replyReview: boolean;
 }
 
 type Props = IProps & WithTranslation;
@@ -79,6 +82,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     reviewAsset: null,
     currentVisitId: 0,
     height: theme.viewport.height,
+    replyReview: false,
   };
 
   public componentDidMount = (): void => {
@@ -162,6 +166,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         {this.renderCancelConfirmation()}
         {this.renderReviewForm()}
         {this.deleteForm()}
+        {this.replyReviewForm()}
       </View>
     );
   }
@@ -270,13 +275,18 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   };
 
   private renderCompletedButtons = (item: AssetVisit): React.ReactNode => {
+    const { replyReview } = this.state;
     const { t } = this.props;
-    const onPress = (): void => {
-      this.setState({ reviewAsset: item, showReviewForm: true });
-    };
     const { review, isAssetOwner } = item;
 
     if (isAssetOwner && !review) return null;
+    const onPress = (): void => {
+      if (isAssetOwner) {
+        this.setState({ replyReview: !replyReview });
+      } else {
+        this.setState({ reviewAsset: item, showReviewForm: true });
+      }
+    };
 
     return (
       <>
@@ -389,6 +399,29 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     if (newHeight === height) {
       this.setState({ height: newHeight });
     }
+  };
+
+  private replyReviewForm = (): React.ReactNode => {
+    const { replyReview } = this.state;
+    const { t } = this.props;
+
+    return (
+      <BottomSheet
+        visible={replyReview}
+        sheetHeight={theme.viewport.height * 0.65}
+        headerTitle={t('propertyReview')}
+        onCloseSheet={this.onCancelReview}
+      >
+        <ScrollView>
+          <AssetReviewCard
+            hideShowMore
+            key={editReview.id}
+            review={editReview}
+            reportCategories={editReview.reportCategories}
+          />
+        </ScrollView>
+      </BottomSheet>
+    );
   };
 
   private delete = (): void => {
