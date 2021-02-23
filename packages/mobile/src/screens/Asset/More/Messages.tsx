@@ -4,7 +4,6 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { throttle } from 'lodash';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -16,6 +15,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 interface IScreenState {
   searchValue: string;
@@ -28,6 +28,7 @@ interface IStateToProps {
 
 interface IDispatchToProps {
   getGroupMessage: () => void;
+  setCurrentChatDetail: (payload: IChatPayload) => void;
 }
 
 type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.Messages>;
@@ -82,7 +83,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
   }
 
   private renderItem = ({ item, index }: { item: GroupMessage; index: number }): React.ReactElement => {
-    return <GroupChat chatData={item} onChatPress={FunctionUtils.noop} />;
+    return <GroupChat chatData={item} onChatPress={this.handleChatPress} />;
   };
 
   private renderItemSeparator = (): React.ReactElement => {
@@ -115,6 +116,15 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
 
     return filteredMessages ?? null;
   };
+
+  private handleChatPress = (name: string): void => {
+    const { navigation, setCurrentChatDetail } = this.props;
+    setCurrentChatDetail({
+      groupName: name,
+      groupId: 16, // TODO: Add proper id
+    });
+    navigation.navigate(ScreensKeys.ChatScreen);
+  };
 }
 
 const mapStateToProps = (state: IState): IStateToProps => {
@@ -125,8 +135,8 @@ const mapStateToProps = (state: IState): IStateToProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
-  const { getGroupMessage } = CommonActions;
-  return bindActionCreators({ getGroupMessage }, dispatch);
+  const { getGroupMessage, setCurrentChatDetail } = CommonActions;
+  return bindActionCreators({ getGroupMessage, setCurrentChatDetail }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Messages));

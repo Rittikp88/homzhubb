@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { LayoutChangeEvent, PickerItemProps, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import React, { PureComponent } from 'react';
+import { LayoutChangeEvent, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -21,7 +21,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FullScreenAssetDetailsCarousel, HeaderCard } from '@homzhub/mobile/src/components';
-import DropdownModal from '@homzhub/mobile/src/components/molecules/DropdownModal';
+import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { AssetReviews } from '@homzhub/mobile/src/components/organisms/AssetReviews';
@@ -102,7 +102,7 @@ interface IRoutes {
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
-export class PropertyDetailScreen extends Component<Props, IDetailState> {
+export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   public focusListener: any;
 
   public state = {
@@ -235,6 +235,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
             navigationState: { index, routes },
           } = props;
           const currentRoute = routes[index];
+
           return (
             <TabBar
               {...props}
@@ -546,7 +547,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     }
   };
 
-  private getMenuList = (isListingCreated: boolean, isOccupied: boolean): PickerItemProps[] => {
+  private getMenuList = (isListingCreated: boolean, isOccupied: boolean): IMenu[] => {
     const {
       t,
       route: { params },

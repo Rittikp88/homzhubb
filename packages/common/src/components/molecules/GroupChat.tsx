@@ -7,7 +7,7 @@ import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 interface IProps {
   chatData: GroupMessage;
-  onChatPress: () => void;
+  onChatPress: (name: string) => void;
 }
 
 const GroupChat = (props: IProps): React.ReactElement => {
@@ -16,8 +16,12 @@ const GroupChat = (props: IProps): React.ReactElement => {
     onChatPress,
   } = props;
 
+  const handleChatPress = (): void => {
+    onChatPress(name);
+  };
+
   return (
-    <TouchableOpacity style={styles.container} onPress={onChatPress}>
+    <TouchableOpacity style={styles.container} onPress={handleChatPress}>
       <GroupChatAvatar faces={users} isHeader={false} containerStyle={styles.avatar} />
       <View style={styles.subContainer}>
         <View style={[styles.justifyContent, styles.heading]}>

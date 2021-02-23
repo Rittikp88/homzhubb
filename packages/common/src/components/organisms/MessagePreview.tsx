@@ -1,19 +1,23 @@
 import React, { Component, createRef, ReactElement, RefObject } from 'react';
-import { groupBy, isEmpty } from 'lodash';
-import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { groupBy } from 'lodash';
+import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import MessageCard from '@homzhub/common/src/components/molecules/MessageCard';
-import { IMessages, Message } from '@homzhub/common/src/domain/models/Message';
+import { IMessageKeyValue, IMessages, Message } from '@homzhub/common/src/domain/models/Message';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 interface IStateProps {
   messages: IMessages | null;
+  currentChat: IChatPayload | null;
 }
 
 interface IDispatchProps {
@@ -24,9 +28,13 @@ interface IScreenState {
   isRefreshing: boolean;
 }
 
-type Props = IStateProps & IDispatchProps;
+interface IProps {
+  shouldEnableOuterScroll?: (enable: boolean) => void;
+  shouldScrollToBottom?: () => void;
+  isScrollToBottom?: boolean;
+}
 
-// TODO: Use Text component
+type Props = IStateProps & IDispatchProps & IProps;
 
 class MessagePreview extends Component<Props, IScreenState> {
   public scrollRef: RefObject<ScrollView> = createRef();
@@ -36,43 +44,57 @@ class MessagePreview extends Component<Props, IScreenState> {
   };
 
   public componentDidMount = (): void => {
-    const { getMessages } = this.props;
-    this.scrollToBottom();
-    getMessages({ groupId: 16 });
+    const { getMessages, currentChat } = this.props;
+    if (currentChat) {
+      getMessages({ groupId: currentChat.groupId });
+    }
+  };
+
+  public componentDidUpdate = (): void => {
+    const { isScrollToBottom } = this.props;
+    if (isScrollToBottom) {
+      this.scrollToBottom();
+    }
   };
 
   public render(): React.ReactNode {
-    const { messages } = this.props;
-    if (!messages || isEmpty(messages)) return null;
+    const { messages, shouldEnableOuterScroll } = this.props;
+    if (!messages) return <Loader visible />;
     const { messageResult } = messages;
-
     return (
-      <ScrollView refreshControl={this.renderRefreshControl()} showsVerticalScrollIndicator={false}>
-        {messageResult.reverse().map((item) => {
-          const { results } = item;
-          const formattedByTime = this.getFormattedMessage(results, 'LT');
-          return (
-            <>
-              <View style={styles.separator}>
-                <View style={styles.dividerView} />
-                <Text>{item.key}</Text>
-                <View style={styles.dividerView} />
-              </View>
-              {Object.keys(formattedByTime)
-                .reverse()
-                .map((time) => {
-                  const user = this.getMessageByUser(formattedByTime[time]);
-                  return (
-                    <>
-                      {user.map((detail, index) => {
-                        return <MessageCard key={index} details={detail} />;
-                      })}
-                    </>
-                  );
-                })}
-            </>
-          );
-        })}
+      <ScrollView
+        ref={this.scrollRef}
+        refreshControl={this.renderRefreshControl()}
+        showsVerticalScrollIndicator={false}
+        onTouchStart={shouldEnableOuterScroll ? (): void => shouldEnableOuterScroll(true) : undefined}
+        style={styles.container}
+      >
+        {Object.keys(messageResult)
+          .reverse()
+          .map((key) => {
+            const formattedByTime = this.getFormattedMessage(messageResult[key], 'h:mm:ss');
+            return (
+              <>
+                <View style={styles.separator}>
+                  <View style={styles.dividerView} />
+                  <Label type="large">{key}</Label>
+                  <View style={styles.dividerView} />
+                </View>
+                {Object.keys(formattedByTime)
+                  .reverse()
+                  .map((time) => {
+                    const user = this.getMessageByUser(formattedByTime[time]);
+                    return (
+                      <>
+                        {user.map((item, index) => {
+                          return <MessageCard key={index} details={item} />;
+                        })}
+                      </>
+                    );
+                  })}
+              </>
+            );
+          })}
       </ScrollView>
     );
   }
@@ -83,17 +105,20 @@ class MessagePreview extends Component<Props, IScreenState> {
   };
 
   private onLoad = (): void => {
-    const { getMessages, messages } = this.props;
+    const { getMessages, messages, shouldScrollToBottom, currentChat } = this.props;
     const link = messages && !!messages.links.next ? messages.links.next : '';
-    if (!link) return;
+    if (shouldScrollToBottom) {
+      shouldScrollToBottom();
+    }
+
+    if (!link || !currentChat) return;
     getMessages({
-      groupId: 16,
+      groupId: currentChat.groupId,
       cursor: link,
     });
   };
 
-  // TODO: Add type
-  private getFormattedMessage = (data: Message[], format: string): any => {
+  private getFormattedMessage = (data: Message[], format: string): IMessageKeyValue => {
     return groupBy(data, (results: Message) => {
       return DateUtils.getUtcDisplayDate(results.createdAt, format);
     });
@@ -116,9 +141,10 @@ class MessagePreview extends Component<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getMessages } = CommonSelectors;
+  const { getMessages, getCurrentChatDetail } = CommonSelectors;
   return {
     messages: getMessages(state),
+    currentChat: getCurrentChatDetail(state),
   };
 };
 
@@ -130,6 +156,9 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(mapStateToProps, mapDispatchToProps)(MessagePreview);
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 16,
+  },
   separator: {
     flexDirection: 'row',
     alignItems: 'center',

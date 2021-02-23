@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { ImageBackground, StyleProp, StyleSheet, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 
 interface IProps {
   onUploadImage: () => void;
-  onSubmit: () => void;
+  onInputFocus: () => void;
+  onSubmit: (text: string, isAttachment?: boolean) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const ChatInputBox = (props: IProps): React.ReactElement => {
-  const { onSubmit, onUploadImage } = props;
+  const { onSubmit, onUploadImage, containerStyle, onInputFocus } = props;
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const attachmentUrl = useSelector(CommonSelectors.getMessageAttachment);
+
   // states
   const [value, setValue] = useState('');
   const [isImage, setIsImage] = useState(false);
@@ -22,10 +30,25 @@ const ChatInputBox = (props: IProps): React.ReactElement => {
 
   const onPressIcon = (): void => {
     setIsImage(!isImage);
+    if (attachmentUrl) {
+      clearAttachment();
+    }
+  };
+
+  const onPressSend = (): void => {
+    onSubmit(value, !!attachmentUrl);
+    setValue('');
+    if (attachmentUrl) {
+      clearAttachment();
+    }
+  };
+
+  const clearAttachment = (): void => {
+    dispatch(CommonActions.clearAttachment());
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <TouchableOpacity onPress={onPressIcon}>
         <Icon
           name={isImage ? icons.circularCrossFilled : icons.circularPlus}
@@ -34,7 +57,7 @@ const ChatInputBox = (props: IProps): React.ReactElement => {
           style={styles.icon}
         />
       </TouchableOpacity>
-      {isImage && (
+      {isImage && !attachmentUrl && (
         <Icon
           name={icons.filledGallery}
           color={theme.colors.blue}
@@ -43,15 +66,29 @@ const ChatInputBox = (props: IProps): React.ReactElement => {
           style={styles.gallery}
         />
       )}
+      {!!attachmentUrl && (
+        <View style={styles.imageContainer}>
+          <ImageBackground source={{ uri: attachmentUrl }} style={styles.image}>
+            <Icon
+              name={icons.close}
+              color={theme.colors.white}
+              size={25}
+              style={styles.iconContainer}
+              onPress={clearAttachment}
+            />
+          </ImageBackground>
+        </View>
+      )}
       {!isImage && (
         <TextInput
+          onFocus={onInputFocus}
           placeholder={t('common:typeYourMessage')}
           value={value}
           onChangeText={onChangeText}
           style={styles.input}
         />
       )}
-      <TouchableOpacity onPress={onSubmit}>
+      <TouchableOpacity onPress={onPressSend}>
         <Icon name={icons.circularArrow} color={theme.colors.blue} size={40} style={styles.send} />
       </TouchableOpacity>
     </View>
@@ -85,5 +122,23 @@ const styles = StyleSheet.create({
   },
   send: {
     marginHorizontal: 4,
+  },
+  imageContainer: {
+    flex: 1,
+    paddingVertical: 10,
+  },
+  image: {
+    width: 150,
+    height: 100,
+  },
+  iconContainer: {
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: theme.colors.crossIconContainer,
   },
 });
