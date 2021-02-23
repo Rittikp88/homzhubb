@@ -1,11 +1,11 @@
 export const groupChatData = [
   {
     id: 1,
-    name: 'John doe',
+    name: 'property one',
     users: [
       {
         id: 1,
-        first_name: 'John',
+        first_name: 'shivam',
         last_name: 'Doe',
         email: 'johndoe@mail.com',
         phone_code: '+91',
@@ -16,7 +16,7 @@ export const groupChatData = [
       },
       {
         id: 1,
-        first_name: 'John',
+        first_name: 'rahul',
         last_name: 'Doe',
         email: 'johndoe@mail.com',
         phone_code: '+91',
@@ -27,7 +27,7 @@ export const groupChatData = [
       },
       {
         id: 1,
-        first_name: 'John',
+        first_name: 'aditya',
         last_name: 'Doe',
         email: 'johndoe@mail.com',
         phone_code: '+91',
@@ -38,8 +38,8 @@ export const groupChatData = [
       },
       {
         id: 1,
-        first_name: 'John',
-        last_name: 'Doe',
+        first_name: 'ram',
+        last_name: 'singh',
         email: 'johndoe@mail.com',
         phone_code: '+91',
         phone_number: '9597773556',
@@ -49,7 +49,7 @@ export const groupChatData = [
       },
       {
         id: 1,
-        first_name: 'John',
+        first_name: 'shyam',
         last_name: 'Doe',
         email: 'johndoe@mail.com',
         phone_code: '+91',
@@ -64,12 +64,12 @@ export const groupChatData = [
   },
   {
     id: 2,
-    name: 'John doe',
+    name: 'badminton court',
     users: [
       {
         id: 1,
-        first_name: 'John',
-        last_name: 'Doe',
+        first_name: 'victor',
+        last_name: 'axelson',
         email: 'johndoe@mail.com',
         phone_code: '+91',
         phone_number: '9597773556',
@@ -79,8 +79,8 @@ export const groupChatData = [
       },
       {
         id: 1,
-        first_name: 'John',
-        last_name: 'Doe',
+        first_name: 'lin',
+        last_name: 'dan',
         email: 'johndoe@mail.com',
         phone_code: '+91',
         phone_number: '9597773556',
@@ -94,11 +94,11 @@ export const groupChatData = [
   },
   {
     id: 3,
-    name: 'John doe',
+    name: 'amrindar singh',
     users: [
       {
         id: 1,
-        first_name: 'John',
+        first_name: 'narendra modi',
         last_name: 'Doe',
         email: 'johndoe@mail.com',
         phone_code: '+91',
@@ -109,8 +109,8 @@ export const groupChatData = [
       },
       {
         id: 1,
-        first_name: 'John',
-        last_name: 'Doe',
+        first_name: 'rahul',
+        last_name: 'gandhi',
         email: 'johndoe@mail.com',
         phone_code: '+91',
         phone_number: '9597773556',
@@ -124,12 +124,12 @@ export const groupChatData = [
   },
   {
     id: 4,
-    name: 'John doe',
+    name: 'some property name',
     users: [
       {
         id: 1,
-        first_name: 'John',
-        last_name: 'Doe',
+        first_name: 'rahul',
+        last_name: 'sharma',
         email: 'johndoe@mail.com',
         phone_code: '+91',
         phone_number: '9597773556',
@@ -139,7 +139,7 @@ export const groupChatData = [
       },
       {
         id: 1,
-        first_name: 'John',
+        first_name: 'akansha',
         last_name: 'Doe',
         email: 'johndoe@mail.com',
         phone_code: '+91',
