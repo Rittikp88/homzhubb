@@ -67,7 +67,9 @@ class MessagePreview extends Component<Props, IScreenState> {
         refreshControl={this.renderRefreshControl()}
         showsVerticalScrollIndicator={false}
         onTouchStart={shouldEnableOuterScroll ? (): void => shouldEnableOuterScroll(true) : undefined}
-        style={styles.container}
+        onMomentumScrollEnd={this.controlScroll}
+        onScrollEndDrag={this.controlScroll}
+        style={[styles.container, shouldEnableOuterScroll && styles.height]}
       >
         {Object.keys(messageResult)
           .reverse()
@@ -118,6 +120,13 @@ class MessagePreview extends Component<Props, IScreenState> {
     });
   };
 
+  private controlScroll = (): void => {
+    const { shouldEnableOuterScroll } = this.props;
+    if (shouldEnableOuterScroll) {
+      shouldEnableOuterScroll(true);
+    }
+  };
+
   private getFormattedMessage = (data: Message[], format: string): IMessageKeyValue => {
     return groupBy(data, (results: Message) => {
       return DateUtils.getUtcDisplayDate(results.createdAt, format);
@@ -158,6 +167,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(MessagePreview);
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
+  },
+  height: {
+    maxHeight: 500,
   },
   separator: {
     flexDirection: 'row',

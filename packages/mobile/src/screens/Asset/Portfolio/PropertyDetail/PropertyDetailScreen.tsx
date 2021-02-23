@@ -12,6 +12,7 @@ import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -31,6 +32,7 @@ import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/Propert
 import DetailTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DetailTab';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
+import MessageTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/MessageTab';
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -76,6 +78,8 @@ interface IDispatchProps {
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   getAssetById: () => void;
   clearAsset: () => void;
+  clearChatDetail: () => void;
+  clearMessages: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
@@ -334,8 +338,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         );
       case Tabs.MESSAGES:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 6)}>
-            <DummyView />
+          <View onLayout={(e): void => this.onLayout(e, 6)} style={styles.background}>
+            <MessageTab shouldEnableOuterScroll={this.toggleScroll} />
           </View>
         );
       case Tabs.DOCUMENTS:
@@ -514,7 +518,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private handleIndexChange = (index: number): void => {
-    this.setState({ currentIndex: index });
+    const { clearMessages } = this.props;
+    this.setState({ currentIndex: index }, () => {
+      if (index !== 6) {
+        clearMessages();
+      }
+    });
   };
 
   private handleResponder = (): boolean => {
@@ -599,8 +608,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private handleIconPress = (): void => {
-    const { navigation } = this.props;
+    const { navigation, clearChatDetail } = this.props;
     navigation.goBack();
+    clearChatDetail();
   };
 
   private handleMenuIcon = (): void => {
@@ -628,8 +638,18 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     toggleEditPropertyFlowBottomSheet,
   } = RecordAssetActions;
   const { clearAsset } = AssetActions;
+  const { clearChatDetail, clearMessages } = CommonActions;
   return bindActionCreators(
-    { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet, clearAsset },
+    {
+      setAssetId,
+      setSelectedPlan,
+      getAssetById,
+      setEditPropertyFlow,
+      toggleEditPropertyFlowBottomSheet,
+      clearAsset,
+      clearChatDetail,
+      clearMessages,
+    },
     dispatch
   );
 };
