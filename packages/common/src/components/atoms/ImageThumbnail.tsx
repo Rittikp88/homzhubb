@@ -23,6 +23,7 @@ export interface IOwnProps {
   onPressLastThumbnail?: () => void;
   isFavorite?: boolean;
   markFavorite?: () => void;
+  galleryView?: boolean;
 }
 
 type IProps = WithTranslation & IOwnProps;
@@ -45,23 +46,24 @@ class ImageThumbnail extends React.PureComponent<IProps> {
       coverPhotoTitle = 'Cover Photo',
       markFavorite,
       t,
+      galleryView,
     } = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
         {imageUrl && (
           <ImageBackground
-            resizeMode={PlatformUtils.isWeb() ? 'contain' : undefined}
+            resizeMode={PlatformUtils.isWeb() && galleryView ? 'contain' : 'cover'}
             source={{ uri: imageUrl }}
             imageStyle={[styles.imageStyle, imageContainerStyle]}
             style={[styles.imageWrapper, imageWrapperStyle]}
           >
             {isIconVisible && (
               <TouchableOpacity
-                style={PlatformUtils.isWeb() ? styles.iconContainerWeb : styles.iconContainer}
+                style={PlatformUtils.isWeb() && isCoverPhotoContainer ? styles.iconContainerWeb : styles.iconContainer}
                 onPress={this.handleIconPress}
               >
                 <Icon name={icons.close} size={iconSize || 22} color={iconColor || theme.colors.white} />
-                {PlatformUtils.isWeb() && (
+                {PlatformUtils.isWeb() && isCoverPhotoContainer && (
                   <Typography variant="label" size="large" style={styles.removeTxt}>
                     {t('remove')}
                   </Typography>
