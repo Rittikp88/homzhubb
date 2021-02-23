@@ -2,18 +2,18 @@ import React from 'react';
 import { FlatList, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import GroupChat from '@homzhub/common/src/components/molecules/GroupChat';
+import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
-import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src//navigation/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { connect } from 'react-redux';
-import { CommonActions } from '@homzhub/common/src/modules/common/actions';
-import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IScreenState {

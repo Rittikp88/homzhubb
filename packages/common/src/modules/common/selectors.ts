@@ -3,8 +3,8 @@ import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IMessages } from '@homzhub/common/src/domain/models/Message';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getCountryList = (state: IState): Country[] => {
   const {
