@@ -53,7 +53,7 @@ import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedPro
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
-import { Messages } from '@homzhub/mobile/src/screens/Asset/More/Messages';
+import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 

@@ -16,7 +16,6 @@ const GroupChat = (props: IProps): React.ReactElement => {
     onChatPress,
   } = props;
 
-  // TODO: (Shivam: 22/2/21: replace image with avatar component)
   return (
     <TouchableOpacity style={styles.container} onPress={onChatPress}>
       <GroupChatAvatar faces={users} isHeader={false} containerStyle={styles.avatar} />

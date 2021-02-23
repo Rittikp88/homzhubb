@@ -4,6 +4,7 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IMessages } from '@homzhub/common/src/domain/models/Message';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 const getCountryList = (state: IState): Country[] => {
   const {
@@ -61,6 +62,37 @@ const getMessages = (state: IState): IMessages | null => {
   return messages;
 };
 
+const getGroupMessages = (state: IState): GroupMessage[] | null => {
+  const {
+    common: { groupMessages },
+  } = state;
+  if (!groupMessages) {
+    return groupMessages;
+  }
+
+  return ObjectMapper.deserializeArray(GroupMessage, groupMessages);
+};
+
+const getGroupMessagesLoading = (state: IState): boolean => {
+  const {
+    common: {
+      loaders: { groupMessages },
+    },
+  } = state;
+
+  return groupMessages;
+};
+
+const getGroupMessagesError = (state: IState): string => {
+  const {
+    common: {
+      error: { groupMessages },
+    },
+  } = state;
+
+  return groupMessages;
+};
+
 export const CommonSelectors = {
   getCountryList,
   getDefaultPhoneCode,
@@ -68,4 +100,7 @@ export const CommonSelectors = {
   getDefaultCurrency,
   getRedirectionDetails,
   getMessages,
+  getGroupMessages,
+  getGroupMessagesLoading,
+  getGroupMessagesError,
 };
