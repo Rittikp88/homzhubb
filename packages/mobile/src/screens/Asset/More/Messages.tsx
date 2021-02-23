@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
+import { throttle } from 'lodash';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
@@ -54,20 +55,21 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       t,
       groupMessages,
     } = this.props;
-
+    const filteredMessages = this.getFilteredMessages(groupMessages);
+    // TODO: (shivam: handle empty state)
     return (
       <UserScreen title={t('assetMore:more')} scrollEnabled onBackPress={goBack} pageTitle={t('assetMore:messages')}>
         <View style={styles.container}>
           <SearchBar
             placeholder={t('assetMore:searchByNameOrProperty')}
             value={searchValue}
-            updateValue={this.updateSearchValue}
+            updateValue={throttle(this.updateSearchValue)}
           />
           <Text type="small" textType="semiBold" style={styles.chat}>
             {t('assetMore:chats')}
           </Text>
           <FlatList
-            data={groupMessages}
+            data={filteredMessages}
             renderItem={this.renderItem}
             style={styles.chatList}
             ItemSeparatorComponent={this.renderItemSeparator}
@@ -93,6 +95,25 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
 
   private updateSearchValue = (value: string): void => {
     this.setState({ searchValue: value });
+  };
+
+  private getFilteredMessages = (groupMessages: GroupMessage[] | null): GroupMessage[] | null => {
+    const { searchValue } = this.state;
+
+    if (!groupMessages || !searchValue) {
+      return groupMessages;
+    }
+
+    const foundElements = groupMessages.filter((groupMessage: GroupMessage) => {
+      const { name, getAlphabeticalSortedUserNames } = groupMessage;
+      const lowerCasedSearchValue = searchValue.toLowerCase();
+      const isGroupName = name.toLowerCase().includes(lowerCasedSearchValue);
+      const isUserName = getAlphabeticalSortedUserNames.toLowerCase().includes(lowerCasedSearchValue);
+
+      return isGroupName || isUserName;
+    });
+
+    return foundElements ?? null;
   };
 }
 
