@@ -3,9 +3,11 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { Messages } from '@homzhub/common/src/domain/models/Message';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { IGetMessageParam, IMessagePayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 const ENDPOINTS = {
   messages: (groupId: number): string => `message-groups/${groupId}/messages/`,
+  groupMessage: (): string => 'message-groups',
 };
 
 class MessageRepository {
@@ -24,6 +26,12 @@ class MessageRepository {
   public sendMessage = async (payload: IMessagePayload): Promise<void> => {
     const { groupId, message, attachments } = payload;
     return await this.apiClient.post(ENDPOINTS.messages(groupId), { message, attachments });
+  };
+
+  // TODO: (shivam: 23/1/21: intergrate api)
+  public getGroupMessages = async (): Promise<GroupMessage> => {
+    const result = this.apiClient.get(ENDPOINTS.groupMessage());
+    return result;
   };
 }
 

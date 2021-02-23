@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, ImageStyle, TextStyle, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Image } from '@homzhub/common/src/components/atoms/Image';
+import GroupChatAvatar from '@homzhub/common/src/components/atoms/GroupChatAvatar';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
@@ -12,14 +12,13 @@ interface IProps {
 
 const GroupChat = (props: IProps): React.ReactElement => {
   const {
-    chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate },
+    chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate, users },
     onChatPress,
   } = props;
 
-  // TODO: (Shivam: 22/2/21: replace image with avatar component)
   return (
     <TouchableOpacity style={styles.container} onPress={onChatPress}>
-      <Image source={{ uri: '' }} style={styles.avatar} width={50} height={50} />
+      <GroupChatAvatar faces={users} isHeader={false} containerStyle={styles.avatar} />
       <View style={styles.subContainer}>
         <View style={[styles.justifyContent, styles.heading]}>
           <Label type="large" textType="bold">
@@ -68,10 +67,13 @@ const styles: IScreenStyles = StyleSheet.create({
     borderColor: theme.colors.background,
   },
   subContainer: {
-    flex: 1,
+    flex: 3,
   },
   avatar: {
     marginEnd: 12,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginBottom: -20,
   },
   justifyContent: {
     flex: 1,

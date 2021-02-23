@@ -6,6 +6,7 @@ import { CommonActionPayloadTypes, CommonActionTypes } from '@homzhub/common/src
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
 import { Links } from '@homzhub/common/src/domain/models/Links';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
+import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 export const initialCommonState: ICommonState = {
   countries: [],
@@ -18,6 +19,10 @@ export const initialCommonState: ICommonState = {
   redirectionDetails: {
     redirectionLink: '',
     shouldRedirect: false,
+  },
+  groupMessages: null,
+  loaders: {
+    groupMessages: false,
   },
 };
 
@@ -56,6 +61,19 @@ export const commonReducer = (
           links: payload.links,
           messageResult: ReducerUtils.formatMessages(action.payload as Messages),
         },
+      };
+    case CommonActionTypes.GET.GROUP_MESSAGES:
+      return {
+        ...state,
+        ['groupMessages']: null,
+        ['error']: { ...state.error, ['groupMessages']: '' },
+        ['loaders']: { ...state.loaders, ['groupMessages']: true },
+      };
+    case CommonActionTypes.GET.GROUP_MESSAGES_SUCCESS:
+      return {
+        ...state,
+        ['groupMessages']: action.payload as GroupMessage[],
+        ['loaders']: { ...state.loaders, ['groupMessages']: false },
       };
     default:
       return {

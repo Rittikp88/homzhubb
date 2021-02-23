@@ -9,7 +9,7 @@ import { mockUsers } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 const MAX_DISPLAY_COUNT_HEADER = 3;
 const MAX_DISPLAY_COUNT_CHAT = 2;
 const CIRCLE_SIZE_HEADER = 55;
-const CIRCLE_SIZE_CHAT = 40;
+const CIRCLE_SIZE_CHAT = 30;
 
 interface IProps {
   faces: User[];
@@ -24,25 +24,27 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
   const mockFaces = ObjectMapper.deserializeArray(User, mockUsers); // TODO:Praharsh : Remove mock
   const styles = getStyles();
   const { faces = mockFaces, isHeader = true, containerStyle = {} } = props;
+
   const faceDisplayCount = isHeader ? MAX_DISPLAY_COUNT_HEADER : MAX_DISPLAY_COUNT_CHAT;
   const shouldShowOverflow = faces.length > faceDisplayCount;
   const overflow = faces.length - faceDisplayCount;
+
   const facesToShow = faces
     .sort((a: User, b: User) => a.firstName.localeCompare(b.firstName))
     .slice(0, faceDisplayCount);
   const circleSize = isHeader ? CIRCLE_SIZE_HEADER : CIRCLE_SIZE_CHAT;
 
   const ExtraCount = (): React.ReactElement | null => {
-    const customStyle = getStyles(circleSize, isHeader);
+    const extraCountStyle = getStyles(circleSize, isHeader);
     if (shouldShowOverflow) {
       return (
         <Avatar
           isOnlyAvatar
-          containerStyle={customStyle.extraCountContainer}
+          containerStyle={extraCountStyle.extraCountContainer}
           imageSize={circleSize}
           customText={`+${overflow.toString()}`}
-          initialsContainerStyle={customStyle.initialsContainerStyle}
-          customTextStyle={customStyle.customText}
+          initialsContainerStyle={extraCountStyle.initialsContainerStyle}
+          customTextStyle={extraCountStyle.customText}
         />
       );
     }
@@ -56,23 +58,22 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
           const isFirst = facesToShow.indexOf(face) === 0;
           const index = facesToShow.indexOf(face);
           const { name, profilePicture } = face;
-          const faceStyle = getStyles(circleSize, isHeader, isFirst, index);
+          const avatarStyle = getStyles(circleSize, isHeader, isFirst, index);
           return (
             <Avatar
               key={index}
               isOnlyAvatar
-              containerStyle={faceStyle.imageAvatarContainer}
+              containerStyle={avatarStyle.imageAvatarContainer}
               imageSize={circleSize}
               fullName={name}
               image={profilePicture || undefined}
-              customTextStyle={faceStyle.customText}
+              customTextStyle={avatarStyle.customText}
             />
           );
         })}
       </>
     );
   };
-
   return (
     <View style={[styles.container, containerStyle]}>
       <Faces />
@@ -80,9 +81,7 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
     </View>
   );
 };
-
 export default React.memo(GroupChatAvatar);
-
 interface IScreenStyles {
   container: FlexStyle;
   initialsContainerStyle: ViewStyle;
@@ -91,19 +90,16 @@ interface IScreenStyles {
   customText: TextStyle;
   extraCountContainer: ViewStyle;
 }
-
 const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, isFirst = false, index = 0) => {
   // To lift item up on chat head
-  const liftUp = (): { marginBottom: number } => {
-    const shift = isHeader ? (circleSize / 2) * index : circleSize * index + 7;
+  const liftUp = (): TextStyle => {
+    const shift = isHeader ? circleSize * index : circleSize * index + 7;
     return { marginBottom: isHeader ? 0 : shift };
   };
-
   const imageAvatarContainerStyle = (): ViewStyle =>
     !isFirst
       ? { marginLeft: -circleSize / 3.5, ...liftUp() }
       : { marginRight: isHeader ? 0 : -circleSize / 3, zIndex: isHeader ? 0 : 10 };
-
   return StyleSheet.create({
     container: {
       flex: 1,

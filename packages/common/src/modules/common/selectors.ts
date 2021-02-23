@@ -3,6 +3,7 @@ import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IMessages } from '@homzhub/common/src/domain/models/Message';
+import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getCountryList = (state: IState): Country[] => {
@@ -61,6 +62,27 @@ const getMessages = (state: IState): IMessages | null => {
   return messages;
 };
 
+const getGroupMessages = (state: IState): GroupMessage[] | null => {
+  const {
+    common: { groupMessages },
+  } = state;
+  if (!groupMessages) {
+    return groupMessages;
+  }
+
+  return ObjectMapper.deserializeArray(GroupMessage, groupMessages);
+};
+
+const getGroupMessagesLoading = (state: IState): boolean => {
+  const {
+    common: {
+      loaders: { groupMessages },
+    },
+  } = state;
+
+  return groupMessages;
+};
+
 export const CommonSelectors = {
   getCountryList,
   getDefaultPhoneCode,
@@ -68,4 +90,6 @@ export const CommonSelectors = {
   getDefaultCurrency,
   getRedirectionDetails,
   getMessages,
+  getGroupMessages,
+  getGroupMessagesLoading,
 };
