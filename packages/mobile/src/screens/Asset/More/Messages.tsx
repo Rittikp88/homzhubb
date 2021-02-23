@@ -104,16 +104,16 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       return groupMessages;
     }
 
-    const foundElements = groupMessages.filter((groupMessage: GroupMessage) => {
+    const filteredMessages = groupMessages.filter((groupMessage: GroupMessage) => {
       const { name, getAlphabeticalSortedUserNames } = groupMessage;
       const lowerCasedSearchValue = searchValue.toLowerCase();
-      const isGroupName = name.toLowerCase().includes(lowerCasedSearchValue);
-      const isUserName = getAlphabeticalSortedUserNames.toLowerCase().includes(lowerCasedSearchValue);
+      const isGroupNameIncluded = name.toLowerCase().includes(lowerCasedSearchValue);
+      const isUserNameIncluded = getAlphabeticalSortedUserNames.toLowerCase().includes(lowerCasedSearchValue);
 
-      return isGroupName || isUserName;
+      return isGroupNameIncluded || isUserNameIncluded;
     });
 
-    return foundElements ?? null;
+    return filteredMessages ?? null;
   };
 }
 
