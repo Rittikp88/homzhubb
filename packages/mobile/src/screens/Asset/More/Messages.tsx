@@ -65,12 +65,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
     const isSearchFound = sortedMessages && sortedMessages.length > 0;
 
     return (
-      <UserScreen
-        title={t('assetMore:more')}
-        scrollEnabled={false}
-        onBackPress={goBack}
-        pageTitle={t('assetMore:messages')}
-      >
+      <UserScreen title={t('assetMore:more')} onBackPress={goBack} pageTitle={t('assetMore:messages')}>
         {isMessagesPresent ? (
           <View style={styles.container}>
             <SearchBar
@@ -223,7 +218,9 @@ const styles: IScreenStyles = StyleSheet.create({
     color: theme.colors.darkTint3,
   },
   noChat: {
-    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
   },
   searchBar: {
     marginTop: 16,
