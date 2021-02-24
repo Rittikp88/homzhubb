@@ -94,6 +94,7 @@ const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, 
   const liftUpStyle: ViewStyle = isHeader ? {} : { bottom: circleSize / 2 };
   const facesHorizontalDivisor = isHeader ? 1.3 : 3;
   const extraCountHorizontalDivisor = isHeader ? 1.3 : 1.4;
+  const extraCountThreshold = 3;
 
   const imageAvatarContainerStyle: ViewStyle = !isFirstFace
     ? { position: 'absolute', ...liftUpStyle, left: (circleSize / facesHorizontalDivisor) * index + 1 }
@@ -101,7 +102,9 @@ const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, 
 
   const extraCountStyle: ViewStyle = {
     position: 'absolute',
-    left: (circleSize / extraCountHorizontalDivisor) * 3,
+    left: isHeader
+      ? (circleSize / extraCountHorizontalDivisor) * extraCountThreshold
+      : circleSize / extraCountHorizontalDivisor,
   };
 
   return StyleSheet.create({
