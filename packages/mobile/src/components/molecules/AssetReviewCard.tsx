@@ -52,7 +52,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   const owner = useSelector(UserSelector.getUserProfile);
 
   // State const's
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(hideShowMore);
   const [showMoreReply, setShowMoreReply] = useState(false);
   const [replyMode, setReplyMode] = useState(false);
   const [reply, setReply] = useState(comment);
