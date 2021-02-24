@@ -17,7 +17,7 @@ interface IProps {
   containerStyle?: ViewStyle;
 }
 
-type getStyles = (circleSize?: number, isHeader?: boolean, isFirst?: boolean, index?: number) => IScreenStyles;
+type getStyles = (circleSize?: number, isHeader?: boolean, index?: number) => IScreenStyles;
 
 const GroupChatAvatar = (props: IProps): React.ReactElement => {
   // Deserializing data
@@ -54,11 +54,10 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
   const Faces = (): React.ReactElement => {
     return (
       <>
-        {facesToShow.map((face: User) => {
-          const isFirst = facesToShow.indexOf(face) === 0;
-          const index = facesToShow.indexOf(face);
+        {facesToShow.map((face: User, index: number) => {
           const { name, profilePicture } = face;
-          const avatarStyle = getStyles(circleSize, isHeader, isFirst, index);
+          const avatarStyle = getStyles(circleSize, isHeader, index);
+
           return (
             <Avatar
               key={index}
@@ -90,16 +89,14 @@ interface IScreenStyles {
   customText: TextStyle;
   extraCountContainer: ViewStyle;
 }
-const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, isFirst = false, index = 0) => {
-  // To lift item up on chat head
-  const liftUp = (): TextStyle => {
-    const shift = isHeader ? circleSize * index : circleSize * index + 7;
-    return { marginBottom: isHeader ? 0 : shift };
-  };
-  const imageAvatarContainerStyle = (): ViewStyle =>
-    !isFirst
-      ? { marginLeft: -circleSize / 3.5, ...liftUp() }
-      : { marginRight: isHeader ? 0 : -circleSize / 3, zIndex: isHeader ? 0 : 10 };
+const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, index = 0) => {
+  const isFirstFace = index === 0;
+
+  const imageAvatarContainerStyle: ViewStyle = isFirstFace
+    ? { marginRight: isHeader ? 0 : 0, zIndex: isHeader ? 0 : 10 }
+    : { position: 'absolute', bottom: circleSize / 2, left: circleSize / 3 };
+  const extraCountStyle: ViewStyle = isHeader ? {} : { position: 'absolute', left: circleSize / 1.4 };
+
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -114,12 +111,13 @@ const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, 
       marginBottom: -4,
       zIndex: 10,
     },
-    imageAvatarContainer: { ...imageAvatarContainerStyle() },
+    imageAvatarContainer: { ...imageAvatarContainerStyle },
     customText: {
       ...(!isHeader && { fontSize: circleSize / 2.5 }),
     },
     extraCountContainer: {
-      marginLeft: isHeader ? -circleSize / 3.5 : -circleSize / 1.5,
+      ...extraCountStyle,
+      marginLeft: isHeader ? -circleSize / 3.5 : 0,
       zIndex: isHeader ? 0 : 10,
     },
   });

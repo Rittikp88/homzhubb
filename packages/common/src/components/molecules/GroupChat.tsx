@@ -25,7 +25,7 @@ const GroupChat = (props: IProps): React.ReactElement => {
       <GroupChatAvatar faces={users} isHeader={false} containerStyle={styles.avatar} />
       <View style={styles.subContainer}>
         <View style={[styles.justifyContent, styles.heading]}>
-          <Label type="large" textType="bold">
+          <Label type="large" textType="bold" numberOfLines={1} style={styles.userNames}>
             {name}
           </Label>
           <Label type="regular" textType="regular" style={styles.tintColor}>
@@ -71,13 +71,14 @@ const styles: IScreenStyles = StyleSheet.create({
     borderColor: theme.colors.background,
   },
   subContainer: {
-    flex: 3,
+    flex: 4,
   },
   avatar: {
+    flex: 1,
     marginEnd: 12,
     justifyContent: 'flex-start',
-    alignItems: 'center',
-    marginBottom: -20,
+    alignItems: 'flex-end',
+    alignContent: 'flex-end',
   },
   justifyContent: {
     flex: 1,
@@ -95,12 +96,11 @@ const styles: IScreenStyles = StyleSheet.create({
     paddingHorizontal: 6,
     borderRadius: 12,
     backgroundColor: theme.colors.blue,
-    alignContent: 'center',
   },
   unreadCount: {
     flex: 1,
-    color: theme.colors.white,
     alignSelf: 'center',
+    color: theme.colors.white,
   },
   userNames: {
     flex: 2,

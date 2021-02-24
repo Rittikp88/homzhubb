@@ -8,6 +8,7 @@ import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import GroupChat from '@homzhub/common/src/components/molecules/GroupChat';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
@@ -56,31 +57,55 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       t,
       groupMessages,
     } = this.props;
+
     const filteredMessages = this.getFilteredMessages(groupMessages);
-    // TODO: (shivam: handle empty state)
+    const sortedMessages = this.getLastSentSortedMessages(filteredMessages);
+
+    const isMessagesPresent = groupMessages && groupMessages.length > 0;
+    const isSearchFound = sortedMessages && sortedMessages.length > 0;
+
     return (
-      <UserScreen title={t('assetMore:more')} scrollEnabled onBackPress={goBack} pageTitle={t('assetMore:messages')}>
-        <View style={styles.container}>
-          <SearchBar
-            placeholder={t('assetMore:searchByNameOrProperty')}
-            value={searchValue}
-            updateValue={throttle(this.updateSearchValue)}
-          />
-          <Text type="small" textType="semiBold" style={styles.chat}>
-            {t('assetMore:chats')}
-          </Text>
-          <FlatList
-            data={filteredMessages}
-            renderItem={this.renderItem}
-            style={styles.chatList}
-            ItemSeparatorComponent={this.renderItemSeparator}
-            keyExtractor={this.keyExtractor}
-            scrollEnabled={false}
-          />
-        </View>
+      <UserScreen title={t('assetMore:more')} onBackPress={goBack} pageTitle={t('assetMore:messages')}>
+        {isMessagesPresent ? (
+          <View style={styles.container}>
+            <SearchBar
+              placeholder={t('assetMore:searchByNameOrProperty')}
+              value={searchValue}
+              updateValue={throttle(this.updateSearchValue)}
+              containerStyle={styles.searchBar}
+            />
+            {isSearchFound ? (
+              <>
+                <Text type="small" textType="semiBold" style={styles.chat}>
+                  {t('assetMore:chats')}
+                </Text>
+                <FlatList
+                  data={filteredMessages}
+                  renderItem={this.renderItem}
+                  style={styles.chatList}
+                  ItemSeparatorComponent={this.renderItemSeparator}
+                  keyExtractor={this.keyExtractor}
+                  scrollEnabled
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.chatListContent}
+                />
+              </>
+            ) : (
+              this.renderEmptyState()
+            )}
+          </View>
+        ) : (
+          this.renderEmptyState()
+        )}
       </UserScreen>
     );
   }
+
+  private renderEmptyState = (): React.ReactElement => {
+    const { t } = this.props;
+
+    return <EmptyState title={t('assetMore:noChatsFound')} containerStyle={styles.noChat} />;
+  };
 
   private renderItem = ({ item, index }: { item: GroupMessage; index: number }): React.ReactElement => {
     return <GroupChat chatData={item} onChatPress={this.handleChatPress} />;
@@ -117,6 +142,29 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
     return filteredMessages ?? null;
   };
 
+  private getLastSentSortedMessages = (filteredMessages: GroupMessage[] | null): GroupMessage[] | null => {
+    if (!filteredMessages) {
+      return filteredMessages;
+    }
+
+    const sortedGroupMessages = filteredMessages.sort((message1: GroupMessage, message2: GroupMessage) => {
+      const { lastMessage: lastMessage1 } = message1;
+      const { lastMessage: lastMessage2 } = message2;
+
+      const value = new Date(lastMessage1).valueOf() - new Date(lastMessage2).valueOf();
+      if (value > 0) {
+        return -1;
+      }
+      if (value < 0) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+    return sortedGroupMessages;
+  };
+
   private handleChatPress = (name: string): void => {
     const { navigation, setCurrentChatDetail } = this.props;
     setCurrentChatDetail({
@@ -144,17 +192,23 @@ export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Me
 interface IScreenStyles {
   container: ViewStyle;
   chatList: ViewStyle;
+  chatListContent: ViewStyle;
   separator: ViewStyle;
+  noChat: ViewStyle;
+  searchBar: ViewStyle;
   chat: TextStyle;
 }
 
 const styles: IScreenStyles = StyleSheet.create({
   container: {
     marginHorizontal: 12,
+    flex: 1,
   },
   chatList: {
     marginTop: 12,
-    marginBottom: 20,
+  },
+  chatListContent: {
+    paddingBottom: 20,
   },
   separator: {
     height: 12,
@@ -162,5 +216,13 @@ const styles: IScreenStyles = StyleSheet.create({
   chat: {
     marginTop: 16,
     color: theme.colors.darkTint3,
+  },
+  noChat: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignContent: 'center',
+  },
+  searchBar: {
+    marginTop: 16,
   },
 });
