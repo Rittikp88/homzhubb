@@ -4,8 +4,8 @@ import { User } from '@homzhub/common/src/domain/models/User';
 
 @JsonObject('GroupMessage')
 export class GroupMessage {
-  @JsonProperty('id', Number)
-  private _id = 0;
+  @JsonProperty('id', String)
+  private _id = '0';
 
   @JsonProperty('name', String)
   private _name = '';
@@ -19,7 +19,7 @@ export class GroupMessage {
   @JsonProperty('unread_count', Number)
   private _unreadCount = 0;
 
-  get id(): number {
+  get id(): string {
     return this._id;
   }
 
