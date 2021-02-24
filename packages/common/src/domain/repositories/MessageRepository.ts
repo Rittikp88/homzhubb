@@ -28,10 +28,9 @@ class MessageRepository {
     return await this.apiClient.post(ENDPOINTS.messages(groupId), { message, attachments });
   };
 
-  // TODO: (shivam: 23/1/21: intergrate api)
-  public getGroupMessages = async (): Promise<GroupMessage> => {
-    const result = this.apiClient.get(ENDPOINTS.groupMessage());
-    return result;
+  public getGroupMessages = async (): Promise<GroupMessage[]> => {
+    const result = await this.apiClient.get(ENDPOINTS.groupMessage());
+    return ObjectMapper.deserializeArray(GroupMessage, result);
   };
 }
 

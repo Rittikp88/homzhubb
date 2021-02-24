@@ -285,7 +285,7 @@ export const groupChatData = [
         phone_number: '9597773556',
         profile_picture: null,
         rating: 3,
-        is_asset_owner: true,
+        is_asset_owner: false,
       },
       {
         id: 1,
