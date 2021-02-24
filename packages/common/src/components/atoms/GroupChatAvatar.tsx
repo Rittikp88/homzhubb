@@ -104,7 +104,6 @@ const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, 
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'row',
-      backgroundColor: 'red',
     },
     initialsContainerStyle: {
       backgroundColor: theme.colors.background,
