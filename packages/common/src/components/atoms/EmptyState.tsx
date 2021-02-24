@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
@@ -18,13 +19,15 @@ export const EmptyState = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const { icon = icons.search, iconSize = 30, title = t('common:noResultsFound'), buttonProps, containerStyle } = props;
   return (
-    <View style={[styles.noDataContainer, containerStyle]}>
-      <Icon name={icon} size={iconSize} color={theme.colors.disabledSearch} />
-      <Text type="small" textType="semiBold" style={styles.noResultsFound}>
-        {title}
-      </Text>
-      {buttonProps && <Button {...buttonProps} />}
-    </View>
+    <KeyboardAwareScrollView bounces={false} contentContainerStyle={[styles.noDataContainer, containerStyle]}>
+      <View style={[styles.noDataContainer, containerStyle]}>
+        <Icon name={icon} size={iconSize} color={theme.colors.disabledSearch} />
+        <Text type="small" textType="semiBold" style={styles.noResultsFound}>
+          {title}
+        </Text>
+        {buttonProps && <Button {...buttonProps} />}
+      </View>
+    </KeyboardAwareScrollView>
   );
 };
 

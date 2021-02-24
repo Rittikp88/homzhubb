@@ -16,6 +16,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 
 interface IScreenState {
   searchValue: string;
@@ -55,28 +56,49 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       t,
       groupMessages,
     } = this.props;
+
     const filteredMessages = this.getFilteredMessages(groupMessages);
-    // TODO: (shivam: handle empty state)
+    const isMessagesPresent = groupMessages && groupMessages.length > 0;
+    const isSearchFound = filteredMessages && filteredMessages.length > 0;
+
     return (
-      <UserScreen title={t('assetMore:more')} scrollEnabled onBackPress={goBack} pageTitle={t('assetMore:messages')}>
-        <View style={styles.container}>
-          <SearchBar
-            placeholder={t('assetMore:searchByNameOrProperty')}
-            value={searchValue}
-            updateValue={throttle(this.updateSearchValue)}
-          />
-          <Text type="small" textType="semiBold" style={styles.chat}>
-            {t('assetMore:chats')}
-          </Text>
-          <FlatList
-            data={filteredMessages}
-            renderItem={this.renderItem}
-            style={styles.chatList}
-            ItemSeparatorComponent={this.renderItemSeparator}
-            keyExtractor={this.keyExtractor}
-            scrollEnabled={false}
-          />
-        </View>
+      <UserScreen
+        title={t('assetMore:more')}
+        scrollEnabled={false}
+        onBackPress={goBack}
+        pageTitle={t('assetMore:messages')}
+      >
+        {isMessagesPresent ? (
+          <View style={styles.container}>
+            <SearchBar
+              placeholder={t('assetMore:searchByNameOrProperty')}
+              value={searchValue}
+              updateValue={throttle(this.updateSearchValue)}
+              containerStyle={styles.searchBar}
+            />
+            {isSearchFound ? (
+              <>
+                <Text type="small" textType="semiBold" style={styles.chat}>
+                  {t('assetMore:chats')}
+                </Text>
+                <FlatList
+                  data={filteredMessages}
+                  renderItem={this.renderItem}
+                  style={styles.chatList}
+                  ItemSeparatorComponent={this.renderItemSeparator}
+                  keyExtractor={this.keyExtractor}
+                  scrollEnabled
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.chatListContent}
+                />
+              </>
+            ) : (
+              <EmptyState title={t('assetMore:noChatsFound')} containerStyle={styles.noChat} />
+            )}
+          </View>
+        ) : (
+          <EmptyState title={t('assetMore:noChatsFound')} containerStyle={styles.noChat} />
+        )}
       </UserScreen>
     );
   }
@@ -134,17 +156,23 @@ export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Me
 interface IScreenStyles {
   container: ViewStyle;
   chatList: ViewStyle;
+  chatListContent: ViewStyle;
   separator: ViewStyle;
+  noChat: ViewStyle;
+  searchBar: ViewStyle;
   chat: TextStyle;
 }
 
 const styles: IScreenStyles = StyleSheet.create({
   container: {
     marginHorizontal: 12,
+    flex: 1,
   },
   chatList: {
     marginTop: 12,
-    marginBottom: 20,
+  },
+  chatListContent: {
+    paddingBottom: 20,
   },
   separator: {
     height: 12,
@@ -152,5 +180,11 @@ const styles: IScreenStyles = StyleSheet.create({
   chat: {
     marginTop: 16,
     color: theme.colors.darkTint3,
+  },
+  noChat: {
+    flex: 1,
+  },
+  searchBar: {
+    marginTop: 16,
   },
 });
