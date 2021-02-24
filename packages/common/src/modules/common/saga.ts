@@ -21,7 +21,7 @@ function* getCountries() {
 function* getMessages(action: IFluxStandardAction<IGetMessageParam>) {
   try {
     const response = yield call(MessageRepository.getMessages, action.payload as IGetMessageParam);
-    yield put(CommonActions.getMessagesSuccess(response));
+    yield put(CommonActions.getMessagesSuccess({ response, isNew: action.payload?.isNew }));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });
