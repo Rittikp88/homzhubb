@@ -42,6 +42,9 @@ export class GroupMessage {
   get getAlphabeticalSortedUserNames(): string {
     const userNames: string[] = [];
     this.users.forEach((user: User) => {
+      if (user.isAssetOwner) {
+        return;
+      }
       const { firstName, lastName } = user;
       const name = `${firstName} ${lastName}`;
 

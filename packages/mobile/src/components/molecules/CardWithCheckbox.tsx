@@ -23,6 +23,7 @@ interface IOwnProps extends WithTranslation {
   onToggle: (value: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
   currency: Currency;
+  isMobile?: boolean;
 }
 
 interface IOwnState {
@@ -35,13 +36,12 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
   };
 
   public render = (): React.ReactElement => {
-    const { t, heading, image, price, discountedPrice, containerStyle, selected, currency } = this.props;
+    const { t, heading, image, price, discountedPrice, containerStyle, selected, currency, isMobile } = this.props;
     const { showMore } = this.state;
     const {
       colors: { moreSeparator, white },
     } = theme;
     const backgroundColor = selected ? moreSeparator : white;
-
     return (
       <View style={[styles.container, containerStyle]}>
         <View style={[{ backgroundColor }, styles.padding]}>
@@ -49,11 +49,17 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
             <Image source={{ uri: image }} style={styles.image} />
             <View style={styles.content}>
               <View style={styles.headingStyle}>
-                <Label type="large" textType="semiBold" numberOfLines={3} style={styles.textStyle}>
+                <Label
+                  type="large"
+                  textType="semiBold"
+                  numberOfLines={3}
+                  style={[styles.textStyle, PlatformUtils.isWeb() && isMobile && styles.mobileContainer]}
+                >
                   {heading}
                 </Label>
-                <RNCheckbox selected={selected} onToggle={this.onToggle} />
+                {PlatformUtils.isMobile() && <RNCheckbox selected={selected} onToggle={this.onToggle} />}
               </View>
+
               <View style={styles.rowStyle}>
                 <PricePerUnit
                   price={discountedPrice || price}
@@ -72,6 +78,11 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
                 )}
               </View>
             </View>
+            {PlatformUtils.isWeb() && (
+              <View style={styles.checkBoxWeb}>
+                <RNCheckbox selected={selected} onToggle={this.onToggle} />
+              </View>
+            )}
           </View>
           {showMore && this.renderMoreContent()}
         </View>
@@ -90,6 +101,7 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
 
   private renderMoreContent = (): ReactElement => {
     const { bundleItems } = this.props;
+
     return (
       <>
         <Divider containerStyles={styles.dividerStyles} />
@@ -144,6 +156,9 @@ const styles = StyleSheet.create({
     width: PlatformUtils.isWeb() ? '100%' : '62%',
     color: theme.colors.darkTint2,
   },
+  mobileContainer: {
+    width: '65%',
+  },
   price: {
     marginTop: 10,
     color: theme.colors.darkTint2,
@@ -192,4 +207,5 @@ const styles = StyleSheet.create({
     width: 70,
     height: 60,
   },
+  checkBoxWeb: { position: 'absolute', right: '24px', top: 0 },
 });

@@ -1,11 +1,18 @@
 import React from 'react';
-import { PickerItemProps, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+
+export interface IMenu {
+  icon?: string;
+  label: string;
+  value: string;
+}
 
 interface IProps {
   isVisible: boolean;
-  data: PickerItemProps[];
+  data: IMenu[];
   onSelect: (value: string) => void;
 }
 
@@ -19,7 +26,8 @@ const DropdownModal = (props: IProps): React.ReactElement | null => {
     <View style={styles.container}>
       {data.map((item, index) => {
         return (
-          <TouchableOpacity onPress={(): void => onSelect(item.value)} key={index}>
+          <TouchableOpacity onPress={(): void => onSelect(item.value)} key={index} style={styles.content}>
+            {!!item.icon && <Icon name={item.icon} size={20} color={theme.colors.darkTint3} style={styles.iconStyle} />}
             <Text type="small" style={styles.label}>
               {item.label}
             </Text>
@@ -50,8 +58,15 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 7,
   },
-  label: {
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 12,
+  },
+  label: {
     color: theme.colors.darkTint3,
+  },
+  iconStyle: {
+    marginRight: 6,
   },
 });

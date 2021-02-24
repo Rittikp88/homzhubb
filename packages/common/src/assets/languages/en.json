@@ -793,7 +793,8 @@
     "fewMomentAgo": "a few moments ago",
     "daysAgo": "{{day}} day ago",
     "chats": "Chats",
-    "searchByNameOrProperty": "Search by name or property"
+    "searchByNameOrProperty": "Search by name or property",
+    "noChatsFound": "No Chats Found"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

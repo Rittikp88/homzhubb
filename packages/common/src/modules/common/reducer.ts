@@ -1,21 +1,17 @@
 import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { CommonActionPayloadTypes, CommonActionTypes } from '@homzhub/common/src/modules/common/actions';
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
-import { Links } from '@homzhub/common/src/domain/models/Links';
-import { Messages } from '@homzhub/common/src/domain/models/Message';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IChatPayload, ICommonState, IMessageSuccess } from '@homzhub/common/src/modules/common/interfaces';
 
 export const initialCommonState: ICommonState = {
   countries: [],
   deviceCountry: '',
-  messages: {
-    count: 10,
-    links: new Links(),
-    messageResult: [],
-  },
+  attachment: '',
+  messages: null,
+  currentChatDetail: null,
   redirectionDetails: {
     redirectionLink: '',
     shouldRedirect: false,
@@ -53,20 +49,36 @@ export const commonReducer = (
       };
     case CommonActionTypes.GET.MESSAGES_SUCCESS:
       // eslint-disable-next-line no-case-declarations
-      const payload = action.payload as Messages;
+      const { response, isNew } = action.payload as IMessageSuccess;
+      // eslint-disable-next-line no-case-declarations
+      const messageResult = ReducerUtils.formatMessages(response, state.messages, isNew);
       return {
         ...state,
         messages: {
-          count: payload.count,
-          links: payload.links,
-          messageResult: ReducerUtils.formatMessages(action.payload as Messages),
+          count: response.count,
+          links: response.links,
+          messageResult,
         },
+      };
+    case CommonActionTypes.SET.MESSAGE_ATTACHMENT:
+      return {
+        ...state,
+        ['attachment']: action.payload as string,
+      };
+    case CommonActionTypes.CLEAR_MESSAGES:
+      return {
+        ...state,
+        messages: initialCommonState.messages,
+      };
+    case CommonActionTypes.CLEAR_ATTACHMENT:
+      return {
+        ...state,
+        attachment: initialCommonState.attachment,
       };
     case CommonActionTypes.GET.GROUP_MESSAGES:
       return {
         ...state,
         ['groupMessages']: null,
-        ['error']: { ...state.error, ['groupMessages']: '' },
         ['loaders']: { ...state.loaders, ['groupMessages']: true },
       };
     case CommonActionTypes.GET.GROUP_MESSAGES_SUCCESS:
@@ -74,6 +86,16 @@ export const commonReducer = (
         ...state,
         ['groupMessages']: action.payload as GroupMessage[],
         ['loaders']: { ...state.loaders, ['groupMessages']: false },
+      };
+    case CommonActionTypes.SET.CURRENT_CHAT:
+      return {
+        ...state,
+        currentChatDetail: action.payload as IChatPayload,
+      };
+    case CommonActionTypes.CLEAR_CHAT_DETAIL:
+      return {
+        ...state,
+        currentChatDetail: initialCommonState.currentChatDetail,
       };
     default:
       return {

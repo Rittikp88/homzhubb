@@ -178,16 +178,16 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
   }
 
   private renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
-    const { visits, isLoading, reviewVisitId, t } = this.props;
+    const { visits, isLoading, reviewVisitId, t, navigation } = this.props;
     const { dropdownValue, pillars } = this.state;
     let dropdownData;
-
     switch (route.key) {
       case Tabs.UPCOMING:
         dropdownData = VisitUtils.getDropdownData(Tabs.UPCOMING);
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
             <PropertyVisitList
+              navigation={navigation}
               visitType={route.key}
               visitData={visits}
               dropdownData={dropdownData}
@@ -205,6 +205,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
         return (
           <View onLayout={(e): void => this.onLayout(e, 1)}>
             <PropertyVisitList
+              navigation={navigation}
               visitType={route.key}
               visitData={visits}
               isLoading={isLoading}
@@ -222,6 +223,7 @@ class SiteVisitTab extends PureComponent<Props, IScreenState> {
         return (
           <View onLayout={(e): void => this.onLayout(e, 2)}>
             <PropertyVisitList
+              navigation={navigation}
               visitType={route.key}
               visitData={visits}
               isLoading={isLoading}

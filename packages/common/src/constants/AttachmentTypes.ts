@@ -4,4 +4,5 @@ export enum AttachmentType {
   ASSET_VERIFICATION = 'verification_documents',
   ASSET_RECORD = 'financial_record',
   PROFILE_IMAGE = 'profile_images',
+  CHAT_DOCUMENT = 'chat_document',
 }

@@ -1,13 +1,13 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { IGetMessageParam, IMessagePayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 const ENDPOINTS = {
+  groupMessage: (): string => 'message-groups/',
   messages: (groupId: number): string => `message-groups/${groupId}/messages/`,
-  groupMessage: (): string => 'message-groups',
 };
 
 class MessageRepository {
@@ -28,10 +28,9 @@ class MessageRepository {
     return await this.apiClient.post(ENDPOINTS.messages(groupId), { message, attachments });
   };
 
-  // TODO: (shivam: 23/1/21: intergrate api)
-  public getGroupMessages = async (): Promise<GroupMessage> => {
-    const result = this.apiClient.get(ENDPOINTS.groupMessage());
-    return result;
+  public getGroupMessages = async (): Promise<GroupMessage[]> => {
+    const result = await this.apiClient.get(ENDPOINTS.groupMessage());
+    return ObjectMapper.deserializeArray(GroupMessage, result);
   };
 }
 

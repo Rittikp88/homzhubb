@@ -783,7 +783,8 @@
     "chooseAPropertyText": "Choose a property to buy the services",
     "valueServicesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
     "newCase": "New Case",
-    "caseLogs": "Case Logs ({{count}})"
+    "caseLogs": "Case Logs ({{count}})",
+    "viewInfo": "View Info"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

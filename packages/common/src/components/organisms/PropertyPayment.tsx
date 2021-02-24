@@ -277,6 +277,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
     paddingVertical: 16,
+    height: PlatformUtils.isWeb() ? '100vh' : 'auto',
   },
   payButton: {
     marginHorizontal: 16,
@@ -326,5 +327,9 @@ const styles = StyleSheet.create({
   emptyView: {
     paddingHorizontal: 16,
     backgroundColor: theme.colors.white,
+    alignItems: 'center',
+    textAlign: 'center',
+    height: '50%',
+    justifyContent: 'center',
   },
 });
