@@ -21,6 +21,7 @@ interface IProps {
   isRescheduleAll?: boolean;
   isFromProperty?: boolean;
   onPressSchedule?: () => void;
+  navigateToAssetDetails: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -37,6 +38,7 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
     isRescheduleAll = false,
     isFromProperty = false,
     isPropertyOwner = false,
+    navigateToAssetDetails,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const dateTime = DateUtils.convertTimeFormat(startDate, 'YYYY-MM-DD HH');
@@ -70,13 +72,15 @@ export const AddressWithVisitDetail = (props: IProps): React.ReactElement => {
           )}
         </>
       ) : (
-        <PropertyAddress
-          primaryTextType="small"
-          subAddress={subAddress}
-          primaryAddress={primaryAddress}
-          subAddressStyle={styles.subAddress}
-          containerStyle={styles.addressContainer}
-        />
+        <TouchableOpacity onPress={(): void => navigateToAssetDetails()}>
+          <PropertyAddress
+            primaryTextType="small"
+            subAddress={subAddress}
+            primaryAddress={primaryAddress}
+            subAddressStyle={styles.subAddress}
+            containerStyle={styles.addressContainer}
+          />
+        </TouchableOpacity>
       )}
       <Label type="regular" style={[styles.textColor, !comments && styles.detail]}>
         {t('visitDetails')}
