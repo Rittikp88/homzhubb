@@ -36,11 +36,13 @@ const GroupChat = (props: IProps): React.ReactElement => {
           <Label numberOfLines={1} type="regular" textType="regular" style={[styles.tintColor, styles.userNames]}>
             {getAlphabeticalSortedUserNames}
           </Label>
-          <View style={styles.unreadCountContainer}>
-            <Label type="regular" textType="regular" style={styles.unreadCount}>
-              {unreadCount}
-            </Label>
-          </View>
+          {unreadCount ? (
+            <View style={styles.unreadCountContainer}>
+              <Label type="regular" textType="regular" style={styles.unreadCount}>
+                {unreadCount}
+              </Label>
+            </View>
+          ) : null}
         </View>
       </View>
     </TouchableOpacity>

@@ -91,10 +91,11 @@ interface IScreenStyles {
 }
 const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, index = 0) => {
   const isFirstFace = index === 0;
+  const liftUpStyle: ViewStyle = isHeader ? {} : { bottom: circleSize / 2 };
 
-  const imageAvatarContainerStyle: ViewStyle = isFirstFace
-    ? { marginRight: isHeader ? 0 : 0, zIndex: isHeader ? 0 : 10 }
-    : { position: 'absolute', bottom: circleSize / 2, left: circleSize / 3 };
+  const imageAvatarContainerStyle: ViewStyle = !isFirstFace
+    ? { position: 'absolute', ...liftUpStyle, left: (circleSize / 3) * index + 1 }
+    : { marginRight: isHeader ? 0 : 0, zIndex: isHeader ? 0 : 10 };
   const extraCountStyle: ViewStyle = isHeader ? {} : { position: 'absolute', left: circleSize / 1.4 };
 
   return StyleSheet.create({
