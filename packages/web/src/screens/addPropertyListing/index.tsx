@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
 import AddListingView from '@homzhub/web/src/screens/addPropertyListing/AddListingView';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 enum ComponentName {
   Listing_Plan_Selection = 'ListingPlanSelection',
@@ -15,9 +17,12 @@ enum ComponentName {
 const AddPropertyListing = (): React.ReactElement => {
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
   const dispatch = useDispatch();
+  const Desktop = useOnly(deviceBreakpoint.DESKTOP);
+  const Mobile = useOnly(deviceBreakpoint.MOBILE);
+  const Tablet = useOnly(deviceBreakpoint.TABLET);
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(323));
+    dispatch(RecordAssetActions.setAssetId(704));
   });
 
   const renderScene = (): React.ReactElement | null => {
@@ -31,7 +36,14 @@ const AddPropertyListing = (): React.ReactElement => {
           />
         );
       case ComponentName.Add_Listing_Detail:
-        return <AddListingView onUploadDocument={FunctionUtils.noop} />;
+        return (
+          <AddListingView
+            onUploadDocument={FunctionUtils.noop}
+            isDesktop={Desktop}
+            isMobile={Mobile}
+            isTablet={Tablet}
+          />
+        );
       default:
         return null;
     }
