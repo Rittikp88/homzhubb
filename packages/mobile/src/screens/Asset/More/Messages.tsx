@@ -29,6 +29,7 @@ interface IStateToProps {
 
 interface IDispatchToProps {
   getGroupMessage: () => void;
+  clearMessages: () => void;
   setCurrentChatDetail: (payload: IChatPayload) => void;
 }
 
@@ -37,6 +38,8 @@ type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.M
 type MessageProps = NavProps & WithTranslation & IStateToProps & IDispatchToProps;
 
 class Messages extends React.PureComponent<MessageProps, IScreenState> {
+  public focusListener: any;
+
   constructor(props: MessageProps) {
     super(props);
 
@@ -46,8 +49,15 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
   }
 
   public componentDidMount(): void {
-    const { getGroupMessage } = this.props;
-    getGroupMessage();
+    const { getGroupMessage, navigation, clearMessages } = this.props;
+    this.focusListener = navigation.addListener('focus', () => {
+      getGroupMessage();
+      clearMessages();
+    });
+  }
+
+  public componentWillUnmount(): void {
+    this.focusListener();
   }
 
   public render(): React.ReactNode {
@@ -85,7 +95,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
                   style={styles.chatList}
                   ItemSeparatorComponent={this.renderItemSeparator}
                   keyExtractor={this.keyExtractor}
-                  scrollEnabled
+                  scrollEnabled={false}
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={styles.chatListContent}
                 />
@@ -165,11 +175,11 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
     return sortedGroupMessages;
   };
 
-  private handleChatPress = (name: string): void => {
+  private handleChatPress = (name: string, id: number): void => {
     const { navigation, setCurrentChatDetail } = this.props;
     setCurrentChatDetail({
       groupName: name,
-      groupId: 16, // TODO: Add proper id
+      groupId: id,
     });
     navigation.navigate(ScreensKeys.ChatScreen);
   };
@@ -183,8 +193,8 @@ const mapStateToProps = (state: IState): IStateToProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
-  const { getGroupMessage, setCurrentChatDetail } = CommonActions;
-  return bindActionCreators({ getGroupMessage, setCurrentChatDetail }, dispatch);
+  const { getGroupMessage, setCurrentChatDetail, clearMessages } = CommonActions;
+  return bindActionCreators({ getGroupMessage, setCurrentChatDetail, clearMessages }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Messages));
@@ -218,7 +228,6 @@ const styles: IScreenStyles = StyleSheet.create({
     color: theme.colors.darkTint3,
   },
   noChat: {
-    flexDirection: 'row',
     justifyContent: 'center',
     alignContent: 'center',
   },

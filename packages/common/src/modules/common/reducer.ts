@@ -19,6 +19,7 @@ export const initialCommonState: ICommonState = {
   groupMessages: null,
   loaders: {
     groupMessages: false,
+    messages: false,
   },
 };
 
@@ -47,6 +48,11 @@ export const commonReducer = (
         ...state,
         ['redirectionDetails']: action.payload as IRedirectionDetails,
       };
+    case CommonActionTypes.GET.MESSAGES:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['messages']: true },
+      };
     case CommonActionTypes.GET.MESSAGES_SUCCESS:
       // eslint-disable-next-line no-case-declarations
       const { response, isNew } = action.payload as IMessageSuccess;
@@ -59,6 +65,7 @@ export const commonReducer = (
           links: response.links,
           messageResult,
         },
+        ['loaders']: { ...state.loaders, ['messages']: false },
       };
     case CommonActionTypes.SET.MESSAGE_ATTACHMENT:
       return {

@@ -4,25 +4,40 @@ import { useTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   icon?: string;
   title?: string;
   iconSize?: number;
+  subTitle?: string;
+  isIconRequired?: boolean;
   buttonProps?: IButtonProps;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 export const EmptyState = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { icon = icons.search, iconSize = 30, title = t('common:noResultsFound'), buttonProps, containerStyle } = props;
+  const {
+    isIconRequired = true,
+    icon = icons.search,
+    iconSize = 30,
+    title = t('common:noResultsFound'),
+    subTitle,
+    buttonProps,
+    containerStyle,
+  } = props;
   return (
     <View style={[styles.noDataContainer, containerStyle]}>
-      <Icon name={icon} size={iconSize} color={theme.colors.disabledSearch} />
+      {isIconRequired && <Icon name={icon} size={iconSize} color={theme.colors.disabledSearch} />}
       <Text type="small" textType="semiBold" style={styles.noResultsFound}>
         {title}
       </Text>
+      {!!subTitle && (
+        <Label type="large" textType="semiBold" style={styles.subTitle}>
+          {subTitle}
+        </Label>
+      )}
       {buttonProps && <Button {...buttonProps} />}
     </View>
   );
@@ -39,5 +54,9 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     textAlign: 'center',
     color: theme.colors.darkTint6,
+  },
+  subTitle: {
+    textAlign: 'center',
+    color: theme.colors.darkTint8,
   },
 });

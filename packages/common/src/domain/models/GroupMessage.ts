@@ -55,6 +55,7 @@ export class GroupMessage {
   }
 
   get getDate(): string {
+    if (!this.lastMessage) return '';
     return DateUtils.getDateDifferenceMessage(this.lastMessage);
   }
 }

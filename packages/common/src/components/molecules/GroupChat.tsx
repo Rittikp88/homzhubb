@@ -7,17 +7,17 @@ import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 interface IProps {
   chatData: GroupMessage;
-  onChatPress: (name: string) => void;
+  onChatPress: (name: string, id: number) => void;
 }
 
 const GroupChat = (props: IProps): React.ReactElement => {
   const {
-    chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate, users },
+    chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate, users, id },
     onChatPress,
   } = props;
 
   const handleChatPress = (): void => {
-    onChatPress(name);
+    onChatPress(name, id);
   };
 
   return (
@@ -28,9 +28,11 @@ const GroupChat = (props: IProps): React.ReactElement => {
           <Label type="large" textType="bold" numberOfLines={1} style={styles.userNames}>
             {name}
           </Label>
-          <Label type="regular" textType="regular" style={styles.tintColor}>
-            {getDate}
-          </Label>
+          {!!getDate && (
+            <Label type="regular" textType="regular" style={styles.tintColor}>
+              {getDate}
+            </Label>
+          )}
         </View>
         <View style={styles.justifyContent}>
           <Label numberOfLines={1} type="regular" textType="regular" style={[styles.tintColor, styles.userNames]}>

@@ -78,6 +78,10 @@ export enum ListingType {
   SALE_LISTING = 'sale-listings',
 }
 
+export enum MessageAction {
+  READ = 'READ',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -680,4 +684,16 @@ export interface IMessagePayload {
   groupId: number;
   message: string;
   attachments: number[];
+}
+
+interface IMessageAction {
+  action: MessageAction;
+  payload: {
+    read_at: string;
+  };
+}
+
+export interface IUpdateMessagePayload {
+  groupId: number;
+  data: IMessageAction;
 }

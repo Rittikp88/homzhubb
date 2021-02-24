@@ -9,16 +9,17 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 
 interface IProps {
   onUploadImage: () => void;
+  onPressCamera: () => void;
   onInputFocus: () => void;
   onSubmit: (text: string, isAttachment?: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const ChatInputBox = (props: IProps): React.ReactElement => {
-  const { onSubmit, onUploadImage, containerStyle, onInputFocus } = props;
+  const { onSubmit, onUploadImage, containerStyle, onInputFocus, onPressCamera } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const attachmentUrl = useSelector(CommonSelectors.getMessageAttachment);
+  const attachmentUrl: string = useSelector(CommonSelectors.getMessageAttachment);
 
   // states
   const [value, setValue] = useState('');
@@ -58,13 +59,22 @@ const ChatInputBox = (props: IProps): React.ReactElement => {
         />
       </TouchableOpacity>
       {isImage && !attachmentUrl && (
-        <Icon
-          name={icons.filledGallery}
-          color={theme.colors.blue}
-          size={28}
-          onPress={onUploadImage}
-          style={styles.gallery}
-        />
+        <View style={styles.iconView}>
+          <Icon
+            name={icons.filledGallery}
+            color={theme.colors.blue}
+            size={28}
+            onPress={onUploadImage}
+            style={styles.gallery}
+          />
+          <Icon
+            name={icons.camera}
+            color={theme.colors.blue}
+            size={28}
+            onPress={onPressCamera}
+            style={styles.gallery}
+          />
+        </View>
       )}
       {!!attachmentUrl && (
         <View style={styles.imageContainer}>
@@ -114,7 +124,6 @@ const styles = StyleSheet.create({
   gallery: {
     marginLeft: 8,
     paddingVertical: 18.5,
-    flex: 1,
   },
   input: {
     paddingVertical: 24,
@@ -140,5 +149,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     backgroundColor: theme.colors.crossIconContainer,
+  },
+  iconView: {
+    flexDirection: 'row',
+    flex: 1,
   },
 });

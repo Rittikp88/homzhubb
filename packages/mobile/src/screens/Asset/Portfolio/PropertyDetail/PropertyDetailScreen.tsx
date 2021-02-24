@@ -55,6 +55,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
 import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 const { height, width } = theme.viewport;
 const TAB_LAYOUT = {
@@ -82,6 +83,7 @@ interface IDispatchProps {
   clearMessages: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
+  setCurrentChatDetail: (payload: IChatPayload) => void;
 }
 
 interface IDetailState {
@@ -518,12 +520,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private handleIndexChange = (index: number): void => {
-    const { clearMessages } = this.props;
-    this.setState({ currentIndex: index }, () => {
-      if (index !== 6) {
-        clearMessages();
-      }
-    });
+    this.setState({ currentIndex: index });
   };
 
   private handleResponder = (): boolean => {
@@ -537,6 +534,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   private getAssetDetail = async (): Promise<void> => {
     const {
       assetPayload: { asset_id, assetType, listing_id },
+      setCurrentChatDetail,
+      clearMessages,
+      clearChatDetail,
     } = this.props;
     const payload: IPropertyDetailPayload = {
       asset_id,
@@ -546,10 +546,23 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     this.setState({ isLoading: true });
     try {
       const response = await PortfolioRepository.getPropertyDetail(payload);
-      this.setState({
-        propertyData: response,
-        isLoading: false,
-      });
+      const info = response.assetStatusInfo;
+      clearMessages();
+      clearChatDetail();
+      this.setState(
+        {
+          propertyData: response,
+          isLoading: false,
+        },
+        () => {
+          if (info && info.leaseTransaction && info.leaseTransaction.id > 0) {
+            setCurrentChatDetail({
+              groupName: response.projectName,
+              groupId: info.leaseTransaction.messageGroupId,
+            });
+          }
+        }
+      );
     } catch (e) {
       this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -608,9 +621,10 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private handleIconPress = (): void => {
-    const { navigation, clearChatDetail } = this.props;
+    const { navigation, clearChatDetail, clearMessages } = this.props;
     navigation.goBack();
     clearChatDetail();
+    clearMessages();
   };
 
   private handleMenuIcon = (): void => {
@@ -638,7 +652,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     toggleEditPropertyFlowBottomSheet,
   } = RecordAssetActions;
   const { clearAsset } = AssetActions;
-  const { clearChatDetail, clearMessages } = CommonActions;
+  const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   return bindActionCreators(
     {
       setAssetId,
@@ -649,6 +663,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       clearAsset,
       clearChatDetail,
       clearMessages,
+      setCurrentChatDetail,
     },
     dispatch
   );

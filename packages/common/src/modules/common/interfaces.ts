@@ -13,6 +13,7 @@ export interface ICommonState {
   groupMessages: GroupMessage[] | null;
   loaders: {
     groupMessages: boolean;
+    messages: boolean;
   };
 }
 
