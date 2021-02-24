@@ -9,6 +9,7 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -36,6 +37,7 @@ import {
   IClosureReasonPayload,
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
@@ -52,6 +54,7 @@ interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
   setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
+  setCurrentChatDetail: (payload: IChatPayload) => void;
 }
 
 interface IPortfolioState {
@@ -181,7 +184,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
-      this.onViewProperty({ ...data, dataType: type }, key);
+      this.onViewProperty({ ...data, dataType: type }, item, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
       this.handleActions(item, payload, param);
@@ -210,9 +213,14 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.closeBottomSheet();
   };
 
-  private onViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
-    const { navigation, setCurrentAsset } = this.props;
+  private onViewProperty = (data: ISetAssetPayload, item: Asset, key?: Tabs): void => {
+    const { navigation, setCurrentAsset, setCurrentChatDetail } = this.props;
+    const { projectName } = item;
     setCurrentAsset(data);
+    setCurrentChatDetail({
+      groupName: projectName,
+      groupId: 16,
+    });
     navigation.navigate(ScreensKeys.PropertyDetailScreen, {
       isFromTenancies: data.dataType === DataType.TENANCIES,
       ...(key && { tabKey: key }),
@@ -377,8 +385,17 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
   const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
+  const { setCurrentChatDetail } = CommonActions;
   return bindActionCreators(
-    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setAssetId, setEditPropertyFlow },
+    {
+      getTenanciesDetails,
+      getPropertyDetails,
+      setCurrentAsset,
+      setCurrentFilter,
+      setAssetId,
+      setEditPropertyFlow,
+      setCurrentChatDetail,
+    },
     dispatch
   );
 };

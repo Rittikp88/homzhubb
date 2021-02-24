@@ -1,13 +1,13 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { IGetMessageParam, IMessagePayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 
 const ENDPOINTS = {
+  groupMessage: (): string => 'message-groups/',
   messages: (groupId: number): string => `message-groups/${groupId}/messages/`,
-  groupMessage: (): string => 'message-groups',
 };
 
 class MessageRepository {

@@ -59,7 +59,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-10T12:01:00Z',
     unread_count: 20,
   },
   {
@@ -89,7 +89,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-11T12:01:00Z',
     unread_count: 20,
   },
   {
@@ -119,7 +119,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-12T12:01:00Z',
     unread_count: 20,
   },
   {
@@ -149,7 +149,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-13T12:01:00Z',
     unread_count: 20,
   },
   {
@@ -179,7 +179,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-14T12:01:00Z',
     unread_count: 20,
   },
   {
@@ -209,7 +209,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-15T12:01:00Z',
     unread_count: 20,
   },
   {
@@ -239,7 +239,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-16T12:01:00Z',
     unread_count: 20,
   },
   {
@@ -269,7 +269,7 @@ export const groupChatData = [
         is_asset_owner: true,
       },
     ],
-    last_message_at: '2021-01-21T12:01:00Z',
+    last_message_at: '2021-01-17T12:01:00Z',
     unread_count: 20,
   },
   {

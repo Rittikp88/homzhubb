@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import React, { ReactElement } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -30,7 +31,7 @@ import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/model
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IRoutes, ListingRoutesWeb, Tabs } from '@homzhub/common/src/constants/Tabs';
+import { IRoutes, ListingRoutes, ListingRoutesWeb, Tabs } from '@homzhub/common/src/constants/Tabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
@@ -51,6 +52,7 @@ interface IDispatchProps {
 interface IProps {
   params?: any;
   onUploadDocument: () => any;
+  isDesktop?: boolean;
 }
 
 type Props = WithTranslation & IStateProps & IDispatchProps & IProps & IWithMediaQuery;
@@ -77,7 +79,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
     currentIndex: 0,
     isStepDone: [],
-    tabViewHeights: [height, height, height, height * 0.5],
+    tabViewHeights: [height, height, height, height],
     isActionSheetToggled: false,
     leaseType: LeaseTypes.Entire,
     isSheetVisible: false,
@@ -141,7 +143,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     } = this.props;
 
     if (!assetDetails) return null;
-
     const {
       projectName,
       assetType: { name },
@@ -330,9 +331,11 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
           </View>
         );
       case Tabs.SERVICE_PAYMENT:
+        const { isDesktop } = this.props;
         return (
           <View style={styles.service}>
             <ValueAddedServicesView
+              isDesktop={isDesktop}
               propertyId={assetDetails.id}
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
               valueAddedServices={valueAddedServices}
@@ -349,6 +352,31 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
               handleNextStep={this.handleNextStep}
             />
           </View>
+        );
+      case Tabs.SERVICES:
+        const { isMobile, isTablet } = this.props;
+        return (
+          <ValueAddedServicesView
+            isMobile={isMobile}
+            isTablet={isTablet}
+            propertyId={assetDetails.id}
+            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
+            valueAddedServices={valueAddedServices}
+            setValueAddedServices={setValueAddedServices}
+            typeOfPlan={selectedPlan}
+            handleNextStep={this.handleNextStep}
+          />
+        );
+      case Tabs.PAYMENT:
+        return (
+          <PropertyPayment
+            propertyId={assetDetails.id}
+            lastVisitedStep={assetDetails.lastVisitedStepSerialized}
+            valueAddedServices={valueAddedServices}
+            setValueAddedServices={setValueAddedServices}
+            typeOfPlan={selectedPlan}
+            handleNextStep={this.handleNextStep}
+          />
         );
       default:
         return (
@@ -385,8 +413,9 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   public getRoutes = (): IRoutes[] => {
     const {
       selectedAssetPlan: { selectedPlan },
+      isDesktop,
     } = this.props;
-    const routes = ListingRoutesWeb;
+    const routes = isDesktop ? ListingRoutesWeb : ListingRoutes;
 
     if (selectedPlan !== TypeOfPlan.MANAGE) {
       return routes;

@@ -6,6 +6,7 @@ export const MonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug
 export const DateFormats = {
   ISO: 'YYYY-MM-DDThh:mm:ss.sss[Z]',
   ISO24Format: 'YYYY-MM-DDTHH:mm:ss.sssZ',
+  ISO8601: 'YYYY-MM-DDTHH:mm:ss.SSSSZ',
   ddd: 'ddd',
   DD: 'DD',
   y: 'y',
@@ -33,6 +34,7 @@ export const DateFormats = {
   MMM_YYYY: 'MMM YYYY',
   DDMMMYYYY_H: 'DD MMM YYYY, h A',
   DDMM: 'DD MMM',
+  HHMM_A: 'hh:mm a',
 };
 
 class DateUtils {
@@ -335,6 +337,10 @@ class DateUtils {
     }
 
     return moment(lastMessageDate.toString()).format(DateFormats.DDMM);
+  };
+
+  public convertDate = (date: string, format: string): string => {
+    return moment(date, DateFormats.ISO8601).format(format);
   };
 }
 

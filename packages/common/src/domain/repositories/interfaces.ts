@@ -673,6 +673,7 @@ export interface IGetMessageParam {
   groupId: number;
   count?: number;
   cursor?: string;
+  isNew?: boolean;
 }
 
 export interface IMessagePayload {
