@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EmptyState should match snapshot 1`] = `
-<View
-  style={
+<KeyboardAwareScrollViewMock
+  bounces={false}
+  contentContainerStyle={
     Array [
       Object {
         "alignItems": "center",
@@ -13,25 +14,46 @@ exports[`EmptyState should match snapshot 1`] = `
       undefined,
     ]
   }
+  enableAutomaticScroll={true}
+  enableOnAndroid={false}
+  enableResetScrollToCoords={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  viewIsInsideTabBar={false}
 >
-  <Icon
-    allowFontScaling={false}
-    color="#80C1FC"
-    name="search"
-    size={30}
-  />
-  <Text
+  <View
     style={
-      Object {
-        "color": "#808D9B",
-        "marginVertical": 16,
-        "textAlign": "center",
-      }
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#FFFFFF",
+          "justifyContent": "center",
+          "minHeight": 150,
+        },
+        undefined,
+      ]
     }
-    textType="semiBold"
-    type="small"
   >
-    common:noResultsFound
-  </Text>
-</View>
+    <Icon
+      allowFontScaling={false}
+      color="#80C1FC"
+      name="search"
+      size={30}
+    />
+    <Text
+      style={
+        Object {
+          "color": "#808D9B",
+          "marginVertical": 16,
+          "textAlign": "center",
+        }
+      }
+      textType="semiBold"
+      type="small"
+    >
+      common:noResultsFound
+    </Text>
+  </View>
+</KeyboardAwareScrollViewMock>
 `;

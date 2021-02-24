@@ -93,15 +93,21 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
                 />
               </>
             ) : (
-              <EmptyState title={t('assetMore:noChatsFound')} containerStyle={styles.noChat} />
+              this.renderEmptyState()
             )}
           </View>
         ) : (
-          <EmptyState title={t('assetMore:noChatsFound')} containerStyle={styles.noChat} />
+          this.renderEmptyState()
         )}
       </UserScreen>
     );
   }
+
+  private renderEmptyState = (): React.ReactElement => {
+    const { t } = this.props;
+
+    return <EmptyState title={t('assetMore:noChatsFound')} containerStyle={styles.noChat} />;
+  };
 
   private renderItem = ({ item, index }: { item: GroupMessage; index: number }): React.ReactElement => {
     return <GroupChat chatData={item} onChatPress={FunctionUtils.noop} />;
