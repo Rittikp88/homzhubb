@@ -124,6 +124,9 @@ export class LeaseTransaction extends LeasePeriod {
   @JsonProperty('security_deposit', Transaction, true)
   private _securityDeposit: Transaction | null = null;
 
+  @JsonProperty('message_group_id', Number, true)
+  private _messageGroupId = 0;
+
   get rent(): Transaction | null {
     return this._rent;
   }
@@ -134,5 +137,9 @@ export class LeaseTransaction extends LeasePeriod {
 
   get currency(): Currency {
     return this._currency;
+  }
+
+  get messageGroupId(): number {
+    return this._messageGroupId;
   }
 }

@@ -1,10 +1,8 @@
 import React from 'react';
 import { FlexStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { mockUsers } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 
 const MAX_DISPLAY_COUNT_HEADER = 3;
 const MAX_DISPLAY_COUNT_CHAT = 2;
@@ -15,23 +13,31 @@ interface IProps {
   faces: User[];
   isHeader: boolean;
   containerStyle?: ViewStyle;
+  loggedInUserId?: number;
 }
 
-type getStyles = (circleSize?: number, isHeader?: boolean, isFirst?: boolean, index?: number) => IScreenStyles;
+type getStyles = (circleSize?: number, isHeader?: boolean, index?: number) => IScreenStyles;
 
 const GroupChatAvatar = (props: IProps): React.ReactElement => {
   // Deserializing data
-  const mockFaces = ObjectMapper.deserializeArray(User, mockUsers); // TODO:Praharsh : Remove mock
   const styles = getStyles();
-  const { faces = mockFaces, isHeader = true, containerStyle = {} } = props;
+  const { faces, isHeader = true, containerStyle = {}, loggedInUserId } = props;
 
   const faceDisplayCount = isHeader ? MAX_DISPLAY_COUNT_HEADER : MAX_DISPLAY_COUNT_CHAT;
   const shouldShowOverflow = faces.length > faceDisplayCount;
   const overflow = faces.length - faceDisplayCount;
 
-  const facesToShow = faces
-    .sort((a: User, b: User) => a.firstName.localeCompare(b.firstName))
-    .slice(0, faceDisplayCount);
+  const sortedFaces = faces.sort((a: User, b: User) => a.firstName.localeCompare(b.firstName));
+
+  if (loggedInUserId) {
+    const loggedInUserIndex = sortedFaces.findIndex((user: User) => user.id === loggedInUserId);
+    const loggedInuser = sortedFaces[loggedInUserIndex];
+    sortedFaces.splice(loggedInUserIndex, 1);
+    sortedFaces.push(loggedInuser);
+  }
+
+  const facesToShow = sortedFaces.slice(0, faceDisplayCount);
+
   const circleSize = isHeader ? CIRCLE_SIZE_HEADER : CIRCLE_SIZE_CHAT;
 
   const ExtraCount = (): React.ReactElement | null => {
@@ -54,11 +60,10 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
   const Faces = (): React.ReactElement => {
     return (
       <>
-        {facesToShow.map((face: User) => {
-          const isFirst = facesToShow.indexOf(face) === 0;
-          const index = facesToShow.indexOf(face);
+        {facesToShow.map((face: User, index: number) => {
           const { name, profilePicture } = face;
-          const avatarStyle = getStyles(circleSize, isHeader, isFirst, index);
+          const avatarStyle = getStyles(circleSize, isHeader, index);
+
           return (
             <Avatar
               key={index}
@@ -90,16 +95,24 @@ interface IScreenStyles {
   customText: TextStyle;
   extraCountContainer: ViewStyle;
 }
-const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, isFirst = false, index = 0) => {
-  // To lift item up on chat head
-  const liftUp = (): TextStyle => {
-    const shift = isHeader ? circleSize * index : circleSize * index + 7;
-    return { marginBottom: isHeader ? 0 : shift };
+const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, index = 0) => {
+  const isFirstFace = index === 0;
+  const liftUpStyle: ViewStyle = isHeader ? {} : { bottom: circleSize / 2 };
+  const facesHorizontalDivisor = isHeader ? 1.3 : 3;
+  const extraCountHorizontalDivisor = isHeader ? 1.3 : 1.4;
+  const extraCountThreshold = 3;
+
+  const imageAvatarContainerStyle: ViewStyle = !isFirstFace
+    ? { position: 'absolute', ...liftUpStyle, left: (circleSize / facesHorizontalDivisor) * index + 1 }
+    : { marginRight: isHeader ? 0 : 0, zIndex: isHeader ? 0 : 10 };
+
+  const extraCountStyle: ViewStyle = {
+    position: 'absolute',
+    left: isHeader
+      ? (circleSize / extraCountHorizontalDivisor) * extraCountThreshold
+      : circleSize / extraCountHorizontalDivisor,
   };
-  const imageAvatarContainerStyle = (): ViewStyle =>
-    !isFirst
-      ? { marginLeft: -circleSize / 3.5, ...liftUp() }
-      : { marginRight: isHeader ? 0 : -circleSize / 3, zIndex: isHeader ? 0 : 10 };
+
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -114,12 +127,12 @@ const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, 
       marginBottom: -4,
       zIndex: 10,
     },
-    imageAvatarContainer: { ...imageAvatarContainerStyle() },
+    imageAvatarContainer: { ...imageAvatarContainerStyle },
     customText: {
       ...(!isHeader && { fontSize: circleSize / 2.5 }),
     },
     extraCountContainer: {
-      marginLeft: isHeader ? -circleSize / 3.5 : -circleSize / 1.5,
+      ...extraCountStyle,
       zIndex: isHeader ? 0 : 10,
     },
   });

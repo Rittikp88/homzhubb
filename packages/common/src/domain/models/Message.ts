@@ -4,14 +4,13 @@ import { Links } from '@homzhub/common/src/domain/models/Links';
 import { User } from '@homzhub/common/src/domain/models/User';
 
 export interface IMessageKeyValue {
-  key: string;
-  results: Message[];
+  [key: string]: Message[];
 }
 
 export interface IMessages {
   count: number | null;
   links: Links;
-  messageResult: IMessageKeyValue[];
+  messageResult: IMessageKeyValue;
 }
 
 @JsonObject('Message')

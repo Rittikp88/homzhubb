@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -24,6 +25,7 @@ interface IUserScreenProps {
   isOuterScrollEnabled?: boolean;
   onBackPress?: () => void;
   rightNode?: React.ReactElement;
+  onNavigateCallback?: () => void;
 }
 
 // Constants for Gradient background
@@ -46,6 +48,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     isOuterScrollEnabled,
     onBackPress,
     rightNode,
+    onNavigateCallback,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -63,6 +66,9 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
       screen: ScreensKeys.UserProfileScreen,
       initial: false,
     });
+    if (onNavigateCallback) {
+      onNavigateCallback();
+    }
   }, [navigation]);
 
   const renderHeader = useCallback((): React.ReactElement => {
@@ -114,7 +120,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
   };
 
   return (
-    <>
+    <HandleBack navigation={navigation} onBack={onBackPress}>
       {isGradient ? <LinearGradient {...gradientProps}>{renderHeader()}</LinearGradient> : renderHeader()}
       <View style={[styles.screen, { backgroundColor }]}>
         {renderPageHeader()}
@@ -133,7 +139,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
         )}
       </View>
       <Loader visible={loading} />
-    </>
+    </HandleBack>
   );
 };
 

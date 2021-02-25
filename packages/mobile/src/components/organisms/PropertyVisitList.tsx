@@ -9,9 +9,13 @@ import {
   ViewStyle,
   TouchableOpacity,
 } from 'react-native';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -22,6 +26,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { AssetReviewCard } from '@homzhub/mobile/src/components/molecules/AssetReviewCard';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
 import { ReviewForm } from '@homzhub/mobile/src/components/molecules/ReviewForm';
@@ -32,14 +37,21 @@ import {
   RoleType,
   VisitActions,
 } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IVisitActionParam, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 // CONSTANTS
 const confirmation = ['Yes', 'No'];
 // END CONSTANTS
+
+type NavigationType =
+  | StackNavigationProp<MoreStackNavigatorParamList, ScreensKeys.PropertyVisits>
+  | StackNavigationProp<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
+
 interface IProps {
   visitType?: Tabs;
   visitData: IVisitByKey[];
@@ -58,6 +70,7 @@ interface IProps {
   resetData?: () => void;
   reviewVisitId?: number;
   isResponsiveHeightRequired?: boolean;
+  navigation?: NavigationType;
 }
 
 interface IScreenState {
@@ -67,6 +80,8 @@ interface IScreenState {
   reviewAsset: AssetVisit | null;
   currentVisitId: number;
   height: number;
+  replyReview: boolean;
+  reviewData: AssetReview | null;
 }
 
 type Props = IProps & WithTranslation;
@@ -79,6 +94,8 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     reviewAsset: null,
     currentVisitId: 0,
     height: theme.viewport.height,
+    replyReview: false,
+    reviewData: null,
   };
 
   public componentDidMount = (): void => {
@@ -87,6 +104,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
 
   public componentDidUpdate = (prevProps: Props): void => {
     const { visitData } = this.props;
+
     if (prevProps.visitData.length <= 0 && visitData.length > 0) {
       this.openReviewForm();
     }
@@ -105,6 +123,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
       containerStyle,
       isResponsiveHeightRequired = true,
     } = this.props;
+
     const { height } = this.state;
 
     const totalVisit = visitData[0] ? visitData[0].totalVisits : 0;
@@ -162,6 +181,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         {this.renderCancelConfirmation()}
         {this.renderReviewForm()}
         {this.deleteForm()}
+        {this.replyReviewForm()}
       </View>
     );
   }
@@ -180,19 +200,23 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
       isAssetOwner,
       status,
       updatedAt,
+      leaseListing,
+      saleListing,
+      isValidVisit,
     } = item;
+
     const { visitType, handleReschedule, isUserView, handleUserView } = this.props;
     const visitStatus = visitType ?? this.getUserVisitStatus(startDate, status);
     const isMissed = visitStatus === Tabs.MISSED;
     const isCompleted = visitStatus === Tabs.COMPLETED;
-
+    const listingId = saleListing === 0 || !saleListing ? leaseListing : saleListing;
     const userRole = this.getUserRole(role);
 
     const containerStyle = [styles.container, actions.length > 1 && styles.newVisit];
 
     const onReschedule = (): void => handleReschedule(item, user.id);
     const onPressIcon = (): void => handleUserView && handleUserView(user.id);
-
+    const onNavigation = (): void => this.navigateToAssetDetails(listingId, asset.id, isValidVisit);
     return (
       <View style={styles.mainContainer} key={id}>
         <View style={containerStyle}>
@@ -218,6 +242,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
             isCompletedVisit={isCompleted}
             onPressSchedule={onReschedule}
             containerStyle={styles.horizontalStyle}
+            navigateToAssetDetails={onNavigation}
           />
           {visitStatus === Tabs.UPCOMING && this.renderUpcomingView(item)}
           {visitStatus === Tabs.COMPLETED && this.renderCompletedButtons(item)}
@@ -271,12 +296,16 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
 
   private renderCompletedButtons = (item: AssetVisit): React.ReactNode => {
     const { t } = this.props;
-    const onPress = (): void => {
-      this.setState({ reviewAsset: item, showReviewForm: true });
-    };
     const { review, isAssetOwner } = item;
-
     if (isAssetOwner && !review) return null;
+    const onPress = (): void => {
+      if (isAssetOwner) {
+        this.setState({ replyReview: true });
+        this.getReview(review.id);
+      } else {
+        this.setState({ reviewAsset: item, showReviewForm: true });
+      }
+    };
 
     return (
       <>
@@ -370,6 +399,12 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     });
   };
 
+  private onCancelReviewReply = (): void => {
+    this.setState({
+      replyReview: false,
+    });
+  };
+
   private onCancelReview = (reset = false): void => {
     const { resetData } = this.props;
     this.setState(
@@ -389,6 +424,49 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     if (newHeight === height) {
       this.setState({ height: newHeight });
     }
+  };
+
+  public navigateToAssetDetails = (listingId: number | null, id: number, isValidVisit: boolean): void => {
+    const { navigation, t } = this.props;
+    if (isValidVisit && navigation) {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.Search,
+        params: {
+          screen: ScreensKeys.PropertyAssetDescription,
+          initial: false,
+          params: {
+            propertyTermId: listingId,
+            propertyId: id,
+          },
+        },
+      });
+    } else {
+      AlertHelper.error({ message: t('property:inValidVisit') });
+    }
+  };
+
+  private replyReviewForm = (): React.ReactNode => {
+    const { replyReview, reviewData } = this.state;
+    const { t } = this.props;
+    if (!reviewData) return null;
+    return (
+      <BottomSheet
+        visible={replyReview}
+        sheetHeight={theme.viewport.height * 0.65}
+        headerTitle={t('propertyReview')}
+        onCloseSheet={this.onCancelReviewReply}
+      >
+        <ScrollView>
+          <AssetReviewCard
+            hideShowMore
+            key={reviewData.id}
+            review={reviewData}
+            reportCategories={reviewData.pillarRatings}
+          />
+        </ScrollView>
+      </BottomSheet>
+    );
   };
 
   private delete = (): void => {
@@ -544,6 +622,16 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
       isCancelSheet: true,
       currentVisitId: id,
     });
+  };
+
+  private getReview = (id: number): void => {
+    try {
+      AssetRepository.getReview(id).then((response) => {
+        this.setState({ reviewData: response });
+      });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private openReviewForm = (): void => {

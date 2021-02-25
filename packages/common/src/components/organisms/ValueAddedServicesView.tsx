@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { View, StyleSheet, ViewStyle, StyleProp, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -24,6 +24,9 @@ interface IOwnProps extends WithTranslation {
   lastVisitedStep?: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
   buttonStyle?: StyleProp<ViewStyle>;
+  isDesktop?: boolean;
+  isMobile?: boolean;
+  isTablet?: boolean;
 }
 
 interface IOwnState {
@@ -36,7 +39,16 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   public render = (): ReactElement => {
-    const { setValueAddedServices, valueAddedServices, containerStyle, buttonStyle, t } = this.props;
+    const {
+      setValueAddedServices,
+      valueAddedServices,
+      containerStyle,
+      buttonStyle,
+      t,
+      isDesktop,
+      isMobile,
+      isTablet,
+    } = this.props;
     const { searchString } = this.state;
 
     if (valueAddedServices && valueAddedServices.length <= 0) {
@@ -56,50 +68,53 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
             updateValue={this.updateSearchString}
             containerStyle={styles.searchStyle}
           />
-          {this.dynamicSearch().length > 0 ? (
-            this.dynamicSearch().map((item: ValueAddedService) => {
-              const {
-                id,
-                valueBundle: {
-                  valueBundleItems,
-                  label,
-                  attachment: { link },
-                },
-                bundlePrice,
-                discountedPrice,
-              } = item;
+          <ScrollView>
+            {this.dynamicSearch().length > 0 ? (
+              this.dynamicSearch().map((item: ValueAddedService) => {
+                const {
+                  id,
+                  valueBundle: {
+                    valueBundleItems,
+                    label,
+                    attachment: { link },
+                  },
+                  bundlePrice,
+                  discountedPrice,
+                } = item;
 
-              const handleToggle = (value: boolean): void => {
-                setValueAddedServices({ id, value });
-              };
+                const handleToggle = (value: boolean): void => {
+                  setValueAddedServices({ id, value });
+                };
 
-              return (
-                <CardWithCheckbox
-                  key={id}
-                  heading={label}
-                  selected={item.value}
-                  image={link}
-                  price={bundlePrice}
-                  discountedPrice={discountedPrice}
-                  bundleItems={valueBundleItems}
-                  currency={item.currency}
-                  containerStyle={styles.cardContainer}
-                  onToggle={handleToggle}
-                />
-              );
-            })
-          ) : (
-            <Text style={styles.noResults} type="regular">
-              {t('common:noResultsFound')}
-            </Text>
-          )}
+                return (
+                  <CardWithCheckbox
+                    key={id}
+                    heading={label}
+                    selected={item.value}
+                    image={link}
+                    price={bundlePrice}
+                    discountedPrice={discountedPrice}
+                    bundleItems={valueBundleItems}
+                    currency={item.currency}
+                    containerStyle={styles.cardContainer}
+                    onToggle={handleToggle}
+                    isMobile={isMobile}
+                  />
+                );
+              })
+            ) : (
+              <Text style={styles.noResults} type="regular">
+                {t('common:noResultsFound')}
+              </Text>
+            )}
+          </ScrollView>
         </View>
-        {PlatformUtils.isMobile() && (
+        {!isDesktop && (
           <Button
             disabled={valueAddedServices.filter((service) => service.value).length === 0}
             type="primary"
             title={t('common:continue')}
-            containerStyle={[styles.buttonStyle, buttonStyle]}
+            containerStyle={[isTablet && styles.buttonTabStyle, styles.buttonStyle, buttonStyle]}
             onPress={this.handleContinue}
           />
         )}
@@ -153,6 +168,7 @@ const styles = StyleSheet.create({
     flex: PlatformUtils.isWeb() ? 0.9 : 0,
     padding: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
+    height: PlatformUtils.isWeb() ? '100vh' : 'auto',
   },
   noResults: {
     marginTop: 16,
@@ -167,5 +183,12 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     marginBottom: 16,
+  },
+  buttonTabStyle: {
+    position: 'absolute',
+    right: '-36px',
+    padding: 8,
+    width: '340px',
+    bottom: '0px',
   },
 });

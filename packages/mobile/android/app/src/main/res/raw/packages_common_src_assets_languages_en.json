@@ -208,7 +208,12 @@
     "tenantDetailsAreUpdated": "Tenant Details are updated",
     "admin": "Admin",
     "serverError": "We are having trouble connecting to our servers, please check back in some time",
-    "codeCopy": "Code copy"
+    "codeCopy": "Code copy",
+    "delete": "Delete",
+    "doYouWantToRemove": "Do you want to remove?",
+    "deleteReview": "Delete Review",
+    "deleteReviewText": "Once deleted, this review won't be visible to anyone. This action cannot be undone.",
+    "user": "User"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -746,6 +751,7 @@
     "notifications": "Notifications",
     "documents": "Documents",
     "kycDocuments": "KYC Documents",
+    "messages": "Messages",
     "tickets": "Tickets",
     "newLaunches": "New Launches",
     "valueAddedServices": "Value Added Services",
@@ -783,7 +789,16 @@
     "chooseAPropertyText": "Choose a property to buy the services",
     "valueServicesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
     "newCase": "New Case",
-    "caseLogs": "Case Logs ({{count}})"
+    "caseLogs": "Case Logs ({{count}})",
+    "fewMomentAgo": "a few moments ago",
+    "daysAgo": "{{day}} day ago",
+    "chats": "Chats",
+    "searchByNameOrProperty": "Search by name or property",
+    "noChatsFound": "No Chats Found",
+    "noMessageYet": "No messages here yet...",
+    "viewInfo": "View Info",
+    "noActiveThread": "You have no active message threads.",
+    "accessOldMessage": "You can access the old messages \n from inside the Messages menu."
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

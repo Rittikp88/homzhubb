@@ -7,9 +7,9 @@ import { useTranslation } from 'react-i18next';
 import Focused from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.svg';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { AuthStackNavigator } from '@homzhub/mobile/src/navigation/AuthStack';
@@ -53,7 +53,7 @@ import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedPro
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
-import { Messages } from '@homzhub/mobile/src/screens/Asset/More/Messages';
+import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 
@@ -240,7 +240,10 @@ export const BottomTabs = (): React.ReactElement => {
         name={ScreensKeys.Portfolio}
         component={isLoggedIn ? PortfolioStack : DefaultLogin}
         listeners={{
-          blur: (): IFluxStandardAction => dispatch(PortfolioActions.setInitialState()),
+          blur: (): void => {
+            dispatch(PortfolioActions.setInitialState());
+            dispatch(CommonActions.clearMessages());
+          },
         }}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
@@ -285,6 +288,11 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.More}
         component={isLoggedIn ? MoreStack : DefaultLogin}
+        listeners={{
+          blur: (): void => {
+            dispatch(CommonActions.clearMessages());
+          },
+        }}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetMore:more'),

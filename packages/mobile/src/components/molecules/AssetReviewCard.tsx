@@ -27,13 +27,14 @@ interface IAssetReviewProps {
   review: AssetReview;
   reportCategories?: Unit[];
   hideButtons?: boolean;
+  hideShowMore?: boolean;
 }
 
 const MAX_LENGTH = 50;
 
 const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   // Local const's
-  const { review, reportCategories, hideButtons = false } = props;
+  const { review, reportCategories, hideButtons = false, hideShowMore } = props;
   const {
     id: reviewId,
     description,
@@ -51,7 +52,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   const owner = useSelector(UserSelector.getUserProfile);
 
   // State const's
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState(hideShowMore);
   const [showMoreReply, setShowMoreReply] = useState(false);
   const [replyMode, setReplyMode] = useState(false);
   const [reply, setReply] = useState(comment);
@@ -312,11 +313,13 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
           ]}
         >
           {!reply && !replyMode && !hideButtons && renderReviewActions()}
-          <TouchableOpacity onPress={toggleShowMore}>
-            <Label type="large" textType="semiBold" style={styles.showMore}>
-              {showMore ? t('showLess') : t('showMore')}
-            </Label>
-          </TouchableOpacity>
+          {!hideShowMore ? (
+            <TouchableOpacity onPress={toggleShowMore}>
+              <Label type="large" textType="semiBold" style={styles.showMore}>
+                {showMore ? t('showLess') : t('showMore')}
+              </Label>
+            </TouchableOpacity>
+          ) : null}
         </View>
         {!isUnderReview && replyMode && renderTextArea()}
         {!isUnderReview && !!reply && !replyMode && renderReplyComment()}

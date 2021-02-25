@@ -120,6 +120,7 @@ export class More extends React.PureComponent<Props> {
         navigation.navigate(ScreensKeys.MarketTrends);
         break;
       case MoreScreenTypes.PROPERTY_VISITS:
+        // @ts-ignore
         navigation.navigate(ScreensKeys.PropertyVisits);
         break;
       case MoreScreenTypes.SETTINGS:

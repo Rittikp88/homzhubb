@@ -21,7 +21,17 @@ function* getCountries() {
 function* getMessages(action: IFluxStandardAction<IGetMessageParam>) {
   try {
     const response = yield call(MessageRepository.getMessages, action.payload as IGetMessageParam);
-    yield put(CommonActions.getMessagesSuccess(response));
+    yield put(CommonActions.getMessagesSuccess({ response, isNew: action.payload?.isNew }));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+  }
+}
+
+function* getGroupMessages() {
+  try {
+    const response = yield call(MessageRepository.getGroupMessages);
+    yield put(CommonActions.getGroupMessageSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });
@@ -31,4 +41,5 @@ function* getMessages(action: IFluxStandardAction<IGetMessageParam>) {
 export function* watchCommonActions() {
   yield takeEvery(CommonActionTypes.GET.COUNTRIES, getCountries);
   yield takeEvery(CommonActionTypes.GET.MESSAGES, getMessages);
+  yield takeEvery(CommonActionTypes.GET.GROUP_MESSAGES, getGroupMessages);
 }

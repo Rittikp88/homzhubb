@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { LayoutChangeEvent, PickerItemProps, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import React, { PureComponent } from 'react';
+import { LayoutChangeEvent, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -12,6 +12,7 @@ import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -21,7 +22,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FullScreenAssetDetailsCarousel, HeaderCard } from '@homzhub/mobile/src/components';
-import DropdownModal from '@homzhub/mobile/src/components/molecules/DropdownModal';
+import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { AssetReviews } from '@homzhub/mobile/src/components/organisms/AssetReviews';
@@ -31,6 +32,7 @@ import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/Propert
 import DetailTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DetailTab';
 import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
+import MessageTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/MessageTab';
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -53,6 +55,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
 import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 const { height, width } = theme.viewport;
 const TAB_LAYOUT = {
@@ -76,8 +79,11 @@ interface IDispatchProps {
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   getAssetById: () => void;
   clearAsset: () => void;
+  clearChatDetail: () => void;
+  clearMessages: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
+  setCurrentChatDetail: (payload: IChatPayload) => void;
 }
 
 interface IDetailState {
@@ -102,7 +108,7 @@ interface IRoutes {
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
-export class PropertyDetailScreen extends Component<Props, IDetailState> {
+export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   public focusListener: any;
 
   public state = {
@@ -235,6 +241,7 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
             navigationState: { index, routes },
           } = props;
           const currentRoute = routes[index];
+
           return (
             <TabBar
               {...props}
@@ -333,8 +340,8 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
         );
       case Tabs.MESSAGES:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 6)}>
-            <DummyView />
+          <View onLayout={(e): void => this.onLayout(e, 6)} style={styles.background}>
+            <MessageTab shouldEnableOuterScroll={this.toggleScroll} />
           </View>
         );
       case Tabs.DOCUMENTS:
@@ -527,6 +534,9 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   private getAssetDetail = async (): Promise<void> => {
     const {
       assetPayload: { asset_id, assetType, listing_id },
+      setCurrentChatDetail,
+      clearMessages,
+      clearChatDetail,
     } = this.props;
     const payload: IPropertyDetailPayload = {
       asset_id,
@@ -536,17 +546,30 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
     this.setState({ isLoading: true });
     try {
       const response = await PortfolioRepository.getPropertyDetail(payload);
-      this.setState({
-        propertyData: response,
-        isLoading: false,
-      });
+      const info = response.assetStatusInfo;
+      clearMessages();
+      clearChatDetail();
+      this.setState(
+        {
+          propertyData: response,
+          isLoading: false,
+        },
+        () => {
+          if (info && info.leaseTransaction && info.leaseTransaction.id > 0) {
+            setCurrentChatDetail({
+              groupName: response.projectName,
+              groupId: info.leaseTransaction.messageGroupId,
+            });
+          }
+        }
+      );
     } catch (e) {
       this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
-  private getMenuList = (isListingCreated: boolean, isOccupied: boolean): PickerItemProps[] => {
+  private getMenuList = (isListingCreated: boolean, isOccupied: boolean): IMenu[] => {
     const {
       t,
       route: { params },
@@ -598,8 +621,10 @@ export class PropertyDetailScreen extends Component<Props, IDetailState> {
   };
 
   private handleIconPress = (): void => {
-    const { navigation } = this.props;
+    const { navigation, clearChatDetail, clearMessages } = this.props;
     navigation.goBack();
+    clearChatDetail();
+    clearMessages();
   };
 
   private handleMenuIcon = (): void => {
@@ -627,8 +652,19 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     toggleEditPropertyFlowBottomSheet,
   } = RecordAssetActions;
   const { clearAsset } = AssetActions;
+  const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   return bindActionCreators(
-    { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet, clearAsset },
+    {
+      setAssetId,
+      setSelectedPlan,
+      getAssetById,
+      setEditPropertyFlow,
+      toggleEditPropertyFlowBottomSheet,
+      clearAsset,
+      clearChatDetail,
+      clearMessages,
+      setCurrentChatDetail,
+    },
     dispatch
   );
 };

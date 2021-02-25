@@ -242,7 +242,7 @@ exports[`Financials Screen should render snapshot 1`] = `
         <Icon
           allowFontScaling={false}
           color="#78B7FA"
-          name="documents"
+          name="mail"
           size={22}
           style={
             Object {

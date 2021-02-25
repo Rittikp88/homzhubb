@@ -65,7 +65,7 @@ export const MORE_SCREENS: IMoreScreens = {
     {
       id: 4,
       title: `${translationKey}:messages`,
-      icon: icons.documents,
+      icon: icons.mail,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.MESSAGES,

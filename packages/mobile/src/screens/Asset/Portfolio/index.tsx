@@ -9,6 +9,7 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -52,6 +53,7 @@ interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
   setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
+  clearMessages: () => void;
 }
 
 interface IPortfolioState {
@@ -83,9 +85,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   public componentDidMount = (): void => {
-    const { navigation } = this.props;
+    const { navigation, clearMessages } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
       this.getScreenData().then();
+      clearMessages();
       this.setState({
         assetType: '',
       });
@@ -377,8 +380,17 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
   const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
+  const { clearMessages } = CommonActions;
   return bindActionCreators(
-    { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter, setAssetId, setEditPropertyFlow },
+    {
+      getTenanciesDetails,
+      getPropertyDetails,
+      setCurrentAsset,
+      setCurrentFilter,
+      setAssetId,
+      setEditPropertyFlow,
+      clearMessages,
+    },
     dispatch
   );
 };
