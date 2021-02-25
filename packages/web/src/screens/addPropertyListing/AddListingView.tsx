@@ -52,7 +52,7 @@ interface IProps {
   params?: any;
   onUploadDocument: () => any;
   isDesktop?: boolean;
-  history: any;
+  history: any; //  TODO Discuss with Shikha.
 }
 
 type Props = WithTranslation & IStateProps & IDispatchProps & IProps & IWithMediaQuery;

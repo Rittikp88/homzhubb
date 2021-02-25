@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,14 +11,13 @@ import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelectio
 import AddListingView from '@homzhub/web/src/screens/addPropertyListing/AddListingView';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
-import { useDispatch } from 'react-redux';
 
 enum ComponentName {
   Listing_Plan_Selection = 'ListingPlanSelection',
   Add_Listing_Detail = 'AddListingDetail',
 }
 
-interface IListingProps {
+export interface IListingProps {
   wasRedirected?: boolean;
 }
 
@@ -32,6 +32,7 @@ const AddPropertyListing = (): React.ReactElement => {
   const Mobile = useOnly(deviceBreakpoint.MOBILE);
   const Tablet = useOnly(deviceBreakpoint.TABLET);
   const dispatch = useDispatch();
+  // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   useEffect(() => {
     dispatch(RecordAssetActions.setAssetId(720));
   });
