@@ -1,19 +1,22 @@
 import React from 'react';
+import { throttle } from 'lodash';
 import { FlatList, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
-import { throttle } from 'lodash';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import GroupChat from '@homzhub/common/src/components/molecules/GroupChat';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
@@ -25,6 +28,7 @@ interface IScreenState {
 interface IStateToProps {
   groupMessages: GroupMessage[] | null;
   groupMessagesLoading: boolean;
+  userProfile: UserProfile;
 }
 
 interface IDispatchToProps {
@@ -66,6 +70,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       navigation: { goBack },
       t,
       groupMessages,
+      groupMessagesLoading,
     } = this.props;
 
     const filteredMessages = this.getFilteredMessages(groupMessages);
@@ -73,6 +78,10 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
 
     const isMessagesPresent = groupMessages && groupMessages.length > 0;
     const isSearchFound = sortedMessages && sortedMessages.length > 0;
+
+    if (groupMessagesLoading) {
+      return <Loader visible />;
+    }
 
     return (
       <UserScreen title={t('assetMore:more')} onBackPress={goBack} pageTitle={t('assetMore:messages')}>
@@ -118,7 +127,11 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
   };
 
   private renderItem = ({ item, index }: { item: GroupMessage; index: number }): React.ReactElement => {
-    return <GroupChat chatData={item} onChatPress={this.handleChatPress} />;
+    const {
+      userProfile: { id },
+    } = this.props;
+
+    return <GroupChat chatData={item} onChatPress={this.handleChatPress} loggedInUserId={id} />;
   };
 
   private renderItemSeparator = (): React.ReactElement => {
@@ -158,17 +171,20 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
     }
 
     const sortedGroupMessages = filteredMessages.sort((message1: GroupMessage, message2: GroupMessage) => {
-      const { lastMessage: lastMessage1 } = message1;
-      const { lastMessage: lastMessage2 } = message2;
+      const { lastMessage: lastMessage1, createdAt: createdAtMessage1 } = message1;
+      const { lastMessage: lastMessage2, createdAt: createdAtMessage2 } = message2;
 
-      const value = new Date(lastMessage1).valueOf() - new Date(lastMessage2).valueOf();
+      const firstMessageDate = lastMessage1 || createdAtMessage1;
+      const secondMessageDate = lastMessage2 || createdAtMessage2;
+
+      const value = new Date(firstMessageDate).getTime() - new Date(secondMessageDate).getTime();
+
       if (value > 0) {
         return -1;
       }
       if (value < 0) {
         return 1;
       }
-
       return 0;
     });
 
@@ -189,6 +205,7 @@ const mapStateToProps = (state: IState): IStateToProps => {
   return {
     groupMessages: CommonSelectors.getGroupMessages(state),
     groupMessagesLoading: CommonSelectors.getGroupMessagesLoading(state),
+    userProfile: UserSelector.getUserProfile(state),
   };
 };
 

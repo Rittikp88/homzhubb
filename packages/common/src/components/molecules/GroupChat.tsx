@@ -1,28 +1,48 @@
 import React from 'react';
 import { View, StyleSheet, ViewStyle, ImageStyle, TextStyle, TouchableOpacity } from 'react-native';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import GroupChatAvatar from '@homzhub/common/src/components/atoms/GroupChatAvatar';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 interface IProps {
   chatData: GroupMessage;
   onChatPress: (name: string, id: number) => void;
+  loggedInUserId: number;
 }
+type Props = IProps & WithTranslation;
 
-const GroupChat = (props: IProps): React.ReactElement => {
+const GroupChat = (props: Props): React.ReactElement => {
   const {
-    chatData: { name, unreadCount, getAlphabeticalSortedUserNames, getDate, users, id },
+    chatData: { name, unreadCount, getDate, users, id },
     onChatPress,
+    loggedInUserId,
+    t,
   } = props;
 
   const handleChatPress = (): void => {
     onChatPress(name, id);
   };
 
+  const userNames: string[] = [];
+
+  users.forEach((user: User) => {
+    if (user.id === loggedInUserId) {
+      return;
+    }
+    const { name: userName } = user;
+
+    userNames.push(userName);
+  });
+
+  const filteredUserNames = `${userNames.sort().join(', ')} ${t('assetMore:andYou')}`;
+
   return (
     <TouchableOpacity style={styles.container} onPress={handleChatPress}>
-      <GroupChatAvatar faces={users} isHeader={false} containerStyle={styles.avatar} />
+      <GroupChatAvatar faces={users} isHeader={false} containerStyle={styles.avatar} loggedInUserId={loggedInUserId} />
       <View style={styles.subContainer}>
         <View style={[styles.justifyContent, styles.heading]}>
           <Label type="large" textType="bold" numberOfLines={1} style={styles.userNames}>
@@ -36,7 +56,7 @@ const GroupChat = (props: IProps): React.ReactElement => {
         </View>
         <View style={styles.justifyContent}>
           <Label numberOfLines={1} type="regular" textType="regular" style={[styles.tintColor, styles.userNames]}>
-            {getAlphabeticalSortedUserNames}
+            {filteredUserNames}
           </Label>
           {unreadCount ? (
             <View style={styles.unreadCountContainer}>
@@ -111,4 +131,4 @@ const styles: IScreenStyles = StyleSheet.create({
   },
 });
 
-export default React.memo(GroupChat);
+export default withTranslation(LocaleConstants.namespacesKey.assetMore)(React.memo(GroupChat));

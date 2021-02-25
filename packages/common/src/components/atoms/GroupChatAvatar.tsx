@@ -1,10 +1,8 @@
 import React from 'react';
 import { FlexStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { mockUsers } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 
 const MAX_DISPLAY_COUNT_HEADER = 3;
 const MAX_DISPLAY_COUNT_CHAT = 2;
@@ -15,23 +13,31 @@ interface IProps {
   faces: User[];
   isHeader: boolean;
   containerStyle?: ViewStyle;
+  loggedInUserId?: number;
 }
 
 type getStyles = (circleSize?: number, isHeader?: boolean, index?: number) => IScreenStyles;
 
 const GroupChatAvatar = (props: IProps): React.ReactElement => {
   // Deserializing data
-  const mockFaces = ObjectMapper.deserializeArray(User, mockUsers); // TODO:Praharsh : Remove mock
   const styles = getStyles();
-  const { faces = mockFaces, isHeader = true, containerStyle = {} } = props;
+  const { faces, isHeader = true, containerStyle = {}, loggedInUserId } = props;
 
   const faceDisplayCount = isHeader ? MAX_DISPLAY_COUNT_HEADER : MAX_DISPLAY_COUNT_CHAT;
   const shouldShowOverflow = faces.length > faceDisplayCount;
   const overflow = faces.length - faceDisplayCount;
 
-  const facesToShow = faces
-    .sort((a: User, b: User) => a.firstName.localeCompare(b.firstName))
-    .slice(0, faceDisplayCount);
+  const sortedFaces = faces.sort((a: User, b: User) => a.firstName.localeCompare(b.firstName));
+
+  if (loggedInUserId) {
+    const loggedInUserIndex = sortedFaces.findIndex((user: User) => user.id === loggedInUserId);
+    const loggedInuser = sortedFaces[loggedInUserIndex];
+    sortedFaces.splice(loggedInUserIndex, 1);
+    sortedFaces.push(loggedInuser);
+  }
+
+  const facesToShow = sortedFaces.slice(0, faceDisplayCount);
+
   const circleSize = isHeader ? CIRCLE_SIZE_HEADER : CIRCLE_SIZE_CHAT;
 
   const ExtraCount = (): React.ReactElement | null => {

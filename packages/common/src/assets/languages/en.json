@@ -798,7 +798,9 @@
     "noMessageYet": "No messages here yet...",
     "viewInfo": "View Info",
     "noActiveThread": "You have no active message threads.",
-    "accessOldMessage": "You can access the old messages \n from inside the Messages menu."
+    "accessOldMessage": "You can access the old messages \n from inside the Messages menu.",
+    "hrAgo": "{{hour}} hr ago",
+    "andYou": "and You."
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
