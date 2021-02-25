@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
@@ -9,25 +9,25 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 
+export interface IContinuePopupProps {
+  title: string;
+  subTitle: string;
+  buttonSubText: string;
+}
 interface IProps {
-  title?: string;
-  subTitle?: string;
-  buttonSubText?: string;
   buttonTitle?: string;
   iconName?: string;
   iconColor?: string;
   isSvg: boolean;
+  isOpen: boolean;
 }
-const ContinuePopup: React.FC<IProps> = (props: IProps) => {
-  const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor, isSvg } = props;
+
+type Props = IContinuePopupProps & IProps;
+
+const ContinuePopup: React.FC<Props> = (props: Props) => {
+  const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor, isSvg, isOpen } = props;
   const popupRef = useRef<PopupActions>(null);
   const { t } = useTranslation();
-  useEffect(() => {
-    if (popupRef && popupRef.current) {
-      popupRef.current.open();
-    }
-    console.log('Popup Component');
-  }, []);
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
@@ -44,11 +44,11 @@ const ContinuePopup: React.FC<IProps> = (props: IProps) => {
           containerStyle={styles.cross}
           type="text"
         />
-        <Typography variant="text" size="large" style={styles.cardTitle} fontWeight="semiBold">
-          {title || 'Title'}
+        <Typography variant="text" size="large" fontWeight="semiBold">
+          {title}
         </Typography>
         <Typography variant="text" size="small" style={styles.cardSubTitle} fontWeight="regular">
-          {subTitle || 'Subtitle'}
+          {subTitle}
         </Typography>
         {isSvg ? (
           <PropertySearch />
@@ -61,9 +61,14 @@ const ContinuePopup: React.FC<IProps> = (props: IProps) => {
           />
         )}
         <Typography variant="label" size="large" style={styles.buttonSubText} fontWeight="regular">
-          {buttonSubText || 'Button SubText'}
+          {buttonSubText}
         </Typography>
-        <Button type="primary" containerStyle={styles.continueButton} title={buttonTitle || t('continue')} />
+        <Button
+          type="primary"
+          containerStyle={styles.continueButton}
+          title={buttonTitle || t('continue')}
+          onPress={(): void => handlePopupClose()}
+        />
       </View>
     );
   };
@@ -74,6 +79,7 @@ const ContinuePopup: React.FC<IProps> = (props: IProps) => {
         content={renderPopupCard}
         popupProps={{
           position: 'center center',
+          open: isOpen,
           on: [],
           arrow: false,
           closeOnDocumentClick: false,
@@ -92,7 +98,6 @@ const styles = StyleSheet.create({
     width: '100vh',
     height: '100vh',
   },
-  popupOptionStyle: {},
   popupCard: {
     height: 340,
     width: 480,
@@ -100,7 +105,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  cardTitle: {},
   cardSubTitle: { marginVertical: 10 },
   iconStyle: { marginVertical: 30 },
   buttonSubText: {
