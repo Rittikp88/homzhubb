@@ -330,7 +330,7 @@ class DateUtils {
       return I18nService.t('assetMore:fewMomentAgo');
     }
     if (isMoreThanAHour) {
-      return hoursDifference.toString();
+      return I18nService.t('assetMore:hrAgo', { hour: Math.trunc(hoursDifference) });
     }
     if (isLessThanAWeek) {
       return I18nService.t('assetMore:daysAgo', { day: dayDifference });

@@ -62,6 +62,16 @@ const getMessages = (state: IState): IMessages | null => {
   return messages;
 };
 
+const getMessagesLoading = (state: IState): boolean => {
+  const {
+    common: {
+      loaders: { messages },
+    },
+  } = state;
+
+  return messages;
+};
+
 const getMessageAttachment = (state: IState): string => {
   const {
     common: { attachment },
@@ -109,4 +119,5 @@ export const CommonSelectors = {
   getGroupMessages,
   getGroupMessagesLoading,
   getCurrentChatDetail,
+  getMessagesLoading,
 };

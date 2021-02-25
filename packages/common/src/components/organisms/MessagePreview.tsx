@@ -1,8 +1,9 @@
 import React, { Component, createRef, ReactElement, RefObject } from 'react';
-import { groupBy } from 'lodash';
+import { groupBy, isEmpty } from 'lodash';
 import { RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -14,10 +15,12 @@ import { IMessageKeyValue, IMessages, Message } from '@homzhub/common/src/domain
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IStateProps {
   messages: IMessages | null;
   currentChat: IChatPayload | null;
+  isLoading: boolean;
 }
 
 interface IDispatchProps {
@@ -34,7 +37,7 @@ interface IProps {
   isScrollToBottom?: boolean;
 }
 
-type Props = IStateProps & IDispatchProps & IProps;
+type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
 
 class MessagePreview extends Component<Props, IScreenState> {
   public scrollRef: RefObject<ScrollView> = createRef();
@@ -58,8 +61,9 @@ class MessagePreview extends Component<Props, IScreenState> {
   };
 
   public render(): React.ReactNode {
-    const { messages, shouldEnableOuterScroll } = this.props;
-    if (!messages) return <Loader visible />;
+    const { messages, shouldEnableOuterScroll, isLoading } = this.props;
+    if (isLoading && !messages) return <Loader visible />;
+    if (!messages || (messages && isEmpty(messages.messageResult))) return this.renderEmptyView();
     const { messageResult } = messages;
     return (
       <ScrollView
@@ -69,7 +73,7 @@ class MessagePreview extends Component<Props, IScreenState> {
         onTouchStart={shouldEnableOuterScroll ? (): void => shouldEnableOuterScroll(true) : undefined}
         onMomentumScrollEnd={this.controlScroll}
         onScrollEndDrag={this.controlScroll}
-        style={[styles.container, shouldEnableOuterScroll && styles.height]}
+        style={styles.container}
       >
         {Object.keys(messageResult)
           .reverse()
@@ -77,11 +81,7 @@ class MessagePreview extends Component<Props, IScreenState> {
             const formattedByTime = this.getFormattedMessage(messageResult[key], 'h:mm:ss');
             return (
               <>
-                <View style={styles.separator}>
-                  <View style={styles.dividerView} />
-                  <Label type="large">{key}</Label>
-                  <View style={styles.dividerView} />
-                </View>
+                {this.renderSeparator(key)}
                 {Object.keys(formattedByTime)
                   .reverse()
                   .map((time) => {
@@ -100,6 +100,30 @@ class MessagePreview extends Component<Props, IScreenState> {
       </ScrollView>
     );
   }
+
+  private renderSeparator = (key: string): ReactElement => {
+    return (
+      <View style={styles.separator}>
+        <View style={styles.dividerView} />
+        <Label type="large">{key}</Label>
+        <View style={styles.dividerView} />
+      </View>
+    );
+  };
+
+  private renderEmptyView = (): ReactElement => {
+    const { t } = this.props;
+    return (
+      <View style={styles.flexOne}>
+        {this.renderSeparator(t('common:today'))}
+        <View style={styles.emptyViewContent}>
+          <Label type="large" style={styles.emptyText}>
+            {t('noMessageYet')}
+          </Label>
+        </View>
+      </View>
+    );
+  };
 
   private renderRefreshControl = (): ReactElement => {
     const { isRefreshing } = this.state;
@@ -150,10 +174,11 @@ class MessagePreview extends Component<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getMessages, getCurrentChatDetail } = CommonSelectors;
+  const { getMessages, getCurrentChatDetail, getMessagesLoading } = CommonSelectors;
   return {
     messages: getMessages(state),
     currentChat: getCurrentChatDetail(state),
+    isLoading: getMessagesLoading(state),
   };
 };
 
@@ -162,11 +187,17 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   return bindActionCreators({ getMessages }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MessagePreview);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.assetMore)(MessagePreview));
 
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
+  },
+  flexOne: {
+    flex: 1,
   },
   height: {
     maxHeight: 500,
@@ -181,5 +212,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.background,
     width: 100,
+  },
+  emptyViewContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    color: theme.colors.darkTint8,
   },
 });

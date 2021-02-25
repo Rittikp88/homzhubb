@@ -1,10 +1,13 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
+import PortfolioHeader from '@homzhub/web/src/screens/portfolio/components/PortfolioHeader';
+import PortfolioCardGroup from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
 
 const Portfolio: FC = () => {
   return (
     <View style={styles.container}>
-      <View> Portfolio </View>
+      <PortfolioHeader />
+      <PortfolioCardGroup />
     </View>
   );
 };

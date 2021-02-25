@@ -1,5 +1,5 @@
-import React from 'react';
-import { Image, ImageStyle, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import React, { useState } from 'react';
+import { Image, ImageStyle, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -7,6 +7,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import UserView from '@homzhub/common/src/components/organisms/UserView';
 import { Message } from '@homzhub/common/src/domain/models/Message';
 
 interface IProps {
@@ -18,12 +19,22 @@ const MessageCard = (props: IProps): React.ReactElement => {
   const {
     user: { firstName, id, profilePicture },
     createdAt,
+    user,
   } = details[0];
+  const [isUserView, setUserView] = useState(false);
 
-  const user = useSelector(UserSelector.getUserProfile);
+  const userData = useSelector(UserSelector.getUserProfile);
 
-  const isOwner = id === user.id;
+  const isOwner = id === userData.id;
   const styles = getStyles(isOwner);
+
+  const handleUserView = (): void => {
+    setUserView(true);
+  };
+
+  const onCloseUserView = (): void => {
+    setUserView(false);
+  };
 
   const messageView = (): React.ReactElement | null => {
     // eslint-disable-next-line react/prop-types
@@ -33,7 +44,9 @@ const MessageCard = (props: IProps): React.ReactElement => {
       <>
         <View style={styles.container}>
           {!isOwner && (
-            <Avatar isOnlyAvatar fullName={firstName} image={profilePicture} containerStyle={styles.avatar} />
+            <TouchableOpacity onPress={handleUserView} style={styles.avatar}>
+              <Avatar isOnlyAvatar fullName={firstName} image={profilePicture} />
+            </TouchableOpacity>
           )}
           <View style={styles.flexOne}>
             {messages.map((item, index) => {
@@ -60,7 +73,9 @@ const MessageCard = (props: IProps): React.ReactElement => {
       <>
         <View style={styles.container}>
           {!isOwner && (
-            <Avatar isOnlyAvatar fullName={firstName} image={profilePicture} containerStyle={styles.avatar} />
+            <TouchableOpacity onPress={handleUserView} style={styles.avatar}>
+              <Avatar isOnlyAvatar fullName={firstName} image={profilePicture} />
+            </TouchableOpacity>
           )}
           {attachments.map((attachment, index) => {
             return <Image key={index} source={{ uri: attachment.attachments[0].link }} style={styles.imageStyle} />;
@@ -93,6 +108,7 @@ const MessageCard = (props: IProps): React.ReactElement => {
     <>
       {messageView()}
       {attachmentView()}
+      <UserView isVisible={isUserView} user={user} onClose={onCloseUserView} />
     </>
   );
 };

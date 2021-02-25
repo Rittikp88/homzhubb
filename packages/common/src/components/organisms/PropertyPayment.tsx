@@ -17,6 +17,7 @@ import HomzhubCoins from '@homzhub/common/src/components/molecules/HomzhubCoins'
 import OrderSummary from '@homzhub/common/src/components/molecules/OrderSummary';
 import PromoCode from '@homzhub/common/src/components/molecules/PromoCode';
 import { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
+import PaymentGatewayWeb from '@homzhub/web/src/components/molecules/PaymentGateway';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
@@ -99,15 +100,24 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           onClear={this.clearPromo}
         />
         <OrderSummary summary={orderSummary} />
-        {orderSummary.amountPayable > 0 && (
-          <PaymentGateway
-            type="primary"
-            title={t('assetFinancial:payNow')}
-            containerStyle={styles.payButton}
-            initiatePayment={this.initiatePayment}
-            paymentApi={this.paymentApi}
-          />
-        )}
+        {orderSummary.amountPayable > 0 &&
+          (PlatformUtils.isWeb() ? (
+            <PaymentGatewayWeb
+              type="primary"
+              title={t('assetFinancial:payNow')}
+              containerStyle={styles.payButton}
+              initiatePayment={this.initiatePayment}
+              paymentApi={this.paymentApi}
+            />
+          ) : (
+            <PaymentGateway
+              type="primary"
+              title={t('assetFinancial:payNow')}
+              containerStyle={styles.payButton}
+              initiatePayment={this.initiatePayment}
+              paymentApi={this.paymentApi}
+            />
+          ))}
         <View style={styles.secureView}>
           <Icon name={icons.badge} color={theme.colors.darkTint7} size={28} />
           <Label type="large" textType="semiBold" style={styles.secureText}>

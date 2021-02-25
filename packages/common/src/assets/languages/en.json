@@ -794,7 +794,13 @@
     "daysAgo": "{{day}} day ago",
     "chats": "Chats",
     "searchByNameOrProperty": "Search by name or property",
-    "noChatsFound": "No Chats Found"
+    "noChatsFound": "No Chats Found",
+    "noMessageYet": "No messages here yet...",
+    "viewInfo": "View Info",
+    "noActiveThread": "You have no active message threads.",
+    "accessOldMessage": "You can access the old messages \n from inside the Messages menu.",
+    "hrAgo": "{{hour}} hr ago",
+    "andYou": "and You."
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

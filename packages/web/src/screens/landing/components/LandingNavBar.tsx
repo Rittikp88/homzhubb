@@ -35,6 +35,7 @@ const LandingNavBar: FC = () => {
   const navigateToScreen = (path: string): void => {
     NavigationUtils.navigate(history, { path });
   };
+
   return (
     <>
       <StickyHeader>

@@ -52,6 +52,7 @@ import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDe
 const ENDPOINTS = {
   asset: (): string => 'assets/',
   updateAsset: (id: number): string => `assets/${id}/`,
+  getReviewsById: (reviewId: number): string => `listing-reviews/${reviewId}/`,
   getAssetById: (propertyId: number): string => `assets/${propertyId}/`,
   leaseTerms: (propertyId: number): string => `assets/${propertyId}/lease-listings/`,
   updateLeaseTerms: (propertyId: number, leaseTermId: number): string =>
@@ -138,6 +139,11 @@ class AssetRepository {
 
   public deleteAsset = async (id: number): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.updateAsset(id));
+  };
+
+  public getReview = async (reviewId: number): Promise<AssetReview> => {
+    const response = await this.apiClient.get(ENDPOINTS.getReviewsById(reviewId));
+    return ObjectMapper.deserialize(AssetReview, response);
   };
 
   public getLeaseTerms = async (propertyId: number): Promise<LeaseTerm[]> => {

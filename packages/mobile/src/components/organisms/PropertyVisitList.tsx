@@ -13,6 +13,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -35,12 +37,12 @@ import {
   RoleType,
   VisitActions,
 } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IVisitActionParam, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
-import { editReview } from '@homzhub/common/src/mocks/EditReview';
 
 // CONSTANTS
 const confirmation = ['Yes', 'No'];
@@ -79,6 +81,7 @@ interface IScreenState {
   currentVisitId: number;
   height: number;
   replyReview: boolean;
+  reviewData: AssetReview | null;
 }
 
 type Props = IProps & WithTranslation;
@@ -92,6 +95,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     currentVisitId: 0,
     height: theme.viewport.height,
     replyReview: false,
+    reviewData: null,
   };
 
   public componentDidMount = (): void => {
@@ -291,14 +295,13 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   };
 
   private renderCompletedButtons = (item: AssetVisit): React.ReactNode => {
-    const { replyReview } = this.state;
     const { t } = this.props;
     const { review, isAssetOwner } = item;
-
     if (isAssetOwner && !review) return null;
     const onPress = (): void => {
       if (isAssetOwner) {
-        this.setState({ replyReview: !replyReview });
+        this.setState({ replyReview: true });
+        this.getReview(review.id);
       } else {
         this.setState({ reviewAsset: item, showReviewForm: true });
       }
@@ -396,6 +399,12 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     });
   };
 
+  private onCancelReviewReply = (): void => {
+    this.setState({
+      replyReview: false,
+    });
+  };
+
   private onCancelReview = (reset = false): void => {
     const { resetData } = this.props;
     this.setState(
@@ -438,22 +447,22 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   };
 
   private replyReviewForm = (): React.ReactNode => {
-    const { replyReview } = this.state;
+    const { replyReview, reviewData } = this.state;
     const { t } = this.props;
-
+    if (!reviewData) return null;
     return (
       <BottomSheet
         visible={replyReview}
         sheetHeight={theme.viewport.height * 0.65}
         headerTitle={t('propertyReview')}
-        onCloseSheet={this.onCancelReview}
+        onCloseSheet={this.onCancelReviewReply}
       >
         <ScrollView>
           <AssetReviewCard
             hideShowMore
-            key={editReview.id}
-            review={editReview}
-            reportCategories={editReview.reportCategories}
+            key={reviewData.id}
+            review={reviewData}
+            reportCategories={reviewData.pillarRatings}
           />
         </ScrollView>
       </BottomSheet>
@@ -613,6 +622,16 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
       isCancelSheet: true,
       currentVisitId: id,
     });
+  };
+
+  private getReview = (id: number): void => {
+    try {
+      AssetRepository.getReview(id).then((response) => {
+        this.setState({ reviewData: response });
+      });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private openReviewForm = (): void => {

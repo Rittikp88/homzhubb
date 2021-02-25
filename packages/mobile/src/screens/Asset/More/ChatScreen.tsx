@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { MessageRepository } from '@homzhub/common/src/domain/repositories/MessageRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
@@ -18,7 +19,7 @@ import ChatInputBox from '@homzhub/common/src/components/molecules/ChatInputBox'
 import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import MessagePreview from '@homzhub/common/src/components/organisms/MessagePreview';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { IGetMessageParam, IMessagePayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IGetMessageParam, IMessagePayload, MessageAction } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -32,7 +33,6 @@ enum MenuItems {
 interface IDispatchProps {
   getMessages: (param: IGetMessageParam) => void;
   setAttachment: (payload: string) => void;
-  clearMessages: () => void;
   clearAttachment: () => void;
   clearChatDetail: () => void;
 }
@@ -70,6 +70,7 @@ class ChatScreen extends Component<Props, IScreenState> {
           onBackPress={this.onGoBack}
           scrollEnabled={false}
           rightNode={this.renderRightNode()}
+          onNavigateCallback={this.handleNavigationCallback}
         >
           <MessagePreview isScrollToBottom={isScrollToBottom} shouldScrollToBottom={this.updateScroll} />
         </UserScreen>
@@ -81,12 +82,13 @@ class ChatScreen extends Component<Props, IScreenState> {
 
   private renderInputView = (): React.ReactElement => {
     return (
-      <KeyboardAvoidingView behavior="padding">
+      <KeyboardAvoidingView behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
         <ChatInputBox
           containerStyle={styles.inputBox}
           onInputFocus={this.onInputFocus}
           onSubmit={this.onSendMessage}
           onUploadImage={this.onUploadAttachment}
+          onPressCamera={this.onClickImage}
         />
       </KeyboardAvoidingView>
     );
@@ -101,11 +103,10 @@ class ChatScreen extends Component<Props, IScreenState> {
   };
 
   private onGoBack = (): void => {
-    const { navigation, clearMessages, clearAttachment, clearChatDetail } = this.props;
+    const { navigation, clearChatDetail } = this.props;
+    this.setState({ isMenuVisible: false });
     navigation.goBack();
-    clearMessages();
-    clearAttachment();
-    clearChatDetail();
+    this.handleNavigationCallback().then(() => clearChatDetail());
   };
 
   private onInputFocus = (): void => {
@@ -118,19 +119,40 @@ class ChatScreen extends Component<Props, IScreenState> {
     }
   };
 
+  private onClickImage = (): void => {
+    const { setAttachment } = this.props;
+    ImagePicker.openCamera({
+      width: 400,
+      height: 400,
+      compressImageMaxWidth: 400,
+      compressImageMaxHeight: 400,
+      compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
+      useFrontCamera: true,
+      cropping: true,
+    })
+      .then((response: ImagePickerResponse | ImagePickerResponse[]) => {
+        const image = response as ImagePickerResponse;
+        this.setState({ attachment: image });
+        setAttachment(image.path);
+      })
+      .catch((err) => {
+        AlertHelper.error({ message: err.message });
+      });
+  };
+
   private onUploadAttachment = async (): Promise<void> => {
     const { setAttachment } = this.props;
     try {
-      // @ts-ignore
-      const response: ImagePickerResponse = await ImagePicker.openPicker({
+      const response: ImagePickerResponse | ImagePickerResponse[] = await ImagePicker.openPicker({
         compressImageMaxWidth: 400,
         compressImageMaxHeight: 400,
         compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
         includeBase64: true,
         mediaType: 'photo',
       });
-      this.setState({ attachment: response });
-      setAttachment(response.path);
+      const image = response as ImagePickerResponse;
+      this.setState({ attachment: image });
+      setAttachment(image.path);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
@@ -152,7 +174,7 @@ class ChatScreen extends Component<Props, IScreenState> {
       formData.append('files[]', {
         // @ts-ignore
         name: PlatformUtils.isIOS()
-          ? attachment.filename
+          ? attachment.filename ?? attachment.path.substring(attachment.path.lastIndexOf('/') + 1)
           : attachment.path.substring(attachment.path.lastIndexOf('/') + 1),
         uri: attachment.path,
         type: attachment.mime,
@@ -189,6 +211,28 @@ class ChatScreen extends Component<Props, IScreenState> {
       });
   };
 
+  private handleNavigationCallback = async (): Promise<void> => {
+    const { currentChat, clearAttachment } = this.props;
+
+    clearAttachment();
+    this.setState({ isMenuVisible: false });
+    console.log(currentChat);
+    if (!currentChat) return;
+    try {
+      await MessageRepository.updateMessage({
+        groupId: currentChat.groupId,
+        data: {
+          action: MessageAction.READ,
+          payload: {
+            read_at: DateUtils.getDisplayDate(new Date().toISOString(), DateFormats.ISO8601),
+          },
+        },
+      });
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
+  };
+
   private getMenuItems = (): IMenu[] => {
     const { t } = this.props;
     return [{ icon: icons.info, label: t('assetMore:viewInfo'), value: MenuItems.VIEW_INFO }];
@@ -214,8 +258,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getMessages, clearMessages, setAttachment, clearAttachment, clearChatDetail } = CommonActions;
-  return bindActionCreators({ getMessages, clearMessages, setAttachment, clearAttachment, clearChatDetail }, dispatch);
+  const { getMessages, setAttachment, clearAttachment, clearChatDetail } = CommonActions;
+  return bindActionCreators({ getMessages, setAttachment, clearAttachment, clearChatDetail }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ChatScreen));
