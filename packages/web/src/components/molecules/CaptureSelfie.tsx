@@ -1,6 +1,5 @@
-import React, { FC, useState, useRef, useCallback } from 'react';
+import React, { FC,useRef, useCallback } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-
 import Webcam from 'react-webcam';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -14,8 +13,8 @@ const CaptureSelfie: FC<ISelfieProps> = (props: ISelfieProps) => {
     if (webcamRef && webcamRef.current !== null) {
       const imageSrc = webcamRef.current.getScreenshot();
       onCapture(imageSrc);
-    } 
-  }, [webcamRef]); 
+    }
+  }, [webcamRef]);
   return (
     <>
       <View>

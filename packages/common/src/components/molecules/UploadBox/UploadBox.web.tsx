@@ -4,10 +4,8 @@ import { FileRejection, useDropzone } from 'react-dropzone';
 import { UploadBtn } from '@homzhub/common/src/components/molecules/UploadBox/UploadBtn';
 import {
   VerificationDocumentCategory,
-  VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
-import Webcam from 'react-webcam';
-import Popup from 'reactjs-popup';
+
 interface IUploadProps {
   icon: string;
   header: string;

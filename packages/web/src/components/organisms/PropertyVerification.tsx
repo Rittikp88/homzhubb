@@ -10,10 +10,9 @@ import { IDocsProps, ListingService } from '@homzhub/common/src/services/Propert
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label} from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
 import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
-
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
@@ -63,7 +62,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public render(): React.ReactElement {
     const { t, typeOfPlan, isTablet, isIpadPro } = this.props;
-    const { existingDocuments, localDocuments, isLoading, verificationTypes, takeSelfie, selfie } = this.state;
+    const { existingDocuments, localDocuments, isLoading, verificationTypes, takeSelfie } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
     const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
@@ -166,11 +165,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     );
   };
   public onSelfieSelect = async (value: VerificationDocumentTypes, selfie: string) => {
-    console.log(selfie);
-    const formData = new FormData();
-    formData.append('files[]', selfie);
     const verificationDocumentId = value.id;
-
     const source = { uri: selfie, type: 'jpeg', name: 'image' };
     this.updateLocalDocuments(verificationDocumentId, source, value);
   };

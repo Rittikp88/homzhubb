@@ -20,7 +20,6 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
-import { UploadBtn } from '../molecules/UploadBox/UploadBtn';
 
 interface IVerificationProps {
   typeOfPlan: TypeOfPlan;
