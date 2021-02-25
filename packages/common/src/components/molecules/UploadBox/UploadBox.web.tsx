@@ -2,7 +2,12 @@ import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { FileRejection, useDropzone } from 'react-dropzone';
 import { UploadBtn } from '@homzhub/common/src/components/molecules/UploadBox/UploadBtn';
-
+import {
+  VerificationDocumentCategory,
+  VerificationDocumentTypes,
+} from '@homzhub/common/src/domain/models/VerificationDocuments';
+import Webcam from 'react-webcam';
+import Popup from 'reactjs-popup';
 interface IUploadProps {
   icon: string;
   header: string;
@@ -16,10 +21,12 @@ interface IUploadProps {
   webOnDropAccepted?: (files: File[]) => void;
   webOnDropRejected?: (fileRejections: FileRejection[]) => void;
   multipleUpload: boolean;
+  VerificationDocumentType:string;
+
 }
 
 export const UploadBox: React.FC<IUploadProps> = (props: IUploadProps) => {
-  const { webOnDropAccepted, webOnDropRejected, multipleUpload } = props;
+  const { webOnDropAccepted, webOnDropRejected, multipleUpload,VerificationDocumentType} = props;
   const { getRootProps, getInputProps } = useDropzone({
     accept: '.jpg,.jpeg,.png,.pdf',
     onDropAccepted: webOnDropAccepted,
@@ -27,10 +34,13 @@ export const UploadBox: React.FC<IUploadProps> = (props: IUploadProps) => {
     multiple: multipleUpload,
   });
 
+
+console.log(VerificationDocumentType)
   return (
     <div {...getRootProps()}>
-      <input {...getInputProps()} />
+     {(VerificationDocumentType !== VerificationDocumentCategory.SELFIE_ID_PROOF) &&  <input {...getInputProps()} />   }
       <UploadBtn {...props} />
     </div>
   );
+  
 };

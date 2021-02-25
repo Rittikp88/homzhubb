@@ -20,6 +20,7 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { selfieInstruction } from '@homzhub/common/src/constants/AsssetVerification';
+import { UploadBtn } from '../molecules/UploadBox/UploadBtn';
 
 interface IVerificationProps {
   typeOfPlan: TypeOfPlan;
@@ -93,6 +94,7 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
 
   private renderImageOrUploadBox = (currentData: VerificationDocumentTypes): ReactElement => {
     const { handleUpload, existingDocuments, localDocuments, deleteDocument, isMobile, isOnlyTablet, t } = this.props;
+    const {verificationTypes} = this.state;
     const onPress = (): void => {
       handleUpload(currentData);
     };
@@ -143,7 +145,6 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         </View>
       );
     }
-
     return PlatformUtils.isMobile() ? (
       <UploadBox
         icon={currentData.icon}
@@ -162,7 +163,9 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         webOnDropAccepted={imageSelection}
         webOnDropRejected={onDropRejection}
         multipleUpload={false}
+        VerificationDocumentType={currentData.name}
       />
+     
     );
   };
 
