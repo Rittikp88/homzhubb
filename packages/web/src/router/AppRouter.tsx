@@ -13,6 +13,7 @@ import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerificati
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
+import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
 
 export const AppRouter = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ export const AppRouter = (): React.ReactElement => {
     SIGNUP,
     OTP_VERIFICATION,
     MOBILE_VERIFICATION,
+    POPUP,
   } = RouteNames.publicRoutes;
   const { DASHBOARD } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
@@ -41,6 +43,7 @@ export const AppRouter = (): React.ReactElement => {
         <Route exact path={SIGNUP} component={SignUp} />
         <Route exact path={TERMS_CONDITION} component={TermsAndCondition} />
         <Route exact path={PRIVACY_POLICY} component={PrivacyPolicy} />
+        <Route exact path={POPUP} component={ContinuePopup} />
         {isDebugMode && (
           <>
             <Route exact path={LOGIN} component={Login} />
