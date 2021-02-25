@@ -9,21 +9,19 @@ interface ISelfieProps {
 }
 const CaptureSelfie: FC<ISelfieProps> = (props: ISelfieProps) => {
   const webcamRef = useRef<Webcam>(null);
-  const [imgSrc, setImgSrc] = useState<string | null>(null);
   const { onCapture } = props;
   const capture = useCallback(() => {
     if (webcamRef && webcamRef.current !== null) {
       const imageSrc = webcamRef.current.getScreenshot();
-      setImgSrc(imageSrc);
-      onCapture(imgSrc);
-    }
-  }, [webcamRef, setImgSrc]);
+      onCapture(imageSrc);
+    } 
+  }, [webcamRef]); 
   return (
     <>
       <View>
         <View style={Styles.icon}>
           <TouchableOpacity>
-            <Icon name={icons.close} size={20} onPress={() => onCapture(imgSrc)} />
+            <Icon name={icons.close} size={20} onPress={() => onCapture(null)} />
           </TouchableOpacity>
         </View>
         <View style={Styles.webCam}>
