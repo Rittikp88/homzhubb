@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
@@ -15,9 +16,10 @@ interface IProps {
   buttonTitle?: string;
   iconName?: string;
   iconColor?: string;
+  isSvg: boolean;
 }
 const ContinuePopup: React.FC<IProps> = (props: IProps) => {
-  const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor } = props;
+  const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor, isSvg } = props;
   const popupRef = useRef<PopupActions>(null);
   const { t } = useTranslation();
   useEffect(() => {
@@ -26,21 +28,38 @@ const ContinuePopup: React.FC<IProps> = (props: IProps) => {
     }
     console.log('Popup Component');
   }, []);
+  const handlePopupClose = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+    }
+  };
   const renderPopupCard = (): React.ReactElement => {
     return (
       <View style={styles.popupCard}>
+        <Button
+          icon={icons.close}
+          iconSize={20}
+          iconColor={theme.colors.darkTint3}
+          onPress={handlePopupClose}
+          containerStyle={styles.cross}
+          type="text"
+        />
         <Typography variant="text" size="large" style={styles.cardTitle} fontWeight="semiBold">
           {title || 'Title'}
         </Typography>
         <Typography variant="text" size="small" style={styles.cardSubTitle} fontWeight="regular">
           {subTitle || 'Subtitle'}
         </Typography>
-        <Icon
-          name={iconName || icons.circularCheckFilled}
-          size={80}
-          color={iconColor || theme.colors.green}
-          style={styles.iconStyle}
-        />
+        {isSvg ? (
+          <PropertySearch />
+        ) : (
+          <Icon
+            name={iconName || icons.circularCheckFilled}
+            size={80}
+            color={iconColor || theme.colors.green}
+            style={styles.iconStyle}
+          />
+        )}
         <Typography variant="label" size="large" style={styles.buttonSubText} fontWeight="regular">
           {buttonSubText || 'Button SubText'}
         </Typography>
@@ -57,8 +76,9 @@ const ContinuePopup: React.FC<IProps> = (props: IProps) => {
           position: 'center center',
           on: [],
           arrow: false,
-          closeOnDocumentClick: true,
+          closeOnDocumentClick: false,
           children: undefined,
+          modal: true,
         }}
       />
     </View>
@@ -89,6 +109,14 @@ const styles = StyleSheet.create({
   continueButton: {
     marginVertical: 15,
     width: '80%',
+  },
+  cross: {
+    position: 'absolute',
+    zIndex: 1000,
+    minWidth: 20,
+    minHeight: 20,
+    right: 24,
+    top: 24,
   },
 });
 export default ContinuePopup;
