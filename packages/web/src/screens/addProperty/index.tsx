@@ -2,10 +2,12 @@ import React, { FC, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Script from 'react-load-script';
+import { useHistory } from 'react-router-dom';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -14,6 +16,7 @@ import { AttachmentService } from '@homzhub/common/src/services/AttachmentServic
 import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -53,6 +56,7 @@ export const AddPropertyActionsGrp: FC = () => {
 };
 
 const AddProperty: FC = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const assetId = useSelector(RecordAssetSelectors.getCurrentAssetId);
   const selectedImages = useSelector(RecordAssetSelectors.getSelectedImages);
@@ -130,6 +134,12 @@ const AddProperty: FC = () => {
     { component: AddPropertyStack.AddPropertyViewScreen },
   ];
   const styles = AddPropertyStyles;
+  const compProps = {
+    wasRedirected: true,
+  };
+  const onNavigateToPlanSelection = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING, params: { ...compProps } });
+  };
   const renderScreen = (comp: AddPropertyStack): React.ReactElement => {
     const { AddPropertyLocationScreen, PropertyDetailsMapScreen, AddPropertyViewScreen } = AddPropertyStack;
     switch (comp) {
@@ -143,7 +153,7 @@ const AddProperty: FC = () => {
             <AddPropertyView
               onUploadImage={onImageSelection}
               onEditPress={handleEditSelection}
-              onNavigateToPlanSelection={FunctionUtils.noop}
+              onNavigateToPlanSelection={onNavigateToPlanSelection}
               onNavigateToDetail={FunctionUtils.noop}
             />
           </View>

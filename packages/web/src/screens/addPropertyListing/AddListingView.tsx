@@ -7,18 +7,16 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { IListingUpdate, ListingService } from '@homzhub/common/src/services/Property/ListingService';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
-
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { ActionController } from '@homzhub/common/src/components/organisms/ActionController';
@@ -26,6 +24,7 @@ import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecul
 import PropertyVerification from '@homzhub/web/src/components/organisms/PropertyVerification';
 import PropertyPayment from '@homzhub/common/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/common/src/components/organisms/ValueAddedServicesView';
+import ContinuePopup, { IContinuePopupProps } from '@homzhub/web/src/components/molecules/ContinuePopup';
 import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
@@ -53,6 +52,7 @@ interface IProps {
   params?: any;
   onUploadDocument: () => any;
   isDesktop?: boolean;
+  history: any; //  TODO Discuss with Shikha.
 }
 
 type Props = WithTranslation & IStateProps & IDispatchProps & IProps & IWithMediaQuery;
@@ -72,8 +72,6 @@ const TAB_LAYOUT = {
   width: width - theme.layout.screenPadding * 2,
   height,
 };
-
-const isFixRequired = true;
 
 class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
@@ -151,7 +149,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
 
     const steps = this.getRoutes().map((route) => route.title);
-
     return (
       <>
         <AddressWithStepIndicator
@@ -180,21 +177,31 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
           }}
           style={{ height: tabViewHeights[currentIndex] }}
         />
-        {!isFixRequired && (
-          <Popover
-            content={this.renderContinueView(assetDetails)}
-            popupProps={{
-              open: isSheetVisible,
-              modal: true,
-              children: undefined,
-            }}
-          >
-            {this.renderContinueView(assetDetails)}
-          </Popover>
-        )}
+        <ContinuePopup isSvg isOpen={isSheetVisible} {...this.renderContinueView(assetDetails)} />
       </>
     );
   }
+
+  private renderContinueView = (assetDetails: Asset): IContinuePopupProps => {
+    const { t } = this.props;
+    const {
+      lastVisitedStep: {
+        isVerificationRequired,
+        listing: { type },
+      },
+    } = assetDetails;
+
+    const isReadyToPreview = type !== TypeOfPlan.MANAGE && !isVerificationRequired;
+    const title = isReadyToPreview ? t('previewOwnProperty') : t('clickContinueToDashboard');
+
+    const popupDetails = {
+      title: t('common:congratulations'),
+      subTitle: t('paymentSuccessMsg'),
+      buttonSubText: title,
+      buttonTitle: t('common:continue'),
+    };
+    return popupDetails;
+  };
 
   public renderTabHeader = (): ReactElement => {
     const {
@@ -265,41 +272,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             )}
           </View>
         )}
-      </>
-    );
-  };
-
-  // TODO: Fix Popup UI (Note: Use same text only change UI)
-  private renderContinueView = (assetDetails: Asset): ReactElement => {
-    const { t } = this.props;
-    const {
-      lastVisitedStep: {
-        isVerificationRequired,
-        listing: { type },
-      },
-    } = assetDetails;
-
-    const isReadyToPreview = type !== TypeOfPlan.MANAGE && !isVerificationRequired;
-    const title = isReadyToPreview ? t('previewOwnProperty') : t('clickContinueToDashboard');
-
-    return (
-      <>
-        <View style={styles.sheetContent}>
-          <Text type="large" style={styles.sheetTitle}>
-            {t('common:congratulations')}
-          </Text>
-          <Text type="small">{t('paymentSuccessMsg')}</Text>
-          <PropertySearch />
-          <Label type="large" style={styles.continue}>
-            {title}
-          </Label>
-        </View>
-        <Button
-          type="primary"
-          title={t('common:continue')}
-          containerStyle={styles.buttonStyle}
-          onPress={this.handleContinue}
-        />
       </>
     );
   };
@@ -420,7 +392,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     if (selectedPlan !== TypeOfPlan.MANAGE) {
       return routes;
     }
-
     return routes.filter((route) => route.key !== Tabs.VERIFICATIONS);
   };
 
@@ -487,7 +458,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   };
 
   public handleSkip = (): void => {
-    const { assetDetails } = this.props;
+    const { assetDetails, isDesktop } = this.props;
     const { currentIndex } = this.state;
 
     if (assetDetails && assetDetails.lastVisitedStep.isPropertyReady) {
@@ -497,6 +468,14 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         this.navigateToDashboard();
       }
     } else if (currentIndex < this.getRoutes().length) {
+      if (isDesktop && currentIndex === 2) {
+        this.navigateToDashboard();
+        return;
+      }
+      if (!isDesktop && currentIndex === 3) {
+        this.navigateToDashboard();
+        return;
+      }
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       this.scrollToTop();
     } else {
@@ -505,9 +484,9 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToDashboard = (): void => {
-    const { resetState } = this.props;
+    const { resetState, history } = this.props;
     resetState();
-    // TODO: Add logic
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
 
   private scrollToTop = (): void => {
