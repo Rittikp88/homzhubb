@@ -10,7 +10,7 @@ import { IDocsProps, ListingService } from '@homzhub/common/src/services/Propert
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Label} from '@homzhub/common/src/components/atoms/Text';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
 import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
@@ -112,7 +112,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     document: ExistingVerificationDocuments,
     isLocalDocument?: boolean
   ): Promise<void> => {
-    const { localDocuments, existingDocuments, selfie } = this.state;
+    const { localDocuments, existingDocuments } = this.state;
     const { propertyId } = this.props;
     await ListingService.deleteDocument(
       {
@@ -126,27 +126,43 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     );
   };
 
-  public handleVerificationDocumentUploads = async (
-    value: VerificationDocumentTypes,
-    files?: File[]
-  ): Promise<void> => {
-    const verificationDocumentType = value.name;
-
-    if (verificationDocumentType === VerificationDocumentCategory.SELFIE_ID_PROOF) {
-      this.setState({ takeSelfie: true, verificationTypes: [value] });
-    } else {
-      await this.onImageSelection(value, files);
-    }
-  };
-  public onCaptureSelfie = (data: string | null) => {
+  public onCaptureSelfie = (data: string | null): void => {
+    const { verificationTypes, selfie } = this.state;
     {
       data !== null &&
         this.setState({ selfie: data }, () => {
-          this.onSelfieSelect(this.state.verificationTypes[0], this.state.selfie);
+          this.onSelfieSelect(verificationTypes[0], selfie);
         });
     }
     this.setState({ takeSelfie: false });
   };
+
+  public onSelfieSelect = (value: VerificationDocumentTypes, selfie: string) => {
+    const verificationDocumentId = value.id;
+    const source = { uri: selfie, type: 'jpeg', name: 'image' };
+    this.updateLocalDocuments(verificationDocumentId, source, value);
+  };
+
+  public onImageSelection = async (value: VerificationDocumentTypes, files?: File[]): Promise<void> => {
+    if (!files) {
+      return;
+    }
+    const verificationDocumentId = value.id;
+    console.log(files[0]);
+    const image = files[0];
+    const formData = new FormData();
+    formData.append('files[]', image);
+
+    const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
+    const { data } = response;
+    const source = { uri: data[0].link, type: image.type, name: image.name };
+    if (Object.values(AllowedAttachmentFormats).includes(image.type)) {
+      this.updateLocalDocuments(verificationDocumentId, source, value);
+    } else {
+      AlertHelper.error({ message: value.helpText });
+    }
+  };
+
   public captureSelfie = () => {
     return (
       <View>
@@ -164,29 +180,17 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       </View>
     );
   };
-  public onSelfieSelect = async (value: VerificationDocumentTypes, selfie: string) => {
-    const verificationDocumentId = value.id;
-    const source = { uri: selfie, type: 'jpeg', name: 'image' };
-    this.updateLocalDocuments(verificationDocumentId, source, value);
-  };
-  public onImageSelection = async (value: VerificationDocumentTypes, files?: File[]): Promise<void> => {
-    if (!files) {
-      return;
-    }
-    const verificationDocumentId = value.id;
-    console.log(files[0]);
-    const image = files[0];
-    const formData = new FormData();
-    formData.append('files[]', image);
-    console.log(formData);
 
-    const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
-    const { data } = response;
-    const source = { uri: data[0].link, type: image.type, name: image.name };
-    if (Object.values(AllowedAttachmentFormats).includes(image.type)) {
-      this.updateLocalDocuments(verificationDocumentId, source, value);
+  public handleVerificationDocumentUploads = async (
+    value: VerificationDocumentTypes,
+    files?: File[]
+  ): Promise<void> => {
+    const verificationDocumentType = value.name;
+
+    if (verificationDocumentType === VerificationDocumentCategory.SELFIE_ID_PROOF) {
+      this.setState({ takeSelfie: true, verificationTypes: [value] });
     } else {
-      AlertHelper.error({ message: value.helpText });
+      await this.onImageSelection(value, files);
     }
   };
 

@@ -93,7 +93,6 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
 
   private renderImageOrUploadBox = (currentData: VerificationDocumentTypes): ReactElement => {
     const { handleUpload, existingDocuments, localDocuments, deleteDocument, isMobile, isOnlyTablet, t } = this.props;
-    const {verificationTypes} = this.state;
     const onPress = (): void => {
       handleUpload(currentData);
     };
@@ -164,7 +163,6 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         multipleUpload={false}
         VerificationDocumentType={currentData.name}
       />
-     
     );
   };
 

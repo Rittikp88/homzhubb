@@ -29,7 +29,6 @@ const Popover: FC<IProps> = (props: IProps) => {
     <Popup ref={forwardedRef} trigger={<div>{children && children}</div>} {...popupProps} modal>
       {content}
     </Popup>
-    
   );
 };
 
