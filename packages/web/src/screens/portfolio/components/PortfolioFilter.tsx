@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginEnd: 12,
-    color: theme.colors.primaryColor,
+    color: theme.colors.primaryColor, 
   },
 });
 export default PortfolioFilter;
