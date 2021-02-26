@@ -29,7 +29,6 @@ export const UploadBox: React.FC<IUploadProps> = (props: IUploadProps) => {
     multiple: multipleUpload,
   });
 
-  console.log(VerificationDocumentType);
   return (
     <div {...getRootProps()}>
       {VerificationDocumentType !== VerificationDocumentCategory.SELFIE_ID_PROOF && <input {...getInputProps()} />}

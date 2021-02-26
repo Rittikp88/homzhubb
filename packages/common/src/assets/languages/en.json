@@ -213,7 +213,9 @@
     "doYouWantToRemove": "Do you want to remove?",
     "deleteReview": "Delete Review",
     "deleteReviewText": "Once deleted, this review won't be visible to anyone. This action cannot be undone.",
-    "user": "User"
+    "user": "User",
+    "capture":"Capture"
+
   },
   "auth": {
     "verifyNumber": "Verify your number",

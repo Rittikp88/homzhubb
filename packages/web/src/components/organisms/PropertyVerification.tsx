@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
@@ -13,6 +13,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
 import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
@@ -24,7 +25,6 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
-import Popover from 'components/atoms/Popover';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -126,12 +126,13 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     );
   };
 
-  public onCaptureSelfie = (data: string | null): void => {
-    const { verificationTypes, selfie } = this.state;
+  public onCaptureSelfie = (data: string | null) => {
     {
       data !== null &&
         this.setState({ selfie: data }, () => {
-          this.onSelfieSelect(verificationTypes[0], selfie);
+          const { verificationTypes } = this.state;
+
+          this.onSelfieSelect(verificationTypes[0], data);
         });
     }
     this.setState({ takeSelfie: false });
@@ -148,7 +149,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       return;
     }
     const verificationDocumentId = value.id;
-    console.log(files[0]);
     const image = files[0];
     const formData = new FormData();
     formData.append('files[]', image);
@@ -163,7 +163,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     }
   };
 
-  public captureSelfie = () => {
+  public captureSelfie = (): ReactElement => {
     return (
       <View>
         <Popover
