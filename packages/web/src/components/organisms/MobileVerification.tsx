@@ -31,26 +31,34 @@ interface IDispatchProps {
   login: (payload: ILoginPayload) => void;
 }
 
-interface IOwnProps {
-  history: History;
+interface INavProps {
   title: string;
   subTitle: string;
   buttonTitle: string;
   underlineDesc: string;
   socialUserData?: ISocialUserData;
   isFromLogin?: boolean;
+  isEmailLogin?: boolean;
+}
+interface IOwnProps {
+  history: History<INavProps>;
 }
 
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const MobileVerification: FC<IProps> = (props: IProps) => {
+  const { history } = props;
+  const {
+    location: { state },
+  } = history;
+  const { title, subTitle, buttonTitle, underlineDesc, isFromLogin, socialUserData, isEmailLogin } = state;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
-  const [isEmailLogin, setIsEmailLogin] = useState(false);
-  const { title, subTitle, buttonTitle, underlineDesc } = props;
+  const [isEmail, setIsEmailLogin] = useState(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -58,9 +66,6 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
     dispatch(CommonActions.setDeviceCountry('IN'));
   }, []);
 
-  const navigateToHomeScreen = (): void => {
-    NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
-  };
   const backToLoginWithPhone = (): void => {
     setIsEmailLogin(false);
   };
@@ -72,8 +77,10 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
     const compProps = {
       phoneCode: phone_code,
       otpSentTo: phone_number,
-      type: OtpNavTypes.Login,
-      onCallback: navigateToHomeScreen,
+      type: OtpNavTypes.SocialMedia,
+      buttonTitle: t('common:signUp'),
+      navigationPath: RouteNames.publicRoutes.SIGNUP,
+      socialUserData,
     };
     NavigationUtils.navigate(props.history, {
       path: RouteNames.publicRoutes.OTP_VERIFICATION,
@@ -96,6 +103,7 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
       >
         <View style={styles.loginForm}>
           <LoginForm
+            isEmailLogin={isEmailLogin}
             onLoginSuccess={handleOtpLogin}
             handleForgotPassword={handleForgotPassword}
             testID="loginFormWeb"
@@ -103,6 +111,7 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
             title={title}
             subTitle={subTitle}
             buttonTitle={buttonTitle}
+            isFromLogin={isFromLogin}
           />
         </View>
       </UserValidationScreensTemplate>
