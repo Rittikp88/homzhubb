@@ -126,12 +126,11 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     );
   };
 
-  public onCaptureSelfie = (data: string | null) => {
+  public onCaptureSelfie = (data: string | null):void => {
     {
       data !== null &&
         this.setState({ selfie: data }, () => {
           const { verificationTypes } = this.state;
-
           this.onSelfieSelect(verificationTypes[0], data);
         });
     }
