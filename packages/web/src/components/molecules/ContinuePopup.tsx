@@ -95,8 +95,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100vh',
-    height: '100vh',
   },
   popupCard: {
     height: 340,

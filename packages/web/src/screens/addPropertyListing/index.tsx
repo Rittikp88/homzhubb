@@ -125,7 +125,7 @@ const AddPropertyListing = (): React.ReactElement => {
   const renderCarousel = (): React.ReactElement => {
     const popupDetails = {
       title: t('common:congratulations'),
-      subTitle: t('property:paymentSuccessMsg'),
+      subTitle: t('property:yourDetailsAdded'),
       buttonSubText: t('property:clickContinue'),
       buttonTitle: t('common:continue'),
     };
