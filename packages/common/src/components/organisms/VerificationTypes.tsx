@@ -143,7 +143,6 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         </View>
       );
     }
-
     return PlatformUtils.isMobile() ? (
       <UploadBox
         icon={currentData.icon}
@@ -162,6 +161,7 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         webOnDropAccepted={imageSelection}
         webOnDropRejected={onDropRejection}
         multipleUpload={false}
+        VerificationDocumentType={currentData.name}
       />
     );
   };

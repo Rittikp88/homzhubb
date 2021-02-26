@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -13,6 +13,8 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
+import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
@@ -21,6 +23,7 @@ import {
   IPostVerificationDocuments,
   VerificationDocumentTypes,
   IExistingVerificationDocuments,
+  VerificationDocumentCategory,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -32,6 +35,8 @@ interface IPropertyVerificationState {
   existingDocuments: ExistingVerificationDocuments[];
   localDocuments: ExistingVerificationDocuments[];
   isLoading: boolean;
+  takeSelfie: boolean;
+  selfie: string;
 }
 
 interface IProps {
@@ -50,6 +55,8 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     existingDocuments: [],
     localDocuments: [],
     isLoading: false,
+    takeSelfie: false,
+    selfie: '',
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -58,8 +65,8 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public render(): React.ReactElement {
-    const { t, typeOfPlan, isTablet, isIpadPro, isMobile } = this.props;
-    const { existingDocuments, localDocuments, isLoading, verificationTypes } = this.state;
+    const { t, typeOfPlan, isTablet, isIpadPro ,isMobile} = this.props;
+    const { existingDocuments, localDocuments, isLoading, verificationTypes, takeSelfie } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
     const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
@@ -68,13 +75,14 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     return (
       <>
         <View style={styles.container}>
+          {takeSelfie && this.captureSelfie()}
           <VerificationTypes
             typeOfPlan={typeOfPlan}
             existingDocuments={existingDocuments}
             localDocuments={localDocuments}
             deleteDocument={this.onDeleteDocument}
             handleTypes={this.handleVerificationTypes}
-            handleUpload={this.onImageSelection}
+            handleUpload={this.handleVerificationDocumentUploads}
           />
           {!isTablet && !isIpadPro && (
             <>
@@ -122,13 +130,29 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     );
   };
 
+  public onCaptureSelfie = (data: string | null):void => {
+    {
+      data !== null &&
+        this.setState({ selfie: data }, () => {
+          const { verificationTypes } = this.state;
+          this.onSelfieSelect(verificationTypes[0], data);
+        });
+    }
+    this.setState({ takeSelfie: false });
+  };
+
+  public onSelfieSelect = (value: VerificationDocumentTypes, selfie: string) => {
+    const verificationDocumentId = value.id;
+    const source = { uri: selfie, type: 'jpeg', name: 'image', id:verificationDocumentId};
+    this.updateLocalDocuments(verificationDocumentId, source, value);
+  };
+
   public onImageSelection = async (value: VerificationDocumentTypes, files?: File[]): Promise<void> => {
     if (!files) {
       return;
     }
     const verificationDocumentId = value.id;
     const image = files[0];
-
     const formData = new FormData();
     formData.append('files[]', image);
 
@@ -139,6 +163,36 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       this.updateLocalDocuments(verificationDocumentId, source, value);
     } else {
       AlertHelper.error({ message: value.helpText });
+    }
+  };
+
+  public captureSelfie = (): ReactElement => {
+    return (
+      <View>
+        <Popover
+          content={<CaptureSelfie onCapture={this.onCaptureSelfie} />}
+          popupProps={{
+            open: true,
+            closeOnDocumentClick: true,
+            arrow: false,
+            contentStyle: { marginTop: '4px', alignItems: 'stretch' },
+            children: undefined,
+          }}
+        />
+      </View>
+    );
+  };
+
+  public handleVerificationDocumentUploads = async (
+    value: VerificationDocumentTypes,
+    files?: File[]
+  ): Promise<void> => {
+    const verificationDocumentType = value.name;
+
+    if (verificationDocumentType === VerificationDocumentCategory.SELFIE_ID_PROOF) {
+      this.setState({ takeSelfie: true, verificationTypes: [value] });
+    } else {
+      await this.onImageSelection(value, files);
     }
   };
 

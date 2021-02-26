@@ -214,6 +214,7 @@
     "deleteReview": "Delete Review",
     "deleteReviewText": "Once deleted, this review won't be visible to anyone. This action cannot be undone.",
     "user": "User",
+    "capture":"Capture",
     "members": "Members",
     "chatMemberCount": "{{count}} Members",
     "media": "Media"
