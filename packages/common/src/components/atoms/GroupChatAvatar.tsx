@@ -19,7 +19,6 @@ interface IProps {
 type getStyles = (circleSize?: number, isHeader?: boolean, index?: number) => IScreenStyles;
 
 const GroupChatAvatar = (props: IProps): React.ReactElement => {
-  // Deserializing data
   const styles = getStyles();
   const { faces, isHeader = true, containerStyle = {}, loggedInUserId } = props;
 
@@ -41,16 +40,16 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
   const circleSize = isHeader ? CIRCLE_SIZE_HEADER : CIRCLE_SIZE_CHAT;
 
   const ExtraCount = (): React.ReactElement | null => {
-    const extraCountStyle = getStyles(circleSize, isHeader);
+    const extraCountStyles = getStyles(circleSize, isHeader);
     if (shouldShowOverflow) {
       return (
         <Avatar
           isOnlyAvatar
-          containerStyle={extraCountStyle.extraCountContainer}
+          containerStyle={extraCountStyles.extraCountStyle}
           imageSize={circleSize}
           customText={`+${overflow.toString()}`}
-          initialsContainerStyle={extraCountStyle.initialsContainerStyle}
-          customTextStyle={extraCountStyle.customText}
+          initialsContainerStyle={extraCountStyles.initialsContainerStyle}
+          customTextStyle={extraCountStyles.customText}
         />
       );
     }
@@ -68,7 +67,7 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
             <Avatar
               key={index}
               isOnlyAvatar
-              containerStyle={avatarStyle.imageAvatarContainer}
+              containerStyle={avatarStyle.avatarStyle}
               imageSize={circleSize}
               fullName={name}
               image={profilePicture || undefined}
@@ -90,28 +89,14 @@ export default React.memo(GroupChatAvatar);
 interface IScreenStyles {
   container: FlexStyle;
   initialsContainerStyle: ViewStyle;
-  extraCount: ViewStyle;
-  imageAvatarContainer: ViewStyle;
   customText: TextStyle;
-  extraCountContainer: ViewStyle;
+  extraCountStyle: ViewStyle;
+  avatarStyle: ViewStyle;
 }
 const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, index = 0) => {
   const isFirstFace = index === 0;
-  const liftUpStyle: ViewStyle = isHeader ? {} : { bottom: circleSize / 2 };
-  const facesHorizontalDivisor = isHeader ? 1.3 : 3;
-  const extraCountHorizontalDivisor = isHeader ? 1.3 : 1.4;
-  const extraCountThreshold = 3;
-
-  const imageAvatarContainerStyle: ViewStyle = !isFirstFace
-    ? { position: 'absolute', ...liftUpStyle, left: (circleSize / facesHorizontalDivisor) * index + 1 }
-    : { marginRight: isHeader ? 0 : 0, zIndex: isHeader ? 0 : 10 };
-
-  const extraCountStyle: ViewStyle = {
-    position: 'absolute',
-    left: isHeader
-      ? (circleSize / extraCountHorizontalDivisor) * extraCountThreshold
-      : circleSize / extraCountHorizontalDivisor,
-  };
+  const facesHorizontalDivisor = 3;
+  const extraCountHorizontalDivisor = 1.4;
 
   return StyleSheet.create({
     container: {
@@ -123,17 +108,25 @@ const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, 
     initialsContainerStyle: {
       backgroundColor: theme.colors.background,
     },
-    extraCount: {
-      marginBottom: -4,
-      zIndex: 10,
-    },
-    imageAvatarContainer: { ...imageAvatarContainerStyle },
     customText: {
       ...(!isHeader && { fontSize: circleSize / 2.5 }),
     },
-    extraCountContainer: {
-      ...extraCountStyle,
-      zIndex: isHeader ? 0 : 10,
-    },
+    avatarStyle: isHeader
+      ? { marginLeft: -16 }
+      : {
+        position: 'absolute',
+        ...(!isFirstFace && {
+          bottom: circleSize / 2,
+          left: (circleSize / facesHorizontalDivisor) * index + 1,
+        }),
+        zIndex: isFirstFace ? 10 : 0,
+      },
+    extraCountStyle: isHeader
+      ? { marginLeft: -16 }
+      : {
+        position: 'absolute',
+        left: circleSize / extraCountHorizontalDivisor,
+        zIndex: 10,
+      },
   });
 };

@@ -8,19 +8,27 @@ interface IProps {
   currentSlide: number;
   totalSlides: number;
   type: string;
+  hasOnlyImages?: boolean;
 }
 
 const ImageVideoPagination = (props: IProps): React.ReactElement => {
-  const { currentSlide, totalSlides, type } = props;
+  const { currentSlide, totalSlides, type, hasOnlyImages = false } = props;
   return (
     <View style={styles.container}>
-      <Icon name={icons.camera} size={20} color={type === 'IMAGE' ? theme.colors.white : theme.colors.darkTint5} />
       <Icon
-        name={icons.video}
+        name={icons.camera}
         size={20}
-        color={type === 'VIDEO' ? theme.colors.white : theme.colors.darkTint5}
-        style={styles.video}
+        color={type === 'IMAGE' ? theme.colors.white : theme.colors.darkTint5}
+        style={hasOnlyImages ? styles.video : {}}
       />
+      {!hasOnlyImages && (
+        <Icon
+          name={icons.video}
+          size={20}
+          color={type === 'VIDEO' ? theme.colors.white : theme.colors.darkTint5}
+          style={styles.video}
+        />
+      )}
       <Label type="large" textType="regular" style={styles.label}>
         {currentSlide + 1} / {totalSlides}
       </Label>

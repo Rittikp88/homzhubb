@@ -1,10 +1,12 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { Media } from '@homzhub/common/src/domain/models/Media';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IGetMessageParam,
+  IGroupChatInfoPayload,
   IMessagePayload,
   IUpdateMessagePayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -12,6 +14,8 @@ import {
 const ENDPOINTS = {
   groupMessage: (): string => 'message-groups/',
   messages: (groupId: number): string => `message-groups/${groupId}/messages/`,
+  groupChatInfo: (groupId: number): string => `message-groups/${groupId}/`,
+  getChatAttachments: (groupId: number): string => `message-groups/${groupId}/attachments/`,
 };
 
 class MessageRepository {
@@ -40,6 +44,18 @@ class MessageRepository {
   public getGroupMessages = async (): Promise<GroupMessage[]> => {
     const result = await this.apiClient.get(ENDPOINTS.groupMessage());
     return ObjectMapper.deserializeArray(GroupMessage, result);
+  };
+
+  public getGroupChatInfo = async (payload: IGroupChatInfoPayload): Promise<GroupMessage> => {
+    const { groupId } = payload;
+    const response = await this.apiClient.get(ENDPOINTS.groupChatInfo(groupId));
+    return ObjectMapper.deserialize(GroupMessage, response);
+  };
+
+  public getGroupChatMedia = async (payload: IGetMessageParam): Promise<Media> => {
+    const { groupId, cursor, count } = payload;
+    const response = await this.apiClient.get(ENDPOINTS.getChatAttachments(groupId), { cursor, count });
+    return ObjectMapper.deserialize(Media, response);
   };
 }
 

@@ -113,6 +113,7 @@ export enum ScreensKeys {
   ServicesForSelectedAsset = 'ServicesForSelectedAsset',
   Messages = 'Messages',
   ChatScreen = 'ChatScreen',
+  GroupChatInfo = 'GroupChatInfo',
 }
 
 export enum OtpNavTypes {
