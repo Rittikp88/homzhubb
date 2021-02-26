@@ -15,6 +15,7 @@ interface IProps {
   onFullScreenToggle: () => void;
   updateSlide: (index: number) => void;
   onShare?: () => void;
+  hasOnlyImages?: boolean;
 }
 
 const heightValue = PlatformUtils.isIOS() ? (theme.viewport.width > 400 ? 3 : 2) : 2;
@@ -30,7 +31,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
   }
 
   public renderListHeader = (): React.ReactElement => {
-    const { activeSlide, data, onFullScreenToggle, onShare } = this.props;
+    const { activeSlide, data, onFullScreenToggle, onShare, hasOnlyImages = false } = this.props;
     return (
       <View style={styles.fullscreenContainer}>
         <Icon name={icons.close} size={20} color={theme.colors.white} onPress={onFullScreenToggle} />
@@ -39,6 +40,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           totalSlides={data.length}
           // @ts-ignore
           type={data[activeSlide].mediaType}
+          hasOnlyImages={hasOnlyImages}
         />
         {onShare && <Icon name={icons.share} size={23} color={theme.colors.white} onPress={onShare} />}
       </View>

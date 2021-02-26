@@ -172,7 +172,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             open: true,
             closeOnDocumentClick: true,
             arrow: false,
-            modal: true,
             contentStyle: { marginTop: '4px', alignItems: 'stretch' },
             children: undefined,
           }}

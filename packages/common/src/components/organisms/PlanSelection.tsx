@@ -29,6 +29,9 @@ interface IProps {
   carouselView: ReactElement;
   onSelectPlan: () => void;
   onSkip: () => void;
+  isDesktop?: boolean;
+  isMobile?: boolean;
+  isTablet?: boolean;
 }
 
 type OwnProps = WithTranslation;
@@ -41,10 +44,10 @@ class PlanSelection extends React.PureComponent<Props> {
   };
 
   public render(): React.ReactElement {
-    const { carouselView } = this.props;
+    const { carouselView, isMobile } = this.props;
     return (
-      <View style={styles.container}>
-        <View style={styles.planContainer}>{this.renderPlans()}</View>
+      <View style={[styles.container, isMobile && styles.containerMobile]}>
+        <View style={[styles.planContainer, isMobile && styles.planContainerMobile]}>{this.renderPlans()}</View>
         {carouselView}
       </View>
     );
@@ -68,7 +71,7 @@ class PlanSelection extends React.PureComponent<Props> {
   };
 
   public renderItem = (item: AssetPlan, index: number): React.ReactElement => {
-    const { assetPlan } = this.props;
+    const { assetPlan, isTablet, isMobile } = this.props;
 
     const onPress = (): void => this.onPressPlan(item);
     const isLastIndex = assetPlan.length === index + 1;
@@ -82,12 +85,16 @@ class PlanSelection extends React.PureComponent<Props> {
               <Text type="small" textType="semiBold" style={styles.planName}>
                 {ListingService.getHeader(item.name)}
               </Text>
-              <Label type="large" textType="regular" style={styles.description}>
+              <Label
+                type="large"
+                textType="regular"
+                style={[styles.description, isTablet && styles.descriptionTab, isMobile && styles.descriptionMobile]}
+              >
                 {item.description}
               </Label>
             </View>
+            <Icon name={icons.rightArrow} size={22} color={theme.colors.primaryColor} />
           </View>
-          <Icon name={icons.rightArrow} size={22} color={theme.colors.primaryColor} />
         </TouchableOpacity>
         {!isLastIndex && <Divider />}
       </View>
@@ -131,9 +138,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
+  containerMobile: {
+    flexDirection: 'column',
+  },
   planContainer: {
     backgroundColor: theme.colors.white,
     padding: theme.layout.screenPadding,
+    width: PlatformUtils.isWeb() ? '50%' : undefined,
+  },
+  planContainerMobile: {
+    width: 'auto',
   },
   header: {
     flexDirection: 'row',
@@ -159,12 +173,18 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint5,
     paddingTop: 10,
   },
+  descriptionTab: {
+    width: '100%',
+  },
+  descriptionMobile: {
+    width: '90%',
+  },
   descriptionContainer: {
     marginStart: 20,
     flex: 1,
   },
   flexRow: {
     flexDirection: 'row',
-    width: PlatformUtils.isMobile() ? theme.viewport.width / 1.2 : undefined,
+    width: PlatformUtils.isMobile() ? theme.viewport.width / 1.2 : '100%',
   },
 });

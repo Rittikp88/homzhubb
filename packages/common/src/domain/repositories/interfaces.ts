@@ -686,6 +686,10 @@ export interface IMessagePayload {
   attachments: number[];
 }
 
+export interface IGroupChatInfoPayload {
+  groupId: number;
+}
+
 interface IMessageAction {
   action: MessageAction;
   payload: {

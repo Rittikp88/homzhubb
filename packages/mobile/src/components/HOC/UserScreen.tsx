@@ -25,6 +25,7 @@ interface IUserScreenProps {
   isOuterScrollEnabled?: boolean;
   onBackPress?: () => void;
   rightNode?: React.ReactElement;
+  hasLeftIcon?: boolean;
   onNavigateCallback?: () => void;
 }
 
@@ -48,6 +49,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     isOuterScrollEnabled,
     onBackPress,
     rightNode,
+    hasLeftIcon = true,
     onNavigateCallback,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
@@ -103,14 +105,16 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     return (
       <View style={[styles.pageHeaderContainer, styles.rowStyle]}>
         <View style={styles.rowStyle}>
-          <Icon
-            size={20}
-            name={icons.leftArrow}
-            color={theme.colors.primaryColor}
-            style={styles.backIconStyle}
-            onPress={onBackPress}
-          />
-          <Text type="small" textType="semiBold" style={styles.pageTitle}>
+          {hasLeftIcon && (
+            <Icon
+              size={20}
+              name={icons.leftArrow}
+              color={theme.colors.primaryColor}
+              style={styles.backIconStyle}
+              onPress={onBackPress}
+            />
+          )}
+          <Text type="small" textType="semiBold" style={[styles.pageTitle, !hasLeftIcon && styles.countText]}>
             {pageTitle}
           </Text>
         </View>
@@ -186,5 +190,8 @@ const styles = StyleSheet.create({
   },
   rowStyle: {
     flexDirection: 'row',
+  },
+  countText: {
+    marginLeft: 5,
   },
 });
