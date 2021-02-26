@@ -4,7 +4,8 @@ exports[`AssetAdvertisementBanner should call function 1`] = `
 <View
   style={
     Object {
-      "height": 180,
+      "backgroundColor": "#FFFFFF",
+      "height": 200,
       "marginTop": 16,
     }
   }
@@ -70,7 +71,7 @@ exports[`AssetAdvertisementBanner should call function 1`] = `
       Object {
         "alignSelf": "center",
         "bottom": 0,
-        "paddingVertical": 5,
+        "paddingVertical": 10,
         "position": "absolute",
       }
     }
@@ -89,7 +90,8 @@ exports[`AssetAdvertisementBanner should match snapshot 1`] = `
 <View
   style={
     Object {
-      "height": 180,
+      "backgroundColor": "#FFFFFF",
+      "height": 200,
       "marginTop": 16,
     }
   }
@@ -155,7 +157,7 @@ exports[`AssetAdvertisementBanner should match snapshot 1`] = `
       Object {
         "alignSelf": "center",
         "bottom": 0,
-        "paddingVertical": 5,
+        "paddingVertical": 10,
         "position": "absolute",
       }
     }
@@ -176,7 +178,8 @@ exports[`AssetAdvertisementBanner should match snapshot without banners 1`] = `
 <View
   style={
     Object {
-      "height": 180,
+      "backgroundColor": "#FFFFFF",
+      "height": 200,
       "marginTop": 16,
     }
   }
@@ -206,7 +209,7 @@ exports[`AssetAdvertisementBanner should match snapshot without banners 1`] = `
       Object {
         "alignSelf": "center",
         "bottom": 0,
-        "paddingVertical": 5,
+        "paddingVertical": 10,
         "position": "absolute",
       }
     }

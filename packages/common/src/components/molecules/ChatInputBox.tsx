@@ -11,12 +11,13 @@ interface IProps {
   onUploadImage: () => void;
   onPressCamera: () => void;
   onInputFocus: () => void;
+  onFocusOut: () => void;
   onSubmit: (text: string, isAttachment?: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const ChatInputBox = (props: IProps): React.ReactElement => {
-  const { onSubmit, onUploadImage, containerStyle, onInputFocus, onPressCamera } = props;
+  const { onSubmit, onUploadImage, containerStyle, onInputFocus, onPressCamera, onFocusOut } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const attachmentUrl: string = useSelector(CommonSelectors.getMessageAttachment);
@@ -92,6 +93,7 @@ const ChatInputBox = (props: IProps): React.ReactElement => {
       {!isImage && (
         <TextInput
           onFocus={onInputFocus}
+          onBlur={onFocusOut}
           placeholder={t('common:typeYourMessage')}
           value={value}
           onChangeText={onChangeText}

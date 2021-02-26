@@ -40,16 +40,16 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
   const circleSize = isHeader ? CIRCLE_SIZE_HEADER : CIRCLE_SIZE_CHAT;
 
   const ExtraCount = (): React.ReactElement | null => {
-    const extraCountStyles = getStyles(circleSize, isHeader);
+    const { marginStyle, extraCountStyle, initialsContainerStyle, customText } = getStyles(circleSize, isHeader);
     if (shouldShowOverflow) {
       return (
         <Avatar
           isOnlyAvatar
-          containerStyle={extraCountStyles.extraCountStyle}
+          containerStyle={isHeader ? marginStyle : extraCountStyle}
           imageSize={circleSize}
           customText={`+${overflow.toString()}`}
-          initialsContainerStyle={extraCountStyles.initialsContainerStyle}
-          customTextStyle={extraCountStyles.customText}
+          initialsContainerStyle={initialsContainerStyle}
+          customTextStyle={customText}
         />
       );
     }
@@ -61,17 +61,17 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
       <>
         {facesToShow.map((face: User, index: number) => {
           const { name, profilePicture } = face;
-          const avatarStyle = getStyles(circleSize, isHeader, index);
+          const { avatarStyle, marginStyle, customText } = getStyles(circleSize, isHeader, index);
 
           return (
             <Avatar
               key={index}
               isOnlyAvatar
-              containerStyle={avatarStyle.avatarStyle}
+              containerStyle={isHeader ? marginStyle : avatarStyle}
               imageSize={circleSize}
               fullName={name}
               image={profilePicture || undefined}
-              customTextStyle={avatarStyle.customText}
+              customTextStyle={customText}
             />
           );
         })}
@@ -92,6 +92,7 @@ interface IScreenStyles {
   customText: TextStyle;
   extraCountStyle: ViewStyle;
   avatarStyle: ViewStyle;
+  marginStyle: ViewStyle;
 }
 const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, index = 0) => {
   const isFirstFace = index === 0;
@@ -111,22 +112,21 @@ const getStyles: getStyles = (circleSize = CIRCLE_SIZE_HEADER, isHeader = true, 
     customText: {
       ...(!isHeader && { fontSize: circleSize / 2.5 }),
     },
-    avatarStyle: isHeader
-      ? { marginLeft: -16 }
-      : {
-        position: 'absolute',
-        ...(!isFirstFace && {
-          bottom: circleSize / 2,
-          left: (circleSize / facesHorizontalDivisor) * index + 1,
-        }),
-        zIndex: isFirstFace ? 10 : 0,
-      },
-    extraCountStyle: isHeader
-      ? { marginLeft: -16 }
-      : {
-        position: 'absolute',
-        left: circleSize / extraCountHorizontalDivisor,
-        zIndex: 10,
-      },
+    marginStyle: {
+      marginLeft: -16,
+    },
+    avatarStyle: {
+      position: 'absolute',
+      ...(!isFirstFace && {
+        bottom: circleSize / 2,
+        left: (circleSize / facesHorizontalDivisor) * index + 1,
+      }),
+      zIndex: isFirstFace ? 10 : 0,
+    },
+    extraCountStyle: {
+      position: 'absolute',
+      left: circleSize / extraCountHorizontalDivisor,
+      zIndex: 10,
+    },
   });
 };

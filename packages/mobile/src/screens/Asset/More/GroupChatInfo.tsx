@@ -1,15 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ListRenderItem,
-  StyleSheet,
-  View,
-  ViewStyle,
-  TouchableOpacity,
-} from 'react-native';
+import { ActivityIndicator, FlatList, Image, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { MessageRepository } from '@homzhub/common/src/domain/repositories/MessageRepository';
@@ -85,11 +76,15 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
     } else {
       setLoading(true);
     }
-    const { results, links } = await MessageRepository.getGroupChatMedia({ groupId, cursor: link?.next, count });
+    const { results, links: responseLink } = await MessageRepository.getGroupChatMedia({
+      groupId,
+      cursor: link?.next || '',
+      count,
+    });
     const mediaData = from === LOAD_MORE ? [...media, ...results] : results;
     setMedia(mediaData);
-    setLinks(links);
-    setTerminate(links.next ? false : true);
+    setLinks(responseLink);
+    setTerminate(!responseLink.next);
     setCount(count);
     setLoading(false);
     setLoadingMore(false);
@@ -97,7 +92,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
 
   useEffect(() => {
     try {
-      Promise.all([fetchGroupChatInfo(), fetchMedia()]);
+      Promise.all([fetchGroupChatInfo(), fetchMedia()]).then();
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
@@ -152,13 +147,15 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
 
   const MembersSection = useMemo(
     () => (): React.ReactElement => {
-      const renderItem: ListRenderItem<Partial<User>> = ({ item }) => {
+      const renderItem = ({ item }: { item: User }): React.ReactElement => {
         const { fullName, profilePicture, isAssetOwner } = item;
         const role = isAssetOwner ? t('property:owner') : t('property:tenant');
-        const showProfile = () => {
+
+        const showProfile = (): void => {
           setOpenUser(item);
           toggleProfileSheet();
         };
+
         return (
           <>
             <View style={styles.chatItemContainer}>
@@ -212,9 +209,10 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
   const MediaSection = (): React.ReactElement => {
     const keyExtractor = (item: Attachment, index: number): string => `${item.id}[${index}]`;
 
-    const renderItem: ListRenderItem<Attachment> = ({ item }) => {
+    const renderItem = ({ item }: { item: Attachment }): React.ReactElement => {
       const { id, link } = item;
-      const setActiveImage = () => updateSlide(media.indexOf(item));
+      const setActiveImage = (): void => updateSlide(media.indexOf(item));
+
       return (
         <TouchableOpacity key={id} style={styles.mediaHolder} onPress={setActiveImage}>
           <Image source={{ uri: link }} style={styles.image} resizeMode="stretch" />
@@ -222,7 +220,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
       );
     };
 
-    const mediaSeparator = () => <View style={styles.mediaSeparator} />;
+    const mediaSeparator = (): React.ReactElement => <View style={styles.mediaSeparator} />;
 
     const onEndReached = ({ distanceFromEnd }: { distanceFromEnd: number }): void => {
       if (distanceFromEnd >= 0) {
@@ -365,10 +363,6 @@ const styles = StyleSheet.create({
   },
   mediaHeader: {
     margin: 16,
-  },
-  carouselImage: {
-    height: '100%',
-    width: '100%',
   },
   loadMore: {
     flex: 1,
