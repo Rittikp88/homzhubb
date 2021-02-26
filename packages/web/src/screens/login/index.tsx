@@ -121,6 +121,7 @@ const Login: FC<IProps> = (props: IProps) => {
         <View style={styles.loginForm}>
           {isEmailLogin ? (
             <LoginForm
+              isFromLogin
               isEmailLogin
               onLoginSuccess={handleSubmitEmailLogin}
               handleForgotPassword={handleForgotPassword}
@@ -128,6 +129,7 @@ const Login: FC<IProps> = (props: IProps) => {
             />
           ) : (
             <LoginForm
+              isFromLogin
               isEmailLogin={false}
               onLoginSuccess={handleOtpLogin}
               handleForgotPassword={handleForgotPassword}
