@@ -122,6 +122,7 @@ class SocialMediaGateway extends React.PureComponent<IProps, IState> {
             buttonTitle: t('common:login'),
             underlineDesc: t('auth:authDescLogin', { username: result.user.first_name }),
             isFromLogin,
+            isEmailLogin: false,
           };
         } else {
           compProps = {
@@ -130,7 +131,8 @@ class SocialMediaGateway extends React.PureComponent<IProps, IState> {
             subTitle: result.user.email,
             buttonTitle: t('common:signUp'),
             underlineDesc: t('auth:authDescSignUp', { username: result.user.first_name }),
-            isFromLogin,
+            isFromLogin: false,
+            isEmailLogin: false,
           };
         }
         NavigationUtils.navigate(history, {

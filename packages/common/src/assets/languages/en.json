@@ -249,6 +249,8 @@
     "minimumCharacters": "Minimum 8 characters allowed",
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already registered?",
+    "alreadyAccount": "Already have an account ?",
+    "loginInstead": " Log In instead",
     "signUpWithGoogle": "Signup With Google",
     "signUpWithFacebook": "Signup With Facebook",
     "loginWithGoogle": "Login With Google",
