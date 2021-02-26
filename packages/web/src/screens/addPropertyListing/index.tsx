@@ -194,6 +194,6 @@ const styles = StyleSheet.create({
   },
   imageTablet: {
     width: 340,
-    marginVertical: '48px'
+    marginVertical: '48px',
   },
 });
