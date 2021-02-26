@@ -73,7 +73,7 @@ const AddPropertyListing = (): React.ReactElement => {
   const Tablet = useOnly(deviceBreakpoint.TABLET);
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(704));
+    dispatch(RecordAssetActions.setAssetId(731));
   });
 
   // TODO: remove the commented code once the API issue from chrome is resolved

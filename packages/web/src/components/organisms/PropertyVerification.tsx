@@ -70,8 +70,8 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
     const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
     const containsAllReqd = uploadedTypes.length === verificationTypes.length;
-    console.log("here" , containsAllReqd);
-    
+    console.log('here', containsAllReqd, 'verification', verificationTypes, 'isLoading', isLoading);
+
     return (
       <>
         <View style={styles.container}>
@@ -138,6 +138,9 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           this.onSelfieSelect(verificationTypes[0], data);
         });
     }
+    // if (popupRef && popupRef.current) {
+    //   popupRef.current.close();
+    // }
     this.setState({ takeSelfie: false });
   };
 
@@ -167,6 +170,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public captureSelfie = (): ReactElement => {
+  // const popupRef = useRef<PopupActions>(null);
     return (
       <View>
         <Popover
@@ -177,6 +181,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             arrow: false,
             contentStyle: { marginTop: '4px', alignItems: 'stretch' },
             children: undefined,
+            modal: true,
           }}
         />
       </View>
@@ -190,7 +195,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const verificationDocumentType = value.name;
 
     if (verificationDocumentType === VerificationDocumentCategory.SELFIE_ID_PROOF) {
-      this.setState({ takeSelfie: true, verificationTypes: [value] });
+      this.setState({ takeSelfie: true });
     } else {
       await this.onImageSelection(value, files);
     }
