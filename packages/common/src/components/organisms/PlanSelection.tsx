@@ -144,8 +144,7 @@ const styles = StyleSheet.create({
   planContainer: {
     backgroundColor: theme.colors.white,
     padding: theme.layout.screenPadding,
-    width: '50%',
-    height: 'fit-content',
+    width: PlatformUtils.isWeb() ? '50%' : undefined,
   },
   planContainerMobile: {
     width: 'auto',
@@ -173,8 +172,6 @@ const styles = StyleSheet.create({
   description: {
     color: theme.colors.darkTint5,
     paddingTop: 10,
-    wordWrap: 'break-word',
-    width: '480px',
   },
   descriptionTab: {
     width: '100%',
@@ -188,6 +185,6 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
-    width: PlatformUtils.isMobile() ? theme.viewport.width / 1.2 : 'fit-content',
+    width: PlatformUtils.isMobile() ? theme.viewport.width / 1.2 : '100%',
   },
 });
