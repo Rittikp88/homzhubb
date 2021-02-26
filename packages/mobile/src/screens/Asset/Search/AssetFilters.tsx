@@ -10,6 +10,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AdvancedFilters, IAdvancedFilters, IFilterData } from '@homzhub/common/src/constants/AssetAdvancedFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -26,11 +27,13 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 
 interface IStateProps {
   filters: IFilter;
   filterDetails: FilterDetail | null;
+  userPreference: UserPreferences;
 }
 
 interface IDispatchProps {
@@ -60,15 +63,19 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     { title: this.props.t('property:semiFurnished'), value: FurnishingTypes.SEMI },
     { title: this.props.t('property:none'), value: FurnishingTypes.NONE },
   ];
-  /* eslint-enable */
 
-  public state = {
-    isFacingToggled: false,
-    isPropertyAmenitiesToggled: false,
-    isShowVerifiedHelperToggled: false,
-    isAgentListedHelperToggled: false,
-    data: AdvancedFilters,
-  };
+  /* eslint-enable */
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      isFacingToggled: false,
+      isPropertyAmenitiesToggled: false,
+      isShowVerifiedHelperToggled: false,
+      isAgentListedHelperToggled: false,
+      data: AdvancedFilters,
+    };
+  }
 
   public render(): React.ReactElement {
     const {
@@ -618,11 +625,11 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   };
 
   public translateData = (data: IFilterData[]): IFilterData[] => {
-    const { t } = this.props;
+    const { t, userPreference } = this.props;
     return data.map((currentData: IFilterData) => {
       return {
         value: currentData.value,
-        label: t(currentData.label),
+        label: t(currentData.label, { metric: userPreference ? userPreference.metricUnit : 'km' }),
       };
     });
   };
@@ -713,6 +720,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   return {
     filters: getFilters(state),
     filterDetails: getFilterDetail(state),
+    userPreference: UserSelector.getUserPreferences(state),
   };
 };
 

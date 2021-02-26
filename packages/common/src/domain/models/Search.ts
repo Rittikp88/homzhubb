@@ -76,6 +76,7 @@ export interface IFilter {
     facing: string[];
     furnishing: FurnishingTypes[];
     propertyAmenity: number[];
+    search_radius_unit: string;
   };
 }
 
@@ -128,5 +129,6 @@ export interface ISearchHistoryPayload {
     facing?: string[];
     rent_free_period?: IUnit;
     furnishing_status?: FurnishingTypes[];
+    search_radius_unit: string;
   };
 }
