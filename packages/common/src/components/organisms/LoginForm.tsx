@@ -71,7 +71,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
   }
 
   public render(): React.ReactNode {
-    const { t, handleForgotPassword, isEmailLogin, testID, buttonTitle, isFromLogin } = this.props;
+    const { t, handleForgotPassword, isEmailLogin, testID, buttonTitle } = this.props;
     const formData = { ...this.state };
     return (
       <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>

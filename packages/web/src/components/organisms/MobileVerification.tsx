@@ -57,6 +57,9 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
+
+  // TODO: (Lakshit) - Remove eslint disable once isEmail used
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
   const [isEmail, setIsEmailLogin] = useState(false);
 
   const dispatch = useDispatch();

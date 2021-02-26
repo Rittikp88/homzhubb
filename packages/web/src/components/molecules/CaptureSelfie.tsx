@@ -17,7 +17,7 @@ const CaptureSelfie: FC<ISelfieProps> = (props: ISelfieProps) => {
       onCapture(imageSrc);
     }
   }, [webcamRef]);
-  
+
   return (
     <>
       <View style={Styles.icon}>

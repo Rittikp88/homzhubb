@@ -64,8 +64,12 @@ interface IProps {
   formProps: any;
   currencyData: Currency;
   assetGroupType: string;
+  leaseEndDate?: string;
+  leaseStartDate?: string;
   isFromManage?: boolean;
   isSplitAsUnits?: boolean;
+  isTitleRequired?: boolean;
+  isFromEdit?: boolean;
   children?: React.ReactNode;
 }
 
@@ -74,6 +78,7 @@ const MAXIMUM_LEASE_PERIOD = 24;
 const MINIMUM_TOTAL_LEASE_PERIOD = 0;
 const MAXIMUM_TOTAL_LEASE_PERIOD = 60;
 const DEFAULT_LEASE_PERIOD = 11;
+
 export const initialLeaseFormValues = {
   showMore: false,
   monthlyRent: '',
@@ -97,8 +102,12 @@ const LeaseTermForm = ({
   currencyData,
   assetGroupType,
   children,
+  leaseEndDate,
+  leaseStartDate,
   isSplitAsUnits = false,
   isFromManage = false,
+  isFromEdit = false,
+  isTitleRequired = true,
 }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   const { setFieldValue, setFieldTouched, values } = formProps;
@@ -114,13 +123,16 @@ const LeaseTermForm = ({
 
   let dateLabel;
   let minDate;
-  let maxDate: string | undefined = DateUtils.getFutureDate(assetGroupType === AssetGroupTypes.COM ? 180 : 60);
+  let maxDate: string | undefined =
+    leaseEndDate ?? DateUtils.getFutureDate(assetGroupType === AssetGroupTypes.COM ? 180 : 60);
+  if (isFromEdit && leaseStartDate) {
+    minDate = leaseStartDate;
+  }
   if (isFromManage) {
     maxDate = DateUtils.getFutureYearLastDate(5);
     minDate = DateUtils.getPreviousYearStartDate(5);
     dateLabel = t('common:startingFrom');
   }
-
   // CONSTANTS END
 
   // EFFECT
@@ -164,14 +176,12 @@ const LeaseTermForm = ({
 
   return (
     <>
-      <AssetListingSection title={t('leaseTerms')}>
+      <AssetListingSection title={isTitleRequired ? t('leaseTerms') : ''}>
         <>
           {isFromManage && children}
-          {PlatformUtils.isWeb() && (
-            <Text type="small" textType="semiBold" style={styles.headerTitle}>
-              {t('rentAndSecurity')}
-            </Text>
-          )}
+          <Text type="small" textType="semiBold" style={styles.headerTitle}>
+            {t('rentAndSecurity')}
+          </Text>
 
           <View style={PlatformUtils.isWeb() && !isMobile && styles.leaseTerms}>
             <View
@@ -355,16 +365,18 @@ const LeaseTermForm = ({
         </>
       </AssetListingSection>
       {!isFromManage && children}
-      <AssetListingSection title={t('assetDescription:description')} contentContainerStyles={styles.paddingTop}>
-        <TextArea
-          value={formProps.values[LeaseFormKeys.description]}
-          wordCountLimit={MAX_DESCRIPTION_LENGTH}
-          placeholder={isFromManage ? t('property:manageFlowFormDescription') : t('property:rentFlowFormDescription')}
-          onMessageChange={onDescriptionChange}
-          containerStyle={styles.descriptionContainer}
-          inputContainerStyle={PlatformUtils.isWeb() && styles.textAreaStyle}
-        />
-      </AssetListingSection>
+      {!isFromEdit && (
+        <AssetListingSection title={t('assetDescription:description')} contentContainerStyles={styles.paddingTop}>
+          <TextArea
+            value={formProps.values[LeaseFormKeys.description]}
+            wordCountLimit={MAX_DESCRIPTION_LENGTH}
+            placeholder={isFromManage ? t('property:manageFlowFormDescription') : t('property:rentFlowFormDescription')}
+            onMessageChange={onDescriptionChange}
+            containerStyle={styles.descriptionContainer}
+            inputContainerStyle={PlatformUtils.isWeb() && styles.textAreaStyle}
+          />
+        </AssetListingSection>
+      )}
     </>
   );
 };
@@ -414,7 +426,7 @@ export { memoizedComponent as LeaseTermForm, DEFAULT_LEASE_PERIOD, LeaseFormKeys
 
 const styles = StyleSheet.create({
   headerTitle: {
-    marginTop: 25,
+    marginTop: PlatformUtils.isWeb() ? 25 : 12,
     color: theme.colors.darkTint3,
   },
   showMore: {

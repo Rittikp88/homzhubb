@@ -214,7 +214,7 @@
     "deleteReview": "Delete Review",
     "deleteReviewText": "Once deleted, this review won't be visible to anyone. This action cannot be undone.",
     "user": "User",
-    "capture":"Capture",
+    "capture": "Capture",
     "members": "Members",
     "chatMemberCount": "{{count}} Members",
     "media": "Media"
@@ -544,7 +544,9 @@
     "inValidVisit": "This listing has been removed by the property owner.",
     "youHaveAlreadyReportedThisCommentOn": "You have already reported this comment on",
     "tenantRemoveDate": "This tenant will be removed from the lease on {{date}}",
-    "reportStatus": "Report status"
+    "reportStatus": "Report status",
+    "editLeaseTerm": "Edit Lease Terms",
+    "leaseUpdated": "Successfully lease updated"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

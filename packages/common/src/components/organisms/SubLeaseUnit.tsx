@@ -196,7 +196,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
     });
   }, [t]);
   // FORM VALIDATIONS END
-  console.log(spaces);
+
   return (
     <Formik
       enableReinitialize
