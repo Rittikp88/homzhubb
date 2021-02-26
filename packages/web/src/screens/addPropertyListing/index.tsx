@@ -138,9 +138,7 @@ const AddPropertyListing = (): React.ReactElement => {
               style={styles.image}
               resizeMode="contain"
               source={{
-                uri: 
-                'https://hmzhbdev.s3.ap-south-1.amazonaws.com/advertisements/f205f192f15d49fa994632d641463fb2.svg',
-                // 'https://hmzhbdev.s3.ap-south-1.amazonaws.com/c363134df8194ef1b42d56d0bc76694a.svg'
+                uri: 'https://homzhub-bucket.s3.amazonaws.com/f205f192f15d49fa994632d641463fb2.svg',
               }}
               // source={{ uri: item.attachment.link }}        //Same todo as above
             />
@@ -173,7 +171,7 @@ const styles = StyleSheet.create({
     height: 'fit-content',
     paddingBottom: 12,
   },
-  carouselViewMobile:{
+  carouselViewMobile: {
     marginTop: 20,
     marginLeft: 0,
   },
