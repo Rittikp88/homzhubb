@@ -135,7 +135,7 @@ const AddPropertyListing = (): React.ReactElement => {
           {/* {banners?.results.map((item) => ( */}
           <View style={styles.imageContainer}>
             <Image
-              style={styles.image}
+              style={[styles.image, Tablet && styles.imageTablet, Mobile && styles.imageMobile,]}
               resizeMode="contain"
               source={{
                 uri: 'https://homzhub-bucket.s3.amazonaws.com/f205f192f15d49fa994632d641463fb2.svg',
@@ -184,5 +184,16 @@ const styles = StyleSheet.create({
   image: {
     width: 525,
     height: 330,
+    marginVertical: '12px',
+  },
+  imageMobile: {
+    width: 300,
+    height: 280,
+    // marginVertical: 0,
+    margin: 'auto',
+  },
+  imageTablet: {
+    width: 340,
+    marginVertical: '48px'
   },
 });
