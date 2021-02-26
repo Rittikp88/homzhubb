@@ -7,7 +7,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { IDocsProps, ListingService } from '@homzhub/common/src/services/Property/ListingService';
-import { AttachmentError }  from '@homzhub/common/src/services/AttachmentService/AttachmentService.web';
+import { AttachmentError } from '@homzhub/common/src/services/AttachmentService/AttachmentService.web';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -28,7 +28,6 @@ import {
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
-
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -65,13 +64,14 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public render(): React.ReactElement {
-    const { t, typeOfPlan, isTablet, isIpadPro ,isMobile} = this.props;
+    const { t, typeOfPlan, isTablet, isIpadPro, isMobile } = this.props;
     const { existingDocuments, localDocuments, isLoading, verificationTypes, takeSelfie } = this.state;
     const totalDocuments = existingDocuments.concat(localDocuments);
 
     const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
     const containsAllReqd = uploadedTypes.length === verificationTypes.length;
-
+    console.log("here" , containsAllReqd);
+    
     return (
       <>
         <View style={styles.container}>
@@ -130,7 +130,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     );
   };
 
-  public onCaptureSelfie = (data: string | null):void => {
+  public onCaptureSelfie = (data: string | null): void => {
     {
       data !== null &&
         this.setState({ selfie: data }, () => {
@@ -143,7 +143,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
   public onSelfieSelect = (value: VerificationDocumentTypes, selfie: string) => {
     const verificationDocumentId = value.id;
-    const source = { uri: selfie, type: 'jpeg', name: 'image', id:verificationDocumentId};
+    const source = { uri: selfie, type: 'jpeg', name: 'image', id: verificationDocumentId };
     this.updateLocalDocuments(verificationDocumentId, source, value);
   };
 
