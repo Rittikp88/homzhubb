@@ -68,6 +68,7 @@ enum MenuItems {
   EDIT_PROPERTY = 'EDIT_PROPERTY',
   DELETE_PROPERTY = 'DELETE_PROPERTY',
   MANAGE_TENANT = 'MANAGE_TENANT',
+  EDIT_LEASE = 'EDIT_LEASE',
 }
 
 interface IStateProps {
@@ -461,6 +462,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           listing: { type },
         },
         assetStatusInfo,
+        assetGroup,
       },
     } = this.state;
     setSelectedPlan({ id, selectedPlan: type });
@@ -506,6 +508,14 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       const { propertyData } = this.state;
       navigation.navigate(ScreensKeys.ManageTenantScreen, {
         assetDetail: propertyData,
+      });
+    }
+
+    if (value === MenuItems.EDIT_LEASE && assetStatusInfo?.leaseTransaction) {
+      navigation.navigate(ScreensKeys.UpdateLeaseScreen, {
+        transactionId: assetStatusInfo.leaseTransaction.id,
+        assetGroup: assetGroup.name,
+        user: assetStatusInfo.leaseTenantInfo.user,
       });
     }
   };
@@ -580,7 +590,10 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     }
 
     if (params && isOccupied) {
-      list = [{ label: t('property:manageTenants'), value: MenuItems.MANAGE_TENANT }];
+      list = [
+        { label: t('property:editLeaseTerm'), value: MenuItems.EDIT_LEASE },
+        { label: t('property:manageTenants'), value: MenuItems.MANAGE_TENANT },
+      ];
       return list;
     }
 

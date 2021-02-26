@@ -4,12 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { CarouselProps } from 'react-multi-carousel';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
-import { AssetAdvertisement } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 import { theme } from '@homzhub/common/src/styles/theme';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
@@ -66,7 +62,6 @@ const AddPropertyListing = (): React.ReactElement => {
   } = history;
   const { t } = useTranslation();
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
-  const [banners, setBanners] = useState<AssetAdvertisement>();
   const dispatch = useDispatch();
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);
   const Mobile = useOnly(deviceBreakpoint.MOBILE);
@@ -78,6 +73,7 @@ const AddPropertyListing = (): React.ReactElement => {
 
   // TODO: remove the commented code once the API issue from chrome is resolved
 
+  //  const [banners, setBanners] = useState<AssetAdvertisement>();
   // useEffect(() => {
   //   const requestPayload = {
   //     category: 'service',

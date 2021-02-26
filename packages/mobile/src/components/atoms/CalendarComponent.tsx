@@ -77,30 +77,32 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
   }
 
   private renderHeader = (): React.ReactElement => {
-    const { allowPastDates, maxDate, isOnlyYearView } = this.props;
-    const { year, isMonthView, selectedDate, isYearView, yearTitle } = this.state;
-    const newYear = moment(selectedDate).year();
-    let { month } = this.state;
+    const { allowPastDates, maxDate, isOnlyYearView, minDate } = this.props;
+    const { isMonthView, selectedDate, isYearView, yearTitle } = this.state;
+    let { month, year } = this.state;
     if (selectedDate) {
       month = moment(selectedDate).month();
+      year = String(moment(selectedDate).year());
     }
     const updateMonth = DateUtils.getFullMonthName(month, DateFormats.MMMM);
 
     const isCurrentMonth = month === moment().month();
 
-    const title = `${updateMonth} ${newYear || year}`;
+    const title = `${updateMonth} ${year}`;
 
     return (
       <CalendarHeader
         isAllowPastDate={allowPastDates}
         headerTitle={title}
         month={month}
-        headerYear={`${newYear || year}`}
+        year={year}
+        headerYear={`${year}`}
         isCurrentMonth={isCurrentMonth}
         isMonthView={isMonthView}
         yearTitle={yearTitle}
         isYearView={isYearView || isOnlyYearView}
         maxDate={maxDate}
+        minDate={minDate}
         onBackPress={this.handleBackPress}
         onNextPress={this.handleNextPress}
         onMonthPress={this.handleMonthPress}
