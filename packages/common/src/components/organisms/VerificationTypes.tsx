@@ -143,7 +143,6 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         </View>
       );
     }
-
     return PlatformUtils.isMobile() ? (
       <UploadBox
         icon={currentData.icon}
@@ -162,6 +161,7 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         webOnDropAccepted={imageSelection}
         webOnDropRejected={onDropRejection}
         multipleUpload={false}
+        VerificationDocumentType={currentData.name}
       />
     );
   };
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   mobileUploadBox: {
-    width: PlatformUtils.isWeb() ? 'calc(100% - 24px)' : 'auto',
+    width: PlatformUtils.isWeb() ? '100%' : 'auto',
     paddingHorizontal: PlatformUtils.isWeb() ? 8 : 16,
   },
   title: {

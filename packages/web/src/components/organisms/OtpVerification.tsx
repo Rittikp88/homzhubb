@@ -141,6 +141,7 @@ const OtpVerification: React.FC<IProps> = (props: IProps) => {
       });
       const tokens = { refresh_token: data.refreshToken, access_token: data.accessToken };
       dispatch(UserActions.loginSuccess(tokens));
+      navigateToHomeScreen();
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     } catch (e) {
       AlertHelper.error({ message: e.message });

@@ -116,39 +116,39 @@ exports[`Asset filter should render snapshot 1`] = `
             Array [
               Object {
                 "label": "propertySearch:thisAreaOnly",
+                "value": 50,
+              },
+              Object {
+                "label": "propertySearch:withinQuarter",
+                "value": 0.25,
+              },
+              Object {
+                "label": "propertySearch:withinHalf",
+                "value": 0.5,
+              },
+              Object {
+                "label": "propertySearch:within1",
                 "value": 1,
               },
               Object {
-                "label": "propertySearch:withinQuarterkm",
-                "value": 3,
-              },
-              Object {
-                "label": "propertySearch:withinHalfkm",
+                "label": "propertySearch:within5",
                 "value": 5,
               },
               Object {
-                "label": "propertySearch:within1km",
-                "value": 7,
-              },
-              Object {
-                "label": "propertySearch:within5km",
-                "value": 2,
-              },
-              Object {
-                "label": "propertySearch:within10km",
-                "value": 4,
-              },
-              Object {
-                "label": "propertySearch:within20km",
-                "value": 6,
-              },
-              Object {
-                "label": "propertySearch:within30km",
-                "value": 8,
-              },
-              Object {
-                "label": "propertySearch:within40km",
+                "label": "propertySearch:within10",
                 "value": 10,
+              },
+              Object {
+                "label": "propertySearch:within20",
+                "value": 20,
+              },
+              Object {
+                "label": "propertySearch:within30",
+                "value": 30,
+              },
+              Object {
+                "label": "propertySearch:within40",
+                "value": 40,
               },
             ]
           }

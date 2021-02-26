@@ -37,7 +37,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1",
     "react-tooltip": "^4.2.10",
-    "reactjs-popup": "^2.0.4"
+    "reactjs-popup": "^2.0.4",
+    "react-webcam": "^5.2.3"
   },
   "devDependencies": {
     "@types/crypto-js": "^3.1.47",
