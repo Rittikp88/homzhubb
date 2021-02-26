@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   mobileUploadBox: {
-    width: PlatformUtils.isWeb() ? 'calc(100% - 24px)' : 'auto',
+    width: PlatformUtils.isWeb() ? '100%' : 'auto',
     paddingHorizontal: PlatformUtils.isWeb() ? 8 : 16,
   },
   title: {
