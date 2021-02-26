@@ -67,11 +67,7 @@ interface IOwnState {
   tabViewHeights: number[];
 }
 
-const { height, width } = theme.viewport;
-const TAB_LAYOUT = {
-  width: width - theme.layout.screenPadding * 2,
-  height,
-};
+const { height } = theme.viewport;
 
 class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
@@ -166,7 +162,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         {this.renderTabHeader()}
         <TabView
           lazy
-          initialLayout={TAB_LAYOUT}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}
           renderTabBar={(): null => null}
@@ -473,6 +468,10 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         return;
       }
       if (!isDesktop && currentIndex === 3) {
+        this.navigateToDashboard();
+        return;
+      }
+      if (this.getRoutes().length === 2 && currentIndex === 1) {
         this.navigateToDashboard();
         return;
       }
