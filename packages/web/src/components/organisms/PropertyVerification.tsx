@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -13,8 +13,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
-import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
-import Popover from '@homzhub/web/src/components/atoms/Popover';
+import CaptureSelfiePopover from '@homzhub/web/src/screens/addPropertyListing/CaptureSelfiePopover';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
@@ -74,7 +73,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     return (
       <>
         <View style={styles.container}>
-          {takeSelfie && this.captureSelfie()}
+          <CaptureSelfiePopover onCaptureSelfie={this.onCaptureSelfie} takeSelfie={takeSelfie} />
           <VerificationTypes
             typeOfPlan={typeOfPlan}
             existingDocuments={existingDocuments}
@@ -166,23 +165,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     }
   };
 
-  public captureSelfie = (): ReactElement => {
-    return (
-      <View>
-        <Popover
-          content={<CaptureSelfie onCapture={this.onCaptureSelfie} />}
-          popupProps={{
-            open: true,
-            closeOnDocumentClick: true,
-            arrow: false,
-            contentStyle: { marginTop: '4px', alignItems: 'stretch' },
-            children: undefined,
-          }}
-        />
-      </View>
-    );
-  };
-
   public handleVerificationDocumentUploads = async (
     value: VerificationDocumentTypes,
     files?: File[]
@@ -190,7 +172,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const verificationDocumentType = value.name;
 
     if (verificationDocumentType === VerificationDocumentCategory.SELFIE_ID_PROOF) {
-      this.setState({ takeSelfie: true, verificationTypes: [value] });
+      this.setState({ takeSelfie: true });
     } else {
       await this.onImageSelection(value, files);
     }

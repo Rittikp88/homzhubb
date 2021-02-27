@@ -490,7 +490,9 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
 
   private scrollToTop = (): void => {
     setTimeout(() => {
-      // TODO: Add logic
+      if (PlatformUtils.isWeb()) {
+        window.scrollTo(0, 0);
+      }
     }, 100);
   };
 }
