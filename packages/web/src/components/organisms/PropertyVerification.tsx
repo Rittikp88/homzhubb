@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -13,8 +13,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
-import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
-import Popover from '@homzhub/web/src/components/atoms/Popover';
+import CaptureSelfiePopover from '@homzhub/web/src/screens/addPropertyListing/CaptureSelfiePopover';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
@@ -70,12 +69,11 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
     const uploadedTypes = totalDocuments.map((doc: ExistingVerificationDocuments) => doc.verificationDocumentType.name);
     const containsAllReqd = uploadedTypes.length === verificationTypes.length;
-    console.log('here', containsAllReqd, 'verification', verificationTypes, 'isLoading', isLoading);
 
     return (
       <>
         <View style={styles.container}>
-          {takeSelfie && this.captureSelfie()}
+          <CaptureSelfiePopover onCaptureSelfie={this.onCaptureSelfie} takeSelfie={takeSelfie} />
           <VerificationTypes
             typeOfPlan={typeOfPlan}
             existingDocuments={existingDocuments}
@@ -165,25 +163,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     } else {
       AlertHelper.error({ message: value.helpText });
     }
-  };
-
-  public captureSelfie = (): ReactElement => {
-    // const popupRef = useRef<PopupActions>(null);
-    return (
-      <View>
-        <Popover
-          content={<CaptureSelfie onCapture={this.onCaptureSelfie} />}
-          popupProps={{
-            open: true,
-            closeOnDocumentClick: true,
-            arrow: false,
-            contentStyle: { marginTop: '4px', alignItems: 'stretch' },
-            children: undefined,
-            modal: true,
-          }}
-        />
-      </View>
-    );
   };
 
   public handleVerificationDocumentUploads = async (
