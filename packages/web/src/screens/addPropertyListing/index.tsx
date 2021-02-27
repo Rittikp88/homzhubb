@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { CarouselProps } from 'react-multi-carousel';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -11,7 +10,6 @@ import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
 import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
 import AddListingView from '@homzhub/web/src/screens/addPropertyListing/AddListingView';
-import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 enum ComponentName {
@@ -62,14 +60,13 @@ const AddPropertyListing = (): React.ReactElement => {
   } = history;
   const { t } = useTranslation();
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
-  const dispatch = useDispatch();
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);
   const Mobile = useOnly(deviceBreakpoint.MOBILE);
   const Tablet = useOnly(deviceBreakpoint.TABLET);
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
-  useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(720));
-  });
+  // useEffect(() => {
+  //   dispatch(RecordAssetActions.setAssetId(720));
+  // });
 
   // TODO: remove the commented code once the API issue from chrome is resolved
 
