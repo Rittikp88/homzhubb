@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
-import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
+import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
 
 interface IProps {
   onCaptureSelfie: (data: string | null) => void;
