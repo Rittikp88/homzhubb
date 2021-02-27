@@ -213,7 +213,10 @@
     "doYouWantToRemove": "Do you want to remove?",
     "deleteReview": "Delete Review",
     "deleteReviewText": "Once deleted, this review won't be visible to anyone. This action cannot be undone.",
-    "user": "User"
+    "user": "User",
+    "members": "Members",
+    "chatMemberCount": "{{count}} Members",
+    "media": "Media"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -748,6 +751,7 @@
   "assetMore": {
     "more": "More",
     "profile": "Profile",
+    "profileDetails": "Profile Details",
     "notifications": "Notifications",
     "documents": "Documents",
     "kycDocuments": "KYC Documents",
@@ -798,7 +802,9 @@
     "noMessageYet": "No messages here yet...",
     "viewInfo": "View Info",
     "noActiveThread": "You have no active message threads.",
-    "accessOldMessage": "You can access the old messages \n from inside the Messages menu."
+    "accessOldMessage": "You can access the old messages \n from inside the Messages menu.",
+    "hrAgo": "{{hour}} hr ago",
+    "andYou": "and You."
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

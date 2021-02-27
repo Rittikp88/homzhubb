@@ -131,20 +131,18 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public onCaptureSelfie = (data: string | null): void => {
-    {
-      data !== null &&
-        this.setState({ selfie: data }, () => {
-          const { verificationTypes } = this.state;
-          this.onSelfieSelect(verificationTypes[0], data);
-        });
+    if (!data) {
+      this.setState({ takeSelfie: false });
+      return;
     }
-    // if (popupRef && popupRef.current) {
-    //   popupRef.current.close();
-    // }
-    this.setState({ takeSelfie: false });
+
+    this.setState({ selfie: data }, () => {
+      const { verificationTypes } = this.state;
+      this.onSelfieSelect(verificationTypes[0], data);
+    });
   };
 
-  public onSelfieSelect = (value: VerificationDocumentTypes, selfie: string) => {
+  public onSelfieSelect = (value: VerificationDocumentTypes, selfie: string): void => {
     const verificationDocumentId = value.id;
     const source = { uri: selfie, type: 'jpeg', name: 'image', id: verificationDocumentId };
     this.updateLocalDocuments(verificationDocumentId, source, value);
@@ -170,7 +168,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public captureSelfie = (): ReactElement => {
-  // const popupRef = useRef<PopupActions>(null);
+    // const popupRef = useRef<PopupActions>(null);
     return (
       <View>
         <Popover

@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
@@ -17,8 +18,9 @@ const UserView = (props: IProps): React.ReactElement => {
     isVisible,
     onClose,
   } = props;
+  const { t } = useTranslation();
   return (
-    <BottomSheet visible={isVisible} sheetHeight={300} onCloseSheet={onClose}>
+    <BottomSheet headerTitle={t('assetMore:profile')} visible={isVisible} sheetHeight={300} onCloseSheet={onClose}>
       <View style={styles.container}>
         <Avatar isOnlyAvatar fullName={name} image={profilePicture} imageSize={72} />
         <Text type="regular" style={styles.name}>

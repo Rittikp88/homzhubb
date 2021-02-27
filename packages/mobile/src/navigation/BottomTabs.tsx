@@ -24,6 +24,7 @@ import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/Pr
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
   IComingSoon,
+  IEditLeaseProps,
   IForgotPasswordProps,
   IManageTenantProps,
   IOtpNavProps,
@@ -55,8 +56,9 @@ import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocument
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
-import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
+import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
+import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export type BottomTabNavigatorParamList = {
@@ -82,6 +84,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
   [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
   [ScreensKeys.ManageTenantScreen]: IManageTenantProps;
+  [ScreensKeys.UpdateLeaseScreen]: IEditLeaseProps;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -146,6 +149,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
       <PortfolioNavigator.Screen name={ScreensKeys.ManageTenantScreen} component={ManageTenantScreen} />
+      <PortfolioNavigator.Screen name={ScreensKeys.UpdateLeaseScreen} component={UpdateLeaseTerm} />
     </PortfolioNavigator.Navigator>
   );
 };

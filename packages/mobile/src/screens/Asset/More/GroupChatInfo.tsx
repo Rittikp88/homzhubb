@@ -11,9 +11,9 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import GroupChatAvatar from '@homzhub/common/src/components/atoms/GroupChatAvatar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components/molecules/FullScreenAssetDetailsCarousel';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import UserView from '@homzhub/common/src/components/organisms/UserView';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { Links } from '@homzhub/common/src/domain/models/Links';
@@ -41,7 +41,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
   const [zoomedImage, setZoomedImage] = useState<number>(0);
   const [hasClickedImage, setHasClickedImage] = useState<boolean>(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState<boolean>(false);
-  const [openUser, setOpenUser] = useState<Partial<User>>({});
+  const [openUser, setOpenUser] = useState<User>({});
 
   const [usersData, setUsersData] = useState<GroupMessage>(new GroupMessage());
   const [media, setMedia] = useState<Attachment[]>([]);
@@ -50,7 +50,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
 
   const { users, name } = usersData;
 
-  const toggleProfileSheet = (): void => setIsBottomSheetVisible(!isBottomSheetVisible);
+  const closeProfileSheet = (): void => setIsBottomSheetVisible(false);
 
   const onFullScreenToggle = (): void => setHasClickedImage(!hasClickedImage);
 
@@ -121,51 +121,25 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
     [usersData]
   );
 
-  const ProfileBottomSheet = useMemo(
-    () => (): React.ReactElement => {
-      const { fullName, profilePicture } = openUser;
-      return (
-        <>
-          <BottomSheet
-            visible={isBottomSheetVisible}
-            sheetHeight={theme.viewport.height / 3}
-            onCloseSheet={toggleProfileSheet}
-            headerTitle={t('assetMore:profile')}
-          >
-            <View style={styles.profileSheet}>
-              <Avatar isOnlyAvatar fullName={fullName} imageSize={72} image={profilePicture} />
-              <Text textType="semiBold" type="small" style={styles.profileFullName}>
-                {fullName}
-              </Text>
-            </View>
-          </BottomSheet>
-        </>
-      );
-    },
-    [openUser]
-  );
-
   const MembersSection = useMemo(
     () => (): React.ReactElement => {
       const renderItem = ({ item }: { item: User }): React.ReactElement => {
-        const { fullName, profilePicture, isAssetOwner } = item;
+        const { name: personName, profilePicture, isAssetOwner } = item;
         const role = isAssetOwner ? t('property:owner') : t('property:tenant');
-
         const showProfile = (): void => {
           setOpenUser(item);
-          toggleProfileSheet();
+          setIsBottomSheetVisible(true);
         };
-
         return (
           <>
             <View style={styles.chatItemContainer}>
               <TouchableOpacity style={styles.chatAvatarContainer} onPress={showProfile}>
-                <Avatar isOnlyAvatar image={profilePicture} imageSize={42} fullName={fullName} />
+                <Avatar isOnlyAvatar image={profilePicture} imageSize={42} fullName={personName} />
               </TouchableOpacity>
 
               <View style={styles.chatItemTextContainer}>
                 <Text textType="semiBold" type="small">
-                  {fullName}
+                  {personName}
                 </Text>
                 <Text textType="light" type="small" style={styles.role}>
                   {role}
@@ -287,7 +261,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
         <MembersSection />
         {Boolean(media.length) && <MediaSection />}
       </UserScreen>
-      <ProfileBottomSheet />
+      <UserView isVisible={isBottomSheetVisible} user={openUser} onClose={closeProfileSheet} />
       <FullScreenImage />
     </>
   );
@@ -368,13 +342,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  profileSheet: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  profileFullName: {
-    marginVertical: 20,
   },
 });

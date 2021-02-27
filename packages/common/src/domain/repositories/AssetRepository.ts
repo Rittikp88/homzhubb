@@ -24,6 +24,7 @@ import {
   IReportReview,
   IUpdateTenantParam,
   IUserDetails,
+  IUpdateLeaseTerm,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -45,6 +46,7 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
 import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
+import { TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 
@@ -110,6 +112,7 @@ const ENDPOINTS = {
   listingReviewsSummary: 'listing-reviews/summary/',
   updateTenant: (param: IUpdateTenantParam): string =>
     `assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}/`,
+  leaseTransaction: (id: number): string => `lease-transactions/${id}/`,
 };
 
 class AssetRepository {
@@ -407,6 +410,16 @@ class AssetRepository {
 
   public deleteTenant = async (param: IUpdateTenantParam): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.updateTenant(param));
+  };
+
+  public getLeaseTransaction = async (transactionId: number): Promise<TransactionDetail> => {
+    const response = await this.apiClient.get(ENDPOINTS.leaseTransaction(transactionId));
+    return ObjectMapper.deserialize(TransactionDetail, response);
+  };
+
+  public updateLeaseTransaction = async (payload: IUpdateLeaseTerm): Promise<void> => {
+    const { transactionId, data } = payload;
+    return await this.apiClient.put(ENDPOINTS.leaseTransaction(transactionId), data);
   };
 }
 

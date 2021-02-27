@@ -4,12 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { CarouselProps } from 'react-multi-carousel';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
-import { AssetAdvertisement } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 import { theme } from '@homzhub/common/src/styles/theme';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
@@ -66,18 +62,18 @@ const AddPropertyListing = (): React.ReactElement => {
   } = history;
   const { t } = useTranslation();
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
-  const [banners, setBanners] = useState<AssetAdvertisement>();
   const dispatch = useDispatch();
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);
   const Mobile = useOnly(deviceBreakpoint.MOBILE);
   const Tablet = useOnly(deviceBreakpoint.TABLET);
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(731));
+    dispatch(RecordAssetActions.setAssetId(704));
   });
 
   // TODO: remove the commented code once the API issue from chrome is resolved
 
+  //  const [banners, setBanners] = useState<AssetAdvertisement>();
   // useEffect(() => {
   //   const requestPayload = {
   //     category: 'service',
@@ -135,7 +131,7 @@ const AddPropertyListing = (): React.ReactElement => {
           {/* {banners?.results.map((item) => ( */}
           <View style={styles.imageContainer}>
             <Image
-              style={[styles.image, Tablet && styles.imageTablet, Mobile && styles.imageMobile,]}
+              style={[styles.image, Tablet && styles.imageTablet, Mobile && styles.imageMobile]}
               resizeMode="contain"
               source={{
                 uri: 'https://homzhub-bucket.s3.amazonaws.com/f205f192f15d49fa994632d641463fb2.svg',
@@ -189,7 +185,6 @@ const styles = StyleSheet.create({
   imageMobile: {
     width: 300,
     height: 280,
-    // marginVertical: 0,
     margin: 'auto',
   },
   imageTablet: {
