@@ -41,7 +41,7 @@ class NavigationService {
       return;
     }
 
-    // Otherwise redirect user to the signup screen
+    // Otherwise redirect user to the signup screen which has login option too
     if (redirectionLink && shouldRedirect) {
       this.navigator.navigate(ScreensKeys.AuthStack, {
         screen: ScreensKeys.SignUp,
@@ -51,7 +51,6 @@ class NavigationService {
 
   public handlePrivateRoutes = (url: string): void => {
     const type = this.getValueOfParamFromUrl(DynamicLinkParamKeys.Type, url);
-
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigateTo(ScreensKeys.BottomTabs, {
@@ -105,6 +104,14 @@ class NavigationService {
           },
         });
         break;
+      case DynamicLinkTypes.TenantInvitation:
+        this.navigateTo(ScreensKeys.Portfolio, {
+          screen: ScreensKeys.PortfolioLandingScreen,
+          params: {
+            inviteId: this.getValueOfParamFromUrl(DynamicLinkParamKeys.InviteId, url),
+          },
+        });
+        break;
       default:
         AlertHelper.error({ message: I18nService.t('common:invalidLink') });
         break;
@@ -113,7 +120,7 @@ class NavigationService {
 
   public handlePublicRoutes = (url: string): void => {
     const type = this.getValueOfParamFromUrl(DynamicLinkParamKeys.Type, url);
-
+    const inviteId = this.getValueOfParamFromUrl(DynamicLinkParamKeys.InviteId, url);
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigateTo(ScreensKeys.SearchStack, {
@@ -136,6 +143,7 @@ class NavigationService {
           initial: false,
           params: {
             verification_id: this.getValueOfParamFromUrl(DynamicLinkParamKeys.VerificationId, url),
+            ...(inviteId && { invite_id: inviteId }),
           },
         });
         break;
@@ -155,7 +163,6 @@ class NavigationService {
 
   private navigateTo = (stackName: string, params: any): void => {
     const store = StoreProviderService.getStore();
-
     this.navigator.navigate(stackName, params);
     store.dispatch(StoreCommonActions.setRedirectionDetails({ redirectionLink: '', shouldRedirect: false }));
   };

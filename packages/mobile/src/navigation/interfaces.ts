@@ -153,6 +153,7 @@ export interface IVerificationProps extends IScreenCallback {
 
 export interface IResetPasswordProps extends IScreenCallback {
   verification_id: string;
+  invite_id?: string;
 }
 
 export interface IForgotPasswordProps extends IScreenCallback {
