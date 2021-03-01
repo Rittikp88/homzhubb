@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 // @ts-ignore
-import { ProgressBar as Progress } from 'react-native-web';
+import {ProgressBar as Progress} from 'react-native-web';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
@@ -11,10 +11,11 @@ interface IProgressBarProps {
   width?: number;
   filledColor?: string;
   containerStyles?: StyleProp<ViewStyle>;
+  isPropertyVacant?: boolean
 }
 
 const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
-  const { progress, width, filledColor = theme.colors.green, title, containerStyles = {} } = props;
+  const { progress, width, filledColor = theme.colors.green, title, containerStyles = {}, isPropertyVacant } = props;
   return (
     <View style={containerStyles}>
       <View style={styles.container}>
@@ -26,13 +27,14 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
         </Label>
       </View>
       <Progress
-        progress={progress / 100}
+        progress={progress}
         width={width}
-        color={filledColor}
-        trackColor={theme.colors.background}
+        // color={isPropertyVacant ? theme.colors.green : filledColor}
+        // trackColor={theme.colors.background}
         style={styles.barStyle}
         borderRadius={5}
-      />
+        unfilledColor={ theme.colors.green}
+        />
     </View>
   );
 };

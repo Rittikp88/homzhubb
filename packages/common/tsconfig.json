@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src/**/*", "src/*.json", "src/styles/font.ts", "src/assets/images/declarations.d.ts"],
+  "include": ["src/**/*", "src/*.json", "src/styles/font.ts", "src/assets/images/declarations.d.ts", "../mobile/src/components/molecules/LeaseProgress.tsx"],
   "exclude": ["node_modules"],
   "compilerOptions": {
     "experimentalDecorators": true,
