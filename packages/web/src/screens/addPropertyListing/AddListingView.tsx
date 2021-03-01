@@ -434,7 +434,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       } = assetDetails;
       if (isPropertyReady && type !== TypeOfPlan.MANAGE) {
         // TODO: Add Preview Logic
-        console.log('here');
         this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       } else {
         this.navigateToDashboard();
@@ -443,10 +442,8 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   };
 
   private handleNextStep = (): void => {
-    console.log(' function called');
     const { currentIndex, isStepDone, isSheetVisible, isNextStep } = this.state;
     const { assetDetails, getAssetById } = this.props;
-
     ListingService.handleListingStep({
       currentIndex,
       isStepDone,
@@ -470,7 +467,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       ...prevState,
       ...(currentIndex && { currentIndex }),
       ...(isStepDone && { isStepDone }),
-      isNextStep: isNextStep || false,
+      isNextStep: isNextStep ?? false,
       isSheetVisible: isSheetVisible || false,
     }));
   };

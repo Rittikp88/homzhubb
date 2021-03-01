@@ -144,9 +144,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const verificationDocumentId = value.id;
 
     const blob = this.dataURLtoFile(selfie, 'image.jpg');
-    console.log(typeof blob);
-    const uriData = URL.createObjectURL(blob);
-
     const formData = new FormData();
     formData.append('files[]', blob);
 
@@ -154,37 +151,19 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const { data } = response;
 
     const source = { uri: data[0].link, type: 'jpeg', name: 'image', id: data[0].id };
-
-    console.log(response);
     this.updateLocalDocuments(verificationDocumentId, source, value);
   };
-
-  public dataURLtoFile(dataurl: any, filename: any) {
-    const arr = dataurl.split(',');
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-
-    return new File([u8arr], filename, { type: 'image/jpeg' });
-  }
 
   public onImageSelection = async (value: VerificationDocumentTypes, files?: File[]): Promise<void> => {
     if (!files) {
       return;
     }
-    console.log(files);
     const verificationDocumentId = value.id;
     const image = files[0];
     const formData = new FormData();
     formData.append('files[]', image);
 
     const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
-    console.log(response);
     const { data } = response;
     const source = { uri: data[0].link, type: image.type, name: image.name, id: data[0].id };
     if (Object.values(AllowedAttachmentFormats).includes(image.type)) {
@@ -193,6 +172,20 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       AlertHelper.error({ message: value.helpText });
     }
   };
+
+  public dataURLtoFile(dataurl: any, filename: any): File {
+    const arr = dataurl.split(',');
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    // eslint-disable-next-line no-plusplus
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: 'image/jpeg' });
+  }
 
   public handleVerificationDocumentUploads = async (
     value: VerificationDocumentTypes,
@@ -304,7 +297,6 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
       await ListingService.getExistingDocuments(propertyId, this.updateState);
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
-      console.log('calling function');
       updateStep();
     } catch (e) {
       this.setState({ isLoading: false });
