@@ -458,7 +458,8 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
 
     if (assetDetails && assetDetails.lastVisitedStep.isPropertyReady) {
       if (assetDetails.lastVisitedStep.listing.type !== TypeOfPlan.MANAGE) {
-        // TODO: Add logic
+        this.navigateToDashboard();
+        return;
       } else {
         this.navigateToDashboard();
       }
