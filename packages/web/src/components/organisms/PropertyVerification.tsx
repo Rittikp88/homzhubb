@@ -34,7 +34,7 @@ interface IPropertyVerificationState {
   localDocuments: ExistingVerificationDocuments[];
   isLoading: boolean;
   takeSelfie: boolean;
-  selfie: string;
+  selfie: any;
 }
 
 interface IProps {
@@ -133,29 +133,84 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       this.setState({ takeSelfie: false });
       return;
     }
-
+   
     this.setState({ selfie: data, takeSelfie: false }, () => {
       const { verificationTypes } = this.state;
       this.onSelfieSelect(verificationTypes[1], data);
     });
   };
 
-  public onSelfieSelect = (value: VerificationDocumentTypes, selfie: string): void => {
+  public onSelfieSelect = async (value: VerificationDocumentTypes, selfie: string):  Promise<void> => {
     const verificationDocumentId = value.id;
-    const source = { uri: selfie, type: 'jpeg', name: 'image', id: verificationDocumentId };
+
+const blob = this.dataURLtoFile(selfie, 'image.jpg');
+console.log(typeof(blob))
+  const uriData = URL.createObjectURL(blob);
+
+    const formData = new FormData();
+    formData.append('files[]', blob);
+
+    const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
+    const { data } = response;
+
+    const source = { uri: data[0].link, type: 'jpeg', name: 'image', id: data[0].id };
+
+    console.log(response)
     this.updateLocalDocuments(verificationDocumentId, source, value);
   };
+
+  public dataURLtoFile(dataurl:any, filename:any) {
+ 
+    var arr = dataurl.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), 
+        n = bstr.length, 
+        u8arr = new Uint8Array(n);
+        
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    
+    return new File([u8arr], filename, {type:'image/jpeg'});
+}
+
+// public  b64toBlob = (b64Data:any, contentType='', sliceSize=512) => {
+//   var imageData = b64Data.toString();
+// var byteCharacters = atob(imageData.replace(/^data:image\/(png|jpeg|jpg);base64,/, ''));
+//   // const byteCharacters = atob(b64Data);
+//   const byteArrays = [];
+
+//   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+//     const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+//     const byteNumbers = new Array(slice.length);
+//     for (let i = 0; i < slice.length; i++) {
+//       byteNumbers[i] = slice.charCodeAt(i);
+//     }
+
+//     const byteArray = new Uint8Array(byteNumbers);
+//     byteArrays.push(byteArray);
+//   }
+
+//   const blob = new Blob(byteArrays, {type: contentType});
+//   return blob;
+// }
+
+
+
 
   public onImageSelection = async (value: VerificationDocumentTypes, files?: File[]): Promise<void> => {
     if (!files) {
       return;
     }
+    console.log(files)
     const verificationDocumentId = value.id;
     const image = files[0];
     const formData = new FormData();
     formData.append('files[]', image);
 
     const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
+    console.log(response)
     const { data } = response;
     const source = { uri: data[0].link, type: image.type, name: image.name, id: data[0].id };
     if (Object.values(AllowedAttachmentFormats).includes(image.type)) {
