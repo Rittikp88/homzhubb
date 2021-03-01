@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
     flex: PlatformUtils.isWeb() ? 0.9 : 0,
     padding: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
-    height: PlatformUtils.isWeb() ? '100vh' : 'auto',
+    height: PlatformUtils.isWeb() ? 'auto' : 'auto',
   },
   noResults: {
     marginTop: 16,
