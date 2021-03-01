@@ -172,7 +172,12 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
           }}
           style={{ height: tabViewHeights[currentIndex] }}
         />
-        <ContinuePopup isSvg isOpen={isSheetVisible} {...this.renderContinueView(assetDetails)} />
+        <ContinuePopup
+          isSvg
+          isOpen={isSheetVisible}
+          {...this.renderContinueView(assetDetails)}
+          onContinueRoute={RouteNames.protectedRoutes.DASHBOARD}
+        />
       </>
     );
   }
@@ -459,7 +464,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     if (assetDetails && assetDetails.lastVisitedStep.isPropertyReady) {
       if (assetDetails.lastVisitedStep.listing.type !== TypeOfPlan.MANAGE) {
         this.navigateToDashboard();
-        return;
       } else {
         this.navigateToDashboard();
       }
