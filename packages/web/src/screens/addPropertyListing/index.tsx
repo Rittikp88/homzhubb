@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+// import { useDispatch } from 'react-redux';
 import { CarouselProps } from 'react-multi-carousel';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -11,6 +12,7 @@ import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
 import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
 import AddListingView from '@homzhub/web/src/screens/addPropertyListing/AddListingView';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+// import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 
 enum ComponentName {
   Listing_Plan_Selection = 'ListingPlanSelection',
@@ -63,9 +65,10 @@ const AddPropertyListing = (): React.ReactElement => {
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);
   const Mobile = useOnly(deviceBreakpoint.MOBILE);
   const Tablet = useOnly(deviceBreakpoint.TABLET);
+  // const dispatch = useDispatch();
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   // useEffect(() => {
-  //   dispatch(RecordAssetActions.setAssetId(720));
+  //   dispatch(RecordAssetActions.setAssetId(731));
   // });
 
   // TODO: remove the commented code once the API issue from chrome is resolved
