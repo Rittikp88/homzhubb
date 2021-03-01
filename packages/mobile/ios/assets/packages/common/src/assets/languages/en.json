@@ -311,6 +311,7 @@
     "projectNamePlaceholder": "Enter project Name",
     "projectNameRequired": "Please enter project name",
     "manageTenants": "Manage Tenants",
+    "editLeaseTerm": "Edit Lease Terms",
     "inviteTenant": "Invite Tenant",
     "tenants": "Tenants",
     "removeTenant": "Remove Tenant",

@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { FC, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { History } from 'history';
@@ -12,9 +13,11 @@ import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import { GetToKnowUsCarousel } from '@homzhub/web/src/components/organisms/GetToKnowUsCarousel';
 import { SignUpForm } from '@homzhub/common/src/components/organisms/SignUpForm';
+import { SocialMediaGateway } from '@homzhub/web/src/components/organisms/SocialMediaGateway';
 import UserValidationScreensTemplate from '@homzhub/web/src/components/hoc/UserValidationScreensTemplate';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
@@ -30,7 +33,7 @@ type IProps = IOwnProps;
 
 const SignUp: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.auth);
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -94,9 +97,13 @@ const SignUp: FC<IProps> = (props: IProps) => {
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
   };
+  const navigateToScreen = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.LOGIN });
+  };
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isIPadPro = useIsIpadPro();
+  const styles = signUpStyles(isMobile);
   return (
     <View style={[styles.container, isTablet && styles.tabletContainer, isIPadPro && styles.iPadContainer]}>
       <UserValidationScreensTemplate
@@ -114,42 +121,79 @@ const SignUp: FC<IProps> = (props: IProps) => {
             webGroupPrefix={handleWebView}
           />
         </View>
+        <View style={styles.existingUser}>
+          <Typography variant="label" size="large">
+            {t('auth:alreadyAccount')}
+          </Typography>
+          <TouchableOpacity onPress={navigateToScreen}>
+            <Typography variant="label" size="large" fontWeight="semiBold" style={styles.alreadyAccount}>
+              {t('auth:loginInstead')}
+            </Typography>
+          </TouchableOpacity>
+        </View>
+        <SocialMediaGateway isFromLogin={false} containerStyle={styles.socialMediaContainer} history={history} />
       </UserValidationScreensTemplate>
       <GetToKnowUsCarousel />
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    minHeight: '150vh',
-  },
-  tabletContainer: {
-    minHeight: '100vh',
-  },
-  containerStyle: {
-    backgroundColor: theme.colors.white,
-    width: '45%',
-  },
-  containerStyleTablet: {
-    width: '100%',
-  },
-  submitStyle: {
-    flex: 0,
-    marginTop: 30,
-  },
-  formContainer: {
-    width: '55%',
-    marginHorizontal: 'auto',
-  },
-  formContainerMobile: {
-    width: '90%',
-  },
-  iPadContainer: {
-    minHeight: '100vh',
-  },
-});
+interface ISignUpStyles {
+  container: ViewStyle;
+  containerStyle: ViewStyle;
+  containerStyleTablet: ViewStyle;
+  tabletContainer: ViewStyle;
+  submitStyle: ViewStyle;
+  formContainer: ViewStyle;
+  formContainerMobile: ViewStyle;
+  iPadContainer: ViewStyle;
+  socialMediaContainer: ViewStyle;
+  existingUser: ViewStyle;
+  alreadyAccount: ViewStyle;
+}
+const signUpStyles = (isMobile: boolean): StyleSheet.NamedStyles<ISignUpStyles> =>
+  StyleSheet.create<ISignUpStyles>({
+    container: {
+      flex: 1,
+      flexDirection: 'row',
+      minHeight: '150vh',
+    },
+    tabletContainer: {
+      minHeight: '100vh',
+    },
+    containerStyle: {
+      backgroundColor: theme.colors.white,
+      width: '45%',
+    },
+    containerStyleTablet: {
+      width: '100%',
+    },
+    submitStyle: {
+      flex: 0,
+      marginTop: 30,
+    },
+    formContainer: {
+      width: '55%',
+      marginHorizontal: 'auto',
+    },
+    formContainerMobile: {
+      width: '90%',
+    },
+    iPadContainer: {
+      minHeight: '100vh',
+    },
+    socialMediaContainer: {
+      marginTop: 36,
+      alignSelf: 'center',
+      width: isMobile ? '100%' : '50%',
+    },
+    existingUser: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      top: 30,
+    },
+    alreadyAccount: {
+      color: theme.colors.primaryColor,
+    },
+  });
 
 export default SignUp;

@@ -52,26 +52,25 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public render(): React.ReactNode {
-    const { t, containerStyle, onUploadImage, selectedImages } = this.props;
+    const { t, onUploadImage, selectedImages } = this.props;
     const { isBottomSheetVisible } = this.state;
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
+
     return (
       <>
-        <View style={containerStyle}>
-          <View>
-            <AssetListingSection title={t('property:images')}>
-              <>
-                <UploadBox
-                  icon={icons.gallery}
-                  header={header}
-                  subHeader={t('property:supportedImageFormats')}
-                  onPress={onUploadImage}
-                />
-                {this.renderImages()}
-              </>
-            </AssetListingSection>
-            {this.renderVideo()}
-          </View>
+        <View style={styles.container}>
+          <AssetListingSection title={t('property:images')}>
+            <>
+              <UploadBox
+                icon={icons.gallery}
+                header={header}
+                subHeader={t('property:supportedImageFormats')}
+                onPress={onUploadImage}
+              />
+              {this.renderImages()}
+            </>
+          </AssetListingSection>
+          {this.renderVideo()}
           <Button
             type="primary"
             title={t('common:continue')}
@@ -321,6 +320,9 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 export default withTranslation()(PropertyImages);
 
 const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 16,
+  },
   uploadImageContainer: {
     marginVertical: 20,
     flexDirection: 'row',

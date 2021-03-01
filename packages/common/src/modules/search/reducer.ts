@@ -39,6 +39,7 @@ export const initialSearchState: ISearchState = {
       facing: [],
       furnishing: [],
       propertyAmenity: [],
+      search_radius_unit: 'km',
     },
   },
   filterDetails: null,

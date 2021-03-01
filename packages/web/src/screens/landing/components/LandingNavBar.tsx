@@ -85,6 +85,7 @@ const LandingNavBar: FC = () => {
   );
 };
 const RenderNavItems = (): React.ReactElement => {
+  const history = useHistory();
   const [isSelected, setIsSelected] = useState(0);
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
@@ -98,12 +99,12 @@ const RenderNavItems = (): React.ReactElement => {
     },
     {
       text: t('featuredProperties'),
-      url: URLs.featuredProperties,
+      url: URLs.featuredPropertiesSearch,
       disabled: false,
     },
     {
       text: t('pricing'),
-      url: RouteNames.publicRoutes.PRICING,
+      url: RouteNames.publicRoutes.APP_BASE, // TODO  Add URL when resprective screen is available.
       disabled: isReleaseMode,
     },
   ];
@@ -122,11 +123,11 @@ const RenderNavItems = (): React.ReactElement => {
   const menuItems = isLaptop ? navItems : [...navItems, ...login];
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
-    if (navItems[index].text === t('featuredProperties')) {
+    if (menuItems[index].text === t('featuredProperties')) {
       LinkingService.redirect(URLs.featuredPropertiesSearch);
+    } else if (menuItems[index].text !== t('featuredProperties')) {
+      NavigationUtils.navigate(history, { path: menuItems[index].url });
     }
-    // TODO: uncomment when links have respective component
-    //  NavigationUtils.navigate(history, { path: navItems[index].url });
   };
   return (
     <>

@@ -73,6 +73,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
               this.dynamicSearch().map((item: ValueAddedService) => {
                 const {
                   id,
+                  priceLabel,
                   valueBundle: {
                     valueBundleItems,
                     label,
@@ -93,6 +94,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
                     selected={item.value}
                     image={link}
                     price={bundlePrice}
+                    priceLabel={priceLabel}
                     discountedPrice={discountedPrice}
                     bundleItems={valueBundleItems}
                     currency={item.currency}

@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import moment from 'moment';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -15,7 +16,9 @@ interface IProps {
   isYearView?: boolean;
   isCurrentMonth?: boolean;
   maxDate?: string;
+  minDate?: string;
   month?: number;
+  year?: string;
   onBackPress?: () => void;
   onNextPress?: () => void;
   onMonthPress?: () => void;
@@ -26,6 +29,7 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
   const {
     isAllowPastDate,
     maxDate,
+    minDate,
     onBackPress,
     onNextPress,
     onMonthPress,
@@ -37,17 +41,27 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
     isYearView = false,
     yearTitle,
     month,
+    year,
   } = props;
+
+  // DISABLE VALIDATION
   const isNextDisable =
-    maxDate && (moment(maxDate).month() === moment().month() || (month && moment(maxDate).month() === month));
+    maxDate &&
+    (moment(maxDate).month() === moment().month() ||
+      moment(maxDate).year() === Number(year) ||
+      (month && moment(maxDate).month() === month));
+  const isPreviousDisable =
+    (minDate ? moment(minDate).year() === moment().year() : !isAllowPastDate) && isCurrentMonth && !isYearView;
+  // DISABLE VALIDATION
+
   return (
     <>
       <View style={styles.headerContainer}>
         <Icon
           name={icons.leftArrow}
-          onPress={onBackPress}
+          onPress={!isPreviousDisable ? onBackPress : FunctionUtils.noop}
           size={22}
-          color={!isAllowPastDate && isCurrentMonth && !isYearView ? theme.colors.disabled : theme.colors.primaryColor}
+          color={isPreviousDisable ? theme.colors.disabled : theme.colors.primaryColor}
         />
         {!isYearView && !isMonthView && (
           <Text type="small" textType="semiBold" onPress={onMonthPress} style={styles.headerTitle}>
@@ -68,7 +82,7 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
           name={icons.rightArrow}
           size={22}
           color={isNextDisable ? theme.colors.disabled : theme.colors.primaryColor}
-          onPress={onNextPress}
+          onPress={!isNextDisable ? onNextPress : FunctionUtils.noop}
         />
       </View>
       <Divider />

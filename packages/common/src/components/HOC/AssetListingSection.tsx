@@ -4,7 +4,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
-  title: string;
+  title?: string;
   children: React.ReactElement;
   containerStyles?: StyleProp<ViewStyle>;
   contentContainerStyles?: StyleProp<ViewStyle>;
@@ -18,11 +18,13 @@ const AssetListingSection = ({
 }: IProps): React.ReactElement => {
   return (
     <View style={[styles.container, containerStyles]}>
-      <View style={styles.titleContainer}>
-        <Text type="small" textType="semiBold" style={styles.title}>
-          {title}
-        </Text>
-      </View>
+      {!!title && (
+        <View style={styles.titleContainer}>
+          <Text type="small" textType="semiBold" style={styles.title}>
+            {title}
+          </Text>
+        </View>
+      )}
       <View style={[styles.contentContainer, contentContainerStyles]}>{children}</View>
     </View>
   );

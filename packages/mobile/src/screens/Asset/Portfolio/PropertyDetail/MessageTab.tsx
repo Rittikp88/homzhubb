@@ -123,6 +123,10 @@ const MessageTab = (props: IProps): React.ReactElement => {
     setScrollToBottom(true);
   };
 
+  const onFocusOut = (): void => {
+    setScrollToBottom(false);
+  };
+
   const updateScroll = (): void => {
     setScrollToBottom(false);
   };
@@ -147,6 +151,7 @@ const MessageTab = (props: IProps): React.ReactElement => {
       <KeyboardAvoidingView behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
         <ChatInputBox
           onInputFocus={onFocus}
+          onFocusOut={onFocusOut}
           onPressCamera={onClickImage}
           onUploadImage={onUploadAttachment}
           onSubmit={onSendMessage}

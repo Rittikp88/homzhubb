@@ -14,6 +14,8 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
@@ -113,7 +115,16 @@ export function* userProfile() {
 export function* userPreferences() {
   try {
     const response: UserPreferences = yield call(UserRepository.getUserPreferences);
+    const { metricUnit } = response;
     yield put(UserActions.getUserPreferencesSuccess(response));
+    const filters: IFilter = yield select(SearchSelector.getFilters);
+    // adds the search radius unit filter
+    yield put(
+      SearchActions.setFilter({
+        ...filters,
+        miscellaneous: { ...filters.miscellaneous, search_radius_unit: metricUnit },
+      } as IFilter)
+    );
 
     const currentLanguage = yield I18nService.getLanguage();
     if (currentLanguage !== response.languageCode) {
@@ -139,8 +150,16 @@ export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPr
       yield StorageService.set(StorageKeys.USER_SELECTED_LANGUAGE, response.languageCode);
       yield I18nService.changeLanguage(response.languageCode as SupportedLanguages);
     }
+    const { metricUnit } = response;
+    const filters: IFilter = yield select(SearchSelector.getFilters);
 
     yield put(UserActions.getUserPreferencesSuccess(response));
+    yield put(
+      SearchActions.setFilter({
+        ...filters,
+        miscellaneous: { ...filters.miscellaneous, search_radius_unit: metricUnit },
+      } as IFilter)
+    );
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });

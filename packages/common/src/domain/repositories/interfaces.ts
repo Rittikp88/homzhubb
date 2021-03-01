@@ -2,6 +2,7 @@ import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
 import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
+import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 
 // ENUMS
 
@@ -634,7 +635,10 @@ export interface IListingReviewParams {
   lease_listing?: number;
   sale_listing?: number;
   rating: number;
-  pillar_ratings: { pillar: number; rating: number }[];
+  pillar_ratings: {
+    pillar: number;
+    rating: number;
+  }[];
   description?: string;
 }
 
@@ -686,6 +690,10 @@ export interface IMessagePayload {
   attachments: number[];
 }
 
+export interface IGroupChatInfoPayload {
+  groupId: number;
+}
+
 interface IMessageAction {
   action: MessageAction;
   payload: {
@@ -696,4 +704,21 @@ interface IMessageAction {
 export interface IUpdateMessagePayload {
   groupId: number;
   data: IMessageAction;
+}
+
+export interface IUpdateLeaseTerm {
+  transactionId: number;
+  data: {
+    rent: number;
+    security_deposit: number;
+    lease_period: number;
+    annual_rent_increment_percentage: number;
+    maintenance_paid_by: PaidByTypes;
+    utility_paid_by: PaidByTypes;
+    lease_start_date: string;
+    tentative_end_date: string;
+    currency: string;
+    minimum_lease_period: number;
+    maintenance_amount: number | null;
+  };
 }

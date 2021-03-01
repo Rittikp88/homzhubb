@@ -38,6 +38,7 @@ interface IProps {
   title?: string;
   subTitle?: string;
   buttonTitle?: string;
+  isFromLogin?: boolean;
 }
 
 type Props = ILoginFormProps & IStateProps & IProps;
@@ -70,7 +71,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
   }
 
   public render(): React.ReactNode {
-    const { t, handleForgotPassword, isEmailLogin, testID } = this.props;
+    const { t, handleForgotPassword, isEmailLogin, testID, buttonTitle } = this.props;
     const formData = { ...this.state };
     return (
       <KeyboardAvoidingView style={styles.flexOne} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
@@ -88,7 +89,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
                 onPress={formProps.handleSubmit}
                 formProps={formProps}
                 type="primary"
-                title={t('login')}
+                title={buttonTitle || t('login')}
                 containerStyle={styles.submitStyle}
               />
               {isEmailLogin && PlatformUtils.isMobile() && (
@@ -169,13 +170,21 @@ class LoginForm extends PureComponent<Props, IFormData> {
   };
 
   public handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
-    const { onLoginSuccess, isEmailLogin, t } = this.props;
+    const { onLoginSuccess, isEmailLogin, t, isFromLogin } = this.props;
     formActions.setSubmitting(true);
     if (!isEmailLogin) {
       try {
         const phone = `${values.phoneCode}~${values.phone}`;
         const isPhoneUsed = await UserRepository.phoneExists(phone);
-        if (!isPhoneUsed.is_exists) {
+        if (!isFromLogin && PlatformUtils.isWeb() && isPhoneUsed.is_exists) {
+          AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
+          return;
+        }
+        if (isFromLogin && PlatformUtils.isWeb() && !isPhoneUsed.is_exists) {
+          AlertHelper.error({ message: t('auth:phoneNotExists') });
+          return;
+        }
+        if (!PlatformUtils.isWeb() && !isPhoneUsed.is_exists) {
           AlertHelper.error({ message: t('auth:phoneNotExists') });
           return;
         }

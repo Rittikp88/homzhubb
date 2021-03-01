@@ -65,6 +65,7 @@ class MessagePreview extends Component<Props, IScreenState> {
     if (isLoading && !messages) return <Loader visible />;
     if (!messages || (messages && isEmpty(messages.messageResult))) return this.renderEmptyView();
     const { messageResult } = messages;
+
     return (
       <ScrollView
         ref={this.scrollRef}

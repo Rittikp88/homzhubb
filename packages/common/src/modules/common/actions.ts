@@ -97,8 +97,7 @@ export type CommonActionPayloadTypes =
   | Messages
   | GroupMessage[]
   | IChatPayload
-  | string
-  | number;
+  | string;
 
 export const CommonActions = {
   getCountries,

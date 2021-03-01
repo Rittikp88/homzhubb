@@ -71,6 +71,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       if (selectedValue) {
         return selectedValue;
       }
+
       return formProps?.values[name] === moment().format('YYYY-MM-DD') ? 'Today' : formProps?.values[name];
     };
 
@@ -80,6 +81,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       TextField = Label;
     }
     const isPlaceholderStyle = selectedValue === '' || !availableDate();
+
     return (
       <View style={containerStyle}>
         <TextField type={textSize} textType={fontType} style={labelStyles}>

@@ -69,6 +69,7 @@ export enum ScreensKeys {
   PropertyDetailsNotifications = 'PropertyDetailsNotifications',
   UpdatePropertyScreen = 'UpdatePropertyScreen',
   ManageTenantScreen = 'ManageTenantScreen',
+  UpdateLeaseScreen = 'UpdateLeaseScreen',
 
   // Financials Stack
   FinancialsLandingScreen = 'FinancialsLandingScreen',
@@ -113,6 +114,7 @@ export enum ScreensKeys {
   ServicesForSelectedAsset = 'ServicesForSelectedAsset',
   Messages = 'Messages',
   ChatScreen = 'ChatScreen',
+  GroupChatInfo = 'GroupChatInfo',
 }
 
 export enum OtpNavTypes {
@@ -237,6 +239,12 @@ export interface IUpdatePropertyProps {
 
 export interface IManageTenantProps {
   assetDetail: Asset;
+}
+
+export interface IEditLeaseProps {
+  transactionId: number;
+  assetGroup: string;
+  user: User;
 }
 
 export interface ISignUpParams extends IScreenCallback {
