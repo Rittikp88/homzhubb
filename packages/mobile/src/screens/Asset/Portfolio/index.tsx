@@ -5,6 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -85,8 +86,15 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   public componentDidMount = (): void => {
-    const { navigation, clearMessages } = this.props;
+    const {
+      navigation,
+      clearMessages,
+      route: { params },
+    } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
+      if (params) {
+        this.acceptInvite().then();
+      }
       this.getScreenData().then();
       clearMessages();
       this.setState({
@@ -250,6 +258,17 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
       screen: ScreensKeys.AddProperty,
       params: { previousScreen: ScreensKeys.Dashboard },
     });
+  };
+
+  private acceptInvite = async (): Promise<void> => {
+    const {
+      route: { params },
+    } = this.props;
+    try {
+      await AssetRepository.acceptInvite(params);
+    } catch (error) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
+    }
   };
 
   private getScreenData = async (): Promise<void> => {

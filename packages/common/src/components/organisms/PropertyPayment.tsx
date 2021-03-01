@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
     paddingVertical: 16,
-    height: PlatformUtils.isWeb() ? '100vh' : 'auto',
+    height: PlatformUtils.isWeb() ? 'max-content' : 'auto',
   },
   payButton: {
     marginHorizontal: 16,

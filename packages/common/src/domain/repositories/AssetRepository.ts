@@ -2,6 +2,7 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
+  IAcceptInvitePayload,
   ICreateAssetParams,
   ICreateAssetResult,
   ICreateDocumentPayload,
@@ -112,6 +113,7 @@ const ENDPOINTS = {
   listingReviewsSummary: 'listing-reviews/summary/',
   updateTenant: (param: IUpdateTenantParam): string =>
     `assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}/`,
+  acceptInvite: (): string => 'lease-tenants/accept-invite',
   leaseTransaction: (id: number): string => `lease-transactions/${id}/`,
 };
 
@@ -418,6 +420,11 @@ class AssetRepository {
 
   public deleteTenant = async (param: IUpdateTenantParam): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.updateTenant(param));
+  };
+
+  public acceptInvite = async (payload: IAcceptInvitePayload): Promise<void> => {
+    const { inviteId } = payload;
+    return await this.apiClient.get(ENDPOINTS.acceptInvite(), { invite_id: inviteId });
   };
 
   public getLeaseTransaction = async (transactionId: number): Promise<TransactionDetail> => {

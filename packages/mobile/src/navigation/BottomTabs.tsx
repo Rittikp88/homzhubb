@@ -59,7 +59,7 @@ import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
-import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAcceptInvitePayload, IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -78,7 +78,7 @@ export type DashboardNavigatorParamList = {
 };
 
 export type PortfolioNavigatorParamList = {
-  [ScreensKeys.PortfolioLandingScreen]: undefined;
+  [ScreensKeys.PortfolioLandingScreen]: IAcceptInvitePayload;
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
