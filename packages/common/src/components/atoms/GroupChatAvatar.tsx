@@ -60,7 +60,6 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
     return (
       <>
         {facesToShow.map((face: User, index: number) => {
-          const { name, profilePicture } = face;
           const { avatarStyle, marginStyle, customText } = getStyles(circleSize, isHeader, index);
 
           return (
@@ -69,8 +68,8 @@ const GroupChatAvatar = (props: IProps): React.ReactElement => {
               isOnlyAvatar
               containerStyle={isHeader ? marginStyle : avatarStyle}
               imageSize={circleSize}
-              fullName={name}
-              image={profilePicture || undefined}
+              fullName={face ? face.name : ''}
+              image={(!!face && face.profilePicture) || undefined}
               customTextStyle={customText}
             />
           );
