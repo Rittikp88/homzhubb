@@ -140,6 +140,13 @@ class ListingService {
         };
         getAssetById();
         scrollToTop();
+      } else if (currentIndex === 1 || isPropertyReady) {
+        updatedStates = {
+          ...states,
+          currentIndex: currentIndex + 1,
+        };
+        getAssetById();
+        scrollToTop();
       } else {
         updatedStates = {
           ...states,

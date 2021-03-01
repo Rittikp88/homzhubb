@@ -146,7 +146,15 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
 
     const steps = this.getRoutes().map((route) => route.title);
-    const { key } = this.getRoutes()[currentIndex];
+    const checkServicesTab = (): boolean => {
+      if (currentIndex > 3) return false;
+
+      const { key } = this.getRoutes()[currentIndex];
+      if (Tabs.SERVICE_PAYMENT === key) {
+        return true;
+      }
+      return false;
+    };
     return (
       <>
         <AddressWithStepIndicator
@@ -172,7 +180,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             index: currentIndex,
             routes: this.getRoutes(),
           }}
-          style={{ height: isDesktop && Tabs.SERVICE_PAYMENT === key ? 'auto' : tabViewHeights[currentIndex] }}
+          style={{ height: isDesktop && checkServicesTab() ? 'auto' : tabViewHeights[currentIndex] }}
         />
         <ContinuePopup
           isSvg
@@ -414,6 +422,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   private handleContinue = (): void => {
     const { resetState, assetDetails } = this.props;
     this.setState({ isSheetVisible: false });
+    const { currentIndex } = this.state;
     resetState();
 
     if (assetDetails) {
@@ -425,6 +434,8 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       } = assetDetails;
       if (isPropertyReady && type !== TypeOfPlan.MANAGE) {
         // TODO: Add Preview Logic
+        console.log('here');
+        this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       } else {
         this.navigateToDashboard();
       }
@@ -432,6 +443,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   };
 
   private handleNextStep = (): void => {
+    console.log(' function called');
     const { currentIndex, isStepDone, isSheetVisible, isNextStep } = this.state;
     const { assetDetails, getAssetById } = this.props;
 
@@ -447,6 +459,10 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       updateState: this.updateState,
     });
   };
+
+  // private isPaymentComplete = (): void => {
+  //   this.setState({isSheetVisible: true});
+  // }
 
   private updateState = (data: IListingUpdate): void => {
     const { isNextStep, isSheetVisible, currentIndex, isStepDone } = data;
@@ -625,7 +641,6 @@ const styles = StyleSheet.create({
   service: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: '2000px',
   },
   verificationSubtitle: {
     marginTop: 12,
