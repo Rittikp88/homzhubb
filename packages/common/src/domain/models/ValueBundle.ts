@@ -18,6 +18,9 @@ export class ValueBundle extends Unit {
   @JsonProperty('value_bundle_items', [Unit], true)
   private _valueBundleItems = [new Unit()];
 
+  @JsonProperty('display_order', Number, true)
+  private _displayOrder = -1;
+
   get attachment(): Attachment {
     return this._attachment;
   }

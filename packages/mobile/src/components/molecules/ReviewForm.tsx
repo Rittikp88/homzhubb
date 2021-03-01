@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { cloneDeep } from 'lodash';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -12,9 +14,11 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IListingReviewParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   saleListingId: number | null;
@@ -22,21 +26,36 @@ interface IProps {
   asset: VisitAssetDetail;
   ratingCategories: Pillar[];
   onClose: (reset?: boolean) => void;
-  deleted: () => void;
+  deleted?: () => void;
   editReview?: boolean;
+  overallRatings?: number;
+  review?: AssetReview;
 }
 
 const ReviewForm = (props: IProps): React.ReactElement => {
-  const { asset, onClose, ratingCategories, saleListingId, leaseListingId, deleted, editReview } = props;
+  const {
+    asset,
+    onClose = FunctionUtils.noop,
+    ratingCategories,
+    saleListingId,
+    leaseListingId,
+    deleted = FunctionUtils.noop,
+    editReview,
+    review,
+  } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
 
   const [overallRating, setOverallRating] = useState(0);
   const [description, setDescription] = useState('');
-  const [categoryRatings, setcategoryRatings] = useState<Pillar[]>([]);
+  const [categoryRatings, setCategoryRatings] = useState<Pillar[]>([]);
 
   useEffect(() => {
-    setcategoryRatings(cloneDeep(ratingCategories));
-  }, [ratingCategories]);
+    if (review) {
+      setOverallRating(review?.rating);
+      setDescription(review?.description);
+    }
+    setCategoryRatings(cloneDeep(ratingCategories));
+  }, [ratingCategories, review]);
 
   const updatePillarRating = useCallback(
     (newRating: number, id: number): void => {
@@ -48,7 +67,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
       }
 
       categoryToUpdate.rating = newRating;
-      setcategoryRatings(stateToUpdate);
+      setCategoryRatings(stateToUpdate);
     },
     [categoryRatings]
   );
@@ -64,11 +83,41 @@ const ReviewForm = (props: IProps): React.ReactElement => {
       });
       onClose(true);
     } catch (err) {
-      AlertHelper.error({ message: t('common:genericErrorMessage') });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
-  }, [description, overallRating, categoryRatings, leaseListingId, saleListingId, onClose, t]);
-  const onPress = (): void => (editReview ? deleted() : onClose());
+  }, [description, overallRating, categoryRatings, leaseListingId, saleListingId, onClose]);
 
+  const update = useCallback(async (): Promise<void> => {
+    if (!review || !categoryRatings) return;
+
+    const payload: IListingReviewParams = {
+      rating: overallRating,
+      description,
+      pillar_ratings: categoryRatings.map((pillar: Pillar) => ({
+        pillar: pillar.pillarName?.id ?? 0,
+        rating: pillar.rating,
+      })),
+      ...(leaseListingId && { lease_listing: leaseListingId }),
+      ...(saleListingId && { sale_listing: saleListingId }),
+    };
+
+    try {
+      await AssetRepository.updateReview(review.id, payload);
+      onClose(true);
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+    }
+  }, [description, overallRating, categoryRatings, leaseListingId, saleListingId, review, onClose]);
+
+  const onPress = (): void => {
+    if (editReview && deleted) {
+      deleted();
+      return;
+    }
+    onClose();
+  };
+
+  const onClick = (): Promise<void> => (editReview ? update() : onSubmit());
   return (
     <>
       <PropertyAddressCountry
@@ -88,7 +137,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
             return (
               <Rating
                 key={pillarRating.id}
-                title={pillarRating.name}
+                title={(pillarRating.name || pillarRating.pillarName?.name) ?? ''}
                 value={pillarRating.rating}
                 onChange={(newRating): void => updatePillarRating(newRating, pillarRating.id)}
                 containerStyle={styles.rating}
@@ -114,7 +163,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
             containerStyle={editReview ? styles.deleteButton : undefined}
           />
           <Button
-            onPress={onSubmit}
+            onPress={onClick}
             disabled={editReview ? false : overallRating === 0}
             type="primary"
             title={editReview ? t('common:update') : t('common:submit')}

@@ -29,8 +29,17 @@ export class ValueAddedService {
   @JsonProperty('bundle_price', Number, true)
   private _bundlePrice = -1;
 
+  @JsonProperty('validity', Number, true)
+  private _validity = -1;
+
   @JsonProperty('discounted_price', Number, true)
   private _discountedPrice = 0;
+
+  @JsonProperty('price_label', String, true)
+  private _priceLabel = '';
+
+  @JsonProperty('is_partial', Boolean, true)
+  private _isPartial = false;
 
   @JsonProperty('currency', Currency, true)
   private _currency = new Currency();
@@ -71,5 +80,17 @@ export class ValueAddedService {
 
   set value(value: boolean) {
     this._value = value;
+  }
+
+  get validity(): number {
+    return this._validity;
+  }
+
+  get priceLabel(): string {
+    return this._priceLabel;
+  }
+
+  get isPartial(): boolean {
+    return this._isPartial;
   }
 }

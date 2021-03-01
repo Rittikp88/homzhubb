@@ -295,6 +295,14 @@ class AssetRepository {
     return await this.apiClient.post(ENDPOINTS.assetVisit(), payload);
   };
 
+  public deleteReview = async (reviewId: number): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.getReviewsById(reviewId));
+  };
+
+  public updateReview = async (reviewId: number, payload: IListingReviewParams): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.getReviewsById(reviewId), payload);
+  };
+
   public postAttachmentUpload = async (payload: { link: string }[]): Promise<IYoutubeResponse[]> => {
     return await this.apiClient.post(ENDPOINTS.attachmentUpload(), payload);
   };

@@ -16,12 +16,13 @@ import { FormButton } from '@homzhub/common/src/components/molecules/FormButton'
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 
 interface IOwnProps extends WithTranslation {
   reviewId: number;
   onSuccessFullSubmit?: () => void;
   onFormCancellation: () => void;
-  reportCategories: Unit[];
+  reportCategories: Pillar[] | Unit[];
 }
 
 interface IFormData {
