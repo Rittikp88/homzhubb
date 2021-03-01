@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';

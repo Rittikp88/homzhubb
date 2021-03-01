@@ -304,6 +304,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       await AssetRepository.postVerificationDocuments(propertyId, postRequestBody);
       await ListingService.getExistingDocuments(propertyId, this.updateState);
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+      console.log('calling function');
       updateStep();
     } catch (e) {
       this.setState({ isLoading: false });
