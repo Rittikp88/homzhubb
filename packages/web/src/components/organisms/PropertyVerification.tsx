@@ -134,9 +134,9 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       return;
     }
 
-    this.setState({ selfie: data }, () => {
+    this.setState({ selfie: data, takeSelfie: false }, () => {
       const { verificationTypes } = this.state;
-      this.onSelfieSelect(verificationTypes[0], data);
+      this.onSelfieSelect(verificationTypes[1], data);
     });
   };
 
