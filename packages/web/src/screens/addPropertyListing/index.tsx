@@ -68,7 +68,7 @@ const AddPropertyListing = (): React.ReactElement => {
   const dispatch = useDispatch();
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
   useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(720));
+    dispatch(RecordAssetActions.setAssetId(731));
   });
 
   // TODO: remove the commented code once the API issue from chrome is resolved
