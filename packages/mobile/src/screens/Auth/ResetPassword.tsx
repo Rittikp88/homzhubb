@@ -78,7 +78,7 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
     const {
       navigation,
       route: {
-        params: { verification_id },
+        params: { verification_id, invite_id },
       },
       t,
     } = this.props;
@@ -86,6 +86,7 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
       action: 'SET_PASSWORD',
       payload: {
         verification_id,
+        invite_id,
         password,
       },
     };

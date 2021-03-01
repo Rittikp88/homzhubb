@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { CarouselProps } from 'react-multi-carousel';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -11,8 +11,8 @@ import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
 import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
 import AddListingView from '@homzhub/web/src/screens/addPropertyListing/AddListingView';
-import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+// import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 
 enum ComponentName {
   Listing_Plan_Selection = 'ListingPlanSelection',
@@ -62,14 +62,14 @@ const AddPropertyListing = (): React.ReactElement => {
   } = history;
   const { t } = useTranslation();
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
-  const dispatch = useDispatch();
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);
   const Mobile = useOnly(deviceBreakpoint.MOBILE);
   const Tablet = useOnly(deviceBreakpoint.TABLET);
+  // const dispatch = useDispatch();
   // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
-  useEffect(() => {
-    dispatch(RecordAssetActions.setAssetId(323));
-  });
+  // useEffect(() => {
+  //   dispatch(RecordAssetActions.setAssetId(731));
+  // });
 
   // TODO: remove the commented code once the API issue from chrome is resolved
 
@@ -121,7 +121,7 @@ const AddPropertyListing = (): React.ReactElement => {
   const renderCarousel = (): React.ReactElement => {
     const popupDetails = {
       title: t('common:congratulations'),
-      subTitle: t('property:paymentSuccessMsg'),
+      subTitle: t('property:yourDetailsAdded'),
       buttonSubText: t('property:clickContinue'),
       buttonTitle: t('common:continue'),
     };
@@ -131,11 +131,10 @@ const AddPropertyListing = (): React.ReactElement => {
           {/* {banners?.results.map((item) => ( */}
           <View style={styles.imageContainer}>
             <Image
-              style={styles.image}
+              style={[styles.image, Tablet && styles.imageTablet, Mobile && styles.imageMobile]}
               resizeMode="contain"
               source={{
-                uri: 'https://hmzhbdev.s3.ap-south-1.amazonaws.com/advertisements/f205f192f15d49fa994632d641463fb2.svg',
-                // 'https://hmzhbdev.s3.ap-south-1.amazonaws.com/c363134df8194ef1b42d56d0bc76694a.svg'
+                uri: 'https://homzhub-bucket.s3.amazonaws.com/f205f192f15d49fa994632d641463fb2.svg',
               }}
               // source={{ uri: item.attachment.link }}        //Same todo as above
             />
@@ -181,5 +180,15 @@ const styles = StyleSheet.create({
   image: {
     width: 525,
     height: 330,
+    marginVertical: '12px',
+  },
+  imageMobile: {
+    width: 300,
+    height: 280,
+    margin: 'auto',
+  },
+  imageTablet: {
+    width: 340,
+    marginVertical: '48px',
   },
 });

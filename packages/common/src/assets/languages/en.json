@@ -546,7 +546,10 @@
     "tenantRemoveDate": "This tenant will be removed from the lease on {{date}}",
     "reportStatus": "Report status",
     "editLeaseTerm": "Edit Lease Terms",
-    "leaseUpdated": "Successfully lease updated"
+    "leaseUpdated": "Successfully lease updated",
+    "totalServiceFee": "Total service fees",
+    "tokenAmount": "Token amount: {{amount}}",
+    "orValue": "or{{value}}"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

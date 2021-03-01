@@ -48,6 +48,13 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
 
+    if (!PlatformUtils.isWeb()) {
+      const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
+      if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
+        yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
+      }
+    }
+
     if (PlatformUtils.isMobile()) {
       if (is_referral) {
         yield AnalyticsService.track(EventType.SignupSuccess, trackData);
@@ -55,13 +62,6 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
         yield AnalyticsService.track(EventType.LoginSuccess, trackData);
       }
       yield AnalyticsService.setUser(userData);
-    }
-    if (!PlatformUtils.isWeb()) {
-      const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
-
-      if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
-        yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
-      }
     }
 
     if (callback) {

@@ -159,6 +159,7 @@ export interface IForgotPasswordPayload {
   payload: {
     email?: string;
     verification_id?: string | number;
+    invite_id?: string;
     password?: string;
   };
 }
@@ -635,7 +636,10 @@ export interface IListingReviewParams {
   lease_listing?: number;
   sale_listing?: number;
   rating: number;
-  pillar_ratings: { pillar: number; rating: number }[];
+  pillar_ratings: {
+    pillar: number;
+    rating: number;
+  }[];
   description?: string;
 }
 
@@ -703,6 +707,9 @@ export interface IUpdateMessagePayload {
   data: IMessageAction;
 }
 
+export interface IAcceptInvitePayload {
+  inviteId: string;
+}
 export interface IUpdateLeaseTerm {
   transactionId: number;
   data: {
