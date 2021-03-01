@@ -457,10 +457,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     });
   };
 
-  // private isPaymentComplete = (): void => {
-  //   this.setState({isSheetVisible: true});
-  // }
-
   private updateState = (data: IListingUpdate): void => {
     const { isNextStep, isSheetVisible, currentIndex, isStepDone } = data;
     this.setState((prevState) => ({
