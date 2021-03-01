@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 6,
     width: PlatformUtils.isWeb() ? undefined : theme.viewport.width / 2 - 40,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   numberContainer: {
     flexDirection: 'row',

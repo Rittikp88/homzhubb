@@ -27,7 +27,6 @@ export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/Payment
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
 export { Range } from '@homzhub/mobile/src/components/molecules/Range';
-export { RentAndMaintenance } from '@homzhub/mobile/src/components/molecules/RentAndMaintenance';
 export { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 export { GoogleSearchBar } from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 export { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
