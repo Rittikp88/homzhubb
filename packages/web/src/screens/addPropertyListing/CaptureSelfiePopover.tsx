@@ -21,7 +21,7 @@ const CaptureSelfiePopover: React.FC<IProps> = (props: IProps) => {
   return (
     <View>
       <Popover
-        content={<CaptureSelfie onCapture={onCaptureSelfie} />}
+        content={<CaptureSelfie onCapture={onCaptureSelfie} closePopover={onClosePopover} />}
         popupProps={{
           open: takeSelfie,
           closeOnDocumentClick: false,

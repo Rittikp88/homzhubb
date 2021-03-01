@@ -7,15 +7,17 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 
 interface ISelfieProps {
   onCapture: (data: string | null) => void;
+  closePopover: () => void;
 }
 const CaptureSelfie: FC<ISelfieProps> = (props: ISelfieProps) => {
   const webcamRef = useRef<Webcam>(null);
-  const { onCapture } = props;
+  const { onCapture, closePopover } = props;
   const capture = useCallback(() => {
     if (webcamRef && webcamRef.current !== null) {
       const imageSrc = webcamRef.current.getScreenshot();
       onCapture(imageSrc);
     }
+    closePopover();
   }, [webcamRef]);
 
   return (
