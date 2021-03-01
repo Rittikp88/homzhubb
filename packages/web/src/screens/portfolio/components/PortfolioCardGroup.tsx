@@ -13,6 +13,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
@@ -30,13 +31,11 @@ import {
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
-import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance'
+import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 // import { LeaseProgress } from '@homzhub/common/src/components/molecules/LeaseProgress';
 import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
 // import ProgressBar from 'components/atoms/ProgressBar';
-
- 
 
 interface IUserInfo {
   name: string;
@@ -90,7 +89,7 @@ export class AssetCard extends Component<Props, IState> {
       carpetAreaUnit,
       assetGroup,
       furnishing,
-      spaces
+      spaces,
     } = assetData;
     let detailPayload: ISetAssetPayload;
     if (assetStatusInfo) {
@@ -108,10 +107,10 @@ export class AssetCard extends Component<Props, IState> {
     return (
       <View style={styles.mainContainer}>
         <View style={[styles.container, containerStyle]}>
-        { this.renderAttachmentView(attachments, handlePropertyView)}
-        <View style={styles.topView}>
-              <View style={styles.topLeftView}>
-                <View style={{flexDirection:'row', flexWrap:'wrap'}}>
+          {this.renderAttachmentView(attachments, handlePropertyView)}
+          <View style={styles.topView}>
+            <View style={styles.topLeftView}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 <Badge
                   title={assetStatusInfo?.tag.label ?? ''}
                   badgeColor={assetStatusInfo?.tag.color ?? ''}
@@ -134,31 +133,28 @@ export class AssetCard extends Component<Props, IState> {
                     {serviceTickets?.count}
                   </Label>
                 </TouchableOpacity>
-                </View>
-                <TouchableOpacity onPress={(): void => handlePropertyView()} activeOpacity={isDetailView ? 1 : 0.3}>
-            <View style={{width:'100%', flexWrap:"wrap"}}>
-             
-              
-              <PropertyAddressCountry
-                primaryAddress={projectName}
-                countryFlag={flag}
-                subAddress={address ?? `${unitNumber} ${blockNumber}`}
-                containerStyle={styles.addressStyle}
-              />
-                {amenitiesData.length > 0 && (
-            <PropertyAmenities
-              data={amenitiesData}
-              direction="row"
-              containerStyle={styles.propertyInfoBox}
-              contentContainerStyle={styles.cardIcon}
-            />
-          )}
-            </View>
-          </TouchableOpacity>
               </View>
-             
+              <TouchableOpacity onPress={(): void => handlePropertyView()} activeOpacity={isDetailView ? 1 : 0.3}>
+                <View style={{ width: '100%', flexWrap: 'wrap' }}>
+                  <PropertyAddressCountry
+                    primaryAddress={projectName}
+                    countryFlag={flag}
+                    subAddress={address ?? `${unitNumber} ${blockNumber}`}
+                    containerStyle={styles.addressStyle}
+                  />
+                  {amenitiesData.length > 0 && (
+                    <PropertyAmenities
+                      data={amenitiesData}
+                      direction="row"
+                      containerStyle={styles.propertyInfoBox}
+                      contentContainerStyle={styles.cardIcon}
+                    />
+                  )}
+                </View>
+              </TouchableOpacity>
             </View>
-          { this.renderExpandedView()}
+          </View>
+          {this.renderExpandedView()}
         </View>
       </View>
     );
@@ -176,17 +172,17 @@ export class AssetCard extends Component<Props, IState> {
       link,
       mediaType,
     } = item;
-   console.log(link, mediaType)
+    console.log(link, mediaType);
     return (
       <TouchableOpacity>
         {mediaType === 'IMAGE' && (
-          <View style={{width:310, height: 220}}>
-          <Image
-            source={{
-              uri: link,
-            }}
-            style= {styles.detailViewImage}
-          />
+          <View style={{ width: 310, height: 220 }}>
+            <Image
+              source={{
+                uri: link,
+              }}
+              style={styles.detailViewImage}
+            />
           </View>
         )}
         {mediaType === 'VIDEO' && (
@@ -213,9 +209,7 @@ export class AssetCard extends Component<Props, IState> {
     } = assetData;
     const isActive = action ? action.label === 'TERMINATE' : false;
     return (
-      <View>
-        test
-      </View>
+      <View>test</View>
       // <BottomSheet
       //   visible={isBottomSheetVisible}
       //   sheetHeight={theme.viewport.height * 0.7}
@@ -255,45 +249,45 @@ export class AssetCard extends Component<Props, IState> {
       lastVisitedStep: { assetCreation },
       isVerificationDocumentUploaded,
     } = assetData;
-    
-    console.log(assetData)
+
+    console.log(assetData);
     const isListed = leaseListingId || saleListingId;
     // console.log(assetData,leaseOwnerInfo, user)
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     // console.log(userData, userInfo)
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
-    console.log(action)
+    console.log(action);
     return (
       <>
-         <Divider containerStyles={styles.divider} />
-         <View style={{flexDirection:'column',justifyContent:'space-evenly', marginLeft: 20}}>
-           {!isVacant &&  
+        <Divider containerStyles={styles.divider} />
+        <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', marginLeft: 20 }}>
+          {!isVacant && (
             <>
-            <Avatar
-              isRightIcon={!isInviteAccepted}
-              onPressRightIcon={this.onToggleBottomSheet}
-              // icon={userInfo.icon}
-              fullName={userData.name}
-              image={userData.profilePicture}
-              designation={userInfo.designation}
-              customDesignation={userInfo.designationStyle}
-            />
-          </>}
-        
-      
-        {rent && securityDeposit && (
-          <View style={{marginTop : 24}}>
-            {/* <Divider containerStyles={styles.divider} /> */}
-            <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
-          </View>
-        )}
-        {((isVacant && assetCreation.percentage < 100) || !isVacant) && (
-          <View style={{marginTop: 24}}>
-            {/* <Divider containerStyles={styles.divider} />  */}
-            {/* <ProgressBar progress={totalSpendPeriod || assetCreation.percentage / 100} isPropertyVacant={isVacant} fromDate={leaseStartDate}
+              <Avatar
+                isRightIcon={!isInviteAccepted}
+                onPressRightIcon={this.onToggleBottomSheet}
+                // icon={userInfo.icon}
+                fullName={userData.name}
+                image={userData.profilePicture}
+                designation={userInfo.designation}
+                customDesignation={userInfo.designationStyle}
+              />
+            </>
+          )}
+
+          {rent && securityDeposit && (
+            <View style={{ marginTop: 24 }}>
+              {/* <Divider containerStyles={styles.divider} /> */}
+              <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
+            </View>
+          )}
+          {((isVacant && assetCreation.percentage < 100) || !isVacant) && (
+            <View style={{ marginTop: 24 }}>
+              {/* <Divider containerStyles={styles.divider} />  */}
+              {/* <ProgressBar progress={totalSpendPeriod || assetCreation.percentage / 100} isPropertyVacant={isVacant} fromDate={leaseStartDate}
               toDate={leaseEndDate} /> */}
-            {/* <Progress
+              {/* <Progress
               progress={totalSpendPeriod || assetCreation.percentage / 100}
               fromDate={leaseStartDate}
               toDate={leaseEndDate}
@@ -301,53 +295,58 @@ export class AssetCard extends Component<Props, IState> {
               assetCreation={assetCreation}
               width={10}
             />  */}
-          </View>
-        )}
-        {isVacant && assetCreation.percentage < 100 && !action && (
-          <Button
-            type="primary"
-            textType="label"
-            textSize="regular"
-            fontType="semiBold"
-            containerStyle={styles.buttonStyle}
-            title={t('complete')}
-            titleStyle={styles.buttonTitle}
-            onPress={this.onCompleteDetails}
-          />
-        )}
-        {isVerificationDocumentUploaded && isListed && (
-          <OffersVisitsSection
-            onNav={onOfferVisitPress}
-            isDetailView={isDetailView}
-            values={{
-              [OffersVisitsType.offers]: [0, 0, 0],
-              [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
-            }}
-          />
-        )}
-        <View style={styles.buttonGroup}>
-          {action && (
-          
+            </View>
+          )}
+          {isVacant && assetCreation.percentage < 100 && !action && (
             <Button
               type="primary"
               textType="label"
               textSize="regular"
               fontType="semiBold"
-              containerStyle={[
-                styles.buttonStyle,
-                // { backgroundColor: action.color },
-                (action.label === ActionType.CANCEL  || action.label === ActionType.TERMINATE) && styles.cancelButton,
-              ]}
-              title={action.label}
-              titleStyle={[styles.buttonTitle, (action.label === ActionType.CANCEL || action.label === ActionType.TERMINATE) && styles.cancelTitle]}
-              onPress={this.onPressAction}
+              containerStyle={styles.buttonStyle}
+              title={t('complete')}
+              titleStyle={styles.buttonTitle}
+              onPress={this.onCompleteDetails}
             />
           )}
-        </View>
-        {/* {this.renderBottomSheet()} */}
+          {isVerificationDocumentUploaded && isListed && (
+            <OffersVisitsSection
+              onNav={onOfferVisitPress}
+              isDetailView={isDetailView}
+              values={{
+                [OffersVisitsType.offers]: [0, 0, 0],
+                [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
+              }}
+            />
+          )}
+          <View style={styles.buttonGroup}>
+            {action ? (
+              <Button
+                type="primary"
+                textType="label"
+                textSize="regular"
+                fontType="semiBold"
+                containerStyle={[
+                  styles.buttonStyle,
+                  // { backgroundColor: action.color },
+                  (action.label === ActionType.CANCEL || action.label === ActionType.TERMINATE) && styles.cancelButton,
+                ]}
+                title={action.label}
+                titleStyle={[
+                  styles.buttonTitle,
+                  (action.label === ActionType.CANCEL || action.label === ActionType.TERMINATE) && styles.cancelTitle,
+                ]}
+                onPress={this.onPressAction}
+              />
+            ) : (
+              <View style={styles.latestUpdates}>
+                <LatestUpdates propertyVisitsData={assetData.listingVisits} />
+              </View>
+            )}
+          </View>
+          {/* {this.renderBottomSheet()} */}
         </View>
       </>
-    
     );
   };
 
@@ -406,7 +405,7 @@ export class AssetCard extends Component<Props, IState> {
     let icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
     let name = isInviteAccepted ? user.name : user.email;
     let image = isInviteAccepted ? user.profilePicture : undefined;
-    let designation =  t('property:tenant');
+    let designation = t('property:tenant');
     let designationStyle = isInviteAccepted ? undefined : styles.designation;
 
     if (isFromTenancies) {
@@ -453,7 +452,6 @@ export default withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(Ass
 const styles = StyleSheet.create({
   mainContainer: {
     marginBottom: 14,
-    
   },
   container: {
     backgroundColor: theme.colors.white,
@@ -462,18 +460,18 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 16,
     marginBottom: 2,
-    flexDirection:'row',
+    flexDirection: 'row',
   },
   topView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop:20,
-    width:'40%'
+    marginTop: 20,
+    width: '40%',
   },
   topLeftView: {
     flexDirection: 'column',
-    marginLeft:'10px',
-    width:'fit-content'
+    marginLeft: '10px',
+    width: 'fit-content',
   },
   badgeStyle: {
     minWidth: 75,
@@ -511,8 +509,8 @@ const styles = StyleSheet.create({
   detailViewImage: {
     borderRadius: 4,
     height: '100%',
-    width:'100%',
-    resizeMode:'stretch'
+    width: '100%',
+    resizeMode: 'stretch',
   },
   buttonStyle: {
     flex: 1,
@@ -530,9 +528,9 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     flexDirection: 'row',
-    width:147,
-    height:33,
-    marginTop:24
+    width: 147,
+    height: 33,
+    marginTop: 24,
     // justifyContent: 'flex-end',
     // backgroundColor:'green'
   },
@@ -553,9 +551,13 @@ const styles = StyleSheet.create({
   propertyInfoBox: {
     justifyContent: undefined,
     marginRight: 16,
-    marginTop:10
+    marginTop: 10,
   },
   cardIcon: {
     marginRight: 8,
+  },
+  latestUpdates: {
+    flex: 1,
+    marginTop: 16,
   },
 });
