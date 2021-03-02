@@ -75,7 +75,7 @@ const TAB_LAYOUT = {
 
 class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
-    currentIndex: 0,
+    currentIndex: 1,
     isStepDone: [],
     tabViewHeights: [height, height, height, height],
     isActionSheetToggled: false,
@@ -166,7 +166,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         {this.renderTabHeader()}
         <TabView
           lazy
-          initialLayout={TAB_LAYOUT}
+          // initialLayout={TAB_LAYOUT}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}
           renderTabBar={(): null => null}

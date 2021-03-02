@@ -128,8 +128,8 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const formData = new FormData();
     formData.append('files[]', image);
 
-    const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
-    const { data } = response;
+     const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_VERIFICATION);
+     const { data } = response;
     const source = { uri: data[0].link, type: image.type, name: image.name };
     if (Object.values(AllowedAttachmentFormats).includes(image.type)) {
       this.updateLocalDocuments(verificationDocumentId, source, value);

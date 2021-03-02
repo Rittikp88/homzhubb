@@ -5,6 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,7 +15,6 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -28,12 +28,6 @@ import {
   IGetTenanciesPayload,
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
-import { Tabs } from '@homzhub/common/src/constants/Tabs';
-import {
-  ClosureReasonType,
-  IClosureReasonPayload,
-  IListingParam,
-} from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -80,45 +74,18 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   public componentDidMount = (): void => {
-    const { navigation, clearMessages } = this.props;
     this.getScreenData();
-    // clearMessages();
-    // this.setState({
-    //   assetType: '',
-    // });
   };
 
 
 
   public render = (): React.ReactElement => {
-    const { t, tenancies, properties, currentFilter, isTenanciesLoading } = this.props;
-    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading, assetType, isLoading } = this.state;
-    console.log(properties)
+    const {  properties } = this.props;
     return (   
         this.renderPortfolio(properties)
     );
   };
 
-  // private renderTenancies = (tenancies: Asset[]): React.ReactElement | null => {
-  //   const { t } = this.props;
-  //   const { assetType } = this.state;
-  //   const filteredData = tenancies.filter((item) => item.assetGroup.name === assetType);
-
-  //   if (assetType && filteredData.length < 1) {
-  //     return null;
-  //   }
-
-  //   return (
-  //     <>
-  //       <Text type="small" textType="semiBold" style={styles.title}>
-  //         {t('tenancies')}
-  //       </Text>
-  //       {(assetType ? filteredData : tenancies).map((tenancy, index) =>
-  //         this.renderList(tenancy, index, DataType.TENANCIES)
-  //       )}
-  //     </>
-  //   );
-  // };
 
   private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
     const { t, currentFilter } = this.props;
@@ -154,60 +121,21 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
-    const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
-      this.onViewProperty({ ...data, dataType: type }, key);
-    const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
-    const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
-      this.handleActions(item, payload, param);
-     };
+ 
     return (
       <AssetCard
         assetData={item}
         key={index}
         expandedId={type === DataType.PROPERTIES ? expandedAssetId : expandedTenanciesId}
         isFromTenancies={type === DataType.TENANCIES}
-        onViewProperty={handleViewProperty}
-        onPressArrow={handleArrowPress}
-        onCompleteDetails={this.onCompleteDetails}
-        onOfferVisitPress={this.onOfferVisitPress}
-        onHandleAction={onPressAction}
+        onViewProperty={FunctionUtils.noop}
+        onPressArrow={FunctionUtils.noop}
+        onCompleteDetails={FunctionUtils.noop}
+        onOfferVisitPress={FunctionUtils.noop}
+        onHandleAction={FunctionUtils.noop}
       />
     );
   };
-
-
-  private onOfferVisitPress = (type: OffersVisitsType): void => {};
-
-  private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
-    setAssetId(assetId);
-    setEditPropertyFlow(true);
-    // @ts-ignore
-    navigation.navigate(ScreensKeys.PropertyPostStack, {
-      screen: ScreensKeys.AddProperty,
-      params: { previousScreen: ScreensKeys.Dashboard },
-    });
-  };
-
-  private handleExpandCollapse = (id: number, type: DataType): void => {
-    const { expandedAssetId, expandedTenanciesId } = this.state;
-    if (type === DataType.PROPERTIES) {
-      this.setState({ expandedAssetId: expandedAssetId === id ? 0 : id });
-    } else {
-      this.setState({ expandedTenanciesId: expandedTenanciesId === id ? 0 : id });
-    }
-  };
-
-
-  private onViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
-    const { navigation, setCurrentAsset } = this.props;
-    setCurrentAsset(data);
-    navigation.navigate(ScreensKeys.PropertyDetailScreen, {
-      isFromTenancies: data.dataType === DataType.TENANCIES,
-      ...(key && { tabKey: key }),
-    });
-  };
-
 
 
   private onPropertiesCallback = (): void => {
@@ -227,18 +155,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.getPortfolioProperty();
   };
 
-  // private handleExpandCollapse = (id: number, type: DataType): void => {
-  //   const { expandedAssetId, expandedTenanciesId } = this.state;
-  //   if (type === DataType.PROPERTIES) {
-  //     this.setState({ expandedAssetId: expandedAssetId === id ? 0 : id });
-  //   } else {
-  //     this.setState({ expandedTenanciesId: expandedTenanciesId === id ? 0 : id });
-  //   }
-  // };
-
-  // private closeBottomSheet = (): void => {
-  //   this.setState({ isBottomSheetVisible: false });
-  // };
 
   private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
@@ -292,23 +208,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
-  private handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
-    const { navigation, setAssetId } = this.props;
-    const { id } = asset;
-    setAssetId(id);
-    const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
-    const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
-    const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
-    if (param && param.hasTakeAction) {
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.PropertyPostStack, {
-        screen: ScreensKeys.AssetPlanSelection,
-        params: { isFromPortfolio: true },
-      });
-    } else {
-      navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });
-    }
-  };
+
 
 
   private verifyData = (): void => {
