@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PaymentGateway = () => {
+const PaymentGateway = (): React.ReactElement => {
   return <div />;
 };
 

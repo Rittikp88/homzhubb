@@ -28,7 +28,7 @@ export interface IPortfolioState {
 
 export interface IGetPropertiesPayload {
   status: string;
-  onCallback: (params: ICallback) => void;
+  onCallback?: (params: ICallback) => void;
 }
 
 export interface IGetTenanciesPayload {

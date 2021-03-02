@@ -21,7 +21,6 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
 
   const { filterData, getStatus } = props;
   const popupRef = useRef<PopupActions>(null);
-
   const popupProps = {
     position: 'bottom left' as 'bottom left',
     on: 'click' as 'click',

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
@@ -19,15 +16,14 @@ import { PropertyAmenities } from '@homzhub/common/src/components/molecules/Prop
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
+import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
-import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
-import { IGetHistoryPayload, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import {
   ClosureReasonType,
   IClosureReasonPayload,
@@ -59,18 +55,8 @@ interface IListProps {
   onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
 }
 
-interface IState {
-  isBottomSheetVisible: boolean;
-  listOfTenant: number;
-}
-
 type Props = WithTranslation & IListProps;
-export class AssetCard extends Component<Props, IState> {
-  public state = {
-    isBottomSheetVisible: false,
-    listOfTenant: 0,
-  };
-
+export class AssetCard extends Component<Props> {
   public render(): React.ReactElement {
     const { assetData, isDetailView, onViewProperty, containerStyle } = this.props;
     const {
@@ -206,7 +192,7 @@ export class AssetCard extends Component<Props, IState> {
   };
 
   private renderExpandedView = (): React.ReactNode => {
-    const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
+    const { assetData, t } = this.props;
     if (!assetData || !assetData.assetStatusInfo) return null;
 
     const {
@@ -216,16 +202,14 @@ export class AssetCard extends Component<Props, IState> {
         leaseTenantInfo: { user, isInviteAccepted },
         leaseListingId,
         saleListingId,
-        leaseOwnerInfo,
         leaseTransaction: { rent, securityDeposit, totalSpendPeriod, leaseEndDate, leaseStartDate, currency },
       },
-      listingVisits: { upcomingVisits, missedVisits, completedVisits },
       lastVisitedStep: { assetCreation },
       isVerificationDocumentUploaded,
     } = assetData;
 
     const isListed = leaseListingId || saleListingId;
-    const userData: User = isFromTenancies ? leaseOwnerInfo : user;
+    const userData: User = user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     return (
@@ -298,12 +282,6 @@ export class AssetCard extends Component<Props, IState> {
               />
             </View>
           )}
-
-          {/* {label === Filters.FOR__RENT && (
-            <View style={styles.latestUpdates}>
-              <LatestUpdates propertyVisitsData={assetData.listingVisits} />
-            </View>
-          )} */}
         </View>
       </>
     );
@@ -370,27 +348,6 @@ export class AssetCard extends Component<Props, IState> {
       image,
       designationStyle,
     };
-  };
-
-  public activeTenantList = async (): Promise<void> => {
-    const {
-      assetData: { id, assetStatusInfo },
-    } = this.props;
-
-    if (!assetStatusInfo) return;
-
-    const { leaseTransaction } = assetStatusInfo;
-
-    const data: IGetHistoryPayload = {
-      lease_transaction_id: leaseTransaction.id,
-      active: true,
-    };
-    try {
-      const tenants: TenantInfo[] = await PortfolioRepository.getTenantHistory(id, data);
-      this.setState({ listOfTenant: tenants.length });
-    } catch (err) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
-    }
   };
 }
 
