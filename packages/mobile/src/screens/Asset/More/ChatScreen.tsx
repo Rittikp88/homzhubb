@@ -62,7 +62,7 @@ class ChatScreen extends Component<Props, IScreenState> {
 
   public async componentDidMount(): Promise<void> {
     if (!(await NotificationService.checkIsPermissionGranted())) {
-      NotificationService.requestPermisson();
+      await NotificationService.requestPermisson();
     }
   }
 
