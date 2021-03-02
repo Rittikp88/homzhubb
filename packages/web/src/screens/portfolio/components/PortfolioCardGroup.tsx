@@ -298,12 +298,6 @@ export class AssetCard extends Component<Props, IState> {
               />
             </View>
           )}
-
-          {/* {label === Filters.FOR__RENT && (
-            <View style={styles.latestUpdates}>
-              <LatestUpdates propertyVisitsData={assetData.listingVisits} />
-            </View>
-          )} */}
         </View>
       </>
     );

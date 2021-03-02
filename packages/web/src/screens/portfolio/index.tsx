@@ -29,6 +29,7 @@ import {
   IGetTenanciesPayload,
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
+import ApiResponseHandler from '@homzhub/common/src/network/ApiResponseHandler';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -36,7 +37,6 @@ interface IStateProps {
   isTenanciesLoading: boolean;
   currentFilter: Filters;
 }
-
 interface IDispatchProps {
   getTenanciesDetails: (payload: IGetTenanciesPayload) => void;
   getPropertyDetails: (payload: IGetPropertiesPayload) => void;
@@ -46,7 +46,6 @@ interface IDispatchProps {
   setAssetId: (payload: number) => void;
   clearMessages: () => void;
 }
-
 interface IPortfolioState {
   isBottomSheetVisible: boolean;
   metrics: AssetMetrics;
@@ -57,12 +56,9 @@ interface IPortfolioState {
   expandedAssetId: number;
   assetType: string;
 }
-
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
-
 export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
-
   public state = {
     isBottomSheetVisible: false,
     metrics: {} as AssetMetrics,
@@ -77,42 +73,47 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   public componentDidMount = (): void => {
     this.getScreenData();
     PortfolioRepository.getAssetFilters()
-    .then((response) => {
-      this.setState({
-        filters: response
+      .then((response) => {
+        console.log('FIlter data', response);
+        this.setFilteredData(response);
       })
-    })
-    .catch((e) => {
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      .catch((e) => {
+        const error = ErrorUtils.getErrorMessage(e.details);
+        AlertHelper.error({ message: error });
+      });
+  };
+
+  public setFilteredData = (response: any) => {
+    this.setState({
+      filters: response,
     });
   };
 
-
-
   public render = (): React.ReactElement => {
-    const {  properties } = this.props;
-    const {filters} = this.state
-    return ( 
-        <View style={{flexDirection:'column'}}>
-      <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
+    const { properties } = this.props;
+    const { filters } = this.state;
+    console.log(filters);
+    return (
+      <View style={{ flexDirection: 'column', width: '100%' }}>
+        <PortfolioFilter filterData={filters} getStatus={this.status} />
         {this.renderPortfolio(properties)}
-        </View>
+      </View>
     );
   };
 
+  private status = (status: string) => {
+    console.log(status);
+    this.getStatus(status);
+  };
 
   private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
     const { t, currentFilter } = this.props;
     const { assetType } = this.state;
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
-
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
-
     const isEmpty = !data || data.length <= 0;
-
     return (
-      <View style={{flexDirection:'column', maxWidth:'100%'}}>
+      <View style={{ flexDirection: 'column', maxWidth: '100%' }}>
         <View style={styles.headingView}>
           <Text type="small" textType="semiBold" style={styles.title}>
             {t('propertyPortfolio')}
@@ -130,17 +131,19 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         ) : (
           data?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
         )}
-      </View> 
+      </View>
     );
   };
 
-
   private getStatus = (status: string): void => {
+    console.log(status);
     PortfolioRepository.getUserAssetDetails(status)
       .then((response) => {
+        console.log(response);
         // TODO :Use the response to display filteredcard :Mohak
       })
       .catch((e) => {
+        console.log(e);
         const error = ErrorUtils.getErrorMessage(e.details);
         AlertHelper.error({ message: error });
       });
@@ -148,7 +151,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
- 
+
     return (
       <AssetCard
         assetData={item}
@@ -164,7 +167,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     );
   };
 
-
   private onPropertiesCallback = (): void => {
     this.verifyData();
     this.setState({ isSpinnerLoading: false, isLoading: false });
@@ -174,40 +176,17 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.verifyData();
   };
 
-
   private getScreenData = async (): Promise<void> => {
     await this.getAssetMetrics();
-    await this.getAssetFilters();
     this.getTenancies();
     this.getPortfolioProperty();
   };
-
 
   private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
       const response: AssetMetrics = await PortfolioRepository.getAssetMetrics();
       this.setState({ metrics: response, isLoading: false });
-    } catch (e) {
-      this.setState({ isLoading: false });
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
-    }
-  };
-
-  private getAssetFilters = async (): Promise<void> => {
-    this.setState({ isLoading: true });
-    try {
-      const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
-      const filterData: PickerItemProps[] = response.map(
-        (item): PickerItemProps => {
-          return {
-            label: item.title,
-            value: item.label,
-          };
-        }
-      );
-      this.setState({ filters: filterData, isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e.details);
@@ -235,30 +214,22 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
-
-
-
   private verifyData = (): void => {
     const { tenancies, properties } = this.props;
-
     if ((tenancies && tenancies.length > 0) || (properties && properties.length > 0)) {
       if (tenancies && tenancies.length > 0) {
         this.setState({
           expandedTenanciesId: tenancies[0].id,
         });
       }
-
       if (properties && properties.length > 0) {
         this.setState({
           expandedAssetId: properties[0].id,
         });
       }
     }
-    
-    
   };
 }
-
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     tenancies: PortfolioSelectors.getTenancies(state),
@@ -267,7 +238,6 @@ const mapStateToProps = (state: IState): IStateProps => {
     isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
   };
 };
-
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
   const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
@@ -282,17 +252,13 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setEditPropertyFlow,
       clearMessages,
     },
-    dispatch)
-  }
-
-
-
-
+    dispatch
+  );
+};
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(Portfolio));
-
 const styles = StyleSheet.create({
   title: {
     color: theme.colors.darkTint1,
