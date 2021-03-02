@@ -134,6 +134,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
+      isDesktop,
     } = this.props;
 
     if (!assetDetails) return null;
@@ -145,6 +146,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
 
     const steps = this.getRoutes().map((route) => route.title);
+    const { key } = this.getRoutes()[currentIndex];
     return (
       <>
         <AddressWithStepIndicator
@@ -170,7 +172,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             index: currentIndex,
             routes: this.getRoutes(),
           }}
-          style={{ height: tabViewHeights[currentIndex] }}
+          style={{ height: isDesktop && Tabs.SERVICE_PAYMENT === key ? 'auto' : tabViewHeights[currentIndex] }}
         />
         <ContinuePopup isSvg isOpen={isSheetVisible} {...this.renderContinueView(assetDetails)} />
       </>
@@ -294,6 +296,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
               updateStep={this.handleNextStep}
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
               onUploadDocument={onUploadDocument}
+              handleNextStep={this.handleSkip}
             />
           </View>
         );
@@ -618,6 +621,7 @@ const styles = StyleSheet.create({
   service: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    height: '2000px',
   },
   verificationSubtitle: {
     marginTop: 12,

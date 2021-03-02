@@ -10,16 +10,17 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 const NoCamera: React.FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const notDesktop = useDown(deviceBreakpoint.TABLET);
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <View style={[styles.content, isMobile && styles.mobileContent]}>
         <NoRecording />
         <Typography size="large" variant="text" fontWeight="semiBold" style={styles.heading}>
-          No Camera Detected
+         {t('noWebCam')}
         </Typography>
         <Typography variant="text" size="small" fontWeight="regular" style={styles.title}>
-          We noticed that your current device does not have a camera attached. Due to this you will have to use our
-          mobile apps to complete the verification process.
+         {t('noWebCamDescription')}
         </Typography>
         <View style={[styles.buttonContainer, notDesktop && styles.tabContainer, isMobile && styles.mobileContainer]}>
           <StoreButton

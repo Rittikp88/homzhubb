@@ -137,8 +137,14 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
           <ImageThumbnail
             imageUrl={thumbnailImage}
             onIconPress={onDeleteImageThumbnail}
-            imageWrapperStyle={PlatformUtils.isWeb() && !isMobile && styles.imageWrapper}
-            imageContainerStyle={isOnlyTablet && styles.imageContainerTablet}
+            imageWrapperStyle={[
+              PlatformUtils.isWeb() && !isMobile && styles.imageWrapper,
+              PlatformUtils.isWeb() && !isMobile && currentData.name == 'SELFIE_ID_PROOF' && styles.selfieWrapper,
+            ]}
+            imageContainerStyle={[
+              isOnlyTablet && styles.imageContainerTablet,
+              PlatformUtils.isWeb() && !isMobile && currentData.name == 'SELFIE_ID_PROOF' && styles.selfieWrapper,
+            ]}
           />
         </View>
       );
@@ -257,6 +263,10 @@ const styles = StyleSheet.create({
   },
   imageWrapper: {
     height: 280,
+  },
+  selfieWrapper: {
+    height: 400,
+    width: 320,
   },
   imageContainerTablet: {
     width: 650,

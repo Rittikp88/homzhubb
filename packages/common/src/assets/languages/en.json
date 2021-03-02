@@ -217,7 +217,10 @@
     "capture": "Capture",
     "members": "Members",
     "chatMemberCount": "{{count}} Members",
-    "media": "Media"
+    "media": "Media",
+    "noWebCam": " No camera detected",
+    "noWebCamDescription":" We noticed that your current device does not have a camera attached. Due to this you will have to use our mobile apps to complete the verification process."
+
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -549,7 +552,9 @@
     "leaseUpdated": "Successfully lease updated",
     "totalServiceFee": "Total service fees",
     "tokenAmount": "Token amount: {{amount}}",
-    "orValue": "or{{value}}"
+    "orValue": "or{{value}}",
+    "takeSelfie":"Take a selfie",
+    "captureWeb":"Capture selfie"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -715,7 +720,8 @@
     "noPropertiesAdded": "You haven't added any properties",
     "noFilterProperties": "There are no properties for the selected filter",
     "deletePropertyDescription": "Once deleted all the historical records of this property will be lost. Homzhub will remove or mask any sensitive information but will retain transactional data.",
-    "deleteConfirmation": "Do you want to continue deleting this property?"
+    "deleteConfirmation": "Do you want to continue deleting this property?",
+    "selectCountry": "Select Country"
   },
   "assetFinancial": {
     "financial": "Financials",

@@ -44,6 +44,7 @@ interface IProps {
   propertyId: number;
   lastVisitedStep: ILastVisitedStep;
   onUploadDocument: () => any;
+  handleNextStep: () => void;
 }
 
 type Props = WithTranslation & IProps & IWithMediaQuery;
@@ -100,23 +101,27 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           </View>
         )}
         {!navigator.mediaDevices.getUserMedia && (
-          <View>
+          <View style={styles.container}>
             <NoCamera />
           </View>
         )}
-       { !navigator.mediaDevices.getUserMedia &&<Button
-          type="primary"
-          title={t('common:continue')}
-          disabled={!containsAllReqd || isLoading}
-          containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
-          onPress={this.postPropertyVerificationDocuments}
-        />}
-         { navigator.mediaDevices.getUserMedia &&<Button
-          type="primary"
-          title={t('common:continue')}
-         containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
-          onPress={this.nextStep}
-        />}
+        {navigator.mediaDevices.getUserMedia && (
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            disabled={!containsAllReqd || isLoading}
+            containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
+            onPress={this.postPropertyVerificationDocuments}
+          />
+        )}
+        {!navigator.mediaDevices.getUserMedia && (
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
+            onPress={this.nextStep}
+          />
+        )}
       </>
     );
   }
@@ -230,11 +235,10 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     }));
   };
 
-  public nextStep =():void=>{
-    const {updateStep}=this.props;
-    updateStep();
-
-  }
+  public nextStep = (): void => {
+    const { handleNextStep } = this.props;
+    handleNextStep();
+  };
   // HANDLERS END
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
@@ -311,6 +315,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems:"center",
     backgroundColor: theme.colors.white,
   },
   buttonStyle: {

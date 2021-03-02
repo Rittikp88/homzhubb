@@ -4,13 +4,14 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
-import Portfolio from '@homzhub/web/src/screens/portfolio/index';
+import Portfolio from '@homzhub/web/src/screens/portfolio';
+
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
 
 export const MainRouter = (): React.ReactElement => {
-  const { DASHBOARD, ADD_PROPERTY, FINANCIALS, HELP_SUPPORT, ADD_LISTING, PORTFOLIO} = RouteNames.protectedRoutes;
+  const { DASHBOARD, ADD_PROPERTY, FINANCIALS, HELP_SUPPORT, ADD_LISTING, PORTFOLIO } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
 

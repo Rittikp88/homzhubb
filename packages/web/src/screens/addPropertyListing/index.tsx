@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
- import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { CarouselProps } from 'react-multi-carousel';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';

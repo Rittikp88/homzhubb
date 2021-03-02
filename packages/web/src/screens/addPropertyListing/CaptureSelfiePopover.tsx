@@ -1,8 +1,11 @@
 import React, { useRef } from 'react';
 import { View } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+
 
 interface IProps {
   onCaptureSelfie: (data: string | null) => void;
@@ -10,6 +13,7 @@ interface IProps {
 }
 
 const CaptureSelfiePopover: React.FC<IProps> = (props: IProps) => {
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { onCaptureSelfie, takeSelfie } = props;
   const selfiePopoverRef = useRef<PopupActions>(null);
   const onClosePopover = (): void => {
@@ -26,9 +30,10 @@ const CaptureSelfiePopover: React.FC<IProps> = (props: IProps) => {
           open: takeSelfie,
           closeOnDocumentClick: false,
           arrow: false,
-          contentStyle: { marginTop: '4px', alignItems: 'stretch' },
+          contentStyle: { alignItems:'stretch', width:isMobile?300:450, height:isMobile?300:430, paddingBottom:170, borderRadius:8 },
           children: undefined,
           modal: true,
+          position: 'center center',
           onClose: onClosePopover,
         }}
         forwardedRef={selfiePopoverRef}
