@@ -15,7 +15,7 @@ export interface IPopupOptions {
 
 interface IProps<T extends IPopupOptions> {
   options: T[];
-  onMenuOptionPress: (option: T) => void;
+  onMenuOptionPress: (option: T  ) => void;
 }
 
 const PopupMenuOptions = <T extends IPopupOptions>({ options, onMenuOptionPress }: IProps<T>): React.ReactElement => {

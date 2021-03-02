@@ -101,15 +101,15 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     console.log(filters)
     return ( 
         <View style={{flexDirection:'column'}}>
-      <PortfolioFilter filterData={filters} getStatus={this.status} />
+      <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
         {this.renderPortfolio(properties)}
         </View>
     );
   };
 
-  private status = (status:string) => {
-    console.log(status)
-    this.getStatus(status);
+  private getStatus = (filter:string) => {
+    const {getPropertyDetails} = this.props
+    getPropertyDetails({ status: filter , onCallback: this.onPropertiesCallback });
   }
 
 
@@ -146,19 +146,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
 
-  private getStatus = (status: string): void => {
-    console.log(status)
-    PortfolioRepository.getUserAssetDetails(status)
-      .then((response) => {
-        console.log(response)
-        // TODO :Use the response to display filteredcard :Mohak
-      })
-      .catch((e) => {
-        console.log(e)
-        const error = ErrorUtils.getErrorMessage(e.details);
-        AlertHelper.error({ message: error });
-      });
-  };
+
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
