@@ -17,6 +17,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
+import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
@@ -282,7 +283,7 @@ export class AssetCard extends Component<Props, IState> {
             />
           )}
           <View style={styles.buttonGroup}>
-            {action && (
+            {action && !isVacant ? (
               <Button
                 type="primary"
                 textType="label"
@@ -300,6 +301,10 @@ export class AssetCard extends Component<Props, IState> {
                 ]}
                 onPress={this.onPressAction}
               />
+            ) : (
+              <View style={styles.latestUpdates}>
+                <LatestUpdates propertyVisitsData={assetData.listingVisits} />
+              </View>
             )}
           </View>
         </View>
@@ -410,6 +415,7 @@ const styles = StyleSheet.create({
   topView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 20,
     width: '40%',
   },
   topLeftView: {
@@ -498,5 +504,9 @@ const styles = StyleSheet.create({
   },
   cardIcon: {
     marginRight: 8,
+  },
+  latestUpdates: {
+    flex: 1,
+    marginTop: 16,
   },
 });
