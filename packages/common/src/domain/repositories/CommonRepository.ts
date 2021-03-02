@@ -15,6 +15,7 @@ import {
   IMarketTrendParams,
   ISubscribeToNewsletterPayload,
   ISupportPayload,
+  IDeviceTokenPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { SocialAuthProviders } from '@homzhub/common/src/constants/SocialAuthProviders';
 
@@ -31,6 +32,7 @@ const ENDPOINTS = {
   getPillars: 'pillars/',
   subscribeToNewsLetter: 'newslettters/subscriptions/',
   updateMarketTrends: (id: number): string => `market-trends/${id}/`,
+  postDeviceToken: (): string => 'devices/',
 };
 
 class CommonRepository {
@@ -106,6 +108,10 @@ class CommonRepository {
       review_type: reviewType,
     });
     return ObjectMapper.deserializeArray(Pillar, response);
+  };
+
+  public postDeviceToken = async (requestBody: IDeviceTokenPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.postDeviceToken(), requestBody);
   };
 }
 

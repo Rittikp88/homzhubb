@@ -11,6 +11,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { MessageRepository } from '@homzhub/common/src/domain/repositories/MessageRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -58,6 +59,12 @@ class ChatScreen extends Component<Props, IScreenState> {
     isMenuVisible: false,
     attachment: {} as ImagePickerResponse,
   };
+
+  public async componentDidMount(): Promise<void> {
+    if (!(await NotificationService.checkIsPermissionGranted())) {
+      NotificationService.requestPermisson();
+    }
+  }
 
   public render(): React.ReactNode {
     const { t, currentChat } = this.props;
