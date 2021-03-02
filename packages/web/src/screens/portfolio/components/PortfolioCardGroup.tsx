@@ -10,7 +10,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import ProgressBar from 'components/atoms/ProgressBar';
+import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -235,7 +235,7 @@ export class AssetCard extends Component<Props, IState> {
           {!isVacant && (
             <>
               <Avatar
-                isRightIcon={true}
+                isRightIcon
                 onPressRightIcon={FunctionUtils.noop}
                 fullName={userData.name}
                 image={userData.profilePicture}
@@ -244,7 +244,6 @@ export class AssetCard extends Component<Props, IState> {
               />
             </>
           )}
-
           {rent && securityDeposit && (
             <View style={{ marginTop: 24 }}>
               <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
@@ -272,18 +271,14 @@ export class AssetCard extends Component<Props, IState> {
               onPress={this.onCompleteDetails}
             />
           )}
+
           {isVerificationDocumentUploaded && isListed && (
-            <OffersVisitsSection
-              onNav={onOfferVisitPress}
-              isDetailView={isDetailView}
-              values={{
-                [OffersVisitsType.offers]: [0, 0, 0],
-                [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
-              }}
-            />
+            <View style={styles.latestUpdates}>
+              <LatestUpdates propertyVisitsData={assetData.listingVisits} />
+            </View>
           )}
-      <View style={styles.buttonGroup}>
-            {action && !isVacant && (
+          {action && !isVacant && (
+            <View style={styles.buttonGroup}>
               <Button
                 type="primary"
                 textType="label"
@@ -301,14 +296,14 @@ export class AssetCard extends Component<Props, IState> {
                 ]}
                 onPress={this.onPressAction}
               />
-            )}
-          </View>
-          {console.log({ label })};
-          {label === Filters.FOR__RENT && (
+            </View>
+          )}
+
+          {/* {label === Filters.FOR__RENT && (
             <View style={styles.latestUpdates}>
               <LatestUpdates propertyVisitsData={assetData.listingVisits} />
             </View>
-          )}
+          )} */}
         </View>
       </>
     );
