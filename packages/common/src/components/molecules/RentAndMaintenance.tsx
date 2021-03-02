@@ -6,6 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Transaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
+
 interface IProps {
   rentData: Transaction;
   depositData: Transaction;
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: PlatformUtils.isWeb()? '270px':undefined
+    width: PlatformUtils.isWeb() ? '270px' : undefined,
   },
   contentView: {
     flexDirection: 'row',
