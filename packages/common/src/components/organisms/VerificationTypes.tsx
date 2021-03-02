@@ -139,11 +139,11 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
             onIconPress={onDeleteImageThumbnail}
             imageWrapperStyle={[
               PlatformUtils.isWeb() && !isMobile && styles.imageWrapper,
-              PlatformUtils.isWeb() && !isMobile && currentData.name == 'SELFIE_ID_PROOF' && styles.selfieWrapper,
+              PlatformUtils.isWeb() && !isMobile && currentData.name === 'SELFIE_ID_PROOF' && styles.selfieWrapper,
             ]}
             imageContainerStyle={[
               isOnlyTablet && styles.imageContainerTablet,
-              PlatformUtils.isWeb() && !isMobile && currentData.name == 'SELFIE_ID_PROOF' && styles.selfieWrapper,
+              PlatformUtils.isWeb() && !isMobile && currentData.name === 'SELFIE_ID_PROOF' && styles.selfieWrapper,
             ]}
           />
         </View>

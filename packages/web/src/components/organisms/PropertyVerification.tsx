@@ -104,23 +104,23 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             <NoCamera />
           </View>
         )}
-        {navigator.mediaDevices.getUserMedia && (
-          <Button
-            type="primary"
-            title={t('common:continue')}
-            disabled={!containsAllReqd || isLoading}
-            containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
-            onPress={this.postPropertyVerificationDocuments}
-          />
-        )}
-        {!navigator.mediaDevices.getUserMedia && (
+        {/* {navigator.mediaDevices.getUserMedia && ( */}
+        <Button
+          type="primary"
+          title={t('common:continue')}
+          disabled={!containsAllReqd || isLoading}
+          containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
+          onPress={this.postPropertyVerificationDocuments}
+        />
+        {/* )} */}
+        {/* {!navigator.mediaDevices.getUserMedia && (
           <Button
             type="primary"
             title={t('common:continue')}
             containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
             onPress={this.nextStep}
           />
-        )}
+        )} */}
       </>
     );
   }
@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems:"center",
+    alignItems: 'center',
     backgroundColor: theme.colors.white,
   },
   buttonStyle: {

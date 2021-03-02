@@ -6,7 +6,6 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import CaptureSelfie from '@homzhub/web/src/components/molecules/CaptureSelfie';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-
 interface IProps {
   onCaptureSelfie: (data: string | null) => void;
   takeSelfie: boolean;
@@ -30,7 +29,13 @@ const CaptureSelfiePopover: React.FC<IProps> = (props: IProps) => {
           open: takeSelfie,
           closeOnDocumentClick: false,
           arrow: false,
-          contentStyle: { alignItems:'stretch', width:isMobile?300:450, height:isMobile?300:430, paddingBottom:170, borderRadius:8 },
+          contentStyle: {
+            alignItems: 'stretch',
+            width: isMobile ? 300 : 450,
+            height: isMobile ? 300 : 430,
+            paddingBottom: 170,
+            borderRadius: 8,
+          },
           children: undefined,
           modal: true,
           position: 'center center',

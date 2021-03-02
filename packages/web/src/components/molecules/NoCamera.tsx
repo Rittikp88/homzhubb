@@ -17,10 +17,10 @@ const NoCamera: React.FC = () => {
       <View style={[styles.content, isMobile && styles.mobileContent]}>
         <NoRecording />
         <Typography size="large" variant="text" fontWeight="semiBold" style={styles.heading}>
-         {t('noWebCam')}
+          {t('noWebCam')}
         </Typography>
         <Typography variant="text" size="small" fontWeight="regular" style={styles.title}>
-         {t('noWebCamDescription')}
+          {t('noWebCamDescription')}
         </Typography>
         <View style={[styles.buttonContainer, notDesktop && styles.tabContainer, isMobile && styles.mobileContainer]}>
           <StoreButton

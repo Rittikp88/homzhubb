@@ -32,7 +32,7 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
   };
 
   const selectedFilter = (selectedOption: AssetFilter): void => {
-    console.log(selectedOption)
+    console.log(selectedOption);
     getStatus(selectedOption.label);
     closePopup();
   };

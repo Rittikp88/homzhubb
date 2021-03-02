@@ -37,13 +37,10 @@ const Portfolio: FC = () => {
       <PortfolioCardGroup />
     </View>
   );
- 
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   
-    
   },
 });
 export default Portfolio;

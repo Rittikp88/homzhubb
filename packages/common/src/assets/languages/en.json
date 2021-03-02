@@ -219,8 +219,7 @@
     "chatMemberCount": "{{count}} Members",
     "media": "Media",
     "noWebCam": " No camera detected",
-    "noWebCamDescription":" We noticed that your current device does not have a camera attached. Due to this you will have to use our mobile apps to complete the verification process."
-
+    "noWebCamDescription": " We noticed that your current device does not have a camera attached. Due to this you will have to use our mobile apps to complete the verification process."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -553,8 +552,8 @@
     "totalServiceFee": "Total service fees",
     "tokenAmount": "Token amount: {{amount}}",
     "orValue": "or{{value}}",
-    "takeSelfie":"Take a selfie",
-    "captureWeb":"Capture selfie"
+    "takeSelfie": "Take a selfie",
+    "captureWeb": "Capture selfie"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

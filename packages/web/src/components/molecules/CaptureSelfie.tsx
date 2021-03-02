@@ -28,9 +28,9 @@ const CaptureSelfie: FC<ISelfieProps> = (props: ISelfieProps) => {
     closePopover();
   }, [webcamRef]);
   const videoConstraints = {
-    width: { min:isMobile?250: 400 },
-    height: { min: isMobile?350:480 },
-    aspectRatio:isMobile?0.7: 0.8222222222,
+    width: { min: isMobile ? 250 : 400 },
+    height: { min: isMobile ? 350 : 480 },
+    aspectRatio: isMobile ? 0.7 : 0.8222222222,
   };
   return (
     <>
@@ -52,8 +52,8 @@ const CaptureSelfie: FC<ISelfieProps> = (props: ISelfieProps) => {
           screenshotFormat="image/jpeg"
           mirrored
           videoConstraints={videoConstraints}
-          width={isMobile?250:400}
-          height={isMobile?350:480}
+          width={isMobile ? 250 : 400}
+          height={isMobile ? 350 : 480}
         />
 
         <View style={[Styles.footer, isMobile && Styles.buttonMobile]}>
@@ -82,9 +82,9 @@ const Styles = StyleSheet.create({
     width: 210,
     justifyContent: 'center',
   },
-  buttonMobile:{
- marginLeft:20,
- top:'84%'
+  buttonMobile: {
+    marginLeft: 20,
+    top: '84%',
   },
   webCam: {
     marginHorizontal: 24,
