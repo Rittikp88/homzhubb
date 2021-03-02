@@ -21,7 +21,7 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
 
   const { filterData, getStatus } = props;
   const popupRef = useRef<PopupActions>(null);
-  console.log(filterData)
+  console.log(filterData);
   const popupProps = {
     position: 'bottom left' as 'bottom left',
     on: 'click' as 'click',
@@ -32,7 +32,7 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
   };
 
   const selectedFilter = (selectedOption: AssetFilter): void => {
-    console.log(selectedOption)
+    console.log(selectedOption);
     getStatus(selectedOption.label);
     closePopup();
   };
