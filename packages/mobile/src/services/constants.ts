@@ -26,3 +26,7 @@ export enum DynamicLinkParamKeys {
 }
 
 // Enums related to dynamic linking - ends
+
+export enum NotificationTypes {
+  Chat = 'CHAT',
+}

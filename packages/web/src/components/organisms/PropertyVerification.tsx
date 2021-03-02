@@ -7,7 +7,6 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { IDocsProps, ListingService } from '@homzhub/common/src/services/Property/ListingService';
-import { AttachmentError } from '@homzhub/common/src/services/AttachmentService/AttachmentService.web';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -26,7 +25,7 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { AttachmentType, AttachmentError } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];

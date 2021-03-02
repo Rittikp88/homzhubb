@@ -96,8 +96,8 @@ class GeolocationService {
     const formattedLng = lng.toString().replace('.', '');
 
     return {
-      latValue: formattedLat.length > 11 ? Number(lat.toPrecision(11)) : lat,
-      lngValue: formattedLng.length > 11 ? Number(lng.toPrecision(11)) : lng,
+      latValue: formattedLat.length > 11 ? Number(lat.toPrecision(10)) : lat,
+      lngValue: formattedLng.length > 11 ? Number(lng.toPrecision(10)) : lng,
     };
   };
 }

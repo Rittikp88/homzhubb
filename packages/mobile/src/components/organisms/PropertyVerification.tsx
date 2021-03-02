@@ -8,10 +8,11 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { IDocsProps, ListingService } from '@homzhub/common/src/services/Property/ListingService';
-import { AttachmentError, AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import {
   ExistingVerificationDocuments,
@@ -21,8 +22,8 @@ import {
   VerificationDocumentTypes,
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AttachmentError, AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];

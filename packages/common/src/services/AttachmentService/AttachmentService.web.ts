@@ -1,10 +1,6 @@
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
-import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
-
-export enum AttachmentError {
-  UPLOAD_IMAGE_ERROR = 'File is corrupted',
-}
+import { AttachmentType, AttachmentError } from '@homzhub/common/src/constants/AttachmentTypes';
 
 const baseUrl = ConfigHelper.getBaseUrl();
 

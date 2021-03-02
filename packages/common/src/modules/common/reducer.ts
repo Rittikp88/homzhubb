@@ -52,6 +52,7 @@ export const commonReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['messages']: true },
+        ['messages']: initialCommonState.messages,
       };
     case CommonActionTypes.GET.MESSAGES_SUCCESS:
       // eslint-disable-next-line no-case-declarations

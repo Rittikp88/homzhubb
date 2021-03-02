@@ -59,7 +59,11 @@ import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
-import { IAcceptInvitePayload, IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IAcceptInvitePayload,
+  IGetMessageParam,
+  IChatScreen,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -110,7 +114,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ValueAddedServices]: undefined;
   [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
   [ScreensKeys.Messages]: undefined;
-  [ScreensKeys.ChatScreen]: undefined;
+  [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam;
 };
 

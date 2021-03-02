@@ -1,3 +1,4 @@
+import { OSTypes } from '@homzhub/common/src/utils/PlatformUtils';
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
@@ -725,4 +726,15 @@ export interface IUpdateLeaseTerm {
     minimum_lease_period: number;
     maintenance_amount: number | null;
   };
+}
+
+export interface IChatScreen {
+  groupId: number;
+}
+
+export interface IDeviceTokenPayload {
+  registration_id: string;
+  name: string;
+  device_id: string;
+  type: OSTypes;
 }
