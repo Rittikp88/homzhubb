@@ -78,10 +78,17 @@ const AddProperty: FC = () => {
     setCurrentScreen(comp);
   };
   const goBack = (): void => {
+    if (currentScreen === 0) {
+      navigateToDashboard();
+    }
     if (currentScreen !== AddPropertyStack.AddPropertyLocationScreen) {
       const activeIndex = compArray.findIndex((value) => value.component === currentScreen);
       setCurrentScreen(compArray[activeIndex - 1].component);
     }
+  };
+
+  const navigateToDashboard = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
   const handleEditSelection = (): void => {
     setCurrentScreen(AddPropertyStack.PropertyDetailsMapScreen);

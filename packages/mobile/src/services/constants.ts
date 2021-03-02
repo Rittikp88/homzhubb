@@ -7,6 +7,7 @@ export enum DynamicLinkTypes {
   WorkEmailVerification = 'WORK_EMAIL_VERIFICATION',
   Referral = 'REFERRAL',
   PropertyVisitReview = 'PROPERTY_VISIT_REVIEW',
+  TenantInvitation = 'TENANT_INVITATION',
 }
 
 export enum RouteTypes {
@@ -21,6 +22,7 @@ export enum DynamicLinkParamKeys {
   PropertyTermId = 'propertyTermId',
   ReferralCode = 'referralCode',
   VisitId = 'visitId',
+  InviteId = 'inviteId',
 }
 
 // Enums related to dynamic linking - ends

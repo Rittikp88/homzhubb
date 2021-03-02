@@ -67,11 +67,7 @@ interface IOwnState {
   tabViewHeights: number[];
 }
 
-const { height, width } = theme.viewport;
-const TAB_LAYOUT = {
-  width: width - theme.layout.screenPadding * 2,
-  height,
-};
+const { height } = theme.viewport;
 
 class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
@@ -138,6 +134,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     const {
       selectedAssetPlan: { selectedPlan },
       assetDetails,
+      isDesktop,
     } = this.props;
 
     if (!assetDetails) return null;
@@ -149,6 +146,15 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
 
     const steps = this.getRoutes().map((route) => route.title);
+    const checkServicesTab = (): boolean => {
+      if (currentIndex > 3) return false;
+
+      const { key } = this.getRoutes()[currentIndex];
+      if (Tabs.SERVICE_PAYMENT === key) {
+        return true;
+      }
+      return false;
+    };
     return (
       <>
         <AddressWithStepIndicator
@@ -166,7 +172,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         {this.renderTabHeader()}
         <TabView
           lazy
-          // initialLayout={TAB_LAYOUT}
           renderScene={this.renderScene}
           onIndexChange={this.handleIndexChange}
           renderTabBar={(): null => null}
@@ -175,9 +180,14 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             index: currentIndex,
             routes: this.getRoutes(),
           }}
-          style={{ height: tabViewHeights[currentIndex] }}
+          style={{ height: isDesktop && checkServicesTab() ? 'auto' : tabViewHeights[currentIndex] }}
         />
-        <ContinuePopup isSvg isOpen={isSheetVisible} {...this.renderContinueView(assetDetails)} />
+        <ContinuePopup
+          isSvg
+          isOpen={isSheetVisible}
+          {...this.renderContinueView(assetDetails)}
+          onContinueRoute={RouteNames.protectedRoutes.DASHBOARD}
+        />
       </>
     );
   }
@@ -412,6 +422,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   private handleContinue = (): void => {
     const { resetState, assetDetails } = this.props;
     this.setState({ isSheetVisible: false });
+    const { currentIndex } = this.state;
     resetState();
 
     if (assetDetails) {
@@ -423,6 +434,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       } = assetDetails;
       if (isPropertyReady && type !== TypeOfPlan.MANAGE) {
         // TODO: Add Preview Logic
+        this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
       } else {
         this.navigateToDashboard();
       }
@@ -432,7 +444,6 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   private handleNextStep = (): void => {
     const { currentIndex, isStepDone, isSheetVisible, isNextStep } = this.state;
     const { assetDetails, getAssetById } = this.props;
-
     ListingService.handleListingStep({
       currentIndex,
       isStepDone,
@@ -452,7 +463,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
       ...prevState,
       ...(currentIndex && { currentIndex }),
       ...(isStepDone && { isStepDone }),
-      isNextStep: isNextStep || false,
+      isNextStep: isNextStep ?? false,
       isSheetVisible: isSheetVisible || false,
     }));
   };
@@ -463,7 +474,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
 
     if (assetDetails && assetDetails.lastVisitedStep.isPropertyReady) {
       if (assetDetails.lastVisitedStep.listing.type !== TypeOfPlan.MANAGE) {
-        // TODO: Add logic
+        this.navigateToDashboard();
       } else {
         this.navigateToDashboard();
       }
@@ -473,6 +484,10 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         return;
       }
       if (!isDesktop && currentIndex === 3) {
+        this.navigateToDashboard();
+        return;
+      }
+      if (this.getRoutes().length === 2 && currentIndex === 1) {
         this.navigateToDashboard();
         return;
       }
@@ -491,7 +506,9 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
 
   private scrollToTop = (): void => {
     setTimeout(() => {
-      // TODO: Add logic
+      if (PlatformUtils.isWeb()) {
+        window.scrollTo(0, 0);
+      }
     }, 100);
   };
 }

@@ -4,7 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
-import Portfolio from '@homzhub/web/src/screens/portfolio/index'
+import Portfolio from '@homzhub/web/src/screens/portfolio';
 
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
@@ -23,7 +23,7 @@ export const MainRouter = (): React.ReactElement => {
         <Route exact path={ADD_PROPERTY} component={PostProperty} />
         <Route exact path={HELP_SUPPORT} component={HelpAndSupport} />
         <Route exact path={ADD_LISTING} component={AddPropertyListing} />
-        <Route exact path= {PORTFOLIO} component = {Portfolio}/>
+        <Route exact path={PORTFOLIO} component={Portfolio} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>
     </Suspense>

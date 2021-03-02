@@ -19,7 +19,7 @@ export class GroupMessage {
   @JsonProperty('created_at', String, true)
   private _createdAt = '';
 
-  @JsonProperty('unread_count', Number)
+  @JsonProperty('unread_count', Number, true)
   private _unreadCount = 0;
 
   get id(): number {

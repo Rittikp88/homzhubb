@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
@@ -20,18 +22,26 @@ interface IProps {
   iconColor?: string;
   isSvg: boolean;
   isOpen: boolean;
+  onContinueRoute: string | null;
 }
 
 type Props = IContinuePopupProps & IProps;
 
 const ContinuePopup: React.FC<Props> = (props: Props) => {
-  const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor, isSvg, isOpen } = props;
+  const history = useHistory();
+  const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor, isSvg, isOpen, onContinueRoute } = props;
   const popupRef = useRef<PopupActions>(null);
   const { t } = useTranslation();
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
+  };
+  const handleContinue = (): void => {
+    if (onContinueRoute) {
+      NavigationUtils.navigate(history, { path: onContinueRoute });
+    }
+    handlePopupClose();
   };
   const renderPopupCard = (): React.ReactElement => {
     return (
@@ -67,7 +77,7 @@ const ContinuePopup: React.FC<Props> = (props: Props) => {
           type="primary"
           containerStyle={styles.continueButton}
           title={buttonTitle || t('continue')}
-          onPress={(): void => handlePopupClose()}
+          onPress={handleContinue}
         />
       </View>
     );
@@ -95,8 +105,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100vh',
-    height: '100vh',
   },
   popupCard: {
     height: 340,

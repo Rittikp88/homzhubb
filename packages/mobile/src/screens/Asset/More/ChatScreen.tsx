@@ -10,6 +10,7 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { MessageRepository } from '@homzhub/common/src/domain/repositories/MessageRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -25,6 +26,7 @@ import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IAttachmentResponse } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 enum MenuItems {
   VIEW_INFO = 'VIEW_INFO',
@@ -86,6 +88,7 @@ class ChatScreen extends Component<Props, IScreenState> {
         <ChatInputBox
           containerStyle={styles.inputBox}
           onInputFocus={this.onInputFocus}
+          onFocusOut={this.onInputFocusOut}
           onSubmit={this.onSendMessage}
           onUploadImage={this.onUploadAttachment}
           onPressCamera={this.onClickImage}
@@ -113,9 +116,18 @@ class ChatScreen extends Component<Props, IScreenState> {
     this.setState({ isScrollToBottom: true });
   };
 
+  private onInputFocusOut = (): void => {
+    this.setState({ isScrollToBottom: false });
+  };
+
   private onSelectMenuItem = (value: string): void => {
+    const {
+      navigation,
+      currentChat: { groupId },
+    } = this.props;
     if (value === MenuItems.VIEW_INFO) {
-      // TODO: Add navigation for info screen
+      navigation.navigate(ScreensKeys.GroupChatInfo, { groupId });
+      this.handleMenu();
     }
   };
 
@@ -201,10 +213,13 @@ class ChatScreen extends Component<Props, IScreenState> {
   };
 
   private handleSend = (payload: IMessagePayload): void => {
-    const { getMessages } = this.props;
+    const { getMessages, currentChat } = this.props;
     MessageRepository.sendMessage(payload)
       .then(() => {
         getMessages({ groupId: payload.groupId, isNew: true });
+        if (currentChat) {
+          AnalyticsService.track(EventType.NEW_MESSAGE, { group_name: currentChat.groupName });
+        }
       })
       .catch((err) => {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
@@ -216,7 +231,7 @@ class ChatScreen extends Component<Props, IScreenState> {
 
     clearAttachment();
     this.setState({ isMenuVisible: false });
-    console.log(currentChat);
+
     if (!currentChat) return;
     try {
       await MessageRepository.updateMessage({

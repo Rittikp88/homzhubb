@@ -114,7 +114,7 @@ const Avatar = (props: IProps): React.ReactElement => {
               <Label textType="regular" type="regular" style={[styles.designation, customDesignation]}>
                 {designation}
               </Label>
-              {phoneNumber && (
+              {!!phoneNumber && (
                 <View style={styles.numberContainer}>
                   <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
                   {!!phoneCode && (
@@ -137,7 +137,7 @@ const Avatar = (props: IProps): React.ReactElement => {
           </View>
         )}
       </View>
-      {(isRightIcon || date) && (
+      {(isRightIcon || !!date) && (
         <View style={styles.rightView}>
           {isRightIcon && onPressRightIcon && (
             <Icon
@@ -148,7 +148,7 @@ const Avatar = (props: IProps): React.ReactElement => {
               onPress={onPressRightIcon}
             />
           )}
-          {date && (
+          {!!date && (
             <Label textType="regular" type="regular" style={styles.designation}>
               {TimeUtils.getLocaltimeDifference(date)}
             </Label>

@@ -81,7 +81,7 @@ interface IScreenState {
   currentVisitId: number;
   height: number;
   replyReview: boolean;
-  reviewData: AssetReview | null;
+  reviewData: AssetReview;
 }
 
 type Props = IProps & WithTranslation;
@@ -95,7 +95,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     currentVisitId: 0,
     height: theme.viewport.height,
     replyReview: false,
-    reviewData: null,
+    reviewData: new AssetReview(),
   };
 
   public componentDidMount = (): void => {
@@ -299,9 +299,12 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     const { review, isAssetOwner } = item;
     if (isAssetOwner && !review) return null;
     const onPress = (): void => {
+      if (review) {
+        this.getReview(review.id);
+      }
+
       if (isAssetOwner) {
         this.setState({ replyReview: true });
-        this.getReview(review.id);
       } else {
         this.setState({ reviewAsset: item, showReviewForm: true });
       }
@@ -357,9 +360,8 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   };
 
   private renderReviewForm = (): React.ReactNode => {
-    const { showReviewForm, reviewAsset } = this.state;
+    const { showReviewForm, reviewAsset, reviewData } = this.state;
     const { t, pillars } = this.props;
-
     if (reviewAsset === null) return null;
     const { asset, leaseListing, saleListing } = (reviewAsset as unknown) as AssetVisit;
     return (
@@ -369,14 +371,26 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         headerTitle={t('propertyReview')}
         onCloseSheet={this.onCancelReview}
       >
-        <ReviewForm
-          deleted={this.delete}
-          onClose={this.onCancelReview}
-          asset={asset}
-          ratingCategories={pillars ?? []}
-          leaseListingId={leaseListing}
-          saleListingId={saleListing}
-        />
+        {reviewData && reviewData.id ? (
+          <ReviewForm
+            editReview
+            deleted={this.closeDeleteSheet}
+            onClose={this.onCancelReview}
+            asset={asset}
+            review={reviewData}
+            ratingCategories={reviewData.pillarRatings}
+            leaseListingId={reviewData.leaseListing}
+            saleListingId={reviewData.saleListing}
+          />
+        ) : (
+          <ReviewForm
+            onClose={this.onCancelReview}
+            asset={asset}
+            ratingCategories={pillars ?? []}
+            leaseListingId={leaseListing}
+            saleListingId={saleListing}
+          />
+        )}
       </BottomSheet>
     );
   };
@@ -470,13 +484,29 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   };
 
   private delete = (): void => {
+    const { showDeleteForm, reviewData } = this.state;
+    const { resetData } = this.props;
+    this.setState({ showDeleteForm: !showDeleteForm });
+    AssetRepository.deleteReview(reviewData.id)
+      .then(() => {
+        if (resetData) {
+          this.closeBottomSheet();
+          resetData();
+        }
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      });
+  };
+
+  private closeDeleteSheet = (): void => {
     const { showDeleteForm } = this.state;
     this.setState({ showDeleteForm: !showDeleteForm });
   };
 
   private closeBottomSheet = (): void => {
     const { showDeleteForm, showReviewForm } = this.state;
-    this.setState({ showDeleteForm: !showDeleteForm, showReviewForm: !showReviewForm });
+    this.setState({ showDeleteForm: !showDeleteForm, showReviewForm: !showReviewForm, reviewData: new AssetReview() });
   };
 
   private deleteForm = (): React.ReactElement => {
@@ -498,7 +528,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
 
           <View style={styles.buttonContaine}>
             <Button
-              onPress={this.closeBottomSheet}
+              onPress={this.closeDeleteSheet}
               type="secondary"
               title={t('common:no')}
               titleStyle={styles.buttonTitle}

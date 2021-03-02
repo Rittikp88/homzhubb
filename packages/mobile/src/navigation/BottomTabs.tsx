@@ -24,6 +24,7 @@ import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/Pr
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
   IComingSoon,
+  IEditLeaseProps,
   IForgotPasswordProps,
   IManageTenantProps,
   IOtpNavProps,
@@ -49,13 +50,16 @@ import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePasswor
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
+import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
-import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
+import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
+import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
+import { IAcceptInvitePayload, IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -74,12 +78,13 @@ export type DashboardNavigatorParamList = {
 };
 
 export type PortfolioNavigatorParamList = {
-  [ScreensKeys.PortfolioLandingScreen]: undefined;
+  [ScreensKeys.PortfolioLandingScreen]: IAcceptInvitePayload;
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
   [ScreensKeys.PropertyDetailsNotifications]: undefined;
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
   [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
   [ScreensKeys.ManageTenantScreen]: IManageTenantProps;
+  [ScreensKeys.UpdateLeaseScreen]: IEditLeaseProps;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -106,6 +111,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
   [ScreensKeys.Messages]: undefined;
   [ScreensKeys.ChatScreen]: undefined;
+  [ScreensKeys.GroupChatInfo]: IGetMessageParam;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -143,6 +149,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.PropertyPostLandingScreen} component={AssetLandingScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
       <PortfolioNavigator.Screen name={ScreensKeys.ManageTenantScreen} component={ManageTenantScreen} />
+      <PortfolioNavigator.Screen name={ScreensKeys.UpdateLeaseScreen} component={UpdateLeaseTerm} />
     </PortfolioNavigator.Navigator>
   );
 };
@@ -188,6 +195,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
       <MoreStackNavigator.Screen name={ScreensKeys.Messages} component={Messages} />
       <MoreStackNavigator.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
+      <MoreStackNavigator.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -209,6 +217,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.PropertyPostStack,
       ScreensKeys.AssetNeighbourhood,
       ScreensKeys.ChatScreen,
+      ScreensKeys.GroupChatInfo,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };

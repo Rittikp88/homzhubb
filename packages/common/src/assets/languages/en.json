@@ -213,7 +213,11 @@
     "doYouWantToRemove": "Do you want to remove?",
     "deleteReview": "Delete Review",
     "deleteReviewText": "Once deleted, this review won't be visible to anyone. This action cannot be undone.",
-    "user": "User"
+    "user": "User",
+    "capture": "Capture",
+    "members": "Members",
+    "chatMemberCount": "{{count}} Members",
+    "media": "Media"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -246,6 +250,8 @@
     "minimumCharacters": "Minimum 8 characters allowed",
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already registered?",
+    "alreadyAccount": "Already have an account ?",
+    "loginInstead": " Log In instead",
     "signUpWithGoogle": "Signup With Google",
     "signUpWithFacebook": "Signup With Facebook",
     "loginWithGoogle": "Login With Google",
@@ -538,7 +544,12 @@
     "inValidVisit": "This listing has been removed by the property owner.",
     "youHaveAlreadyReportedThisCommentOn": "You have already reported this comment on",
     "tenantRemoveDate": "This tenant will be removed from the lease on {{date}}",
-    "reportStatus": "Report status"
+    "reportStatus": "Report status",
+    "editLeaseTerm": "Edit Lease Terms",
+    "leaseUpdated": "Successfully lease updated",
+    "totalServiceFee": "Total service fees",
+    "tokenAmount": "Token amount: {{amount}}",
+    "orValue": "or{{value}}"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -586,15 +597,15 @@
     "showVerified": "Show Verified",
     "agentListed": "Agent Listed",
     "thisAreaOnly": "This area only",
-    "within5km": "Within 5 km",
-    "withinQuarterkm": "Within 0.25 km",
-    "within10km": "Within 10 km",
-    "withinHalfkm": "Within 0.5 km",
-    "within20km": "Within 20 km",
-    "within1km": "Within 1 km",
-    "within30km": "Within 30 km",
+    "within5": "Within 5 {{metric}}",
+    "withinQuarter": "Within 0.25 {{metric}}",
+    "within10": "Within 10 {{metric}}",
+    "withinHalf": "Within 0.5 {{metric}}",
+    "within20": "Within 20 {{metric}}",
+    "within1": "Within 1 {{metric}}",
+    "within30": "Within 30 {{metric}}",
     "within3km": "Within 3 km",
-    "within40km": "Within 40 km",
+    "within40": "Within 40 {{metric}}",
     "anytime": "Anytime",
     "last3days": "Last 3 days",
     "last14days": "Last 14 days",
@@ -704,7 +715,8 @@
     "noPropertiesAdded": "You haven't added any properties",
     "noFilterProperties": "There are no properties for the selected filter",
     "deletePropertyDescription": "Once deleted all the historical records of this property will be lost. Homzhub will remove or mask any sensitive information but will retain transactional data.",
-    "deleteConfirmation": "Do you want to continue deleting this property?"
+    "deleteConfirmation": "Do you want to continue deleting this property?",
+    "selectCountry": "Select Country"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -748,6 +760,7 @@
   "assetMore": {
     "more": "More",
     "profile": "Profile",
+    "profileDetails": "Profile Details",
     "notifications": "Notifications",
     "documents": "Documents",
     "kycDocuments": "KYC Documents",

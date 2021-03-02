@@ -17,40 +17,40 @@ const translationKey = LocaleConstants.namespacesKey.propertySearch;
 export const AdvancedFilters = {
   searchRadius: [
     {
-      value: 1,
+      value: 50,
       label: `${translationKey}:thisAreaOnly`,
     },
     {
-      value: 3,
-      label: `${translationKey}:withinQuarterkm`,
+      value: 0.25,
+      label: `${translationKey}:withinQuarter`,
+    },
+    {
+      value: 0.5,
+      label: `${translationKey}:withinHalf`,
+    },
+    {
+      value: 1,
+      label: `${translationKey}:within1`,
     },
     {
       value: 5,
-      label: `${translationKey}:withinHalfkm`,
-    },
-    {
-      value: 7,
-      label: `${translationKey}:within1km`,
-    },
-    {
-      value: 2,
-      label: `${translationKey}:within5km`,
-    },
-    {
-      value: 4,
-      label: `${translationKey}:within10km`,
-    },
-    {
-      value: 6,
-      label: `${translationKey}:within20km`,
-    },
-    {
-      value: 8,
-      label: `${translationKey}:within30km`,
+      label: `${translationKey}:within5`,
     },
     {
       value: 10,
-      label: `${translationKey}:within40km`,
+      label: `${translationKey}:within10`,
+    },
+    {
+      value: 20,
+      label: `${translationKey}:within20`,
+    },
+    {
+      value: 30,
+      label: `${translationKey}:within30`,
+    },
+    {
+      value: 40,
+      label: `${translationKey}:within40`,
     },
   ],
   dateAdded: [

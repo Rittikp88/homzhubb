@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import Check from '@homzhub/common/src/assets/images/check.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
@@ -132,14 +133,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   };
 
   private renderCarouselItem = (item: AssetAdvertisementResults): React.ReactElement => {
-    return (
-      <Image
-        source={{
-          uri: item?.attachment?.link ?? '',
-        }}
-        style={styles.carouselImage}
-      />
-    );
+    return <SVGUri uri={item.attachment.link} />;
   };
 
   public onSnapToItem = (slideNumber: number): void => {
@@ -224,10 +218,7 @@ const styles = StyleSheet.create({
   },
   carouselContainer: {
     height: 350,
-  },
-  carouselImage: {
-    height: '100%',
-    width: '100%',
+    backgroundColor: theme.colors.white,
   },
   activeDotStyle: {
     width: 18,

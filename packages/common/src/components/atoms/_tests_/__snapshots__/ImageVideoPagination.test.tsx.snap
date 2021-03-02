@@ -19,6 +19,7 @@ exports[`ImageVideoPagination should match snapshot for IMAGE 1`] = `
     color="#FFFFFF"
     name="camera"
     size={20}
+    style={Object {}}
   />
   <Icon
     allowFontScaling={false}
@@ -66,6 +67,7 @@ exports[`ImageVideoPagination should match snapshot for VIDEO 1`] = `
     color="#667686"
     name="camera"
     size={20}
+    style={Object {}}
   />
   <Icon
     allowFontScaling={false}

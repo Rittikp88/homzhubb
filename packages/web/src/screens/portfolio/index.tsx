@@ -16,6 +16,7 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
+import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/PortfolioFilter';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
@@ -75,14 +76,28 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   public componentDidMount = (): void => {
     this.getScreenData();
+    PortfolioRepository.getAssetFilters()
+    .then((response) => {
+      this.setState({
+        filters: response
+      })
+    })
+    .catch((e) => {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    });
   };
 
 
 
   public render = (): React.ReactElement => {
     const {  properties } = this.props;
-    return (   
-        this.renderPortfolio(properties)
+    const {filters} = this.state
+    return ( 
+        <View style={{flexDirection:'column'}}>
+      <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
+        {this.renderPortfolio(properties)}
+        </View>
     );
   };
 
@@ -115,8 +130,20 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         ) : (
           data?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
         )}
-      </View>
+      </View> 
     );
+  };
+
+
+  private getStatus = (status: string): void => {
+    PortfolioRepository.getUserAssetDetails(status)
+      .then((response) => {
+        // TODO :Use the response to display filteredcard :Mohak
+      })
+      .catch((e) => {
+        const error = ErrorUtils.getErrorMessage(e.details);
+        AlertHelper.error({ message: error });
+      });
   };
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
@@ -255,9 +282,11 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setEditPropertyFlow,
       clearMessages,
     },
-    dispatch
-  );
-};
+    dispatch)
+  }
+
+
+
 
 export default connect(
   mapStateToProps,

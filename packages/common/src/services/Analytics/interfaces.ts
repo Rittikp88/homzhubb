@@ -65,6 +65,10 @@ export interface IVisitEvent extends IPropertyEvent {
   end_date: string;
 }
 
+export interface IMessageEvent {
+  group_name: string;
+}
+
 export type EventDataType =
   | IAuthenticationEvent
   | IAddPropertyEvent
@@ -73,4 +77,5 @@ export type EventDataType =
   | ISearchEvent
   | IReferEvent
   | IPropertyShareEvent
-  | IVisitEvent;
+  | IVisitEvent
+  | IMessageEvent;

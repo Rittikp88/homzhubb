@@ -13,7 +13,7 @@ import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 
 // CONSTANTS
-const SEARCH_RADIUS_KILO_METRE = [50, 5, 0.25, 10, 0.5, 20, 1, 30, 3, 40];
+const DEFAULT_SEARCH_RADIUS = 50;
 const DATE_ADDED = [
   null,
   DateUtils.getDate(1),
@@ -56,6 +56,7 @@ class AssetService {
         facing,
         furnishing,
         propertyAmenity,
+        search_radius_unit,
       } = miscellaneous;
 
       miscellaneousData = {
@@ -67,10 +68,9 @@ class AssetService {
         ...(show_verified ? { is_verified: show_verified } : {}),
         ...(agent_listed ? { agent_listed } : {}),
         // ...{property_age.id !== -1 && { age__gte: PROPERTY_AGE[property_age.id - 1] } },
-        ...(search_radius.id === -1
-          ? { search_radius: SEARCH_RADIUS_KILO_METRE[0] }
-          : { search_radius: SEARCH_RADIUS_KILO_METRE[search_radius.id - 1] }),
+        ...(search_radius.id === -1 ? { search_radius: DEFAULT_SEARCH_RADIUS } : { search_radius: search_radius.id }),
         ...(date_added.id !== -1 ? { date_added__gte: DATE_ADDED[date_added.id - 1] } : {}),
+        ...(search_radius_unit ? { search_radius_unit } : { search_radius_unit: 'km' }),
       };
     }
     const bedroomCount = cloneDeep(room_count);
@@ -195,6 +195,7 @@ class AssetService {
         expected_move_in_date,
         facing,
         furnishing,
+        search_radius_unit,
       } = miscellaneous;
       miscellaneous_search_criteria = {
         ...(property_age && property_age.id > 0 && { property_age }),
@@ -205,6 +206,7 @@ class AssetService {
         ...(furnishing.length > 0 && { furnishing_status: furnishing }),
         agent_listed,
         expected_move_in_date,
+        search_radius_unit,
       };
     }
 

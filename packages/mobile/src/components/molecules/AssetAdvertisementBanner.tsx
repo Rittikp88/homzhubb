@@ -1,9 +1,10 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
+import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { AssetAdvertisement, AssetAdvertisementResults } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 
 interface IAssetAdvertisementBannerState {
@@ -53,14 +54,7 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
   }
 
   private renderCarouselItem = (item: AssetAdvertisementResults): React.ReactElement => {
-    return (
-      <Image
-        source={{
-          uri: item.attachment.link,
-        }}
-        style={styles.carouselImage}
-      />
-    );
+    return <SVGUri uri={item.attachment.link} />;
   };
 
   public onSnapToItem = (slideNumber: number): void => {
@@ -76,7 +70,8 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
 const styles = StyleSheet.create({
   container: {
     marginTop: 16,
-    height: 180,
+    height: 200,
+    backgroundColor: theme.colors.white,
   },
   radius: {
     borderRadius: 4,
@@ -85,11 +80,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignSelf: 'center',
     bottom: 0,
-    paddingVertical: 5,
-  },
-  carouselImage: {
-    height: '100%',
-    width: '100%',
+    paddingVertical: 10,
   },
   activeDotStyle: {
     borderWidth: 1,
