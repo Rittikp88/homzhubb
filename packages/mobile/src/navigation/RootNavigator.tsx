@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import SplashScreen from 'react-native-splash-screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
+import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -30,6 +31,7 @@ export const RootNavigator = (props: IProps): React.ReactElement | null => {
       dispatch(UserActions.getUserProfile());
       dispatch(UserActions.getFavouriteProperties());
       dispatch(UserActions.getAssets());
+      NotificationService.postDeviceToken();
     }
 
     GeolocationService.setLocationDetails(isLoggedIn, searchAddress).then();

@@ -5,6 +5,7 @@ import { ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IChatPayload, ICommonState, IMessageSuccess } from '@homzhub/common/src/modules/common/interfaces';
+import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export const initialCommonState: ICommonState = {
   countries: [],
@@ -49,9 +50,12 @@ export const commonReducer = (
         ['redirectionDetails']: action.payload as IRedirectionDetails,
       };
     case CommonActionTypes.GET.MESSAGES:
+      // eslint-disable-next-line no-case-declarations
+      const { isNew: newData } = action.payload as IGetMessageParam;
       return {
         ...state,
-        ['loaders']: { ...state.loaders, ['messages']: true },
+        ['loaders']: { ...state.loaders, ['messages']: !newData },
+        ['messages']: initialCommonState.messages,
       };
     case CommonActionTypes.GET.MESSAGES_SUCCESS:
       // eslint-disable-next-line no-case-declarations

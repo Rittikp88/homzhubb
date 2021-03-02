@@ -4,6 +4,9 @@ import { theme } from '@homzhub/common/src/styles/theme';
 
 export interface IToastProps {
   message: string;
+  onPress?: () => void;
+  description?: string;
+  duration?: number;
 }
 
 export interface IAlertProps {
@@ -15,11 +18,14 @@ export interface IAlertProps {
 
 class AlertHelper {
   public success = (options: IToastProps): void => {
-    const { message } = options;
+    const { message, onPress, description, duration } = options;
     showMessage({
       message,
       type: 'success',
       backgroundColor: theme.colors.success,
+      onPress,
+      description,
+      duration,
     });
   };
 

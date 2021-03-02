@@ -192,6 +192,24 @@ class NavigationService {
 
     return match[0].split('=')[1];
   };
+
+  public notificationNavigation = (routeName: string, params: any = {}, tabName?: string): void => {
+    if (this.navigator) {
+      if (tabName) {
+        this.navigator.navigate(ScreensKeys.BottomTabs, {
+          screen: tabName,
+          params: {
+            screen: routeName,
+            initial: false,
+            params,
+          },
+        });
+
+        return;
+      }
+      this.navigator.navigate(routeName, params);
+    }
+  };
 }
 
 const navigationService = new NavigationService();

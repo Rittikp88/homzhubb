@@ -3,16 +3,27 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { StyleProp, StyleSheet, TouchableHighlight, View, ViewStyle } from 'react-native';
 import { MessageComponentProps } from 'react-native-flash-message';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+
+interface IMessage {
+  message: string;
+  description?: string;
+  type?: string;
+  backgroundColor?: string;
+  color?: string;
+  duration?: number;
+  onPress: () => void;
+}
 
 type IProps = MessageComponentProps & WithTranslation;
 class Toast extends React.PureComponent<IProps> {
   public render = (): React.ReactNode => {
     const {
       t,
-      message: { message, type },
+      message: { message, type, description },
     } = this.props;
 
     const icon = type === 'danger' ? icons.circularCrossFilled : icons.circularCheckFilled;
@@ -21,9 +32,16 @@ class Toast extends React.PureComponent<IProps> {
       <View style={this.getContainerStyle()}>
         <View style={styles.iconMessageContainer}>
           {icon && <Icon name={icon} size={20} color={theme.colors.white} style={styles.icon} />}
-          <Label type="large" style={styles.text} numberOfLines={2}>
-            {message}
-          </Label>
+          <View>
+            {!!description && (
+              <Text type="small" textType="semiBold" style={styles.text} numberOfLines={2}>
+                {description}
+              </Text>
+            )}
+            <Label type="large" style={styles.text} numberOfLines={2}>
+              {message}
+            </Label>
+          </View>
         </View>
         {(type === 'danger' || 'info') && (
           <TouchableHighlight
@@ -42,6 +60,12 @@ class Toast extends React.PureComponent<IProps> {
   };
 
   private onOKPress = (): void => {
+    const { message } = this.props;
+    const { onPress = FunctionUtils.noop } = message as IMessage;
+
+    if (onPress) {
+      onPress();
+    }
     AlertHelper.dismiss();
   };
 

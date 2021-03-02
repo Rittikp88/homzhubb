@@ -7,7 +7,6 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { IDocsProps, ListingService } from '@homzhub/common/src/services/Property/ListingService';
-import { AttachmentError } from '@homzhub/common/src/services/AttachmentService/AttachmentService.web';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -27,7 +26,7 @@ import {
 } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { AttachmentType, AttachmentError } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IPropertyVerificationState {
   verificationTypes: VerificationDocumentTypes[];
@@ -35,7 +34,7 @@ interface IPropertyVerificationState {
   localDocuments: ExistingVerificationDocuments[];
   isLoading: boolean;
   takeSelfie: boolean;
-  selfie: string;
+  selfie: any;
 }
 
 interface IProps {
@@ -158,9 +157,17 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     });
   };
 
-  public onSelfieSelect = (value: VerificationDocumentTypes, selfie: string): void => {
+  public onSelfieSelect = async (value: VerificationDocumentTypes, selfie: string): Promise<void> => {
     const verificationDocumentId = value.id;
-    const source = { uri: selfie, type: 'jpeg', name: 'image', id: verificationDocumentId };
+
+    const blob = this.dataURLtoFile(selfie, 'image.jpg');
+    const formData = new FormData();
+    formData.append('files[]', blob);
+
+    const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
+    const { data } = response;
+
+    const source = { uri: data[0].link, type: 'jpeg', name: 'image', id: data[0].id };
     this.updateLocalDocuments(verificationDocumentId, source, value);
   };
 
@@ -182,6 +189,20 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       AlertHelper.error({ message: value.helpText });
     }
   };
+
+  public dataURLtoFile(dataurl: any, filename: any): File {
+    const arr = dataurl.split(',');
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    // eslint-disable-next-line no-plusplus
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: 'image/jpeg' });
+  }
 
   public handleVerificationDocumentUploads = async (
     value: VerificationDocumentTypes,

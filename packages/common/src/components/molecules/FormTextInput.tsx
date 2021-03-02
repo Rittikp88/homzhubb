@@ -165,7 +165,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
         break;
       case 'number':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
-        if (inputPrefixText.length > 0 && showCurrencySymbol) {
+        if (inputPrefixText && inputPrefixText.length > 0 && showCurrencySymbol) {
           inputGroupPrefix = (
             <View style={styles.currencyPrefix}>
               <Label type="regular" style={styles.currencyPrefixText}>
@@ -209,7 +209,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       }
       case 'phone':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
-        if (inputPrefixText.length > 0) {
+        if (inputPrefixText && inputPrefixText.length > 0) {
           inputGroupPrefix = PlatformUtils.isMobile() ? (
             <TouchableOpacity style={styles.inputGroupPrefix} onPress={this.fetchPhoneCodes}>
               {this.fetchFlag()}
@@ -393,7 +393,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
 
     this.setState({ isFocused: false });
     if (inputType === 'phone') {
-      if (values.phone.length < this.fetchPhoneLength()) {
+      if (values && values.phone && values.phone.length < this.fetchPhoneLength()) {
         // TODO: Need to figure-out translation isssue
         setFieldError(name, 'Please enter a valid number');
       }

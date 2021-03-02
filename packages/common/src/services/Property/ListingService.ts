@@ -126,7 +126,7 @@ class ListingService {
       } = assetDetails.lastVisitedStep;
       if (currentIndex === 0 && params && params.isEditFlow) {
         updatedStates = {
-          ...states,
+          ...updatedStates,
           currentIndex: currentIndex + 1,
         };
         getAssetById();
@@ -135,14 +135,28 @@ class ListingService {
         onPreview(assetDetails);
       } else if (currentIndex < routes.length - 1) {
         updatedStates = {
-          ...states,
+          ...updatedStates,
           currentIndex: currentIndex + 1,
         };
         getAssetById();
         scrollToTop();
+      } else if (currentIndex === 1 || isPropertyReady) {
+        if (currentIndex < routes.length - 1) {
+          updatedStates = {
+            ...updatedStates,
+            currentIndex: currentIndex + 1,
+          };
+          getAssetById();
+          scrollToTop();
+        } else {
+          updatedStates = {
+            ...updatedStates,
+            isSheetVisible: true,
+          };
+        }
       } else {
         updatedStates = {
-          ...states,
+          ...updatedStates,
           isSheetVisible: true,
         };
       }
