@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingVertical: 24,
+    color: theme.colors.darkTint1,
     flex: 1,
   },
   send: {

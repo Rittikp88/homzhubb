@@ -121,12 +121,9 @@ class ChatScreen extends Component<Props, IScreenState> {
   };
 
   private onSelectMenuItem = (value: string): void => {
-    const {
-      navigation,
-      currentChat: { groupId },
-    } = this.props;
-    if (value === MenuItems.VIEW_INFO) {
-      navigation.navigate(ScreensKeys.GroupChatInfo, { groupId });
+    const { navigation, currentChat } = this.props;
+    if (value === MenuItems.VIEW_INFO && currentChat) {
+      navigation.navigate(ScreensKeys.GroupChatInfo, { groupId: currentChat.groupId });
       this.handleMenu();
     }
   };

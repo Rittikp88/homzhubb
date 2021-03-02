@@ -259,7 +259,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
           </View>
         )}
 
-        {[Tabs.VERIFICATIONS, Tabs.SERVICE_PAYMENT].includes(key) && (
+        {[Tabs.VERIFICATIONS, Tabs.SERVICES, Tabs.SERVICE_PAYMENT].includes(key) && (
           <View style={styles.tabHeaderVerification}>
             <View style={[styles.verification]}>
               <Text type="small" textType="semiBold">
