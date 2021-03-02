@@ -29,6 +29,7 @@ import {
   IGetTenanciesPayload,
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
+import ApiResponseHandler from '@homzhub/common/src/network/ApiResponseHandler';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -78,9 +79,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.getScreenData();
     PortfolioRepository.getAssetFilters()
     .then((response) => {
-      this.setState({
-        filters: response
-      })
+      console.log("FIlter data",response)
+      this.setFilteredData(response)
     })
     .catch((e) => {
       const error = ErrorUtils.getErrorMessage(e.details);
@@ -88,18 +88,29 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     });
   };
 
+  public setFilteredData = (response:any) =>{
+    this.setState({
+      filters:response
+    })
+  }
 
 
   public render = (): React.ReactElement => {
     const {  properties } = this.props;
     const {filters} = this.state
+    console.log(filters)
     return ( 
         <View style={{flexDirection:'column'}}>
-      <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
+      <PortfolioFilter filterData={filters} getStatus={this.status} />
         {this.renderPortfolio(properties)}
         </View>
     );
   };
+
+  private status = (status:string) => {
+    console.log(status)
+    this.getStatus(status);
+  }
 
 
   private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
@@ -136,11 +147,14 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
 
   private getStatus = (status: string): void => {
+    console.log(status)
     PortfolioRepository.getUserAssetDetails(status)
       .then((response) => {
+        console.log(response)
         // TODO :Use the response to display filteredcard :Mohak
       })
       .catch((e) => {
+        console.log(e)
         const error = ErrorUtils.getErrorMessage(e.details);
         AlertHelper.error({ message: error });
       });
@@ -177,7 +191,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private getScreenData = async (): Promise<void> => {
     await this.getAssetMetrics();
-    await this.getAssetFilters();
     this.getTenancies();
     this.getPortfolioProperty();
   };
@@ -195,25 +208,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     }
   };
 
-  private getAssetFilters = async (): Promise<void> => {
-    this.setState({ isLoading: true });
-    try {
-      const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
-      const filterData: PickerItemProps[] = response.map(
-        (item): PickerItemProps => {
-          return {
-            label: item.title,
-            value: item.label,
-          };
-        }
-      );
-      this.setState({ filters: filterData, isLoading: false });
-    } catch (e) {
-      this.setState({ isLoading: false });
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
-    }
-  };
 
   private getTenancies = (): void => {
     const { getTenanciesDetails } = this.props;

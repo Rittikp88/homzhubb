@@ -282,8 +282,8 @@ export class AssetCard extends Component<Props, IState> {
               }}
             />
           )}
-          <View style={styles.buttonGroup}>
-            {action && !isVacant ? (
+      <View style={styles.buttonGroup}>
+            {action && !isVacant && (
               <Button
                 type="primary"
                 textType="label"
@@ -301,12 +301,14 @@ export class AssetCard extends Component<Props, IState> {
                 ]}
                 onPress={this.onPressAction}
               />
-            ) : (
-              <View style={styles.latestUpdates}>
-                <LatestUpdates propertyVisitsData={assetData.listingVisits} />
-              </View>
             )}
           </View>
+          {console.log({ label })};
+          {label === Filters.FOR__RENT && (
+            <View style={styles.latestUpdates}>
+              <LatestUpdates propertyVisitsData={assetData.listingVisits} />
+            </View>
+          )}
         </View>
       </>
     );
