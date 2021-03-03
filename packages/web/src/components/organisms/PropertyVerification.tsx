@@ -13,6 +13,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
 import CaptureSelfiePopover from '@homzhub/web/src/screens/addPropertyListing/CaptureSelfiePopover';
+import NoCamera from '@homzhub/web/src/components/molecules/NoCamera';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
@@ -42,6 +43,7 @@ interface IProps {
   propertyId: number;
   lastVisitedStep: ILastVisitedStep;
   onUploadDocument: () => any;
+  handleNextStep: () => void;
 }
 
 type Props = WithTranslation & IProps & IWithMediaQuery;
@@ -71,38 +73,54 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
 
     return (
       <>
-        <View style={styles.container}>
-          <CaptureSelfiePopover onCaptureSelfie={this.onCaptureSelfie} takeSelfie={takeSelfie} />
-          <VerificationTypes
-            typeOfPlan={typeOfPlan}
-            existingDocuments={existingDocuments}
-            localDocuments={localDocuments}
-            deleteDocument={this.onDeleteDocument}
-            handleTypes={this.handleVerificationTypes}
-            handleUpload={this.handleVerificationDocumentUploads}
+        {navigator.mediaDevices.getUserMedia && (
+          <View style={styles.container}>
+            <CaptureSelfiePopover onCaptureSelfie={this.onCaptureSelfie} takeSelfie={takeSelfie} />
+            <VerificationTypes
+              typeOfPlan={typeOfPlan}
+              existingDocuments={existingDocuments}
+              localDocuments={localDocuments}
+              deleteDocument={this.onDeleteDocument}
+              handleTypes={this.handleVerificationTypes}
+              handleUpload={this.handleVerificationDocumentUploads}
+            />
+            {!isTablet && !isIpadPro && (
+              <>
+                <Divider containerStyles={styles.divider} />
+                <View style={styles.contentView}>
+                  <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
+                    {t('propertyVerificationSubTitle')}
+                  </Label>
+                  <Label type="large" textType="semiBold" style={styles.helperText}>
+                    {t('helperNavigationText')}
+                  </Label>
+                </View>
+              </>
+            )}
+          </View>
+        )}
+        {!navigator.mediaDevices.getUserMedia && (
+          <View style={styles.container}>
+            <NoCamera />
+          </View>
+        )}
+        {navigator.mediaDevices.getUserMedia && (
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            disabled={!containsAllReqd || isLoading}
+            containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
+            onPress={this.postPropertyVerificationDocuments}
           />
-          {!isTablet && !isIpadPro && (
-            <>
-              <Divider containerStyles={styles.divider} />
-              <View style={styles.contentView}>
-                <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
-                  {t('propertyVerificationSubTitle')}
-                </Label>
-                <Label type="large" textType="semiBold" style={styles.helperText}>
-                  {t('helperNavigationText')}
-                </Label>
-              </View>
-            </>
-          )}
-        </View>
-
-        <Button
-          type="primary"
-          title={t('common:continue')}
-          disabled={!containsAllReqd || isLoading}
-          containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
-          onPress={this.postPropertyVerificationDocuments}
-        />
+        )}
+        {!navigator.mediaDevices.getUserMedia && (
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
+            onPress={this.nextStep}
+          />
+        )}
       </>
     );
   }
@@ -238,6 +256,10 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     }));
   };
 
+  public nextStep = (): void => {
+    const { handleNextStep } = this.props;
+    handleNextStep();
+  };
   // HANDLERS END
 
   public postPropertyVerificationDocuments = async (): Promise<void> => {
@@ -314,6 +336,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     backgroundColor: theme.colors.white,
   },
   buttonStyle: {

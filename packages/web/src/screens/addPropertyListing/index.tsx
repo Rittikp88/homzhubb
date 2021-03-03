@@ -63,10 +63,11 @@ const AddPropertyListing = (): React.ReactElement => {
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);
   const Mobile = useOnly(deviceBreakpoint.MOBILE);
   const Tablet = useOnly(deviceBreakpoint.TABLET);
-  // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
-  // useEffect(() => {
-  //   dispatch(RecordAssetActions.setAssetId(763));
-  // });
+  //    const dispatch = useDispatch();
+  //  // TODO: (WEB) Remove this once your add property and add listing flow connected,this is just for testing purpose
+  //   useEffect(() => {
+  //     dispatch(RecordAssetActions.setAssetId(697));
+  //   });
 
   // TODO: remove the commented code once the API issue from chrome is resolved
 
