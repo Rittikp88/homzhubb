@@ -11,10 +11,11 @@ interface IProgressBarProps {
   width?: number;
   filledColor?: string;
   containerStyles?: StyleProp<ViewStyle>;
+  isPropertyVacant?: boolean;
 }
 
 const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
-  const { progress, width, filledColor = theme.colors.green, title, containerStyles = {} } = props;
+  const { progress, width, title, containerStyles = {}, isPropertyVacant, filledColor = theme.colors.green } = props;
   return (
     <View style={containerStyles}>
       <View style={styles.container}>
@@ -28,10 +29,11 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
       <Progress
         progress={progress / 100}
         width={width}
-        color={filledColor}
+        color={isPropertyVacant ? theme.colors.green : filledColor}
         trackColor={theme.colors.background}
         style={styles.barStyle}
         borderRadius={5}
+        unfilledColor={theme.colors.green}
       />
     </View>
   );

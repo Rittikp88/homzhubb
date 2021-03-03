@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { RentAndMaintenance } from '@homzhub/mobile/src/components/molecules/RentAndMaintenance';
+import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Transaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 

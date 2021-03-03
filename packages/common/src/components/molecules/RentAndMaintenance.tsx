@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: PlatformUtils.isWeb() ? 270 : undefined,
   },
   contentView: {
     flexDirection: 'row',
