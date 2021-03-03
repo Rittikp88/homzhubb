@@ -142,6 +142,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     };
     let labelStyles = { ...theme.form.formLabel };
     let inputProps = {
+      caretHidden: true,
       value: values[name],
       placeholder,
       placeholderTextColor: theme.form.placeholderColor,

@@ -19,15 +19,15 @@
         android:launchMode="singleTask"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+        
         <activity
-            android:name=".SplashActivity"
+            android:name="com.zoontek.rnbootsplash.RNBootSplashActivity"
             android:theme="@style/SplashTheme"
             android:label="@string/app_name"
-        >
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
             </intent-filter>
         </activity>
 
