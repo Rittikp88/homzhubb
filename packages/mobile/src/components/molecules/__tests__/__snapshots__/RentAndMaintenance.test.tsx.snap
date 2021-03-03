@@ -6,6 +6,7 @@ exports[`Rent And Maintenance should match snapshot 1`] = `
     Object {
       "flexDirection": "row",
       "justifyContent": "space-between",
+      "width": undefined,
     }
   }
 >

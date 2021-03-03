@@ -10,7 +10,6 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -34,7 +33,6 @@ interface IDispatchProps {
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
-  clearMessages: () => void;
 }
 interface IPortfolioState {
   filters: PickerItemProps[];
@@ -120,9 +118,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     );
   };
 
+  private onPropertiesCallback = (): void => {};
+
   private getStatus = (filter: string): void => {
     const { getPropertyDetails } = this.props;
-    getPropertyDetails({ status: filter });
+    getPropertyDetails({ status: filter, onCallback: this.onPropertiesCallback });
   };
 
   private getScreenData = (): void => {
@@ -131,10 +131,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private getPortfolioProperty = (isFromFilter?: boolean): void => {
     const { getPropertyDetails, currentFilter } = this.props;
-    getPropertyDetails({ status: currentFilter });
+    getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
   };
 }
-
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     properties: PortfolioSelectors.getProperties(state),
@@ -145,23 +144,21 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getPropertyDetails, setCurrentAsset } = PortfolioActions;
   const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
-  const { clearMessages } = CommonActions;
   return bindActionCreators(
     {
       getPropertyDetails,
       setCurrentAsset,
       setAssetId,
       setEditPropertyFlow,
-      clearMessages,
     },
     dispatch
   );
 };
+
 const translatedPortfolio = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(Portfolio));
-
 export default withMediaQuery<any>(translatedPortfolio);
 
 const styles = StyleSheet.create({
