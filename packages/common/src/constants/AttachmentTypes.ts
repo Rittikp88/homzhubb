@@ -6,3 +6,7 @@ export enum AttachmentType {
   PROFILE_IMAGE = 'profile_images',
   CHAT_DOCUMENT = 'chat_document',
 }
+
+export enum AttachmentError {
+  UPLOAD_IMAGE_ERROR = 'File is corrupted',
+}

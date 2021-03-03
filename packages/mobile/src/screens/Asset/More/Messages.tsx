@@ -197,7 +197,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       groupName: name,
       groupId: id,
     });
-    navigation.navigate(ScreensKeys.ChatScreen);
+    navigation.navigate(ScreensKeys.ChatScreen, { groupId: id });
   };
 }
 

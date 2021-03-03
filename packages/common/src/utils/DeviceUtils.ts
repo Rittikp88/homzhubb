@@ -13,6 +13,10 @@ class DeviceUtils {
     const appBuildNumber = DeviceInfo.getBuildNumber();
     return `App Version v${DeviceInfo.getVersion()} (${appBuildNumber})`;
   };
+
+  public getDeviceName = async (): Promise<string> => {
+    return await DeviceInfo.getDeviceName();
+  };
 }
 
 const deviceUtils = new DeviceUtils();

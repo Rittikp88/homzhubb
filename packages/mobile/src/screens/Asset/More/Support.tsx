@@ -9,7 +9,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { icons } from '@homzhub/common/src/assets/icon';
 import Check from '@homzhub/common/src/assets/images/check.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -31,6 +31,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { CaseLog, Status } from '@homzhub/common/src/domain/models/CaseLog';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 enum TabKeys {
   newCase = 'NEW_CASE',
