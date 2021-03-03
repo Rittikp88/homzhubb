@@ -34,19 +34,21 @@ exports[`Toast should match snapshot for type danger 1`] = `
         }
       }
     />
-    <Label
-      numberOfLines={2}
-      style={
-        Object {
-          "color": "#FFFFFF",
-          "flex": 1,
-          "marginEnd": 16,
+    <View>
+      <Label
+        numberOfLines={2}
+        style={
+          Object {
+            "color": "#FFFFFF",
+            "flex": 1,
+            "marginEnd": 16,
+          }
         }
-      }
-      type="large"
-    >
-      Test Message
-    </Label>
+        type="large"
+      >
+        Test Message
+      </Label>
+    </View>
   </View>
   <ForwardRef
     onPress={[Function]}
@@ -109,19 +111,21 @@ exports[`Toast should match snapshot for type success 1`] = `
         }
       }
     />
-    <Label
-      numberOfLines={2}
-      style={
-        Object {
-          "color": "#FFFFFF",
-          "flex": 1,
-          "marginEnd": 16,
+    <View>
+      <Label
+        numberOfLines={2}
+        style={
+          Object {
+            "color": "#FFFFFF",
+            "flex": 1,
+            "marginEnd": 16,
+          }
         }
-      }
-      type="large"
-    >
-      Test Message
-    </Label>
+        type="large"
+      >
+        Test Message
+      </Label>
+    </View>
   </View>
   <ForwardRef
     onPress={[Function]}

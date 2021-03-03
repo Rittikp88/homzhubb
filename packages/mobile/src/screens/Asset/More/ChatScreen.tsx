@@ -62,7 +62,7 @@ class ChatScreen extends Component<Props, IScreenState> {
 
   public async componentDidMount(): Promise<void> {
     if (!(await NotificationService.checkIsPermissionGranted())) {
-      NotificationService.requestPermisson();
+      await NotificationService.requestPermisson();
     }
   }
 
@@ -115,8 +115,10 @@ class ChatScreen extends Component<Props, IScreenState> {
   private onGoBack = (): void => {
     const { navigation, clearChatDetail } = this.props;
     this.setState({ isMenuVisible: false });
-    navigation.goBack();
-    this.handleNavigationCallback().then(() => clearChatDetail());
+    this.handleNavigationCallback().then(() => {
+      clearChatDetail();
+      navigation.goBack();
+    });
   };
 
   private onInputFocus = (): void => {
@@ -231,7 +233,7 @@ class ChatScreen extends Component<Props, IScreenState> {
   };
 
   private handleNavigationCallback = async (): Promise<void> => {
-    const { currentChat, clearAttachment } = this.props;
+    const { currentChat, clearAttachment, navigation } = this.props;
 
     clearAttachment();
     this.setState({ isMenuVisible: false });
@@ -249,6 +251,7 @@ class ChatScreen extends Component<Props, IScreenState> {
       });
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      navigation.goBack();
     }
   };
 

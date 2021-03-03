@@ -147,7 +147,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
           {t('property:youHaveAlreadyReportedThisCommentOn')}
         </Label>
         <Label type="large" textType="bold">
-          {TimeUtils.getLocaltimeDifference(reportData.reviewedAt)}
+          {TimeUtils.getLocaltimeDifference(reportData.reportedOn)}
         </Label>
         <Divider containerStyles={styles.divider} />
         <Label textType="semiBold" type="large">
@@ -158,7 +158,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
             fullName={reportData.reviewedBy.name}
             imageSize={50}
             designation={t('common:admin')}
-            date={new Date().toDateString()}
+            date={new Date(reportData.reviewedAt).toString()}
           />
         </View>
         <Label type="large" textType="light" style={styles.comment}>

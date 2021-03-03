@@ -309,6 +309,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
               updateStep={this.handleNextStep}
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
               onUploadDocument={onUploadDocument}
+              handleNextStep={this.handleSkip}
             />
           </View>
         );

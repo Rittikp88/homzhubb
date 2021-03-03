@@ -68,7 +68,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
           <ScrollView
             ref={this.scrollRef}
             onScroll={this.onScroll}
-            onTouchStart={transactionsData.length > 4 ? (): void => shouldEnableOuterScroll(true) : undefined}
+            onTouchStart={transactionsData.length > 4 ? (): void => shouldEnableOuterScroll(false) : undefined}
             onMomentumScrollEnd={this.controlScroll}
             onScrollEndDrag={this.controlScroll}
             scrollEventThrottle={1500}

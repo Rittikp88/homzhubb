@@ -71,7 +71,7 @@ class MessagePreview extends Component<Props, IScreenState> {
         ref={this.scrollRef}
         refreshControl={this.renderRefreshControl()}
         showsVerticalScrollIndicator={false}
-        onTouchStart={shouldEnableOuterScroll ? (): void => shouldEnableOuterScroll(true) : undefined}
+        onTouchStart={shouldEnableOuterScroll ? (): void => shouldEnableOuterScroll(false) : undefined}
         onMomentumScrollEnd={this.controlScroll}
         onScrollEndDrag={this.controlScroll}
         style={styles.container}
