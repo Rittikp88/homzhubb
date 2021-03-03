@@ -2,8 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import NoRecording from '@homzhub/common/src/assets/images/noRecording.svg';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import StoreButton from '@homzhub/web/src/components/molecules/MobileStoreButton';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 

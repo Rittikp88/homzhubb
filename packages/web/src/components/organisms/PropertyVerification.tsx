@@ -104,7 +104,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
             <NoCamera />
           </View>
         )}
-        {/* {navigator.mediaDevices.getUserMedia && ( */}
+        {navigator.mediaDevices.getUserMedia && (
         <Button
           type="primary"
           title={t('common:continue')}
@@ -112,15 +112,15 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
           onPress={this.postPropertyVerificationDocuments}
         />
-        {/* )} */}
-        {/* {!navigator.mediaDevices.getUserMedia && (
+         )} 
+        {!navigator.mediaDevices.getUserMedia && (
           <Button
             type="primary"
             title={t('common:continue')}
             containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
             onPress={this.nextStep}
           />
-        )} */}
+        )}
       </>
     );
   }

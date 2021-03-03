@@ -6,8 +6,8 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface ISelfieProps {
