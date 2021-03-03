@@ -2,6 +2,7 @@
 import { call, put, takeEvery } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
@@ -88,12 +89,16 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
 export function* logout() {
   try {
     const tokens: IUserTokens = yield StorageService.get(StorageKeys.USER);
-    yield call(UserRepository.logout, { refresh_token: tokens.refresh_token } as IRefreshTokenPayload);
+    yield call(UserRepository.logout, {
+      refresh_token: tokens.refresh_token,
+      device_id: DeviceUtils.getDeviceId(),
+    } as IRefreshTokenPayload);
 
     yield put(UserActions.logoutSuccess());
     yield put(SearchActions.setInitialState());
     yield put(UserActions.clearFavouriteProperties());
     yield StorageService.remove(StorageKeys.USER);
+    yield StorageService.remove(StorageKeys.DEVICE_TOKEN);
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });
