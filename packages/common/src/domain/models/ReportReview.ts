@@ -12,6 +12,9 @@ export class ReportReview {
   @JsonProperty('reviewed_at', String)
   private _reviewedAt = '';
 
+  @JsonProperty('reported_on', String)
+  private _reportedOn = '';
+
   get reviewedBy(): User {
     return this._reviewedBy;
   }
@@ -22,5 +25,9 @@ export class ReportReview {
 
   get reviewedAt(): string {
     return this._reviewedAt;
+  }
+
+  get reportedOn(): string {
+    return this._reportedOn;
   }
 }

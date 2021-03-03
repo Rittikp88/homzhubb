@@ -215,6 +215,7 @@ export interface IRefreshToken {
 
 export interface IRefreshTokenPayload {
   refresh_token: string;
+  device_id?: string;
 }
 
 // REFRESH TOKEN - END
@@ -670,6 +671,7 @@ export interface IUserDetails {
   email: string;
   phone_code: string;
   phone_number: string;
+  tenant_user?: number;
 }
 
 export interface IVisitActionParam {

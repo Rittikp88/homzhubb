@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import * as yup from 'yup';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -46,7 +48,6 @@ const initialState = {
   phoneNumber: '',
 };
 
-// TODO: Add formik validation
 export const EditTenantDetails = (props: IProps): React.ReactElement => {
   const {
     details,
@@ -83,6 +84,7 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
 
   const onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
+
     setLoading(true);
     const payload: IUserDetails = {
       first_name: values.firstName,
@@ -90,6 +92,7 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
       email: values.email,
       phone_code: values.phoneCode,
       phone_number: values.phoneNumber,
+      ...(details && values.email.includes('*') && { tenant_user: details.id }),
     };
 
     try {
@@ -124,6 +127,18 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
     }
   };
 
+  // FORM VALIDATION
+  const formSchema = (): yup.ObjectSchema<IFormData> => {
+    return yup.object().shape({
+      firstName: yup.string().matches(FormUtils.nameRegex, t('auth:onlyAlphabets')).required(t('auth:nameRequired')),
+      lastName: yup.string(),
+      email: yup.string().required(t('auth:emailRequired')),
+      phoneCode: yup.string(),
+      phoneNumber: yup.string().required(t('auth:numberRequired')),
+    });
+  };
+  // FORM VALIDATION
+
   return (
     <>
       <View style={styles.bottomSheet}>
@@ -142,7 +157,12 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
           {t('property:tenantDetails')}
         </Text>
         <KeyboardAwareScrollView>
-          <Formik onSubmit={onSubmit} initialValues={{ ...userDetails }} enableReinitialize>
+          <Formik
+            onSubmit={onSubmit}
+            initialValues={{ ...userDetails }}
+            enableReinitialize
+            validate={FormUtils.validate(formSchema)}
+          >
             {(formProps: FormikProps<IFormData>): React.ReactNode => {
               return (
                 <>
@@ -164,7 +184,6 @@ export const EditTenantDetails = (props: IProps): React.ReactElement => {
                         inputType="default"
                         placeholder={t('auth:enterLastName')}
                         formProps={formProps}
-                        isMandatory
                       />
                     </View>
                   </View>
@@ -214,12 +233,8 @@ const styles = StyleSheet.create({
   },
 
   buttonStyle: {
-    flex: 1,
-    alignSelf: 'center',
     borderRadius: 2,
-    marginTop: 12,
-    width: 380,
-    backgroundColor: theme.colors.blue,
+    marginTop: 18,
   },
   contentView: {
     flexDirection: 'row',
