@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
-import PortfolioHeader from '@homzhub/web/src/screens/portfolio/components/PortfolioHeader';
+import PortfolioOverview from '@homzhub/web/src/screens/portfolio/components/PortfolioOverview';
 import PortfolioCardGroup from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
 import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/PortfolioFilter';
 import { AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -32,7 +32,7 @@ const Portfolio: FC = () => {
   };
   return (
     <View style={styles.container}>
-      <PortfolioHeader />
+      <PortfolioOverview />
       <PortfolioFilter filterData={statusfilters} getStatus={getStatus} />
       <PortfolioCardGroup />
     </View>

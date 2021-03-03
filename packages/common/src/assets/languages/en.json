@@ -693,6 +693,7 @@
   },
   "assetPortfolio": {
     "portfolio": "Portfolio",
+    "yourPortfolio": "Your Portfolio",
     "tenancies": "Tenancies",
     "propertyPortfolio": "Property Portfolio",
     "viewProperty": "View Property",
