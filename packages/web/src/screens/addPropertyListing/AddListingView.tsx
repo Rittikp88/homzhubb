@@ -71,7 +71,7 @@ const { height } = theme.viewport;
 
 class AddListingView extends React.PureComponent<Props, IOwnState> {
   public state = {
-    currentIndex: 1,
+    currentIndex: 0,
     isStepDone: [],
     tabViewHeights: [height, height, height, height],
     isActionSheetToggled: false,
