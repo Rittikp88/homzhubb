@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: PlatformUtils.isWeb() ? '270px' : undefined,
+    width: PlatformUtils.isWeb() ? 270 : undefined,
   },
   contentView: {
     flexDirection: 'row',

@@ -1,36 +1,37 @@
 import React, { Component } from 'react';
 import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
-import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
+import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
-import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { User } from '@homzhub/common/src/domain/models/User';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import {
   ClosureReasonType,
   IClosureReasonPayload,
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Tabs } from '@homzhub/common/src/constants/Tabs';
+
 
 interface IUserInfo {
   name: string;
