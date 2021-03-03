@@ -105,14 +105,14 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
           </View>
         )}
         {navigator.mediaDevices.getUserMedia && (
-        <Button
-          type="primary"
-          title={t('common:continue')}
-          disabled={!containsAllReqd || isLoading}
-          containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
-          onPress={this.postPropertyVerificationDocuments}
-        />
-         )} 
+          <Button
+            type="primary"
+            title={t('common:continue')}
+            disabled={!containsAllReqd || isLoading}
+            containerStyle={[styles.buttonStyle, !isMobile && styles.tabContainer]}
+            onPress={this.postPropertyVerificationDocuments}
+          />
+        )}
         {!navigator.mediaDevices.getUserMedia && (
           <Button
             type="primary"
