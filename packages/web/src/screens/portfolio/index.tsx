@@ -3,6 +3,7 @@ import { PickerItemProps, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
@@ -20,8 +21,6 @@ import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/Portf
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetPropertiesPayload, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
@@ -41,8 +40,9 @@ interface IPortfolioState {
   filters: PickerItemProps[];
   assetType: string;
 }
-type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
-type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
+type Props = WithTranslation & IStateProps & IDispatchProps & IWithMediaQuery;
+
+// TODO : Navigation logic for onclick events
 export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   public state = {
     filters: [],
@@ -67,14 +67,12 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { properties } = this.props;
     const { filters } = this.state;
     return (
-      <View style={{ flexDirection: 'column', width: '100%' }}>
+      <View style={styles.filterContainer}>
         <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
         {this.renderPortfolio(properties)}
       </View>
     );
   };
-
-
 
   private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
     const { t, currentFilter } = this.props;
@@ -83,7 +81,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
     const isEmpty = !data || data.length <= 0;
     return (
-      <View style={{ flexDirection: 'column', maxWidth: '100%' }}>
+      <View style={styles.container}>
         <View style={styles.headingView}>
           <Text type="small" textType="semiBold" style={styles.title}>
             {t('propertyPortfolio')}
@@ -106,6 +104,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
+    const { isTablet } = this.props;
     return (
       <AssetCard
         assetData={item}
@@ -116,6 +115,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         onCompleteDetails={FunctionUtils.noop}
         onOfferVisitPress={FunctionUtils.noop}
         onHandleAction={FunctionUtils.noop}
+        containerStyle={isTablet && styles.assetCardContainer}
       />
     );
   };
@@ -126,7 +126,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private getScreenData = (): void => {
-   this.getPortfolioProperty();
+    this.getPortfolioProperty();
   };
 
   private getPortfolioProperty = (isFromFilter?: boolean): void => {
@@ -157,11 +157,22 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     dispatch
   );
 };
-export default connect(
+const translatedPortfolio = connect(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(Portfolio));
+
+export default withMediaQuery<any>(translatedPortfolio);
+
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    maxWidth: '100%',
+  },
+  assetCardContainer: {
+    flexDirection: 'column',
+    maxWidth: '100%',
+  },
   title: {
     color: theme.colors.darkTint1,
     marginBottom: 16,
@@ -174,5 +185,9 @@ const styles = StyleSheet.create({
   },
   emptyView: {
     minHeight: 200,
+  },
+  filterContainer: {
+    flexDirection: 'column',
+    width: '100%',
   },
 });

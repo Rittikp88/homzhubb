@@ -95,7 +95,7 @@ export class AssetCard extends Component<Props> {
           {this.renderAttachmentView(attachments)}
           <View style={styles.topView}>
             <View style={styles.topLeftView}>
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              <View style={styles.subContainer}>
                 <Badge
                   title={assetStatusInfo?.tag.label ?? ''}
                   badgeColor={assetStatusInfo?.tag.color ?? ''}
@@ -118,16 +118,9 @@ export class AssetCard extends Component<Props> {
                     {serviceTickets?.count}
                   </Label>
                 </TouchableOpacity>
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                <TouchableOpacity style={styles.topLeftView} onPress={(): void => handlePropertyView(Tabs.TICKETS)}>
-                  <Icon name={icons.ticket} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                  <Label type="large" style={styles.count}>
-                    {serviceTickets?.count}
-                  </Label>
-                </TouchableOpacity>
               </View>
               <TouchableOpacity onPress={(): void => handlePropertyView()} activeOpacity={isDetailView ? 1 : 0.3}>
-                <View style={{ width: '100%', flexWrap: 'wrap' }}>
+                <View style={styles.addressContainer}>
                   <PropertyAddressCountry
                     primaryAddress={projectName}
                     countryFlag={flag}
@@ -164,11 +157,10 @@ export class AssetCard extends Component<Props> {
       link,
       mediaType,
     } = item;
-    console.log(link, mediaType);
     return (
       <TouchableOpacity>
         {mediaType === 'IMAGE' && (
-          <View style={{ width: 310, height: '100%' }}>
+          <View style={styles.imageContainer}>
             <Image
               source={{
                 uri: link,
@@ -215,7 +207,7 @@ export class AssetCard extends Component<Props> {
     return (
       <>
         <Divider containerStyles={styles.divider} />
-        <View style={{ flexDirection: 'column', justifyContent: 'space-evenly', marginLeft: 20 }}>
+        <View style={styles.topRightView}>
           {!isVacant && (
             <>
               <Avatar
@@ -229,12 +221,12 @@ export class AssetCard extends Component<Props> {
             </>
           )}
           {rent && securityDeposit && (
-            <View style={{ marginTop: 24 }}>
+            <View style={styles.rentAndMaintenanceView}>
               <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
             </View>
           )}
           {((isVacant && assetCreation.percentage < 100) || !isVacant) && (
-            <View style={{ marginTop: 24 }}>
+            <View style={styles.progressBar}>
               <ProgressBar
                 progress={totalSpendPeriod || assetCreation.percentage / 100}
                 isPropertyVacant={isVacant}
@@ -366,6 +358,7 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     flexDirection: 'row',
   },
+  subContainer: { flexDirection: 'row', flexWrap: 'wrap' },
   topView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -376,6 +369,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginLeft: '10px',
     width: 'fit-content',
+  },
+  topRightView: {
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    marginLeft: 20,
   },
   badgeStyle: {
     minWidth: 75,
@@ -462,5 +460,19 @@ const styles = StyleSheet.create({
   latestUpdates: {
     flex: 1,
     marginTop: 16,
+  },
+  addressContainer: {
+    width: '100%',
+    flexWrap: 'wrap',
+  },
+  imageContainer: {
+    width: 310,
+    height: '100%',
+  },
+  progressBar: {
+    marginTop: 24,
+  },
+  rentAndMaintenanceView: {
+    marginTop: 24,
   },
 });

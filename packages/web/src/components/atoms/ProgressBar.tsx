@@ -18,7 +18,7 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
 
   return (
     <>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.container}>
         <Icon name={isPropertyVacant ? icons.house : icons.calendar} color={theme.colors.darkTint5} size={22} />
         <Label type="large" style={styles.label}>
           leasePeriod
@@ -26,7 +26,7 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
       </View>
       <View style={customStyles.containerStyle(isPropertyVacant)}>
         <View style={customStyles.fillerStyle(progress, isPropertyVacant, filledColor)}>
-          <Text style={labelStyles}>{}</Text>
+          <Text style={styles.labelStyles}>{}</Text>
         </View>
       </View>
       <View style={styles.subTitleContainer}>
@@ -41,26 +41,6 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
       </View>
     </>
   );
-};
-
-const customStyles = {
-  containerStyle: (isVacant: boolean): StyleProp<ViewStyle> => ({
-    backgroundColor: isVacant ? theme.colors.background : theme.colors.green,
-    height: 5,
-    marginLeft: 25,
-    marginTop: 10,
-  }),
-  fillerStyle: (progress: number, isVacant: boolean, filledColor: string): StyleProp<ViewStyle> => ({
-    height: '100%',
-    width: progress * 100,
-    backgroundColor: isVacant ? theme.colors.green : filledColor,
-  }),
-};
-
-const labelStyles = {
-  padding: 5,
-  color: 'white',
-  //   fontWeight: 'bold'
 };
 
 const styles = StyleSheet.create({
@@ -89,6 +69,24 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
     marginLeft: 5,
   },
+  labelStyles: {
+    padding: 5,
+    color: 'white',
+  },
 });
+
+const customStyles = {
+  containerStyle: (isVacant: boolean): StyleProp<ViewStyle> => ({
+    backgroundColor: isVacant ? theme.colors.background : theme.colors.green,
+    height: 5,
+    marginLeft: 25,
+    marginTop: 10,
+  }),
+  fillerStyle: (progress: number, isVacant: boolean, filledColor: string): StyleProp<ViewStyle> => ({
+    height: '100%',
+    width: progress * 100,
+    backgroundColor: isVacant ? theme.colors.green : filledColor,
+  }),
+};
 
 export default ProgressBar;
