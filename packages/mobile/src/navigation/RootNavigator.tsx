@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import SplashScreen from 'react-native-splash-screen';
+import RNBootSplash from 'react-native-bootsplash';
 import { NavigationContainer } from '@react-navigation/native';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
@@ -40,7 +40,7 @@ export const RootNavigator = (props: IProps): React.ReactElement | null => {
   // Once booting is completed hide the native splash and render our RootNavigator
   useEffect(() => {
     if (!booting) {
-      SplashScreen.hide();
+      RNBootSplash.hide();
     }
   }, [booting]);
 

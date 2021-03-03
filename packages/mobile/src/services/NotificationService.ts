@@ -88,10 +88,6 @@ class NotificationService {
       }
     });
 
-    this.messageObject.setBackgroundMessageHandler(async (remoteMessage) => {
-      return Promise.resolve(this.redirectOnNotification(remoteMessage.data));
-    });
-
     // handle backgound app
     this.messageObject.onNotificationOpenedApp((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
       Logger.info(`background notification message: ${remoteMessage} `);
