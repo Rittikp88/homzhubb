@@ -2,6 +2,12 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 const translationKey = LocaleConstants.namespacesKey.serviceTickets;
 
+export enum TicketActionType {
+  SUBMIT_QUOTE = 'QUOTES_READY',
+  APPROVE_QUOTE = 'QUOTES_APPROVED',
+  WORK_COMPLETED = 'CLOSED',
+}
+
 export const initialQuotes = [
   {
     title: `${translationKey}:quote1`,
@@ -18,6 +24,12 @@ export const initialQuotes = [
     price: '',
     document: '',
   },
+];
+
+export const ticketActions = [
+  { label: 'Submit Quote', value: TicketActionType.SUBMIT_QUOTE },
+  { label: 'Approve Quote', value: TicketActionType.APPROVE_QUOTE },
+  { label: 'Work Completed', value: TicketActionType.WORK_COMPLETED },
 ];
 
 export const sampleDetails = [

@@ -222,7 +222,10 @@
     "noWebCamDescription": " We noticed that your current device does not have a camera attached. Due to this you will have to use our mobile apps to complete the verification process.",
     "comment": "Comment",
     "typeComment": "Type your comment here...",
-    "noFileChosen": "No file chosen"
+    "noFileChosen": "No file chosen",
+    "open": "Open",
+    "close": "Close",
+    "chooseAction": "Choose your Action"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -937,6 +940,7 @@
     "youtubeDescription": "Learn how Homzhub helps non-resident home owners lease, manage, buy and sell their properties from wherever they are."
   },
   "serviceTickets": {
+    "serviceTickets": "Service Tickets",
     "submitQuote": "Submit Quote",
     "submitYourQuotes": "Submit your Quotes",
     "submitQuoteDescription": "Please upload your quotes in pdf format.",
@@ -975,6 +979,7 @@
     "ticketRaised": "Ticket Raised",
     "ticketRaisedDescription": "Dummy Ticket raised description",
     "ticketRaisedToOwner": "Ticket assigned to owner",
-    "awaitingOwnerAction": "Awaiting for owner's action"
+    "awaitingOwnerAction": "Awaiting for owner's action",
+    "addNewTicket": "Add New Ticket"
   }
 }

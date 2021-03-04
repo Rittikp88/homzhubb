@@ -2,19 +2,29 @@ import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { AssetDetailsImageCarousel, FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
+import {
+  AssetDetailsImageCarousel,
+  BottomSheetListView,
+  FullScreenAssetDetailsCarousel,
+} from '@homzhub/mobile/src/components';
 import { mockChatMedia } from '@homzhub/common/src/mocks/ChatMedia';
-import { mockTicket, sampleDetails } from '@homzhub/common/src/constants/ServiceTickets';
+import {
+  mockTicket,
+  sampleDetails,
+  ticketActions,
+  TicketActionType,
+} from '@homzhub/common/src/constants/ServiceTickets';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
-// TODO (Praharsh : 04/03/2021) : Replace param
-type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SubmitQuote>;
+type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ServiceTicketDetail>;
 
 type Props = NavProps & WithTranslation;
 
@@ -27,34 +37,51 @@ interface ITicket {
 interface IScreenState {
   activeSlide: number;
   isFullScreen: boolean;
+  isActionSheet: boolean;
+  selectedAction: string;
 }
 class ServiceTicketDetails extends React.Component<Props, IScreenState> {
-  public state: IScreenState = {
+  public state = {
     activeSlide: 0,
     isFullScreen: false,
+    isActionSheet: false,
+    selectedAction: '',
   };
 
   public render = (): React.ReactElement => {
+    const { isActionSheet, selectedAction } = this.state;
     const {
       navigation: { goBack },
       t,
     } = this.props;
     return (
-      <UserScreen
-        title="Property Name"
-        pageTitle={t('serviceTickets:ticketDetails')}
-        loading={false}
-        onBackPress={goBack}
-      >
-        {this.renderFullscreenCarousel()}
-        {this.detailsCard()}
-        <View style={styles.activityView}>
-          {this.renderActivity()}
-          {this.statusSeparator()}
-          {this.renderActivityCard()}
-          {/* Remaining renders fall here (Take Action button) */}
-        </View>
-      </UserScreen>
+      <>
+        <UserScreen
+          title="Property Name"
+          pageTitle={t('serviceTickets:ticketDetails')}
+          loading={false}
+          onBackPress={goBack}
+        >
+          {this.renderFullscreenCarousel()}
+          {this.renderDetailsCard()}
+          <View style={styles.activityView}>
+            {this.renderActivity()}
+            {this.renderStatusSeparator()}
+            {this.renderActivityCard()}
+            {this.renderActivityCard()}
+          </View>
+        </UserScreen>
+        {this.renderActionButton()}
+        <BottomSheetListView
+          selectedValue={selectedAction}
+          listHeight={350}
+          data={ticketActions}
+          listTitle={t('chooseAction')}
+          onSelectItem={this.onSelectAction}
+          onCloseDropDown={(): void => this.handleActionSheet(false)}
+          isBottomSheetVisible={isActionSheet}
+        />
+      </>
     );
   };
 
@@ -69,16 +96,35 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     );
   };
 
+  private renderActionButton = (): React.ReactElement => {
+    const { t } = this.props;
+    return (
+      <View style={styles.buttonContainer}>
+        <Button type="primary" title={t('assetDashboard:takeActions')} />
+        <Button
+          type="primary"
+          icon={icons.downArrow}
+          iconSize={20}
+          iconColor={theme.colors.white}
+          containerStyle={styles.iconButton}
+          onPress={(): void => this.handleActionSheet(true)}
+        />
+      </View>
+    );
+  };
+
   private renderCarousel = (): React.ReactElement => {
     const { activeSlide } = this.state;
 
     if (!mockChatMedia.length) {
       return <ImagePlaceholder height="100%" containerStyle={styles.placeholder} />;
     }
+
     return (
       <AssetDetailsImageCarousel
         enterFullScreen={this.onFullScreenToggle}
         // TODO (Praharsh : 04/03/2021) - Replace with attachments.
+        // @ts-ignore
         data={mockChatMedia}
         activeSlide={activeSlide}
         updateSlide={this.updateSlide}
@@ -95,6 +141,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         onFullScreenToggle={this.onFullScreenToggle}
         activeSlide={activeSlide}
         // TODO (Praharsh : 04/03/2021) - Replace with attachments.
+        // @ts-ignore
         data={mockChatMedia}
         updateSlide={this.updateSlide}
       />
@@ -168,21 +215,15 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         renderItem={renderItem}
         numColumns={2}
         contentContainerStyle={styles.flatList}
-        ItemSeparatorComponent={this.DetailSeparator}
+        ItemSeparatorComponent={this.renderDetailSeparator}
         showsVerticalScrollIndicator={false}
       />
     );
   };
 
-  public onFullScreenToggle = (): void => {
-    this.setState((prevState) => ({
-      isFullScreen: !prevState.isFullScreen,
-    }));
-  };
+  private renderDetailSeparator = (): React.ReactElement => <View style={styles.detailSeparator} />;
 
-  private DetailSeparator = (): React.ReactElement => <View style={styles.detailSeparator} />;
-
-  private detailsCard = (): React.ReactElement => {
+  private renderDetailsCard = (): React.ReactElement => {
     const { t } = this.props;
     return (
       <View style={styles.detailsCard}>
@@ -204,7 +245,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   };
 
   // Date view that separates ticket statuses. Optional param for now
-  private statusSeparator = (): React.ReactElement => {
+  private renderStatusSeparator = (): React.ReactElement => {
     return (
       <View style={styles.separator}>
         <View style={styles.dividerView} />
@@ -214,14 +255,44 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     );
   };
 
+  // HANDLERS START
+
+  public onFullScreenToggle = (): void => {
+    this.setState((prevState) => ({
+      isFullScreen: !prevState.isFullScreen,
+    }));
+  };
+
+  private onSelectAction = (value: string): void => {
+    const { navigation } = this.props;
+    switch (value) {
+      case TicketActionType.SUBMIT_QUOTE:
+        navigation.navigate(ScreensKeys.SubmitQuote);
+        break;
+      case TicketActionType.APPROVE_QUOTE:
+        navigation.navigate(ScreensKeys.ApproveQuote);
+        break;
+      case TicketActionType.WORK_COMPLETED:
+      default:
+      // TODO: Add navigation once screen ready
+    }
+
+    this.handleActionSheet(false);
+  };
+
   private formatDetails = (): ITicket[] => {
-    const details = sampleDetails;
-    return details;
+    return sampleDetails;
   };
 
   public updateSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
+
+  private handleActionSheet = (isOpen: boolean): void => {
+    this.setState({ isActionSheet: isOpen });
+  };
+
+  // HANDLERS END
 }
 
 export default withTranslation()(ServiceTicketDetails);
@@ -309,5 +380,14 @@ const styles = StyleSheet.create({
   },
   activityBadgeText: {
     color: theme.colors.darkTint3,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    padding: 20,
+    backgroundColor: theme.colors.white,
+  },
+  iconButton: {
+    flex: 0.2,
+    marginLeft: 2,
   },
 });

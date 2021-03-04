@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
@@ -15,7 +15,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { initialQuotes } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-const SubmitQuote = (): ReactNode => {
+const SubmitQuote = (): ReactElement => {
   const [quotes, setQuotes] = useState(initialQuotes);
   const [comment, setComment] = useState('');
 

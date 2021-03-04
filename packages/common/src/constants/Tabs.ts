@@ -26,6 +26,10 @@ export enum Tabs {
   SERVICES = 'Services',
   PAYMENT = 'Payment',
   SERVICE_PAYMENT = 'Service & Payment',
+  ALL = 'All',
+  HIGH = 'High',
+  MEDIUM = 'Medium',
+  LOW = 'Low',
 }
 
 // enum END
@@ -105,3 +109,13 @@ export const ListingRoutesWeb: IRoutes[] = [
 ];
 
 // Site Visit Tabs END
+
+// Service Ticket Tabs START
+export const TicketRoutes: IRoutes[] = [
+  { key: Tabs.ALL, title: Tabs.ALL, color: theme.colors.blue },
+  { key: Tabs.HIGH, title: Tabs.HIGH, color: theme.colors.error },
+  { key: Tabs.MEDIUM, title: Tabs.MEDIUM, color: theme.colors.orange },
+  { key: Tabs.LOW, title: Tabs.LOW, color: theme.colors.green },
+];
+
+// Service Ticket Tabs END

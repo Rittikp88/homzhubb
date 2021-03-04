@@ -116,8 +116,10 @@ export enum ScreensKeys {
   Messages = 'Messages',
   ChatScreen = 'ChatScreen',
   GroupChatInfo = 'GroupChatInfo',
+  ServiceTicketScreen = 'ServiceTicketScreen',
   SubmitQuote = 'SubmitQuote',
   ApproveQuote = 'ApproveQuote',
+  ServiceTicketDetail = 'ServiceTicketDetail',
 }
 
 export enum OtpNavTypes {
