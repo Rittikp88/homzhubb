@@ -1,12 +1,9 @@
-import React from 'react';
-import {View} from 'react-native'
+import React, { FC } from 'react';
+import { View } from 'react-native';
+import CardImageCarousel from './components/CardImageCarousel';
 
- const SearchProperty = () =>{
-    return (
-        <View>
-            Search Property
-        </View>
-    )
-}
+const SearchProperty: FC = () => {
+  return <CardImageCarousel />;
+};
 
 export default SearchProperty;
