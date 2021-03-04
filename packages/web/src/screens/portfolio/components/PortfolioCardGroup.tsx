@@ -32,7 +32,6 @@ import {
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
-
 interface IUserInfo {
   name: string;
   icon?: string;

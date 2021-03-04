@@ -219,7 +219,10 @@
     "chatMemberCount": "{{count}} Members",
     "media": "Media",
     "noWebCam": " No camera detected",
-    "noWebCamDescription": " We noticed that your current device does not have a camera attached. Due to this you will have to use our mobile apps to complete the verification process."
+    "noWebCamDescription": " We noticed that your current device does not have a camera attached. Due to this you will have to use our mobile apps to complete the verification process.",
+    "comment": "Comment",
+    "typeComment": "Type your comment here...",
+    "noFileChosen": "No file chosen"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -932,5 +935,15 @@
     "servicePlans": "Service Plans",
     "storeLinkDescription": "You heard it right. Download Homzhub app to start managing your property or to find a new property to rent.",
     "youtubeDescription": "Learn how Homzhub helps non-resident home owners lease, manage, buy and sell their properties from wherever they are."
+  },
+  "serviceTickets": {
+    "submitQuote": "Submit Quote",
+    "submitYourQuotes": "Submit your Quotes",
+    "submitQuoteDescription": "Suspendisse fringilla sit maecenas commodo sollicitudin vulputate.",
+    "enterQuoteAmount": "Enter the quote amount below inclusive of all the taxes",
+    "quotePrice": "Quote Price",
+    "quote1": "Quote 1",
+    "quote2": "Quote 2",
+    "quote3": "Quote 3"
   }
 }
