@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FontWeightType, Label } from '@homzhub/common/src/components/atoms/Text';
 
@@ -8,13 +8,14 @@ interface IProps {
   badgeColor: string;
   badgeStyle?: StyleProp<ViewStyle>;
   textType?: FontWeightType;
+  titleStyle?: TextStyle;
 }
 
 export const Badge = (props: IProps): React.ReactElement => {
-  const { badgeColor, badgeStyle, title, textType = 'semiBold' } = props;
+  const { badgeColor, badgeStyle, title, textType = 'semiBold', titleStyle = {} } = props;
   return (
     <View style={[styles.badge, badgeStyle, { backgroundColor: badgeColor }]}>
-      <Label type="regular" textType={textType} style={styles.title}>
+      <Label type="regular" textType={textType} style={[styles.title, titleStyle]}>
         {title}
       </Label>
     </View>

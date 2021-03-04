@@ -16,6 +16,9 @@ interface ICollapsibleSectionProps {
   containerStyle?: StyleProp<ViewStyle>;
   initialCollapsedValue?: boolean;
   isCollapsibleRequired?: boolean;
+  collapseIcon?: string;
+  expandIcon?: string;
+  iconStyle?: tyleProp<ViewStyle>;
 }
 const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement => {
   const {
@@ -28,6 +31,9 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
     onCollapse,
     isCollapsibleRequired = true,
     containerStyle,
+    collapseIcon = icons.minus,
+    expandIcon = icons.plus,
+    iconStyle,
   } = props;
   const [isCollapsed, setIsCollapsed] = useState(initialCollapsedValue);
 
@@ -53,7 +59,12 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
           </Text>
         </View>
         {isCollapsibleRequired && (
-          <Icon name={isCollapsed ? icons.plus : icons.minus} size={20} color={theme.colors.darkTint4} />
+          <Icon
+            name={isCollapsed ? expandIcon : collapseIcon}
+            size={20}
+            color={theme.colors.darkTint4}
+            style={iconStyle}
+          />
         )}
       </TouchableOpacity>
       <Collapsible collapsed={isCollapsed}>{children}</Collapsible>

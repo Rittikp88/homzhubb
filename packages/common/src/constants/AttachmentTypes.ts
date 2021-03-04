@@ -5,6 +5,7 @@ export enum AttachmentType {
   ASSET_RECORD = 'financial_record',
   PROFILE_IMAGE = 'profile_images',
   CHAT_DOCUMENT = 'chat_document',
+  TICKET_DOCUMENTS = 'ticket_documents',
 }
 
 export enum AttachmentError {

@@ -12,7 +12,9 @@ import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/s
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
+import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
 import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
+import { IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export type AppStackParamList = {
   [ScreensKeys.PropertyPostLandingScreen]: undefined;
@@ -21,6 +23,7 @@ export type AppStackParamList = {
   [ScreensKeys.AddRecordScreen]: { assetId?: number };
   [ScreensKeys.WebViewScreen]: IWebviewProps;
   [ScreensKeys.BookVisit]: IBookVisitProps;
+  [ScreensKeys.AddServiceTicket]: IServiceTicketForm;
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
@@ -41,6 +44,7 @@ export function AppNavigator(): React.ReactElement {
       <AppStackNavigator.Screen name={ScreensKeys.AddRecordScreen} component={AddRecordScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
       <AppStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
+      <AppStackNavigator.Screen name={ScreensKeys.AddServiceTicket} component={ServiceTicketForm} />
     </AppStackNavigator.Navigator>
   );
 }

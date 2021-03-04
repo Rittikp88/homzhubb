@@ -49,9 +49,11 @@ import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
+import ApproveQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ApproveQuote';
 import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
+import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
@@ -118,6 +120,8 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam;
   [ScreensKeys.SubmitQuote]: undefined;
+  [ScreensKeys.AddServiceTicket]: undefined;
+  [ScreensKeys.ApproveQuote]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -203,6 +207,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
       <MoreStackNavigator.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubmitQuote} component={SubmitQuote} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ApproveQuote} component={ApproveQuote} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -225,6 +230,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.AssetNeighbourhood,
       ScreensKeys.ChatScreen,
       ScreensKeys.GroupChatInfo,
+      ScreensKeys.AddServiceTicket,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };

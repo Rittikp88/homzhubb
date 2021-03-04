@@ -133,6 +133,7 @@ const grayShades = {
   gray8: '#FAFAFA',
   gray9: '#F2F3F6',
   gray10: '#F7F8FB',
+  gray11: '#E9EEF2',
 };
 
 const chartColors = {

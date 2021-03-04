@@ -99,6 +99,7 @@ export enum ScreensKeys {
   // Common Screens
   ComingSoonScreen = 'ComingSoonScreen',
   WebViewScreen = 'WebViewScreen',
+  AddServiceTicket = 'AddServiceTicket',
 
   // More Stack
   MoreScreen = 'MoreScreen',
@@ -116,6 +117,7 @@ export enum ScreensKeys {
   ChatScreen = 'ChatScreen',
   GroupChatInfo = 'GroupChatInfo',
   SubmitQuote = 'SubmitQuote',
+  ApproveQuote = 'ApproveQuote',
 }
 
 export enum OtpNavTypes {
