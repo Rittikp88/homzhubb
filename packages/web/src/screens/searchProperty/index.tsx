@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import CardImageCarousel from './components/CardImageCarousel';
+import CardImageCarousel from '@homzhub/web/src/screens/searchProperty/components/CardImageCarousel';
 
 const SearchProperty: FC = () => {
   return <CardImageCarousel />;
