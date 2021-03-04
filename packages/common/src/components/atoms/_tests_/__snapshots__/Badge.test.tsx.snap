@@ -17,11 +17,14 @@ exports[`Badge should match snapshot 1`] = `
 >
   <Label
     style={
-      Object {
-        "alignSelf": "center",
-        "color": "#FFFFFF",
-        "paddingBottom": 0,
-      }
+      Array [
+        Object {
+          "alignSelf": "center",
+          "color": "#FFFFFF",
+          "paddingBottom": 0,
+        },
+        Object {},
+      ]
     }
     textType="semiBold"
     type="regular"

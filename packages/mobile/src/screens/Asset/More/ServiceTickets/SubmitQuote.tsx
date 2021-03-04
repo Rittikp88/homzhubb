@@ -64,7 +64,6 @@ const SubmitQuote = (): ReactNode => {
           {t('submitYourQuotes')}
         </Text>
         <Label type="large" style={styles.description}>
-          {/* TODO: (Shikha) - update dummy text */}
           {t('submitQuoteDescription')}
         </Label>
         <Divider />
