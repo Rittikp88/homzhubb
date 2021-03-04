@@ -20,6 +20,7 @@ const defaultResponsive = {
 };
 
 const CardImageCarousel: FC = () => {
+  // TODO Charit: Replace the images source to prop after integration.
   return (
     <View style={styles.cardImageCrousel}>
       <MultiCarousel passedProps={carouselProps}>
