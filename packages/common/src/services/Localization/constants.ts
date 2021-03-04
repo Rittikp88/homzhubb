@@ -46,6 +46,7 @@ enum namespacesKey {
   moreSettings = 'moreSettings',
   landing = 'landing',
   moreProfile = 'moreProfile',
+  serviceTickets = 'serviceTickets',
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;

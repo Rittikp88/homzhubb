@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
+import { TouchableOpacity, StyleSheet, View, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -12,7 +12,8 @@ interface ICollapsibleSectionProps {
   children: React.ReactNode;
   onCollapse?: (isCollapsed: boolean) => void;
   isDividerRequired?: boolean;
-  titleStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
   initialCollapsedValue?: boolean;
   isCollapsibleRequired?: boolean;
 }
@@ -26,6 +27,7 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
     isDividerRequired = false,
     onCollapse,
     isCollapsibleRequired = true,
+    containerStyle,
   } = props;
   const [isCollapsed, setIsCollapsed] = useState(initialCollapsedValue);
 
@@ -37,7 +39,7 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
   };
 
   return (
-    <>
+    <View style={[styles.container, containerStyle]}>
       <TouchableOpacity
         style={styles.ratingsHeading}
         disabled={!isCollapsibleRequired}
@@ -56,11 +58,14 @@ const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement
       </TouchableOpacity>
       <Collapsible collapsed={isCollapsed}>{children}</Collapsible>
       {isDividerRequired && <Divider containerStyles={styles.divider} />}
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 24,
+  },
   divider: {
     marginTop: 24,
     borderColor: theme.colors.darkTint10,
@@ -76,7 +81,6 @@ const styles = StyleSheet.create({
   ratingsHeading: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 24,
   },
 });
 
