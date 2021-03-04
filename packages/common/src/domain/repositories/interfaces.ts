@@ -740,3 +740,15 @@ export interface IDeviceTokenPayload {
   device_id: string;
   type: OSTypes;
 }
+
+export interface IServiceTicketForm {
+  propertyName?: string;
+}
+
+export interface IPostTicketPayload {
+  ticket_category: number;
+  asset: number;
+  title: string;
+  description?: string;
+  attachments: number[];
+}

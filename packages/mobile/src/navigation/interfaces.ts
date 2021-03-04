@@ -99,6 +99,7 @@ export enum ScreensKeys {
   // Common Screens
   ComingSoonScreen = 'ComingSoonScreen',
   WebViewScreen = 'WebViewScreen',
+  AddServiceTicket = 'AddServiceTicket',
 
   // More Stack
   MoreScreen = 'MoreScreen',

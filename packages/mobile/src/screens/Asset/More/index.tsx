@@ -144,6 +144,9 @@ export class More extends React.PureComponent<Props> {
       case MoreScreenTypes.MESSAGES:
         navigation.navigate(ScreensKeys.Messages);
         break;
+      case MoreScreenTypes.TICKETS:
+        navigation.navigate(ScreensKeys.AddServiceTicket);
+        break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         break;
