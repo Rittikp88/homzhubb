@@ -944,6 +944,20 @@
     "quotePrice": "Quote Price",
     "quote1": "Quote 1",
     "quote2": "Quote 2",
-    "quote3": "Quote 3"
+    "quote3": "Quote 3",
+    "ticketDetails": "Ticket Details",
+    "priorityHigh": "HIGH",
+    "priorityLow": "LOW",
+    "priorityMedium": "MEDIUM",
+    "activity": "Activity",
+    "createdOn": "Created on",
+    "updatedOn": "Updated on",
+    "assignedTo": "Assigned To",
+    "timeElapsed": "Time Elapsed",
+    "ticketNo": "Ticket No.",
+    "ticketRaised": "Ticket Raised",
+    "ticketRaisedDescription": "Dummy Ticket raised description",
+    "ticketRaisedToOwner": "Ticket assigned to owner",
+    "awaitingOwnerAction": "Awaiting for owner's action"
   }
 }
