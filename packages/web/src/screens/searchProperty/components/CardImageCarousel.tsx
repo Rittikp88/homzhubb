@@ -1,14 +1,12 @@
 import React, { FC, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { HeroSectionData } from '@homzhub/common/src/constants/LandingScreen';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
-import { useDown, useIsIpadPro, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { NextPrevBtn } from '@homzhub/web/src/components';
+import { HeroSectionData } from '@homzhub/common/src/constants/LandingScreen';
 
 const defaultResponsive = {
   desktop: {
@@ -22,10 +20,6 @@ const defaultResponsive = {
 };
 
 const CardImageCarousel: FC = () => {
-  const isTablet = useDown(deviceBreakpoint.TABLET);
-  const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const isIpadPro = useIsIpadPro();
-
   return (
     <View style={styles.cardImageCrousel}>
       <MultiCarousel passedProps={carouselProps}>
@@ -45,52 +39,42 @@ const CardImageCarousel: FC = () => {
 };
 
 const ChangeImage = ({ next, previous }: ButtonGroupProps): React.ReactElement => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentImage, setCurrentImage] = useState(0);
 
   const updateCarouselIndex = (updateIndexBy: number): void => {
     if (updateIndexBy === 1 && next) {
       next();
-      if (currentSlide === HeroSectionData.length - 1) {
-        setCurrentSlide(0);
+      if (currentImage === HeroSectionData.length - 1) {
+        setCurrentImage(0);
       } else {
-        setCurrentSlide(currentSlide + 1);
+        setCurrentImage(currentImage + 1);
       }
     } else if (updateIndexBy === -1 && previous) {
       previous();
-      if (currentSlide === 0) {
-        setCurrentSlide(HeroSectionData.length - 1);
+      if (currentImage === 0) {
+        setCurrentImage(HeroSectionData.length - 1);
       } else {
-        setCurrentSlide(currentSlide - 1);
+        setCurrentImage(currentImage - 1);
       }
     }
   };
 
   return (
-    <>
-      {/* <Button
-        type="secondary"
-        containerStyle={[styles.leftRightButtons, styles.leftButton]}
-        onPress={updateCarouselIndex}
-      >
-        <Icon name={icons.leftArrow} size={36} />
-      </Button>
-      <Button type="secondary" containerStyle={[styles.leftRightButtons, styles.rightButton]}>
-        <Icon name={icons.rightArrow} size={36} />
-      </Button> */}
-      <NextPrevBtn
-        leftBtnProps={{
-          icon: icons.leftArrow,
-          iconSize: 20,
-          containerStyle: [styles.leftRightButtons, styles.leftButton],
-        }}
-        rightBtnProps={{
-          icon: icons.rightArrow,
-          iconSize: 20,
-          containerStyle: [styles.leftRightButtons, styles.rightButton],
-        }}
-        onBtnClick={updateCarouselIndex}
-      />
-    </>
+    <NextPrevBtn
+      leftBtnProps={{
+        icon: icons.leftArrow,
+        iconSize: 20,
+        iconColor: theme.colors.white,
+        containerStyle: [styles.leftRightButtons, styles.leftButton],
+      }}
+      rightBtnProps={{
+        icon: icons.rightArrow,
+        iconSize: 20,
+        iconColor: theme.colors.white,
+        containerStyle: [styles.leftRightButtons, styles.rightButton],
+      }}
+      onBtnClick={updateCarouselIndex}
+    />
   );
 };
 
@@ -125,7 +109,15 @@ const styles = StyleSheet.create({
   },
   leftRightButtons: {
     borderWidth: 0,
+    position: 'absolute',
+    width: 'fitContent',
+    backgroundColor: theme.colors.transparent,
+    top: 100,
   },
-  leftButton: {},
-  rightButton: {},
+  leftButton: {
+    left: 0,
+  },
+  rightButton: {
+    right: 0,
+  },
 });
