@@ -2,8 +2,9 @@ import React, { FC, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { NextPrevBtn } from '@homzhub/web/src/components';
 import { HeroSectionData } from '@homzhub/common/src/constants/LandingScreen';
@@ -20,7 +21,7 @@ const defaultResponsive = {
 };
 
 const CardImageCarousel: FC = () => {
-  // TODO Charit: Replace the images source to prop after integration.
+  // TODO Charit: Replace the images and label sources with props after integration.
   return (
     <View style={styles.cardImageCrousel}>
       <MultiCarousel passedProps={carouselProps}>
@@ -39,7 +40,7 @@ const CardImageCarousel: FC = () => {
   );
 };
 
-const ChangeImage = ({ next, previous }: ButtonGroupProps): React.ReactElement => {
+const CarouselButtons = ({ next, previous }: ButtonGroupProps): React.ReactElement => {
   const [currentImage, setCurrentImage] = useState(0);
 
   const updateCarouselIndex = (updateIndexBy: number): void => {
@@ -61,21 +62,29 @@ const ChangeImage = ({ next, previous }: ButtonGroupProps): React.ReactElement =
   };
 
   return (
-    <NextPrevBtn
-      leftBtnProps={{
-        icon: icons.leftArrow,
-        iconSize: 20,
-        iconColor: theme.colors.white,
-        containerStyle: [styles.leftRightButtons, styles.leftButton],
-      }}
-      rightBtnProps={{
-        icon: icons.rightArrow,
-        iconSize: 20,
-        iconColor: theme.colors.white,
-        containerStyle: [styles.leftRightButtons, styles.rightButton],
-      }}
-      onBtnClick={updateCarouselIndex}
-    />
+    <>
+      <NextPrevBtn
+        leftBtnProps={{
+          icon: icons.leftArrow,
+          iconSize: 20,
+          iconColor: theme.colors.white,
+          containerStyle: [styles.leftRightButtons, styles.leftButton],
+        }}
+        rightBtnProps={{
+          icon: icons.rightArrow,
+          iconSize: 20,
+          iconColor: theme.colors.white,
+          containerStyle: [styles.leftRightButtons, styles.rightButton],
+        }}
+        onBtnClick={updateCarouselIndex}
+      />
+      <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
+      <View style={styles.propertyHighlightLabelContainer}>
+        <Typography variant="label" size="regular" style={styles.propertyHighlightLabel}>
+          Description - From API
+        </Typography>
+      </View>
+    </>
   );
 };
 
@@ -87,7 +96,7 @@ const carouselProps: CarouselProps = {
   focusOnSelect: false,
   infinite: true,
   renderButtonGroupOutside: true,
-  customButtonGroup: <ChangeImage />,
+  customButtonGroup: <CarouselButtons />,
   responsive: defaultResponsive,
   showDots: false,
 };
@@ -120,5 +129,22 @@ const styles = StyleSheet.create({
   },
   rightButton: {
     right: 0,
+  },
+  favouriteIcon: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+  },
+  propertyHighlightLabelContainer: {
+    position: 'absolute',
+    left: 20,
+    bottom: 20,
+    borderRadius: 2,
+    backgroundColor: theme.colors.imageVideoPaginationBackground,
+  },
+  propertyHighlightLabel: {
+    color: theme.colors.white,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
   },
 });
