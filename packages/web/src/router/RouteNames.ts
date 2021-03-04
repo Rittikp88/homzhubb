@@ -19,6 +19,7 @@ export const RouteNames = {
     PORTFOLIO: '/dashboard/portfolio',
     ADD_PROPERTY: '/dashboard/addProperty',
     ADD_LISTING: '/dashboard/addListing',
+    SEARCH_PROPERTY: '/dashboard/searchProperty',
     // WRITE YOUR routes here accordingly
     NOTIFICATIONS: '',
     TICKETS: '',
