@@ -9,7 +9,7 @@ import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
@@ -17,6 +17,7 @@ import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/Ren
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
@@ -192,18 +193,15 @@ export class AssetCard extends Component<Props> {
         action,
         tag: { label },
         leaseTenantInfo: { user, isInviteAccepted },
-        leaseListingId,
-        saleListingId,
         leaseTransaction: { rent, securityDeposit, totalSpendPeriod, leaseEndDate, leaseStartDate, currency },
       },
       lastVisitedStep: { assetCreation },
-      isVerificationDocumentUploaded,
     } = assetData;
 
-    const isListed = leaseListingId || saleListingId;
     const userData: User = user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
+    const isTakeActions = label === Filters.VACANT;
     return (
       <>
         <Divider containerStyles={styles.divider} />
@@ -225,7 +223,7 @@ export class AssetCard extends Component<Props> {
               <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
             </View>
           )}
-          {((isVacant && assetCreation.percentage < 100) || !isVacant) && (
+          {!isVacant && (
             <View style={styles.progressBar}>
               <ProgressBar
                 progress={totalSpendPeriod || assetCreation.percentage / 100}
@@ -247,8 +245,7 @@ export class AssetCard extends Component<Props> {
               onPress={this.onCompleteDetails}
             />
           )}
-
-          {isVerificationDocumentUploaded && isListed && (
+          {(label === Filters.FOR__RENT || Filters.FOR__SALE) && (
             <View style={styles.latestUpdates}>
               <LatestUpdates propertyVisitsData={assetData.listingVisits} />
             </View>
@@ -272,6 +269,89 @@ export class AssetCard extends Component<Props> {
                 ]}
                 onPress={this.onPressAction}
               />
+            </View>
+          )}
+          {action && isTakeActions && (
+            <View>
+              {assetCreation.percentage < 100 && (
+                <View>
+                  <Text type="small" style={styles.title} textType="semiBold">
+                    {t('assetPortfolio:detailsCompletionText')}
+                  </Text>
+                  <ProgressBar
+                    progress={totalSpendPeriod || assetCreation.percentage / 100}
+                    isPropertyVacant={isVacant}
+                    isTakeActions={isTakeActions}
+                  />
+                  <Button
+                    type="primary"
+                    textType="label"
+                    textSize="regular"
+                    fontType="semiBold"
+                    containerStyle={styles.buttonStyle}
+                    title={t('complete')}
+                    titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
+                    onPress={this.onCompleteDetails}
+                  />
+                  <View style={styles.sectionSeperator}>
+                    <Typography variant="label" size="regular" style={styles.actionHeader}>
+                      {t('assetPortfolio:takeActionsHeader')}
+                    </Typography>
+                    <Button
+                      type="primary"
+                      textType="label"
+                      textSize="regular"
+                      fontType="semiBold"
+                      containerStyle={styles.buttonContainer}
+                      title={action.label}
+                      titleStyle={[styles.buttonTitle, { color: action.color }]}
+                      onPress={this.onCompleteDetails}
+                    />
+                  </View>
+                </View>
+              )}
+              {assetCreation.percentage >= 100 && (
+                <View>
+                  <Text type="small" style={styles.title} textType="semiBold">
+                    {t('Take Actions')}
+                  </Text>
+                  <Typography variant="label" size="large" style={styles.actionHeader}>
+                    {t('assetPortfolio:takeActionsHeader')}
+                  </Typography>
+                  <View style={styles.flexRow}>
+                    <Button
+                      type="primary"
+                      textType="label"
+                      textSize="regular"
+                      fontType="semiBold"
+                      containerStyle={styles.buttonFlexContainer}
+                      title={t('assetPortfolio:rentButton')}
+                      titleStyle={[styles.buttonTitle, { color: action.color }]}
+                      onPress={this.onCompleteDetails}
+                    />
+                    <Button
+                      type="primary"
+                      textType="label"
+                      textSize="regular"
+                      fontType="semiBold"
+                      containerStyle={styles.buttonFlexContainer}
+                      title={t('assetPortfolio:sellButton')}
+                      titleStyle={[styles.buttonTitle, { color: action.color }]}
+                      onPress={this.onCompleteDetails}
+                    />
+                  </View>
+                  <Button
+                    type="primary"
+                    textType="label"
+                    textSize="regular"
+                    fontType="semiBold"
+                    containerStyle={styles.buttonContainer}
+                    title={t('assetPortfolio:manageButton')}
+                    titleStyle={[styles.buttonTitle, { color: action.color }]}
+                    onPress={this.onCompleteDetails}
+                  />
+                </View>
+              )}
             </View>
           )}
         </View>
@@ -374,6 +454,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     marginLeft: 20,
+    width: '30%',
   },
   badgeStyle: {
     minWidth: 75,
@@ -418,10 +499,13 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 1,
     alignSelf: 'flex-end',
+    width: 310,
+    padding: 6,
     borderRadius: 2,
     marginTop: 12,
-    backgroundColor: theme.colors.green,
-    marginLeft: 10,
+    opacity: 0.1,
+    backgroundColor: theme.colors.blue,
+    marginBottom: 12,
   },
   buttonTitle: {
     marginVertical: 1,
@@ -474,5 +558,37 @@ const styles = StyleSheet.create({
   },
   rentAndMaintenanceView: {
     marginTop: 24,
+  },
+  buttonContainer: {
+    width: 310,
+    padding: 6,
+    textAlign: 'center',
+    opacity: 0.1,
+    backgroundColor: theme.colors.blue,
+    marginBottom: 12,
+  },
+  title: {
+    color: theme.colors.darkTint4,
+    marginBottom: 12,
+  },
+  actionHeader: {
+    color: theme.colors.darkTint6,
+    marginBottom: 12,
+  },
+  sectionSeperator: {
+    borderColor: theme.colors.background,
+    borderTopWidth: 2,
+  },
+  buttonFlexContainer: {
+    width: 140,
+    padding: 6,
+    textAlign: 'center',
+    opacity: 0.1,
+    backgroundColor: theme.colors.blue,
+    marginBottom: 12,
+    marginRight: 15,
+  },
+  flexRow: {
+    flexDirection: 'row',
   },
 });

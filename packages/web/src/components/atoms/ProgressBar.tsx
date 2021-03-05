@@ -8,10 +8,11 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProgressBarProps {
   progress: number;
-  fromDate: string;
-  toDate: string;
+  fromDate?: string;
+  toDate?: string;
   filledColor?: string;
   isPropertyVacant: boolean;
+  isTakeActions?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -32,7 +33,7 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
       <View style={styles.container}>
         <Icon name={isPropertyVacant ? icons.house : icons.calendar} color={theme.colors.darkTint5} size={22} />
         <Label type="large" style={styles.label}>
-          {t('leasePeriod')}
+          {isPropertyVacant ? t('listingScore') : t('leasePeriod')}
         </Label>
       </View>
       {renderProgress()}

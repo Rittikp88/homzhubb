@@ -727,7 +727,12 @@
     "noFilterProperties": "There are no properties for the selected filter",
     "deletePropertyDescription": "Once deleted all the historical records of this property will be lost. Homzhub will remove or mask any sensitive information but will retain transactional data.",
     "deleteConfirmation": "Do you want to continue deleting this property?",
-    "selectCountry": "Select Country"
+    "selectCountry": "Select Country",
+    "takeActionsHeader": "Click here to list or manage your property",
+    "detailsCompletionText": "Complete your property details",
+    "rentButton": "RENT",
+    "sellButton": "SELL",
+    "manageButton": "MANAGE"
   },
   "assetFinancial": {
     "financial": "Financials",

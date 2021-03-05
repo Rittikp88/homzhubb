@@ -17,6 +17,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
 import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/PortfolioFilter';
+import PortfolioOverview from '@homzhub/web/src/screens/portfolio/components/PortfolioOverview';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -66,6 +67,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const { filters } = this.state;
     return (
       <View style={styles.filterContainer}>
+        <PortfolioOverview />
         <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
         {this.renderPortfolio(properties)}
       </View>
