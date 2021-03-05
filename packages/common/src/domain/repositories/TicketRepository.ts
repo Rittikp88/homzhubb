@@ -1,6 +1,8 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { IPostTicketPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IPostTicket, IPostTicketPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   postTicket: 'tickets/',
@@ -14,8 +16,13 @@ class TicketRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public postTicket = async (requestPayload: IPostTicketPayload): Promise<void> => {
-    return await this.apiClient.get(ENDPOINTS.postTicket, requestPayload);
+  public postTicket = async (requestPayload: IPostTicketPayload): Promise<IPostTicket> => {
+    return await this.apiClient.post(ENDPOINTS.postTicket, requestPayload);
+  };
+
+  public getTicketCategories = async (): Promise<TicketCategory[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getCategories);
+    return ObjectMapper.deserializeArray(TicketCategory, response);
   };
 }
 

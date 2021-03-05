@@ -967,7 +967,6 @@
     "subCategoryError": "please select sub category.",
     "subCategory": "Sub Category",
     "quoteNumber": "Quote {{number}}",
-    "tickets": "Tickets",
     "approveQuote": "Approve Quote",
     "submittedQuotes": "Approve Submitted Quotes",
     "approveQuoteDescription": "Select the best quote from each category",
@@ -985,6 +984,10 @@
     "ticketRaisedDescription": "Dummy Ticket raised description",
     "ticketRaisedToOwner": "Ticket assigned to owner",
     "awaitingOwnerAction": "Awaiting for owner's action",
-    "addNewTicket": "Add New Ticket"
+    "addNewTicket": "Add New Ticket",
+    "addIssuePhotos": "Add Issue Photos",
+    "uploadIssuePhotoHelperText": "Supports: JPG, JPEG, PNG",
+    "otherCategory": "Other Category",
+    "enterOtherCategory": "Enter Other Category"
   }
 }

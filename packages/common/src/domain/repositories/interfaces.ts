@@ -742,7 +742,7 @@ export interface IDeviceTokenPayload {
 }
 
 export interface IServiceTicketForm {
-  propertyName?: string;
+  propertyId?: number;
 }
 
 export interface IPostTicketPayload {
@@ -750,5 +750,10 @@ export interface IPostTicketPayload {
   asset: number;
   title: string;
   description?: string;
+  others_field_description?: string;
   attachments: number[];
+}
+
+export interface IPostTicket {
+  id: number;
 }

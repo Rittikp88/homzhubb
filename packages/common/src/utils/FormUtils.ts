@@ -42,6 +42,15 @@ class FormUtils {
       };
     }, {});
   };
+
+  public isValuesTouched = (values: Record<any, string>, optionalFields?: string[]): boolean => {
+    const updatedValue = { ...values };
+    if (optionalFields) {
+      optionalFields.forEach((field: string) => delete updatedValue[field]);
+    }
+
+    return Object.values(updatedValue).every((value) => !!value);
+  };
 }
 
 const formUtils = new FormUtils();

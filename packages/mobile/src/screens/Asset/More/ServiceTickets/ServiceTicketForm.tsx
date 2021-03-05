@@ -23,17 +23,19 @@ import { IUploadAttachmentResponse } from '@homzhub/mobile/src/components/organi
 import { UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IFormValues {
-  propertyName: string;
+  property: number;
   title: string;
   category: string;
   subCategory: string;
   issueDesctiption?: string;
+  otherCategory?: string;
 }
 
 interface IScreeState {
@@ -41,13 +43,14 @@ interface IScreeState {
   attachments: IDocumentSource[];
   clearCount: number;
   isScreenLoading: boolean;
+  selectedCategoryId: number;
+  categories: IDropdownOption[];
+  subCategories: IDropdownOption[];
+  categoryWithSubCategory: TicketCategory[];
 }
 
-// TODO: add types
 interface IStateToProps {
   properties: Asset[];
-  categories: any;
-  subCategories: any;
 }
 
 type NavigationProps = NavigationScreenProps<AppStackParamList, ScreensKeys.AddServiceTicket>;
@@ -60,50 +63,78 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   constructor(props: Props) {
     super(props);
     const { route } = this.props;
+    const propertId = (route && route.params && route.params.propertyId) || -1;
 
     this.state = {
       serviceForm: {
-        propertyName: (route && route.params && route.params.propertyName) || '',
+        property: propertId,
         title: '',
         category: '',
         subCategory: '',
         issueDesctiption: '',
+        otherCategory: '',
       },
       attachments: [],
       clearCount: 0,
       isScreenLoading: false,
+      categories: [],
+      subCategories: [],
+      categoryWithSubCategory: [],
+      selectedCategoryId: -1,
     };
     this.formRef = React.createRef<typeof Formik>();
   }
 
+  public async componentDidMount(): Promise<void> {
+    const ticketCategories = await TicketRepository.getTicketCategories();
+    const dropDowncategories = ticketCategories.map((category: TicketCategory) => {
+      const { name, id } = category;
+      return { value: id, label: name };
+    });
+
+    this.setState({ categories: dropDowncategories, categoryWithSubCategory: ticketCategories });
+
+    const subCategories = this.getSubCategories();
+    if (subCategories) {
+      this.setState({ subCategories });
+    }
+  }
+
   public componentDidUpdate = (prevProps: Props, prevState: IScreeState): void => {
-    const { clearCount: newVal } = this.state;
-    const { clearCount: oldVal } = prevState;
+    const { clearCount: newVal, selectedCategoryId: newCatogoryId } = this.state;
+    const { clearCount: oldVal, selectedCategoryId: oldCategoryId } = prevState;
 
     if (newVal !== oldVal) {
-      this.formRef.current.resetForm();
+      this.formRef.current.resetForm({});
       // eslint-disable-next-line react/no-did-update-set-state
-      this.setState({ attachments: [] });
+      this.setState({ attachments: [], selectedCategoryId: -1 });
+    }
+    if (newCatogoryId !== oldCategoryId) {
+      const subCategories = this.getSubCategories();
+      if (subCategories) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({ subCategories });
+      }
     }
   };
 
-  // TODO: (Shivam: 4/3/21): add category and sub category api
   public render(): React.ReactElement {
     const {
       t,
       route,
       navigation: { goBack },
     } = this.props;
-    const { serviceForm, attachments, isScreenLoading } = this.state;
-    const propertyName = route && route.params && route.params.propertyName;
+    const { serviceForm, attachments, isScreenLoading, categories, subCategories, selectedCategoryId } = this.state;
+    const propertyId = route && route.params && route.params.propertyId;
 
     return (
       <>
         <UserScreen
-          title={t('ticket')}
-          pageTitle={t('newTicket')}
+          title={t('assetMore:tickets')}
+          pageTitle={t('serviceTickets:newTicket')}
           onBackPress={goBack}
           rightNode={this.renderClearButton()}
+          scrollEnabled
         >
           <View style={styles.container}>
             <Formik
@@ -118,6 +149,19 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                 const onMessageChange = (description: string): void => {
                   setFieldValue('issueDesctiption', description);
                 };
+                const isSubmitDisabled =
+                  !FormUtils.isValuesTouched(values, ['issueDesctiption', 'otherCategory']) || attachments.length <= 0;
+
+                const subCategorySelectedValue = values.subCategory;
+                let isOtherSelected = false;
+
+                const selectedSubCategory = subCategories.find(
+                  (subCategory: IDropdownOption) => subCategory.value === subCategorySelectedValue
+                );
+
+                if (selectedSubCategory) {
+                  isOtherSelected = selectedSubCategory.label === 'Others';
+                }
 
                 return (
                   <>
@@ -126,18 +170,19 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                       textSize="large"
                       fontType="regular"
                       options={this.getProperties()}
-                      name="propertyName"
+                      name="property"
                       formProps={formProps}
-                      label={t('property')}
-                      placeholder={t('selectProperty')}
+                      label={t('assetFinancial:property')}
+                      placeholder={t('assetFinancial:selectProperty')}
                       isMandatory
-                      isDisabled={!!propertyName}
+                      isDisabled={propertyId ? propertyId >= 0 : false}
+                      onChange={(value: string): void => setFieldValue('property', value)}
                     />
                     <FormTextInput
-                      label={t('title')}
+                      label={t('serviceTickets:title')}
                       formProps={formProps}
                       name="title"
-                      placeholder={t('exampleTitle')}
+                      placeholder={t('serviceTickets:exampleTitle')}
                       inputType="default"
                       isMandatory
                     />
@@ -145,38 +190,50 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                       textType="label"
                       textSize="large"
                       fontType="regular"
-                      label={t('category')}
-                      options={this.getCategories()}
+                      label={t('assetFinancial:category')}
+                      options={categories}
                       name="category"
                       formProps={formProps}
-                      placeholder={t('selectCategory')}
+                      placeholder={t('serviceTickets:selectCategory')}
                       isMandatory
+                      onChange={this.setSelectedCatogory}
                     />
-                    <FormDropdown
-                      textType="label"
-                      textSize="large"
-                      fontType="regular"
-                      options={this.getSubCategories()}
-                      name="subCategory"
-                      label={t('subCategory')}
-                      formProps={formProps}
-                      placeholder={t('selectSubCategory')}
-                      isMandatory
-                    />
+                    {selectedCategoryId > 0 && (
+                      <FormDropdown
+                        textType="label"
+                        textSize="large"
+                        fontType="regular"
+                        options={subCategories}
+                        name="subCategory"
+                        label={t('serviceTickets:subCategory')}
+                        formProps={formProps}
+                        placeholder={t('serviceTickets:selectSubCategory')}
+                        isMandatory
+                      />
+                    )}
+                    {isOtherSelected && (
+                      <FormTextInput
+                        label={t('serviceTickets:otherCategory')}
+                        formProps={formProps}
+                        name="otherCategory"
+                        placeholder={t('serviceTickets:enterOtherCategory')}
+                        inputType="default"
+                      />
+                    )}
                     <TextArea
-                      label={t('description')}
-                      placeholder={t('typeIssue')}
+                      label={t('serviceTickets:description')}
+                      placeholder={t('serviceTickets:typeIssue')}
                       value={values.issueDesctiption}
                       onMessageChange={onMessageChange}
                       wordCountLimit={200}
-                      helpText={t('optional')}
+                      helpText={t('common:optional')}
                       containerStyle={styles.description}
                     />
                     <UploadBoxComponent
                       attachments={attachments}
                       icon={icons.document}
-                      header={t('common:uploadDocument')}
-                      subHeader={t('common:uploadDocHelperText')}
+                      header={t('serviceTickets:addIssuePhotos')}
+                      subHeader={t('serviceTickets:uploadIssuePhotoHelperText')}
                       onCapture={this.handleUpload}
                       onDelete={this.handleDocumentDelete}
                       containerStyle={styles.uploadBox}
@@ -185,7 +242,8 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                       onPress={(): void => formProps.handleSubmit()}
                       formProps={formProps}
                       type="primary"
-                      title={t('submit')}
+                      title={t('common:submit')}
+                      disabled={isSubmitDisabled}
                     />
                   </>
                 );
@@ -204,7 +262,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     return (
       <TouchableOpacity onPress={this.onClear}>
         <Label type="large" textType="semiBold" style={styles.clear}>
-          {t('clear')}
+          {t('common:clear')}
         </Label>
       </TouchableOpacity>
     );
@@ -214,6 +272,34 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     this.setState((prevState: IScreeState) => {
       return { clearCount: prevState.clearCount + 1 };
     });
+  };
+
+  private setSelectedCatogory = (value: string, props?: FormikProps<FormikValues>): void => {
+    if (props) {
+      const { setFieldValue } = props;
+      setFieldValue('subCategory', '');
+    }
+    this.setState({ selectedCategoryId: Number(value) });
+  };
+
+  private getSubCategories = (): IDropdownOption[] | null => {
+    const { selectedCategoryId, categoryWithSubCategory } = this.state;
+
+    let dropDownSubCategories = null;
+    const selectedCategory = categoryWithSubCategory.find(
+      (category: TicketCategory) => category.id === selectedCategoryId
+    );
+
+    if (selectedCategoryId && selectedCategory) {
+      const { subCategories } = selectedCategory;
+
+      dropDownSubCategories = subCategories.map((subCategory: Unit) => {
+        const { name, id } = subCategory;
+        return { value: id, label: name };
+      });
+    }
+
+    return dropDownSubCategories;
   };
 
   private handleUpload = (attachments: IDocumentSource[]): void => {
@@ -236,37 +322,21 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     });
   };
 
-  // TODO: (shivam: 4/3/21) add api data
-  private getCategories = (): IDropdownOption[] => {
-    const { properties } = this.props;
-
-    return properties.map((property: Asset) => {
-      return { value: property.id, label: property.projectName };
-    });
-  };
-
-  private getSubCategories = (): IDropdownOption[] => {
-    const { properties } = this.props;
-
-    return properties.map((property: Asset) => {
-      return { value: property.id, label: property.projectName };
-    });
-  };
-
   private formSchema = (): yup.ObjectSchema<IFormValues> => {
     const { t } = this.props;
 
     return yup.object().shape({
-      propertyName: yup.string().required(t('propertyError')),
-      title: yup.string().required(t('titleError')),
-      category: yup.string().required(t('categoryError')),
-      subCategory: yup.string().required(t('subCategoryError')),
+      property: yup.number().moreThan(-1, t('serviceTickets:propertyError')),
+      title: yup.string().required(t('serviceTickets:titleError')),
+      category: yup.string().required(t('serviceTickets:categoryError')),
+      subCategory: yup.string().required(t('serviceTickets:subCategoryError')),
       issueDesctiption: yup.string().optional(),
+      otherCategory: yup.string().optional(),
     });
   };
 
   private handleSubmit = async (values: IFormValues, formActions: FormikHelpers<IFormValues>): Promise<void> => {
-    const { propertyName, subCategory, title, issueDesctiption } = values;
+    const { property, subCategory, title, issueDesctiption, otherCategory } = values;
     const { attachments } = this.state;
 
     let attachmentIds: Array<number> = [];
@@ -287,22 +357,25 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       }
 
       formActions.setSubmitting(true);
+      const otherField = otherCategory ? { others_field_description: otherCategory } : {};
 
       const payload = {
         ticket_category: Number(subCategory),
-        asset: Number(propertyName),
+        asset: Number(property),
         attachments: attachmentIds,
         title,
         description: issueDesctiption,
+        ...otherField,
       };
 
       await TicketRepository.postTicket(payload);
-      this.setState({ isScreenLoading: false });
+      formActions.resetForm({});
+      this.setState({ isScreenLoading: false, selectedCategoryId: -1, attachments: [] });
 
       formActions.setSubmitting(false);
       // TODO: (Shivam: 4/3.21) navigate to ticket detail screen
     } catch (e) {
-      this.setState({ isScreenLoading: false });
+      this.setState({ isScreenLoading: false, selectedCategoryId: -1, attachments: [] });
       formActions.setSubmitting(false);
       formActions.resetForm({});
       AlertHelper.error({ message: e.message });
@@ -312,16 +385,10 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 const mapStateToProps = (state: IState): IStateToProps => {
   return {
     properties: UserSelector.getUserAssets(state),
-    categories: [],
-    subCategories: [],
   };
 };
 
-const { namespacesKey: namespace } = LocaleConstants;
-export default connect(
-  mapStateToProps,
-  null
-)(withTranslation([namespace.serviceTickets, namespace.common, namespace.assetFinancial])(ServiceTicketForm));
+export default connect(mapStateToProps, null)(withTranslation()(ServiceTicketForm));
 
 const styles = StyleSheet.create({
   container: {
