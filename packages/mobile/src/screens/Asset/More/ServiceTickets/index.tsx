@@ -22,7 +22,7 @@ const ServiceTicket = (): React.ReactElement => {
 
   return (
     <UserScreen title={t('assetMore:more')} pageTitle={t('serviceTickets')} onBackPress={goBack}>
-      <ServiceTicketList onAddTicket={onAddTicket} navigateToDetail={onNavigateToDetail} />
+      <ServiceTicketList onAddTicket={onAddTicket} navigateToDetail={onNavigateToDetail} isFromMore />
     </UserScreen>
   );
 };

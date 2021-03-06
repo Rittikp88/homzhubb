@@ -10,6 +10,7 @@ interface IProps {
   value: string;
   placeholder: string;
   helpText?: string;
+  isCountRequired?: boolean;
   onMessageChange?: (text: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
   textAreaStyle?: StyleProp<ViewStyle>;
@@ -29,6 +30,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
     wordCountLimit = 250,
     helpText,
     textAreaStyle,
+    isCountRequired = true,
   } = props;
   const { t } = useTranslation();
 
@@ -64,9 +66,11 @@ export const TextArea = (props: IProps): React.ReactElement => {
           onChangeText={onMessageChange}
         />
       </TouchableOpacity>
-      <Label type="small" style={[styles.labelStyle, styles.helpText]}>
-        {t('charactersRemaining', { wordCount })}
-      </Label>
+      {isCountRequired && (
+        <Label type="small" style={[styles.labelStyle, styles.helpText]}>
+          {t('charactersRemaining', { wordCount })}
+        </Label>
+      )}
     </View>
   );
 };

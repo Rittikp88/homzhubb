@@ -160,6 +160,10 @@ export const icons = {
   filledGallery: 'filled-gallery',
   circularPlus: 'circular-plus',
   circularArrow: 'circular-arrow',
+  sadFace: 'sad-face',
+  neutralFace: 'neutral-face',
+  happyFace: 'happy-face',
+  attachDoc: 'attach-doc',
 
   // COMMUTE
   train: 'train',

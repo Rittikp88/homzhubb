@@ -9,8 +9,11 @@ export class TicketCategory {
   @JsonProperty('name', String)
   private _name = '';
 
-  @JsonProperty('sub_categories', [Unit])
+  @JsonProperty('sub_categories', [Unit], true)
   private _subCategories = [];
+
+  @JsonProperty('parent_ticket_category', Unit, true)
+  private _parentTicketCategory = new Unit();
 
   get id(): number {
     return this._id;
@@ -22,5 +25,9 @@ export class TicketCategory {
 
   get subCategories(): Unit[] {
     return this._subCategories;
+  }
+
+  get parentTicketCategory(): Unit {
+    return this._parentTicketCategory;
   }
 }

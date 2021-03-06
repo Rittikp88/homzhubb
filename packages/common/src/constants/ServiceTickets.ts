@@ -1,12 +1,20 @@
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-
-const translationKey = LocaleConstants.namespacesKey.serviceTickets;
+import { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
 
 export enum TicketActionType {
   SUBMIT_QUOTE = 'QUOTES_READY',
   APPROVE_QUOTE = 'QUOTES_APPROVED',
   WORK_COMPLETED = 'CLOSED',
 }
+
+export enum ExperienceType {
+  UNSATISFIED = 'Unsatisfied',
+  NEUTRAL = 'Neutral',
+  SATISFIED = 'Satisfied',
+}
+
+const translationKey = LocaleConstants.namespacesKey.serviceTickets;
 
 export const TOTAL_IMAGES = 10;
 
@@ -25,6 +33,27 @@ export const initialQuotes = [
     title: `${translationKey}:quote3`,
     price: '',
     document: '',
+  },
+];
+
+export const initialExperienceData = [
+  {
+    icon: icons.sadFace,
+    title: ExperienceType.UNSATISFIED,
+    type: ExperienceType.UNSATISFIED,
+    color: theme.colors.darkTint9,
+  },
+  {
+    icon: icons.neutralFace,
+    title: ExperienceType.NEUTRAL,
+    type: ExperienceType.NEUTRAL,
+    color: theme.colors.darkTint9,
+  },
+  {
+    icon: icons.happyFace,
+    title: ExperienceType.SATISFIED,
+    type: ExperienceType.SATISFIED,
+    color: theme.colors.darkTint9,
   },
 ];
 
@@ -77,7 +106,7 @@ export const mockTicket = {
   },
 };
 
-// TODO: Remove after API integration
+// TODO: (Shikha) - Remove after API integration
 export const quotesPreview = [
   {
     id: 1,
@@ -298,5 +327,73 @@ export const quotesPreview = [
         ],
       },
     ],
+  },
+];
+
+// TODO: (Naveen) - Remove after API integration
+export const ticketList = [
+  {
+    id: 1,
+    ticket_number: 'RB1234',
+    ticket_category: {
+      id: 1,
+      name: 'Leakage',
+      parent_ticket_category: {
+        id: 1,
+        name: 'Kitchen',
+      },
+    },
+    title: 'My kitchen ceiling is leaking',
+    description: 'Foobar JohnDoe',
+    assigned_to: {
+      id: 1,
+      first_name: 'Foobar',
+      last_name: 'JohnDoe',
+      profile_link: 'https://link.com',
+    },
+    asset: {
+      id: 1,
+      project_name: '2BHK - 209, Mahindra Bloomdale, Nagpur',
+    },
+    status: 'OPEN',
+    priority: 'HIGH',
+    created_at: '2021-01-20T11:20:00Z',
+    closed_at: '2021-01-20T11:20:00Z',
+    updated_at: '2021-01-20T11:20:00Z',
+  },
+  {
+    id: 1,
+    ticket_number: 'RB1234',
+    ticket_category: {
+      id: 1,
+      name: 'Leakage',
+      parent_ticket_category: {
+        id: 1,
+        name: 'Kitchen',
+      },
+    },
+    title: 'My kitchen ceiling is leaking',
+    description: 'Foobar JohnDoe',
+    assigned_to: {
+      id: 1,
+      first_name: 'Foobar',
+      last_name: 'JohnDoe',
+      profile_link: 'https://link.com',
+    },
+    closed_by: {
+      id: 1,
+      first_name: 'Foobar',
+      last_name: 'JohnDoe',
+      profile_link: 'https://link.com',
+    },
+    asset: {
+      id: 1,
+      project_name: '2BHK - 209, Mahindra Bloomdale, Nagpur',
+    },
+    status: 'CLOSED',
+    priority: 'HIGH',
+    created_at: '2021-01-20T11:20:00Z',
+    closed_at: '2021-01-20T11:20:00Z',
+    updated_at: '2021-01-20T11:20:00Z',
   },
 ];

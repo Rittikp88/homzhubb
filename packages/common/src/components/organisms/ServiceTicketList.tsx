@@ -1,26 +1,27 @@
 import React, { Component, ReactElement } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { TabBar, TabView } from 'react-native-tab-view';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { TicketCard } from '@homzhub/common/src/components/organisms/TicketCard';
+import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
+import { ticketList } from '@homzhub/common/src/constants/ServiceTickets';
 import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-
-enum ListType {
-  Open = 1,
-  Close = 2,
-}
 
 interface IProps {
   onAddTicket: () => void;
   navigateToDetail: () => void;
+  isFromMore?: boolean;
 }
 
 interface IScreenState {
-  selectedListType: ListType;
+  selectedListType: TicketStatus;
   currentIndex: number;
 }
 
@@ -28,21 +29,22 @@ type Props = WithTranslation & IProps;
 
 class ServiceTicketList extends Component<Props, IScreenState> {
   public state = {
-    selectedListType: ListType.Open,
+    selectedListType: TicketStatus.OPEN,
     currentIndex: 0,
   };
 
   public render(): React.ReactNode {
     const { selectedListType } = this.state;
     const { t, onAddTicket } = this.props;
+
     return (
       <>
         <View style={styles.container}>
           <Button type="secondary" title={t('addNewTicket')} containerStyle={styles.addButton} onPress={onAddTicket} />
           <SelectionPicker
             data={[
-              { title: t('common:open'), value: ListType.Open },
-              { title: t('common:closed'), value: ListType.Close },
+              { title: t('common:open'), value: TicketStatus.OPEN },
+              { title: t('common:closed'), value: TicketStatus.CLOSED },
             ]}
             selectedItem={[selectedListType]}
             onValueChange={this.onTypeChange}
@@ -90,33 +92,54 @@ class ServiceTicketList extends Component<Props, IScreenState> {
     );
   };
 
-  // TODO: Update scene with ticket card
   private renderScene = ({ route }: { route: IRoutes }): ReactElement => {
-    const { navigateToDetail } = this.props;
     switch (route.key) {
       case Tabs.ALL:
+        return this.renderContent(TicketPriority.ALL);
       case Tabs.HIGH:
+        return this.renderContent(TicketPriority.HIGH);
       case Tabs.MEDIUM:
+        return this.renderContent(TicketPriority.MEDIUM);
       case Tabs.LOW:
+        return this.renderContent(TicketPriority.LOW);
       default:
-        return (
-          <Button
-            type="secondary"
-            title="Ticket Detail" // TODO: Remove
-            containerStyle={styles.detailButton}
-            onPress={navigateToDetail}
-          />
-        );
+        return <EmptyState />;
     }
   };
 
-  private onTypeChange = (value: ListType): void => {
+  private renderContent = (priority: TicketPriority): ReactElement => {
+    const data = this.getFormattedData(priority);
+    // TODO: (Naveen)- Ticket count and Empty state
+    return (
+      <>
+        <FlatList data={data} renderItem={this.renderItem} contentContainerStyle={styles.listContainer} />
+      </>
+    );
+  };
+
+  private renderItem = ({ item }: { item: Ticket }): ReactElement => {
+    const { navigateToDetail, isFromMore } = this.props;
+    // TODO: Pass ticket id with navigation once Ticket Detail API integrated
+    return <TicketCard cardData={item} onCardPress={navigateToDetail} isFromMore={isFromMore} />;
+  };
+
+  // HANDLERS START
+  private onTypeChange = (value: TicketStatus): void => {
     this.setState({ selectedListType: value });
+  };
+
+  private getFormattedData = (priority: TicketPriority): Ticket[] => {
+    const { selectedListType } = this.state;
+    // TODO: (Naveen) - use ticket list from API
+    const data = ObjectMapper.deserializeArray(Ticket, ticketList);
+    const formattedData = data.filter((item) => item.status === selectedListType);
+    return priority === TicketPriority.ALL ? formattedData : formattedData.filter((item) => item.priority === priority);
   };
 
   private handleIndexChange = (index: number): void => {
     this.setState({ currentIndex: index });
   };
+  // HANDLERS END
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.serviceTickets)(ServiceTicketList);
@@ -137,8 +160,7 @@ const styles = StyleSheet.create({
   tabTitle: {
     color: theme.colors.darkTint3,
   },
-  // TODO: Remove
-  detailButton: {
+  listContainer: {
     margin: 16,
   },
 });
