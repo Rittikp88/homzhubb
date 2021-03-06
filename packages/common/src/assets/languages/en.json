@@ -224,8 +224,10 @@
     "typeComment": "Type your comment here...",
     "noFileChosen": "No file chosen",
     "open": "Open",
-    "close": "Close",
-    "chooseAction": "Choose your Action"
+    "closed": "Closed",
+    "chooseAction": "Choose your Action",
+    "uploadWarning": "You can upload a maximum of 10 images",
+    "addPhoto": "Add Photos"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -985,9 +987,12 @@
     "ticketRaisedToOwner": "Ticket assigned to owner",
     "awaitingOwnerAction": "Awaiting for owner's action",
     "addNewTicket": "Add New Ticket",
+    "workCompleted": "Work Completed",
     "addIssuePhotos": "Add Issue Photos",
     "uploadIssuePhotoHelperText": "Supports: JPG, JPEG, PNG",
     "otherCategory": "Other Category",
-    "enterOtherCategory": "Enter Other Category"
+    "enterOtherCategory": "Enter Other Category",
+    "uploadProof": "Upload Proof of Completion",
+    "showcasePhoto": "Showcase photos of your finished work here"
   }
 }

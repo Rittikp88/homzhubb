@@ -8,6 +8,8 @@ export enum TicketActionType {
   WORK_COMPLETED = 'CLOSED',
 }
 
+export const TOTAL_IMAGES = 10;
+
 export const initialQuotes = [
   {
     title: `${translationKey}:quote1`,

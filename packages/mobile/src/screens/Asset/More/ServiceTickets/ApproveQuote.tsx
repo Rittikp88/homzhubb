@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -35,6 +37,14 @@ const ApproveQuote = (): React.ReactElement => {
   const onCommentChange = (value: string): void => {
     setComment(value);
   };
+
+  const onOpenQuote = async (url: string): Promise<void> => {
+    if (!(await LinkingService.canOpenURL(url))) {
+      AlertHelper.error({ message: t('common:invalidLinkError') });
+    }
+
+    await LinkingService.canOpenURL(url);
+  };
   // HANDLERS
 
   return (
@@ -61,6 +71,7 @@ const ApproveQuote = (): React.ReactElement => {
                 detail={item.quoteSubmitGroup}
                 selectedQuote={selectedQuote[index]}
                 onSelectQuote={(id): void => onSelectQuote(id, index)}
+                onOpenQuote={onOpenQuote}
               />
             </CollapsibleSection>
           );

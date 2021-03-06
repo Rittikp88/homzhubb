@@ -34,7 +34,7 @@ interface IFormValues {
   title: string;
   category: string;
   subCategory: string;
-  issueDesctiption?: string;
+  issueDescription?: string;
   otherCategory?: string;
 }
 
@@ -71,7 +71,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         title: '',
         category: '',
         subCategory: '',
-        issueDesctiption: '',
+        issueDescription: '',
         otherCategory: '',
       },
       attachments: [],
@@ -147,10 +147,10 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                 const { values, setFieldValue } = formProps;
 
                 const onMessageChange = (description: string): void => {
-                  setFieldValue('issueDesctiption', description);
+                  setFieldValue('issueDescription', description);
                 };
                 const isSubmitDisabled =
-                  !FormUtils.isValuesTouched(values, ['issueDesctiption', 'otherCategory']) || attachments.length <= 0;
+                  !FormUtils.isValuesTouched(values, ['issueDescription', 'otherCategory']) || attachments.length <= 0;
 
                 const subCategorySelectedValue = values.subCategory;
                 let isOtherSelected = false;
@@ -223,7 +223,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                     <TextArea
                       label={t('serviceTickets:description')}
                       placeholder={t('serviceTickets:typeIssue')}
-                      value={values.issueDesctiption}
+                      value={values.issueDescription}
                       onMessageChange={onMessageChange}
                       wordCountLimit={200}
                       helpText={t('common:optional')}
@@ -330,13 +330,13 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       title: yup.string().required(t('serviceTickets:titleError')),
       category: yup.string().required(t('serviceTickets:categoryError')),
       subCategory: yup.string().required(t('serviceTickets:subCategoryError')),
-      issueDesctiption: yup.string().optional(),
+      issueDescription: yup.string().optional(),
       otherCategory: yup.string().optional(),
     });
   };
 
   private handleSubmit = async (values: IFormValues, formActions: FormikHelpers<IFormValues>): Promise<void> => {
-    const { property, subCategory, title, issueDesctiption, otherCategory } = values;
+    const { property, subCategory, title, issueDescription, otherCategory } = values;
     const { attachments } = this.state;
 
     let attachmentIds: Array<number> = [];
@@ -364,7 +364,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         asset: Number(property),
         attachments: attachmentIds,
         title,
-        description: issueDesctiption,
+        description: issueDescription,
         ...otherField,
       };
 
@@ -392,7 +392,7 @@ export default connect(mapStateToProps, null)(withTranslation()(ServiceTicketFor
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    paddingHorizontal: 16,
   },
   clear: {
     color: theme.colors.blue,

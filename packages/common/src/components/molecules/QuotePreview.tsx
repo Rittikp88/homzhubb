@@ -15,10 +15,11 @@ interface IProps {
   detail: QuoteGroup[];
   selectedQuote: number;
   onSelectQuote: (id: number) => void;
+  onOpenQuote: (url: string) => void;
 }
 
 const QuotePreview = (props: IProps): React.ReactElement => {
-  const { detail, selectedQuote, onSelectQuote } = props;
+  const { detail, selectedQuote, onSelectQuote, onOpenQuote } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
   // HANDLERS
@@ -33,16 +34,17 @@ const QuotePreview = (props: IProps): React.ReactElement => {
       quoteNumber,
       currency: { currencySymbol },
       totalAmount,
+      attachment: { link },
     } = quote;
     const isSelected = id === selectedQuote;
     return (
       <View style={styles.cardContent}>
-        <View style={styles.center}>
+        <TouchableOpacity style={styles.center} onPress={(): void => onOpenQuote(link)}>
           <Icon name={icons.docFilled} color={theme.colors.darkTint5} size={20} />
           <Label type="large" style={styles.title}>
             {t('quoteNumber', { number: quoteNumber })}
           </Label>
-        </View>
+        </TouchableOpacity>
         <View style={styles.center}>
           <Label type="large" style={styles.subTTitle} textType={isSelected ? 'semiBold' : 'regular'}>
             {currencySymbol} {totalAmount}

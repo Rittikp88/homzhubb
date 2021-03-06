@@ -21,5 +21,6 @@ export interface IState {
   portfolio: IPortfolioState;
   recordAsset: IRecordAssetState;
   search: ISearchState;
+  ticket: ITicketState;
   user: IUserState;
 }

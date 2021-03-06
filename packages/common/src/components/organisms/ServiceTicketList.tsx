@@ -42,7 +42,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
           <SelectionPicker
             data={[
               { title: t('common:open'), value: ListType.Open },
-              { title: t('common:close'), value: ListType.Close },
+              { title: t('common:closed'), value: ListType.Close },
             ]}
             selectedItem={[selectedListType]}
             onValueChange={this.onTypeChange}

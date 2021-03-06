@@ -5,11 +5,13 @@ import { userReducer } from '@homzhub/common/src/modules/user/reducer';
 import { searchReducer } from '@homzhub/common/src/modules/search/reducer';
 import { portfolioReducer } from '@homzhub/common/src/modules/portfolio/reducer';
 import { recordAssetReducer } from '@homzhub/common/src/modules/recordAsset/reducer';
+import { ticketReducer } from '@homzhub/common/src/modules/tickets/reducer';
 
 export default combineReducers({
   asset: assetReducer,
   common: commonReducer,
   search: searchReducer,
+  ticket: ticketReducer,
   user: userReducer,
   portfolio: portfolioReducer,
   recordAsset: recordAssetReducer,

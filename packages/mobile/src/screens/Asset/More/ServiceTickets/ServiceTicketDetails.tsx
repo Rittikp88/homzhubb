@@ -62,7 +62,6 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           loading={false}
           onBackPress={goBack}
         >
-          {this.renderFullscreenCarousel()}
           {this.renderDetailsCard()}
           <View style={styles.activityView}>
             {this.renderActivity()}
@@ -72,6 +71,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           </View>
         </UserScreen>
         {this.renderActionButton()}
+        {this.renderFullscreenCarousel()}
         <BottomSheetListView
           selectedValue={selectedAction}
           listHeight={350}
@@ -98,6 +98,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
 
   private renderActionButton = (): React.ReactElement => {
     const { t } = this.props;
+    // TODO: (Shikha) -Add take action button title logic
     return (
       <View style={styles.buttonContainer}>
         <Button type="primary" title={t('assetDashboard:takeActions')} />
@@ -274,7 +275,8 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         break;
       case TicketActionType.WORK_COMPLETED:
       default:
-      // TODO: Add navigation once screen ready
+        navigation.navigate(ScreensKeys.WorkCompleted);
+        break;
     }
 
     this.handleActionSheet(false);

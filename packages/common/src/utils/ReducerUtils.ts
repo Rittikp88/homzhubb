@@ -1,4 +1,4 @@
-import { groupBy } from 'lodash';
+import { groupBy, cloneDeep } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { Message, Messages, IMessageKeyValue, IMessages } from '@homzhub/common/src/domain/models/Message';
 
@@ -25,6 +25,14 @@ class ReducerUtils {
     });
 
     return resultObj;
+  };
+
+  public removeAttachment = (key: string, prevData: string[]): string[] => {
+    const attachments = cloneDeep(prevData);
+
+    const index = attachments.indexOf(key);
+    attachments.splice(index, 1);
+    return attachments;
   };
 }
 

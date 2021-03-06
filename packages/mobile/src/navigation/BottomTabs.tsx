@@ -58,6 +58,7 @@ import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More
 import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
+import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
@@ -121,10 +122,11 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam;
   [ScreensKeys.ServiceTicketScreen]: undefined;
-  [ScreensKeys.SubmitQuote]: undefined;
-  [ScreensKeys.AddServiceTicket]: undefined;
-  [ScreensKeys.ApproveQuote]: undefined;
   [ScreensKeys.ServiceTicketDetail]: undefined;
+  [ScreensKeys.AddServiceTicket]: undefined;
+  [ScreensKeys.SubmitQuote]: undefined;
+  [ScreensKeys.ApproveQuote]: undefined;
+  [ScreensKeys.WorkCompleted]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -209,10 +211,11 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.Messages} component={Messages} />
       <MoreStackNavigator.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
       <MoreStackNavigator.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ServiceTicketDetail} component={ServiceTicketDetails} />
       <MoreStackNavigator.Screen name={ScreensKeys.ServiceTicketScreen} component={ServiceTicket} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubmitQuote} component={SubmitQuote} />
       <MoreStackNavigator.Screen name={ScreensKeys.ApproveQuote} component={ApproveQuote} />
-      <MoreStackNavigator.Screen name={ScreensKeys.ServiceTicketDetail} component={ServiceTicketDetails} />
+      <MoreStackNavigator.Screen name={ScreensKeys.WorkCompleted} component={WorkCompleted} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -239,6 +242,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.AddServiceTicket,
       ScreensKeys.SubmitQuote,
       ScreensKeys.ApproveQuote,
+      ScreensKeys.WorkCompleted,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };

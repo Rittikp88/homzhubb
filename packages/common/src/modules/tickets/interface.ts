@@ -1,0 +1,3 @@
+interface ITicketState {
+  proofAttachment: string[];
+}
