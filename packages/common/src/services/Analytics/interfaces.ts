@@ -1,3 +1,4 @@
+import { Data } from '@homzhub/common/src/domain/models/Asset';
 import { ContactActions } from '@homzhub/common/src/domain/models/Search';
 import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
 
@@ -69,6 +70,15 @@ export interface IMessageEvent {
   group_name: string;
 }
 
+export interface IAddServiceEvent {
+  property_location: string;
+  project_name: string;
+  city: string;
+  country: string;
+  asset_group: Data;
+  asset_type: Data;
+}
+
 export type EventDataType =
   | IAuthenticationEvent
   | IAddPropertyEvent
@@ -78,4 +88,5 @@ export type EventDataType =
   | IReferEvent
   | IPropertyShareEvent
   | IVisitEvent
-  | IMessageEvent;
+  | IMessageEvent
+  | IAddServiceEvent;

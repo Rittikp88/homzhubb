@@ -1,7 +1,6 @@
 import messaging, { FirebaseMessagingTypes } from '@react-native-firebase/messaging';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
-import { Logger } from '@homzhub/common/src/utils/Logger';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
@@ -14,6 +13,7 @@ import { IDeviceTokenPayload } from '@homzhub/common/src/domain/repositories/int
 
 const notificationScreenMap = {
   [NotificationTypes.Chat]: ScreensKeys.ChatScreen,
+  [NotificationTypes.AddedServiceTicket]: ScreensKeys.AddServiceTicket,
 };
 
 interface INotificationData {
@@ -26,7 +26,6 @@ class NotificationService {
   constructor() {
     this.messageObject = messaging();
   }
-  // TODO: (shivam: 3/2/21) remove loggers
 
   public async init(): Promise<void> {
     await this.requestPermisson();
@@ -41,64 +40,73 @@ class NotificationService {
   }
 
   public addNotificationListeners = async (): Promise<void> => {
-    // foreground message
+    // Handled Notification for foreground message / App is opened.
     this.messageObject.onMessage((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      Logger.info(`foreground notification message: ${remoteMessage} `);
-      // TODO: (shivam: 3/2/21) destruct data and redirect to screen.
       if (remoteMessage.data) {
         const {
           data: { message, deeplink_metadata, title },
           data,
         } = remoteMessage;
-        // TODO: check the current rout name and show alert accordingly
-        const { navigation } = NavigationService;
-        const currentRoute = navigation.getCurrentRoute();
-        const { name, params } = currentRoute;
         const JSONDeeplinkData: INotificationData = JSON.parse(deeplink_metadata);
-        const { message_group_id, message_group_name } = JSONDeeplinkData;
-
-        const groupId = params && params.groupId ? params.groupId : null;
-        const isOnChatScreen = name === ScreensKeys.ChatScreen && groupId === message_group_id;
+        const { message_group_id, message_group_name, type } = JSONDeeplinkData;
 
         const store = StoreProviderService.getStore();
 
-        if (isOnChatScreen) {
-          store.dispatch(
-            CommonActions.getMessages({
-              groupId: Number(message_group_id),
-            })
-          );
-          CommonActions.setCurrentChatDetail({
-            groupName: message_group_name,
-            groupId: Number(message_group_id),
-          });
-        } else {
-          store.dispatch(
-            CommonActions.getMessages({
-              groupId: Number(message_group_id),
-            })
-          );
-          AlertHelper.success({
-            message,
-            onPress: () => this.redirectOnNotification(data),
-            description: title,
-            duration: 5000,
-          });
+        switch (type) {
+          case NotificationTypes.Chat:
+            {
+              const { navigation } = NavigationService;
+              const currentRoute = navigation.getCurrentRoute();
+              const { name, params } = currentRoute;
+              const groupId = params && params.groupId ? params.groupId : null;
+
+              const isOnChatScreen = name === ScreensKeys.ChatScreen && groupId === message_group_id;
+
+              if (isOnChatScreen) {
+                store.dispatch(
+                  CommonActions.getMessages({
+                    groupId: Number(message_group_id),
+                  })
+                );
+                CommonActions.setCurrentChatDetail({
+                  groupName: message_group_name,
+                  groupId: Number(message_group_id),
+                });
+              } else {
+                store.dispatch(
+                  CommonActions.getMessages({
+                    groupId: Number(message_group_id),
+                  })
+                );
+                AlertHelper.success({
+                  message,
+                  onPress: () => this.redirectOnNotification(data),
+                  description: title,
+                  duration: 5000,
+                });
+              }
+            }
+            break;
+          default:
+            AlertHelper.success({
+              message,
+              onPress: () => this.redirectOnNotification(data),
+              description: title,
+              duration: 5000,
+            });
         }
       }
     });
 
-    // handle backgound app
+    // Handle Notification when App is in backgound.
     this.messageObject.onNotificationOpenedApp((remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      Logger.info(`background notification message: ${remoteMessage} `);
       const { data } = remoteMessage;
       if (data) {
         this.redirectOnNotification(data);
       }
     });
-    // handle quit app
+    // Handle Notification when App is quit / App is not opened.
     const remoteMessage: FirebaseMessagingTypes.RemoteMessage | null = await this.messageObject.getInitialNotification();
-    Logger.info(`quit app notification message: ${remoteMessage} `);
     if (remoteMessage && remoteMessage.data) {
       this.redirectOnNotification(remoteMessage.data);
     }
@@ -111,8 +119,6 @@ class NotificationService {
   public postDeviceToken = async (): Promise<void> => {
     const newDeviceToken = await this.messageObject.getToken();
     const oldDeviceToken = await this.getDeviceToken();
-
-    Logger.info(`device toke: ${newDeviceToken}`);
 
     const isDeviceTokenChanged = !oldDeviceToken || newDeviceToken !== oldDeviceToken;
 
@@ -159,7 +165,7 @@ class NotificationService {
 
     const navigationTab = ScreensKeys.More;
     const params = {};
-    let screeName = notificationScreenMap[type as NotificationTypes] || ScreensKeys.ChatScreen;
+    const screeName = notificationScreenMap[type as NotificationTypes] || ScreensKeys.ChatScreen;
 
     switch (type) {
       case NotificationTypes.Chat:
@@ -174,9 +180,11 @@ class NotificationService {
             })
           );
 
-          screeName = notificationScreenMap[type];
           NavigationService.notificationNavigation(screeName, params, navigationTab);
         }
+        break;
+      case NotificationTypes.AddedServiceTicket:
+        NavigationService.notificationNavigation(screeName);
         break;
       default:
         NavigationService.notificationNavigation(screeName, params, navigationTab);

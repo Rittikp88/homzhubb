@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { StyleProp, StyleSheet, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 
 interface IProps {
@@ -16,6 +16,7 @@ interface IProps {
   textAreaStyle?: StyleProp<ViewStyle>;
   wordCountLimit?: number;
   inputContainerStyle?: StyleProp<ViewStyle>;
+  labelType?: TextSizeType;
 }
 
 export const TextArea = (props: IProps): React.ReactElement => {
@@ -31,6 +32,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
     helpText,
     textAreaStyle,
     isCountRequired = true,
+    labelType = 'large',
   } = props;
   const { t } = useTranslation();
 
@@ -45,7 +47,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
   return (
     <View style={containerStyle}>
       <View style={styles.labelView}>
-        <Label type="large" style={styles.labelStyle}>
+        <Label type={labelType} style={styles.labelStyle}>
           {label}
         </Label>
         {!!helpText && (

@@ -29,4 +29,5 @@ export enum DynamicLinkParamKeys {
 
 export enum NotificationTypes {
   Chat = 'CHAT',
+  AddedServiceTicket = 'NEW_SERVICE_TICKET',
 }

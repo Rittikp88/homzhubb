@@ -11,6 +11,7 @@ export const icons = {
   dashboard: 'dashboard',
   location: 'location',
   search: 'search',
+  searchFilled: 'search-filled',
   leftArrow: 'left-arrow',
   rightArrow: 'right-arrow',
   downArrow: 'down-arrow',
@@ -54,6 +55,7 @@ export const icons = {
   starUnfilled: 'unfilled-star',
   heartOutline: 'heart-outline',
   threeDots: 'three-dots',
+  threeDotsUnfilled: 'three-dots-unfilled',
   list: 'list',
   filter: 'filter',
   bathTub: 'bath-tub',
@@ -102,6 +104,7 @@ export const icons = {
   toggleOff: 'toggle-off',
   toggleOn: 'toggle-on',
   portfolio: 'portfolio',
+  portfolioFilled: 'portfolio-filled',
   verticalDots: 'vertical-dots',
   home: 'home',
   upArrow: 'up-arrow',
@@ -164,6 +167,7 @@ export const icons = {
   neutralFace: 'neutral-face',
   happyFace: 'happy-face',
   attachDoc: 'attach-doc',
+  addImage: 'add-image',
 
   // COMMUTE
   train: 'train',

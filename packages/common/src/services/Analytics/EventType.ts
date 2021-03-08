@@ -21,4 +21,5 @@ export enum EventType {
   PropertyShare = 'property_share',
   Refer = 'refer',
   NEW_MESSAGE = 'new_message',
+  NewServiceTicket = 'new_service_ticket',
 }

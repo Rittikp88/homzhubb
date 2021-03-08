@@ -3,9 +3,11 @@ import * as yup from 'yup';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import { connect } from 'react-redux';
+import DocumentPicker from 'react-native-document-picker';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
@@ -28,6 +30,8 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { IAddServiceEvent } from '@homzhub/common/src/services/Analytics/interfaces';
 
 interface IFormValues {
   property: number;
@@ -167,7 +171,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                   <>
                     <FormDropdown
                       textType="label"
-                      textSize="large"
+                      textSize="regular"
                       fontType="regular"
                       options={this.getProperties()}
                       name="property"
@@ -188,7 +192,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                     />
                     <FormDropdown
                       textType="label"
-                      textSize="large"
+                      textSize="regular"
                       fontType="regular"
                       label={t('assetFinancial:category')}
                       options={categories}
@@ -201,7 +205,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                     {selectedCategoryId > 0 && (
                       <FormDropdown
                         textType="label"
-                        textSize="large"
+                        textSize="regular"
                         fontType="regular"
                         options={subCategories}
                         name="subCategory"
@@ -228,15 +232,17 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                       wordCountLimit={200}
                       helpText={t('common:optional')}
                       containerStyle={styles.description}
+                      labelType="regular"
                     />
                     <UploadBoxComponent
                       attachments={attachments}
-                      icon={icons.document}
+                      icon={icons.addImage}
                       header={t('serviceTickets:addIssuePhotos')}
                       subHeader={t('serviceTickets:uploadIssuePhotoHelperText')}
                       onCapture={this.handleUpload}
                       onDelete={this.handleDocumentDelete}
                       containerStyle={styles.uploadBox}
+                      allowedTypes={[DocumentPicker.types.images]}
                     />
                     <FormButton
                       onPress={(): void => formProps.handleSubmit()}
@@ -336,6 +342,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   };
 
   private handleSubmit = async (values: IFormValues, formActions: FormikHelpers<IFormValues>): Promise<void> => {
+    const { properties } = this.props;
     const { property, subCategory, title, issueDescription, otherCategory } = values;
     const { attachments } = this.state;
 
@@ -369,6 +376,21 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       };
 
       await TicketRepository.postTicket(payload);
+
+      const selectedProperty = properties.find((asset: Asset) => asset.id === property);
+      if (selectedProperty) {
+        const { city, countryName, assetGroup, assetType, projectName, address } = selectedProperty;
+
+        AnalyticsService.track(EventType.NewServiceTicket, {
+          property_location: address,
+          project_name: projectName,
+          city,
+          country: countryName,
+          asset_group: assetGroup,
+          asset_type: assetType,
+        } as IAddServiceEvent);
+      }
+
       formActions.resetForm({});
       this.setState({ isScreenLoading: false, selectedCategoryId: -1, attachments: [] });
 

@@ -282,9 +282,13 @@ export const BottomTabs = (): React.ReactElement => {
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetPortfolio:portfolio'),
-          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <Icon name={icons.portfolio} color={color} size={22} />
-          ),
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
+            return focused ? (
+              <Icon name={icons.portfolioFilled} color={color} size={22} />
+            ) : (
+              <Icon name={icons.portfolio} color={color} size={22} />
+            );
+          },
         })}
       />
       <BottomTabNavigator.Screen
@@ -292,9 +296,13 @@ export const BottomTabs = (): React.ReactElement => {
         component={isLoggedIn ? FinancialsStack : DefaultLogin}
         options={{
           tabBarLabel: t('assetFinancial:financial'),
-          tabBarIcon: ({ color }: { color: string }): React.ReactElement => (
-            <Icon name={icons.barChartOutline} color={color} size={22} />
-          ),
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
+            return focused ? (
+              <Icon name={icons.barChartFilled} color={color} size={22} />
+            ) : (
+              <Icon name={icons.barChartOutline} color={color} size={22} />
+            );
+          },
         }}
       />
       <BottomTabNavigator.Screen
@@ -314,8 +322,12 @@ export const BottomTabs = (): React.ReactElement => {
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('common:search'),
-          tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
-            return <Icon name={icons.search} color={color} size={22} />;
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
+            return focused ? (
+              <Icon name={icons.searchFilled} color={color} size={26} />
+            ) : (
+              <Icon name={icons.search} color={color} size={22} />
+            );
           },
         })}
       />
@@ -330,8 +342,12 @@ export const BottomTabs = (): React.ReactElement => {
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetMore:more'),
-          tabBarIcon: ({ color }: { color: string }): React.ReactElement => {
-            return <Icon name={icons.threeDots} color={color} size={22} />;
+          tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
+            return focused ? (
+              <Icon name={icons.threeDots} color={color} size={22} />
+            ) : (
+              <Icon name={icons.threeDotsUnfilled} color={color} size={22} />
+            );
           },
         })}
       />
