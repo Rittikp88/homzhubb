@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
-import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -23,6 +23,7 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import AddPropertyLocation from '@homzhub/web/src/screens/addPropertyLocation';
 import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropertyView';
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/VerificationDocuments';
@@ -150,8 +151,6 @@ const AddProperty: FC = () => {
   const renderScreen = (comp: AddPropertyStack): React.ReactElement => {
     const { AddPropertyLocationScreen, PropertyDetailsMapScreen, AddPropertyViewScreen } = AddPropertyStack;
     switch (comp) {
-      case AddPropertyLocationScreen:
-        return <AddPropertyLocation />;
       case PropertyDetailsMapScreen:
         return <PropertyDetailsMap />;
       case AddPropertyViewScreen:
@@ -165,8 +164,15 @@ const AddProperty: FC = () => {
             />
           </View>
         );
+      case AddPropertyLocationScreen:
       default:
-        return <AddPropertyLocation />;
+        return (
+          <AddPropertyLocation
+            setUpdatedLatLng={setLatLng}
+            hasScriptLoaded={hasScriptLoaded}
+            navigateScreen={navigateScreen}
+          />
+        );
     }
   };
   return (

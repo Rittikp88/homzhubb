@@ -1,8 +1,7 @@
-import React, { FC, useContext } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { GeolocationError, GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -11,23 +10,35 @@ import GoogleMapView from '@homzhub/web/src/components/atoms/GoogleMapView';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import AutoCompletionSearchBar from '@homzhub/web/src/components/atoms/AutoCompletionSearchBar';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
-const AddPropertyLocation: FC = () => {
+interface IProps {
+  setUpdatedLatLng: (latLng: ILatLng) => void;
+  hasScriptLoaded: boolean;
+  navigateScreen: (screen: AddPropertyStack) => void;
+}
+
+const AddPropertyLocation: FC<IProps> = (props: IProps) => {
+  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = AddPropertyLocationStyles;
-  const { hasScriptLoaded } = useContext(AddPropertyContext);
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
       {hasScriptLoaded && <GoogleMapView />}
-      <SearchView />
+      <SearchView
+        setUpdatedLatLng={setUpdatedLatLng}
+        hasScriptLoaded={hasScriptLoaded}
+        navigateScreen={navigateScreen}
+      />
     </View>
   );
 };
 
-const SearchView: FC = () => {
+const SearchView: FC<IProps> = (props: IProps) => {
+  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = searchViewStyles();
@@ -41,7 +52,6 @@ const SearchView: FC = () => {
     justifyContent: 'center',
     alignItems: 'center',
   };
-  const { setUpdatedLatLng, navigateScreen } = useContext(AddPropertyContext);
   const onPressAutoDetect = (): void => {
     GeolocationService.getCurrentPosition(onFetchSuccess, onFetchError);
   };
@@ -60,7 +70,11 @@ const SearchView: FC = () => {
         <Typography size="regular" style={styles.title}>
           {t('findProperty')}
         </Typography>
-        <AutoCompletionSearchBar />
+        <AutoCompletionSearchBar
+          setUpdatedLatLng={setUpdatedLatLng}
+          hasScriptLoaded={hasScriptLoaded}
+          navigateAddProperty={navigateScreen}
+        />
         <Button type="secondaryOutline" containerStyle={styles.buttonContainer} onPress={onPressAutoDetect}>
           <Icon name={icons.location} size={15} color={theme.colors.white} />
           <Typography variant="label" size="regular" style={styles.buttonTitle}>

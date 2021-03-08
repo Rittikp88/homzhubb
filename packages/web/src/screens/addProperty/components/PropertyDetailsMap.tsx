@@ -3,11 +3,12 @@ import { StyleSheet, View } from 'react-native';
 import { Marker } from '@react-google-maps/api';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { getPlaceDetailsFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
-import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import GoogleMapView from '@homzhub/web/src/components/atoms/GoogleMapView';
 import PropertyDetailsForm from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsForm';
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const PropertyDetailsMap: FC = () => {

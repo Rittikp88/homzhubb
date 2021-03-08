@@ -1,6 +1,6 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { ISearchState } from '@homzhub/common/src/modules/search/interface';
+import { ISearchState, ILatLng } from '@homzhub/common/src/modules/search/interface';
 import { SearchActionTypes, SearchPayloadTypes } from '@homzhub/common/src/modules/search/actions';
 import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { IFilterDetails } from '@homzhub/common/src/domain/models/FilterDetail';
@@ -50,6 +50,9 @@ export const initialSearchState: ISearchState = {
       previous: '',
     },
     results: [],
+  },
+  searchBar: {
+    latLng: { lat: 0, lng: 0 },
   },
   error: {
     search: '',
@@ -135,6 +138,8 @@ export const searchReducer = (
       };
     case SearchActionTypes.SET.INITIAL_MISCELLANEOUS:
       return { ...state, ['filter']: { ...state.filter, miscellaneous: initialSearchState.filter.miscellaneous } };
+    case SearchActionTypes.SET.SEARCH_LATLNG:
+      return { ...state, ['searchBar']: { ...state.searchBar, latLng: action.payload as ILatLng } };
     default:
       return state;
   }

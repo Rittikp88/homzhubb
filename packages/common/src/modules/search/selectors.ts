@@ -87,6 +87,21 @@ const getSearchLocationLatLong = (state: IState): Point => {
   };
 };
 
+const getLocationLatLong = (state: IState): Point => {
+  const {
+    search: {
+      searchBar: {
+        latLng: { lat, lng },
+      },
+    },
+  } = state;
+
+  return {
+    lat: lat ?? 0,
+    lng: lng ?? 0,
+  };
+};
+
 const getSearchAddress = (state: IState): string => {
   const {
     search: {
@@ -106,4 +121,5 @@ export const SearchSelector = {
   getPriceRange,
   getSearchLocationLatLong,
   getSearchAddress,
+  getLocationLatLong,
 };

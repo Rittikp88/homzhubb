@@ -4,6 +4,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IAssetSearch, AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { FilterDetail, IFilterDetails } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'Search/';
@@ -25,6 +26,7 @@ export const SearchActionTypes = {
     INITIAL_FILTERS: `${actionTypePrefix}SET_INITIAL_FILTERS`,
     INITIAL_STATE: `${actionTypePrefix}SET_INITIAL_STATE`,
     INITIAL_MISCELLANEOUS: `${actionTypePrefix}SET_INITIAL_MISCELLANEOUS`,
+    SEARCH_LATLNG: `${actionTypePrefix}SET_SEARCH_LATLNG`,
   },
 };
 
@@ -114,7 +116,14 @@ const setInitialMiscellaneous = (): IFluxStandardAction => {
   };
 };
 
-export type SearchPayloadTypes = string | number | IAssetSearch | IFilter | IFilterDetails | undefined;
+const setSearchLatLng = (latLng: ILatLng): IFluxStandardAction<ILatLng> => {
+  return {
+    type: SearchActionTypes.SET.SEARCH_LATLNG,
+    payload: latLng,
+  };
+};
+
+export type SearchPayloadTypes = string | number | IAssetSearch | IFilter | IFilterDetails | ILatLng | undefined;
 
 export const SearchActions = {
   getFilterDetails,
@@ -130,4 +139,5 @@ export const SearchActions = {
   getPropertiesListViewSuccess,
   getPropertiesListViewFailure,
   setInitialMiscellaneous,
+  setSearchLatLng,
 };

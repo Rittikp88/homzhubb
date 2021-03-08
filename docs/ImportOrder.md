@@ -4,10 +4,10 @@
 2. Utils
 3. Repositories
 4. Services
-5. Navigation
+5. Navigation/ Routes
 6. Redux-related (ex: @modules/user/… )
 7. theme, images, icons
-8. Components (atoms, molecules, organisms, templates)
+8. Components (atoms, molecules, organisms, templates, screens)
 9. Domain models
 10. Constants, mocks, interfaces
 

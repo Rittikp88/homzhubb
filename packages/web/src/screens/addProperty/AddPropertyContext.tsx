@@ -2,11 +2,7 @@ import React from 'react';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { GoogleGeocodeData } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
-
-export interface ILatLng {
-  lat: number;
-  lng: number;
-}
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 
 type AddPropertyContextType = {
   hasScriptLoaded: boolean;

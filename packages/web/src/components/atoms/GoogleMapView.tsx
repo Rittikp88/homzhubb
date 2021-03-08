@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GoogleMap } from '@react-google-maps/api';
-import { ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 
 const containerStyle = {
   width: '100%',

@@ -1,21 +1,30 @@
-import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, TextInput, LayoutChangeEvent } from 'react-native';
+import { useHistory } from 'react-router-dom';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
 import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
-import { AddPropertyContext, ILatLng } from '@homzhub/web/src/screens/addProperty/AddPropertyContext';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 
-const AutoCompletionSearchBar: FC = () => {
+interface ISearchBarProps {
+  setUpdatedLatLng: (latLng: ILatLng) => void;
+  hasScriptLoaded?: boolean;
+  navigateAddProperty?: (screen: AddPropertyStack) => void;
+}
+
+const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) => {
+  const history = useHistory();
+  const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty } = props;
   const { t } = useTranslation();
   const [popOverWidth, setPopoverWidth] = useState<string | number>('100%');
   const popupRef = useRef<PopupActions>(null);
   const searchInputRef = useRef<TextInput>(null);
   const [searchText, setSearchText] = useState('');
-  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen } = useContext(AddPropertyContext);
   const [suggestions, setSuggestions] = useState<google.maps.places.QueryAutocompletePrediction[]>([]);
   const updateSearchValue = (value: string): void => setSearchText(value);
   const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch', width: popOverWidth };
@@ -45,7 +54,9 @@ const AutoCompletionSearchBar: FC = () => {
     if (selectedOption && selectedOption.value) {
       getDataFromPlaceID((selectedOption?.value as string) ?? '', (result) => {
         setUpdatedLatLng({ lat: result.geometry.location.lat(), lng: result.geometry.location.lng() } as ILatLng);
-        navigateScreen(AddPropertyStack.PropertyDetailsMapScreen);
+        if (navigateAddProperty && history.location.pathname === RouteNames.protectedRoutes.ADD_PROPERTY) {
+          navigateAddProperty(AddPropertyStack.PropertyDetailsMapScreen);
+        }
       });
     }
     if (popupRef && popupRef.current) {
