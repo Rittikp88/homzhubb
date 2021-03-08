@@ -330,6 +330,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 
   private formSchema = (): yup.ObjectSchema<IFormValues> => {
     const { t } = this.props;
+    const { subCategories } = this.state;
 
     return yup.object().shape({
       property: yup.number().moreThan(-1, t('serviceTickets:propertyError')),
@@ -337,7 +338,19 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       category: yup.string().required(t('serviceTickets:categoryError')),
       subCategory: yup.string().required(t('serviceTickets:subCategoryError')),
       issueDescription: yup.string().optional(),
-      otherCategory: yup.string().optional(),
+      otherCategory: yup.string().when('subCategory', {
+        is: (value): boolean => {
+          const selectedSubCategory = subCategories.find(
+            (subCategory: IDropdownOption) => String(subCategory.value) === value
+          );
+          if (selectedSubCategory) {
+            return selectedSubCategory.label === 'Others';
+          }
+          return false;
+        },
+        then: yup.string().required(t('serviceTickets:otherCategoryError')),
+        otherwise: yup.string().optional(),
+      }),
     });
   };
 
