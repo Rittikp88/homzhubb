@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Comment } from '@homzhub/common/src/domain/models/Comment';
 import { Quote } from '@homzhub/common/src/domain/models/Quote';
 import { User } from '@homzhub/common/src/domain/models/User';
 
@@ -13,8 +14,8 @@ export class QuoteGroup {
   @JsonProperty('role', String)
   private _role = '';
 
-  @JsonProperty('comment', String)
-  private _comment = '';
+  @JsonProperty('comment', Comment)
+  private _comment = new Comment();
 
   @JsonProperty('quotes', [Quote])
   private _quotes = [];
@@ -31,7 +32,7 @@ export class QuoteGroup {
     return this._role;
   }
 
-  get comment(): string {
+  get comment(): Comment {
     return this._comment;
   }
 

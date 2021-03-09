@@ -1,13 +1,23 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
-import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
+import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import {
+  IPostTicket,
+  IPostTicketPayload,
+  IQuoteParam,
+  IQuoteSubmitPayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { IPostTicket, IPostTicketPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  postTicket: 'tickets/',
-  getCategories: 'ticket-categories/',
+  ticket: 'tickets/',
+  ticketCategories: 'ticket-categories/',
+  quoteRequestCategory: (param: IQuoteParam): string =>
+    `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-request-categories/`,
+  quoteSubmit: (param: IQuoteParam): string =>
+    `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-submit-group/`,
 };
 
 class TicketRepository {
@@ -18,19 +28,29 @@ class TicketRepository {
   }
 
   public postTicket = async (requestPayload: IPostTicketPayload): Promise<IPostTicket> => {
-    return await this.apiClient.post(ENDPOINTS.postTicket, requestPayload);
+    return await this.apiClient.post(ENDPOINTS.ticket, requestPayload);
   };
 
   public getTicketCategories = async (): Promise<TicketCategory[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.getCategories);
+    const response = await this.apiClient.get(ENDPOINTS.ticketCategories);
     return ObjectMapper.deserializeArray(TicketCategory, response);
   };
 
   public getTickets = async (): Promise<Ticket[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.postTicket);
+    const response = await this.apiClient.get(ENDPOINTS.ticket);
     return ObjectMapper.deserializeArray(Ticket, response);
+  };
+
+  public getQuoteRequestCategory = async (param: IQuoteParam): Promise<QuoteCategory[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.quoteRequestCategory(param));
+    return ObjectMapper.deserializeArray(QuoteCategory, response);
+  };
+
+  public quoteSubmit = async (payload: IQuoteSubmitPayload): Promise<void> => {
+    const { param, data } = payload;
+    return await this.apiClient.post(ENDPOINTS.quoteSubmit(param), data);
   };
 }
 
-const tedgerRepository = new TicketRepository();
-export { tedgerRepository as TicketRepository };
+const ticketRepository = new TicketRepository();
+export { ticketRepository as TicketRepository };

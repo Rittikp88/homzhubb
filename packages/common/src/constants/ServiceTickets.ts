@@ -1,6 +1,7 @@
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 export enum TicketActionType {
   SUBMIT_QUOTE = 'QUOTES_READY',
@@ -18,21 +19,31 @@ const translationKey = LocaleConstants.namespacesKey.serviceTickets;
 
 export const TOTAL_IMAGES = 10;
 
-export const initialQuotes = [
+export interface IInitialQuote {
+  quoteNumber: number;
+  title: string;
+  price: string;
+  document: IDocumentSource | null;
+}
+
+export const initialQuotes: IInitialQuote[] = [
   {
+    quoteNumber: 1,
     title: `${translationKey}:quote1`,
     price: '',
-    document: '',
+    document: null,
   },
   {
+    quoteNumber: 2,
     title: `${translationKey}:quote2`,
     price: '',
-    document: '',
+    document: null,
   },
   {
+    quoteNumber: 3,
     title: `${translationKey}:quote3`,
     price: '',
-    document: '',
+    document: null,
   },
 ];
 

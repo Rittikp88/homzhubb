@@ -741,6 +741,8 @@ export interface IDeviceTokenPayload {
   type: OSTypes;
 }
 
+// SERVICE TICKETS START
+
 export interface IServiceTicketForm {
   propertyId?: number;
 }
@@ -757,3 +759,32 @@ export interface IPostTicketPayload {
 export interface IPostTicket {
   id: number;
 }
+
+export interface IQuoteParam {
+  ticketId: number;
+  quoteRequestId: number;
+}
+
+export interface IQuoteData {
+  quote_number: number;
+  price: number;
+  currency: string;
+  attachment: number;
+}
+
+export interface IQuoteGroup {
+  quote_request_category: number;
+  quotes: IQuoteData[];
+}
+
+export interface IQuoteSubmitBody {
+  quote_group: IQuoteGroup[];
+  comment?: string;
+}
+
+export interface IQuoteSubmitPayload {
+  param: IQuoteParam;
+  data: IQuoteSubmitBody;
+}
+
+// SERVICE TICKETS END

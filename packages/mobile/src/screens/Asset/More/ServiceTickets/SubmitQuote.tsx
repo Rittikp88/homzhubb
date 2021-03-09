@@ -1,9 +1,13 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { cloneDeep } from 'lodash';
 import { useNavigation } from '@react-navigation/native';
 import DocumentPicker from 'react-native-document-picker';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -12,30 +16,103 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import QuoteBox from '@homzhub/common/src/components/molecules/QuoteBox';
 import { CollapsibleSection } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { initialQuotes } from '@homzhub/common/src/constants/ServiceTickets';
+import { IQuoteData, IQuoteSubmitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { IInitialQuote, initialQuotes } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const SubmitQuote = (): ReactElement => {
-  const [quotes, setQuotes] = useState(initialQuotes);
+  const [quotes, setQuotes] = useState<IInitialQuote[]>([]);
   const [comment, setComment] = useState('');
+  const [quoteCategoryId, setQuoteCategoryId] = useState(0);
+  const [payload, setPayload] = useState<IQuoteData[]>([]);
 
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
+  useEffect(() => {
+    setQuotes(initialQuotes);
+
+    // TODO: (Shikha) - Use Ids from ticket detail screen
+    TicketRepository.getQuoteRequestCategory({ ticketId: 11, quoteRequestId: 2 })
+      .then((res) => {
+        // TODO: Add logic for multiple category once request flow ready.
+        setQuoteCategoryId(res[0].id);
+      })
+      .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
+  }, []);
+
+  useEffect(() => {
+    if (payload.length > 0) {
+      const submitPayload: IQuoteSubmitPayload = {
+        param: { ticketId: 11, quoteRequestId: 2 }, // TODO: (Shikha) - Use from ticket detail screen
+        data: {
+          quote_group: [
+            {
+              quote_request_category: quoteCategoryId,
+              quotes: payload ?? [],
+            },
+          ],
+          ...(!!comment && { comment }),
+        },
+      };
+
+      TicketRepository.quoteSubmit(submitPayload)
+        .then(() => {
+          AlertHelper.success({ message: t('quoteSubmission') });
+          navigate(ScreensKeys.ServiceTicketDetail);
+          setQuotes(initialQuotes);
+          setPayload([]);
+        })
+        .catch((e) => {
+          AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        });
+    }
+  }, [payload]);
+
   // HANDLERS
+
+  const onSubmit = (): void => {
+    quotes.forEach((item) => {
+      if (item.document) {
+        const formData = new FormData();
+        // @ts-ignore
+        formData.append('files[]', item.document);
+
+        AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS)
+          .then((response: any) => {
+            const { data } = response;
+            if (data.length > 0) {
+              setPayload([
+                ...payload,
+                {
+                  quote_number: item.quoteNumber,
+                  price: Number(item.price),
+                  currency: 'INR', // TODO: (Shikha) - Use from ticket detail screen
+                  attachment: data[0].id,
+                },
+              ]);
+            }
+          })
+          .catch((e: any) => AlertHelper.error({ message: e.message }));
+      }
+    });
+  };
+
   const updatePrice = (price: string, index: number): void => {
-    const prevQuotes = [...quotes];
+    const prevQuotes = cloneDeep(quotes);
     prevQuotes[index].price = price;
     setQuotes(prevQuotes);
   };
 
   const onUploadDoc = (index: number): void => {
-    const prevQuotes = [...quotes];
+    const prevQuotes = cloneDeep(quotes);
     DocumentPicker.pick({
       type: [DocumentPicker.types.allFiles],
     })
       .then((doc) => {
-        prevQuotes[index].document = doc.name;
+        prevQuotes[index].document = doc;
         setQuotes(prevQuotes);
       })
       .catch((e) => {
@@ -44,21 +121,29 @@ const SubmitQuote = (): ReactElement => {
   };
 
   const onRemovedDoc = (index: number): void => {
-    const prevQuotes = [...quotes];
-    prevQuotes[index].document = '';
+    const prevQuotes = cloneDeep(quotes);
+    prevQuotes[index].document = null;
     setQuotes(prevQuotes);
   };
 
   const onCommentChange = (value: string): void => {
     setComment(value);
   };
+
+  const onBack = (): void => {
+    setQuotes(initialQuotes);
+    setPayload([]);
+    goBack();
+  };
+
   // HANDLERS
 
   const filterData = quotes.filter((item) => !item.price || !item.document);
   const isDisabled = filterData.length === quotes.length;
 
+  // TODO: (Shikha) - Use title from ticket detail screen
   return (
-    <UserScreen title={t('assetMore:more')} pageTitle={t('submitQuote')} onBackPress={goBack}>
+    <UserScreen title="Property Name" pageTitle={t('submitQuote')} onBackPress={onBack}>
       <View style={styles.container}>
         <Text type="small" textType="semiBold">
           {t('submitYourQuotes')}
@@ -76,7 +161,7 @@ const SubmitQuote = (): ReactElement => {
               titleStyle={styles.cardTitle}
             >
               <QuoteBox
-                document={item.document}
+                document={item.document?.name ?? ''}
                 onSetPrice={(price): void => updatePrice(price, index)}
                 onUploadAttachment={(): void => onUploadDoc(index)}
                 onRemoveAttachment={(): void => onRemovedDoc(index)}
@@ -93,7 +178,7 @@ const SubmitQuote = (): ReactElement => {
           onMessageChange={onCommentChange}
           containerStyle={styles.commentBox}
         />
-        <Button type="primary" title={t('common:submit')} disabled={isDisabled} />
+        <Button type="primary" title={t('common:submit')} disabled={isDisabled} onPress={onSubmit} />
       </View>
     </UserScreen>
   );

@@ -6,10 +6,13 @@ export class QuoteCategory {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('name', String)
+  @JsonProperty('name', String, true)
   private _name = '';
 
-  @JsonProperty('quote_submit_group', [QuoteGroup])
+  @JsonProperty('title', String, true)
+  private _title = '';
+
+  @JsonProperty('quote_submit_group', [QuoteGroup], true)
   private _quoteSubmitGroup = [];
 
   get id(): number {
@@ -18,6 +21,10 @@ export class QuoteCategory {
 
   get name(): string {
     return this._name;
+  }
+
+  get title(): string {
+    return this._title;
   }
 
   get quoteSubmitGroup(): QuoteGroup[] {
