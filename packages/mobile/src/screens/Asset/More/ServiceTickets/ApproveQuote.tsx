@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -20,45 +22,52 @@ import { IQuoteApprovePayload } from '@homzhub/common/src/domain/repositories/in
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const ApproveQuote = (): React.ReactElement => {
-  const { goBack, navigate } = useNavigation();
-  const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
-
   const [isLoading, setLoader] = useState(false);
   const [comment, setComment] = useState('');
   const [quotes, setQuotes] = useState<QuoteRequest>();
   const [selectedQuote, setSelectedQuote] = useState<number[]>([]);
 
+  const { goBack, navigate } = useNavigation();
+  const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
+  const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
+
   useEffect(() => {
     setLoader(true);
-    // TODO: (Shikha) - Use ids from ticket detail screen
-    TicketRepository.getQuoteRequest({ ticketId: 11, quoteRequestId: 2 })
-      .then((res) => {
-        setQuotes(res);
-        setLoader(false);
+    if (selectedTicket) {
+      TicketRepository.getQuoteRequest({
+        ticketId: selectedTicket.ticketId,
+        quoteRequestId: selectedTicket.quoteRequestId,
       })
-      .catch((e) => {
-        setLoader(false);
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-      });
+        .then((res) => {
+          setQuotes(res);
+          setLoader(false);
+        })
+        .catch((e) => {
+          setLoader(false);
+          AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        });
+    }
   }, []);
 
   // HANDLERS
 
   const onSubmit = (): void => {
-    const payload: IQuoteApprovePayload = {
-      param: { ticketId: 11 }, // TODO: (Shikha) - Use from ticket detail screen
-      data: {
-        quotes: selectedQuote,
-        ...(!!comment && { comment }),
-      },
-    };
+    if (selectedTicket) {
+      const payload: IQuoteApprovePayload = {
+        param: { ticketId: selectedTicket.ticketId },
+        data: {
+          quotes: selectedQuote,
+          ...(!!comment && { comment }),
+        },
+      };
 
-    TicketRepository.quoteApprove(payload)
-      .then(() => {
-        AlertHelper.success({ message: t('quoteApproved') });
-        navigate(ScreensKeys.ServiceTicketDetail);
-      })
-      .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
+      TicketRepository.quoteApprove(payload)
+        .then(() => {
+          AlertHelper.success({ message: t('quoteApproved') });
+          navigate(ScreensKeys.ServiceTicketDetail);
+        })
+        .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
+    }
   };
 
   const onSelectQuote = (id: number, index: number): void => {
@@ -80,9 +89,13 @@ const ApproveQuote = (): React.ReactElement => {
   };
   // HANDLERS
 
-  // TODO: (Shikha) - Use title from ticket detail screen
   return (
-    <UserScreen title="Property Name" pageTitle={t('approveQuote')} onBackPress={goBack} loading={isLoading}>
+    <UserScreen
+      title={selectedTicket?.propertyName ?? ''}
+      pageTitle={t('approveQuote')}
+      onBackPress={goBack}
+      loading={isLoading}
+    >
       <View style={styles.container}>
         <Text type="small" textType="semiBold">
           {t('submittedQuotes')}

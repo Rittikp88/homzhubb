@@ -17,14 +17,17 @@ import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 
 interface IProps {
   onAddTicket: () => void;
   navigateToDetail: () => void;
   isFromMore?: boolean;
 }
+
 interface IDispatchProps {
   getTickets: () => void;
+  setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
 interface IStateProps {
@@ -36,7 +39,7 @@ interface IScreenState {
   currentIndex: number;
 }
 
-type Props = WithTranslation & IProps;
+type Props = WithTranslation & IProps & IDispatchProps & IStateProps;
 
 class ServiceTicketList extends Component<Props, IScreenState> {
   public state = {
@@ -139,9 +142,8 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   private renderItem = ({ item }: { item: Ticket }): ReactElement => {
-    const { navigateToDetail, isFromMore } = this.props;
-    // TODO: Pass ticket id with navigation once Ticket Detail API integrated
-    return <TicketCard cardData={item} onCardPress={navigateToDetail} isFromMore={isFromMore} />;
+    const { isFromMore } = this.props;
+    return <TicketCard cardData={item} onCardPress={(): void => this.onTicketPress(item)} isFromMore={isFromMore} />;
   };
 
   private renderEmptyComponent = (): ReactElement => {
@@ -150,6 +152,12 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   // HANDLERS START
+  private onTicketPress = ({ id, quoteRequestId, asset }: Ticket): void => {
+    const { navigateToDetail, setCurrentTicket } = this.props;
+    setCurrentTicket({ ticketId: id, quoteRequestId, propertyName: asset.projectName });
+    navigateToDetail();
+  };
+
   private onTypeChange = (value: TicketStatus): void => {
     this.setState({ selectedListType: value });
   };
@@ -177,10 +185,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTickets } = TicketActions;
+  const { getTickets, setCurrentTicket } = TicketActions;
   return bindActionCreators(
     {
       getTickets,
+      setCurrentTicket,
     },
     dispatch
   );
@@ -210,6 +219,6 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   count: {
-    color: theme.colors.gray2,
+    color: theme.colors.darkTint6,
   },
 });

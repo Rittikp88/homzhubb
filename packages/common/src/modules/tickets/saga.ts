@@ -10,8 +10,7 @@ export function* getUserTickets() {
     const response = yield call(TicketRepository.getTickets);
     yield put(TicketActions.getTicketsSuccess(response));
   } catch (e) {
-    const error = ErrorUtils.getErrorMessage(e);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
   }
 }
 

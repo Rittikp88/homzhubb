@@ -5,6 +5,7 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Quote } from '@homzhub/common/src/domain/models/Quote';
@@ -64,25 +65,29 @@ const QuotePreview = (props: IProps): React.ReactElement => {
   return (
     <>
       <Divider containerStyles={styles.divider} />
-      {detail.map((item, index) => {
-        const {
-          user: { name },
-          role,
-          quotes,
-        } = item;
+      {detail.length > 0 ? (
+        detail.map((item, index) => {
+          const {
+            user: { name },
+            role,
+            quotes,
+          } = item;
 
-        return (
-          <View key={index} style={styles.container}>
-            <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
-            <View style={styles.cardContainer}>
-              {quotes.map((quote) => {
-                return renderQuotes(quote);
-              })}
+          return (
+            <View key={index} style={styles.container}>
+              <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
+              <View style={styles.cardContainer}>
+                {quotes.map((quote) => {
+                  return renderQuotes(quote);
+                })}
+              </View>
+              {index !== quotes.length - 1 && <Divider containerStyles={styles.separator} />}
             </View>
-            {index !== quotes.length - 1 && <Divider containerStyles={styles.separator} />}
-          </View>
-        );
-      })}
+          );
+        })
+      ) : (
+        <EmptyState title={t('noQuoteFound')} />
+      )}
     </>
   );
 };

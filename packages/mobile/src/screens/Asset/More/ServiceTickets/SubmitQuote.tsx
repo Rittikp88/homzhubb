@@ -2,12 +2,14 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { cloneDeep } from 'lodash';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import DocumentPicker from 'react-native-document-picker';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -30,25 +32,33 @@ const SubmitQuote = (): ReactElement => {
   const [isLoading, setLoader] = useState(false);
 
   const { goBack, navigate } = useNavigation();
+  const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
   useEffect(() => {
     setQuotes(initialQuotes);
 
-    // TODO: (Shikha) - Use Ids from ticket detail screen
-    TicketRepository.getQuoteRequestCategory({ ticketId: 11, quoteRequestId: 2 })
-      .then((res) => {
-        // TODO: Add logic for multiple category once request flow ready.
-        setQuoteCategoryId(res[0].id);
+    if (selectedTicket) {
+      TicketRepository.getQuoteRequestCategory({
+        ticketId: selectedTicket.ticketId,
+        quoteRequestId: selectedTicket.quoteRequestId,
       })
-      .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
+        .then((res) => {
+          // TODO: Add logic for multiple category once request flow ready.
+          setQuoteCategoryId(res[0].id);
+        })
+        .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
+    }
   }, []);
 
   useEffect(() => {
-    if (payload.length > 0) {
+    if (payload.length > 0 && selectedTicket) {
       setLoader(true);
       const submitPayload: IQuoteSubmitPayload = {
-        param: { ticketId: 11, quoteRequestId: 2 }, // TODO: (Shikha) - Use from ticket detail screen
+        param: {
+          ticketId: selectedTicket.ticketId,
+          quoteRequestId: selectedTicket.quoteRequestId,
+        },
         data: {
           quote_group: [
             {
@@ -156,9 +166,13 @@ const SubmitQuote = (): ReactElement => {
   const filterData = quotes.filter((item) => !item.price || !item.document);
   const isDisabled = filterData.length === quotes.length;
 
-  // TODO: (Shikha) - Use title from ticket detail screen
   return (
-    <UserScreen title="Property Name" pageTitle={t('submitQuote')} onBackPress={onBack} loading={isLoading}>
+    <UserScreen
+      title={selectedTicket?.propertyName ?? ''}
+      pageTitle={t('submitQuote')}
+      onBackPress={onBack}
+      loading={isLoading}
+    >
       <View style={styles.container}>
         <Text type="small" textType="semiBold">
           {t('submitYourQuotes')}

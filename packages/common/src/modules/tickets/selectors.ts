@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 
 const getProofAttachment = (state: IState): string[] => {
   const {
@@ -16,4 +17,11 @@ const getTickets = (state: IState): Ticket[] => {
   return ObjectMapper.deserializeArray(Ticket, tickets);
 };
 
-export const TicketSelectors = { getProofAttachment, getTickets };
+const getCurrentTicket = (state: IState): ICurrentTicket | null => {
+  const {
+    ticket: { currentTicket },
+  } = state;
+  return currentTicket;
+};
+
+export const TicketSelectors = { getProofAttachment, getTickets, getCurrentTicket };

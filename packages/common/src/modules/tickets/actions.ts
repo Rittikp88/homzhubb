@@ -10,6 +10,7 @@ export const TicketActionTypes = {
   },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
+    CURRENT_TICKET: `${actionTypePrefix}CURRENT_TICKET`,
   },
   REMOVE_ATTACHMENT: `${actionTypePrefix}REMOVE_ATTACHMENT`,
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
@@ -38,7 +39,12 @@ const getTicketsSuccess = (payload: Ticket[]): IFluxStandardAction<ITicket[]> =>
   payload: ObjectMapper.serializeArray(payload),
 });
 
-export type TicketActionPayloadTypes = string[] | string | ITicket[];
+const setCurrentTicket = (payload: ICurrentTicket): IFluxStandardAction<ICurrentTicket> => ({
+  type: TicketActionTypes.SET.CURRENT_TICKET,
+  payload,
+});
+
+export type TicketActionPayloadTypes = string[] | string | ITicket[] | ICurrentTicket;
 
 export const TicketActions = {
   setAttachment,
@@ -46,4 +52,5 @@ export const TicketActions = {
   clearState,
   getTickets,
   getTicketsSuccess,
+  setCurrentTicket,
 };

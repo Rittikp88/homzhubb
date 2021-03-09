@@ -85,6 +85,9 @@ export class Ticket {
   @JsonProperty('updated_at', String, true)
   private _updatedAt = '';
 
+  @JsonProperty('quote_request_id', Number, true)
+  private _quoteRequestId = 0;
+
   get id(): number {
     return this._id;
   }
@@ -151,5 +154,9 @@ export class Ticket {
 
   get asset(): VisitAssetDetail {
     return this._asset;
+  }
+
+  get quoteRequestId(): number {
+    return this._quoteRequestId;
   }
 }

@@ -1,9 +1,12 @@
 import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { TicketActionPayloadTypes, TicketActionTypes } from '@homzhub/common/src//modules/tickets/actions';
+import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 
 export const initialTicketState: ITicketState = {
   proofAttachment: [],
+  currentTicket: null,
   tickets: [],
 };
 
@@ -30,7 +33,12 @@ export const ticketReducer = (
     case TicketActionTypes.GET.GET_TICKETS_SUCCESS:
       return {
         ...state,
-        tickets: action.payload,
+        ['tickets']: action.payload as ITicket[],
+      };
+    case TicketActionTypes.SET.CURRENT_TICKET:
+      return {
+        ...state,
+        ['currentTicket']: action.payload as ICurrentTicket,
       };
     default:
       return {

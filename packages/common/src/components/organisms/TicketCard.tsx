@@ -202,12 +202,12 @@ export const TicketCard = (props: IProps): React.ReactElement => {
       <View style={styles.row}>
         <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
         <View>
-          <View style={styles.title}>
-            <Label type="large" textType="semiBold">
+          <View style={styles.titleView}>
+            <Label type="large" textType="semiBold" style={styles.title}>
               {title}
             </Label>
             {isFromMore && (
-              <Label type="regular" textType="light">
+              <Label type="regular" style={styles.subTitle}>
                 {location}
               </Label>
             )}
@@ -236,6 +236,8 @@ const styles = StyleSheet.create({
     flex: 1,
     borderColor: theme.colors.darkTint10,
     borderWidth: 1,
+    borderRadius: 4,
+    marginVertical: 12,
   },
   row: {
     flexDirection: 'row',
@@ -300,8 +302,14 @@ const styles = StyleSheet.create({
   iconPadding: {
     marginRight: 15,
   },
-  title: {
-    paddingLeft: 16,
+  titleView: {
+    paddingHorizontal: 16,
     paddingTop: 10,
+  },
+  title: {
+    color: theme.colors.darkTint3,
+  },
+  subTitle: {
+    color: theme.colors.darkTint4,
   },
 });

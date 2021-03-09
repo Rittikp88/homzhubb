@@ -1000,6 +1000,7 @@
     "noTickets": "No Tickets Found",
     "tickets": "tickets",
     "quoteSubmission": "Successfully Quote Submitted",
-    "quoteApproved": "Successfully Quote Approved"
+    "quoteApproved": "Successfully Quote Approved",
+    "noQuoteFound": "No quote found"
   }
 }
