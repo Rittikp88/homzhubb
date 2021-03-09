@@ -43,6 +43,7 @@ const namedColors = {
   divider: '#E5E8EC',
   maroon: '#FD689A',
   carousalBackground: '#f4f9fe',
+  yellow: '#ffe603',
 };
 
 const tintColors = {

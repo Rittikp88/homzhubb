@@ -1,23 +1,36 @@
 import React, { Component, ReactElement } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { Dispatch, bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
+import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { TicketCard } from '@homzhub/common/src/components/organisms/TicketCard';
 import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { ticketList } from '@homzhub/common/src/constants/ServiceTickets';
-import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IProps {
   onAddTicket: () => void;
   navigateToDetail: () => void;
   isFromMore?: boolean;
+}
+interface IDispatchProps {
+  getTickets: () => void;
+}
+
+interface IStateProps {
+  tickets: Ticket[];
 }
 
 interface IScreenState {
@@ -108,12 +121,18 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   private renderContent = (priority: TicketPriority): ReactElement => {
+    const { t } = this.props;
     const data = this.getFormattedData(priority);
     // TODO: (Naveen)- Ticket count and Empty state
     return (
-      <>
-        <FlatList data={data} renderItem={this.renderItem} contentContainerStyle={styles.listContainer} />
-      </>
+      <View style={styles.listContainer}>
+        {data.length > 0 && (
+          <Label type="large" textType="regular" style={styles.count}>
+            {data.length} {t('tickets')}
+          </Label>
+        )}
+        <FlatList data={data} ListEmptyComponent={this.renderEmptyComponent} renderItem={this.renderItem} />
+      </View>
     );
   };
 
@@ -121,6 +140,11 @@ class ServiceTicketList extends Component<Props, IScreenState> {
     const { navigateToDetail, isFromMore } = this.props;
     // TODO: Pass ticket id with navigation once Ticket Detail API integrated
     return <TicketCard cardData={item} onCardPress={navigateToDetail} isFromMore={isFromMore} />;
+  };
+
+  private renderEmptyComponent = (): ReactElement => {
+    const { t } = this.props;
+    return <EmptyState title={t('serviceTickets:noTickets')} icon={icons.ticket} />;
   };
 
   // HANDLERS START
@@ -142,7 +166,26 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   // HANDLERS END
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.serviceTickets)(ServiceTicketList);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getTickets } = TicketSelectors;
+  return {
+    tickets: getTickets(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getTickets } = TicketActions;
+  return bindActionCreators(
+    {
+      getTickets,
+    },
+    dispatch
+  );
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.serviceTickets)(ServiceTicketList));
 
 const styles = StyleSheet.create({
   container: {
@@ -162,5 +205,8 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     margin: 16,
+  },
+  count: {
+    color: theme.colors.gray2,
   },
 });

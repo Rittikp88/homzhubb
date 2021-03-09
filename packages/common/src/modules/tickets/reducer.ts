@@ -4,6 +4,7 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 export const initialTicketState: ITicketState = {
   proofAttachment: [],
+  tickets: [],
 };
 
 export const ticketReducer = (
@@ -25,6 +26,11 @@ export const ticketReducer = (
       return {
         ...state,
         proofAttachment: initialTicketState.proofAttachment,
+      };
+    case TicketActionTypes.GET.GET_TICKETS_SUCCESS:
+      return {
+        ...state,
+        tickets: initialTicketState.tickets,
       };
     default:
       return {

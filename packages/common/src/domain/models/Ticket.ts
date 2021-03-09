@@ -17,12 +17,27 @@ export enum TicketPriority {
 }
 // ENUM
 
+export interface ITicket {
+  id: number;
+  ticket_category: TicketCategory;
+  assigned_to: User;
+  closed_by: User;
+  asset: VisitAssetDetail;
+  title: string;
+  description?: string;
+  status: string;
+  priority: string;
+  created_at: string;
+  closed_at: string;
+  updated_at: string;
+}
+
 @JsonObject('Ticket')
 export class Ticket {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('ticket_number', String)
+  @JsonProperty('ticket_number', String, true)
   private _ticketNumber = '';
 
   @JsonProperty('ticket_category', TicketCategory)

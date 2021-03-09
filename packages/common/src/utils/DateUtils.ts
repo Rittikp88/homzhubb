@@ -33,6 +33,7 @@ export const DateFormats = {
   YYYYMMDD_HM: 'YYYY-MM-DD hh:mm',
   MMM_YYYY: 'MMM YYYY',
   DDMMMYYYY_H: 'DD MMM YYYY, h A',
+  DDMMMYYYY_HM: 'DD/MMM/YYYY-HH:MM',
   DDMM: 'DD MMM',
   HHMM_A: 'hh:mm a',
 };
@@ -341,6 +342,10 @@ class DateUtils {
 
   public convertDate = (date: string, format: string): string => {
     return moment(date, DateFormats.ISO8601).format(format);
+  };
+
+  public convertDateFormatted = (date: string): string => {
+    return moment(date).format(DateFormats.DDMMMYYYY_HM);
   };
 }
 

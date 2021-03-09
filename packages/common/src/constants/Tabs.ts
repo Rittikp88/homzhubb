@@ -114,8 +114,8 @@ export const ListingRoutesWeb: IRoutes[] = [
 export const TicketRoutes: IRoutes[] = [
   { key: Tabs.ALL, title: Tabs.ALL, color: theme.colors.blue },
   { key: Tabs.HIGH, title: Tabs.HIGH, color: theme.colors.error },
-  { key: Tabs.MEDIUM, title: Tabs.MEDIUM, color: theme.colors.orange },
-  { key: Tabs.LOW, title: Tabs.LOW, color: theme.colors.green },
+  { key: Tabs.MEDIUM, title: Tabs.MEDIUM, color: theme.colors.yellow },
+  { key: Tabs.LOW, title: Tabs.LOW, color: theme.colors.blue },
 ];
 
 // Service Ticket Tabs END

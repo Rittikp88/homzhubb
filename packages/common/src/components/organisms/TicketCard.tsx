@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -38,13 +39,13 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   // Data formation for closed and open tickets
   const openTicket = {
-    'serviceTickets:createdOn': createdAt,
-    'serviceTickets:updatedOn': updatedAt,
+    'serviceTickets:createdOn': DateUtils.convertDateFormatted(createdAt),
+    'serviceTickets:updatedOn': DateUtils.convertDateFormatted(updatedAt),
     'helpAndSupport:status': status,
     'serviceTickets:assignedTo': assignedTo.firstName,
   };
   const closedTicket = {
-    'serviceTickets:closedOn': closedAt,
+    'serviceTickets:closedOn': DateUtils.convertDateFormatted(closedAt),
     'serviceTickets:closedBy': closedBy.firstName,
   };
 
@@ -70,16 +71,25 @@ export const TicketCard = (props: IProps): React.ReactElement => {
         setExperience(type);
         return { ...item, color: getIconColor(type) };
       }
-
       return initialExperienceData[index];
     });
     setIsComment(true);
     setExperienceData(updatedData);
   };
 
+  const clearExperience = (): void => {
+    const updatedData = experienceData.map((item, index) => {
+      setExperience('');
+      return initialExperienceData[index];
+    });
+    setIsComment(false);
+    setExperienceData(updatedData);
+  };
+
   const onChangeComment = (value: string): void => {
     setComment(value);
   };
+
   // HANDLERS END
 
   const renderTextArea = (): React.ReactElement => {
@@ -94,7 +104,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
         />
         <View style={styles.buttonContainer}>
           <Button
-            onPress={(): void => setIsComment(false)}
+            onPress={(): void => clearExperience()}
             type="secondary"
             title={t('common:cancel')}
             containerStyle={styles.button}

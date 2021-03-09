@@ -27,6 +27,7 @@ import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/P
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { AssetReviews } from '@homzhub/mobile/src/components/organisms/AssetReviews';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
+import ServiceTicketList from '@homzhub/common/src/components/organisms/ServiceTicketList';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
 import DetailTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DetailTab';
@@ -303,7 +304,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.TICKETS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 1)}>
-            <DummyView />
+            <ServiceTicketList onAddTicket={this.onAddTicket} navigateToDetail={this.onNavigateToDetail} />
           </View>
         );
       case Tabs.OFFERS:
@@ -387,6 +388,18 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     if (attachments) {
       this.setState({ attachments });
     }
+  };
+
+  private onAddTicket = (): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.AddServiceTicket);
+  };
+
+  private onNavigateToDetail = (): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.ServiceTicketDetail);
   };
 
   private onRecordAdd = (): void => {

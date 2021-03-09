@@ -1,3 +1,5 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'Ticket/';
@@ -7,6 +9,10 @@ export const TicketActionTypes = {
   },
   REMOVE_ATTACHMENT: `${actionTypePrefix}REMOVE_ATTACHMENT`,
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
+  GET: {
+    GET_TICKETS: `${actionTypePrefix}GET_TICKETS`,
+    GET_TICKETS_SUCCESS: `${actionTypePrefix}GET_TICKETS_SUCCESS`,
+  },
 };
 
 const setAttachment = (payload: string[]): IFluxStandardAction<string[]> => ({
@@ -23,10 +29,21 @@ const clearState = (): IFluxStandardAction => ({
   type: TicketActionTypes.CLEAR_STATE,
 });
 
-export type TicketActionPayloadTypes = string[] | string;
+const getTickets = (): IFluxStandardAction => ({
+  type: TicketActionTypes.GET.GET_TICKETS,
+});
+
+const getTicketsSuccess = (payload: Ticket[]): IFluxStandardAction<ITicket[]> => ({
+  type: TicketActionTypes.GET.GET_TICKETS_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+export type TicketActionPayloadTypes = string[] | string | ITicket[];
 
 export const TicketActions = {
   setAttachment,
   removeAttachment,
   clearState,
+  getTickets,
+  getTicketsSuccess,
 };
