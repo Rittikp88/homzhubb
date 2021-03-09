@@ -44,6 +44,8 @@ const namedColors = {
   maroon: '#FD689A',
   carousalBackground: '#f4f9fe',
   yellow: '#ffe603',
+  pinkRed: '#AE434D',
+  red: '#D42E17',
 };
 
 const tintColors = {
@@ -62,11 +64,19 @@ const tintColors = {
   darkTint12: '#E0E0E0',
 
   // blue
+  blueTint3: '#D3A6F0',
+  blueTint4: '#3E4FC2',
+  blueTint5: '#2F2685',
   blueTint6: '#323E70',
   blueTint7: '#99CEFC',
   blueTint8: '#B2DAFD',
   blueTint9: '#CCE6FE',
   blueTint10: '#E5F3FE',
+
+  // green
+  greenTint6: '#006A0A',
+  greenTint7: '#73ce64',
+  greenTint8: '#47C2B1',
 };
 
 // Theme based color scheme

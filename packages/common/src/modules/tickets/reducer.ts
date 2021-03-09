@@ -30,7 +30,7 @@ export const ticketReducer = (
     case TicketActionTypes.GET.GET_TICKETS_SUCCESS:
       return {
         ...state,
-        tickets: initialTicketState.tickets,
+        tickets: action.payload,
       };
     default:
       return {

@@ -35,7 +35,7 @@ const getTickets = (): IFluxStandardAction => ({
 
 const getTicketsSuccess = (payload: Ticket[]): IFluxStandardAction<ITicket[]> => ({
   type: TicketActionTypes.GET.GET_TICKETS_SUCCESS,
-  payload: ObjectMapper.serialize(payload),
+  payload: ObjectMapper.serializeArray(payload),
 });
 
 export type TicketActionPayloadTypes = string[] | string | ITicket[];

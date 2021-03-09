@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import { Ticket, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
-import { initialExperienceData, ExperienceType } from '@homzhub/common/src/constants/ServiceTickets';
+import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
+import {
+  ExperienceType,
+  initialExperienceData,
+  ServiceTicketStatus,
+} from '@homzhub/common/src/constants/ServiceTickets';
 
 interface IDataType {
   [key: string]: string;
@@ -34,14 +39,14 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   // HOOKS END
 
-  const { title, asset, createdAt, updatedAt, status, assignedTo, closedAt, closedBy } = cardData;
+  const { title, createdAt, updatedAt, status, assignedTo, closedAt, closedBy, location } = cardData;
   const isClosed = status === TicketStatus.CLOSED;
 
   // Data formation for closed and open tickets
   const openTicket = {
     'serviceTickets:createdOn': DateUtils.convertDateFormatted(createdAt),
     'serviceTickets:updatedOn': DateUtils.convertDateFormatted(updatedAt),
-    'helpAndSupport:status': status,
+    'helpAndSupport:status': StringUtils.toTitleCase(status),
     'serviceTickets:assignedTo': assignedTo.firstName,
   };
   const closedTicket = {
@@ -62,6 +67,42 @@ export const TicketCard = (props: IProps): React.ReactElement => {
         return theme.colors.error;
       default:
         return theme.colors.darkTint9;
+    }
+  };
+
+  const StatusCode = (type: string): string => {
+    switch (type) {
+      case ServiceTicketStatus.OPEN:
+        return theme.colors.red;
+      case ServiceTicketStatus.PAYMENT_DONE:
+        return theme.colors.greenTint7;
+      case ServiceTicketStatus.PAYMENT_REQUESTED:
+        return theme.colors.pinkRed;
+      case ServiceTicketStatus.QUOTES_APPROVED:
+        return theme.colors.greenTint6;
+      case ServiceTicketStatus.QUOTES_REQUESTED:
+        return theme.colors.blueTint5;
+      case ServiceTicketStatus.QUOTES_SUBMITTED:
+        return theme.colors.blueTint4;
+      case ServiceTicketStatus.WORK_INITIATED:
+        return theme.colors.blueTint3;
+      case ServiceTicketStatus.CLOSED:
+        return theme.colors.greenTint8;
+      default:
+        return theme.colors.darkTint3;
+    }
+  };
+
+  const cardColor = (type: string): string => {
+    switch (type) {
+      case TicketPriority.HIGH:
+        return theme.colors.error;
+      case TicketPriority.MEDIUM:
+        return theme.colors.yellow;
+      case TicketPriority.LOW:
+        return theme.colors.blue;
+      default:
+        return theme.colors.darkTint3;
     }
   };
 
@@ -90,6 +131,10 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     setComment(value);
   };
 
+  const onColorChange = (value: string): TextStyle => {
+    const color = StatusCode(value);
+    return { ...styles.detail, color };
+  };
   // HANDLERS END
 
   const renderTextArea = (): React.ReactElement => {
@@ -155,26 +200,30 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   return (
     <TouchableOpacity style={styles.container} onPress={onCardPress}>
       <View style={styles.row}>
-        <View style={styles.line} />
-        <View style={styles.detailsContainer}>
-          <Label type="large" textType="semiBold">
-            {title}
-          </Label>
-          {isFromMore && (
-            <Label type="regular" textType="light">
-              {asset.projectName}
+        <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
+        <View>
+          <View style={styles.title}>
+            <Label type="large" textType="semiBold">
+              {title}
             </Label>
-          )}
-          {Object.keys(dataByStatus).map((key, indexValue: number) => (
-            <View key={indexValue} style={styles.detailsColumn}>
-              <Label type="small" textType="regular" style={styles.details}>
-                {t(key)}
+            {isFromMore && (
+              <Label type="regular" textType="light">
+                {location}
               </Label>
-              <Label type="regular" textType="semiBold">
-                {dataByStatus[key]}
-              </Label>
-            </View>
-          ))}
+            )}
+          </View>
+          <View style={styles.detailsContainer}>
+            {Object.keys(dataByStatus).map((key, indexValue: number) => (
+              <View key={indexValue} style={styles.detailsColumn}>
+                <Label type="small" textType="regular" style={styles.details}>
+                  {t(key)}
+                </Label>
+                <Label type="regular" textType="semiBold" style={onColorChange(dataByStatus[key])}>
+                  {dataByStatus[key]}
+                </Label>
+              </View>
+            ))}
+          </View>
         </View>
       </View>
       {isClosed && renderIconView()}
@@ -194,7 +243,8 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: 16,
+    paddingLeft: 16,
+    marginBottom: 20,
   },
   details: {
     color: theme.colors.darkTint3,
@@ -219,6 +269,9 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 0,
+  },
+  detail: {
+    color: theme.colors.darkTint3,
   },
   buttonTitle: {
     marginHorizontal: 12,
@@ -246,5 +299,9 @@ const styles = StyleSheet.create({
   },
   iconPadding: {
     marginRight: 15,
+  },
+  title: {
+    paddingLeft: 16,
+    paddingTop: 10,
   },
 });

@@ -4,7 +4,6 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { TabBar, TabView } from 'react-native-tab-view';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
@@ -15,7 +14,6 @@ import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionP
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { TicketCard } from '@homzhub/common/src/components/organisms/TicketCard';
 import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
-import { ticketList } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -44,6 +42,11 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   public state = {
     selectedListType: TicketStatus.OPEN,
     currentIndex: 0,
+  };
+
+  public componentDidMount = (): void => {
+    const { getTickets } = this.props;
+    getTickets();
   };
 
   public render(): React.ReactNode {
@@ -123,7 +126,6 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   private renderContent = (priority: TicketPriority): ReactElement => {
     const { t } = this.props;
     const data = this.getFormattedData(priority);
-    // TODO: (Naveen)- Ticket count and Empty state
     return (
       <View style={styles.listContainer}>
         {data.length > 0 && (
@@ -154,10 +156,11 @@ class ServiceTicketList extends Component<Props, IScreenState> {
 
   private getFormattedData = (priority: TicketPriority): Ticket[] => {
     const { selectedListType } = this.state;
-    // TODO: (Naveen) - use ticket list from API
-    const data = ObjectMapper.deserializeArray(Ticket, ticketList);
-    const formattedData = data.filter((item) => item.status === selectedListType);
-    return priority === TicketPriority.ALL ? formattedData : formattedData.filter((item) => item.priority === priority);
+    const { tickets } = this.props;
+    const formattedData = tickets.filter((item: Ticket) => item.status === selectedListType);
+    return priority === TicketPriority.ALL
+      ? formattedData
+      : formattedData.filter((item: Ticket) => item.priority === priority);
   };
 
   private handleIndexChange = (index: number): void => {

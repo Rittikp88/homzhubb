@@ -13,7 +13,7 @@ export class VisitAssetDetail {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('project_name', String)
+  @JsonProperty('project_name', String, true)
   private _projectName = '';
 
   @JsonProperty('address', String, true)

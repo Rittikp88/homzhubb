@@ -15,6 +15,17 @@ export enum ExperienceType {
   SATISFIED = 'Satisfied',
 }
 
+export enum ServiceTicketStatus {
+  OPEN = 'Open',
+  QUOTES_REQUESTED = 'Quotes Requested',
+  QUOTES_SUBMITTED = 'Quotes Submitted',
+  QUOTES_APPROVED = 'Quotes Approved',
+  WORK_INITIATED = 'Work Initiated',
+  PAYMENT_REQUESTED = 'Payment Requested',
+  PAYMENT_DONE = 'Payment Done',
+  CLOSED = 'Closed',
+}
+
 const translationKey = LocaleConstants.namespacesKey.serviceTickets;
 
 export const TOTAL_IMAGES = 10;
@@ -354,7 +365,7 @@ export const ticketList = [
         name: 'Kitchen',
       },
     },
-    title: 'My kitchen ceiling is leaking',
+    title: 'My kitchen',
     description: 'Foobar JohnDoe',
     assigned_to: {
       id: 1,

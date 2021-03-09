@@ -18,19 +18,19 @@ export class Country {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('name', String)
+  @JsonProperty('name', String, true)
   private _name = '';
 
-  @JsonProperty('iso2_code', String)
+  @JsonProperty('iso2_code', String, true)
   private _iso2Code = '';
 
-  @JsonProperty('iso3_code', String)
+  @JsonProperty('iso3_code', String, true)
   private _iso3Code = '';
 
-  @JsonProperty('phone_codes', [PhoneCode])
+  @JsonProperty('phone_codes', [PhoneCode], true)
   private _phoneCodes = [];
 
-  @JsonProperty('currencies', [Currency])
+  @JsonProperty('currencies', [Currency], true)
   private _currencies = [];
 
   get id(): number {

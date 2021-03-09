@@ -30,6 +30,9 @@ export interface ITicket {
   created_at: string;
   closed_at: string;
   updated_at: string;
+  category: TicketCategory;
+  sub_category: TicketCategory;
+  others_field_description: string;
 }
 
 @JsonObject('Ticket')
@@ -40,10 +43,19 @@ export class Ticket {
   @JsonProperty('ticket_number', String, true)
   private _ticketNumber = '';
 
-  @JsonProperty('ticket_category', TicketCategory)
+  @JsonProperty('ticket_category', TicketCategory, true)
   private _ticketCategory = new TicketCategory();
 
-  @JsonProperty('assigned_to', User)
+  @JsonProperty('sub_category', TicketCategory, true)
+  private _subCategory = new TicketCategory();
+
+  @JsonProperty('category', TicketCategory, true)
+  private _category = new TicketCategory();
+
+  @JsonProperty('others_field_description', String, true)
+  private _othersFieldDescription = '';
+
+  @JsonProperty('assigned_to', User, true)
   private _assignedTo = new User();
 
   @JsonProperty('closed_by', User, true)
@@ -64,13 +76,13 @@ export class Ticket {
   @JsonProperty('priority', String)
   private _priority = '';
 
-  @JsonProperty('created_at', String)
+  @JsonProperty('created_at', String, true)
   private _createdAt = '';
 
   @JsonProperty('closed_at', String, true)
   private _closedAt = '';
 
-  @JsonProperty('updated_at', String)
+  @JsonProperty('updated_at', String, true)
   private _updatedAt = '';
 
   get id(): number {
@@ -83,6 +95,18 @@ export class Ticket {
 
   get ticketCategory(): TicketCategory {
     return this._ticketCategory;
+  }
+
+  get subCategory(): TicketCategory {
+    return this._subCategory;
+  }
+
+  get category(): TicketCategory {
+    return this._category;
+  }
+
+  get othersFieldDescription(): string {
+    return this._othersFieldDescription;
   }
 
   get assignedTo(): User {
@@ -111,6 +135,10 @@ export class Ticket {
 
   get createdAt(): string {
     return this._createdAt;
+  }
+
+  get location(): string {
+    return `${this.asset.projectName}-${this.asset.address}`;
   }
 
   get closedAt(): string {
