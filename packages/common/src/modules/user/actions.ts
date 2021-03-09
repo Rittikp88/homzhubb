@@ -6,6 +6,7 @@ import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/mo
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IWishlist, Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
+import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
 
 const actionTypePrefix = 'User/';
 
@@ -63,9 +64,10 @@ const loginFailure = (error: string): IFluxStandardAction => {
   };
 };
 
-const logout = (): IFluxStandardAction => {
+const logout = (payload?: IAuthCallback): IFluxStandardAction<IAuthCallback> => {
   return {
     type: UserActionTypes.AUTH.LOGOUT,
+    payload,
   };
 };
 

@@ -26,6 +26,7 @@ import {
   IUpdateUserPreferences,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
 import { AuthenticationType, IAuthenticationEvent } from '@homzhub/common/src/services/Analytics/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
@@ -86,7 +87,8 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
   }
 }
 
-export function* logout() {
+export function* logout(action: IFluxStandardAction<IAuthCallback>) {
+  const { payload } = action;
   try {
     const tokens: IUserTokens = yield StorageService.get(StorageKeys.USER);
     yield call(UserRepository.logout, {
@@ -99,10 +101,16 @@ export function* logout() {
     yield put(UserActions.clearFavouriteProperties());
     yield StorageService.remove(StorageKeys.USER);
     yield StorageService.remove(StorageKeys.DEVICE_TOKEN);
+    if (payload?.callback) {
+      payload.callback(true);
+    }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });
     yield put(UserActions.logoutFailure(error));
+    if (payload?.callback) {
+      payload.callback(false);
+    }
   }
 }
 

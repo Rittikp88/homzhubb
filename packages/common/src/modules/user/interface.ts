@@ -22,3 +22,7 @@ export interface IUserState {
     userPreferences: boolean;
   };
 }
+
+export interface IAuthCallback {
+  callback?: (status: boolean) => void;
+}

@@ -1,20 +1,27 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useRef } from 'react';
 import { ImageStyle, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
 import HomzhubLogo from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { StickyHeader } from '@homzhub/web/src/components/hoc/StickyHeader';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
+import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface INavItem {
   icon: string;
@@ -23,7 +30,9 @@ interface INavItem {
   isActive: boolean;
   onNavItemPress: (index: number) => void;
 }
-
+interface IDispatchProps {
+  logout: (payload: IAuthCallback) => void;
+}
 const NavItem: FC<INavItem> = ({ icon, text, index, isActive, onNavItemPress }: INavItem) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -44,8 +53,10 @@ const NavItem: FC<INavItem> = ({ icon, text, index, isActive, onNavItemPress }: 
   );
 };
 
-const Navbar: FC = () => {
+type NavbarProps = IDispatchProps;
+const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const { t } = useTranslation();
+  const { logout } = props;
   const isDesktop = useDown(deviceBreakpoint.DESKTOP);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -71,6 +82,28 @@ const Navbar: FC = () => {
   };
   const onChange = (text: string): void => {
     setSearchText(text);
+  };
+  const [isUserOptions, setIsUserOptions] = useState(false);
+  const popupRef = useRef<PopupActions>(null);
+  const onCloseUserOptions = (): void => {
+    setIsUserOptions(false);
+  };
+  const userOptions: IPopupOptions[] = [
+    {
+      label: t('common:logout'),
+      value: 'LOGOUT',
+    },
+  ];
+  const handleUserOptionsPress = (selectedOption: IPopupOptions): void => {
+    if (selectedOption.value === 'LOGOUT') {
+      logout({
+        callback: (status: boolean): void => {
+          if (status) {
+            NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
+          }
+        },
+      });
+    }
   };
   return (
     <StickyHeader>
@@ -111,9 +144,26 @@ const Navbar: FC = () => {
                 index={index}
               />
             ))}
+
             <View style={navBarStyles.items}>
               {/** TODO: Replace name once login API integrated * */}
-              <Avatar fullName={t('User')} isOnlyAvatar />
+              <Popover
+                forwardedRef={popupRef}
+                content={<PopupMenuOptions options={userOptions} onMenuOptionPress={handleUserOptionsPress} />}
+                popupProps={{
+                  position: 'bottom center',
+                  on: [],
+                  open: isUserOptions,
+                  arrow: false,
+                  closeOnDocumentClick: true,
+                  children: undefined,
+                  onClose: onCloseUserOptions,
+                }}
+              >
+                <TouchableOpacity onPress={(): void => setIsUserOptions(true)}>
+                  <Avatar fullName={t('common:user')} isOnlyAvatar />
+                </TouchableOpacity>
+              </Popover>
             </View>
           </View>
         </View>
@@ -204,4 +254,14 @@ const navItemStyle = (isMobile: boolean, isActive: boolean): StyleSheet.NamedSty
     },
   });
 
-export default Navbar;
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { logout } = UserActions;
+  return bindActionCreators(
+    {
+      logout,
+    },
+    dispatch
+  );
+};
+
+export default connect(null, mapDispatchToProps)(Navbar);
