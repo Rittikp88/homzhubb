@@ -12,8 +12,8 @@ export class QuoteCategory {
   @JsonProperty('title', String, true)
   private _title = '';
 
-  @JsonProperty('quote_submit_group', [QuoteGroup], true)
-  private _quoteSubmitGroup = [];
+  @JsonProperty('quote_submit_groups', [QuoteGroup], true)
+  private _quoteSubmitGroups = [];
 
   get id(): number {
     return this._id;
@@ -27,7 +27,7 @@ export class QuoteCategory {
     return this._title;
   }
 
-  get quoteSubmitGroup(): QuoteGroup[] {
-    return this._quoteSubmitGroup;
+  get quoteSubmitGroups(): QuoteGroup[] {
+    return this._quoteSubmitGroups;
   }
 }

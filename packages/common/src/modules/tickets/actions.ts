@@ -4,15 +4,15 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'Ticket/';
 export const TicketActionTypes = {
+  GET: {
+    GET_TICKETS: `${actionTypePrefix}GET_TICKETS`,
+    GET_TICKETS_SUCCESS: `${actionTypePrefix}GET_TICKETS_SUCCESS`,
+  },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
   },
   REMOVE_ATTACHMENT: `${actionTypePrefix}REMOVE_ATTACHMENT`,
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
-  GET: {
-    GET_TICKETS: `${actionTypePrefix}GET_TICKETS`,
-    GET_TICKETS_SUCCESS: `${actionTypePrefix}GET_TICKETS_SUCCESS`,
-  },
 };
 
 const setAttachment = (payload: string[]): IFluxStandardAction<string[]> => ({

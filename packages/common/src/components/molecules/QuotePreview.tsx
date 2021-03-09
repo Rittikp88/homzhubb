@@ -70,6 +70,7 @@ const QuotePreview = (props: IProps): React.ReactElement => {
           role,
           quotes,
         } = item;
+
         return (
           <View key={index} style={styles.container}>
             <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />

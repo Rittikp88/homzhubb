@@ -996,6 +996,9 @@
     "otherCategory": "Other Category",
     "enterOtherCategory": "Enter Other Category",
     "uploadProof": "Upload Proof of Completion",
-    "showcasePhoto": "Showcase photos of your finished work here"
+    "showcasePhoto": "Showcase photos of your finished work here",
+    "noTickets": "No Tickets Found",
+    "tickets": "tickets",
+    "quoteSubmission": "Successfully Quote Submitted"
   }
 }

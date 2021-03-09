@@ -762,7 +762,7 @@ export interface IPostTicket {
 
 export interface IQuoteParam {
   ticketId: number;
-  quoteRequestId: number;
+  quoteRequestId?: number;
 }
 
 export interface IQuoteData {
@@ -785,6 +785,16 @@ export interface IQuoteSubmitBody {
 export interface IQuoteSubmitPayload {
   param: IQuoteParam;
   data: IQuoteSubmitBody;
+}
+
+export interface IQuoteApproveBody {
+  quotes: number[];
+  comment?: string;
+}
+
+export interface IQuoteApprovePayload {
+  param: IQuoteParam;
+  data: IQuoteApproveBody;
 }
 
 // SERVICE TICKETS END

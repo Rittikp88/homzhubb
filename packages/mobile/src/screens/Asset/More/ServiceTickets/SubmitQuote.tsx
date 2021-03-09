@@ -27,6 +27,7 @@ const SubmitQuote = (): ReactElement => {
   const [comment, setComment] = useState('');
   const [quoteCategoryId, setQuoteCategoryId] = useState(0);
   const [payload, setPayload] = useState<IQuoteData[]>([]);
+  const [isLoading, setLoader] = useState(false);
 
   const { goBack, navigate } = useNavigation();
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
@@ -45,6 +46,7 @@ const SubmitQuote = (): ReactElement => {
 
   useEffect(() => {
     if (payload.length > 0) {
+      setLoader(true);
       const submitPayload: IQuoteSubmitPayload = {
         param: { ticketId: 11, quoteRequestId: 2 }, // TODO: (Shikha) - Use from ticket detail screen
         data: {
@@ -64,8 +66,10 @@ const SubmitQuote = (): ReactElement => {
           navigate(ScreensKeys.ServiceTicketDetail);
           setQuotes(initialQuotes);
           setPayload([]);
+          setLoader(false);
         })
         .catch((e) => {
+          setLoader(false);
           AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
         });
     }
@@ -74,6 +78,9 @@ const SubmitQuote = (): ReactElement => {
   // HANDLERS
 
   const onSubmit = (): void => {
+    let updatePayload = cloneDeep([...payload]);
+    setLoader(true);
+
     quotes.forEach((item) => {
       if (item.document) {
         const formData = new FormData();
@@ -84,20 +91,28 @@ const SubmitQuote = (): ReactElement => {
           .then((response: any) => {
             const { data } = response;
             if (data.length > 0) {
-              setPayload([
-                ...payload,
+              updatePayload = [
+                ...updatePayload,
                 {
                   quote_number: item.quoteNumber,
                   price: Number(item.price),
                   currency: 'INR', // TODO: (Shikha) - Use from ticket detail screen
                   attachment: data[0].id,
                 },
-              ]);
+              ];
             }
           })
-          .catch((e: any) => AlertHelper.error({ message: e.message }));
+          .catch((e: any) => {
+            setLoader(false);
+            AlertHelper.error({ message: e.message });
+          });
       }
     });
+
+    /* Added because payload formation taking time due to s3 upload */
+    setTimeout(() => {
+      setPayload(updatePayload);
+    }, 2000);
   };
 
   const updatePrice = (price: string, index: number): void => {
@@ -143,7 +158,7 @@ const SubmitQuote = (): ReactElement => {
 
   // TODO: (Shikha) - Use title from ticket detail screen
   return (
-    <UserScreen title="Property Name" pageTitle={t('submitQuote')} onBackPress={onBack}>
+    <UserScreen title="Property Name" pageTitle={t('submitQuote')} onBackPress={onBack} loading={isLoading}>
       <View style={styles.container}>
         <Text type="small" textType="semiBold">
           {t('submitYourQuotes')}
