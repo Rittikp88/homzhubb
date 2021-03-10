@@ -154,7 +154,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
           onBackPress={goBack}
           rightNode={this.renderClearButton()}
           scrollEnabled
-          loading={isActiveAssetsLoading}
+          loading={isActiveAssetsLoading || isScreenLoading}
         >
           {isPropertiesPresent ? (
             <View style={styles.container}>
@@ -279,7 +279,6 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
             this.renderEmptyState()
           )}
         </UserScreen>
-        <Loader visible={isScreenLoading} />
       </>
     );
   }

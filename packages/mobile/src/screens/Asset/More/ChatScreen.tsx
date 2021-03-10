@@ -224,7 +224,7 @@ class ChatScreen extends Component<Props, IScreenState> {
       .then(() => {
         getMessages({ groupId: payload.groupId, isNew: true });
         if (currentChat) {
-          AnalyticsService.track(EventType.NEW_MESSAGE, { group_name: currentChat.groupName });
+          AnalyticsService.track(EventType.NewMessage, { group_name: currentChat.groupName });
         }
       })
       .catch((err) => {

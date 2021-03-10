@@ -81,12 +81,12 @@ const cardColor = (type: string): string => {
 const setEmojiColor = (
   experienceType: ExperienceType | string,
   experienceData: IExperienceData[],
-  callback?: (selectedExperiance: IExperienceData) => void
+  callback?: (selectedExperience: IExperienceData) => void
 ): IExperienceData[] => {
-  let updatedExperianceData = experienceData;
+  let updatedExperienceData = experienceData;
 
   if (experienceType) {
-    updatedExperianceData = experienceData.map((item, index) => {
+    updatedExperienceData = experienceData.map((item, index) => {
       if (item.type === experienceType) {
         if (callback) {
           callback(item);
@@ -97,7 +97,7 @@ const setEmojiColor = (
     });
   }
 
-  return updatedExperianceData;
+  return updatedExperienceData;
 };
 
 export const TicketCard = (props: IProps): React.ReactElement => {
@@ -107,20 +107,19 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     createdAt,
     updatedAt,
     status,
-    assignedTo,
     closedAt,
     closedBy,
     id,
     location,
     review: { rating, description },
-    experianceType,
+    experienceType,
   } = cardData;
   // HOOKS START
 
   const { t } = useTranslation();
-  const [experienceData, setExperienceData] = useState(setEmojiColor(experianceType, initialExperienceData));
+  const [experienceData, setExperienceData] = useState(setEmojiColor(experienceType, initialExperienceData));
   const [ticketInfo, setTicketInfo] = useState({
-    experience: experianceType,
+    experience: experienceType,
     showComment: !!description,
     comment: description,
     rating,
@@ -135,7 +134,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     'serviceTickets:createdOn': DateUtils.convertDateFormatted(createdAt),
     'serviceTickets:updatedOn': DateUtils.convertDateFormatted(updatedAt),
     'helpAndSupport:status': StringUtils.toTitleCase(status),
-    'serviceTickets:assignedTo': assignedTo.firstName,
+    'serviceTickets:assignedTo': 'Homzhub', // TODO: (Shikha) Remove after demo and use AssignedTo
   };
   const closedTicket = {
     'serviceTickets:closedOn': DateUtils.convertDateFormatted(closedAt),
@@ -180,7 +179,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
       data: { rating: ticketRating, description: comment },
     };
 
-    TicketRepository.reviewSubmit(payload);
+    TicketRepository.reviewSubmit(payload).then();
     onSubmitReview();
     clearExperience();
   };

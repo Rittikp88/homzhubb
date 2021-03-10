@@ -1,12 +1,14 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'Ticket/';
 export const TicketActionTypes = {
   GET: {
-    GET_TICKETS: `${actionTypePrefix}GET_TICKETS`,
-    GET_TICKETS_SUCCESS: `${actionTypePrefix}GET_TICKETS_SUCCESS`,
+    TICKETS: `${actionTypePrefix}TICKETS`,
+    TICKETS_SUCCESS: `${actionTypePrefix}TICKETS_SUCCESS`,
+    TICKETS_FAILURE: `${actionTypePrefix}TICKETS_FAILURE`,
   },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
@@ -31,12 +33,16 @@ const clearState = (): IFluxStandardAction => ({
 });
 
 const getTickets = (): IFluxStandardAction => ({
-  type: TicketActionTypes.GET.GET_TICKETS,
+  type: TicketActionTypes.GET.TICKETS,
 });
 
 const getTicketsSuccess = (payload: Ticket[]): IFluxStandardAction<ITicket[]> => ({
-  type: TicketActionTypes.GET.GET_TICKETS_SUCCESS,
+  type: TicketActionTypes.GET.TICKETS_SUCCESS,
   payload: ObjectMapper.serializeArray(payload),
+});
+
+const getTicketsFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.GET.TICKETS_FAILURE,
 });
 
 const setCurrentTicket = (payload: ICurrentTicket): IFluxStandardAction<ICurrentTicket> => ({
@@ -53,4 +59,5 @@ export const TicketActions = {
   getTickets,
   getTicketsSuccess,
   setCurrentTicket,
+  getTicketsFailure,
 };

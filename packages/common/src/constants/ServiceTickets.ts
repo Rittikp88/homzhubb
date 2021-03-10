@@ -1,7 +1,5 @@
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
@@ -487,5 +485,3 @@ export const mockTicketContract = {
     },
   ],
 };
-
-export const mockTicketDetails = ObjectMapper.deserialize(Ticket, mockTicketContract);

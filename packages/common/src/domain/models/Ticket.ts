@@ -87,7 +87,7 @@ export class Ticket {
   @JsonProperty('created_at', String, true)
   private _createdAt = '';
 
-  @JsonProperty('closed_at', String, true)
+  @JsonProperty('closed_on', String, true)
   private _closedAt = '';
 
   @JsonProperty('updated_at', String, true)
@@ -200,7 +200,7 @@ export class Ticket {
     return this._review;
   }
 
-  get experianceType(): ExperienceType | string {
+  get experienceType(): ExperienceType | string {
     if (this.review && this.review.rating) {
       const { rating } = this.review;
 

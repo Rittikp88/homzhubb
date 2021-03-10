@@ -1,5 +1,5 @@
 import React, { Component, ReactElement } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -23,6 +23,7 @@ interface IProps {
   onAddTicket: () => void;
   navigateToDetail: () => void;
   isFromMore?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IDispatchProps {
@@ -54,10 +55,10 @@ class ServiceTicketList extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { selectedListType } = this.state;
-    const { t, onAddTicket } = this.props;
+    const { t, onAddTicket, containerStyle } = this.props;
 
     return (
-      <>
+      <View style={containerStyle}>
         <View style={styles.container}>
           <Button type="secondary" title={t('addNewTicket')} containerStyle={styles.addButton} onPress={onAddTicket} />
           <SelectionPicker
@@ -71,7 +72,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
           />
         </View>
         {this.renderTabView()}
-      </>
+      </View>
     );
   }
 
@@ -136,7 +137,12 @@ class ServiceTicketList extends Component<Props, IScreenState> {
             {data.length} {t('tickets')}
           </Label>
         )}
-        <FlatList data={data} ListEmptyComponent={this.renderEmptyComponent} renderItem={this.renderItem} />
+        <FlatList
+          data={data}
+          ListEmptyComponent={this.renderEmptyComponent}
+          renderItem={this.renderItem}
+          extraData={data}
+        />
       </View>
     );
   };
@@ -211,6 +217,7 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   addButton: {
+    flex: 0,
     borderStyle: 'dashed',
   },
   picker: {

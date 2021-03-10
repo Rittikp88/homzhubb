@@ -20,6 +20,7 @@ export enum EventType {
   ClickSimilarProperty = 'click_similar_property',
   PropertyShare = 'property_share',
   Refer = 'refer',
-  NEW_MESSAGE = 'new_message',
+  NewMessage = 'new_message',
   NewServiceTicket = 'new_service_ticket',
+  ClosedServiceTicket = 'closed_service_ticket',
 }

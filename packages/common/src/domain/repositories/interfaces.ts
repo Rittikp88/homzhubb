@@ -84,6 +84,11 @@ export enum MessageAction {
   READ = 'READ',
 }
 
+export enum TicketAction {
+  COMPLETE_TICKET = 'COMPLETE_TICKET',
+  CLOSE_TICKET = 'CLOSE_TICKET',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -809,6 +814,19 @@ export interface IQuoteApproveBody {
 export interface IQuoteApprovePayload {
   param: IQuoteParam;
   data: IQuoteApproveBody;
+}
+
+export interface ICompleteTicketBody {
+  action: TicketAction;
+  payload: {
+    comment?: string;
+    attachments?: number[];
+  };
+}
+
+export interface ICompleteTicketPayload {
+  param: IQuoteParam;
+  data: ICompleteTicketBody;
 }
 
 // SERVICE TICKETS END

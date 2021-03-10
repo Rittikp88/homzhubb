@@ -5,6 +5,7 @@ import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory
 import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import {
+  ICompleteTicketPayload,
   IPostTicket,
   IPostTicketPayload,
   IQuoteApprovePayload,
@@ -24,6 +25,7 @@ const ENDPOINTS = {
     `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-submit-group/`,
   reviewSubmit: (ticketId: number): string => `tickets/${ticketId}/reviews/`,
   quoteApprove: (param: IQuoteParam): string => `tickets/${param.ticketId}/quote-approved-group/`,
+  ticketById: (ticketId: number): string => `tickets/${ticketId}/`,
 };
 
 class TicketRepository {
@@ -70,6 +72,11 @@ class TicketRepository {
   public quoteApprove = async (payload: IQuoteApprovePayload): Promise<void> => {
     const { param, data } = payload;
     return await this.apiClient.post(ENDPOINTS.quoteApprove(param), data);
+  };
+
+  public completeTicket = async (payload: ICompleteTicketPayload): Promise<void> => {
+    const { param, data } = payload;
+    return await this.apiClient.patch(ENDPOINTS.ticketById(param.ticketId), data);
   };
 }
 

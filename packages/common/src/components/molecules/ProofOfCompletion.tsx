@@ -15,9 +15,10 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProps {
   onUploadImage: () => void;
+  onUpdateComment: (value: string) => void;
 }
 
-const ProofOfCompletion = ({ onUploadImage }: IProps): ReactElement => {
+const ProofOfCompletion = ({ onUploadImage, onUpdateComment }: IProps): ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const dispatch = useDispatch();
   const attachments = useSelector(TicketSelectors.getProofAttachment);
@@ -27,6 +28,7 @@ const ProofOfCompletion = ({ onUploadImage }: IProps): ReactElement => {
   // HANDLERS
   const onCommentChange = (value: string): void => {
     setComment(value);
+    onUpdateComment(value);
   };
 
   const onAddProof = (): void => {

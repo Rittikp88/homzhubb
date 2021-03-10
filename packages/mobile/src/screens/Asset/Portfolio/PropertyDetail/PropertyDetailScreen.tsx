@@ -303,8 +303,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         );
       case Tabs.TICKETS:
         return (
-          <View onLayout={(e): void => this.onLayout(e, 1)}>
-            <ServiceTicketList onAddTicket={this.onAddTicket} navigateToDetail={this.onNavigateToDetail} />
+          <View onLayout={(e): void => this.onLayout(e, 1)} style={styles.background}>
+            <ServiceTicketList
+              onAddTicket={this.onAddTicket}
+              navigateToDetail={this.onNavigateToDetail}
+              containerStyle={styles.heightStyle}
+            />
           </View>
         );
       case Tabs.OFFERS:
@@ -451,6 +455,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           isDeleteProperty: false,
         },
         () => {
+          // @ts-ignore
           navigation.navigate(ScreensKeys.PortfolioLandingScreen);
         }
       );
@@ -719,5 +724,8 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: theme.colors.white,
+  },
+  heightStyle: {
+    minHeight: theme.viewport.height,
   },
 });

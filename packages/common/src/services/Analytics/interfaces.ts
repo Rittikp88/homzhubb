@@ -79,6 +79,11 @@ export interface IAddServiceEvent {
   asset_type: Data;
 }
 
+export interface ICloseTicketEvent {
+  project_name: string;
+  ticketId: number;
+}
+
 export type EventDataType =
   | IAuthenticationEvent
   | IAddPropertyEvent
@@ -89,4 +94,5 @@ export type EventDataType =
   | IPropertyShareEvent
   | IVisitEvent
   | IMessageEvent
-  | IAddServiceEvent;
+  | IAddServiceEvent
+  | ICloseTicketEvent;

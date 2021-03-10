@@ -4,6 +4,7 @@ import { IPortfolioState } from '@homzhub/common/src/modules/portfolio/interface
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
+import { ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 
 export interface IFluxStandardAction<Payload = undefined, Error = string> {
   type: string;

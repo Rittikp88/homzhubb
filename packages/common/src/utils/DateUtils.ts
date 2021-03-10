@@ -348,8 +348,7 @@ class DateUtils {
 
   public getTimeElapsedInDays = (date: string): number => {
     const currentDate = new Date().toISOString();
-    const timeElapsed = this.getDateDiff(currentDate, date, 'days');
-    return timeElapsed;
+    return this.getDateDiff(currentDate, date, 'days');
   };
 
   public convertDateFormatted = (date: string): string => {

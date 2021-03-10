@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -14,9 +16,9 @@ import {
   FullScreenAssetDetailsCarousel,
 } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { mockTicketDetails, ticketActions, TicketActionType } from '@homzhub/common/src/constants/ServiceTickets';
+import { mockTicketContract, ticketActions, TicketActionType } from '@homzhub/common/src/constants/ServiceTickets';
 
 type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ServiceTicketDetail>;
 
@@ -28,6 +30,9 @@ interface IScreenState {
   isActionSheet: boolean;
   selectedAction: string;
 }
+
+const mockTicketDetails = ObjectMapper.deserialize(Ticket, mockTicketContract);
+
 class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   public state = {
     activeSlide: 0,

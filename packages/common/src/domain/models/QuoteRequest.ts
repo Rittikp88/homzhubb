@@ -10,7 +10,7 @@ export class QuoteRequest {
   @JsonProperty('ticket', Number)
   private _ticket = 0;
 
-  @JsonProperty('ticket_activity', Number)
+  @JsonProperty('ticket_activity', Number, true)
   private _ticketActivity = 0;
 
   @JsonProperty('emails', [String])

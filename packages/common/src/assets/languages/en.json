@@ -1020,6 +1020,7 @@
     "otherCategoryError": "Please enter other category.",
     "noPropertyAdded": "You haven't added any property yet. Start adding properties to generate ticket.",
     "quoteApproved": "Successfully Quote Approved",
+    "ticketComplete": "Successfully Ticket Completed",
     "noQuoteFound": "No quote found"
   }
 }

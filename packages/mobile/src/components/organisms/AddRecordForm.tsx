@@ -8,7 +8,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
-import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
@@ -22,6 +22,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 enum FormType {

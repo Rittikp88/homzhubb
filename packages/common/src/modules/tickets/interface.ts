@@ -4,6 +4,9 @@ export interface ITicketState {
   proofAttachment: string[];
   currentTicket: ICurrentTicket | null;
   tickets: ITicket[];
+  loaders: {
+    tickets: boolean;
+  };
 }
 
 export interface ICurrentTicket {

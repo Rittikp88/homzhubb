@@ -24,4 +24,11 @@ const getCurrentTicket = (state: IState): ICurrentTicket | null => {
   return currentTicket;
 };
 
-export const TicketSelectors = { getProofAttachment, getTickets, getCurrentTicket };
+const getTicketLoader = (state: IState): boolean => {
+  const {
+    ticket: { loaders },
+  } = state;
+  return loaders.tickets;
+};
+
+export const TicketSelectors = { getProofAttachment, getTickets, getCurrentTicket, getTicketLoader };

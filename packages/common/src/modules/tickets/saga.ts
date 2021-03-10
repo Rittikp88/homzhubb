@@ -10,10 +10,11 @@ export function* getUserTickets() {
     const response = yield call(TicketRepository.getTickets);
     yield put(TicketActions.getTicketsSuccess(response));
   } catch (e) {
+    yield put(TicketActions.getTicketsFailure());
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
   }
 }
 
 export function* watchTicket() {
-  yield takeEvery(TicketActionTypes.GET.GET_TICKETS, getUserTickets);
+  yield takeEvery(TicketActionTypes.GET.TICKETS, getUserTickets);
 }
