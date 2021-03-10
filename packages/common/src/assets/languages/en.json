@@ -1017,6 +1017,8 @@
     "noTickets": "No Tickets Found",
     "tickets": "tickets",
     "quoteSubmission": "Successfully Quote Submitted",
+    "otherCategoryError": "Please enter other category.",
+    "noPropertyAdded": "You haven't added any property yet. Start adding properties to generate ticket.",
     "quoteApproved": "Successfully Quote Approved",
     "noQuoteFound": "No quote found"
   }

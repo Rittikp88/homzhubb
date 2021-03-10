@@ -188,6 +188,16 @@ export function* getUserAssets() {
   } catch (e) {}
 }
 
+export function* getUserActiveAssets() {
+  try {
+    const response = yield call(AssetRepository.getActiveAssets);
+    yield put(UserActions.getActiveAssetsSuccess(response));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+  }
+}
+
 export function* getFavouriteProperties() {
   try {
     const response = yield call(UserRepository.getWishlistProperties);
@@ -203,5 +213,6 @@ export function* watchUser() {
   yield takeEvery(UserActionTypes.GET.USER_PREFERENCES, userPreferences);
   yield takeEvery(UserActionTypes.UPDATE.USER_PREFERENCES, updateUserPreferences);
   yield takeEvery(UserActionTypes.GET.USER_ASSETS, getUserAssets);
+  yield takeEvery(UserActionTypes.GET.USER_ACTIVE_ASSETS, getUserActiveAssets);
   yield takeEvery(UserActionTypes.GET.FAVOURITE_PROPERTIES, getFavouriteProperties);
 }

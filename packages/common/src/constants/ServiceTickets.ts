@@ -72,24 +72,35 @@ export const initialQuotes: IInitialQuote[] = [
   },
 ];
 
-export const initialExperienceData = [
+export interface IExperienceData {
+  icon: string;
+  title: ExperienceType;
+  type: ExperienceType;
+  color: string;
+  rating: number;
+}
+
+export const initialExperienceData: IExperienceData[] = [
   {
     icon: icons.sadFace,
     title: ExperienceType.UNSATISFIED,
     type: ExperienceType.UNSATISFIED,
     color: theme.colors.darkTint9,
+    rating: 1,
   },
   {
     icon: icons.neutralFace,
     title: ExperienceType.NEUTRAL,
     type: ExperienceType.NEUTRAL,
     color: theme.colors.darkTint9,
+    rating: 3,
   },
   {
     icon: icons.happyFace,
     title: ExperienceType.SATISFIED,
     type: ExperienceType.SATISFIED,
     color: theme.colors.darkTint9,
+    rating: 5,
   },
 ];
 

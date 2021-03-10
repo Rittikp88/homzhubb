@@ -28,6 +28,8 @@ export const UserActionTypes = {
     USER_PREFERENCES_FAILURE: `${actionTypePrefix}USER_PREFERENCES_FAILURE`,
     USER_ASSETS: `${actionTypePrefix}USER_ASSETS`,
     USER_ASSETS_SUCCESS: `${actionTypePrefix}USER_ASSETS_SUCCESS`,
+    USER_ACTIVE_ASSETS: `${actionTypePrefix}USER_ACTIVE_ASSETS`,
+    USER_ACTIVE_ASSETS_SUCCESS: `${actionTypePrefix}USER_ACTIVE_ASSETS_SUCCESS`,
     FAVOURITE_PROPERTIES: `${actionTypePrefix}FAVOURITE_PROPERTIES`,
     FAVOURITE_PROPERTIES_SUCCESS: `${actionTypePrefix}FAVOURITE_PROPERTIES_SUCCESS`,
   },
@@ -148,6 +150,15 @@ const getAssetsSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]> => ({
   payload: ObjectMapper.serializeArray(payload),
 });
 
+const getActiveAssets = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.USER_ACTIVE_ASSETS,
+});
+
+const getActiveAssetsSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]> => ({
+  type: UserActionTypes.GET.USER_ACTIVE_ASSETS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
 const getFavouriteProperties = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.FAVOURITE_PROPERTIES,
 });
@@ -194,4 +205,6 @@ export const UserActions = {
   getFavouriteProperties,
   getFavouritePropertiesSuccess,
   clearFavouriteProperties,
+  getActiveAssets,
+  getActiveAssetsSuccess,
 };

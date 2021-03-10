@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import EditableTextArea from '@homzhub/common/src/components/molecules/EditableTextArea';
 import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import {
   ExperienceType,
+  IExperienceData,
   initialExperienceData,
   ServiceTicketStatus,
 } from '@homzhub/common/src/constants/ServiceTickets';
@@ -24,22 +26,108 @@ interface IProps {
   cardData: Ticket;
   onCardPress: () => void;
   isFromMore?: boolean;
+  onSubmitReview: () => void;
 }
 
-export const TicketCard = (props: IProps): React.ReactElement => {
-  const { cardData, onCardPress, isFromMore = false } = props;
+const getIconColor = (type: ExperienceType): string => {
+  switch (type) {
+    case ExperienceType.SATISFIED:
+      return theme.colors.green;
+    case ExperienceType.NEUTRAL:
+      return theme.colors.mediumPriority;
+    case ExperienceType.UNSATISFIED:
+      return theme.colors.error;
+    default:
+      return theme.colors.darkTint9;
+  }
+};
 
+const StatusCode = (type: string): string => {
+  switch (type) {
+    case ServiceTicketStatus.OPEN:
+      return theme.colors.red;
+    case ServiceTicketStatus.PAYMENT_DONE:
+      return theme.colors.greenTint7;
+    case ServiceTicketStatus.PAYMENT_REQUESTED:
+      return theme.colors.pinkRed;
+    case ServiceTicketStatus.QUOTES_APPROVED:
+      return theme.colors.greenTint6;
+    case ServiceTicketStatus.QUOTES_REQUESTED:
+      return theme.colors.blueTint5;
+    case ServiceTicketStatus.QUOTES_SUBMITTED:
+      return theme.colors.blueTint4;
+    case ServiceTicketStatus.WORK_INITIATED:
+      return theme.colors.blueTint3;
+    case ServiceTicketStatus.CLOSED:
+      return theme.colors.greenTint8;
+    default:
+      return theme.colors.darkTint3;
+  }
+};
+
+const cardColor = (type: string): string => {
+  switch (type) {
+    case TicketPriority.HIGH:
+      return theme.colors.error;
+    case TicketPriority.MEDIUM:
+      return theme.colors.yellow;
+    case TicketPriority.LOW:
+      return theme.colors.blue;
+    default:
+      return theme.colors.darkTint3;
+  }
+};
+
+const setEmojiColor = (
+  experienceType: ExperienceType | string,
+  experienceData: IExperienceData[],
+  callback?: (selectedExperiance: IExperienceData) => void
+): IExperienceData[] => {
+  let updatedExperianceData = experienceData;
+
+  if (experienceType) {
+    updatedExperianceData = experienceData.map((item, index) => {
+      if (item.type === experienceType) {
+        if (callback) {
+          callback(item);
+        }
+        return { ...item, color: getIconColor(experienceType) };
+      }
+      return initialExperienceData[index];
+    });
+  }
+
+  return updatedExperianceData;
+};
+
+export const TicketCard = (props: IProps): React.ReactElement => {
+  const { cardData, onCardPress, isFromMore = false, onSubmitReview } = props;
+  const {
+    title,
+    createdAt,
+    updatedAt,
+    status,
+    assignedTo,
+    closedAt,
+    closedBy,
+    id,
+    location,
+    review: { rating, description },
+    experianceType,
+  } = cardData;
   // HOOKS START
 
   const { t } = useTranslation();
-  const [experienceData, setExperienceData] = useState(initialExperienceData);
-  const [experience, setExperience] = useState('');
-  const [isComment, setIsComment] = useState(false);
-  const [comment, setComment] = useState('');
+  const [experienceData, setExperienceData] = useState(setEmojiColor(experianceType, initialExperienceData));
+  const [ticketInfo, setTicketInfo] = useState({
+    experience: experianceType,
+    showComment: !!description,
+    comment: description,
+    rating,
+  });
 
   // HOOKS END
 
-  const { title, createdAt, updatedAt, status, assignedTo, closedAt, closedBy, location } = cardData;
   const isClosed = status === TicketStatus.CLOSED;
 
   // Data formation for closed and open tickets
@@ -57,78 +145,44 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   const dataByStatus: IDataType = isClosed ? closedTicket : openTicket;
 
   // HANDLERS START
-  const getIconColor = (type: ExperienceType): string => {
-    switch (type) {
-      case ExperienceType.SATISFIED:
-        return theme.colors.green;
-      case ExperienceType.NEUTRAL:
-        return theme.colors.orange;
-      case ExperienceType.UNSATISFIED:
-        return theme.colors.error;
-      default:
-        return theme.colors.darkTint9;
-    }
-  };
-
-  const StatusCode = (type: string): string => {
-    switch (type) {
-      case ServiceTicketStatus.OPEN:
-        return theme.colors.red;
-      case ServiceTicketStatus.PAYMENT_DONE:
-        return theme.colors.greenTint7;
-      case ServiceTicketStatus.PAYMENT_REQUESTED:
-        return theme.colors.pinkRed;
-      case ServiceTicketStatus.QUOTES_APPROVED:
-        return theme.colors.greenTint6;
-      case ServiceTicketStatus.QUOTES_REQUESTED:
-        return theme.colors.blueTint5;
-      case ServiceTicketStatus.QUOTES_SUBMITTED:
-        return theme.colors.blueTint4;
-      case ServiceTicketStatus.WORK_INITIATED:
-        return theme.colors.blueTint3;
-      case ServiceTicketStatus.CLOSED:
-        return theme.colors.greenTint8;
-      default:
-        return theme.colors.darkTint3;
-    }
-  };
-
-  const cardColor = (type: string): string => {
-    switch (type) {
-      case TicketPriority.HIGH:
-        return theme.colors.error;
-      case TicketPriority.MEDIUM:
-        return theme.colors.yellow;
-      case TicketPriority.LOW:
-        return theme.colors.blue;
-      default:
-        return theme.colors.darkTint3;
-    }
-  };
 
   const handleExperience = (type: ExperienceType): void => {
-    const updatedData = experienceData.map((item, index) => {
-      if (item.type === type) {
-        setExperience(type);
-        return { ...item, color: getIconColor(type) };
-      }
-      return initialExperienceData[index];
-    });
-    setIsComment(true);
-    setExperienceData(updatedData);
+    setExperienceData(
+      setEmojiColor(type, experienceData, (selectedExperience: IExperienceData) =>
+        setTicketInfo((prevState) => ({
+          ...prevState,
+          showComment: true,
+          experience: type,
+          rating: selectedExperience.rating,
+        }))
+      )
+    );
   };
 
   const clearExperience = (): void => {
     const updatedData = experienceData.map((item, index) => {
-      setExperience('');
+      setTicketInfo((prevState) => ({ ...prevState, experience: '', rating: -1 }));
       return initialExperienceData[index];
     });
-    setIsComment(false);
+    setTicketInfo((prevState) => ({ ...prevState, showComment: false, comment: '' }));
     setExperienceData(updatedData);
   };
 
   const onChangeComment = (value: string): void => {
-    setComment(value);
+    setTicketInfo((prevState) => ({ ...prevState, comment: value }));
+  };
+
+  const submitReview = (): void => {
+    const { rating: ticketRating, comment } = ticketInfo;
+
+    const payload = {
+      param: { ticketId: id },
+      data: { rating: ticketRating, description: comment },
+    };
+
+    TicketRepository.reviewSubmit(payload);
+    onSubmitReview();
+    clearExperience();
   };
 
   const onColorChange = (value: string): TextStyle => {
@@ -137,36 +191,10 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   };
   // HANDLERS END
 
-  const renderTextArea = (): React.ReactElement => {
-    return (
-      <>
-        <TextArea
-          value={comment}
-          isCountRequired={false}
-          placeholder={t('property:writeComment')}
-          textAreaStyle={styles.textArea}
-          onMessageChange={onChangeComment}
-        />
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={(): void => clearExperience()}
-            type="secondary"
-            title={t('common:cancel')}
-            containerStyle={styles.button}
-            titleStyle={styles.buttonTitle}
-          />
-          <Button
-            type="primary"
-            title={t('common:submit')}
-            containerStyle={[styles.button, styles.submit]}
-            titleStyle={styles.buttonTitle}
-          />
-        </View>
-      </>
-    );
-  };
+  const { experience, showComment, comment } = ticketInfo;
 
   const renderIconView = (): React.ReactElement => {
+    const isReviewed = rating > 0;
     return (
       <View style={styles.experienceContent}>
         <Divider containerStyles={styles.divider} />
@@ -182,7 +210,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
                     color={item.color}
                     size={28}
                     style={styles.iconPadding}
-                    onPress={(): void => handleExperience(item.type)}
+                    onPress={isReviewed ? FunctionUtils.noop : (): void => handleExperience(item.type)}
                   />
                 );
               })}
@@ -192,7 +220,17 @@ export const TicketCard = (props: IProps): React.ReactElement => {
             </Label>
           </>
         </View>
-        {isComment && renderTextArea()}
+        {showComment && (
+          <EditableTextArea
+            message={comment}
+            onCancelPress={clearExperience}
+            showCancel
+            onChangeMessage={onChangeComment}
+            onSubmit={submitReview}
+            isEditable={!(rating > 0)}
+            containerStyle={styles.commentBox}
+          />
+        )}
       </View>
     );
   };
@@ -311,5 +349,8 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     color: theme.colors.darkTint4,
+  },
+  commentBox: {
+    marginTop: 16,
   },
 });

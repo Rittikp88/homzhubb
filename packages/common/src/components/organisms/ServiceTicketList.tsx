@@ -142,8 +142,15 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   private renderItem = ({ item }: { item: Ticket }): ReactElement => {
-    const { isFromMore } = this.props;
-    return <TicketCard cardData={item} onCardPress={(): void => this.onTicketPress(item)} isFromMore={isFromMore} />;
+    const { isFromMore, getTickets } = this.props;
+    return (
+      <TicketCard
+        cardData={item}
+        onCardPress={(): void => this.onTicketPress(item)}
+        isFromMore={isFromMore}
+        onSubmitReview={getTickets}
+      />
+    );
   };
 
   private renderEmptyComponent = (): ReactElement => {

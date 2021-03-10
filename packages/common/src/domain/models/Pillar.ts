@@ -41,6 +41,9 @@ export class Pillar {
   @JsonProperty('rating', Number, true)
   private _rating = 0;
 
+  @JsonProperty('description', String, true)
+  private _description = '';
+
   @JsonProperty('pillar', PillarName, true)
   private _pillar: PillarName | null = null;
 
@@ -54,6 +57,10 @@ export class Pillar {
 
   get maxRating(): number {
     return this._maxRating;
+  }
+
+  get description(): string {
+    return this._description;
   }
 
   get rating(): number {

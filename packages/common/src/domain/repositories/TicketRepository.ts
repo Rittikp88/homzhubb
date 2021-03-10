@@ -10,6 +10,7 @@ import {
   IQuoteApprovePayload,
   IQuoteParam,
   IQuoteSubmitPayload,
+  ISubmitReview,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
@@ -21,6 +22,7 @@ const ENDPOINTS = {
     `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-request-categories/`,
   quoteSubmit: (param: IQuoteParam): string =>
     `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-submit-group/`,
+  reviewSubmit: (ticketId: number): string => `tickets/${ticketId}/reviews/`,
   quoteApprove: (param: IQuoteParam): string => `tickets/${param.ticketId}/quote-approved-group/`,
 };
 
@@ -53,6 +55,11 @@ class TicketRepository {
   public quoteSubmit = async (payload: IQuoteSubmitPayload): Promise<void> => {
     const { param, data } = payload;
     return await this.apiClient.post(ENDPOINTS.quoteSubmit(param), data);
+  };
+
+  public reviewSubmit = async (payload: ISubmitReview): Promise<void> => {
+    const { param, data } = payload;
+    return await this.apiClient.post(ENDPOINTS.reviewSubmit(param.ticketId), data);
   };
 
   public getQuoteRequest = async (param: IQuoteParam): Promise<QuoteRequest> => {

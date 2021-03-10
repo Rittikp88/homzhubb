@@ -8,6 +8,7 @@ export interface IUserState {
   userProfile: IUserProfile | null;
   userPreferences: IUserPreferences | null;
   assets: IAsset[];
+  activeAssets: IAsset[];
   isOnBoardingCompleted: boolean;
   isChangeStack: boolean;
   isAddPropertyFlow: boolean;
@@ -20,6 +21,7 @@ export interface IUserState {
     user: boolean;
     userProfile: boolean;
     userPreferences: boolean;
+    activeAssets: boolean;
   };
 }
 

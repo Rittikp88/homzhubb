@@ -115,6 +115,7 @@ const ENDPOINTS = {
     `assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}/`,
   acceptInvite: (): string => 'lease-tenants/accept-invite',
   leaseTransaction: (id: number): string => `lease-transactions/${id}/`,
+  activeAssets: 'active-assets/',
 };
 
 class AssetRepository {
@@ -435,6 +436,11 @@ class AssetRepository {
   public updateLeaseTransaction = async (payload: IUpdateLeaseTerm): Promise<void> => {
     const { transactionId, data } = payload;
     return await this.apiClient.put(ENDPOINTS.leaseTransaction(transactionId), data);
+  };
+
+  public getActiveAssets = async (): Promise<Asset[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.activeAssets);
+    return ObjectMapper.deserializeArray(Asset, response);
   };
 }
 

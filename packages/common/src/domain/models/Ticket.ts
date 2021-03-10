@@ -1,9 +1,11 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { TicketActivity } from '@homzhub/common/src/domain/models/TicketActivity';
 import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
+import { ExperienceType } from '@homzhub/common/src/constants/ServiceTickets';
 
 // ENUM
 export enum TicketStatus {
@@ -35,6 +37,7 @@ export interface ITicket {
   category: TicketCategory;
   sub_category: TicketCategory;
   others_field_description: string;
+  review: Pillar;
 }
 
 @JsonObject('Ticket')
@@ -101,6 +104,9 @@ export class Ticket {
 
   @JsonProperty('quote_request_id', Number, true)
   private _quoteRequestId = 0;
+
+  @JsonProperty('review', Pillar, true)
+  private _review = new Pillar();
 
   get id(): number {
     return this._id;
@@ -188,5 +194,27 @@ export class Ticket {
 
   get quoteRequestId(): number {
     return this._quoteRequestId;
+  }
+
+  get review(): Pillar {
+    return this._review;
+  }
+
+  get experianceType(): ExperienceType | string {
+    if (this.review && this.review.rating) {
+      const { rating } = this.review;
+
+      switch (rating) {
+        case 1:
+          return ExperienceType.UNSATISFIED;
+        case 3:
+          return ExperienceType.NEUTRAL;
+        case 5:
+          return ExperienceType.SATISFIED;
+        default:
+          return ExperienceType.NEUTRAL;
+      }
+    }
+    return '';
   }
 }

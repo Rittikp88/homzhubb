@@ -787,6 +787,20 @@ export interface IQuoteSubmitPayload {
   data: IQuoteSubmitBody;
 }
 
+export interface ISubmitReviewData {
+  rating: number;
+  description: string;
+}
+
+export interface ISubmitReviewParam {
+  ticketId: number;
+}
+
+export interface ISubmitReview {
+  param: ISubmitReviewParam;
+  data: ISubmitReviewData;
+}
+
 export interface IQuoteApproveBody {
   quotes: number[];
   comment?: string;
