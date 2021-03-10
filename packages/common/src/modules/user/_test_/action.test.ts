@@ -1,6 +1,6 @@
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { ILoginPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { loginWithCallback, userData } from '@homzhub/common/src/mocks/UserRepositoryMocks';
+import { loginWithCallback, userData, userLogout } from '@homzhub/common/src/mocks/UserRepositoryMocks';
 
 describe('User Actions', () => {
   it('should call login action', () => {
@@ -27,10 +27,11 @@ describe('User Actions', () => {
     });
   });
 
-  it.skip('should call logout action', () => {
-    const action = UserActions.logout();
+  it('should call logout IAuthaction', () => {
+    const action = UserActions.logout(userLogout);
     expect(action).toStrictEqual({
       type: UserActionTypes.AUTH.LOGOUT,
+      payload: userLogout,
     });
   });
 

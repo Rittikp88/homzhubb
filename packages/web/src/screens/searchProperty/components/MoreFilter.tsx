@@ -1,21 +1,18 @@
 import React from 'react';
-import { View, StyleSheet, StatusBar, SafeAreaView, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { remove } from 'lodash';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import Popup from 'reactjs-popup';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { AdvancedFilters, IAdvancedFilters, IFilterData } from '@homzhub/common/src/constants/AssetAdvancedFilters';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
@@ -23,12 +20,14 @@ import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionP
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
-import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { MultipleButtonGroup } from '@homzhub/common/src/components/molecules/MultipleButtonGroup';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { AdvancedFilters, IAdvancedFilters, IFilterData } from '@homzhub/common/src/constants/AssetAdvancedFilters';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IStateProps {
   filters: IFilter;
@@ -37,6 +36,7 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
+  getFilterDetails: (payload: IFilter) => void;
   setFilter: (payload: any) => void;
   setInitialState: () => void;
   getProperties: () => void;
@@ -44,19 +44,17 @@ interface IDispatchProps {
 }
 
 interface IAssetFiltersState {
-  isFacingToggled: boolean;
   isPropertyAmenitiesToggled: boolean;
   isShowVerifiedHelperToggled: boolean;
   isAgentListedHelperToggled: boolean;
   data: IAdvancedFilters;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyFilters>;
-type Props = libraryProps & IStateProps & IDispatchProps;
+type Props = IStateProps & IDispatchProps & WithTranslation & IWithMediaQuery;
 
 const ShowInMvpRelease = false;
 
-export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState> {
+export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> {
   /*eslint-disable */
   private FURNISHING = [
     { title: this.props.t('property:fullyFurnished'), value: FurnishingTypes.FULL },
@@ -69,7 +67,6 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     super(props);
 
     this.state = {
-      isFacingToggled: false,
       isPropertyAmenitiesToggled: false,
       isShowVerifiedHelperToggled: false,
       isAgentListedHelperToggled: false,
@@ -77,56 +74,56 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     };
   }
 
+  // TODO : Ashwin - To Remove this once search property screen is integrated with getFilter Api
+  public componentDidMount = (): void => {
+    const { getFilterDetails, filters } = this.props;
+    getFilterDetails({ asset_group: filters.asset_group });
+  };
+
   public render(): React.ReactElement {
     const {
       t,
       filters: { asset_group },
+      isTablet,
+      isOnlyTablet,
+      isMobile,
     } = this.props;
     return (
       <>
-        <StatusBar translucent backgroundColor={theme.colors.white} barStyle="dark-content" />
-        <SafeAreaView style={styles.container}>
-          {this.renderHeader()}
-          <ScrollView style={styles.flexOne}>
-            <View style={styles.screen}>
-              {this.renderTransactionType()}
+        <View style={styles.screen}>
+          <View style={styles.mainContainer}>
+            {this.renderSearchRadius()}
+            {this.renderDateAdded()}
+            {this.renderPropertyAge()}
+            {asset_group === 2 && this.renderRentFreePeriod()}
+            {this.renderMoveInDate()}
+            <View style={[styles.facingViewContainer, isTablet && styles.facingTabView]}>{this.renderFacing()}</View>
+            <View style={[styles.container, isOnlyTablet && styles.furnishingTabView]}>{this.renderFurnishing()}</View>
+            <View style={[styles.verifiedContainer, isMobile && styles.container]}>
               {ShowInMvpRelease && this.renderShowVerified()}
               {ShowInMvpRelease && this.renderAgentListed()}
-              {this.renderSearchRadius()}
-              {this.renderDateAdded()}
-              {this.renderPropertyAge()}
-              {asset_group === 2 && this.renderRentFreePeriod()}
-              {this.renderMoveInDate()}
-              {this.renderFacing()}
-              {this.renderFurnishing()}
-              {this.renderPropertyAmenities()}
-              <Button
-                type="primary"
-                title={t('showProperties')}
-                containerStyle={styles.buttonStyle}
-                onPress={this.handleSubmit}
-              />
             </View>
-          </ScrollView>
-        </SafeAreaView>
+            <View style={[styles.propertyAmenityContainer, isTablet && styles.facingTabView]}>
+              {this.renderPropertyAmenities()}
+            </View>
+          </View>
+        </View>
+        <View style={styles.buttonContainer}>
+          <Text type="small" textType="semiBold" style={styles.reset} onPress={this.clearForm}>
+            {t('reset')}
+          </Text>
+          <View style={styles.submitButton}>
+            <Button
+              type="primary"
+              title={t('showProperties')}
+              containerStyle={styles.buttonStyle}
+              onPress={this.handleSubmit}
+            />
+          </View>
+        </View>
       </>
     );
   }
-
-  public renderHeader = (): React.ReactElement => {
-    const { t } = this.props;
-    return (
-      <View style={styles.header}>
-        <Icon name={icons.leftArrow} size={18} color={theme.colors.darkTint3} onPress={this.goBack} />
-        <Text type="small" textType="semiBold">
-          {t('filters')}
-        </Text>
-        <Text type="small" textType="semiBold" style={styles.reset} onPress={this.clearForm}>
-          {t('reset')}
-        </Text>
-      </View>
-    );
-  };
 
   public renderTransactionType = (): React.ReactElement => {
     const {
@@ -150,6 +147,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       t,
       filters: { miscellaneous },
+      isMobile,
     } = this.props;
     const {
       data: { searchRadius },
@@ -160,7 +158,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     };
 
     return (
-      <>
+      <View style={styles.dropdownContainer}>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('searchRadius')}
         </Text>
@@ -173,10 +171,10 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           onDonePress={onSelectSearchRadius}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
-          containerStyle={styles.dropdownContainer}
+          containerStyle={[styles.dropdown, isMobile && styles.dropdownMobile]}
           numColumns={2}
         />
-      </>
+      </View>
     );
   };
 
@@ -184,6 +182,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       t,
       filters: { miscellaneous },
+      isMobile,
     } = this.props;
     const {
       data: { dateAdded },
@@ -195,7 +194,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     };
 
     return (
-      <>
+      <View style={styles.dropdownContainer}>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('dateAdded')}
         </Text>
@@ -208,10 +207,10 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           onDonePress={onSelectDateAdded}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
-          containerStyle={styles.dropdownContainer}
+          containerStyle={[styles.dropdown, isMobile && styles.dropdownMobile]}
           numColumns={2}
         />
-      </>
+      </View>
     );
   };
 
@@ -219,6 +218,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       t,
       filters: { miscellaneous },
+      isMobile,
     } = this.props;
     const {
       data: { propertyAge },
@@ -230,7 +230,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     };
 
     return (
-      <>
+      <View style={styles.dropdownContainer}>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('propertyAge')}
         </Text>
@@ -243,10 +243,10 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           onDonePress={onSelectPropertyAge}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
-          containerStyle={styles.dropdownContainer}
+          containerStyle={[styles.dropdown, isMobile && styles.dropdownMobile]}
           numColumns={2}
         />
-      </>
+      </View>
     );
   };
 
@@ -254,6 +254,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       t,
       filters: { miscellaneous },
+      isMobile,
     } = this.props;
     const {
       data: { rentFreePeriod },
@@ -277,7 +278,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
           onDonePress={onSelectRentFreePeriod}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
-          containerStyle={styles.dropdownContainer}
+          containerStyle={[styles.dropdown, isMobile && styles.dropdownMobile]}
           numColumns={2}
         />
       </>
@@ -290,22 +291,26 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
       setFilter,
       filters,
       filters: { miscellaneous },
+      isMobile,
     } = this.props;
     const updateSelectedDate = (day: string): void => {
       setFilter({ miscellaneous: { ...filters.miscellaneous, expected_move_in_date: day } });
     };
     return (
-      <FormCalendar
-        selectedValue={miscellaneous?.expected_move_in_date}
-        name="expected_move_in_date"
-        label={t('expectedMoveInDate')}
-        calendarTitle={t('expectedMoveInDate')}
-        placeHolder={t('selectMoveInDate')}
-        textType="text"
-        textSize="small"
-        fontType="semiBold"
-        bubbleSelectedDate={updateSelectedDate}
-      />
+      <View style={styles.dropdown}>
+        <FormCalendar
+          selectedValue={miscellaneous?.expected_move_in_date}
+          name="expected_move_in_date"
+          label={t('expectedMoveInDate')}
+          calendarTitle={t('expectedMoveInDate')}
+          placeHolder={t('selectMoveInDate')}
+          textType="text"
+          textSize="small"
+          fontType="semiBold"
+          bubbleSelectedDate={updateSelectedDate}
+          containerStyle={[styles.dropdown, isMobile && styles.dropdownMobile]}
+        />
+      </View>
     );
   };
 
@@ -313,49 +318,26 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       t,
       filters: { miscellaneous },
+      isTablet,
     } = this.props;
     if (!miscellaneous) {
       return null;
     }
     const { facing } = miscellaneous;
-    const { isFacingToggled } = this.state;
-    const transformedFacing = this.transformFacingData();
-    const toggleFacing = (): void => this.setState({ isFacingToggled: !isFacingToggled });
+    const transformedFacing = this.facingCheckboxGroupData(facing);
     return (
-      <>
+      <View style={[styles.facingViewSubContainer, isTablet && styles.facingTabView]}>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('facing', { totalFacing: facing.length })}
         </Text>
         <View style={styles.moreRow}>
-          <MultipleButtonGroup<string>
-            data={transformedFacing.slice(0, 4) ?? []}
-            onItemSelect={this.handleFacingSelection}
-            selectedItem={facing}
+          <CheckboxGroup
+            data={transformedFacing}
+            onToggle={this.handleFacingSelection}
+            containerStyle={[styles.checkboxGroupContainer, isTablet && styles.checkboxGroupContainerTabView]}
           />
-          {transformedFacing.length > 4 && (
-            <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleFacing}>
-              {t('common:more')}
-            </Text>
-          )}
         </View>
-        {isFacingToggled && (
-          <BottomSheet
-            isShadowView
-            sheetHeight={theme.viewport.height * 0.6}
-            headerTitle={t('selectFacing')}
-            visible={isFacingToggled}
-            onCloseSheet={toggleFacing}
-          >
-            <ScrollView style={styles.flexOne}>
-              <CheckboxGroup
-                data={this.facingCheckboxGroupData(facing)}
-                onToggle={this.handleFacingSelection}
-                containerStyle={styles.checkboxGroupContainer}
-              />
-            </ScrollView>
-          </BottomSheet>
-        )}
-      </>
+      </View>
     );
   };
 
@@ -400,34 +382,19 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     const {
       t,
       filters: { miscellaneous },
+      isTablet,
     } = this.props;
     if (!miscellaneous) {
       return null;
     }
     const { propertyAmenity } = miscellaneous;
-    const { isPropertyAmenitiesToggled } = this.state;
-    const toggleAmenities = (): void => this.setState({ isPropertyAmenitiesToggled: !isPropertyAmenitiesToggled });
     return (
-      <>
+      <View style={[styles.propertyAmenitySubContainer, isTablet && styles.facingTabView]}>
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('propertyAmenities', { totalAmenities: propertyAmenity.length })}
         </Text>
-        {this.renderPropertyAmenitiesGroupData()}
-        <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleAmenities}>
-          {propertyAmenity.length > 0 ? t('common:more') : t('common:select')}
-        </Text>
-        {isPropertyAmenitiesToggled && (
-          <BottomSheet
-            isShadowView
-            sheetHeight={theme.viewport.height * 0.6}
-            headerTitle={t('selectAmenities')}
-            visible={isPropertyAmenitiesToggled}
-            onCloseSheet={toggleAmenities}
-          >
-            <ScrollView style={styles.flexOne}>{this.renderAmenitiesData(propertyAmenity)}</ScrollView>
-          </BottomSheet>
-        )}
-      </>
+        <View style={styles.propertyAmenity}>{this.renderAmenitiesData(propertyAmenity)}</View>
+      </View>
     );
   };
 
@@ -478,7 +445,10 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   };
 
   public renderAmenitiesData = (propertyAmenity: number[]): React.ReactElement => {
-    const { setFilter, filters } = this.props;
+    const { setFilter, filters, t, isTablet, isMobile, isIpadPro } = this.props;
+    const { isPropertyAmenitiesToggled } = this.state;
+    const toggleAmenities = (): void => this.setState({ isPropertyAmenitiesToggled: !isPropertyAmenitiesToggled });
+    console.log(filters.miscellaneous);
     const onSelectedAmenities = (value: number | string): void => {
       const existingAmenity: number[] = propertyAmenity;
       if (existingAmenity.includes(value as number)) {
@@ -490,11 +460,22 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
       }
     };
     return (
-      <CheckboxGroup
-        data={this.amenityCheckboxGroupData()}
-        onToggle={onSelectedAmenities}
-        containerStyle={styles.checkboxGroupContainer}
-      />
+      <View style={styles.amenitieCheckboxContainer}>
+        <CheckboxGroup
+          data={
+            isPropertyAmenitiesToggled ? this.amenityCheckboxGroupData() : this.amenityCheckboxGroupData().slice(0, 11)
+          }
+          onToggle={onSelectedAmenities}
+          containerStyle={[styles.checkboxGroupContainer, isTablet && styles.checkboxGroupContainerTabView]}
+        />
+        {!isPropertyAmenitiesToggled && (
+          <View style={[styles.moreButton, isMobile && styles.moreButtonMobile, isIpadPro && styles.moreButtonIPad]}>
+            <Text type="small" textType="semiBold" style={styles.selectAmenity} onPress={toggleAmenities}>
+              {t('common:more')}
+            </Text>
+          </View>
+        )}
+      </View>
     );
   };
 
@@ -517,39 +498,29 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
       <>
         <View style={styles.toggleButton}>
           <View style={styles.moreRow}>
-            <Text type="small" textType="semiBold" style={styles.agentListed}>
-              {t('showVerified')}
-            </Text>
-            <Icon
-              name={icons.tooltip}
-              color={theme.colors.blue}
-              size={22}
-              style={styles.helperIcon}
-              onPress={toggleHelper}
-            />
+            <View style={styles.verified}>
+              <Text type="small" textType="semiBold" style={styles.agentListed}>
+                {t('showVerified')}
+              </Text>
+              <Icon
+                name={icons.tooltip}
+                color={theme.colors.blue}
+                size={22}
+                style={styles.helperIcon}
+                onPress={toggleHelper}
+              />
+            </View>
           </View>
-          <RNSwitch selected={showVerified} onToggle={updateVerified} />
+          <View style={styles.switchContainer}>
+            <RNSwitch selected={showVerified} onToggle={updateVerified} />
+          </View>
         </View>
         {isShowVerifiedHelperToggled && (
-          <BottomSheet
-            visible={isShowVerifiedHelperToggled}
-            onCloseSheet={toggleHelper}
-            headerTitle="Show Verified"
-            sheetHeight={500}
-            isShadowView
-          >
-            <Markdown
-              markdownStyles={{
-                h2: { fontWeight: '600', fontSize: 20, marginVertical: 10 },
-                h4: { fontWeight: '300', fontSize: 24, color: theme.colors.darkTint2 },
-                strong: { fontWeight: '600', fontSize: 16 },
-                text: { fontWeight: 'normal', fontSize: 14 },
-              }}
-              style={{ margin: theme.layout.screenPadding }}
-            >
+          <Popup position="right center" closeOnDocumentClick open={isShowVerifiedHelperToggled}>
+            <Markdown markdownStyles={customStyles} style={{ margin: theme.layout.screenPadding }}>
               Show Verified helper text
             </Markdown>
-          </BottomSheet>
+          </Popup>
         )}
       </>
     );
@@ -574,39 +545,27 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
       <>
         <View style={styles.toggleButton}>
           <View style={styles.moreRow}>
-            <Text type="small" textType="semiBold" style={styles.agentListed}>
-              {t('agentListed')}
-            </Text>
-            <Icon
-              name={icons.tooltip}
-              color={theme.colors.blue}
-              size={22}
-              style={styles.helperIcon}
-              onPress={toggleHelper}
-            />
+            <View style={styles.verified}>
+              <Text type="small" textType="semiBold" style={styles.agentListed}>
+                {t('agentListed')}
+              </Text>
+              <Icon
+                name={icons.tooltip}
+                color={theme.colors.blue}
+                size={22}
+                style={styles.helperIcon}
+                onPress={toggleHelper}
+              />
+            </View>
           </View>
           <RNSwitch selected={agentListed} onToggle={updateAgentListed} />
         </View>
         {isAgentListedHelperToggled && (
-          <BottomSheet
-            visible={isAgentListedHelperToggled}
-            onCloseSheet={toggleHelper}
-            headerTitle="Agent Listed"
-            sheetHeight={500}
-            isShadowView
-          >
-            <Markdown
-              markdownStyles={{
-                h2: { fontWeight: '600', fontSize: 20, marginVertical: 10 },
-                h4: { fontWeight: '300', fontSize: 24, color: theme.colors.darkTint2 },
-                strong: { fontWeight: '600', fontSize: 16 },
-                text: { fontWeight: 'normal', fontSize: 14 },
-              }}
-              style={{ margin: theme.layout.screenPadding }}
-            >
+          <Popup position="right center" closeOnDocumentClick open={isAgentListedHelperToggled}>
+            <Markdown markdownStyles={customStyles} style={{ margin: theme.layout.screenPadding }}>
               Agent Listed helper text
             </Markdown>
-          </BottomSheet>
+          </Popup>
         )}
       </>
     );
@@ -618,10 +577,9 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   };
 
   private handleSubmit = (): void => {
-    const { getProperties, navigation, setFilter } = this.props;
+    const { getProperties, setFilter } = this.props;
     setFilter({ offset: 0 });
     getProperties();
-    navigation.goBack();
   };
 
   public translateData = (data: IFilterData[]): IFilterData[] => {
@@ -663,7 +621,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   public facingCheckboxGroupData = (facing: string[]): ICheckboxGroupData[] => {
     const { filterDetails } = this.props;
     const facingData = filterDetails?.filters?.additionalFilters?.facing ?? [];
-    return facingData.map((facingType: { name: string; label: string }) => ({
+    return facingData.map((facingType: { name: string; label: string; title: string }) => ({
       id: facingType.name,
       label: facingType.label,
       isSelected: facing.includes(facingType.name),
@@ -709,10 +667,7 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
     setInitialMiscellaneous();
   };
 
-  public goBack = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
-  };
+  public goBack = (): void => {};
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -725,9 +680,10 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, setInitialState, getProperties, setInitialMiscellaneous } = SearchActions;
+  const { getFilterDetails, setFilter, setInitialState, getProperties, setInitialMiscellaneous } = SearchActions;
   return bindActionCreators(
     {
+      getFilterDetails,
       setFilter,
       setInitialState,
       getProperties,
@@ -737,15 +693,28 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(
+const translatedMoreFilters = connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.propertySearch)(AssetFilters));
+)(withTranslation(LocaleConstants.namespacesKey.propertySearch)(MoreFilters));
+
+export default withMediaQuery<any>(translatedMoreFilters);
+
+const customStyles = {
+  h2: { fontWeight: '600', fontSize: 20, marginVertical: 10 },
+  h4: { fontWeight: '300', fontSize: 24, color: theme.colors.darkTint2 },
+  strong: { fontWeight: '600', fontSize: 16 },
+  text: { fontWeight: 'normal', fontSize: 14 },
+};
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
   container: {
-    flex: 1,
-    backgroundColor: theme.colors.white,
+    width: '100%',
   },
   flexOne: {
     flex: 1,
@@ -755,6 +724,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 16,
     marginHorizontal: theme.layout.screenPadding,
+    flexWrap: 'wrap',
   },
   header: {
     margin: theme.layout.screenPadding,
@@ -768,9 +738,11 @@ const styles = StyleSheet.create({
     flex: 0,
     borderWidth: 0,
     color: theme.colors.primaryColor,
+    alignSelf: 'center',
   },
   filterHeader: {
-    paddingVertical: 10,
+    marginTop: 10,
+    marginLeft: 10,
     color: theme.colors.darkTint3,
   },
   agentListed: {
@@ -778,6 +750,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
+    width: 160,
     marginVertical: 16,
   },
   toggleButton: {
@@ -794,17 +767,97 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexWrap: 'wrap',
+    flex: 1,
+    marginTop: 16,
   },
   checkboxGroupContainer: {
-    margin: theme.layout.screenPadding,
+    width: 152,
+    marginRight: 16,
+  },
+  checkboxGroupContainerTabView: {
+    width: 152,
+    marginRight: 0,
   },
   dropdownContainer: {
+    flexDirection: 'column',
+  },
+  dropdown: {
+    width: 317,
+    height: 48,
     marginVertical: 10,
+  },
+  dropdownMobile: {
+    width: theme.viewport.width - 80,
   },
   helperIcon: {
     marginStart: 8,
   },
   buttonItemStyle: {
     marginEnd: 4,
+  },
+  amnetiesTabView: {
+    flexDirection: 'column',
+  },
+  facingViewContainer: {
+    width: '65%',
+  },
+  facingViewSubContainer: {
+    flexDirection: 'column',
+    flex: 1,
+    marginTop: 15,
+    marginLeft: 15,
+  },
+  facingTabView: {
+    width: '100%',
+    marginLeft: 0,
+    marginTop: 30,
+  },
+  furnishingTabView: {
+    width: '50%',
+    marginTop: 30,
+  },
+
+  buttonContainer: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'flex-end',
+  },
+  submitButton: {
+    marginHorizontal: 30,
+  },
+  propertyAmenityContainer: { width: '65%', marginLeft: 50 },
+  propertyAmenitySubContainer: {
+    flexDirection: 'column',
+    marginLeft: 20,
+  },
+  propertyAmenity: { flexDirection: 'row', flexWrap: 'wrap' },
+  amenitieCheckboxContainer: { overflow: 'hidden', flexDirection: 'row', flex: 1, width: '100%', marginTop: 16 },
+  moreButton: {
+    position: 'absolute',
+    right: 150,
+    top: 105,
+    justifyContent: 'flex-end',
+  },
+  moreButtonMobile: {
+    position: 'absolute',
+    right: '30%',
+    top: '86%',
+    justifyContent: 'flex-end',
+  },
+  moreButtonIPad: {
+    position: 'absolute',
+    right: 150,
+    top: 150,
+    justifyContent: 'flex-end',
+  },
+  verifiedContainer: {
+    flexDirection: 'column',
+    width: '28%',
+  },
+  verified: {
+    flexDirection: 'row',
+  },
+  switchContainer: {
+    marginTop: 10,
   },
 });

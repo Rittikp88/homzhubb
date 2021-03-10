@@ -56,6 +56,10 @@ export const loginWithCallback = {
   data: loginPayload,
 };
 
+export const userLogout = {
+  callback: (status: boolean): void => {},
+};
+
 export const mockUsers = [
   {
     id: 1,

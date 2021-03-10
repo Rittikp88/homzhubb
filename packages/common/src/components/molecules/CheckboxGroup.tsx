@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 
 export interface ICheckboxGroupData {
@@ -24,7 +25,7 @@ class CheckboxGroup extends React.PureComponent<IProps, {}> {
   public render = (): React.ReactNode => {
     const { data, containerStyle = {}, isMobile } = this.props;
     const styles = checkBoxGrpStyles(isMobile);
-    return isMobile ? (
+    return PlatformUtils.isMobile() ? (
       <View style={[styles.container, containerStyle]}>
         <View style={styles.col}>
           {data.filter((item, index) => index % 2 === 0).map((item) => this.renderCheckbox(item))}
@@ -40,7 +41,7 @@ class CheckboxGroup extends React.PureComponent<IProps, {}> {
 
   private renderCheckbox = (item: ICheckboxGroupData): React.ReactElement => {
     const { label, isSelected = false, isDisabled = false } = item;
-    const { onToggle, labelStyle = {}, testID, isMobile } = this.props;
+    const { onToggle, labelStyle = {}, testID, isMobile, containerStyle = {} } = this.props;
     const styles = checkBoxGrpStyles(isMobile);
     const onCheckboxToggle = (): void => onToggle(item.id, !isSelected);
 
@@ -51,7 +52,7 @@ class CheckboxGroup extends React.PureComponent<IProps, {}> {
           label={label}
           onToggle={onCheckboxToggle}
           labelStyle={labelStyle}
-          containerStyle={styles.checkboxContainer}
+          containerStyle={[styles.checkboxContainer, containerStyle]}
           testID={testID}
         />
       </View>

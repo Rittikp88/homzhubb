@@ -18,7 +18,7 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { TimeSlotGroup, Header } from '@homzhub/mobile/src/components';
-import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
+import { MultipleButtonGroup } from '@homzhub/common/src/components/molecules/MultipleButtonGroup';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { MultipleButtonGroup } from '@homzhub/mobile/src/components/molecules/MultipleButtonGroup';
+import { MultipleButtonGroup } from '@homzhub/common/src/components/molecules/MultipleButtonGroup';
 
 let props: any;
 let wrapper: ShallowWrapper;
