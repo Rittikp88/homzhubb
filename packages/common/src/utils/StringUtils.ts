@@ -21,4 +21,12 @@ export class StringUtils {
     const regex = RegExp(FormUtils.emailRegex, 'g');
     return regex.test(email);
   };
+
+  public static splitter = (value: string, delimiter: string): string => {
+    const result = value
+      .split(delimiter)
+      .map((item: string) => StringUtils.toTitleCase(item))
+      .join(' ');
+    return result;
+  };
 }

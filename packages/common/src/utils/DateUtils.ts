@@ -36,6 +36,8 @@ export const DateFormats = {
   DDMMMYYYY_HM: 'DD/MMM/YYYY-HH:MM',
   DDMM: 'DD MMM',
   HHMM_A: 'hh:mm a',
+  HHMM_AP: 'hh:mm A',
+  DDMM_YYYY_HH_MM: 'DD MMM, YYYY - H:mm ',
 };
 
 class DateUtils {
@@ -301,8 +303,8 @@ class DateUtils {
     return moment(date);
   };
 
-  public getDateDiff = (date1: string, date2: string): number => {
-    return moment(date1).diff(date2);
+  public getDateDiff = (date1: string, date2: string, unit?: unitOfTime.Diff): number => {
+    return moment(date1).diff(date2, unit);
   };
 
   public getCurrentDate24Format = (): string => {
@@ -342,6 +344,12 @@ class DateUtils {
 
   public convertDate = (date: string, format: string): string => {
     return moment(date, DateFormats.ISO8601).format(format);
+  };
+
+  public getTimeElapsedInDays = (date: string): number => {
+    const currentDate = new Date().toISOString();
+    const timeElapsed = this.getDateDiff(currentDate, date, 'days');
+    return timeElapsed;
   };
 
   public convertDateFormatted = (date: string): string => {

@@ -1,4 +1,4 @@
-# Import Oder
+# Import Order
 
 1. 3rd party libraries (react, react-native, etc.)
 2. Utils

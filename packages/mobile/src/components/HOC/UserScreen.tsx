@@ -1,5 +1,5 @@
 import React, { memo, ReactElement, useCallback } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -27,6 +27,7 @@ interface IUserScreenProps {
   rightNode?: React.ReactElement;
   hasLeftIcon?: boolean;
   onNavigateCallback?: () => void;
+  contentContainerStyle?: ViewStyle;
 }
 
 // Constants for Gradient background
@@ -51,6 +52,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     rightNode,
     hasLeftIcon = true,
     onNavigateCallback,
+    contentContainerStyle,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -131,7 +133,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
         {scrollEnabled ? (
           <KeyboardAwareScrollView
             bounces={false}
-            contentContainerStyle={styles.contentContainerStyle}
+            contentContainerStyle={[styles.contentContainerStyle, contentContainerStyle]}
             showsVerticalScrollIndicator={false}
             scrollEnabled={isOuterScrollEnabled}
             nestedScrollEnabled

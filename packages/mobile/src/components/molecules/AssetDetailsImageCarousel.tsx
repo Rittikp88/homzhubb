@@ -12,11 +12,12 @@ interface IProps {
   updateSlide: (index: number) => void;
   activeSlide: number;
   containerStyles?: StyleProp<ViewStyle>;
+  hasOnlyImages?: boolean;
 }
 
 export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { activeSlide, data, containerStyles } = this.props;
+    const { activeSlide, data, containerStyles, hasOnlyImages } = this.props;
     const currentSlide: Attachment = data[activeSlide];
     return (
       <View style={[styles.carouselContainer, containerStyles]}>
@@ -34,6 +35,7 @@ export class AssetDetailsImageCarousel extends React.PureComponent<IProps> {
             currentSlide={activeSlide}
             totalSlides={data.length}
             type={currentSlide?.mediaType ?? 'IMAGE'}
+            hasOnlyImages={hasOnlyImages}
           />
         </View>
       </View>

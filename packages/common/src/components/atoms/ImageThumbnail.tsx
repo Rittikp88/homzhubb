@@ -24,6 +24,7 @@ export interface IOwnProps {
   isFavorite?: boolean;
   markFavorite?: () => void;
   galleryView?: boolean;
+  onPressImage?: () => void;
 }
 
 type IProps = WithTranslation & IOwnProps;
@@ -47,55 +48,76 @@ class ImageThumbnail extends React.PureComponent<IProps> {
       markFavorite,
       t,
       galleryView,
+      onPressImage,
     } = this.props;
+
+    const { handleIconPress } = this;
+
+    const Content = React.memo(
+      (): React.ReactElement => (
+        <>
+          {!!imageUrl && (
+            <ImageBackground
+              resizeMode={PlatformUtils.isWeb() && galleryView ? 'contain' : 'stretch'}
+              source={{ uri: imageUrl }}
+              imageStyle={[styles.imageStyle, imageContainerStyle]}
+              style={[styles.imageWrapper, imageWrapperStyle]}
+            >
+              {isIconVisible && (
+                <TouchableOpacity
+                  style={
+                    PlatformUtils.isWeb() && isCoverPhotoContainer ? styles.iconContainerWeb : styles.iconContainer
+                  }
+                  onPress={handleIconPress}
+                >
+                  <Icon name={icons.close} size={iconSize || 22} color={iconColor || theme.colors.white} />
+                  {PlatformUtils.isWeb() && isCoverPhotoContainer && (
+                    <Typography variant="label" size="large" style={styles.removeTxt}>
+                      {t('remove')}
+                    </Typography>
+                  )}
+                </TouchableOpacity>
+              )}
+              {isCoverPhotoContainer && (
+                <TouchableOpacity style={styles.touchableContainer} onPress={markFavorite}>
+                  <View style={styles.coverPhotoContainer}>
+                    <Text type="small" textType="regular" style={styles.coverPhoto}>
+                      {coverPhotoTitle}
+                    </Text>
+                    <Icon
+                      name={isFavorite ? icons.starFilled : icons.starUnfilled}
+                      size={20}
+                      color={theme.colors.white}
+                      style={styles.starIcon}
+                    />
+                  </View>
+                </TouchableOpacity>
+              )}
+              {isLastThumbnail && (
+                <View style={styles.lastThumbnailContainer}>
+                  <TouchableOpacity onPress={onPressLastThumbnail}>
+                    <Text type="regular" textType="semiBold" style={styles.numberOfImages}>
+                      + {dataLength}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </ImageBackground>
+          )}
+        </>
+      )
+    );
+
+    if (onPressImage) {
+      return (
+        <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPressImage}>
+          <Content />
+        </TouchableOpacity>
+      );
+    }
     return (
       <View style={[styles.container, containerStyle]}>
-        {!!imageUrl && (
-          <ImageBackground
-            resizeMode={PlatformUtils.isWeb() && galleryView ? 'contain' : 'stretch'}
-            source={{ uri: imageUrl }}
-            imageStyle={[styles.imageStyle, imageContainerStyle]}
-            style={[styles.imageWrapper, imageWrapperStyle]}
-          >
-            {isIconVisible && (
-              <TouchableOpacity
-                style={PlatformUtils.isWeb() && isCoverPhotoContainer ? styles.iconContainerWeb : styles.iconContainer}
-                onPress={this.handleIconPress}
-              >
-                <Icon name={icons.close} size={iconSize || 22} color={iconColor || theme.colors.white} />
-                {PlatformUtils.isWeb() && isCoverPhotoContainer && (
-                  <Typography variant="label" size="large" style={styles.removeTxt}>
-                    {t('remove')}
-                  </Typography>
-                )}
-              </TouchableOpacity>
-            )}
-            {isCoverPhotoContainer && (
-              <TouchableOpacity style={styles.touchableContainer} onPress={markFavorite}>
-                <View style={styles.coverPhotoContainer}>
-                  <Text type="small" textType="regular" style={styles.coverPhoto}>
-                    {coverPhotoTitle}
-                  </Text>
-                  <Icon
-                    name={isFavorite ? icons.starFilled : icons.starUnfilled}
-                    size={20}
-                    color={theme.colors.white}
-                    style={styles.starIcon}
-                  />
-                </View>
-              </TouchableOpacity>
-            )}
-            {isLastThumbnail && (
-              <View style={styles.lastThumbnailContainer}>
-                <TouchableOpacity onPress={onPressLastThumbnail}>
-                  <Text type="regular" textType="semiBold" style={styles.numberOfImages}>
-                    + {dataLength}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </ImageBackground>
-        )}
+        <Content />
       </View>
     );
   }

@@ -1,4 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { TicketActivity } from '@homzhub/common/src/domain/models/TicketActivity';
 import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
@@ -43,8 +45,11 @@ export class Ticket {
   @JsonProperty('ticket_number', String, true)
   private _ticketNumber = '';
 
-  @JsonProperty('ticket_category', TicketCategory, true)
-  private _ticketCategory = new TicketCategory();
+  @JsonProperty('ticket_category', Number, true)
+  private _ticketCategory = 0;
+
+  @JsonProperty('raised_by', User, true)
+  private _raisedBy = new User();
 
   @JsonProperty('sub_category', TicketCategory, true)
   private _subCategory = new TicketCategory();
@@ -85,6 +90,15 @@ export class Ticket {
   @JsonProperty('updated_at', String, true)
   private _updatedAt = '';
 
+  @JsonProperty('ticket_attachments', [Attachment], true)
+  private _ticketAttachments = [] as Attachment[];
+
+  @JsonProperty('lease_transaction', Number, true)
+  private _leaseTransaction = null;
+
+  @JsonProperty('activities', [TicketActivity], true)
+  private _activities = [];
+
   @JsonProperty('quote_request_id', Number, true)
   private _quoteRequestId = 0;
 
@@ -96,7 +110,7 @@ export class Ticket {
     return this._ticketNumber;
   }
 
-  get ticketCategory(): TicketCategory {
+  get ticketCategory(): number {
     return this._ticketCategory;
   }
 
@@ -108,8 +122,8 @@ export class Ticket {
     return this._category;
   }
 
-  get othersFieldDescription(): string {
-    return this._othersFieldDescription;
+  get raisedBy(): User {
+    return this._raisedBy;
   }
 
   get assignedTo(): User {
@@ -154,6 +168,22 @@ export class Ticket {
 
   get asset(): VisitAssetDetail {
     return this._asset;
+  }
+
+  get ticketAttachments(): Attachment[] {
+    return this._ticketAttachments;
+  }
+
+  get othersFieldDescription(): string {
+    return this._othersFieldDescription;
+  }
+
+  get leaseTransaction(): number | null {
+    return this._leaseTransaction;
+  }
+
+  get activities(): TicketActivity[] {
+    return this._activities;
   }
 
   get quoteRequestId(): number {

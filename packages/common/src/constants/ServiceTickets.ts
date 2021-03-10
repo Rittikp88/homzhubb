@@ -1,8 +1,11 @@
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { icons } from '@homzhub/common/src/assets/icon';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
+// ENUM START
 export enum TicketActionType {
   SUBMIT_QUOTE = 'QUOTES_READY',
   APPROVE_QUOTE = 'QUOTES_APPROVED',
@@ -17,18 +20,29 @@ export enum ExperienceType {
 
 export enum ServiceTicketStatus {
   OPEN = 'Open',
+  TICKET_RAISED = 'Ticket Raised',
   QUOTES_REQUESTED = 'Quotes Requested',
   QUOTES_SUBMITTED = 'Quotes Submitted',
   QUOTES_APPROVED = 'Quotes Approved',
   WORK_INITIATED = 'Work Initiated',
   PAYMENT_REQUESTED = 'Payment Requested',
   PAYMENT_DONE = 'Payment Done',
+  WORK_COMPLETED = 'Work Completed',
   CLOSED = 'Closed',
 }
+
+// ENUM END
 
 const translationKey = LocaleConstants.namespacesKey.serviceTickets;
 
 export const TOTAL_IMAGES = 10;
+
+export const priorityColors = {
+  LOW: theme.colors.lowPriority,
+  MEDIUM: theme.colors.mediumPriority,
+  HIGH: theme.colors.highPriority,
+  ALL: theme.colors.informational,
+};
 
 export interface IInitialQuote {
   quoteNumber: number;
@@ -95,7 +109,7 @@ export const sampleDetails = [
     value: '23 Sep, 2020 - 20:20',
   },
   {
-    type: `${translationKey}:ticketRaised`,
+    type: `${translationKey}:status`,
     value: 'Ticket Raised',
   },
   {
@@ -112,153 +126,258 @@ export const sampleDetails = [
   },
 ];
 
-export const mockTicket = {
-  date: '23, Nov 2020',
-  title: 'Sample Ticket Title',
-  activity: {
-    stage1: {
-      role: 'Owner',
-      avatar:
-        'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/c1a1aac4-5108-11eb-8e84-0242ac110004IMG_0002.JPG',
-      status: `${translationKey}:ticketRaised`,
-      description: `${translationKey}:ticketRaisedDescription`,
-      time: '11:00 AM',
-      timeLine: [`${translationKey}:ticketRaisedToOwner`, `${translationKey}:awaitingOwnerAction`],
-    },
+// TODO: (Praharsh) - API contract (Remove after API integration)
+export const mockTicketContract = {
+  id: 1,
+  title: 'My Kitchen ceiling',
+  description: 'Description',
+  ticket_number: 'HOM-202103101-10000',
+  ticket_category: 0,
+  category: {
+    id: 2,
+    name: 'Renovation and Rectification',
   },
-};
-
-// TODO: (Shikha) - Remove after API integration
-export const quotesPreview = [
-  {
+  sub_category: {
+    id: 14,
+    name: 'Others',
+  },
+  others_field_description: '',
+  priority: 'LOW', // "LOW|MEDIUM|HIGH"
+  status: 'OPEN', // "OPEN|QUOTES_READY|QUOTES_ACCEPTED|CLOSED"
+  asset: {
     id: 1,
-    name: 'Painting',
-    quote_submit_group: [
-      {
-        id: 1,
-        user: {
+    project_name: 'Prestige',
+  },
+  lease_transaction: null,
+  assigned_to: {
+    id: 1,
+    full_name: 'Abhijeet Anand ****',
+    first_name: 'Abhijeet Anand',
+    last_name: '****',
+    profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+    rating: 4,
+  },
+  raised_by: {
+    id: 3,
+    full_name: 'Anuvrat ****',
+    first_name: 'Anuvrat',
+    last_name: '****',
+    profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+    rating: 4,
+  },
+  created_at: '2021-02-22 05:30:00',
+  updated_at: '2021-02-22 05:30:00',
+  ticket_attachments: [
+    {
+      id: 355,
+      file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+      link:
+        'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+      mime_type: 'image/jpeg',
+      media_type: 'IMAGE',
+      media_attributes: {},
+    },
+    {
+      id: 355,
+      file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+      link:
+        'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+      mime_type: 'image/jpeg',
+      media_type: 'IMAGE',
+      media_attributes: {},
+    },
+  ],
+  activities: [
+    {
+      id: 1,
+      activity_type: {
+        id: 67,
+        order: 1,
+        label: 'Ticket Raised',
+        code: 'TICKET_RAISED',
+      },
+      created_at: '2021-02-22 05:30:00',
+      updated_at: '2021-02-22 05:30:00',
+      user: {
+        id: 3,
+        full_name: 'Anuvrat ****',
+        first_name: 'Anuvrat',
+        last_name: '****',
+        profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+        rating: 4,
+      },
+      role: 'TENANT',
+      comment: 'Some comment',
+      data: {
+        assigned_to: {
           id: 1,
-          first_name: 'Abhijeet',
-          email: 'abhijeet.shah@nineleaps.com',
+          full_name: 'Abhijeet Anand ****',
+          first_name: 'Abhijeet Anand',
+          last_name: '****',
+          profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+          rating: 4,
         },
-        role: 'OWNER',
-        comment: 'Some comment submit group',
-        quotes: [
+      },
+    },
+    {
+      id: 2,
+      activity_type: {
+        id: 67,
+        order: 1,
+        label: 'Quotes Submitted',
+        code: 'QUOTES_SUBMITTED',
+      },
+      created_at: '2021-02-22 05:30:00',
+      updated_at: '2021-02-22 05:30:00',
+      user: {
+        id: 2,
+        full_name: 'Hari ****',
+        first_name: 'Hari',
+        last_name: '****',
+        profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+        rating: 4,
+      },
+      role: 'OWNER',
+      comment: 'Some comment submit group',
+      data: {
+        quote_request_category: [
           {
             id: 1,
-            quote_number: 1,
-            total_amount: 1000,
-            status: 'NEW|APPROVED',
-            currency: {
-              currency_name: 'Indian Rupee',
-              currency_code: 'INR',
-              currency_symbol: '₹',
-            },
-            attachment: {
-              id: 355,
-              file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              link:
-                'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              mime_type: 'image/jpeg',
-              media_type: 'IMAGE',
-              media_attributes: {},
-            },
+            name: 'Painting',
+            quotes: [
+              {
+                id: 1,
+                quote_number: 1,
+                total_amount: 1000,
+                status: 'NEW|APPROVED',
+                currency: {
+                  currency_name: 'Indian Rupee',
+                  currency_code: 'INR',
+                  currency_symbol: '₹',
+                },
+                attachment: {
+                  id: 355,
+                  file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  link:
+                    'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  mime_type: 'image/jpeg',
+                  media_type: 'IMAGE',
+                  media_attributes: {},
+                },
+              },
+              {
+                id: 2,
+                quote_number: 2,
+                total_amount: 1500,
+                status: 'NEW|APPROVED',
+                currency: {
+                  currency_name: 'Indian Rupee',
+                  currency_code: 'INR',
+                  currency_symbol: '₹',
+                },
+                attachment: {
+                  id: 356,
+                  file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  link:
+                    'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  mime_type: 'image/jpeg',
+                  media_type: 'IMAGE',
+                  media_attributes: {},
+                },
+              },
+            ],
           },
           {
             id: 2,
-            quote_number: 2,
-            total_amount: 1500,
-            status: 'NEW|APPROVED',
-            currency: {
-              currency_name: 'Indian Rupee',
-              currency_code: 'INR',
-              currency_symbol: '₹',
-            },
-            attachment: {
-              id: 356,
-              file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              link:
-                'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              mime_type: 'image/jpeg',
-              media_type: 'IMAGE',
-              media_attributes: {},
-            },
+            name: 'Sepage',
+            quotes: [
+              {
+                id: 3,
+                quote_number: 1,
+                total_amount: 1000,
+                status: 'NEW|APPROVED',
+                currency: {
+                  currency_name: 'Indian Rupee',
+                  currency_code: 'INR',
+                  currency_symbol: '₹',
+                },
+                attachment: {
+                  id: 355,
+                  file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  link:
+                    'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  mime_type: 'image/jpeg',
+                  media_type: 'IMAGE',
+                  media_attributes: {},
+                },
+              },
+              {
+                id: 4,
+                quote_number: 2,
+                total_amount: 1500,
+                status: 'NEW|APPROVED',
+                currency: {
+                  currency_name: 'Indian Rupee',
+                  currency_code: 'INR',
+                  currency_symbol: '₹',
+                },
+                attachment: {
+                  id: 356,
+                  file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  link:
+                    'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+                  mime_type: 'image/jpeg',
+                  media_type: 'IMAGE',
+                  media_attributes: {},
+                },
+              },
+            ],
           },
         ],
       },
-      {
-        id: 2,
-        user: {
-          id: 2,
-          first_name: 'Hari',
-          email: 'hari@nineleaps.com',
-        },
-        role: 'OWNER',
-        comment: 'Some comment submit group',
-        quotes: [
-          {
-            id: 3,
-            quote_number: 1,
-            total_amount: 1000,
-            status: 'NEW|APPROVED',
-            currency: {
-              currency_name: 'Indian Rupee',
-              currency_code: 'INR',
-              currency_symbol: '₹',
-            },
-            attachment: {
-              id: 355,
-              file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              link:
-                'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              mime_type: 'image/jpeg',
-              media_type: 'IMAGE',
-              media_attributes: {},
-            },
-          },
-          {
-            id: 4,
-            quote_number: 2,
-            total_amount: 1500,
-            status: 'NEW|APPROVED',
-            currency: {
-              currency_name: 'Indian Rupee',
-              currency_code: 'INR',
-              currency_symbol: '₹',
-            },
-            attachment: {
-              id: 356,
-              file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              link:
-                'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              mime_type: 'image/jpeg',
-              media_type: 'IMAGE',
-              media_attributes: {},
-            },
-          },
-        ],
+    },
+    {
+      id: 3,
+      activity_type: {
+        id: 67,
+        order: 1,
+        label: 'Quotes Approved',
+        code: 'QUOTES_APPROVED',
       },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Carpentry',
-    quote_submit_group: [
-      {
-        id: 3,
-        user: {
-          id: 1,
-          first_name: 'Abhijeet',
-          email: 'abhijeet.shah@nineleaps.com',
-        },
-        role: 'OWNER',
-        comment: 'Some comment submit group',
+      created_at: '2021-02-22 05:30:00',
+      updated_at: '2021-02-22 05:30:00',
+      user: {
+        id: 1,
+        full_name: 'Abhijeet Anand ****',
+        first_name: 'Abhijeet Anand',
+        last_name: '****',
+        profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+        rating: 4,
+      },
+      role: 'OWNER',
+      comment: 'Some comment aprroved group',
+      data: {
         quotes: [
           {
             id: 5,
             quote_number: 1,
             total_amount: 1000,
             status: 'NEW|APPROVED',
+            quote_request_category: {
+              id: 1,
+              name: 'Painting',
+            },
+            quote_submit_group: {
+              id: 1,
+              user: {
+                id: 5,
+                full_name: 'Brooklyn ****',
+                first_name: 'Brooklyn',
+                last_name: '****',
+                profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+                rating: 4,
+              },
+            },
             currency: {
               currency_name: 'Indian Rupee',
               currency_code: 'INR',
@@ -276,41 +395,24 @@ export const quotesPreview = [
           },
           {
             id: 6,
-            quote_number: 2,
-            total_amount: 1500,
-            status: 'NEW|APPROVED',
-            currency: {
-              currency_name: 'Indian Rupee',
-              currency_code: 'INR',
-              currency_symbol: '₹',
-            },
-            attachment: {
-              id: 356,
-              file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              link:
-                'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              mime_type: 'image/jpeg',
-              media_type: 'IMAGE',
-              media_attributes: {},
-            },
-          },
-        ],
-      },
-      {
-        id: 4,
-        user: {
-          id: 2,
-          first_name: 'Hari',
-          email: 'hari@nineleaps.com',
-        },
-        role: 'OWNER',
-        comment: 'Some comment submit group',
-        quotes: [
-          {
-            id: 7,
             quote_number: 1,
             total_amount: 1000,
             status: 'NEW|APPROVED',
+            quote_request_category: {
+              id: 1,
+              name: 'Sepage',
+            },
+            quote_submit_group: {
+              id: 1,
+              user: {
+                id: 5,
+                full_name: 'Brooklyn ****',
+                first_name: 'Brooklyn',
+                last_name: '****',
+                profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+                rating: 4,
+              },
+            },
             currency: {
               currency_name: 'Indian Rupee',
               currency_code: 'INR',
@@ -326,96 +428,53 @@ export const quotesPreview = [
               media_attributes: {},
             },
           },
+        ],
+      },
+    },
+    {
+      id: 5,
+      activity_type: {
+        id: 67,
+        order: 1,
+        label: 'Work Completed',
+        code: 'WORK_COMPLETED',
+      },
+      created_at: '2021-02-22 05:30:00',
+      updated_at: '2021-02-22 05:30:00',
+      user: {
+        id: 1,
+        full_name: 'Abhijeet Anand ****',
+        first_name: 'Abhijeet Anand',
+        last_name: '****',
+        profile_picture: 'https://homzhub-bucket.s3.amazonaws.com/assest_documents/selfie_id.jpeg',
+        rating: 4,
+      },
+      role: 'OWNER',
+      comment: 'Some comment',
+      data: {
+        attachments: [
           {
-            id: 8,
-            quote_number: 2,
-            total_amount: 1500,
-            status: 'NEW|APPROVED',
-            currency: {
-              currency_name: 'Indian Rupee',
-              currency_code: 'INR',
-              currency_symbol: '₹',
-            },
-            attachment: {
-              id: 356,
-              file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              link:
-                'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
-              mime_type: 'image/jpeg',
-              media_type: 'IMAGE',
-              media_attributes: {},
-            },
+            id: 355,
+            file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+            link:
+              'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+            mime_type: 'image/jpeg',
+            media_type: 'IMAGE',
+            media_attributes: {},
+          },
+          {
+            id: 356,
+            file_name: '71cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+            link:
+              'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/e272a216-6090-11eb-909e-0242ac11000471cf4034-8b19-461d-9e96-3c001ad53a5d.jpg',
+            mime_type: 'image/jpeg',
+            media_type: 'IMAGE',
+            media_attributes: {},
           },
         ],
       },
-    ],
-  },
-];
+    },
+  ],
+};
 
-// TODO: (Naveen) - Remove after API integration
-export const ticketList = [
-  {
-    id: 1,
-    ticket_number: 'RB1234',
-    ticket_category: {
-      id: 1,
-      name: 'Leakage',
-      parent_ticket_category: {
-        id: 1,
-        name: 'Kitchen',
-      },
-    },
-    title: 'My kitchen',
-    description: 'Foobar JohnDoe',
-    assigned_to: {
-      id: 1,
-      first_name: 'Foobar',
-      last_name: 'JohnDoe',
-      profile_link: 'https://link.com',
-    },
-    asset: {
-      id: 1,
-      project_name: '2BHK - 209, Mahindra Bloomdale, Nagpur',
-    },
-    status: 'OPEN',
-    priority: 'HIGH',
-    created_at: '2021-01-20T11:20:00Z',
-    closed_at: '2021-01-20T11:20:00Z',
-    updated_at: '2021-01-20T11:20:00Z',
-  },
-  {
-    id: 1,
-    ticket_number: 'RB1234',
-    ticket_category: {
-      id: 1,
-      name: 'Leakage',
-      parent_ticket_category: {
-        id: 1,
-        name: 'Kitchen',
-      },
-    },
-    title: 'My kitchen ceiling is leaking',
-    description: 'Foobar JohnDoe',
-    assigned_to: {
-      id: 1,
-      first_name: 'Foobar',
-      last_name: 'JohnDoe',
-      profile_link: 'https://link.com',
-    },
-    closed_by: {
-      id: 1,
-      first_name: 'Foobar',
-      last_name: 'JohnDoe',
-      profile_link: 'https://link.com',
-    },
-    asset: {
-      id: 1,
-      project_name: '2BHK - 209, Mahindra Bloomdale, Nagpur',
-    },
-    status: 'CLOSED',
-    priority: 'HIGH',
-    created_at: '2021-01-20T11:20:00Z',
-    closed_at: '2021-01-20T11:20:00Z',
-    updated_at: '2021-01-20T11:20:00Z',
-  },
-];
+export const mockTicketDetails = ObjectMapper.deserialize(Ticket, mockTicketContract);
