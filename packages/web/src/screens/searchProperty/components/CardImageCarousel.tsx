@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ViewStyle, ImageStyle } from 'react-native';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -8,6 +8,11 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { NextPrevBtn } from '@homzhub/web/src/components';
 import { HeroSectionData } from '@homzhub/common/src/constants/LandingScreen';
+
+interface IProps {
+  cardImageCarouselStyle: ViewStyle;
+  cardImageStyle: ImageStyle;
+}
 
 const defaultResponsive = {
   desktop: {
@@ -20,15 +25,15 @@ const defaultResponsive = {
   },
 };
 
-const CardImageCarousel: FC = () => {
+const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle }: IProps) => {
   // TODO Charit: Replace the images and label sources with props after integration.
   return (
-    <View style={styles.cardImageCrousel}>
+    <View style={cardImageCarouselStyle}>
       <MultiCarousel passedProps={carouselProps}>
         {HeroSectionData.map((item) => (
           <View key={item.title}>
             <Image
-              style={[styles.image]}
+              style={[styles.image, cardImageStyle]}
               source={{
                 uri: item.image,
               }}
@@ -104,18 +109,12 @@ const carouselProps: CarouselProps = {
 export default CardImageCarousel;
 
 const styles = StyleSheet.create({
-  cardImageCrousel: {
-    width: 340,
-    height: 210,
-  },
   image: {
     flex: 1,
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    width: 340,
-    height: 210,
   },
   leftRightButtons: {
     borderWidth: 0,

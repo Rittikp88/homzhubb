@@ -1,18 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import PropertiesView from '@homzhub/web/src/screens/searchProperty/components/PropertiesView';
 import { PopupProps } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
-import {
-  InvestmentMockData,
-  IInvestmentMockData,
-} from '@homzhub/web/src/screens/dashboard/components/InvestmentMockDetails';
 import MoreFilters from '@homzhub/web/src//screens/searchProperty/components/MoreFilter';
-import PropertySearchCard from '@homzhub/web/src/screens/searchProperty/components/PropertySearchCard';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 // TODO : Replace Dummy Data with Api Data;
@@ -32,6 +28,13 @@ const defaultDropDownProps = (isMobile: boolean): PopupProps => ({
   children: undefined,
 });
 const SearchProperty: FC = () => {
+  const [isListView, setIsListView] = useState(false);
+  const toggleGridView = (): void => {
+    setIsListView(false);
+  };
+  const toggleListView = (): void => {
+    setIsListView(true);
+  };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
   return (
@@ -49,47 +52,47 @@ const SearchProperty: FC = () => {
           />
         </View>
       </Popover>
-      <GridView />
-    </View>
-  );
-};
 
-const GridView = (): React.ReactElement => {
-  const investmentDataArray = InvestmentMockData;
-  const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const isTablet = useDown(deviceBreakpoint.TABLET);
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        {investmentDataArray.map((item: IInvestmentMockData) => (
-          <View key={item.id} style={[styles.card, isTablet && styles.cardTablet, isMobile && styles.cardMobile]}>
-            <PropertySearchCard key={item.id} investmentData={item} />
-          </View>
-        ))}
+      <View style={styles.sortAndToggleButtons}>
+        <View>Filters Here</View>
+        <View style={styles.toggleButtons}>
+          <Icon
+            name={icons.grid}
+            onPress={toggleGridView}
+            size={22}
+            color={isListView ? theme.colors.disabled : theme.colors.primaryColor}
+            style={styles.toggleIcons}
+          />
+          <Icon
+            name={icons.doubleBar}
+            onPress={toggleListView}
+            size={22}
+            color={!isListView ? theme.colors.disabled : theme.colors.primaryColor}
+            style={styles.toggleIcons}
+          />
+        </View>
       </View>
+
+      <PropertiesView isListView={isListView} />
     </View>
   );
 };
+
+export default SearchProperty;
 
 const styles = StyleSheet.create({
   mainContainer: {
     width: '100%',
   },
-  container: {
-    flex: 1,
-    width: '100%',
+  sortAndToggleButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  toggleButtons: {
     flexDirection: 'row',
   },
-  subContainer: {
-    width: '100%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    maxWidth: '100%',
-  },
-  card: {
-    width: '31%',
-    marginLeft: 18,
+  toggleIcons: {
+    marginHorizontal: 10,
   },
   cardMobile: {
     width: '100%',
@@ -112,5 +115,3 @@ const styles = StyleSheet.create({
     marginHorizontal: 6,
   },
 });
-
-export default SearchProperty;

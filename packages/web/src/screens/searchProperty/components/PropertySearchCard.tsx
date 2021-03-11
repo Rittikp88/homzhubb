@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle, ImageStyle } from 'react-native';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -18,10 +18,13 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 
 interface IProps {
   investmentData: any;
+  containerStyleProp?: ViewStyle;
+  cardImageCarouselStyle?: ViewStyle;
+  cardImageStyle?: ImageStyle;
 }
 
 const PropertySearchCard = (props: IProps): React.ReactElement => {
-  const { investmentData } = props;
+  const { investmentData, containerStyleProp, cardImageCarouselStyle = {}, cardImageStyle = {} } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const {
     address,
@@ -52,9 +55,9 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     { color: theme.colors.completed },
   ];
   return (
-    <View style={[styles.card, isMobile && styles.cardMobile]}>
+    <View style={[styles.card, isMobile && styles.cardMobile, containerStyleProp]}>
       <View style={styles.imageContainer}>
-        <CardImageCarousel />
+        <CardImageCarousel cardImageCarouselStyle={cardImageCarouselStyle} cardImageStyle={cardImageStyle} />
       </View>
       <View style={styles.mainBody}>
         <View style={styles.propertyRating}>

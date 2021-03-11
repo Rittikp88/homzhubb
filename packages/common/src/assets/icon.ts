@@ -147,6 +147,7 @@ export const icons = {
   dart: 'dart',
   dartBack: 'back-dart',
   doubleBar: 'double-bar',
+  grid: 'grid',
   owner: 'owner',
   agent: 'agent',
   manager: 'manager',
