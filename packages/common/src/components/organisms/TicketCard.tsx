@@ -3,7 +3,6 @@ import { StyleSheet, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -15,7 +14,7 @@ import {
   ExperienceType,
   IExperienceData,
   initialExperienceData,
-  ServiceTicketStatus,
+  TicketStatusTitle,
 } from '@homzhub/common/src/constants/ServiceTickets';
 
 interface IDataType {
@@ -42,29 +41,31 @@ const getIconColor = (type: ExperienceType): string => {
   }
 };
 
-const StatusCode = (type: string): string => {
+/* Get color for status  */
+const getStatusColor = (type: string): string => {
   switch (type) {
-    case ServiceTicketStatus.OPEN:
+    case TicketStatus.OPEN:
       return theme.colors.red;
-    case ServiceTicketStatus.PAYMENT_DONE:
-      return theme.colors.greenTint7;
-    case ServiceTicketStatus.PAYMENT_REQUESTED:
-      return theme.colors.pinkRed;
-    case ServiceTicketStatus.QUOTES_APPROVED:
-      return theme.colors.greenTint6;
-    case ServiceTicketStatus.QUOTES_REQUESTED:
+    case TicketStatus.QUOTE_REQUESTED:
       return theme.colors.blueTint5;
-    case ServiceTicketStatus.QUOTES_SUBMITTED:
+    case TicketStatus.QUOTE_SUBMITTED:
       return theme.colors.blueTint4;
-    case ServiceTicketStatus.WORK_INITIATED:
+    case TicketStatus.QUOTE_APPROVED:
+      return theme.colors.greenTint6;
+    case TicketStatus.PAYMENT_REQUESTED:
+      return theme.colors.pinkRed;
+    case TicketStatus.PAYMENT_DONE:
+      return theme.colors.greenTint7;
+    case TicketStatus.WORK_INITIATED:
       return theme.colors.blueTint3;
-    case ServiceTicketStatus.CLOSED:
+    case TicketStatus.CLOSED:
       return theme.colors.greenTint8;
     default:
       return theme.colors.darkTint3;
   }
 };
 
+/* Get color for card border  */
 const cardColor = (type: string): string => {
   switch (type) {
     case TicketPriority.HIGH:
@@ -76,6 +77,15 @@ const cardColor = (type: string): string => {
     default:
       return theme.colors.darkTint3;
   }
+};
+
+/* Get values for card keys  */
+const keyValue = (key: string, data: IDataType): string => {
+  if (key === 'helpAndSupport:status') {
+    const status = data[key] as TicketStatus;
+    return TicketStatusTitle[status];
+  }
+  return data[key];
 };
 
 const setEmojiColor = (
@@ -133,7 +143,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   const openTicket = {
     'serviceTickets:createdOn': DateUtils.convertDateFormatted(createdAt),
     'serviceTickets:updatedOn': DateUtils.convertDateFormatted(updatedAt),
-    'helpAndSupport:status': StringUtils.toTitleCase(status),
+    'helpAndSupport:status': status,
     'serviceTickets:assignedTo': 'Homzhub', // TODO: (Shikha) Remove after demo and use AssignedTo
   };
   const closedTicket = {
@@ -185,7 +195,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   };
 
   const onColorChange = (value: string): TextStyle => {
-    const color = StatusCode(value);
+    const color = getStatusColor(value);
     return { ...styles.detail, color };
   };
   // HANDLERS END
@@ -256,7 +266,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
                   {t(key)}
                 </Label>
                 <Label type="regular" textType="semiBold" style={onColorChange(dataByStatus[key])}>
-                  {dataByStatus[key]}
+                  {keyValue(key, dataByStatus)}
                 </Label>
               </View>
             ))}

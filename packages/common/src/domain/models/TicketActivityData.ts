@@ -9,7 +9,7 @@ export class TicketActivityData {
   @JsonProperty('assigned_to', User, true)
   private _assignedTo = new User();
 
-  @JsonProperty('quote_request_category', [QuoteCategory], true)
+  @JsonProperty('quote_request_categories', [QuoteCategory], true)
   private _quoteRequestCategory = [];
 
   @JsonProperty('quotes', [TicketActivityQuote], true)

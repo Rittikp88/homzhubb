@@ -308,6 +308,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
               onAddTicket={this.onAddTicket}
               navigateToDetail={this.onNavigateToDetail}
               containerStyle={styles.heightStyle}
+              propertyId={id}
             />
           </View>
         );
@@ -395,9 +396,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private onAddTicket = (): void => {
-    const { navigation } = this.props;
+    const {
+      navigation,
+      assetPayload: { asset_id },
+    } = this.props;
     // @ts-ignore
-    navigation.navigate(ScreensKeys.AddServiceTicket);
+    navigation.navigate(ScreensKeys.AddServiceTicket, { propertyId: asset_id });
   };
 
   private onNavigateToDetail = (): void => {

@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
@@ -21,20 +22,12 @@ interface ITicketDetails {
 const TicketDetailsCard = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const { ticketData, ticketImages } = props;
-  const {
-    createdAt,
-    updatedAt,
-    status,
-    assignedTo: { firstName },
-    ticketNumber,
-    priority,
-    title,
-  } = ticketData;
+  const { createdAt, updatedAt, status, ticketNumber, priority, title } = ticketData;
 
   const translatedValue = (value: string, root = 'serviceTickets'): string => t(`${root}:${value}`);
 
   const formatDetails = (): ITicketDetails[] => {
-    const formattedDetails = [
+    return [
       {
         type: translatedValue('createdOn'),
         value: DateUtils.getDisplayDate(createdAt, DateFormats.DDMM_YYYY_HH_MM),
@@ -52,7 +45,8 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
       },
       {
         type: translatedValue('assignedTo'),
-        value: firstName,
+        // TODO : (Praharsh) - Hard coded value for demo
+        value: translatedValue('homzhub', 'common'),
       },
       {
         type: translatedValue('timeElapsed'),
@@ -63,7 +57,6 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
         value: ticketNumber,
       },
     ];
-    return formattedDetails;
   };
 
   const DetailSeparator = (): React.ReactElement => <View style={styles.detailSeparator} />;
@@ -74,11 +67,11 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
     const { type, value } = item;
     return (
       <View style={styles.flexOne}>
-        <Label textType="regular" type="regular">
+        <Label textType="regular" type="small" style={styles.label}>
           {type}
         </Label>
 
-        <Label textType="semiBold" type="large">
+        <Label textType="semiBold" type="regular" style={styles.label}>
           {value}
         </Label>
       </View>
@@ -145,7 +138,11 @@ const styles = StyleSheet.create({
     marginVertical: 13,
   },
   ticketTitle: {
+    color: theme.colors.darkTint3,
     marginVertical: 5,
     marginTop: 10,
+  },
+  label: {
+    color: theme.colors.darkTint3,
   },
 });

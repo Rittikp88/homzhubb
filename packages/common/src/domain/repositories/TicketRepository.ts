@@ -6,6 +6,7 @@ import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import {
   ICompleteTicketPayload,
+  IGetTicketParam,
   IPostTicket,
   IPostTicketPayload,
   IQuoteApprovePayload,
@@ -44,9 +45,14 @@ class TicketRepository {
     return ObjectMapper.deserializeArray(TicketCategory, response);
   };
 
-  public getTickets = async (): Promise<Ticket[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.ticket);
+  public getTickets = async (param?: IGetTicketParam): Promise<Ticket[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.ticket, param);
     return ObjectMapper.deserializeArray(Ticket, response);
+  };
+
+  public getTicketDetail = async (payload: number): Promise<Ticket> => {
+    const response = await this.apiClient.get(ENDPOINTS.ticketById(payload));
+    return ObjectMapper.deserialize(Ticket, response);
   };
 
   public getQuoteRequestCategory = async (param: IQuoteParam): Promise<QuoteCategory[]> => {

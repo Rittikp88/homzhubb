@@ -16,18 +16,20 @@ import { TicketCard } from '@homzhub/common/src/components/organisms/TicketCard'
 import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IProps {
   onAddTicket: () => void;
   navigateToDetail: () => void;
   isFromMore?: boolean;
+  propertyId?: number;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IDispatchProps {
-  getTickets: () => void;
+  getTickets: (param?: IGetTicketParam) => void;
   setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
@@ -49,8 +51,15 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   public componentDidMount = (): void => {
-    const { getTickets } = this.props;
-    getTickets();
+    const { getTickets, propertyId, isFromMore } = this.props;
+    if (!isFromMore && propertyId) {
+      const param = {
+        asset_id: propertyId,
+      };
+      getTickets(param);
+    } else {
+      getTickets();
+    }
   };
 
   public render(): React.ReactNode {
@@ -165,9 +174,9 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   // HANDLERS START
-  private onTicketPress = ({ id, quoteRequestId, asset }: Ticket): void => {
+  private onTicketPress = ({ id }: Ticket): void => {
     const { navigateToDetail, setCurrentTicket } = this.props;
-    setCurrentTicket({ ticketId: id, quoteRequestId, propertyName: asset.projectName });
+    setCurrentTicket({ ticketId: id });
     navigateToDetail();
   };
 
@@ -178,7 +187,21 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   private getFormattedData = (priority: TicketPriority): Ticket[] => {
     const { selectedListType } = this.state;
     const { tickets } = this.props;
-    const formattedData = tickets.filter((item: Ticket) => item.status === selectedListType);
+    const formattedData = tickets.filter((item: Ticket): Ticket | null => {
+      switch (selectedListType) {
+        case TicketStatus.CLOSED:
+          if (item.status === selectedListType) {
+            return item;
+          }
+          return null;
+        case TicketStatus.OPEN:
+        default:
+          if (item.status !== TicketStatus.CLOSED) {
+            return item;
+          }
+          return null;
+      }
+    });
     return priority === TicketPriority.ALL
       ? formattedData
       : formattedData.filter((item: Ticket) => item.priority === priority);

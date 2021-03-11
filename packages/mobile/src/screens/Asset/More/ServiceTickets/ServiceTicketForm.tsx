@@ -14,6 +14,7 @@ import { TicketRepository } from '@homzhub/common/src/domain/repositories/Ticket
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -35,6 +36,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { IAddServiceEvent } from '@homzhub/common/src/services/Analytics/interfaces';
+import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 
 interface IFormValues {
   property: number;
@@ -63,6 +65,7 @@ interface IStateToProps {
 
 interface IDispatchToProps {
   getActiveAssets: () => void;
+  setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
 type NavigationProps = NavigationScreenProps<AppStackParamList, ScreensKeys.AddServiceTicket>;
@@ -75,11 +78,11 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   constructor(props: Props) {
     super(props);
     const { route } = this.props;
-    const propertId = (route && route.params && route.params.propertyId) || -1;
+    const propertyId = (route && route.params && route.params.propertyId) || -1;
 
     this.state = {
       serviceForm: {
-        property: propertId,
+        property: propertyId,
         title: '',
         category: '',
         subCategory: '',
@@ -170,9 +173,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                   const onMessageChange = (description: string): void => {
                     setFieldValue('issueDescription', description);
                   };
-                  const isSubmitDisabled =
-                    !FormUtils.isValuesTouched(values, ['issueDescription', 'otherCategory']) ||
-                    attachments.length <= 0;
+                  const isSubmitDisabled = !FormUtils.isValuesTouched(values, ['issueDescription', 'otherCategory']);
 
                   const subCategorySelectedValue = values.subCategory;
                   let isOtherSelected = false;
@@ -402,7 +403,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   };
 
   private handleSubmit = async (values: IFormValues, formActions: FormikHelpers<IFormValues>): Promise<void> => {
-    const { properties } = this.props;
+    const { properties, setCurrentTicket } = this.props;
     const { property, subCategory, title, issueDescription, otherCategory } = values;
     const { attachments } = this.state;
 
@@ -410,19 +411,21 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 
     this.setState({ isScreenLoading: true });
 
-    try {
-      if (attachments.length) {
-        /* Make an API call for uploading the document and extract the doc Id */
-        const formData = new FormData();
-        attachments.forEach((attachment: IDocumentSource) => {
-          // @ts-ignore
-          formData.append('files[]', attachment);
-        });
-        const response = await AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS);
-        const { data } = response;
+    if (attachments.length > 0) {
+      /* Make an API call for uploading the document and extract the doc Id */
+      const formData = new FormData();
+      attachments.forEach((attachment: IDocumentSource) => {
+        // @ts-ignore
+        formData.append('files[]', attachment);
+      });
+      const response = await AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS);
+      const { data } = response;
+      if (data.length > 0) {
         attachmentIds = data.map((i: IUploadAttachmentResponse) => i.id);
       }
+    }
 
+    try {
       formActions.setSubmitting(true);
       const otherField = otherCategory ? { others_field_description: otherCategory } : {};
 
@@ -435,8 +438,8 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         ...otherField,
       };
 
-      await TicketRepository.postTicket(payload);
-
+      const response = await TicketRepository.postTicket(payload);
+      setCurrentTicket({ ticketId: response.id });
       const selectedProperty = properties.find((asset: Asset) => asset.id === property);
       if (selectedProperty) {
         const { city, countryName, assetGroup, assetType, projectName, address } = selectedProperty;
@@ -479,7 +482,8 @@ const mapStateToProps = (state: IState): IStateToProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
   const { getActiveAssets } = AssetActions;
-  return bindActionCreators({ getActiveAssets }, dispatch);
+  const { setCurrentTicket } = TicketActions;
+  return bindActionCreators({ getActiveAssets, setCurrentTicket }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ServiceTicketForm));

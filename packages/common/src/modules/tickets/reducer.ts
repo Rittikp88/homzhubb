@@ -8,8 +8,10 @@ export const initialTicketState: ITicketState = {
   proofAttachment: [],
   currentTicket: null,
   tickets: [],
+  ticketDetail: null,
   loaders: {
     tickets: false,
+    ticketDetail: false,
   },
 };
 
@@ -53,6 +55,22 @@ export const ticketReducer = (
       return {
         ...state,
         ['currentTicket']: action.payload as ICurrentTicket,
+      };
+    case TicketActionTypes.GET.TICKET_DETAIL:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['ticketDetail']: true },
+      };
+    case TicketActionTypes.GET.TICKET_DETAIL_SUCCESS:
+      return {
+        ...state,
+        ['ticketDetail']: action.payload as ITicket,
+        ['loaders']: { ...state.loaders, ['ticketDetail']: false },
+      };
+    case TicketActionTypes.GET.TICKET_DETAIL_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['ticketDetail']: false },
       };
     default:
       return {

@@ -1,3 +1,5 @@
+import { groupBy } from 'lodash';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
@@ -11,6 +13,14 @@ import { ExperienceType } from '@homzhub/common/src/constants/ServiceTickets';
 export enum TicketStatus {
   OPEN = 'OPEN',
   CLOSED = 'CLOSED',
+  TICKET_RAISED = 'TICKET_RAISED',
+  QUOTE_REQUESTED = 'QUOTE_REQUESTED',
+  QUOTE_SUBMITTED = 'QUOTE_SUBMITTED',
+  QUOTE_APPROVED = 'QUOTE_APPROVED',
+  PAYMENT_REQUESTED = 'PAYMENT_REQUESTED',
+  WORK_INITIATED = 'WORK_INITIATED',
+  PAYMENT_DONE = 'PAYMENT_DONE',
+  WORK_COMPLETED = 'WORK_COMPLETED',
 }
 
 export enum TicketPriority {
@@ -20,6 +30,10 @@ export enum TicketPriority {
   HIGH = 'HIGH',
 }
 // ENUM
+
+interface IGroupTicket {
+  [key: string]: TicketActivity[];
+}
 
 export interface ITicket {
   id: number;
@@ -93,7 +107,7 @@ export class Ticket {
   @JsonProperty('updated_at', String, true)
   private _updatedAt = '';
 
-  @JsonProperty('ticket_attachments', [Attachment], true)
+  @JsonProperty('attachments', [Attachment], true)
   private _ticketAttachments = [] as Attachment[];
 
   @JsonProperty('lease_transaction', Number, true)
@@ -190,6 +204,23 @@ export class Ticket {
 
   get activities(): TicketActivity[] {
     return this._activities;
+  }
+
+  get groupedActivities(): IGroupTicket {
+    let data: IGroupTicket = {};
+    const groupedData = groupBy(this.activities, (result) => {
+      return DateUtils.getUtcFormattedDate(result.createdAt, DateFormats.DDMMMYYYY);
+    });
+
+    Object.keys(groupedData).forEach((date) => {
+      const newData = {
+        [date]: groupedData[date],
+      };
+
+      data = { ...data, ...newData };
+    });
+
+    return data;
   }
 
   get quoteRequestId(): number {

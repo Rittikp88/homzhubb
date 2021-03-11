@@ -21,8 +21,8 @@ export class TicketActivity {
   @JsonProperty('user', User)
   private _user = new User();
 
-  @JsonProperty('role', String)
-  private _role = '';
+  @JsonProperty('role', String, true)
+  private _role = null;
 
   @JsonProperty('comment', String)
   private _comment = '';
@@ -51,7 +51,7 @@ export class TicketActivity {
   }
 
   get role(): string {
-    return StringUtils.toTitleCase(this._role);
+    return StringUtils.toTitleCase(this._role ?? '');
   }
 
   get comment(): string {

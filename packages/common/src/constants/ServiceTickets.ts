@@ -16,12 +16,12 @@ export enum ExperienceType {
   SATISFIED = 'Satisfied',
 }
 
-export enum ServiceTicketStatus {
+export enum TicketStatusTitle {
   OPEN = 'Open',
   TICKET_RAISED = 'Ticket Raised',
-  QUOTES_REQUESTED = 'Quotes Requested',
-  QUOTES_SUBMITTED = 'Quotes Submitted',
-  QUOTES_APPROVED = 'Quotes Approved',
+  QUOTE_REQUESTED = 'Quotes Requested',
+  QUOTE_SUBMITTED = 'Quotes Submitted',
+  QUOTE_APPROVED = 'Quotes Approved',
   WORK_INITIATED = 'Work Initiated',
   PAYMENT_REQUESTED = 'Payment Requested',
   PAYMENT_DONE = 'Payment Done',

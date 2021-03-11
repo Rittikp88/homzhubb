@@ -3,8 +3,8 @@ import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { IPortfolioState } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
-import { IUserState } from '@homzhub/common/src/modules/user/interface';
 import { ITicketState } from '@homzhub/common/src/modules/tickets/interface';
+import { IUserState } from '@homzhub/common/src/modules/user/interface';
 
 export interface IFluxStandardAction<Payload = undefined, Error = string> {
   type: string;

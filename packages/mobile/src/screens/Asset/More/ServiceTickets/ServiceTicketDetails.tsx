@@ -1,15 +1,18 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
+import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
-import TicketDetailsCard from '@homzhub/common/src/components/molecules/TicketDetailsCard';
 import TicketActivityCard from '@homzhub/common/src/components/molecules/TicketActivity';
+import TicketDetailsCard from '@homzhub/common/src/components/molecules/TicketDetailsCard';
 import {
   AssetDetailsImageCarousel,
   BottomSheetListView,
@@ -17,12 +20,21 @@ import {
 } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { mockTicketContract, ticketActions, TicketActionType } from '@homzhub/common/src/constants/ServiceTickets';
+import { ticketActions, TicketActionType } from '@homzhub/common/src/constants/ServiceTickets';
 
-type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ServiceTicketDetail>;
+interface IDispatchProps {
+  getTicketDetail: (payload: number) => void;
+  setCurrentTicket: (payload: ICurrentTicket) => void;
+}
 
-type Props = NavProps & WithTranslation;
+interface IStateProps {
+  currentTicket: ICurrentTicket | null;
+  ticketDetails: Ticket | null;
+  isLoading: boolean;
+}
 
 interface IScreenState {
   activeSlide: number;
@@ -31,9 +43,12 @@ interface IScreenState {
   selectedAction: string;
 }
 
-const mockTicketDetails = ObjectMapper.deserialize(Ticket, mockTicketContract);
+type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ServiceTicketDetail>;
+type Props = NavProps & WithTranslation & IDispatchProps & IStateProps;
 
 class ServiceTicketDetails extends React.Component<Props, IScreenState> {
+  public focusListener: any;
+
   public state = {
     activeSlide: 0,
     isFullScreen: false,
@@ -41,24 +56,43 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     selectedAction: '',
   };
 
-  public render = (): React.ReactElement => {
+  public componentDidMount = (): void => {
+    const { navigation, currentTicket, getTicketDetail } = this.props;
+
+    this.focusListener = navigation.addListener('focus', () => {
+      if (currentTicket) {
+        getTicketDetail(currentTicket.ticketId);
+      }
+    });
+  };
+
+  public render = (): React.ReactElement | null => {
     const { isActionSheet, selectedAction } = this.state;
     const {
       navigation: { goBack },
       t,
+      ticketDetails,
+      isLoading,
     } = this.props;
+
+    if (!ticketDetails) return null;
+
+    const {
+      asset: { projectName },
+    } = ticketDetails;
     return (
       <>
         <UserScreen
-          // ToDo : Praharsh : Replace hard coded string
-          title="Property Name"
+          title={projectName}
           pageTitle={t('serviceTickets:ticketDetails')}
-          loading={false}
+          loading={isLoading}
           onBackPress={goBack}
           contentContainerStyle={styles.userScreen}
         >
-          {this.renderDetailsCard()}
-          {this.renderActivityCard()}
+          <View style={styles.container}>
+            {this.renderDetailsCard()}
+            {this.renderActivityCard()}
+          </View>
         </UserScreen>
         {this.renderActionButton()}
         {this.renderFullscreenCarousel()}
@@ -72,6 +106,62 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           isBottomSheetVisible={isActionSheet}
         />
       </>
+    );
+  };
+
+  private renderDetailsCard = (): React.ReactElement | null => {
+    const { ticketDetails } = this.props;
+    if (!ticketDetails) return null;
+    return <TicketDetailsCard ticketData={ticketDetails} ticketImages={this.renderCarousel(ticketDetails)} />;
+  };
+
+  private renderCarousel = (detail: Ticket): React.ReactElement => {
+    const { activeSlide, isFullScreen } = this.state;
+
+    if (!detail.ticketAttachments.length) {
+      return <ImagePlaceholder height="100%" containerStyle={styles.carousel} />;
+    }
+
+    return (
+      <>
+        {!isFullScreen && (
+          <AssetDetailsImageCarousel
+            enterFullScreen={this.enableFullScreenWithImage}
+            data={detail.ticketAttachments}
+            activeSlide={activeSlide}
+            updateSlide={this.updateSlide}
+            containerStyles={styles.carousel}
+            hasOnlyImages
+          />
+        )}
+      </>
+    );
+  };
+
+  private renderFullscreenCarousel = (): React.ReactElement | null => {
+    const { isFullScreen, activeSlide } = this.state;
+    const { ticketDetails } = this.props;
+    if (!isFullScreen || !ticketDetails) return null;
+    return (
+      <FullScreenAssetDetailsCarousel
+        onFullScreenToggle={this.enableFullScreenWithImage}
+        activeSlide={activeSlide}
+        data={ticketDetails.ticketAttachments}
+        updateSlide={this.updateSlide}
+        hasOnlyImages
+      />
+    );
+  };
+
+  private renderActivityCard = (): React.ReactElement | null => {
+    const { ticketDetails } = this.props;
+    if (!ticketDetails) return null;
+    return (
+      <TicketActivityCard
+        ticketData={ticketDetails}
+        onPressQuote={this.handleQuoteClick}
+        onPressImage={this.onFullScreenToggleCompleted}
+      />
     );
   };
 
@@ -93,62 +183,18 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     );
   };
 
-  private renderCarousel = (): React.ReactElement => {
-    const { activeSlide, isFullScreen } = this.state;
-
-    if (!mockTicketDetails.ticketAttachments.length) {
-      return <ImagePlaceholder height="100%" containerStyle={styles.placeholder} />;
-    }
-    return (
-      <>
-        {!isFullScreen && (
-          <AssetDetailsImageCarousel
-            enterFullScreen={this.enableFullScreenWithImage}
-            // To-Do (Praharsh : 08.03.2021) : Replace mock with API response
-            data={mockTicketDetails.ticketAttachments}
-            activeSlide={activeSlide}
-            updateSlide={this.updateSlide}
-            containerStyles={styles.carousel}
-            hasOnlyImages
-          />
-        )}
-      </>
-    );
-  };
-
-  private renderFullscreenCarousel = (): React.ReactElement | null => {
-    const { isFullScreen, activeSlide } = this.state;
-    if (!isFullScreen) return null;
-    return (
-      <FullScreenAssetDetailsCarousel
-        onFullScreenToggle={this.enableFullScreenWithImage}
-        activeSlide={activeSlide}
-        // To-Do (Praharsh : 08.03.2021) : Replace mock with API response
-        data={mockTicketDetails.ticketAttachments}
-        updateSlide={this.updateSlide}
-        hasOnlyImages
-      />
-    );
-  };
-
-  private renderActivityCard = (): React.ReactElement => {
-    return (
-      <TicketActivityCard
-        ticketData={mockTicketDetails}
-        onPressQuote={this.handleQuoteClick}
-        onPressImage={this.onFullScreenToggleCompleted}
-      />
-    );
-  };
-
-  private renderDetailsCard = (): React.ReactElement => {
-    return <TicketDetailsCard ticketData={mockTicketDetails} ticketImages={this.renderCarousel()} />;
-  };
-
   // HANDLERS START
 
   private onSelectAction = (value: string): void => {
-    const { navigation } = this.props;
+    const { navigation, setCurrentTicket, ticketDetails } = this.props;
+    if (!ticketDetails) return;
+    // TODO: (Shikha) Handle logic
+    setCurrentTicket({
+      ticketId: ticketDetails.id,
+      quoteRequestId: ticketDetails.quoteRequestId,
+      propertyName: ticketDetails.asset.projectName,
+    });
+
     switch (value) {
       case TicketActionType.SUBMIT_QUOTE:
         navigation.navigate(ScreensKeys.SubmitQuote);
@@ -193,11 +239,31 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   // HANDLERS END
 }
 
-export default withTranslation()(ServiceTicketDetails);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getCurrentTicket, getTicketDetail, getTicketDetailLoader } = TicketSelectors;
+  return {
+    currentTicket: getCurrentTicket(state),
+    ticketDetails: getTicketDetail(state),
+    isLoading: getTicketDetailLoader(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getTicketDetail, setCurrentTicket } = TicketActions;
+  return bindActionCreators(
+    {
+      getTicketDetail,
+      setCurrentTicket,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ServiceTicketDetails));
 
 const styles = StyleSheet.create({
-  placeholder: {
-    backgroundColor: theme.colors.darkTint5,
+  container: {
+    marginTop: 16,
   },
   carousel: {
     flex: 1,

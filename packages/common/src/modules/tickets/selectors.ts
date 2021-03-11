@@ -24,6 +24,13 @@ const getCurrentTicket = (state: IState): ICurrentTicket | null => {
   return currentTicket;
 };
 
+const getTicketDetail = (state: IState): Ticket | null => {
+  const {
+    ticket: { ticketDetail },
+  } = state;
+  return ObjectMapper.deserialize(Ticket, ticketDetail);
+};
+
 const getTicketLoader = (state: IState): boolean => {
   const {
     ticket: { loaders },
@@ -31,4 +38,18 @@ const getTicketLoader = (state: IState): boolean => {
   return loaders.tickets;
 };
 
-export const TicketSelectors = { getProofAttachment, getTickets, getCurrentTicket, getTicketLoader };
+const getTicketDetailLoader = (state: IState): boolean => {
+  const {
+    ticket: { loaders },
+  } = state;
+  return loaders.ticketDetail;
+};
+
+export const TicketSelectors = {
+  getProofAttachment,
+  getTickets,
+  getCurrentTicket,
+  getTicketDetail,
+  getTicketLoader,
+  getTicketDetailLoader,
+};

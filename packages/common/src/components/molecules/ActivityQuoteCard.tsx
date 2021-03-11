@@ -1,21 +1,22 @@
 import React from 'react';
-import { FlatList, SectionList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FlatList, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { TicketActivityQuote } from '@homzhub/common/src/domain/models/TicketActivityQuote';
 import { Quote } from '@homzhub/common/src/domain/models/Quote';
 import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import { TicketActivityQuote } from '@homzhub/common/src/domain/models/TicketActivityQuote';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   quoteData: QuoteCategory[];
-  onQuotePress: (url: string) => Promise<void>;
+  onQuotePress?: (url: string) => Promise<void>;
 }
 
 interface IQuoteDataItem {
@@ -23,6 +24,7 @@ interface IQuoteDataItem {
   title: string;
   data: Quote[];
 }
+
 interface IQuotesApproved {
   quoteData: TicketActivityQuote[];
   description: string;
@@ -37,16 +39,15 @@ interface IApprovedQuoteItem {
 }
 
 const QuotesSubmitted = (props: IProps): React.ReactElement => {
-  const { quoteData, onQuotePress } = props;
+  const { quoteData, onQuotePress = FunctionUtils.noop } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
   const formatQuotes = (): IQuoteDataItem[] => {
-    const formattedQuotes = quoteData.map((quoteDataItem) => ({
+    return quoteData.map((quoteDataItem) => ({
       id: quoteDataItem.id,
       title: quoteDataItem.name,
       data: quoteDataItem.quotes,
     }));
-    return formattedQuotes;
   };
 
   const allQuotes = formatQuotes();
@@ -117,8 +118,8 @@ const QuotesSubmitted = (props: IProps): React.ReactElement => {
 
 const QuotesApproved = (props: IQuotesApproved): React.ReactElement => {
   const { quoteData, description } = props;
-  const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
+  const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const formatApprovedQuotes = (): IApprovedQuoteItem[] => {
     const formatted = quoteData.map((quote) => {
       const {
@@ -169,9 +170,11 @@ const QuotesApproved = (props: IQuotesApproved): React.ReactElement => {
         <Label textType="semiBold" type="large" style={styles.approvedComment}>
           {t('approvedQuotes')}
         </Label>
-        <Label textType="regular" type="regular">
-          {description}
-        </Label>
+        {!!description && (
+          <Label textType="regular" type="regular">
+            {description}
+          </Label>
+        )}
       </View>
       <Divider containerStyles={styles.approvedSeparator} />
       <View style={styles.approvedContainer}>

@@ -829,4 +829,8 @@ export interface ICompleteTicketPayload {
   data: ICompleteTicketBody;
 }
 
+export interface IGetTicketParam {
+  asset_id: number;
+}
+
 // SERVICE TICKETS END
