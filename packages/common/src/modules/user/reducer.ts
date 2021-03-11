@@ -15,7 +15,6 @@ export const initialUserState: IUserState = {
   isAddPropertyFlow: false,
   userCountryCode: 0,
   assets: [],
-  activeAssets: [],
   favouriteProperties: [],
   error: {
     user: '',
@@ -24,7 +23,6 @@ export const initialUserState: IUserState = {
     user: false,
     userProfile: false,
     userPreferences: false,
-    activeAssets: false,
   },
 };
 
@@ -134,19 +132,6 @@ export const userReducer = (
       return {
         ...state,
         ['favouriteProperties']: [],
-      };
-    case UserActionTypes.GET.USER_ACTIVE_ASSETS:
-      return {
-        ...state,
-        ['activeAssets']: initialUserState.activeAssets,
-        ['loaders']: { ...state.loaders, ['activeAssets']: true },
-      };
-    case UserActionTypes.GET.USER_ACTIVE_ASSETS_SUCCESS:
-      console.log(action.payload, 'payload##');
-      return {
-        ...state,
-        ['activeAssets']: action.payload as IAsset[],
-        ['loaders']: { ...state.loaders, ['activeAssets']: false },
       };
     default:
       return state;

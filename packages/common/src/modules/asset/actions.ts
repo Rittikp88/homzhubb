@@ -24,6 +24,8 @@ export const AssetActionTypes = {
     ASSET_VISIT: `${actionTypePrefix}ASSET_VISIT`,
     ASSET_VISIT_SUCCESS: `${actionTypePrefix}ASSET_VISIT_SUCCESS`,
     ASSET_VISIT_FAILURE: `${actionTypePrefix}ASSET_VISIT_FAILURE`,
+    USER_ACTIVE_ASSETS: `${actionTypePrefix}USER_ACTIVE_ASSETS`,
+    USER_ACTIVE_ASSETS_SUCCESS: `${actionTypePrefix}USER_ACTIVE_ASSETS_SUCCESS`,
   },
   SET: {
     VISIT_IDS: `${actionTypePrefix}VISIT_IDS`,
@@ -111,7 +113,16 @@ const clearVisits = (): IFluxStandardAction => ({
   type: AssetActionTypes.CLEAR_VISITS,
 });
 
-export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[] | Tabs;
+const getActiveAssets = (): IFluxStandardAction => ({
+  type: AssetActionTypes.GET.USER_ACTIVE_ASSETS,
+});
+
+const getActiveAssetsSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]> => ({
+  type: AssetActionTypes.GET.USER_ACTIVE_ASSETS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[] | Tabs | IAsset[];
 
 export const AssetActions = {
   clearAsset,
@@ -130,4 +141,6 @@ export const AssetActions = {
   setVisitIds,
   setVisitType,
   clearVisits,
+  getActiveAssets,
+  getActiveAssetsSuccess,
 };

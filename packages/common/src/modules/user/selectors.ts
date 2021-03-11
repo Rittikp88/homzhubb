@@ -143,26 +143,6 @@ const getUserAssets = (state: IState): Asset[] => {
   return ObjectMapper.deserializeArray(Asset, assets);
 };
 
-const getUserActiveAssets = (state: IState): Asset[] => {
-  const {
-    user: { activeAssets },
-  } = state;
-
-  if (activeAssets.length <= 0) return [];
-
-  return ObjectMapper.deserializeArray(Asset, activeAssets);
-};
-
-const isActiveAssetsLoading = (state: IState): boolean => {
-  const {
-    user: {
-      loaders: { activeAssets },
-    },
-  } = state;
-
-  return activeAssets;
-};
-
 const getFavouritePropertyIds = (state: IState): Wishlist[] => {
   const {
     user: { favouriteProperties },
@@ -215,6 +195,4 @@ export const UserSelector = {
   getFavouritePropertyIds,
   getFavouriteProperties,
   getReferralCode,
-  getUserActiveAssets,
-  isActiveAssetsLoading,
 };

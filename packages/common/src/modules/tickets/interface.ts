@@ -11,6 +11,6 @@ export interface ITicketState {
 
 export interface ICurrentTicket {
   ticketId: number;
-  quoteRequestId: number;
+  quoteRequestId?: number;
   propertyName?: string;
 }

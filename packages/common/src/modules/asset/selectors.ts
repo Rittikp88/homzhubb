@@ -152,6 +152,26 @@ const getVisitLoadingState = (state: IState): boolean => {
   return visits;
 };
 
+const getUserActiveAssets = (state: IState): Asset[] => {
+  const {
+    asset: { activeAssets },
+  } = state;
+
+  if (activeAssets.length <= 0) return [];
+
+  return ObjectMapper.deserializeArray(Asset, activeAssets);
+};
+
+const isActiveAssetsLoading = (state: IState): boolean => {
+  const {
+    asset: {
+      loaders: { activeAssets },
+    },
+  } = state;
+
+  return activeAssets;
+};
+
 export const AssetSelectors = {
   getAssetReviews,
   getAsset,
@@ -163,4 +183,6 @@ export const AssetSelectors = {
   getVisitById,
   getVisitIds,
   getVisitLoadingState,
+  getUserActiveAssets,
+  isActiveAssetsLoading,
 };

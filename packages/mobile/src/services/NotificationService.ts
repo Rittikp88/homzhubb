@@ -6,6 +6,7 @@ import { NavigationService } from '@homzhub/mobile/src/services/NavigationServic
 import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { NotificationTypes } from '@homzhub/mobile/src/services/constants';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -13,7 +14,7 @@ import { IDeviceTokenPayload } from '@homzhub/common/src/domain/repositories/int
 
 const notificationScreenMap = {
   [NotificationTypes.Chat]: ScreensKeys.ChatScreen,
-  [NotificationTypes.AddedServiceTicket]: ScreensKeys.AddServiceTicket,
+  [NotificationTypes.ServiceTicket]: ScreensKeys.ServiceTicketDetail,
 };
 
 interface INotificationData {
@@ -48,13 +49,14 @@ class NotificationService {
           data,
         } = remoteMessage;
         const JSONDeeplinkData: INotificationData = JSON.parse(deeplink_metadata);
-        const { message_group_id, message_group_name, type } = JSONDeeplinkData;
+        const { type } = JSONDeeplinkData;
 
         const store = StoreProviderService.getStore();
 
         switch (type) {
           case NotificationTypes.Chat:
             {
+              const { message_group_id, message_group_name } = JSONDeeplinkData;
               const { navigation } = NavigationService;
               const currentRoute = navigation.getCurrentRoute();
               const { name, params } = currentRoute;
@@ -85,6 +87,23 @@ class NotificationService {
                   duration: 5000,
                 });
               }
+            }
+            break;
+          case NotificationTypes.ServiceTicket:
+            {
+              const { object_id } = JSONDeeplinkData;
+              store.dispatch(
+                TicketActions.setCurrentTicket({
+                  ticketId: Number(object_id),
+                })
+              );
+
+              AlertHelper.success({
+                message,
+                onPress: () => this.redirectOnNotification(data),
+                description: title,
+                duration: 5000,
+              });
             }
             break;
           default:
@@ -163,7 +182,7 @@ class NotificationService {
     const JSONDeeplinkData: INotificationData = JSON.parse(deeplink_metadata);
     const { type } = JSONDeeplinkData;
 
-    const navigationTab = ScreensKeys.More;
+    let navigationTab = ScreensKeys.More;
     const params = {};
     const screeName = notificationScreenMap[type as NotificationTypes] || ScreensKeys.ChatScreen;
 
@@ -183,8 +202,9 @@ class NotificationService {
           NavigationService.notificationNavigation(screeName, params, navigationTab);
         }
         break;
-      case NotificationTypes.AddedServiceTicket:
-        NavigationService.notificationNavigation(screeName);
+      case NotificationTypes.ServiceTicket:
+        navigationTab = ScreensKeys.More;
+        NavigationService.notificationNavigation(screeName, params, navigationTab);
         break;
       default:
         NavigationService.notificationNavigation(screeName, params, navigationTab);

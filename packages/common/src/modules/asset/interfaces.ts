@@ -12,6 +12,7 @@ export interface IAssetState {
   visits: IAssetVisit[];
   visitIds: number[];
   visitType: Tabs;
+  activeAssets: IAsset[];
   error: {
     asset: string;
     reviews: string;
@@ -23,6 +24,7 @@ export interface IAssetState {
     reviews: boolean;
     documents: boolean;
     visits: boolean;
+    activeAssets: boolean;
   };
 }
 

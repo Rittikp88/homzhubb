@@ -13,8 +13,8 @@ import { NavigationService } from '@homzhub/mobile/src/services/NavigationServic
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -290,7 +290,21 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       <EmptyState
         title={t('serviceTickets:noPropertyAdded')}
         containerStyle={styles.emptyState}
-        buttonProps={{ title: t('property:addProperty'), type: 'secondary' }}
+        buttonProps={{
+          title: t('property:addProperty'),
+          type: 'secondary',
+          onPress: (): void => {
+            NavigationService.navigation.navigate(ScreensKeys.BottomTabs, {
+              screen: ScreensKeys.Search,
+              params: {
+                screen: ScreensKeys.PropertyPostStack,
+                params: {
+                  screen: ScreensKeys.AssetLocationSearch,
+                },
+              },
+            });
+          },
+        }}
       />
     );
   };
@@ -458,13 +472,13 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 }
 const mapStateToProps = (state: IState): IStateToProps => {
   return {
-    properties: UserSelector.getUserActiveAssets(state),
-    isActiveAssetsLoading: UserSelector.isActiveAssetsLoading(state),
+    properties: AssetSelectors.getUserActiveAssets(state),
+    isActiveAssetsLoading: AssetSelectors.isActiveAssetsLoading(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
-  const { getActiveAssets } = UserActions;
+  const { getActiveAssets } = AssetActions;
   return bindActionCreators({ getActiveAssets }, dispatch);
 };
 

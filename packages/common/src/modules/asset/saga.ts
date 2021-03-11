@@ -84,9 +84,20 @@ function* getAssetVisit(action: IFluxStandardAction<IAssetVisitPayload>) {
   }
 }
 
+export function* getUserActiveAssets() {
+  try {
+    const response = yield call(AssetRepository.getActiveAssets);
+    yield put(AssetActions.getActiveAssetsSuccess(response));
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+  }
+}
+
 export function* watchAsset() {
   yield takeEvery(AssetActionTypes.GET.ASSET, getAssetDetails);
   yield takeEvery(AssetActionTypes.GET.REVIEWS, getAssetReviews);
   yield takeEvery(AssetActionTypes.GET.ASSET_DOCUMENT, getAssetDocuments);
   yield takeLatest(AssetActionTypes.GET.ASSET_VISIT, getAssetVisit);
+  yield takeEvery(AssetActionTypes.GET.USER_ACTIVE_ASSETS, getUserActiveAssets);
 }
