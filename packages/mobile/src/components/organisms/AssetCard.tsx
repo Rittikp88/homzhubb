@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { Image, StyleProp, StyleSheet, ScrollView, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -206,17 +206,19 @@ export class AssetCard extends Component<Props, IState> {
         headerTitle={t('common:editInvite')}
         onCloseSheet={this.onCloseBottomSheet}
       >
-        <EditTenantDetails
-          onHandleActionProp={this.onPressAction}
-          numberOfTenants={listOfTenant}
-          details={leaseTenantInfo.user}
-          assetId={id}
-          isActive={isActive}
-          endDate={leaseTransaction?.leaseEndDate ?? ''}
-          leaseTransaction={leaseTransaction.id}
-          leaseTenantId={leaseTenantInfo.leaseTenantId}
-          onCloseSheet={this.onCloseBottomSheet}
-        />
+        <ScrollView>
+          <EditTenantDetails
+            onHandleActionProp={this.onPressAction}
+            numberOfTenants={listOfTenant}
+            details={leaseTenantInfo.user}
+            assetId={id}
+            isActive={isActive}
+            endDate={leaseTransaction?.leaseEndDate ?? ''}
+            leaseTransaction={leaseTransaction.id}
+            leaseTenantId={leaseTenantInfo.leaseTenantId}
+            onCloseSheet={this.onCloseBottomSheet}
+          />
+        </ScrollView>
       </BottomSheet>
     );
   };
@@ -224,7 +226,6 @@ export class AssetCard extends Component<Props, IState> {
   private renderExpandedView = (): React.ReactNode => {
     const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
     if (!assetData || !assetData.assetStatusInfo) return null;
-
     const {
       assetStatusInfo: {
         action,
@@ -243,7 +244,7 @@ export class AssetCard extends Component<Props, IState> {
     const isListed = leaseListingId || saleListingId;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
-
+    const showRightIcon = !isFromTenancies && !isInviteAccepted;
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
 
     return (
@@ -252,7 +253,7 @@ export class AssetCard extends Component<Props, IState> {
           <>
             <Divider containerStyles={styles.divider} />
             <Avatar
-              isRightIcon={!isInviteAccepted}
+              isRightIcon={showRightIcon}
               onPressRightIcon={this.onToggleBottomSheet}
               icon={userInfo.icon}
               fullName={userInfo.name}
