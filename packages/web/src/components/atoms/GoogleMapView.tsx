@@ -16,11 +16,12 @@ const centerDefault = {
 interface IProps {
   center?: ILatLng;
   onMapLoadCallBack?: (map: google.maps.Map) => void;
-  children?: React.ReactNode;
+  children?: React.ReactNode | React.ReactNodeArray;
+  zoom?: number;
 }
 
 const GoogleMapView: FC<IProps> = (props: IProps) => {
-  const { center, onMapLoadCallBack, children } = props;
+  const { center, onMapLoadCallBack, children, zoom } = props;
   const onLoad = useCallback((mapInstance: google.maps.Map) => {
     if (onMapLoadCallBack) {
       onMapLoadCallBack(mapInstance);
@@ -33,7 +34,7 @@ const GoogleMapView: FC<IProps> = (props: IProps) => {
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center || centerDefault}
-        zoom={10}
+        zoom={zoom || 10}
         onLoad={onLoad}
         onUnmount={onUnmount}
       >

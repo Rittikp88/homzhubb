@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, ViewStyle, ImageStyle } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import PropertySearchCard from '@homzhub/web/src/screens/searchProperty/components/PropertySearchCard';
-import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import SearchMapView from '@homzhub/web/src/screens/searchProperty/components/SearchMapView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
@@ -16,7 +17,7 @@ const PropertiesView: FC<IProps> = ({ isListView, property }: IProps) => {
 
   return (
     <View style={styles.listViewContainer}>
-      {isListView && isDesktop && <View style={{ width: '45%' }} />}
+      {isListView && isDesktop && <SearchMapView />}
       <View style={isListView ? styles.containerList : styles.containerGrid}>
         <View style={styles.subContainerGrid}>
           {property.results.map((item: Asset) => (
@@ -39,22 +40,6 @@ const PropertiesView: FC<IProps> = ({ isListView, property }: IProps) => {
 };
 
 export default PropertiesView;
-
-interface IFormStyles {
-  listViewContainer: ViewStyle;
-  containerList: ViewStyle;
-  containerGrid: ViewStyle;
-  subContainerList: ViewStyle;
-  subContainerGrid: ViewStyle;
-  cardList: ViewStyle;
-  cardGrid: ViewStyle;
-  cardImageCarouselStyleList: ViewStyle;
-  cardImageStyleList: ImageStyle;
-  cardImageStyleGrid: ImageStyle;
-  cardImageCarouselStyleGrid: ViewStyle;
-  listView: ViewStyle;
-  gridView: ViewStyle;
-}
 
 const styles = StyleSheet.create({
   listViewContainer: {

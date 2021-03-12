@@ -169,6 +169,7 @@ export const icons = {
   happyFace: 'happy-face',
   attachDoc: 'attach-doc',
   addImage: 'add-image',
+  selectionMarker: 'selectedMarker',
 
   // COMMUTE
   train: 'train',

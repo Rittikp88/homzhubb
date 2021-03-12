@@ -563,7 +563,9 @@
     "tokenAmount": "Token amount: {{amount}}",
     "orValue": "or{{value}}",
     "takeSelfie": "Take a selfie",
-    "captureWeb": "Capture selfie"
+    "captureWeb": "Capture selfie",
+    "sqft": "sq. ft",
+    "mo": "mo"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
