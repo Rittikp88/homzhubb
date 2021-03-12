@@ -66,10 +66,17 @@ const getTicketDetailSuccess = (payload: Ticket): IFluxStandardAction<ITicket> =
 });
 
 const getTicketDetailFailure = (): IFluxStandardAction => ({
-  type: TicketActionTypes.GET.TICKET_DETAIL_SUCCESS,
+  type: TicketActionTypes.GET.TICKET_DETAIL_FAILURE,
 });
 
-export type TicketActionPayloadTypes = string[] | string | ITicket[] | ICurrentTicket | ITicket | IGetTicketParam;
+export type TicketActionPayloadTypes =
+  | string[]
+  | string
+  | number
+  | ITicket[]
+  | ICurrentTicket
+  | ITicket
+  | IGetTicketParam;
 
 export const TicketActions = {
   setAttachment,

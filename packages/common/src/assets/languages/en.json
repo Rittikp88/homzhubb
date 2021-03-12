@@ -228,7 +228,8 @@
     "closed": "Closed",
     "chooseAction": "Choose your Action",
     "uploadWarning": "You can upload a maximum of 10 images",
-    "addPhoto": "Add Photos"
+    "addPhoto": "Add Photos",
+    "detail": "Detail"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1024,6 +1025,7 @@
     "noPropertyAdded": "You haven't added any property yet. Start adding properties to generate ticket.",
     "quoteApproved": "Quote approved successfully",
     "ticketComplete": "Successfully Ticket Completed",
-    "noQuoteFound": "No quote found"
+    "noQuoteFound": "No quote found",
+    "noDetail": "There is no detail for selected ticket"
   }
 }

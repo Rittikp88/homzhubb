@@ -2,13 +2,14 @@ import React, { ReactElement, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { cloneDeep } from 'lodash';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import DocumentPicker from 'react-native-document-picker';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -25,6 +26,7 @@ import { IInitialQuote, initialQuotes } from '@homzhub/common/src/constants/Serv
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const SubmitQuote = (): ReactElement => {
+  const dispatch = useDispatch();
   const [quotes, setQuotes] = useState<IInitialQuote[]>([]);
   const [comment, setComment] = useState('');
   const [quoteCategoryId, setQuoteCategoryId] = useState(0);
@@ -77,6 +79,7 @@ const SubmitQuote = (): ReactElement => {
           setQuotes(initialQuotes);
           setPayload([]);
           setLoader(false);
+          dispatch(TicketActions.getTickets());
         })
         .catch((e) => {
           setLoader(false);

@@ -168,9 +168,17 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   private handleServiceTickets = (): void => {
-    const { navigation, t } = this.props;
+    const { navigation } = this.props;
 
-    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('tickets'), tabHeader: t('dashboard') });
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs, {
+      screen: ScreensKeys.More,
+      params: {
+        screen: ScreensKeys.ServiceTicketScreen,
+        initial: false,
+        params: { isFromDashboard: true },
+      },
+    });
   };
 
   private handleNotification = (): void => {

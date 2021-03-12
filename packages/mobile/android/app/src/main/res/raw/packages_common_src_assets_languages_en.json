@@ -994,6 +994,7 @@
     "awaitingOwner2Action": "Awaiting for owner 2's action",
     "quotesRequested": "Quotes Requested",
     "quotesSubmitted": "Quotes Submitted",
+    "awaitingQuotes": "Awaiting for quotes",
     "awaitingApprovalAndPayment": "Awaiting for quotes approval and payment",
     "approvedQuotes": "Approved Quotes",
     "approvedQuotesDescription": "Approved Quotes Description",
@@ -1016,10 +1017,10 @@
     "quoteCategory": "{{title}} Quotes",
     "noTickets": "No Tickets Found",
     "tickets": "tickets",
-    "quoteSubmission": "Successfully Quote Submitted",
+    "quoteSubmission": "Quote submitted successfully",
     "otherCategoryError": "Please enter other category.",
     "noPropertyAdded": "You haven't added any property yet. Start adding properties to generate ticket.",
-    "quoteApproved": "Successfully Quote Approved",
+    "quoteApproved": "Quote approved successfully",
     "ticketComplete": "Successfully Ticket Completed",
     "noQuoteFound": "No quote found"
   }

@@ -179,9 +179,10 @@ export default withTranslation(LocaleConstants.namespacesKey.serviceTickets)(Tic
 const styles = StyleSheet.create({
   activityView: {
     backgroundColor: theme.colors.background,
+    padding: 10,
   },
   activity: {
-    marginTop: 20,
+    marginTop: 10,
   },
   activityBadgeContainer: {
     marginBottom: 16,

@@ -18,11 +18,11 @@ export class Comment {
   @JsonProperty('modified_at', String)
   private _modifiedAt = '';
 
-  @JsonProperty('can_edit', String)
-  private _canEdit = '';
+  @JsonProperty('can_edit', Boolean)
+  private _canEdit = false;
 
-  @JsonProperty('can_delete', String)
-  private _canDelete = '';
+  @JsonProperty('can_delete', Boolean)
+  private _canDelete = false;
 
   get id(): number {
     return this._id;
@@ -44,11 +44,11 @@ export class Comment {
     return this._modifiedAt;
   }
 
-  get canEdit(): string {
+  get canEdit(): boolean {
     return this._canEdit;
   }
 
-  get canDelete(): string {
+  get canDelete(): boolean {
     return this._canDelete;
   }
 }

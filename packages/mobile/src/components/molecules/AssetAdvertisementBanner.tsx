@@ -62,7 +62,7 @@ export class AssetAdvertisementBanner extends React.PureComponent<{}, IAssetAdve
   };
 
   public fetchAdvertisementBanners = async (): Promise<void> => {
-    const response: AssetAdvertisement = await DashboardRepository.getAdvertisements();
+    const response: AssetAdvertisement = await DashboardRepository.getAdvertisements({ category: 'general' });
     this.setState({ banners: response });
   };
 }

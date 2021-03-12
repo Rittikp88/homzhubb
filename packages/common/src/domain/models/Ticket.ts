@@ -3,6 +3,7 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { TicketActivity } from '@homzhub/common/src/domain/models/TicketActivity';
 import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -121,6 +122,9 @@ export class Ticket {
 
   @JsonProperty('review', Pillar, true)
   private _review = new Pillar();
+
+  @JsonProperty('actions', TicketAction, true)
+  private _actions = new TicketAction();
 
   get id(): number {
     return this._id;
@@ -247,5 +251,9 @@ export class Ticket {
       }
     }
     return '';
+  }
+
+  get actions(): TicketAction {
+    return this._actions;
   }
 }

@@ -30,20 +30,16 @@ export const ticketReducer = (
         ...state,
         ['proofAttachment']: ReducerUtils.removeAttachment(action.payload as string, state.proofAttachment),
       };
-    case TicketActionTypes.CLEAR_STATE:
-      return {
-        ...state,
-        proofAttachment: initialTicketState.proofAttachment,
-      };
     case TicketActionTypes.GET.TICKETS:
       return {
         ...state,
+        ['tickets']: [],
         ['loaders']: { ...state.loaders, ['tickets']: true },
       };
     case TicketActionTypes.GET.TICKETS_SUCCESS:
       return {
         ...state,
-        ['tickets']: action.payload as ITicket[],
+        ['tickets']: [...(action.payload as ITicket[])],
         ['loaders']: { ...state.loaders, ['tickets']: false },
       };
     case TicketActionTypes.GET.TICKETS_FAILURE:
@@ -59,6 +55,8 @@ export const ticketReducer = (
     case TicketActionTypes.GET.TICKET_DETAIL:
       return {
         ...state,
+        ['ticketDetail']: initialTicketState.ticketDetail,
+        ['currentTicket']: initialTicketState.currentTicket,
         ['loaders']: { ...state.loaders, ['ticketDetail']: true },
       };
     case TicketActionTypes.GET.TICKET_DETAIL_SUCCESS:
@@ -71,6 +69,11 @@ export const ticketReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['ticketDetail']: false },
+      };
+    case TicketActionTypes.CLEAR_STATE:
+      return {
+        ...state,
+        proofAttachment: initialTicketState.proofAttachment,
       };
     default:
       return {

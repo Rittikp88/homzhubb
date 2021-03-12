@@ -24,6 +24,7 @@ import {
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.UpdateLeaseScreen>;
 type Props = libraryProps;
@@ -36,7 +37,7 @@ const UpdateLeaseTerm = (props: Props): React.ReactElement => {
     },
   } = props;
 
-  const { t } = useTranslation();
+  const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const [leaseData, setLeaseData] = useState<TransactionDetail>();
 
   useEffect(() => {

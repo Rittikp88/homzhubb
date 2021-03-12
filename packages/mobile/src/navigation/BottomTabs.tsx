@@ -121,7 +121,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.Messages]: undefined;
   [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam;
-  [ScreensKeys.ServiceTicketScreen]: undefined;
+  [ScreensKeys.ServiceTicketScreen]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.ServiceTicketDetail]: undefined;
   [ScreensKeys.AddServiceTicket]: undefined;
   [ScreensKeys.SubmitQuote]: undefined;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { PickerItemProps, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -10,6 +10,7 @@ import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import TicketActivityCard from '@homzhub/common/src/components/molecules/TicketActivity';
 import TicketDetailsCard from '@homzhub/common/src/components/molecules/TicketDetailsCard';
@@ -19,15 +20,21 @@ import {
   FullScreenAssetDetailsCarousel,
 } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { Ticket, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
+import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { ticketActions, TicketActionType } from '@homzhub/common/src/constants/ServiceTickets';
+import { TakeActionTitle } from '@homzhub/common/src/constants/ServiceTickets';
+
+interface ITicketAction {
+  title: string;
+  onPress: () => void;
+  isDisabled: boolean;
+}
 
 interface IDispatchProps {
   getTicketDetail: (payload: number) => void;
-  setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
 interface IStateProps {
@@ -66,7 +73,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     });
   };
 
-  public render = (): React.ReactElement | null => {
+  public render = (): React.ReactNode => {
     const { isActionSheet, selectedAction } = this.state;
     const {
       navigation: { goBack },
@@ -75,21 +82,19 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       isLoading,
     } = this.props;
 
-    if (!ticketDetails) return null;
-
-    const {
-      asset: { projectName },
-    } = ticketDetails;
+    const actionList = this.getActionList();
+    const title = ticketDetails ? ticketDetails.asset.projectName : t('common:detail');
     return (
       <>
         <UserScreen
-          title={projectName}
+          title={title}
           pageTitle={t('serviceTickets:ticketDetails')}
           loading={isLoading}
           onBackPress={goBack}
           contentContainerStyle={styles.userScreen}
         >
           <View style={styles.container}>
+            {!ticketDetails && <EmptyState isIconRequired={false} title={t('serviceTickets:noDetail')} />}
             {this.renderDetailsCard()}
             {this.renderActivityCard()}
           </View>
@@ -99,7 +104,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         <BottomSheetListView
           selectedValue={selectedAction}
           listHeight={350}
-          data={ticketActions}
+          data={actionList}
           listTitle={t('chooseAction')}
           onSelectItem={this.onSelectAction}
           onCloseDropDown={(): void => this.handleActionSheet(false)}
@@ -165,12 +170,15 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     );
   };
 
-  private renderActionButton = (): React.ReactElement => {
-    const { t } = this.props;
-    // TODO: (Shikha) -Add take action button title logic
+  private renderActionButton = (): React.ReactElement | null => {
+    const { ticketDetails } = this.props;
+    if (!ticketDetails) return null;
+    const buttonData = this.getActionData(ticketDetails.status, ticketDetails.actions);
+
+    if (!buttonData) return null;
     return (
       <View style={styles.buttonContainer}>
-        <Button type="primary" title={t('assetDashboard:takeActions')} />
+        <Button type="primary" title={buttonData.title} disabled={buttonData.isDisabled} onPress={buttonData.onPress} />
         <Button
           type="primary"
           icon={icons.downArrow}
@@ -186,23 +194,16 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   // HANDLERS START
 
   private onSelectAction = (value: string): void => {
-    const { navigation, setCurrentTicket, ticketDetails } = this.props;
-    if (!ticketDetails) return;
-    // TODO: (Shikha) Handle logic
-    setCurrentTicket({
-      ticketId: ticketDetails.id,
-      quoteRequestId: ticketDetails.quoteRequestId,
-      propertyName: ticketDetails.asset.projectName,
-    });
+    const { navigation } = this.props;
 
     switch (value) {
-      case TicketActionType.SUBMIT_QUOTE:
+      case TakeActionTitle.SUBMIT_QUOTE:
         navigation.navigate(ScreensKeys.SubmitQuote);
         break;
-      case TicketActionType.APPROVE_QUOTE:
+      case TakeActionTitle.APPROVE_QUOTE:
         navigation.navigate(ScreensKeys.ApproveQuote);
         break;
-      case TicketActionType.WORK_COMPLETED:
+      case TakeActionTitle.WORK_COMPLETED:
       default:
         navigation.navigate(ScreensKeys.WorkCompleted);
         break;
@@ -236,6 +237,57 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     await LinkingService.canOpenURL(url);
   };
 
+  /* Take action button logic */
+  private getActionData = (status: string, actions: TicketAction): ITicketAction | null => {
+    const { navigation } = this.props;
+    const { canApproveQuote, canCloseTicket, canSubmitQuote } = actions;
+    switch (status) {
+      case TicketStatus.QUOTE_REQUESTED:
+        return {
+          title: TakeActionTitle.SUBMIT_QUOTE,
+          onPress: (): void => navigation.navigate(ScreensKeys.SubmitQuote),
+          isDisabled: !canSubmitQuote,
+        };
+      case TicketStatus.QUOTE_SUBMITTED:
+        return {
+          title: TakeActionTitle.APPROVE_QUOTE,
+          onPress: (): void => navigation.navigate(ScreensKeys.ApproveQuote),
+          isDisabled: !canApproveQuote,
+        };
+      case TicketStatus.QUOTE_APPROVED:
+        return {
+          title: TakeActionTitle.WORK_COMPLETED,
+          onPress: (): void => navigation.navigate(ScreensKeys.WorkCompleted),
+          isDisabled: !canCloseTicket,
+        };
+      case TicketStatus.WORK_COMPLETED:
+      default:
+        return null;
+    }
+  };
+
+  /* Take action dropdown data logic */
+  private getActionList = (): PickerItemProps[] => {
+    const { ticketDetails } = this.props;
+    if (!ticketDetails) return [];
+    const { canCloseTicket, canApproveQuote, canSubmitQuote } = ticketDetails.actions;
+    const { SUBMIT_QUOTE, WORK_COMPLETED, APPROVE_QUOTE } = TakeActionTitle;
+
+    const list: PickerItemProps[] = [];
+
+    if (canSubmitQuote) {
+      list.push({ label: SUBMIT_QUOTE, value: SUBMIT_QUOTE });
+    }
+    if (canApproveQuote) {
+      list.push({ label: APPROVE_QUOTE, value: APPROVE_QUOTE });
+    }
+    if (canCloseTicket) {
+      list.push({ label: WORK_COMPLETED, value: WORK_COMPLETED });
+    }
+
+    return list;
+  };
+
   // HANDLERS END
 }
 
@@ -249,11 +301,10 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTicketDetail, setCurrentTicket } = TicketActions;
+  const { getTicketDetail } = TicketActions;
   return bindActionCreators(
     {
       getTicketDetail,
-      setCurrentTicket,
     },
     dispatch
   );

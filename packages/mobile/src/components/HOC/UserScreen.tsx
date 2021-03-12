@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
   },
   pageTitle: {
     color: theme.colors.darkTint1,
+    flex: 1,
   },
   backIconStyle: {
     marginEnd: 16,

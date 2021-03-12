@@ -4,12 +4,6 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 // ENUM START
-export enum TicketActionType {
-  SUBMIT_QUOTE = 'QUOTES_READY',
-  APPROVE_QUOTE = 'QUOTES_APPROVED',
-  WORK_COMPLETED = 'CLOSED',
-}
-
 export enum ExperienceType {
   UNSATISFIED = 'Unsatisfied',
   NEUTRAL = 'Neutral',
@@ -27,6 +21,12 @@ export enum TicketStatusTitle {
   PAYMENT_DONE = 'Payment Done',
   WORK_COMPLETED = 'Work Completed',
   CLOSED = 'Closed',
+}
+
+export enum TakeActionTitle {
+  SUBMIT_QUOTE = 'Submit Quotes',
+  APPROVE_QUOTE = 'Approve Quotes',
+  WORK_COMPLETED = 'Work Completed',
 }
 
 // ENUM END
@@ -100,12 +100,6 @@ export const initialExperienceData: IExperienceData[] = [
     color: theme.colors.darkTint9,
     rating: 5,
   },
-];
-
-export const ticketActions = [
-  { label: 'Submit Quote', value: TicketActionType.SUBMIT_QUOTE },
-  { label: 'Approve Quote', value: TicketActionType.APPROVE_QUOTE },
-  { label: 'Work Completed', value: TicketActionType.WORK_COMPLETED },
 ];
 
 export const sampleDetails = [

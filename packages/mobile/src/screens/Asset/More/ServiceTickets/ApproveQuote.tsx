@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -22,6 +23,7 @@ import { IQuoteApprovePayload } from '@homzhub/common/src/domain/repositories/in
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const ApproveQuote = (): React.ReactElement => {
+  const dispatch = useDispatch();
   const [isLoading, setLoader] = useState(false);
   const [comment, setComment] = useState('');
   const [quotes, setQuotes] = useState<QuoteRequest>();
@@ -64,6 +66,7 @@ const ApproveQuote = (): React.ReactElement => {
       TicketRepository.quoteApprove(payload)
         .then(() => {
           AlertHelper.success({ message: t('quoteApproved') });
+          dispatch(TicketActions.getTickets());
           navigate(ScreensKeys.ServiceTicketDetail);
         })
         .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));

@@ -9,6 +9,8 @@ import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/Bott
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
@@ -19,15 +21,16 @@ import {
   Notifications as NotificationModel,
 } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { NotificationType } from '@homzhub/common/src/domain/models/DeeplinkMetaData';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IDispatchProps {
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setFilter: (payload: IFilter) => void;
+  setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
@@ -108,7 +111,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
   public onNotificationClicked = async (data: NotificationModel): Promise<void> => {
     const { notifications } = this.state;
-    const { navigation, setFilter } = this.props;
+    const { navigation, setFilter, setCurrentTicket } = this.props;
     const {
       id,
       deeplinkMetadata: { objectId, type, assetId, leaseListingId, saleListingId },
@@ -133,6 +136,16 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
         params: {
           propertyTermId: leaseListingId > 0 ? leaseListingId : saleListingId,
           propertyId: assetId,
+        },
+      });
+    } else if (type === NotificationType.SERVICE_TICKET) {
+      setCurrentTicket({ ticketId: objectId });
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.More,
+        params: {
+          screen: ScreensKeys.ServiceTicketDetail,
+          initial: false,
         },
       });
     }
@@ -191,7 +204,8 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentAsset } = PortfolioActions;
   const { setFilter } = SearchActions;
-  return bindActionCreators({ setCurrentAsset, setFilter }, dispatch);
+  const { setCurrentTicket } = TicketActions;
+  return bindActionCreators({ setCurrentAsset, setFilter, setCurrentTicket }, dispatch);
 };
 
 export default connect(
