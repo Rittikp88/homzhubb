@@ -448,7 +448,6 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
     const { setFilter, filters, t, isTablet, isMobile, isIpadPro } = this.props;
     const { isPropertyAmenitiesToggled } = this.state;
     const toggleAmenities = (): void => this.setState({ isPropertyAmenitiesToggled: !isPropertyAmenitiesToggled });
-    console.log(filters.miscellaneous);
     const onSelectedAmenities = (value: number | string): void => {
       const existingAmenity: number[] = propertyAmenity;
       if (existingAmenity.includes(value as number)) {

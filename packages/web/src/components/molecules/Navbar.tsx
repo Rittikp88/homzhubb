@@ -16,8 +16,8 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { StickyHeader } from '@homzhub/web/src/components/hoc/StickyHeader';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
+import GoogleSearchBar from '@homzhub/web/src/components/molecules/GoogleSearchBar';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
@@ -33,6 +33,7 @@ interface INavItem {
 interface IDispatchProps {
   logout: (payload: IAuthCallback) => void;
 }
+
 const NavItem: FC<INavItem> = ({ icon, text, index, isActive, onNavItemPress }: INavItem) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -61,7 +62,6 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [isSelected, setIsSelected] = useState(-1);
-  const [searchText, setSearchText] = useState('');
   const navBarStyles = navBarStyle(isMobile, isTablet, isDesktop);
   const history = useHistory();
   const navItems = [
@@ -80,9 +80,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
     setIsSelected(index);
     NavigationUtils.navigate(history, { path: navItems[index].url });
   };
-  const onChange = (text: string): void => {
-    setSearchText(text);
-  };
+
   const [isUserOptions, setIsUserOptions] = useState(false);
   const popupRef = useRef<PopupActions>(null);
   const onCloseUserOptions = (): void => {
@@ -121,7 +119,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
           <View style={navBarStyles.logo}>{isMobile ? <HomzhubLogo /> : <NavLogo />}</View>
           <View style={navBarStyles.search}>
             {!isTablet ? (
-              <SearchField placeholder={t('property:searchInWeb')} value={searchText} updateValue={onChange} />
+              <GoogleSearchBar />
             ) : (
               <Button
                 type="primary"

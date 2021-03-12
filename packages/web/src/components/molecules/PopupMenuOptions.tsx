@@ -1,8 +1,11 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 
 export interface IPopupOptions {
@@ -16,12 +19,34 @@ export interface IPopupOptions {
 interface IProps<T extends IPopupOptions> {
   options: T[];
   onMenuOptionPress: (option: T) => void;
+  from?: string;
+  autoDetect?: () => void;
 }
 
-const PopupMenuOptions = <T extends IPopupOptions>({ options, onMenuOptionPress }: IProps<T>): React.ReactElement => {
+const PopupMenuOptions = <T extends IPopupOptions>({
+  options,
+  onMenuOptionPress,
+  from,
+  autoDetect,
+}: IProps<T>): React.ReactElement => {
   const { primaryColor, darkTint4 } = theme.colors;
+  const { t } = useTranslation();
+
   return (
     <View style={styles.optionContainer}>
+      {from && from === 'Search' && (
+        <>
+          <Button type="secondaryOutline" containerStyle={styles.buttonContainer} onPress={autoDetect}>
+            <Icon name={icons.location} size={15} color={theme.colors.blue} />
+            <Typography variant="label" size="regular" style={styles.buttonTitle}>
+              {t('nearMe')}
+            </Typography>
+          </Button>
+          <Label type="large" textType="semiBold" style={styles.label}>
+            {t('searchResults')}
+          </Label>
+        </>
+      )}
       {options.map((item) => (
         <Hoverable key={item.label}>
           {(isHovered: boolean): React.ReactNode => (
@@ -71,6 +96,20 @@ const styles = StyleSheet.create({
   },
   optionTextHovered: {
     color: theme.colors.primaryColor,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 0,
+    marginLeft: 16,
+  },
+  buttonTitle: {
+    color: theme.colors.blue,
+    marginLeft: 8,
+    paddingVertical: 4,
+  },
+  label: {
+    margin: 16,
   },
 });
 

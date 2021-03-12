@@ -4,22 +4,32 @@ import { useHistory } from 'react-router-dom';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
 import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
+import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
+import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
+import { GeolocationError, GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 
+interface IAddressComponent {
+  long_name: string;
+  short_name: string;
+  types: Array<string>;
+}
+
 interface ISearchBarProps {
-  setUpdatedLatLng: (latLng: ILatLng) => void;
+  setUpdatedLatLng?: (latLng: ILatLng) => void;
   hasScriptLoaded?: boolean;
   navigateAddProperty?: (screen: AddPropertyStack) => void;
+  onSuggestionPress?: (place: IAddressComponent[], address: string, latLng: ILatLng) => void;
 }
 
 const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) => {
   const history = useHistory();
-  const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty } = props;
+  const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty, onSuggestionPress } = props;
   const { t } = useTranslation();
   const [popOverWidth, setPopoverWidth] = useState<string | number>('100%');
   const popupRef = useRef<PopupActions>(null);
@@ -28,6 +38,7 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
   const [suggestions, setSuggestions] = useState<google.maps.places.QueryAutocompletePrediction[]>([]);
   const updateSearchValue = (value: string): void => setSearchText(value);
   const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch', width: popOverWidth };
+
   const getAutocompleteSuggestions = (query: string): void => {
     if (hasScriptLoaded) {
       const service = new google.maps.places.AutocompleteService();
@@ -53,12 +64,21 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
     setSearchText(selectedOption.label);
     if (selectedOption && selectedOption.value) {
       getDataFromPlaceID((selectedOption?.value as string) ?? '', (result) => {
-        setUpdatedLatLng({ lat: result.geometry.location.lat(), lng: result.geometry.location.lng() } as ILatLng);
+        if (setUpdatedLatLng) {
+          setUpdatedLatLng({ lat: result.geometry.location.lat(), lng: result.geometry.location.lng() } as ILatLng);
+        }
+        if (onSuggestionPress) {
+          onSuggestionPress(result.address_components, result.formatted_address, {
+            lat: result.geometry.location.lat(),
+            lng: result.geometry.location.lng(),
+          } as ILatLng);
+        }
         if (navigateAddProperty && history.location.pathname === RouteNames.protectedRoutes.ADD_PROPERTY) {
           navigateAddProperty(AddPropertyStack.PropertyDetailsMapScreen);
         }
       });
     }
+    updateSearchValue('');
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
@@ -73,6 +93,27 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
       }) ?? [],
     [suggestions]
   );
+
+  const onPressAutoDetect = (): void => {
+    GeolocationService.getCurrentPosition(onFetchSuccess, onFetchError);
+  };
+  const onFetchSuccess = (response: GeolocationResponse): void => {
+    const { latitude, longitude } = response.coords;
+
+    GooglePlacesService.getLocationData({ lat: latitude, lng: longitude } as ILatLng).then((result) => {
+      setSearchText(result.formatted_address);
+
+      if (onSuggestionPress) {
+        onSuggestionPress(result.address_components, result.formatted_address, {
+          lat: latitude,
+          lng: longitude,
+        } as ILatLng);
+      }
+    });
+  };
+  const onFetchError = (error: GeolocationError): void => {
+    // empty
+  };
   const onOpenPopover = (): any => {
     if (searchInputRef && searchInputRef.current && suggestions.length > 0) {
       searchInputRef.current.focus();
@@ -81,10 +122,21 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
   const onLayoutChange = (e: LayoutChangeEvent): void => {
     setPopoverWidth(e.nativeEvent.layout.width);
   };
+
+  const popoverContent = (): React.ReactElement => {
+    return (
+      <PopupMenuOptions
+        options={getAutoCompletionOptions()}
+        onMenuOptionPress={handleSuggestionSelection}
+        from="Search"
+        autoDetect={onPressAutoDetect}
+      />
+    );
+  };
   return (
     <Popover
       forwardedRef={popupRef}
-      content={<PopupMenuOptions options={getAutoCompletionOptions()} onMenuOptionPress={handleSuggestionSelection} />}
+      content={popoverContent}
       popupProps={{
         position: 'bottom left',
         on: [],

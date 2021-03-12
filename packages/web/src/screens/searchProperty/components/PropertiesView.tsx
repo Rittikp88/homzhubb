@@ -2,18 +2,16 @@ import React, { FC } from 'react';
 import { View, StyleSheet, ViewStyle, ImageStyle } from 'react-native';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import PropertySearchCard from '@homzhub/web/src/screens/searchProperty/components/PropertySearchCard';
-import {
-  InvestmentMockData,
-  IInvestmentMockData,
-} from '@homzhub/web/src/screens/dashboard/components/InvestmentMockDetails';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   isListView: boolean;
+  property: AssetSearch;
 }
 
-const PropertiesView: FC<IProps> = ({ isListView }: IProps) => {
-  const investmentDataArray = InvestmentMockData;
+const PropertiesView: FC<IProps> = ({ isListView, property }: IProps) => {
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
 
   return (
@@ -21,12 +19,12 @@ const PropertiesView: FC<IProps> = ({ isListView }: IProps) => {
       {isListView && isDesktop && <View style={{ width: '45%' }} />}
       <View style={isListView ? styles.containerList : styles.containerGrid}>
         <View style={styles.subContainerGrid}>
-          {investmentDataArray.map((item: IInvestmentMockData) => (
+          {property.results.map((item: Asset) => (
             <View key={item.id} style={isListView ? styles.cardList : styles.cardGrid}>
               <PropertySearchCard
                 key={item.id}
                 investmentData={item}
-                containerStyleProp={styles.listView}
+                containerStyleProp={isListView ? styles.listView : styles.cardView}
                 cardImageCarouselStyle={
                   isListView ? styles.cardImageCarouselStyleList : styles.cardImageCarouselStyleGrid
                 }
@@ -101,5 +99,8 @@ const styles = StyleSheet.create({
   },
   listView: {
     flexDirection: 'row',
+  },
+  cardView: {
+    flexDirection: 'column',
   },
 });

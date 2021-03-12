@@ -1,11 +1,12 @@
 import React from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
+type TextSizeType = 'small' | 'regular' | 'large';
 interface IProps {
   icon?: string;
   title?: string;
@@ -14,6 +15,8 @@ interface IProps {
   isIconRequired?: boolean;
   buttonProps?: IButtonProps;
   containerStyle?: StyleProp<ViewStyle>;
+  textType?: TextSizeType;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 export const EmptyState = (props: IProps): React.ReactElement => {
@@ -26,11 +29,13 @@ export const EmptyState = (props: IProps): React.ReactElement => {
     subTitle,
     buttonProps,
     containerStyle,
+    textType = 'small',
+    textStyle,
   } = props;
   return (
     <View style={[styles.noDataContainer, containerStyle]}>
       {isIconRequired && <Icon name={icon} size={iconSize} color={theme.colors.disabledSearch} />}
-      <Text type="small" textType="semiBold" style={styles.noResultsFound}>
+      <Text type={textType} textType="semiBold" style={[styles.noResultsFound, textStyle]}>
         {title}
       </Text>
       {!!subTitle && (
