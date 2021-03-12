@@ -5,11 +5,12 @@ import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import CardImageCarousel from '@homzhub/web/src/screens/searchProperty/components/CardImageCarousel';
-import InvestmentFooter from '@homzhub/web/src/screens/dashboard/components/InvestmentFooter';
+import SalePropertyFooter from '@homzhub/web/src/screens/dashboard/components/SalePropertyFooter';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -21,25 +22,50 @@ interface IProps {
   containerStyleProp?: ViewStyle;
   cardImageCarouselStyle?: ViewStyle;
   cardImageStyle?: ImageStyle;
+  priceUnit: string;
 }
 
 const PropertySearchCard = (props: IProps): React.ReactElement => {
-  const { investmentData, containerStyleProp, cardImageCarouselStyle = {}, cardImageStyle = {} } = props;
+  const { investmentData, containerStyleProp, cardImageCarouselStyle = {}, cardImageStyle = {}, priceUnit } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const {
     address,
-    asset_type,
+    assetType,
     furnishing,
     spaces,
-    project_name,
+    projectName,
     carpetArea,
     carpetAreaUnit,
     unitNumber,
     blockNumber,
+    leaseTerm,
+    saleTerm,
   } = investmentData;
-  const primaryAddress = project_name;
+
+  let currencyData = investmentData.country.currencies[0];
+
+  if (leaseTerm && leaseTerm.currency) {
+    currencyData = leaseTerm.currency;
+  }
+
+  if (saleTerm && saleTerm.currency) {
+    currencyData = saleTerm.currency;
+  }
+
+  const getPrice = (): number => {
+    if (leaseTerm) {
+      return Number(leaseTerm.expectedPrice);
+    }
+    if (saleTerm) {
+      return Number(saleTerm.expectedPrice);
+    }
+    return 0;
+  };
+
+  const price = getPrice();
+  const primaryAddress = projectName;
   const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
-  const propertyType = asset_type?.name;
+  const propertyType = assetType?.name;
   const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
     spaces,
     furnishing,
@@ -48,12 +74,15 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     carpetAreaUnit?.title ?? '',
     true
   );
+  console.log(investmentData);
+  console.log(primaryAddress, subAddress);
 
   const badgeInfo = [
     { color: theme.colors.completed },
     { color: theme.colors.completed },
     { color: theme.colors.completed },
   ];
+
   return (
     <View style={[styles.card, isMobile && styles.cardMobile, containerStyleProp]}>
       <View style={styles.imageContainer}>
@@ -76,9 +105,7 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
         />
         <View style={styles.addressContainer}>
           <View style={styles.propertyValueContainer}>
-            <Typography variant="text" size="small" fontWeight="semiBold" style={styles.propertyValue}>
-              From ₹32.5 Lacs - ₹48 Lacs
-            </Typography>
+            <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
           </View>
           {amenitiesData.length > 0 && (
             <PropertyAmenities
@@ -89,7 +116,9 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
             />
           )}
         </View>
-        <InvestmentFooter investmentData={investmentData} />
+        <View>
+          <SalePropertyFooter containerStyle={styles.footerStyle} from="Search" />
+        </View>
       </View>
     </View>
   );
@@ -182,6 +211,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   propertyValueContainer: { width: '50%' },
+  footerStyle:{
+    paddingLeft: 0
+  }
 });
 
 export default PropertySearchCard;

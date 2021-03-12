@@ -1,11 +1,17 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 
 // TODO (LAKSHIT) - change dummy data with actual api data
 
-const SalePropertyFooter = (): React.ReactElement => {
+interface IProps {
+  containerStyle?: StyleProp<ViewStyle>;
+  from?: string;
+}
+
+const SalePropertyFooter = (props: IProps): React.ReactElement => {
+  const { containerStyle, from } = props;
   const onContactTypeClicked = (): void => {
     //  TODOS LAKSHIT
   };
@@ -18,8 +24,8 @@ const SalePropertyFooter = (): React.ReactElement => {
     onContactTypeClicked,
   };
   return (
-    <View style={styles.card}>
-      <ContactPerson {...contactData} />
+    <View style={[styles.card, containerStyle]}>
+      <ContactPerson {...contactData} from={from} />
     </View>
   );
 };

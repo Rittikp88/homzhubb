@@ -10,9 +10,10 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 interface IProps {
   isListView: boolean;
   property: AssetSearch;
+  transaction_type: number;
 }
 
-const PropertiesView: FC<IProps> = ({ isListView, property }: IProps) => {
+const PropertiesView: FC<IProps> = ({ isListView, property, transaction_type }: IProps) => {
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
 
   return (
@@ -30,6 +31,7 @@ const PropertiesView: FC<IProps> = ({ isListView, property }: IProps) => {
                   isListView ? styles.cardImageCarouselStyleList : styles.cardImageCarouselStyleGrid
                 }
                 cardImageStyle={isListView ? styles.cardImageStyleList : styles.cardImageStyleGrid}
+                priceUnit={transaction_type === 0 ? 'mo' : ''}
               />
             </View>
           ))}

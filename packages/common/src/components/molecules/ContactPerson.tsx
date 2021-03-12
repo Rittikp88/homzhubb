@@ -17,10 +17,11 @@ interface IProps {
   phoneNumber: string;
   image?: string;
   onContactTypeClicked: (type: ContactActions, phoneNumber: string, message: string) => void;
+  from?: string;
 }
 
 const ContactPerson = (props: IProps): React.ReactElement => {
-  const { firstName, lastName, designation, phoneNumber, onContactTypeClicked, image } = props;
+  const { firstName, lastName, designation, phoneNumber, onContactTypeClicked, image, from } = props;
   const fullName = `${firstName} ${lastName}`;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -31,11 +32,15 @@ const ContactPerson = (props: IProps): React.ReactElement => {
     { icon: icons.envelope, id: ContactActions.MAIL, visible: true },
   ];
 
+  const OPTIONS_SEARCH = [{ icon: icons.envelope, id: ContactActions.MAIL, visible: true }];
+
+  const data = from === 'Search' ? OPTIONS_SEARCH : OPTIONS;
+
   return (
     <View style={styles.container}>
       <Avatar fullName={fullName} designation={designation} image={image} />
       <View style={styles.iconContainer}>
-        {OPTIONS.map((item, index: number) => {
+        {data.map((item, index: number) => {
           const { icon, id, visible } = item;
 
           const onPress = (): void => {

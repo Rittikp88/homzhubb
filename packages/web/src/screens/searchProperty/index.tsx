@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { bindActionCreators, Dispatch } from 'redux';
 import PropertiesView from '@homzhub/web/src/screens/searchProperty/components/PropertiesView';
 import { PopupProps } from 'reactjs-popup/dist/types';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
@@ -14,6 +16,7 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import MoreFilters from '@homzhub/web/src//screens/searchProperty/components/MoreFilter';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -38,11 +41,14 @@ const defaultDropDownProps = (isMobile: boolean): PopupProps => ({
 interface IStateProps {
   properties: AssetSearch;
   filters: IFilter;
+  filterData: FilterDetail | null;
 }
 
 interface IDispatchProps {
   getProperties: () => void;
   getFilterDetails: (payload: IFilter) => void;
+  setInitialState: () => void;
+  setFilter: (payload: IFilter) => void;
 }
 
 interface IProps {
@@ -61,7 +67,7 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
-  const { properties } = props;
+  const { properties, setInitialState, getProperties, filters, filterData, getFilterDetails } = props;
   const buttonTitle = t('propertySearch:resetFilters');
   const empyStateButtonProps = (): IButtonProps => ({
     title: buttonTitle,
@@ -70,6 +76,18 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     fontType: 'semiBold',
     type: 'text',
   });
+
+  useEffect(() => {
+    console.log(filters);
+    if (!filterData) {
+      getFilterDetails({ asset_group: filters.asset_group });
+    }
+    console.log(filterData);
+    getProperties();
+    return (): void => {
+      setInitialState();
+    };
+  }, []);
   if (!properties) {
     return null;
   }
@@ -91,7 +109,7 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
       </Popover>
 
       <View style={styles.sortAndToggleButtons}>
-        <View>Filters Here</View>
+        <View>Sort By :</View>
         <View style={styles.toggleButtons}>
           <Icon
             name={icons.grid}
@@ -111,7 +129,11 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
       </View>
 
       {properties.results.length > 0 ? (
-        <PropertiesView isListView={isListView} property={properties} />
+        <PropertiesView
+          isListView={isListView}
+          property={properties}
+          transaction_type={filters.asset_transaction_type || 0}
+        />
       ) : (
         <View style={styles.emptyState}>
           <EmptyState
@@ -182,11 +204,25 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getProperties, getFilters } = SearchSelector;
+  const { getProperties, getFilters, getFilterDetail } = SearchSelector;
   return {
     properties: getProperties(state),
     filters: getFilters(state),
+    filterData: getFilterDetail(state),
   };
 };
 
-export default connect(mapStateToProps, null)(SearchProperty);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setInitialState, getProperties, getFilterDetails, setFilter } = SearchActions;
+  return bindActionCreators(
+    {
+      getProperties,
+      setInitialState,
+      getFilterDetails,
+      setFilter,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchProperty);

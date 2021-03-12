@@ -17,6 +17,7 @@ import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 interface IDispatchProps {
   setFilter: (payload: IFilter) => void;
   getProperties: () => void;
+  getPropertiesListView: () => void;
 }
 interface IAddressComponent {
   long_name: string;
@@ -36,7 +37,7 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
 
   const updateLatLng = (result: IAddressComponent[], formatedAddress: string, { lat, lng }: ILatLng): void => {
     const { lngValue, latValue } = GeolocationService.getFormattedCords(lat, lng);
-    const { setFilter, getProperties } = props;
+    const { setFilter } = props;
     console.log(result);
     setSearchedPropertyCurrency(result);
     setFilter({
@@ -45,7 +46,6 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
       search_longitude: lngValue,
       offset: 0,
     });
-    getProperties();
     NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.SEARCH_PROPERTY });
   };
   const setSearchedPropertyCurrency = (placeDetail: IAddressComponent[]): void => {
@@ -76,11 +76,12 @@ const mapStateToProps = (state: any): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, getProperties } = SearchActions;
+  const { setFilter, getProperties, getPropertiesListView } = SearchActions;
   return bindActionCreators(
     {
       setFilter,
       getProperties,
+      getPropertiesListView,
     },
     dispatch
   );
