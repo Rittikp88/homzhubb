@@ -27,7 +27,7 @@ export const PdfView = ({ source, fileName, onCrossPress }: IPdfProps): React.Re
       {!!fileName && (
         <View style={styles.pdfNameContainer}>
           <Icon style={styles.pdfIcon} name={icons.pdf} size={20} color={theme.colors.darkTint3} />
-          <Label type="large" textType="regular" style={styles.fileName}>
+          <Label type="large" textType="regular" style={styles.fileName} numberOfLines={1} ellipsizeMode="middle">
             {fileName}
           </Label>
         </View>
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   fileName: {
+    flex: 1,
     color: theme.colors.darkTint4,
   },
   pdf: {

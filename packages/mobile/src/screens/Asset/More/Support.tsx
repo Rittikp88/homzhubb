@@ -328,6 +328,7 @@ export class Support extends Component<Props, IScreenState> {
     const { subject, description, category } = values;
     let attachmentIds: Array<number> = [];
 
+    this.setState({ isLoading: true });
     try {
       // @ts-ignore
       if (attachments.length) {
@@ -354,9 +355,11 @@ export class Support extends Component<Props, IScreenState> {
       this.setState({
         isFormSubmitted: true,
         attachments: [],
+        isLoading: false,
       });
       formActions.resetForm({});
     } catch (e) {
+      this.setState({ isLoading: false });
       formActions.setSubmitting(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -374,6 +377,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 0,
+    height: 50,
     marginHorizontal: 16,
   },
   title: {

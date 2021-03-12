@@ -106,7 +106,7 @@ export class CaseLogs extends React.PureComponent<Props, IScreenState> {
     const color = status === Status.open ? theme.colors.error : theme.colors.green;
     const caseDetails: ICaseDetails = {
       case_id: ticketNumber,
-      date: DateUtils.getUtcFormatted(raisedAt, DateFormats.ISO24Format, DateFormats.DD_MMM_YYYY),
+      date: DateUtils.convertDateFormatted(raisedAt, DateFormats.DD_MMM_YYYY),
       category: supportCategory.label,
       status,
     };
@@ -119,7 +119,7 @@ export class CaseLogs extends React.PureComponent<Props, IScreenState> {
               {StringUtils.toTitleCase(key.replace('_', ' '))}
             </Label>
             <Label type="regular" textType="semiBold" style={[styles.details, key === Key.status && { color }]}>
-              {StringUtils.toTitleCase(caseDetails[key])}
+              {key === 'date' ? caseDetails[key] : StringUtils.toTitleCase(caseDetails[key])}
             </Label>
           </View>
         ))}

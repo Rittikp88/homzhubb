@@ -351,8 +351,8 @@ class DateUtils {
     return this.getDateDiff(currentDate, date, 'days');
   };
 
-  public convertDateFormatted = (date: string): string => {
-    return moment(date).format(DateFormats.DDMMMYYYY_HM);
+  public convertDateFormatted = (date: string, format = DateFormats.DDMMMYYYY_HM): string => {
+    return moment(date).format(format);
   };
 }
 
