@@ -208,6 +208,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                         placeholder={t('serviceTickets:exampleTitle')}
                         inputType="default"
                         isMandatory
+                        maxLength={100}
                       />
                       <FormDropdown
                         textType="label"
