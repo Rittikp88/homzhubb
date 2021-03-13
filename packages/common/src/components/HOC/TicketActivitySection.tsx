@@ -28,8 +28,8 @@ export const TicketActivitySection = (props: IProp): React.ReactElement => {
 
   return (
     <View style={styles.activityHolder}>
-      <Avatar image={profilePicture} fullName={name} isOnlyAvatar imageSize={45} containerStyle={styles.avatar} />
-      <View style={styles.flexSix}>
+      <Avatar image={profilePicture} fullName={name} isOnlyAvatar imageSize={45} />
+      <View style={styles.content}>
         <View style={styles.activityTextTop}>
           <Label type="regular" textType="regular" style={styles.role}>
             {role}
@@ -61,17 +61,15 @@ const styles = StyleSheet.create({
   role: {
     color: theme.colors.darkTint4,
   },
-  avatar: {
-    flex: 1.2,
-    marginLeft: 10,
-  },
   activityTextTop: {
     flex: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  flexSix: {
-    flex: 6,
+  content: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: 'space-between',
   },
   timeLabel: {
     marginRight: 10,

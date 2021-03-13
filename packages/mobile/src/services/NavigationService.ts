@@ -3,6 +3,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { CommonActions as StoreCommonActions } from '@homzhub/common/src/modules/common/actions';
@@ -51,6 +52,8 @@ class NavigationService {
 
   public handlePrivateRoutes = (url: string): void => {
     const type = this.getValueOfParamFromUrl(DynamicLinkParamKeys.Type, url);
+    const store = StoreProviderService.getStore();
+
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigateTo(ScreensKeys.BottomTabs, {
@@ -109,6 +112,20 @@ class NavigationService {
           screen: ScreensKeys.PortfolioLandingScreen,
           params: {
             inviteId: this.getValueOfParamFromUrl(DynamicLinkParamKeys.InviteId, url),
+          },
+        });
+        break;
+      case DynamicLinkTypes.ServiceTicket:
+        store.dispatch(
+          TicketActions.setCurrentTicket({
+            ticketId: parseInt(this.getValueOfParamFromUrl(DynamicLinkParamKeys.TicketId, url), 10),
+          })
+        );
+        this.navigateTo(ScreensKeys.BottomTabs, {
+          screen: ScreensKeys.More,
+          params: {
+            screen: ScreensKeys.ServiceTicketDetail,
+            initial: false,
           },
         });
         break;

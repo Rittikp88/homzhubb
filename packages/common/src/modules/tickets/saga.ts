@@ -25,7 +25,10 @@ export function* getTicketDetails(action: IFluxStandardAction<number>) {
     const {
       id,
       quoteRequestId,
-      asset: { projectName },
+      asset: {
+        projectName,
+        country: { currencies },
+      },
     } = response;
     yield put(TicketActions.getTicketDetailSuccess(response));
 
@@ -34,6 +37,7 @@ export function* getTicketDetails(action: IFluxStandardAction<number>) {
         ticketId: id,
         quoteRequestId,
         propertyName: projectName,
+        currency: currencies[0],
       })
     );
   } catch (e) {

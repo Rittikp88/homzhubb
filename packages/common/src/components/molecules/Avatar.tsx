@@ -127,7 +127,7 @@ const Avatar = (props: IProps): React.ReactElement => {
                   </Label>
                 </View>
               )}
-              {rating && (
+              {!!rating && (
                 <View style={styles.numberContainer}>
                   <Icon name={icons.roundFilled} color={theme.colors.disabled} size={8} style={styles.iconStyle} />
                   <Rating single value={rating} />

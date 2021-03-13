@@ -172,7 +172,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     return (
       <View style={styles.commentStyle}>
         <Divider containerStyles={styles.divider} />
-        <Avatar fullName={owner.fullName} designation={t('owner')} rating={owner.rating} date={commentDate} />
+        <Avatar fullName={owner.fullName} designation={t('owner')} date={commentDate} />
         <View style={styles.replyContent}>
           <Label type="large" maxLength={!showMoreReply ? MAX_LENGTH : undefined} style={styles.review}>
             {reply}
@@ -283,7 +283,6 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
           fullName={reviewedBy.fullName}
           image={reviewedBy.profilePicture}
           designation={t('tenant')}
-          rating={reviewedBy.rating}
           date={reviewedAt}
         />
         {!!description && (
@@ -291,7 +290,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
             {description}
           </Label>
         )}
-        <Rating isOverallRating value={overallRating ?? 0} />
+        <Rating isOverallRating value={overallRating ?? 0} containerStyle={styles.comment} />
         {showMore && (
           <View style={styles.pillarContainer}>
             {pillars.map((pillarRating, index) => {
@@ -437,7 +436,6 @@ const styles = StyleSheet.create({
   reportView: {
     padding: 25,
   },
-
   comment: {
     marginTop: 10,
   },

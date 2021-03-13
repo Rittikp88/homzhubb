@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -20,8 +20,7 @@ interface IProps {
 const QuoteBox = (props: IProps): ReactElement => {
   const { document, onSetPrice, onUploadAttachment, onRemoveAttachment } = props;
 
-  // TODO: (Shikha) - Use currency from selected asset
-  const { currencySymbol, currencyCode } = useSelector(CommonSelectors.getDefaultCurrency);
+  const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const [price, setPrice] = useState('');
 
@@ -31,6 +30,8 @@ const QuoteBox = (props: IProps): ReactElement => {
     onSetPrice(value);
   };
   // HANDLERS
+  const currencySymbol = selectedTicket && selectedTicket.currency ? selectedTicket.currency.currencySymbol : '';
+  const currencyCode = selectedTicket && selectedTicket.currency ? selectedTicket.currency.currencyCode : '';
 
   return (
     <View style={styles.container}>

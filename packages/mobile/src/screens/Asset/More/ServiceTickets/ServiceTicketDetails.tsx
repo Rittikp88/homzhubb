@@ -94,7 +94,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           contentContainerStyle={styles.userScreen}
         >
           <View style={styles.container}>
-            {!ticketDetails && <EmptyState isIconRequired={false} title={t('serviceTickets:noDetail')} />}
+            {!isLoading && !ticketDetails && <EmptyState isIconRequired={false} title={t('serviceTickets:noDetail')} />}
             {this.renderDetailsCard()}
             {this.renderActivityCard()}
           </View>

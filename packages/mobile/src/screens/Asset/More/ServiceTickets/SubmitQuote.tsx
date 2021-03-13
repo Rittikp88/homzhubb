@@ -20,6 +20,7 @@ import QuoteBox from '@homzhub/common/src/components/molecules/QuoteBox';
 import { CollapsibleSection } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { IQuoteData, IQuoteSubmitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { IInitialQuote, initialQuotes } from '@homzhub/common/src/constants/ServiceTickets';
@@ -29,8 +30,8 @@ const SubmitQuote = (): ReactElement => {
   const dispatch = useDispatch();
   const [quotes, setQuotes] = useState<IInitialQuote[]>([]);
   const [comment, setComment] = useState('');
+  const [attachments, setAttachments] = useState<IDocumentSource[]>([]);
   const [quoteCategoryId, setQuoteCategoryId] = useState(0);
-  const [payload, setPayload] = useState<IQuoteData[]>([]);
   const [isLoading, setLoader] = useState(false);
 
   const { goBack, navigate } = useNavigation();
@@ -53,9 +54,46 @@ const SubmitQuote = (): ReactElement => {
     }
   }, []);
 
-  useEffect(() => {
-    if (payload.length > 0 && selectedTicket) {
-      setLoader(true);
+  // HANDLERS
+
+  const onSubmit = async (): Promise<void> => {
+    let updatePayload: IQuoteData[] = [];
+    let attachmentIds: number[] = [];
+    setLoader(true);
+
+    if (attachments.length > 0) {
+      /* Make an API call for uploading the document and extract the doc Id */
+      const formData = new FormData();
+      attachments.forEach((attachment: IDocumentSource) => {
+        // @ts-ignore
+        formData.append('files[]', attachment);
+      });
+      const response = await AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS);
+      const { data, error } = response;
+      if (data && data.length > 0) {
+        attachmentIds = data.map((i: { id: number }) => i.id);
+      }
+      if (error) {
+        AlertHelper.error({ message: t('common:fileCorrupt') });
+      }
+    }
+
+    if (attachmentIds.length > 0 && selectedTicket) {
+      attachmentIds.forEach((doc, index) => {
+        const quote = quotes[index];
+        /* Creating quote payload */
+        updatePayload = [
+          ...updatePayload,
+          {
+            quote_number: quote.quoteNumber,
+            price: Number(quote.price),
+            currency: selectedTicket && selectedTicket.currency ? selectedTicket.currency.currencyCode : 'INR',
+            attachment: doc,
+          },
+        ];
+      });
+
+      /* Creating Final payload for submit quote */
       const submitPayload: IQuoteSubmitPayload = {
         param: {
           ticketId: selectedTicket.ticketId,
@@ -65,7 +103,7 @@ const SubmitQuote = (): ReactElement => {
           quote_group: [
             {
               quote_request_category: quoteCategoryId,
-              quotes: payload ?? [],
+              quotes: updatePayload ?? [],
             },
           ],
           ...(!!comment && { comment }),
@@ -77,7 +115,6 @@ const SubmitQuote = (): ReactElement => {
           AlertHelper.success({ message: t('quoteSubmission') });
           navigate(ScreensKeys.ServiceTicketDetail);
           setQuotes(initialQuotes);
-          setPayload([]);
           setLoader(false);
           dispatch(TicketActions.getTickets());
         })
@@ -86,46 +123,6 @@ const SubmitQuote = (): ReactElement => {
           AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
         });
     }
-  }, [payload]);
-
-  // HANDLERS
-
-  const onSubmit = (): void => {
-    let updatePayload = cloneDeep([...payload]);
-    setLoader(true);
-
-    quotes.forEach((item) => {
-      if (item.document) {
-        const formData = new FormData();
-        // @ts-ignore
-        formData.append('files[]', item.document);
-
-        AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS)
-          .then((response: any) => {
-            const { data } = response;
-            if (data.length > 0) {
-              updatePayload = [
-                ...updatePayload,
-                {
-                  quote_number: item.quoteNumber,
-                  price: Number(item.price),
-                  currency: 'INR', // TODO: (Shikha) - Use from ticket detail screen
-                  attachment: data[0].id,
-                },
-              ];
-            }
-          })
-          .catch((e: any) => {
-            setLoader(false);
-            AlertHelper.error({ message: e.message });
-          });
-      }
-    });
-
-    /* Added because payload formation taking time due to s3 upload */
-    setTimeout(() => {
-      setPayload(updatePayload);
-    }, 2000);
   };
 
   const updatePrice = (price: string, index: number): void => {
@@ -136,11 +133,13 @@ const SubmitQuote = (): ReactElement => {
 
   const onUploadDoc = (index: number): void => {
     const prevQuotes = cloneDeep(quotes);
+    const prevAttachments = cloneDeep(attachments);
     DocumentPicker.pick({
       type: [DocumentPicker.types.allFiles],
     })
       .then((doc) => {
         prevQuotes[index].document = doc;
+        setAttachments([...prevAttachments, doc]);
         setQuotes(prevQuotes);
       })
       .catch((e) => {
@@ -160,7 +159,6 @@ const SubmitQuote = (): ReactElement => {
 
   const onBack = (): void => {
     setQuotes(initialQuotes);
-    setPayload([]);
     goBack();
   };
 

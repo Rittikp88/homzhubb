@@ -229,7 +229,8 @@
     "chooseAction": "Choose your Action",
     "uploadWarning": "You can upload a maximum of 10 images",
     "addPhoto": "Add Photos",
-    "detail": "Detail"
+    "detail": "Detail",
+    "fileSizeWarning": "File size is too large"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1028,6 +1029,6 @@
     "quoteApproved": "Quote approved successfully",
     "ticketComplete": "Successfully Ticket Completed",
     "noQuoteFound": "No quote found",
-    "noDetail": "There is no detail for selected ticket"
+    "noDetail": "There was an error while trying to fetch your data. Please try again"
   }
 }

@@ -125,6 +125,7 @@ class NotificationService {
       }
     });
     // Handle Notification when App is quit / App is not opened.
+    // eslint-disable-next-line max-len
     const remoteMessage: FirebaseMessagingTypes.RemoteMessage | null = await this.messageObject.getInitialNotification();
     if (remoteMessage && remoteMessage.data) {
       this.redirectOnNotification(remoteMessage.data);

@@ -37,6 +37,7 @@ import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { IAddServiceEvent } from '@homzhub/common/src/services/Analytics/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IFormValues {
   property: number;
@@ -65,6 +66,7 @@ interface IStateToProps {
 
 interface IDispatchToProps {
   getActiveAssets: () => void;
+  getTickets: (param?: IGetTicketParam) => void;
   setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
@@ -404,7 +406,12 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   };
 
   private handleSubmit = async (values: IFormValues, formActions: FormikHelpers<IFormValues>): Promise<void> => {
-    const { properties, setCurrentTicket } = this.props;
+    const {
+      properties,
+      setCurrentTicket,
+      getTickets,
+      route: { params },
+    } = this.props;
     const { property, subCategory, title, issueDescription, otherCategory } = values;
     const { attachments } = this.state;
 
@@ -459,6 +466,11 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       this.setState({ isScreenLoading: false, selectedCategoryId: -1, attachments: [] });
 
       formActions.setSubmitting(false);
+      if (params && params.propertyId) {
+        getTickets({ asset_id: params.propertyId });
+      } else {
+        getTickets();
+      }
 
       NavigationService.navigation.navigate(ScreensKeys.BottomTabs, {
         screen: ScreensKeys.More,
@@ -483,8 +495,8 @@ const mapStateToProps = (state: IState): IStateToProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
   const { getActiveAssets } = AssetActions;
-  const { setCurrentTicket } = TicketActions;
-  return bindActionCreators({ getActiveAssets, setCurrentTicket }, dispatch);
+  const { setCurrentTicket, getTickets } = TicketActions;
+  return bindActionCreators({ getActiveAssets, setCurrentTicket, getTickets }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ServiceTicketForm));

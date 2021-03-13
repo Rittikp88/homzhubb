@@ -228,7 +228,8 @@
     "closed": "Closed",
     "chooseAction": "Choose your Action",
     "uploadWarning": "You can upload a maximum of 10 images",
-    "addPhoto": "Add Photos"
+    "addPhoto": "Add Photos",
+    "detail": "Detail"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -583,6 +584,8 @@
     "searchAgain": "Search Again",
     "resetFilters": "Reset Filters",
     "noResultsMapView": "No results found, try zooming or changing your filters",
+    "noResultsTitle": "Sorry! No results found",
+    "noResultsSubTitle": "Try changing your search criteria",
     "carpetArea": "Carpet Area",
     "carpetAreaPlaceholder": "Eg: 1250",
     "searchRadius": "Search Radius",
@@ -1022,6 +1025,7 @@
     "noPropertyAdded": "You haven't added any property yet. Start adding properties to generate ticket.",
     "quoteApproved": "Quote approved successfully",
     "ticketComplete": "Successfully Ticket Completed",
-    "noQuoteFound": "No quote found"
+    "noQuoteFound": "No quote found",
+    "noDetail": "There is no detail for selected ticket"
   }
 }

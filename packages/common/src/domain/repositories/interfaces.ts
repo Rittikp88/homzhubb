@@ -391,6 +391,8 @@ export interface INotificationsPayload {
   q?: string;
   lease_listing_id?: number;
   sale_listing_id?: number;
+  asset_id?: number;
+  lease_transaction_id?: number;
 }
 
 export interface IDocumentPayload {

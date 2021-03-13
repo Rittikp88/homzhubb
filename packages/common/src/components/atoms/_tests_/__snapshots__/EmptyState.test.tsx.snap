@@ -22,11 +22,14 @@ exports[`EmptyState should match snapshot 1`] = `
   />
   <Text
     style={
-      Object {
-        "color": "#808D9B",
-        "marginVertical": 16,
-        "textAlign": "center",
-      }
+      Array [
+        Object {
+          "color": "#808D9B",
+          "marginVertical": 16,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
     }
     textType="semiBold"
     type="small"

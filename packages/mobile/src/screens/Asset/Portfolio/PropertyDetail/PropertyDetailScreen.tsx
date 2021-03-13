@@ -290,7 +290,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       t,
     } = this.props;
     const {
-      propertyData: { id, assetStatusInfo, isManaged },
+      propertyData: { id, assetStatusInfo },
     } = this.state;
 
     switch (route.key) {
@@ -298,7 +298,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         // TODO: Figure-out something to resolve this error
         return (
           <View onLayout={(e): void => this.onLayout(e, 0)}>
-            <NotificationTab isManagedProperty={isManaged} assetStatusInfo={assetStatusInfo} />
+            <NotificationTab propertyId={id} assetStatusInfo={assetStatusInfo} />
           </View>
         );
       case Tabs.TICKETS:

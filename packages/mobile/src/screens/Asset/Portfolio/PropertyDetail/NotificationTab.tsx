@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { isEmpty } from 'lodash';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,10 +11,13 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 import { AssetNotifications, Notifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
+import { INotificationsPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   assetStatusInfo: AssetStatusInfo | null;
-  isManagedProperty: boolean;
+  propertyId: number;
+  isManagedProperty?: boolean;
 }
 
 type Props = WithTranslation & IProps;
@@ -72,23 +76,40 @@ export class NotificationTab extends React.Component<Props, IAssetNotificationsS
   };
 
   public getAssetNotifications = async (): Promise<void> => {
-    const { assetStatusInfo, isManagedProperty } = this.props;
+    const { assetStatusInfo, propertyId } = this.props;
     const { limit, offset, notifications } = this.state;
     if (!assetStatusInfo) return;
+    const { saleListingId, leaseListingId, leaseTransaction } = assetStatusInfo;
+    const isTransaction = leaseTransaction && leaseTransaction.id > 0;
+    const isAsset = !isTransaction && !leaseListingId && !saleListingId;
 
-    const { saleListingId, leaseListingId } = assetStatusInfo;
-
-    const requestPayload = {
+    let requestPayload: INotificationsPayload = {
       limit,
       offset,
-      ...(saleListingId && { sale_listing_id: saleListingId }),
-      ...(leaseListingId && { lease_listing_id: leaseListingId }),
     };
-    if (!isManagedProperty && (saleListingId || leaseListingId)) {
+    if (isTransaction) {
+      requestPayload = { ...requestPayload, lease_transaction_id: leaseTransaction.id };
+    }
+
+    if (!isTransaction && leaseListingId) {
+      requestPayload = { ...requestPayload, lease_listing_id: leaseListingId };
+    }
+
+    if (!isTransaction && saleListingId) {
+      requestPayload = { ...requestPayload, sale_listing_id: saleListingId };
+    }
+
+    if (isAsset) {
+      requestPayload = { ...requestPayload, asset_id: propertyId };
+    }
+
+    try {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
       this.setState({
         notifications: NotificationService.transformNotificationsData(response, notifications),
       });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 }

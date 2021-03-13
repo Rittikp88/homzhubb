@@ -9,7 +9,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -29,6 +29,7 @@ import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/Upload
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IStateProps {
   currentAssetId: number;
@@ -164,7 +165,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       /* Check if the uploaded document is one of the allowed type */
       if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
         const documentSource = { uri: document.uri, type: document.type, name: document.name };
-        await this.uploadDocument(documentSource);
+        await this.uploadDocument(documentSource as IDocumentSource);
       } else {
         AlertHelper.error({ message: t('unsupportedFormat') });
       }

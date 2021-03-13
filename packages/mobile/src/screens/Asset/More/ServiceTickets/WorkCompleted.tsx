@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -27,6 +28,7 @@ const WorkCompleted = (): React.ReactElement => {
   const { navigate, goBack } = useNavigation();
 
   const [comment, setComment] = useState('');
+  const [isLoading, setLoader] = useState(false);
   const [proofImages, setProofImages] = useState<ImagePickerResponse[]>([]);
   const attachments = useSelector(TicketSelectors.getProofAttachment);
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
@@ -34,6 +36,7 @@ const WorkCompleted = (): React.ReactElement => {
 
   // HANDLERS
   const handleImageUpload = async (): Promise<void> => {
+    const prevAttachments: ImagePickerResponse[] = cloneDeep(proofImages);
     try {
       const response: ImagePickerResponse | ImagePickerResponse[] = await ImagePicker.openPicker({
         compressImageMaxWidth: 400,
@@ -50,7 +53,7 @@ const WorkCompleted = (): React.ReactElement => {
       images.forEach((item) => {
         attachment = [...attachment, item.path];
       });
-      setProofImages(images);
+      setProofImages([...prevAttachments, ...images]);
       dispatch(TicketActions.setAttachment(attachment));
     } catch (err) {
       AlertHelper.error({ message: err.message });
@@ -64,20 +67,31 @@ const WorkCompleted = (): React.ReactElement => {
   const onWorkDone = async (): Promise<void> => {
     const formData = new FormData();
     let attachmentIds: number[] = [];
+    setLoader(true);
 
-    try {
-      if (proofImages.length) {
-        proofImages.forEach((item) => {
+    if (proofImages.length > 0) {
+      proofImages.forEach((image) => {
+        // @ts-ignore
+        formData.append('files[]', {
           // @ts-ignore
-          formData.append('files[]', item);
+          name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
+          uri: image.path,
+          type: image.mime,
         });
+      });
 
-        /* API call for attachment upload on s3 */
-        const response = await AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS);
-        const { data } = response;
+      /* API call for attachment upload on s3 */
+      const response = await AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS);
+      const { data, error } = response;
+      if (data && data.length > 0) {
         attachmentIds = data.map((i: IUploadAttachmentResponse) => i.id);
       }
 
+      if (error) {
+        AlertHelper.error({ message: t('common:fileCorrupt') });
+      }
+    }
+    try {
       if (selectedTicket) {
         const payload: ICompleteTicketPayload = {
           param: { ticketId: selectedTicket.ticketId },
@@ -91,6 +105,7 @@ const WorkCompleted = (): React.ReactElement => {
         };
 
         await TicketRepository.completeTicket(payload);
+        setLoader(false);
         AlertHelper.success({ message: t('ticketComplete') });
         navigate(ScreensKeys.ServiceTicketDetail);
         dispatch(TicketActions.clearState());
@@ -103,6 +118,7 @@ const WorkCompleted = (): React.ReactElement => {
         });
       }
     } catch (e) {
+      setLoader(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
@@ -115,7 +131,12 @@ const WorkCompleted = (): React.ReactElement => {
   // HANDLERS
 
   return (
-    <UserScreen title={selectedTicket?.propertyName ?? ''} pageTitle={t('workCompleted')} onBackPress={onGoBack}>
+    <UserScreen
+      title={selectedTicket?.propertyName ?? ''}
+      pageTitle={t('workCompleted')}
+      onBackPress={onGoBack}
+      loading={isLoading}
+    >
       <ProofOfCompletion onUploadImage={handleImageUpload} onUpdateComment={onCommentChange} />
       <Button type="primary" title={t('common:done')} onPress={onWorkDone} />
     </UserScreen>
