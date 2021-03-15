@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import * as yup from 'yup';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -120,11 +120,10 @@ const LeaseTermForm = ({
     { title: t('owner'), value: PaidByTypes.OWNER },
     { title: t('tenant'), value: PaidByTypes.TENANT },
   ];
-
+  const futureDate = DateUtils.getFutureDate(assetGroupType === AssetGroupTypes.COM ? 180 : 60);
   let dateLabel;
   let minDate;
-  let maxDate: string | undefined =
-    leaseEndDate ?? DateUtils.getFutureDate(assetGroupType === AssetGroupTypes.COM ? 180 : 60);
+  let maxDate: string | undefined = leaseEndDate || DateUtils.getDisplayDate(futureDate, DateFormats.YYYYMMDD);
   if (isFromEdit && leaseStartDate) {
     minDate = leaseStartDate;
   }

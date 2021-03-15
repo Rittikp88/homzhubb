@@ -190,7 +190,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                 />
                 <FormCalendar
                   allowPastDates
-                  maxDate={DateUtils.getCurrentDate()}
                   formProps={formProps}
                   name="date"
                   textType="label"

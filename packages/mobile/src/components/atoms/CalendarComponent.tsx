@@ -137,7 +137,7 @@ export class CalendarComponent extends Component<ICalendarProps, ICalendarState>
     const onPressItem = (): void => (isMonthView ? this.onSelectMonth(item, index) : this.onSelectYear(item, index));
     const yearView = isOnlyYearView ? Number(selectedDate) === Number(item) : month === index;
     const isSelected = isYearView ? year === item : yearView;
-    const isMobile = PlatformUtils.isAndroid();
+    const isMobile = PlatformUtils.isMobile();
 
     return (
       <TouchableOpacity
