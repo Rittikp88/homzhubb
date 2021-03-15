@@ -69,9 +69,9 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     const {
       route: { params },
     } = this.props;
-    const { verificationId } = prevState;
+    const { verificationId } = this.state;
 
-    if (params && params.verification_id && !verificationId) {
+    if (params && params.verification_id && verificationId !== params.verification_id) {
       await this.verifyEmail();
     }
   }
@@ -246,7 +246,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   private closeBottomSheet = (): void => {
-    this.setState({ isBottomSheetOpen: false, verificationId: '' });
+    this.setState({ isBottomSheetOpen: false });
   };
 }
 

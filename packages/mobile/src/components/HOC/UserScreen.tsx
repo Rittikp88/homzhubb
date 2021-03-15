@@ -68,6 +68,9 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
   const onProfilePress = useCallback(() => {
     navigation.navigate(ScreensKeys.More, {
       screen: ScreensKeys.UserProfileScreen,
+      params: {
+        verification_id: '',
+      },
       initial: false,
     });
     if (onNavigateCallback) {
