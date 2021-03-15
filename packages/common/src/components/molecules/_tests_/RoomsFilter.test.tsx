@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
+import { RoomsFilter } from '@homzhub/common/src/components/molecules/RoomsFilter';
 
 let props: any;
 let wrapper: ShallowWrapper;

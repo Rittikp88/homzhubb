@@ -1,10 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
-import { PopupProps, PopupActions } from 'reactjs-popup/dist/types';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
 import { useHistory } from 'react-router';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
@@ -16,34 +14,19 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import Popover from '@homzhub/web/src/components/atoms/Popover';
+import GoogleSearchBar from '@homzhub/web/src/components/molecules/GoogleSearchBar';
 import { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
-import MoreFilters from '@homzhub/web/src//screens/searchProperty/components/MoreFilter';
+import AssetFilters from '@homzhub/web/src/screens/searchProperty/components/AssetFilters';
 import PropertiesView from '@homzhub/web/src/screens/searchProperty/components/PropertiesView';
 import { SortByFilter } from '@homzhub/web/src/screens/searchProperty/components/SortByFilter';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
-
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 // TODO : Replace Dummy Data with Api Data;
-const defaultDropDownProps = (isMobile: boolean): PopupProps => ({
-  position: 'bottom left',
-  arrow: false,
-  contentStyle: {
-    marginTop: '-8px',
-    width: '92%',
-    height: 536,
-    overflow: 'auto',
-    marginRight: isMobile ? 10 : undefined,
-  },
-  closeOnDocumentClick: false,
-  children: undefined,
-  on: 'click',
-});
 interface IStateProps {
   properties: AssetSearch;
   filters: IFilter;
@@ -85,7 +68,6 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
 
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
-  const popupRef = useRef<PopupActions>(null);
   const buttonTitle = t('propertySearch:resetFilters');
   const empyStateButtonProps = (): IButtonProps => ({
     title: buttonTitle,
@@ -144,28 +126,21 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     getPropertiesListView();
   };
 
-  const closePopover = (): void => {
-    if (popupRef && popupRef.current) popupRef.current.close();
-  };
   return (
     <View style={styles.mainContainer}>
-      <Popover
-        content={<MoreFilters closePopover={closePopover} />}
-        popupProps={defaultDropDownProps(isMobile)}
-        forwardedRef={popupRef}
-      >
-        <View>
-          <Button
-            type="secondary"
-            title={t('assetMore:more')}
-            containerStyle={styles.moreButton}
-            titleStyle={styles.moreButtonTitle}
-            icon={icons.downArrow}
-            iconSize={20}
-            iconColor={theme.colors.blue}
-          />
+      <View style={styles.searchAndFilters}>
+        <View style={styles.searchBarContainer}>
+          <View style={styles.googleSearchBar}>
+            <GoogleSearchBar />
+          </View>
+          <Button type="primary" containerStyle={styles.searchButton}>
+            {isMobile ? <Icon name={icons.search} color={theme.colors.white} /> : t('search')}
+          </Button>
         </View>
-      </Popover>
+        <View style={styles.filters}>
+          <AssetFilters />
+        </View>
+      </View>
       <View style={styles.sortAndToggleButtons}>
         <View style={styles.sortByContainer}>
           <Text type="small" textType="regular" style={styles.textStyle}>
@@ -237,6 +212,30 @@ const styles = StyleSheet.create({
   toggleIcons: {
     marginHorizontal: 10,
   },
+  searchAndFilters: {
+    paddingLeft: 25,
+    backgroundColor: theme.colors.white,
+    borderRadius: 4,
+  },
+  searchBarContainer: {
+    flexDirection: 'row',
+    marginTop: 20,
+    width: '70%',
+    justifyContent: 'space-between',
+  },
+  googleSearchBar: {
+    width: '85%',
+  },
+  searchButton: {
+    height: 33,
+    color: theme.colors.white,
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  filters: {
+    marginVertical: 20,
+  },
   cardMobile: {
     width: '100%',
     marginLeft: 0,
@@ -244,19 +243,7 @@ const styles = StyleSheet.create({
   cardTablet: {
     width: '47%',
   },
-  moreButton: {
-    width: 80,
-    height: 31,
-    backgroundColor: theme.colors.lightGrayishBlue,
-    marginTop: 60,
-    flexDirection: 'row',
-  },
-  moreButtonTitle: {
-    alignItems: 'center',
-    textAlign: 'center',
-    marginVertical: 3,
-    marginHorizontal: 6,
-  },
+
   reset: {
     flex: 0,
     borderWidth: 0,

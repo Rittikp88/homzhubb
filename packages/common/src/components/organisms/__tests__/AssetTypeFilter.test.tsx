@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
+import { AssetTypeFilter } from '@homzhub/common/src/components/organisms/AssetTypeFilter';
 import { FilterData } from '@homzhub/common/src/mocks/FilterData';
 
 let props: any;

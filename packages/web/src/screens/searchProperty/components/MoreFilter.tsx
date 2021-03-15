@@ -95,8 +95,10 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
     } = this.props;
     return (
       <>
-        <View style={styles.screen}>
+        <View>
           <Icon name={icons.close} style={styles.iconStyle} onPress={closePopover} />
+        </View>
+        <View style={styles.screen}>
           <View style={styles.mainContainer}>
             {this.renderSearchRadius()}
             {this.renderDateAdded()}
@@ -124,6 +126,7 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
               title={t('showProperties')}
               containerStyle={styles.buttonStyle}
               onPress={this.handleSubmit}
+              titleStyle={styles.buttonTitleStyle}
             />
           </View>
         </View>
@@ -731,6 +734,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginHorizontal: theme.layout.screenPadding,
     flexWrap: 'wrap',
+    height: 380,
+    overflowY: 'scroll',
+    overflowX: 'hidden',
   },
   header: {
     margin: theme.layout.screenPadding,
@@ -870,6 +876,11 @@ const styles = StyleSheet.create({
   iconStyle: {
     flex: 1,
     alignSelf: 'flex-end',
-    fontSize: 20,
+    fontSize: 24,
+    marginRight: 12,
+    marginBottom: 12,
+  },
+  buttonTitleStyle: {
+    marginHorizontal: 0,
   },
 });

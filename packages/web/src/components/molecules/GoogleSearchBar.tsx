@@ -37,8 +37,8 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
 
   const updateLatLng = (result: IAddressComponent[], formatedAddress: string, { lat, lng }: ILatLng): void => {
     const { lngValue, latValue } = GeolocationService.getFormattedCords(lat, lng);
-    const { setFilter } = props;
-    console.log(result);
+    const { setFilter, getProperties } = props;
+
     setSearchedPropertyCurrency(result);
     setFilter({
       search_address: formatedAddress,
@@ -47,6 +47,7 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
     });
 
     NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.SEARCH_PROPERTY });
+    getProperties();
   };
   const setSearchedPropertyCurrency = (placeDetail: IAddressComponent[]): void => {
     const { countryData, setFilter } = props;

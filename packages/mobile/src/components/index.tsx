@@ -26,8 +26,6 @@ export { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeasePro
 export { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
 export { PropertyDetailsLocation } from '@homzhub/mobile/src/components/molecules/PropertyDetailsLocation';
 export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/PropertyMapCard';
-export { Range } from '@homzhub/mobile/src/components/molecules/Range';
-export { RoomsFilter } from '@homzhub/mobile/src/components/molecules/RoomsFilter';
 export { GoogleSearchBar } from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 export { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
@@ -36,7 +34,6 @@ export { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/Upl
 
 // Organisms
 export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
-export { AssetTypeFilter } from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export type { IMetricsData } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';

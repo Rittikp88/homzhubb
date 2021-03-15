@@ -2,7 +2,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { Range } from '@homzhub/mobile/src/components/molecules/Range';
+import { Range } from '@homzhub/common/src/components/molecules/Range';
 import { AreaUnit } from '@homzhub/common/src/mocks/AreaUnit';
 
 let props: any;

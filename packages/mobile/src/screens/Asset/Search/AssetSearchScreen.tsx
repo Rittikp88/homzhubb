@@ -31,7 +31,7 @@ import { FontWeightType, Label, Text } from '@homzhub/common/src/components/atom
 import { ToggleButton } from '@homzhub/common/src/components/atoms/ToggleButton';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { BottomSheetListView, CurrentLocation, Range, RoomsFilter } from '@homzhub/mobile/src/components';
-import AssetTypeFilter from '@homzhub/mobile/src/components/organisms/AssetTypeFilter';
+import AssetTypeFilter from '@homzhub/common/src/components/organisms/AssetTypeFilter';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import PropertySearchList from '@homzhub/mobile/src/components/organisms/PropertySearchList';
