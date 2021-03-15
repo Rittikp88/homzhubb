@@ -246,7 +246,7 @@ export class AssetCard extends Component<Props, IState> {
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const showRightIcon = !isFromTenancies && !isInviteAccepted;
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
-
+    const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
     return (
       <>
         {!!userData.fullName && (
@@ -273,7 +273,7 @@ export class AssetCard extends Component<Props, IState> {
           <>
             <Divider containerStyles={styles.divider} />
             <LeaseProgress
-              progress={totalSpendPeriod || assetCreation.percentage / 100}
+              progress={progress}
               fromDate={leaseStartDate}
               toDate={leaseEndDate}
               isPropertyVacant={isVacant}
