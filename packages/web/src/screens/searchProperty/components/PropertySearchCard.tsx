@@ -25,10 +25,22 @@ interface IProps {
   cardImageStyle?: ImageStyle;
   priceUnit: string;
   isFooterRequired?: boolean;
+  addressContainerStyleProp?: ViewStyle;
+  subContainerStyleProp?: ViewStyle;
+  propertyAddressContainerStyle?: ViewStyle;
 }
 
 const PropertySearchCard = (props: IProps): React.ReactElement => {
-  const { investmentData, containerStyleProp, cardImageCarouselStyle = {}, cardImageStyle = {}, priceUnit } = props;
+  const {
+    investmentData,
+    containerStyleProp,
+    cardImageCarouselStyle = {},
+    cardImageStyle = {},
+    priceUnit,
+    addressContainerStyleProp,
+    subContainerStyleProp,
+    propertyAddressContainerStyle,
+  } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const {
     address,
@@ -43,6 +55,7 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     leaseTerm,
     saleTerm,
     id,
+    attachments,
   } = investmentData;
 
   const history = useHistory();
@@ -91,11 +104,15 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.card, isMobile && styles.cardMobile, containerStyleProp]}>
       <View style={styles.imageContainer}>
-        <CardImageCarousel cardImageCarouselStyle={cardImageCarouselStyle} cardImageStyle={cardImageStyle} />
+        <CardImageCarousel
+          cardImageCarouselStyle={cardImageCarouselStyle}
+          cardImageStyle={cardImageStyle}
+          imagesArray={attachments}
+        />
       </View>
       <TouchableOpacity onPress={navigateToSearchView}>
         <View style={styles.mainBody}>
-          <View style={styles.subContainer}>
+          <View style={[styles.subContainer, subContainerStyleProp]}>
             <View style={styles.propertyRating}>
               <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
                 {propertyType}
@@ -108,9 +125,9 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
               primaryAddressStyle={styles.addressTextStyle}
               subAddressStyle={styles.subAddressTextStyle}
               subAddress={subAddress}
-              containerStyle={styles.propertyAddress}
+              containerStyle={[styles.propertyAddress, propertyAddressContainerStyle]}
             />
-            <View style={styles.addressContainer}>
+            <View style={[styles.addressContainer, addressContainerStyleProp]}>
               <View style={styles.propertyValueContainer}>
                 <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
               </View>
@@ -173,6 +190,7 @@ const styles = StyleSheet.create({
   subContainer: {
     flex: 0.7,
   },
+
   propertyRating: {
     flexDirection: 'row',
     justifyContent: 'space-between',

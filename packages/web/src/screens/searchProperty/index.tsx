@@ -205,12 +205,16 @@ const styles = StyleSheet.create({
   sortAndToggleButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    padding: 20,
   },
   toggleButtons: {
     flexDirection: 'row',
   },
   toggleIcons: {
     marginHorizontal: 10,
+  },
+  sortByContainer: {
+    flexDirection: 'row',
   },
   searchAndFilters: {
     paddingLeft: 25,
@@ -264,10 +268,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
     marginTop: 4,
   },
-  sortByContainer: {
-    flexDirection: 'row',
-    marginTop: 22,
-  },
+
   label: {
     marginLeft: 24,
     marginTop: 2,

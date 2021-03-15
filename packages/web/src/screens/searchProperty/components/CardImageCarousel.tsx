@@ -4,14 +4,16 @@ import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { NextPrevBtn } from '@homzhub/web/src/components';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { HeroSectionData } from '@homzhub/common/src/constants/LandingScreen';
 
 interface IProps {
   cardImageCarouselStyle: ViewStyle;
   cardImageStyle: ImageStyle;
+  imagesArray: Attachment[];
 }
 
 const defaultResponsive = {
@@ -25,21 +27,25 @@ const defaultResponsive = {
   },
 };
 
-const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle }: IProps) => {
+const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle, imagesArray }: IProps) => {
   // TODO Charit: Replace the images and label sources with props after integration.
   return (
     <View style={cardImageCarouselStyle}>
       <MultiCarousel passedProps={carouselProps}>
-        {HeroSectionData.map((item) => (
-          <View key={item.title}>
-            <Image
-              style={[styles.image, cardImageStyle]}
-              source={{
-                uri: item.image,
-              }}
-            />
-          </View>
-        ))}
+        {imagesArray.length === 0 ? (
+          <ImagePlaceholder />
+        ) : (
+          imagesArray.map((item) => (
+            <View key={item.id}>
+              <Image
+                style={[styles.image, cardImageStyle]}
+                source={{
+                  uri: item.link,
+                }}
+              />
+            </View>
+          ))
+        )}
       </MultiCarousel>
     </View>
   );
@@ -84,11 +90,6 @@ const CarouselButtons = ({ next, previous }: ButtonGroupProps): React.ReactEleme
         onBtnClick={updateCarouselIndex}
       />
       <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
-      <View style={styles.propertyHighlightLabelContainer}>
-        <Typography variant="label" size="regular" style={styles.propertyHighlightLabel}>
-          Description - From API
-        </Typography>
-      </View>
     </>
   );
 };
@@ -133,17 +134,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 20,
     right: 20,
-  },
-  propertyHighlightLabelContainer: {
-    position: 'absolute',
-    left: 20,
-    bottom: 20,
-    borderRadius: 2,
-    backgroundColor: theme.colors.imageVideoPaginationBackground,
-  },
-  propertyHighlightLabel: {
-    color: theme.colors.white,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
   },
 });

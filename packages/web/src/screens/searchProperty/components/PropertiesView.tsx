@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useUp, useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
 import InfiniteScrollView from '@homzhub/web/src/components/hoc/InfiniteScroll';
 import PropertySearchCard from '@homzhub/web/src/screens/searchProperty/components/PropertySearchCard';
 import SearchMapView from '@homzhub/web/src/screens/searchProperty/components/SearchMapView';
@@ -23,6 +24,7 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const isTab = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+
   return (
     <View style={styles.container}>
       {isListView && isDesktop && <SearchMapView />}
@@ -42,6 +44,7 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
                 key={item.id}
                 style={[
                   isListView ? styles.cardList : styles.cardGrid,
+                  isMobile && isListView && styles.cardListMobile,
                   isTab && !isListView && styles.cardGridTab,
                   isMobile && !isListView && styles.cardGridMobile,
                 ]}
@@ -49,12 +52,15 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
                 <PropertySearchCard
                   key={item.id}
                   investmentData={item}
-                  containerStyleProp={isListView ? styles.listView : styles.cardView}
+                  containerStyleProp={isListView && !isMobile ? styles.listView : styles.cardView}
                   cardImageCarouselStyle={
                     isListView ? styles.cardImageCarouselStyleList : styles.cardImageCarouselStyleGrid
                   }
                   cardImageStyle={isListView ? styles.cardImageStyleList : styles.cardImageStyleGrid}
                   priceUnit={transaction_type === 0 ? 'mo' : ''}
+                  addressContainerStyleProp={isListView ? styles.addressContainerStyleProp : undefined}
+                  subContainerStyleProp={isListView ? styles.subContainerStyleProp : undefined}
+                  propertyAddressContainerStyle={isListView ? styles.propertyAddressContainerStyle : undefined}
                 />
               </View>
             ))}
@@ -88,6 +94,15 @@ const styles = StyleSheet.create({
   },
   cardList: {
     width: '45vw',
+  },
+  cardListMobile: {
+    width: '85vw',
+  },
+  infiniteGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    width: theme.layout.dashboardWidth,
+    backgroundColor: 'red',
   },
   cardGrid: {
     display: 'flex',
@@ -124,5 +139,17 @@ const styles = StyleSheet.create({
   },
   cardView: {
     flexDirection: 'column',
+  },
+  listViewDetails: {
+    height: 230,
+  },
+  addressContainerStyleProp: {
+    flexDirection: 'column',
+  },
+  subContainerStyleProp: {
+    width: '45%',
+  },
+  propertyAddressContainerStyle: {
+    paddingTop: 36,
   },
 });
