@@ -16,11 +16,14 @@ export interface IPopupOptions {
   label: string;
 }
 
+type TextSizeType = 'small' | 'regular' | 'large';
+
 interface IProps<T extends IPopupOptions> {
   options: T[];
   onMenuOptionPress: (option: T) => void;
   from?: string;
   autoDetect?: () => void;
+  labelType?: TextSizeType;
 }
 
 const PopupMenuOptions = <T extends IPopupOptions>({
@@ -28,6 +31,7 @@ const PopupMenuOptions = <T extends IPopupOptions>({
   onMenuOptionPress,
   from,
   autoDetect,
+  labelType = 'large',
 }: IProps<T>): React.ReactElement => {
   const { primaryColor, darkTint4 } = theme.colors;
   const { t } = useTranslation();
@@ -56,7 +60,7 @@ const PopupMenuOptions = <T extends IPopupOptions>({
             >
               {item.icon && <Icon name={item.icon} color={isHovered ? primaryColor : darkTint4} style={styles.icon} />}
               <Label
-                type="large"
+                type={labelType}
                 textType="semiBold"
                 style={[styles.optionText, isHovered && styles.optionTextHovered]}
               >

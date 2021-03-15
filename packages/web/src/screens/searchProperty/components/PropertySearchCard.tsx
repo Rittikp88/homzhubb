@@ -10,7 +10,6 @@ import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecul
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import CardImageCarousel from '@homzhub/web/src/screens/searchProperty/components/CardImageCarousel';
-import SalePropertyFooter from '@homzhub/web/src/screens/dashboard/components/SalePropertyFooter';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -27,14 +26,7 @@ interface IProps {
 }
 
 const PropertySearchCard = (props: IProps): React.ReactElement => {
-  const {
-    investmentData,
-    containerStyleProp,
-    cardImageCarouselStyle = {},
-    cardImageStyle = {},
-    priceUnit,
-    isFooterRequired = true,
-  } = props;
+  const { investmentData, containerStyleProp, cardImageCarouselStyle = {}, cardImageStyle = {}, priceUnit } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const {
     address,
@@ -95,38 +87,35 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
         <CardImageCarousel cardImageCarouselStyle={cardImageCarouselStyle} cardImageStyle={cardImageStyle} />
       </View>
       <View style={styles.mainBody}>
-        <View style={styles.propertyRating}>
-          <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
-            {propertyType}
-          </Typography>
-          <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
-        </View>
-        <PropertyAddress
-          isIcon={false}
-          primaryAddress={primaryAddress}
-          primaryAddressStyle={styles.addressTextStyle}
-          subAddressStyle={styles.subAddressTextStyle}
-          subAddress={subAddress}
-          containerStyle={styles.propertyAddress}
-        />
-        <View style={styles.addressContainer}>
-          <View style={styles.propertyValueContainer}>
-            <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
+        <View style={styles.subContainer}>
+          <View style={styles.propertyRating}>
+            <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
+              {propertyType}
+            </Typography>
+            <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
           </View>
-          {amenitiesData.length > 0 && (
-            <PropertyAmenities
-              data={amenitiesData}
-              direction="column"
-              containerStyle={styles.propertyInfoBox}
-              contentContainerStyle={styles.cardIcon}
-            />
-          )}
-        </View>
-        {isFooterRequired && (
-          <View>
-            <SalePropertyFooter containerStyle={styles.footerStyle} from="Search" />
+          <PropertyAddress
+            isIcon={false}
+            primaryAddress={primaryAddress}
+            primaryAddressStyle={styles.addressTextStyle}
+            subAddressStyle={styles.subAddressTextStyle}
+            subAddress={subAddress}
+            containerStyle={styles.propertyAddress}
+          />
+          <View style={styles.addressContainer}>
+            <View style={styles.propertyValueContainer}>
+              <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
+            </View>
+            {amenitiesData.length > 0 && (
+              <PropertyAmenities
+                data={amenitiesData}
+                direction="column"
+                containerStyle={styles.propertyInfoBox}
+                contentContainerStyle={styles.cardIcon}
+              />
+            )}
           </View>
-        )}
+        </View>
       </View>
     </View>
   );
@@ -157,19 +146,23 @@ const styles = StyleSheet.create({
     margin: 12,
   },
   propertyAddress: {
-    flex: 0,
+    flex: 1,
     marginTop: 8,
     marginBottom: 8,
     minHeight: 60,
     alignItems: 'flex-start',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   mainBody: {
+    flex: 1,
     flexDirection: 'column',
     marginTop: 16,
     marginHorizontal: 20,
     marginBottom: 0,
     minHeight: '200px',
+  },
+  subContainer: {
+    flex: 0.7,
   },
   propertyRating: {
     flexDirection: 'row',
@@ -204,8 +197,10 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   addressTextStyle: {
+    flex: 0.5,
     fontSize: 14,
     fontWeight: '600',
+    marginVertical: 0,
   },
   subAddressTextStyle: {
     fontSize: 14,
@@ -218,9 +213,7 @@ const styles = StyleSheet.create({
   addressContainer: {
     flexDirection: 'row',
   },
-  propertyValueContainer: {
-    width: '50%',
-  },
+  propertyValueContainer: { width: '40%' },
   footerStyle: {
     paddingLeft: 0,
   },

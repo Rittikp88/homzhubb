@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
-import PropertiesView from '@homzhub/web/src/screens/searchProperty/components/PropertiesView';
-import { PopupProps } from 'reactjs-popup/dist/types';
+import { PopupProps, PopupActions } from 'reactjs-popup/dist/types';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -12,8 +11,12 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
+import { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import MoreFilters from '@homzhub/web/src//screens/searchProperty/components/MoreFilter';
+import PropertiesView from '@homzhub/web/src/screens/searchProperty/components/PropertiesView';
+import { SortByFilter } from '@homzhub/web/src/screens/searchProperty/components/SortByFilter';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
@@ -27,7 +30,6 @@ const defaultDropDownProps = (isMobile: boolean): PopupProps => ({
   position: 'bottom left',
   arrow: false,
   contentStyle: {
-    minWidth: 10,
     marginTop: '-8px',
     width: '92%',
     height: 536,
@@ -36,6 +38,7 @@ const defaultDropDownProps = (isMobile: boolean): PopupProps => ({
   },
   closeOnDocumentClick: false,
   children: undefined,
+  on: 'click',
 });
 
 interface IStateProps {
@@ -49,6 +52,7 @@ interface IDispatchProps {
   getFilterDetails: (payload: IFilter) => void;
   setInitialState: () => void;
   setFilter: (payload: IFilter) => void;
+  setInitialMiscellaneous: () => void;
 }
 
 interface IProps {
@@ -65,9 +69,11 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
   const toggleListView = (): void => {
     setIsListView(true);
   };
+
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
-  const { properties, setInitialState, getProperties, filters, filterData, getFilterDetails } = props;
+  const { properties, setInitialState, getProperties, filters, filterData, getFilterDetails, setFilter } = props;
+  const popupRef = useRef<PopupActions>(null);
   const buttonTitle = t('propertySearch:resetFilters');
   const empyStateButtonProps = (): IButtonProps => ({
     title: buttonTitle,
@@ -75,14 +81,20 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     textSize: 'small',
     fontType: 'semiBold',
     type: 'text',
+    onPress: clearForm,
   });
 
+  const clearForm = (): void => {
+    const { setInitialMiscellaneous } = props;
+    setInitialMiscellaneous();
+    getProperties();
+  };
+
+  const initialCount = properties.results.length === 0 ? 0 : 1;
   useEffect(() => {
-    console.log(filters);
     if (!filterData) {
       getFilterDetails({ asset_group: filters.asset_group });
     }
-    console.log(filterData);
     getProperties();
     return (): void => {
       setInitialState();
@@ -92,9 +104,22 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     return null;
   }
 
+  const onSelectSort = (value: IPopupOptions): void => {
+    setFilter({ sort_by: value.value as string, is_sorting: true, offset: 0 });
+    getProperties();
+  };
+
+  const closePopover = (): void => {
+    if (popupRef && popupRef.current) popupRef.current.close();
+  };
+
   return (
     <View style={styles.mainContainer}>
-      <Popover content={<MoreFilters />} popupProps={defaultDropDownProps(isMobile)}>
+      <Popover
+        content={<MoreFilters closePopover={closePopover} />}
+        popupProps={defaultDropDownProps(isMobile)}
+        forwardedRef={popupRef}
+      >
         <View>
           <Button
             type="secondary"
@@ -109,7 +134,19 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
       </Popover>
 
       <View style={styles.sortAndToggleButtons}>
-        <View>Sort By :</View>
+        <View style={styles.sortByContainer}>
+          <Text type="small" textType="regular" style={styles.textStyle}>
+            {t('propertySearch:sortBy')}
+          </Text>
+          <SortByFilter filters={filters} filterData={filterData} onSelectSort={onSelectSort} />
+          <Label type="large" textType="regular" style={styles.label}>
+            {t('propertySearch:filterCount', {
+              intialCount: initialCount,
+              resultLength: properties.results.length,
+              count: properties.count,
+            })}
+          </Label>
+        </View>
         <View style={styles.toggleButtons}>
           <Icon
             name={icons.grid}
@@ -201,6 +238,18 @@ const styles = StyleSheet.create({
   emptyStateTextStyle: {
     color: theme.colors.darkTint3,
   },
+  textStyle: {
+    marginRight: 8,
+    marginTop: 4,
+  },
+  sortByContainer: {
+    flexDirection: 'row',
+    marginTop: 22,
+  },
+  label: {
+    marginLeft: 24,
+    marginTop: 2,
+  },
 });
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -213,13 +262,14 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setInitialState, getProperties, getFilterDetails, setFilter } = SearchActions;
+  const { setInitialState, getProperties, getFilterDetails, setFilter, setInitialMiscellaneous } = SearchActions;
   return bindActionCreators(
     {
       getProperties,
       setInitialState,
       getFilterDetails,
       setFilter,
+      setInitialMiscellaneous,
     },
     dispatch
   );

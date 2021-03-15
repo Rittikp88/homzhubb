@@ -86,6 +86,12 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const onCloseUserOptions = (): void => {
     setIsUserOptions(false);
   };
+  const popOverContentStyle = {
+    height: 40,
+    marginTop: 24,
+    width: '90%',
+    marginLeft: 16,
+  };
   const userOptions: IPopupOptions[] = [
     {
       label: t('common:logout'),
@@ -103,6 +109,13 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
       });
     }
   };
+  const popoverContent = (): React.ReactElement => {
+    return (
+      <View style={navBarStyles.searchBarContainer}>
+        <GoogleSearchBar />
+      </View>
+    );
+  };
   return (
     <StickyHeader>
       <View style={navBarStyles.container}>
@@ -118,17 +131,30 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
           )}
           <View style={navBarStyles.logo}>{isMobile ? <HomzhubLogo /> : <NavLogo />}</View>
           <View style={navBarStyles.search}>
-            {!isTablet ? (
+            {!isMobile ? (
               <GoogleSearchBar />
             ) : (
-              <Button
-                type="primary"
-                icon={icons.search}
-                iconSize={22}
-                iconColor={theme.colors.darkTint6}
-                containerStyle={navBarStyles.searchIc}
-                testID="btnSearch"
-              />
+              <Popover
+                content={popoverContent()}
+                popupProps={{
+                  on: 'click',
+                  arrow: false,
+                  closeOnDocumentClick: true,
+                  children: undefined,
+                  contentStyle: popOverContentStyle,
+                  className: 'my-Popup',
+                  onClose: onCloseUserOptions,
+                }}
+              >
+                <Button
+                  type="primary"
+                  icon={icons.search}
+                  iconSize={22}
+                  iconColor={theme.colors.darkTint6}
+                  containerStyle={navBarStyles.searchIc}
+                  testID="btnSearch"
+                />
+              </Popover>
             )}
           </View>
           <View style={navBarStyles.itemsContainer}>
@@ -179,6 +205,7 @@ interface INavBarStyle {
   items: ViewStyle;
   menuIc: ViewStyle;
   searchIc: ViewStyle;
+  searchBarContainer: ViewStyle;
 }
 
 const navBarStyle = (isMobile: boolean, isTablet: boolean, isDesktop: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
@@ -228,6 +255,10 @@ const navBarStyle = (isMobile: boolean, isTablet: boolean, isDesktop: boolean): 
     searchIc: {
       marginRight: 12,
       backgroundColor: theme.colors.secondaryColor,
+    },
+    searchBarContainer: {
+      justifyContent: 'center',
+      marginTop: 6,
     },
   });
 

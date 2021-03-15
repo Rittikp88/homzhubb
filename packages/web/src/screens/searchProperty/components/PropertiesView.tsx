@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useUp, useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import PropertySearchCard from '@homzhub/web/src/screens/searchProperty/components/PropertySearchCard';
 import SearchMapView from '@homzhub/web/src/screens/searchProperty/components/SearchMapView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -15,6 +15,8 @@ interface IProps {
 
 const PropertiesView: FC<IProps> = ({ isListView, property, transaction_type }: IProps) => {
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
+  const isTab = useDown(deviceBreakpoint.TABLET);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
 
   return (
     <View style={styles.listViewContainer}>
@@ -22,7 +24,14 @@ const PropertiesView: FC<IProps> = ({ isListView, property, transaction_type }: 
       <View style={isListView ? styles.containerList : styles.containerGrid}>
         <View style={styles.subContainerGrid}>
           {property.results.map((item: Asset) => (
-            <View key={item.id} style={isListView ? styles.cardList : styles.cardGrid}>
+            <View
+              key={item.id}
+              style={[
+                isListView ? styles.cardList : styles.cardGrid,
+                isTab && styles.cardGridTab,
+                isMobile && styles.cardGridMobile,
+              ]}
+            >
               <PropertySearchCard
                 key={item.id}
                 investmentData={item}
@@ -66,6 +75,12 @@ const styles = StyleSheet.create({
   cardGrid: {
     width: '31%',
     marginLeft: 18,
+  },
+  cardGridTab: {
+    width: '45%',
+  },
+  cardGridMobile: {
+    width: '95%',
   },
   cardImageCarouselStyleList: {
     height: 230,

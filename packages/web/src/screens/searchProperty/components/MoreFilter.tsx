@@ -50,7 +50,11 @@ interface IAssetFiltersState {
   data: IAdvancedFilters;
 }
 
-type Props = IStateProps & IDispatchProps & WithTranslation & IWithMediaQuery;
+interface IFilerProps {
+  closePopover: () => void;
+}
+
+type Props = IStateProps & IDispatchProps & WithTranslation & IWithMediaQuery & IFilerProps;
 
 const ShowInMvpRelease = false;
 
@@ -87,10 +91,12 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
       isTablet,
       isOnlyTablet,
       isMobile,
+      closePopover,
     } = this.props;
     return (
       <>
         <View style={styles.screen}>
+          <Icon name={icons.close} style={styles.iconStyle} onPress={closePopover} />
           <View style={styles.mainContainer}>
             {this.renderSearchRadius()}
             {this.renderDateAdded()}
@@ -576,9 +582,10 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
   };
 
   private handleSubmit = (): void => {
-    const { getProperties, setFilter } = this.props;
+    const { getProperties, setFilter, closePopover } = this.props;
     setFilter({ offset: 0 });
     getProperties();
+    closePopover();
   };
 
   public translateData = (data: IFilterData[]): IFilterData[] => {
@@ -784,6 +791,7 @@ const styles = StyleSheet.create({
     width: 317,
     height: 48,
     marginVertical: 10,
+    marginHorizontal: 2,
   },
   dropdownMobile: {
     width: theme.viewport.width - 80,
@@ -858,5 +866,10 @@ const styles = StyleSheet.create({
   },
   switchContainer: {
     marginTop: 10,
+  },
+  iconStyle: {
+    flex: 1,
+    alignSelf: 'flex-end',
+    fontSize: 20,
   },
 });
