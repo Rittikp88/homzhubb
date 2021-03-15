@@ -50,20 +50,17 @@ const Description = (props: IProps): React.ReactElement => {
     );
   };
 
-  const descriptionValue = (isDescription: boolean): string | undefined => {
-    if (isDescription) {
-      if (description !== '') {
-        return description;
-      }
-    } else {
-      if (leaseTerm && leaseTerm.description !== '') {
-        return leaseTerm.description;
-      }
-      if (saleTerm && saleTerm.description !== '') {
-        return saleTerm.description;
-      }
+  const descriptionValue = (): string | undefined => {
+    if (leaseTerm && leaseTerm.description !== '') {
+      return leaseTerm.description;
     }
-    return t('noDescription');
+    if (saleTerm && saleTerm.description !== '') {
+      return saleTerm.description;
+    }
+    if (description === '') {
+      return t('noDescription');
+    }
+    return description;
   };
 
   return (
@@ -72,12 +69,9 @@ const Description = (props: IProps): React.ReactElement => {
         {t('description')}
       </Typography>
       <Typography variant="label" size="large" style={styles.description}>
-        {descriptionValue(true)}
+        {descriptionValue()}
       </Typography>
       <br />
-      <Typography variant="label" size="large" style={styles.description}>
-        {descriptionValue(false)}
-      </Typography>
       <View style={styles.divider}>
         <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.titleText}>
           {t('factsFeatures')}

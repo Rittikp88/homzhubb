@@ -1,12 +1,13 @@
 import React, { FC, useState, useRef } from 'react';
 import { ImageStyle, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { History } from 'history';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -54,16 +55,21 @@ const NavItem: FC<INavItem> = ({ icon, text, index, isActive, onNavItemPress }: 
   );
 };
 
-type NavbarProps = IDispatchProps;
+type LocationParams = { pathname: string };
+interface IProps {
+  location: LocationParams;
+  history: History;
+}
+
+type NavbarProps = IDispatchProps & IProps;
 const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const { t } = useTranslation();
-  const { logout } = props;
+  const { logout, location, history } = props;
   const isDesktop = useDown(deviceBreakpoint.DESKTOP);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [isSelected, setIsSelected] = useState(-1);
   const navBarStyles = navBarStyle(isMobile, isTablet, isDesktop);
-  const history = useHistory();
   const navItems = [
     {
       icon: icons.headset,
@@ -116,6 +122,12 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
       </View>
     );
   };
+
+  const navigateToScreen = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+  };
+  const { SEARCH_PROPERTY } = RouteNames.protectedRoutes;
+  const isSearchBarVisible = !compareUrlsWithPathname([SEARCH_PROPERTY], location.pathname);
   return (
     <StickyHeader>
       <View style={navBarStyles.container}>
@@ -129,34 +141,39 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
               containerStyle={navBarStyles.menuIc}
             />
           )}
-          <View style={navBarStyles.logo}>{isMobile ? <HomzhubLogo /> : <NavLogo />}</View>
-          <View style={navBarStyles.search}>
-            {!isMobile ? (
-              <GoogleSearchBar />
-            ) : (
-              <Popover
-                content={popoverContent()}
-                popupProps={{
-                  on: 'click',
-                  arrow: false,
-                  closeOnDocumentClick: true,
-                  children: undefined,
-                  contentStyle: popOverContentStyle,
-                  className: 'my-Popup',
-                  onClose: onCloseUserOptions,
-                }}
-              >
-                <Button
-                  type="primary"
-                  icon={icons.search}
-                  iconSize={22}
-                  iconColor={theme.colors.darkTint6}
-                  containerStyle={navBarStyles.searchIc}
-                  testID="btnSearch"
-                />
-              </Popover>
-            )}
-          </View>
+          <TouchableOpacity onPress={navigateToScreen}>
+            <View style={navBarStyles.logo}>{isMobile ? <HomzhubLogo /> : <NavLogo />}</View>
+          </TouchableOpacity>
+          {isSearchBarVisible && (
+            <View style={navBarStyles.search}>
+              {!isMobile ? (
+                <GoogleSearchBar />
+              ) : (
+                <Popover
+                  content={popoverContent()}
+                  popupProps={{
+                    on: 'click',
+                    arrow: false,
+                    closeOnDocumentClick: true,
+                    children: undefined,
+                    contentStyle: popOverContentStyle,
+                    className: 'my-Popup',
+                    onClose: onCloseUserOptions,
+                  }}
+                >
+                  <Button
+                    type="primary"
+                    icon={icons.search}
+                    iconSize={22}
+                    iconColor={theme.colors.darkTint6}
+                    containerStyle={navBarStyles.searchIc}
+                    testID="btnSearch"
+                  />
+                </Popover>
+              )}
+            </View>
+          )}
+
           <View style={navBarStyles.itemsContainer}>
             {navItems.map((item, index) => (
               <NavItem

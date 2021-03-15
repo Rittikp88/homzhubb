@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useUp, useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import InfiniteScrollView from '@homzhub/web/src/components/hoc/InfiniteScroll';
 import PropertySearchCard from '@homzhub/web/src/screens/searchProperty/components/PropertySearchCard';
 import SearchMapView from '@homzhub/web/src/screens/searchProperty/components/SearchMapView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -10,40 +11,54 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 interface IProps {
   isListView: boolean;
   property: AssetSearch;
+  fetchData: (value: number) => void;
+  hasMore: boolean;
+  limit: number;
   transaction_type: number;
+  loader: boolean;
 }
 
-const PropertiesView: FC<IProps> = ({ isListView, property, transaction_type }: IProps) => {
+const PropertiesView: FC<IProps> = (props: IProps) => {
+  const { isListView, property, fetchData, hasMore, limit, transaction_type, loader } = props;
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const isTab = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-
   return (
-    <View style={styles.listViewContainer}>
+    <View style={styles.container}>
       {isListView && isDesktop && <SearchMapView />}
       <View style={isListView ? styles.containerList : styles.containerGrid}>
         <View style={styles.subContainerGrid}>
-          {property.results.map((item: Asset) => (
-            <View
-              key={item.id}
-              style={[
-                isListView ? styles.cardList : styles.cardGrid,
-                isTab && styles.cardGridTab,
-                isMobile && styles.cardGridMobile,
-              ]}
-            >
-              <PropertySearchCard
+          <InfiniteScrollView
+            data={property.results.length}
+            fetchMoreData={fetchData}
+            height={isDesktop && isListView ? '1200px' : '150vh'}
+            style={!isListView ? { display: 'flex', flexWrap: 'wrap', width: '88vw' } : {}}
+            hasMore={hasMore}
+            limit={limit}
+            loader={loader}
+          >
+            {property.results.map((item: Asset) => (
+              <View
                 key={item.id}
-                investmentData={item}
-                containerStyleProp={isListView ? styles.listView : styles.cardView}
-                cardImageCarouselStyle={
-                  isListView ? styles.cardImageCarouselStyleList : styles.cardImageCarouselStyleGrid
-                }
-                cardImageStyle={isListView ? styles.cardImageStyleList : styles.cardImageStyleGrid}
-                priceUnit={transaction_type === 0 ? 'mo' : ''}
-              />
-            </View>
-          ))}
+                style={[
+                  isListView ? styles.cardList : styles.cardGrid,
+                  isTab && !isListView && styles.cardGridTab,
+                  isMobile && !isListView && styles.cardGridMobile,
+                ]}
+              >
+                <PropertySearchCard
+                  key={item.id}
+                  investmentData={item}
+                  containerStyleProp={isListView ? styles.listView : styles.cardView}
+                  cardImageCarouselStyle={
+                    isListView ? styles.cardImageCarouselStyleList : styles.cardImageCarouselStyleGrid
+                  }
+                  cardImageStyle={isListView ? styles.cardImageStyleList : styles.cardImageStyleGrid}
+                  priceUnit={transaction_type === 0 ? 'mo' : ''}
+                />
+              </View>
+            ))}
+          </InfiniteScrollView>
         </View>
       </View>
     </View>
@@ -53,12 +68,14 @@ const PropertiesView: FC<IProps> = ({ isListView, property, transaction_type }: 
 export default PropertiesView;
 
 const styles = StyleSheet.create({
-  listViewContainer: {
+  container: {
     flexDirection: 'row',
     width: '100%',
   },
   containerList: {
-    width: '55%',
+    width: '45vw',
+    flexDirection: 'column',
+    height: '1200px',
   },
   containerGrid: {
     flex: 1,
@@ -70,11 +87,14 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   cardList: {
-    width: '100%',
+    width: '45vw',
   },
   cardGrid: {
-    width: '31%',
+    display: 'flex',
+    maxWidth: '31%',
     marginLeft: 18,
+    alignItems: 'flex-start',
+    alignSelf: 'flex-start',
   },
   cardGridTab: {
     width: '45%',

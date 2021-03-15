@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { WithTranslation, withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -14,62 +14,51 @@ interface IProps {
   propertyTermId: number;
 }
 
-type Props = IProps & WithTranslation;
+type Props = IProps;
 
-interface ISimilarPropertiesState {
-  similarProperties: Asset[];
-}
+const SimilarProperties = (props: Props): React.ReactElement => {
+  const { propertyTermId, isMobile, isTablet } = props;
+  const { t } = useTranslation(LocaleConstants.namespacesKey.assetDescription);
+  const [similarProperties, setSimilarProperties] = useState<Asset[]>([]);
 
-export class SimilarProperties extends React.PureComponent<Props, ISimilarPropertiesState> {
-  public state = {
-    similarProperties: [],
-  };
+  useEffect(() => {
+    getSimilarProperties(propertyTermId);
+  }, [propertyTermId]);
 
-  public componentDidMount = async (): Promise<void> => {
-    const { propertyTermId } = this.props;
-    await this.getSimilarProperties(propertyTermId);
-  };
-
-  public render(): React.ReactNode {
-    const { t, isMobile, isTablet } = this.props;
-    const { similarProperties } = this.state;
-
-    if (similarProperties.length === 0) {
-      return null;
-    }
-    return (
-      <View style={styles.container}>
-        <Typography variant="text" size="regular" fontWeight="semiBold">
-          {t('similarProperties')}
-        </Typography>
-        <View style={styles.similarCard}>
-          {similarProperties.map((item: Asset) => {
-            return (
-              <View style={[styles.card, isTablet && styles.tabCard, isMobile && styles.mobileCard]} key={item.id}>
-                <PropertySearchCard
-                  investmentData={item}
-                  priceUnit="mo"
-                  isFooterRequired={false}
-                  cardImageCarouselStyle={styles.carouselStyle}
-                  cardImageStyle={styles.imageStyle}
-                />
-              </View>
-            );
-          })}
-        </View>
-      </View>
-    );
-  }
-
-  public getSimilarProperties = async (propertyTermId: number): Promise<void> => {
-    // TODO: Add route navigation for getting property ID and transaction_type
+  // eslint-disable-next-line no-shadow
+  const getSimilarProperties = async (propertyTermId: number): Promise<void> => {
     const transaction_type = 0;
     const response = await AssetRepository.getSimilarProperties(propertyTermId, transaction_type);
-    this.setState({ similarProperties: response });
+    setSimilarProperties(response);
   };
-}
 
-export default withTranslation(LocaleConstants.namespacesKey.assetDescription)(SimilarProperties);
+  return (
+    <View style={styles.container}>
+      {similarProperties.length !== 0 && (
+        <View>
+          <Typography variant="text" size="regular" fontWeight="semiBold">
+            {t('similarProperties')}
+          </Typography>
+          <View style={styles.similarCard}>
+            {similarProperties.map((item: Asset) => {
+              return (
+                <View style={[styles.card, isTablet && styles.tabCard, isMobile && styles.mobileCard]} key={item.id}>
+                  <PropertySearchCard
+                    investmentData={item}
+                    priceUnit="mo"
+                    isFooterRequired={false}
+                    cardImageCarouselStyle={styles.carouselStyle}
+                    cardImageStyle={styles.imageStyle}
+                  />
+                </View>
+              );
+            })}
+          </View>
+        </View>
+      )}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -83,10 +72,12 @@ const styles = StyleSheet.create({
   similarCard: {
     top: 20,
     flexDirection: 'row',
+    overflowX: 'scroll',
   },
   card: {
     width: '34%',
     justifyContent: 'space-between',
+    marginRight: 24,
   },
   mobileCard: {
     width: '90%',
@@ -103,3 +94,5 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
+
+export default SimilarProperties;

@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { History } from 'history';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
@@ -14,12 +15,13 @@ import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutCo
 
 interface IProps {
   location: LocationParams;
+  history: History;
 }
 
 type LocationParams = { pathname: string };
 
 const AppLayout: FC<IProps> = (props: IProps) => {
-  const { location } = props;
+  const { location, history } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
   const { DASHBOARD, FINANCIALS } = protectedRoutes;
@@ -30,7 +32,7 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   return (
     <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked }}>
       <View style={styles.container}>
-        <Navbar />
+        <Navbar history={history} location={location} />
         <NavigationInfo />
         <View>
           <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>

@@ -140,6 +140,11 @@ export const searchReducer = (
       return { ...state, ['filter']: { ...state.filter, miscellaneous: initialSearchState.filter.miscellaneous } };
     case SearchActionTypes.SET.SEARCH_LATLNG:
       return { ...state, ['searchBar']: { ...state.searchBar, latLng: action.payload as ILatLng } };
+    case SearchActionTypes.CLEAR_PROPERTIES:
+      return {
+        ...state,
+        ['properties']: initialSearchState.properties,
+      };
     default:
       return state;
   }

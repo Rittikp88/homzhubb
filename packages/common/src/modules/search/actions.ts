@@ -28,6 +28,7 @@ export const SearchActionTypes = {
     INITIAL_MISCELLANEOUS: `${actionTypePrefix}SET_INITIAL_MISCELLANEOUS`,
     SEARCH_LATLNG: `${actionTypePrefix}SET_SEARCH_LATLNG`,
   },
+  CLEAR_PROPERTIES: `${actionTypePrefix}CLEAR_PROPERTIES`,
 };
 
 const getFilterDetails = (payload: IFilter): IFluxStandardAction<IFilter> => {
@@ -122,6 +123,11 @@ const setSearchLatLng = (latLng: ILatLng): IFluxStandardAction<ILatLng> => {
     payload: latLng,
   };
 };
+const clearProperties = (): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.CLEAR_PROPERTIES,
+  };
+};
 
 export type SearchPayloadTypes = string | number | IAssetSearch | IFilter | IFilterDetails | ILatLng | undefined;
 
@@ -140,4 +146,5 @@ export const SearchActions = {
   getPropertiesListViewFailure,
   setInitialMiscellaneous,
   setSearchLatLng,
+  clearProperties,
 };

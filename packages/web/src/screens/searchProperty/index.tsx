@@ -4,7 +4,11 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { PopupProps, PopupActions } from 'reactjs-popup/dist/types';
 import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+
+import { useHistory } from 'react-router';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -21,11 +25,11 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
+
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 // TODO : Replace Dummy Data with Api Data;
-
 const defaultDropDownProps = (isMobile: boolean): PopupProps => ({
   position: 'bottom left',
   arrow: false,
@@ -40,29 +44,38 @@ const defaultDropDownProps = (isMobile: boolean): PopupProps => ({
   children: undefined,
   on: 'click',
 });
-
 interface IStateProps {
   properties: AssetSearch;
   filters: IFilter;
   filterData: FilterDetail | null;
+  loader: boolean;
 }
-
 interface IDispatchProps {
-  getProperties: () => void;
+  getPropertiesListView: () => void;
   getFilterDetails: (payload: IFilter) => void;
   setInitialState: () => void;
   setFilter: (payload: IFilter) => void;
+  clearProperties: () => void;
   setInitialMiscellaneous: () => void;
 }
-
 interface IProps {
   property: Asset[];
 }
-
 type SearchPropertyProps = IStateProps & IDispatchProps;
-
 const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null => {
   const [isListView, setIsListView] = useState(false);
+  const {
+    properties,
+    getPropertiesListView,
+    setFilter,
+    filters,
+    clearProperties,
+    setInitialState,
+    filterData,
+    getFilterDetails,
+    loader,
+  } = props;
+
   const toggleGridView = (): void => {
     setIsListView(false);
   };
@@ -72,7 +85,6 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
 
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
-  const { properties, setInitialState, getProperties, filters, filterData, getFilterDetails, setFilter } = props;
   const popupRef = useRef<PopupActions>(null);
   const buttonTitle = t('propertySearch:resetFilters');
   const empyStateButtonProps = (): IButtonProps => ({
@@ -84,35 +96,57 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     onPress: clearForm,
   });
 
-  const clearForm = (): void => {
-    const { setInitialMiscellaneous } = props;
-    setInitialMiscellaneous();
-    getProperties();
-  };
-
+  const history = useHistory();
   const initialCount = properties.results.length === 0 ? 0 : 1;
+  const limit = isListView ? 5 : 9;
+  const hasMore = !(properties.results.length === properties.count);
+
+  useEffect(() => {
+    clearProperties();
+    setFilter({
+      offset: 0,
+      limit,
+    });
+    getPropertiesListView();
+  }, [isListView]);
+
   useEffect(() => {
     if (!filterData) {
       getFilterDetails({ asset_group: filters.asset_group });
     }
-    getProperties();
     return (): void => {
       setInitialState();
     };
   }, []);
-  if (!properties) {
-    return null;
-  }
+
+  useEffect(() => {
+    if (!filters.search_latitude && !filters.search_longitude) {
+      NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    }
+  }, [filters]);
+
+  const clearForm = (): void => {
+    const { setInitialMiscellaneous } = props;
+    setInitialMiscellaneous();
+    getPropertiesListView();
+  };
+
+  const fetchMoreData = (value: number): void | null => {
+    setFilter({
+      offset: value,
+      limit,
+    });
+    getPropertiesListView();
+  };
 
   const onSelectSort = (value: IPopupOptions): void => {
     setFilter({ sort_by: value.value as string, is_sorting: true, offset: 0 });
-    getProperties();
+    getPropertiesListView();
   };
 
   const closePopover = (): void => {
     if (popupRef && popupRef.current) popupRef.current.close();
   };
-
   return (
     <View style={styles.mainContainer}>
       <Popover
@@ -132,7 +166,6 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
           />
         </View>
       </Popover>
-
       <View style={styles.sortAndToggleButtons}>
         <View style={styles.sortByContainer}>
           <Text type="small" textType="regular" style={styles.textStyle}>
@@ -164,12 +197,15 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
           />
         </View>
       </View>
-
       {properties.results.length > 0 ? (
         <PropertiesView
           isListView={isListView}
           property={properties}
+          fetchData={fetchMoreData}
+          hasMore={hasMore}
+          limit={limit}
           transaction_type={filters.asset_transaction_type || 0}
+          loader={loader}
         />
       ) : (
         <View style={styles.emptyState}>
@@ -187,7 +223,6 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
@@ -251,28 +286,34 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
-
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getProperties, getFilters, getFilterDetail } = SearchSelector;
+  const { getProperties, getFilters, getFilterDetail, getLoadingState } = SearchSelector;
   return {
     properties: getProperties(state),
     filters: getFilters(state),
     filterData: getFilterDetail(state),
+    loader: getLoadingState(state),
   };
 };
-
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setInitialState, getProperties, getFilterDetails, setFilter, setInitialMiscellaneous } = SearchActions;
+  const {
+    setInitialState,
+    getPropertiesListView,
+    getFilterDetails,
+    setFilter,
+    clearProperties,
+    setInitialMiscellaneous,
+  } = SearchActions;
   return bindActionCreators(
     {
-      getProperties,
+      getPropertiesListView,
       setInitialState,
       getFilterDetails,
       setFilter,
+      clearProperties,
       setInitialMiscellaneous,
     },
     dispatch
   );
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(SearchProperty);

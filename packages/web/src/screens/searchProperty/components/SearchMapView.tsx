@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import Script from 'react-load-script';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
@@ -19,6 +19,7 @@ interface IProps {
 
 interface IStateProps {
   properties: AssetSearch;
+  filters: IFilter;
 }
 
 interface IDispatchProps {
@@ -30,15 +31,10 @@ type Props = IProps & IDispatchProps & IStateProps;
 
 const SearchMapView: React.FC<Props> = (props: Props) => {
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
-  const { setFilter, getProperties, properties } = props;
+  const { properties, filters } = props;
   const { results } = properties;
-  const dispatch = useDispatch();
-  const lat = 18.52345699;
-  const lng = 73.83758879;
-  useEffect(() => {
-    dispatch(setFilter({ search_latitude: lat, search_longitude: lng, currency_code: 'INR', limit: 50 }));
-    dispatch(getProperties());
-  }, []);
+  const lat = filters.search_latitude || 0;
+  const lng = filters.search_longitude || 0;
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const handleOnMapLoad = (mapInstance: google.maps.Map): void => {
     setMap(mapInstance);
@@ -83,13 +79,14 @@ const SearchMapView: React.FC<Props> = (props: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: '100vh',
     width: '45vw',
   },
 });
 export const mapStateToProps = (state: IState): IStateProps => {
+  const { getProperties, getFilters } = SearchSelector;
   return {
-    properties: SearchSelector.getProperties(state),
+    properties: getProperties(state),
+    filters: getFilters(state),
   };
 };
 

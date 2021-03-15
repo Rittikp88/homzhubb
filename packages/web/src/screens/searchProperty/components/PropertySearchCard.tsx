@@ -1,8 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle, ImageStyle } from 'react-native';
+import { StyleSheet, View, ViewStyle, ImageStyle, TouchableOpacity } from 'react-native';
+import { useHistory } from 'react-router';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
@@ -10,14 +13,13 @@ import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecul
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import CardImageCarousel from '@homzhub/web/src/screens/searchProperty/components/CardImageCarousel';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-// TODO : Replace Dummy Data with Api Data
-
 interface IProps {
-  investmentData: any;
+  investmentData: Asset;
   containerStyleProp?: ViewStyle;
   cardImageCarouselStyle?: ViewStyle;
   cardImageStyle?: ImageStyle;
@@ -40,7 +42,10 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     blockNumber,
     leaseTerm,
     saleTerm,
+    id,
   } = investmentData;
+
+  const history = useHistory();
 
   let currencyData = investmentData.country.currencies[0];
 
@@ -80,43 +85,47 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     { color: theme.colors.completed },
     { color: theme.colors.completed },
   ];
-
+  const navigateToSearchView = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PROPERTY_DETAIL, params: { propertyId: id } });
+  };
   return (
     <View style={[styles.card, isMobile && styles.cardMobile, containerStyleProp]}>
       <View style={styles.imageContainer}>
         <CardImageCarousel cardImageCarouselStyle={cardImageCarouselStyle} cardImageStyle={cardImageStyle} />
       </View>
-      <View style={styles.mainBody}>
-        <View style={styles.subContainer}>
-          <View style={styles.propertyRating}>
-            <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
-              {propertyType}
-            </Typography>
-            <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
-          </View>
-          <PropertyAddress
-            isIcon={false}
-            primaryAddress={primaryAddress}
-            primaryAddressStyle={styles.addressTextStyle}
-            subAddressStyle={styles.subAddressTextStyle}
-            subAddress={subAddress}
-            containerStyle={styles.propertyAddress}
-          />
-          <View style={styles.addressContainer}>
-            <View style={styles.propertyValueContainer}>
-              <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
+      <TouchableOpacity onPress={navigateToSearchView}>
+        <View style={styles.mainBody}>
+          <View style={styles.subContainer}>
+            <View style={styles.propertyRating}>
+              <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
+                {propertyType}
+              </Typography>
+              <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
             </View>
-            {amenitiesData.length > 0 && (
-              <PropertyAmenities
-                data={amenitiesData}
-                direction="column"
-                containerStyle={styles.propertyInfoBox}
-                contentContainerStyle={styles.cardIcon}
-              />
-            )}
+            <PropertyAddress
+              isIcon={false}
+              primaryAddress={primaryAddress}
+              primaryAddressStyle={styles.addressTextStyle}
+              subAddressStyle={styles.subAddressTextStyle}
+              subAddress={subAddress}
+              containerStyle={styles.propertyAddress}
+            />
+            <View style={styles.addressContainer}>
+              <View style={styles.propertyValueContainer}>
+                <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
+              </View>
+              {amenitiesData.length > 0 && (
+                <PropertyAmenities
+                  data={amenitiesData}
+                  direction="column"
+                  containerStyle={styles.propertyInfoBox}
+                  contentContainerStyle={styles.cardIcon}
+                />
+              )}
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

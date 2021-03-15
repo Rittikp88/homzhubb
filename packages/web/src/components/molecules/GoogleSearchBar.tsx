@@ -44,8 +44,8 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
       search_address: formatedAddress,
       search_latitude: latValue,
       search_longitude: lngValue,
-      offset: 0,
     });
+
     NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.SEARCH_PROPERTY });
   };
   const setSearchedPropertyCurrency = (placeDetail: IAddressComponent[]): void => {
