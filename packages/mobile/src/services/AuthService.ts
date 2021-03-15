@@ -17,6 +17,8 @@ class AuthService {
       });
 
       await GoogleSignin.hasPlayServices();
+      GoogleSignin.signOut();
+
       const {
         user: { givenName, familyName, email },
         idToken,
@@ -62,18 +64,18 @@ class AuthService {
   ): Promise<void> => {
     try {
       if (PlatformUtils.isAndroid()) {
-        LoginManager.setLoginBehavior('web_only');
+        LoginManager.setLoginBehavior('native_with_fallback');
       }
+      LoginManager.logOut();
       // Attempt login with permissions
-      const fbAccessToken = await AccessToken.getCurrentAccessToken();
-      if (!fbAccessToken) {
-        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
-        if (result.isCancelled) {
-          throw new Error(I18nService.t('auth:userCancelledLoginProcess'));
-        }
+
+      const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+      if (result.isCancelled) {
+        throw new Error(I18nService.t('auth:userCancelledLoginProcess'));
       }
 
-      const accessToken = await AccessToken.getCurrentAccessToken();
+      const accessToken: AccessToken | null = await AccessToken.getCurrentAccessToken();
+
       if (!accessToken) {
         throw new Error(I18nService.t('auth:errorInFacebookSignIn'));
       }
