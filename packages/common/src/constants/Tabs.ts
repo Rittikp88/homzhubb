@@ -26,6 +26,11 @@ export enum Tabs {
   SERVICES = 'Services',
   PAYMENT = 'Payment',
   SERVICE_PAYMENT = 'Service & Payment',
+  DESCRIPTION = 'Description / Features',
+  AMENITIES = 'Amenities & Highlights',
+  NEIGHBOURHOOD = 'Neighbourhood',
+  REVIEWS_RATING = 'Reviews & Ratings',
+  VIDEO = 'Video Tour',
   ALL = 'All',
   HIGH = 'High',
   MEDIUM = 'Medium',
@@ -66,6 +71,14 @@ export const Routes = [
   { key: Tabs.DOCUMENTS, title: Tabs.DOCUMENTS, icon: icons.documents },
   { key: Tabs.TENANT_HISTORY, title: Tabs.TENANT_HISTORY, icon: icons.history },
   { key: Tabs.DETAILS, title: Tabs.DETAILS, icon: icons.detail },
+];
+
+export const PropertyDetailRoutes = [
+  { key: Tabs.DESCRIPTION, title: Tabs.DESCRIPTION, icon: icons.detail },
+  { key: Tabs.AMENITIES, title: Tabs.AMENITIES, icon: icons.swimmingPool },
+  { key: Tabs.NEIGHBOURHOOD, title: Tabs.NEIGHBOURHOOD, icon: icons.neighborhood },
+  { key: Tabs.REVIEWS_RATING, title: Tabs.REVIEWS_RATING, icon: icons.reviews },
+  { key: Tabs.VIDEO, title: Tabs.VIDEO, icon: icons.youtube },
 ];
 
 // Property Detail Screen Tabs END

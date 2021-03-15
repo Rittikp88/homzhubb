@@ -1,11 +1,14 @@
 import React, { useCallback, memo } from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   value: number;
@@ -15,6 +18,7 @@ interface IProps {
   isOverallRating?: boolean;
   onChange?: (rating: number) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  size?: number;
 }
 
 const MULTI_LENGTH = 5;
@@ -26,8 +30,10 @@ const Rating = ({
   isOverallRating = false,
   onChange,
   containerStyle,
+  size = 14,
 }: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
+  const isMobile = useOnly(deviceBreakpoint.MOBILE);
 
   const ratingColor = useCallback((): string => {
     if (value < 3) {
@@ -72,13 +78,24 @@ const Rating = ({
 
   return (
     <View
-      style={[styles.container, styles.containerMulti, overallRatingStyle, containerStyle]}
+      style={[
+        styles.container,
+        styles.containerMulti,
+        isMobile && styles.containerMultiMobile,
+        overallRatingStyle,
+        containerStyle,
+        isMobile && styles.containerMobile,
+      ]}
       pointerEvents={!onChange ? 'none' : 'auto'}
     >
       <Label
         textType="regular"
         type={isOverallRating ? 'regular' : 'large'}
-        style={[styles.countStyle, overallRatingText]}
+        style={[
+          styles.countStyle,
+          overallRatingText,
+          isOverallRating && isMobile ? styles.widthOverall : isMobile && styles.widthMobile,
+        ]}
       >
         {title}
       </Label>
@@ -87,7 +104,7 @@ const Rating = ({
           <Icon
             key={index}
             name={icons.starFilled}
-            size={14}
+            size={size}
             color={index < value ? ratingColor() : theme.colors.disabled}
             style={index !== MULTI_LENGTH - 1 && styles.star}
             onPress={(): void => onChange && onChange(index + 1)}
@@ -103,11 +120,17 @@ export { memoized as Rating };
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: PlatformUtils.isWeb() ? 'column' : 'row',
     alignItems: 'center',
   },
-  containerMulti: {
+  containerMobile: {
+    flexDirection: 'row',
+  },
+  containerMultiMobile: {
     justifyContent: 'space-between',
+  },
+  containerMulti: {
+    justifyContent: PlatformUtils.isWeb() ? undefined : 'space-between',
   },
   starContainer: {
     flexDirection: 'row',
@@ -118,5 +141,11 @@ const styles = StyleSheet.create({
   countStyle: {
     color: theme.colors.darkTint2,
     marginEnd: 4,
+  },
+  widthMobile: {
+    width: 160,
+  },
+  widthOverall: {
+    width: 80,
   },
 });

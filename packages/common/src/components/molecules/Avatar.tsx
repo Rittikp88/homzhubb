@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   nameContainer: {
     marginLeft: 12,
     marginRight: 6,
-    width: PlatformUtils.isWeb() ? undefined : theme.viewport.width / 2 - 40,
+    width: PlatformUtils.isWeb() ? 'fit-content' : theme.viewport.width / 2 - 40,
     justifyContent: 'center',
   },
   numberContainer: {

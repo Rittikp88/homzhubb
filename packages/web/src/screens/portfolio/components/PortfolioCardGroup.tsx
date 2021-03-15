@@ -192,6 +192,8 @@ export class AssetCard extends Component<Props> {
       assetStatusInfo: {
         action,
         tag: { label },
+        leaseListingId,
+        saleListingId,
         leaseTenantInfo: { user, isInviteAccepted },
         leaseTransaction: { rent, securityDeposit, totalSpendPeriod, leaseEndDate, leaseStartDate, currency },
       },
@@ -199,6 +201,7 @@ export class AssetCard extends Component<Props> {
     } = assetData;
 
     const userData: User = user;
+    const isListed = leaseListingId || saleListingId;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const isTakeActions = label === Filters.VACANT;
@@ -245,7 +248,7 @@ export class AssetCard extends Component<Props> {
               onPress={this.onCompleteDetails}
             />
           )}
-          {(label === Filters.FOR__RENT || Filters.FOR__SALE) && (
+          {isListed && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
             <View style={styles.latestUpdates}>
               <LatestUpdates propertyVisitsData={assetData.listingVisits} />
             </View>
@@ -498,7 +501,6 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     flex: 1,
-    alignSelf: 'flex-end',
     width: 310,
     padding: 6,
     borderRadius: 2,

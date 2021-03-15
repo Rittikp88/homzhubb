@@ -38,7 +38,8 @@
     "react-scripts": "^3.4.1",
     "react-tooltip": "^4.2.10",
     "reactjs-popup": "^2.0.4",
-    "react-webcam": "^5.2.3"
+    "react-webcam": "^5.2.3",
+    "react-circular-progressbar": "^2.0.3"
   },
   "devDependencies": {
     "@types/crypto-js": "^3.1.47",

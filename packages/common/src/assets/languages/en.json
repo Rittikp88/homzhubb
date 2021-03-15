@@ -641,7 +641,10 @@
     "least30days": "At least 30 days",
     "least45days": "At least 45 days",
     "least60days": "At least 60 days",
-    "anyPeriod": "Any Period"
+    "anyPeriod": "Any Period",
+    "enquire": "Enquire",
+    "scheduleVisit": "Schedule a visit",
+    "filterByRating": "Filter by overall rating"
   },
   "assetDescription": {
     "reviewsRatings": "Reviews and ratings",
@@ -680,7 +683,8 @@
     "mostRecent": "Most Recent",
     "positive": "Positive",
     "critical": "Critical",
-    "shareProperty": "Share Property"
+    "shareProperty": "Share Property",
+    "reviews": "Reviews"
   },
   "assetDashboard": {
     "notification": "Notifications",

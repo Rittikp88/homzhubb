@@ -23,10 +23,18 @@ interface IProps {
   cardImageCarouselStyle?: ViewStyle;
   cardImageStyle?: ImageStyle;
   priceUnit: string;
+  isFooterRequired?: boolean;
 }
 
 const PropertySearchCard = (props: IProps): React.ReactElement => {
-  const { investmentData, containerStyleProp, cardImageCarouselStyle = {}, cardImageStyle = {}, priceUnit } = props;
+  const {
+    investmentData,
+    containerStyleProp,
+    cardImageCarouselStyle = {},
+    cardImageStyle = {},
+    priceUnit,
+    isFooterRequired = true,
+  } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const {
     address,
@@ -114,9 +122,11 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
             />
           )}
         </View>
-        <View>
-          <SalePropertyFooter containerStyle={styles.footerStyle} from="Search" />
-        </View>
+        {isFooterRequired && (
+          <View>
+            <SalePropertyFooter containerStyle={styles.footerStyle} from="Search" />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -208,7 +218,9 @@ const styles = StyleSheet.create({
   addressContainer: {
     flexDirection: 'row',
   },
-  propertyValueContainer: { width: '50%' },
+  propertyValueContainer: {
+    width: '50%',
+  },
   footerStyle: {
     paddingLeft: 0,
   },

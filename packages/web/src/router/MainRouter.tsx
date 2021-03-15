@@ -5,6 +5,7 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
+import PropertyDetails from '@homzhub/web/src/screens/PropertyDetails';
 import SearchProperty from '@homzhub/web/src/screens/searchProperty';
 
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
@@ -19,6 +20,7 @@ export const MainRouter = (): React.ReactElement => {
     HELP_SUPPORT,
     ADD_LISTING,
     PORTFOLIO,
+    PROPERTY_DETAIL,
     SEARCH_PROPERTY,
   } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
@@ -33,6 +35,7 @@ export const MainRouter = (): React.ReactElement => {
         <Route exact path={HELP_SUPPORT} component={HelpAndSupport} />
         <Route exact path={ADD_LISTING} component={AddPropertyListing} />
         <Route exact path={PORTFOLIO} component={Portfolio} />
+        <Route exact path={PROPERTY_DETAIL} component={PropertyDetails} />
         <Route exact path={SEARCH_PROPERTY} component={SearchProperty} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>

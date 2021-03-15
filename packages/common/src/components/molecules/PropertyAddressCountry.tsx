@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+
 import { ITypographyProps, Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 interface IProps {
   primaryAddress: string;
+  isIcon?: boolean;
   subAddress: string;
   countryFlag: React.ReactElement | null;
   primaryAddressTextStyles?: ITypographyProps;
@@ -24,6 +27,7 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
     subAddressStyle,
     containerStyle = {},
     countryFlag,
+    isIcon,
   } = props;
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
@@ -39,15 +43,18 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
           {primaryAddress}
         </Typography>
       </View>
-      <Typography
-        variant={subAddressTextStyles?.variant ?? 'text'}
-        size={subAddressTextStyles?.size ?? 'small'}
-        fontWeight={subAddressTextStyles?.fontWeight ?? 'regular'}
-        style={[styles.subAddress, subAddressStyle]}
-        numberOfLines={2}
-      >
-        {subAddress}
-      </Typography>
+      <View style={styles.flexRow}>
+        {isIcon && <Icon name={icons.locationMarker} size={16} color={theme.colors.darkTint3} style={styles.icon} />}
+        <Typography
+          variant={subAddressTextStyles?.variant ?? 'text'}
+          size={subAddressTextStyles?.size ?? 'small'}
+          fontWeight={subAddressTextStyles?.fontWeight ?? 'regular'}
+          style={[styles.subAddress, subAddressStyle]}
+          numberOfLines={2}
+        >
+          {subAddress}
+        </Typography>
+      </View>
     </View>
   );
 };
@@ -78,5 +85,8 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     width: 24,
     height: 24,
+  },
+  icon: {
+    marginEnd: 9,
   },
 });

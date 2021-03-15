@@ -168,6 +168,8 @@ export const icons = {
   neutralFace: 'neutral-face',
   happyFace: 'happy-face',
   attachDoc: 'attach-doc',
+  youtube: 'youtube',
+  neighborhood: 'neighbourhood',
   addImage: 'add-image',
   selectionMarker: 'selectedMarker',
 
