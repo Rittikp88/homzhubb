@@ -74,8 +74,6 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     carpetAreaUnit?.title ?? '',
     true
   );
-  console.log(investmentData);
-  console.log(primaryAddress, subAddress);
 
   const badgeInfo = [
     { color: theme.colors.completed },
@@ -211,9 +209,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   propertyValueContainer: { width: '50%' },
-  footerStyle:{
-    paddingLeft: 0
-  }
+  footerStyle: {
+    paddingLeft: 0,
+  },
 });
 
 export default PropertySearchCard;

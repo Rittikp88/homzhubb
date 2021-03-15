@@ -89,23 +89,6 @@ class NotificationService {
               }
             }
             break;
-          case NotificationTypes.ServiceTicket:
-            {
-              const { object_id } = JSONDeeplinkData;
-              store.dispatch(
-                TicketActions.setCurrentTicket({
-                  ticketId: Number(object_id),
-                })
-              );
-
-              AlertHelper.success({
-                message,
-                onPress: () => this.redirectOnNotification(data),
-                description: title,
-                duration: 5000,
-              });
-            }
-            break;
           default:
             AlertHelper.success({
               message,
@@ -187,12 +170,13 @@ class NotificationService {
     const params = {};
     const screeName = notificationScreenMap[type as NotificationTypes] || ScreensKeys.ChatScreen;
 
+    const store = StoreProviderService.getStore();
+
     switch (type) {
       case NotificationTypes.Chat:
         {
           const { message_group_id, message_group_name } = JSONDeeplinkData;
 
-          const store = StoreProviderService.getStore();
           store.dispatch(
             CommonActions.setCurrentChatDetail({
               groupName: message_group_name,
@@ -204,8 +188,18 @@ class NotificationService {
         }
         break;
       case NotificationTypes.ServiceTicket:
-        navigationTab = ScreensKeys.More;
-        NavigationService.notificationNavigation(screeName, params, navigationTab);
+        {
+          navigationTab = ScreensKeys.More;
+
+          const { object_id } = JSONDeeplinkData;
+          store.dispatch(
+            TicketActions.setCurrentTicket({
+              ticketId: Number(object_id),
+            })
+          );
+
+          NavigationService.notificationNavigation(screeName, params, navigationTab);
+        }
         break;
       default:
         NavigationService.notificationNavigation(screeName, params, navigationTab);
