@@ -122,6 +122,7 @@
     "remove": "Remove",
     "typeHere": "Type here...",
     "days": "Days",
+    "day": "Day",
     "enter": "Enter",
     "yes": "Yes",
     "no": "No",
@@ -228,7 +229,11 @@
     "closed": "Closed",
     "chooseAction": "Choose your Action",
     "uploadWarning": "You can upload a maximum of 10 images",
-    "addPhoto": "Add Photos"
+    "addPhoto": "Add Photos",
+    "detail": "Detail",
+    "fileSizeWarning": "File size is too large",
+    "ownerInfo": "Owner Info",
+    "tenantInfo": "Tenant Info"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -562,7 +567,9 @@
     "tokenAmount": "Token amount: {{amount}}",
     "orValue": "or{{value}}",
     "takeSelfie": "Take a selfie",
-    "captureWeb": "Capture selfie"
+    "captureWeb": "Capture selfie",
+    "sqft": "sq. ft",
+    "mo": "mo"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -576,13 +583,17 @@
     "rooms": "Rooms",
     "price": "Price",
     "area": "Area",
+    "offerType": "Offer Type",
     "propertyType": "Property Type",
+    "priceRange": "Price Range",
     "lookingFor": "Looking For",
     "propertiesFound": "Properties Found",
     "noResultHelper": "We did not find any properties for your search",
     "searchAgain": "Search Again",
     "resetFilters": "Reset Filters",
     "noResultsMapView": "No results found, try zooming or changing your filters",
+    "noResultsTitle": "Sorry! No results found",
+    "noResultsSubTitle": "Try changing your search criteria",
     "carpetArea": "Carpet Area",
     "carpetAreaPlaceholder": "Eg: 1250",
     "searchRadius": "Search Radius",
@@ -635,7 +646,12 @@
     "least30days": "At least 30 days",
     "least45days": "At least 45 days",
     "least60days": "At least 60 days",
-    "anyPeriod": "Any Period"
+    "anyPeriod": "Any Period",
+    "sortBy": "Sort by:",
+    "filterCount": "{{intialCount}}-{{resultLength}} of {{count}} results ",
+    "enquire": "Enquire",
+    "scheduleVisit": "Schedule a visit",
+    "filterByRating": "Filter by overall rating"
   },
   "assetDescription": {
     "reviewsRatings": "Reviews and ratings",
@@ -674,7 +690,8 @@
     "mostRecent": "Most Recent",
     "positive": "Positive",
     "critical": "Critical",
-    "shareProperty": "Share Property"
+    "shareProperty": "Share Property",
+    "reviews": "Reviews"
   },
   "assetDashboard": {
     "notification": "Notifications",
@@ -1022,6 +1039,7 @@
     "noPropertyAdded": "You haven't added any property yet. Start adding properties to generate ticket.",
     "quoteApproved": "Quote approved successfully",
     "ticketComplete": "Successfully Ticket Completed",
-    "noQuoteFound": "No quote found"
+    "noQuoteFound": "No quote found",
+    "noDetail": "There was an error while trying to fetch your data. Please try again"
   }
 }
