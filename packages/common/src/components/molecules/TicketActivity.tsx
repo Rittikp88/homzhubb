@@ -128,7 +128,7 @@ class TicketActivityCard extends PureComponent<Props> {
                     imageUrl={attachments[2].link}
                     isIconVisible={false}
                     isLastThumbnail={count > 3}
-                    dataLength={count - 3}
+                    dataLength={count - 2}
                     containerStyle={customStyle.thumbnailRight}
                     imageWrapperStyle={styles.thumbnailHeight}
                     onPressLastThumbnail={(): void => onPressImage(2)}

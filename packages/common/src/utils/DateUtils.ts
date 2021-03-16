@@ -34,6 +34,7 @@ export const DateFormats = {
   MMM_YYYY: 'MMM YYYY',
   DDMMMYYYY_H: 'DD MMM YYYY, h A',
   DDMMMYYYY_HM: 'DD/MMM/YYYY-HH:MM',
+  DDMMMYYYY_Hm: 'DD/MMM/YYYY-HH:mm',
   DDMM: 'DD MMM',
   HHMM_A: 'hh:mm a',
   HHMM_AP: 'hh:mm A',
@@ -351,7 +352,7 @@ class DateUtils {
     return this.getDateDiff(currentDate, date, 'days');
   };
 
-  public convertDateFormatted = (date: string, format = DateFormats.DDMMMYYYY_HM): string => {
+  public convertDateFormatted = (date: string, format = DateFormats.DDMMMYYYY_Hm): string => {
     return moment(date).format(format);
   };
 }

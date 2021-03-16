@@ -25,6 +25,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
   const { createdAt, updatedAt, status, ticketNumber, priority, title } = ticketData;
 
   const translatedValue = (value: string, root = 'serviceTickets'): string => t(`${root}:${value}`);
+  const timeElapsed = DateUtils.getTimeElapsedInDays(createdAt);
 
   const formatDetails = (): ITicketDetails[] => {
     return [
@@ -50,7 +51,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
       },
       {
         type: translatedValue('timeElapsed'),
-        value: `${DateUtils.getTimeElapsedInDays(createdAt)} ${translatedValue('days', 'common')}`,
+        value: `${timeElapsed} ${translatedValue(timeElapsed === 1 ? 'day' : 'days', 'common')}`,
       },
       {
         type: translatedValue('ticketNo'),

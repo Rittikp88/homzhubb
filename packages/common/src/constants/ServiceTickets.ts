@@ -13,9 +13,9 @@ export enum ExperienceType {
 export enum TicketStatusTitle {
   OPEN = 'Open',
   TICKET_RAISED = 'Ticket Raised',
-  QUOTE_REQUESTED = 'Quotes Requested',
-  QUOTE_SUBMITTED = 'Quotes Submitted',
-  QUOTE_APPROVED = 'Quotes Approved',
+  QUOTE_REQUESTED = 'Quote Requested',
+  QUOTE_SUBMITTED = 'Quote Submitted',
+  QUOTE_APPROVED = 'Quote Approved',
   WORK_INITIATED = 'Work Initiated',
   PAYMENT_REQUESTED = 'Payment Requested',
   PAYMENT_DONE = 'Payment Done',

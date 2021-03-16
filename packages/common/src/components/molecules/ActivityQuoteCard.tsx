@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, SectionList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
@@ -149,7 +150,11 @@ const QuotesApproved = (props: IQuotesApproved): React.ReactElement => {
     const { profilePicture, name } = user;
     return (
       <>
-        <Avatar image={profilePicture} fullName={name} designation={role || t('property:owner')} />
+        <Avatar
+          image={profilePicture}
+          fullName={name}
+          designation={StringUtils.toTitleCase(role) || t('property:owner')}
+        />
         <View style={styles.approvedQuote}>
           <Label type="large" textType="regular">
             {t('quoteCategory', { title })}

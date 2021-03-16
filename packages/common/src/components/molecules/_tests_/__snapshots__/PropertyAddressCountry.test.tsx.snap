@@ -41,22 +41,31 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
       2 BHK
     </Typography>
   </View>
-  <Typography
-    fontWeight="regular"
-    numberOfLines={2}
-    size="small"
+  <View
     style={
-      Array [
-        Object {
-          "color": "#33495E",
-          "marginVertical": 6,
-        },
-        undefined,
-      ]
+      Object {
+        "alignItems": "center",
+        "flexDirection": "row",
+      }
     }
-    variant="text"
   >
-    Delhi
-  </Typography>
+    <Typography
+      fontWeight="regular"
+      numberOfLines={2}
+      size="small"
+      style={
+        Array [
+          Object {
+            "color": "#33495E",
+            "marginVertical": 6,
+          },
+          undefined,
+        ]
+      }
+      variant="text"
+    >
+      Delhi
+    </Typography>
+  </View>
 </View>
 `;

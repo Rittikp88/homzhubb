@@ -92,7 +92,7 @@ export class AssetHighlights extends Component<Props, IState> {
     const isWebMobile = PlatformUtils.isWeb() && isMobile;
 
     let continueButtonStyleWeb: ViewStyle = {};
-    if (!isWebMobile) continueButtonStyleWeb = styles.continueButtonStyleDesktop;
+    if (!isWebMobile && !PlatformUtils.isMobile()) continueButtonStyleWeb = styles.continueButtonStyleDesktop;
 
     return (
       <View style={PlatformUtils.isMobile() && styles.container}>

@@ -71,6 +71,7 @@ interface IOwnState {
   longitude: number;
   assetGroupSelectionDisabled: boolean;
   displayGoBackCaution: boolean;
+  loading: boolean;
 }
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostAssetDetails>;
 type Props = WithTranslation & libraryProps & IDispatchProps & IStateProps;
@@ -94,6 +95,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     longitude: 0,
     latitude: 0,
     displayGoBackCaution: false,
+    loading: false,
   };
 
   private scrollView: KeyboardAwareScrollView | null = null;
@@ -135,12 +137,13 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
 
   public render(): React.ReactNode {
     const { isLoading, t } = this.props;
+    const { loading } = this.state;
 
     return (
       <>
         <Header title={t('headerTitle')} onIconPress={this.handleGoBack} barVisible />
         <SafeAreaView style={styles.container}>{this.renderForm()}</SafeAreaView>
-        <Loader visible={isLoading} />
+        <Loader visible={isLoading || loading} />
         {this.renderGoBackCaution()}
       </>
     );
@@ -154,6 +157,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       assetGroupId,
       formData: { projectName, address },
       assetGroupSelectionDisabled,
+      loading,
     } = this.state;
 
     // TODO: Update this logic once verification shield logic is on place
@@ -197,7 +201,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
               </KeyboardAwareScrollView>
               <WithShadowView>
                 <FormButton
-                  disabled={assetGroupTypeId === -1}
+                  disabled={assetGroupTypeId === -1 || loading}
                   type="primary"
                   title={t('common:submit')}
                   containerStyle={styles.buttonStyle}
@@ -350,6 +354,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     };
 
     formActions.setSubmitting(true);
+    this.setState({ loading: true });
     try {
       if (assetId > -1) {
         // @ts-ignore
@@ -360,12 +365,14 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
         setAssetId(response.id);
         AnalyticsService.track(EventType.AddPropertySuccess, { property_address: address });
       }
+      this.setState({ loading: false });
       if (!shouldGoBack) {
         navigation.navigate(ScreensKeys.AddProperty);
         return;
       }
       this.goBack();
     } catch (e) {
+      this.setState({ loading: false });
       const error = ErrorUtils.getErrorMessage(e.details);
       if (assetId < 1) {
         AnalyticsService.track(EventType.AddPropertyFailure, { property_address: address, error });

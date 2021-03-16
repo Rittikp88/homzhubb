@@ -53,7 +53,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public render(): React.ReactNode {
     const { t, onUploadImage, selectedImages } = this.props;
-    const { isBottomSheetVisible } = this.state;
+    const { isBottomSheetVisible, videoUrl } = this.state;
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
 
     return (
@@ -76,6 +76,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
             title={t('common:continue')}
             containerStyle={styles.buttonStyle}
             onPress={this.postAttachmentsForProperty}
+            disabled={!videoUrl && !selectedImages.length}
           />
         </View>
         <BottomSheet

@@ -25,6 +25,7 @@ import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { TakeActionTitle } from '@homzhub/common/src/constants/ServiceTickets';
 
 interface ITicketAction {
@@ -48,6 +49,7 @@ interface IScreenState {
   isFullScreen: boolean;
   isActionSheet: boolean;
   selectedAction: string;
+  hasClickedWorkDone: boolean;
 }
 
 type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ServiceTicketDetail>;
@@ -61,6 +63,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     isFullScreen: false,
     isActionSheet: false,
     selectedAction: '',
+    hasClickedWorkDone: false,
   };
 
   public componentDidMount = (): void => {
@@ -144,14 +147,20 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   };
 
   private renderFullscreenCarousel = (): React.ReactElement | null => {
-    const { isFullScreen, activeSlide } = this.state;
+    const { isFullScreen, activeSlide, hasClickedWorkDone } = this.state;
     const { ticketDetails } = this.props;
     if (!isFullScreen || !ticketDetails) return null;
+    let workDoneAttachments: Attachment[] = [];
+    if (ticketDetails.status === TicketStatus.CLOSED) {
+      const { activities } = ticketDetails;
+      const lastActivity = activities[activities.length - 1];
+      workDoneAttachments = lastActivity.data?.attachments ?? [];
+    }
     return (
       <FullScreenAssetDetailsCarousel
         onFullScreenToggle={this.enableFullScreenWithImage}
         activeSlide={activeSlide}
-        data={ticketDetails.ticketAttachments}
+        data={hasClickedWorkDone ? workDoneAttachments : ticketDetails.ticketAttachments}
         updateSlide={this.updateSlide}
         hasOnlyImages
       />
@@ -216,6 +225,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     this.setState((prevState) => ({
       isFullScreen: !prevState.isFullScreen,
       activeSlide: slideNumber,
+      hasClickedWorkDone: true,
     }));
   };
 
@@ -226,6 +236,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private enableFullScreenWithImage = (): void => {
     this.setState((prevState) => ({
       isFullScreen: !prevState.isFullScreen,
+      hasClickedWorkDone: false,
     }));
   };
 
