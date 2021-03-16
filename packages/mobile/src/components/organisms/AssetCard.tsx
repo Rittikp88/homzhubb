@@ -11,7 +11,7 @@ import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
@@ -58,6 +58,7 @@ interface IListProps {
 }
 
 interface IState {
+  isOwnerSheetVisible: boolean;
   isBottomSheetVisible: boolean;
   listOfTenant: number;
 }
@@ -66,6 +67,7 @@ type Props = WithTranslation & IListProps;
 export class AssetCard extends Component<Props, IState> {
   public state = {
     isBottomSheetVisible: false,
+    isOwnerSheetVisible: false,
     listOfTenant: 0,
   };
 
@@ -223,6 +225,38 @@ export class AssetCard extends Component<Props, IState> {
     );
   };
 
+  public renderOwnerSheet = (): React.ReactNode => {
+    const { isOwnerSheetVisible } = this.state;
+    const { t, assetData, isFromTenancies = false } = this.props;
+    if (!assetData || !assetData.assetStatusInfo) return null;
+    const {
+      assetStatusInfo: {
+        leaseOwnerInfo: { name, profilePicture },
+        leaseTenantInfo: { user },
+      },
+    } = assetData;
+    const showName = isFromTenancies ? name : user.name;
+    const image = isFromTenancies ? profilePicture : user.profilePicture;
+    const title = isFromTenancies ? t('common:ownerInfo') : t('common:tenantInfo');
+    return (
+      <BottomSheet
+        visible={isOwnerSheetVisible}
+        sheetHeight={theme.viewport.height * 0.5}
+        headerTitle={title}
+        onCloseSheet={this.onCloseBottomSheet}
+      >
+        <ScrollView>
+          <View style={styles.ownerView}>
+            <Avatar fullName={showName} isOnlyAvatar imageSize={72} image={image} />
+            <Text type="regular" style={styles.name}>
+              {showName}
+            </Text>
+          </View>
+        </ScrollView>
+      </BottomSheet>
+    );
+  };
+
   private renderExpandedView = (): React.ReactNode => {
     const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
     if (!assetData || !assetData.assetStatusInfo) return null;
@@ -240,11 +274,9 @@ export class AssetCard extends Component<Props, IState> {
       lastVisitedStep: { assetCreation },
       isVerificationDocumentUploaded,
     } = assetData;
-
     const isListed = leaseListingId || saleListingId;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
-    const showRightIcon = !isFromTenancies && !isInviteAccepted;
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
     return (
@@ -253,7 +285,7 @@ export class AssetCard extends Component<Props, IState> {
           <>
             <Divider containerStyles={styles.divider} />
             <Avatar
-              isRightIcon={showRightIcon}
+              isRightIcon
               onPressRightIcon={this.onToggleBottomSheet}
               icon={userInfo.icon}
               fullName={userInfo.name}
@@ -322,6 +354,7 @@ export class AssetCard extends Component<Props, IState> {
           )}
         </View>
         {this.renderBottomSheet()}
+        {this.renderOwnerSheet()}
       </>
     );
   };
@@ -331,10 +364,22 @@ export class AssetCard extends Component<Props, IState> {
   };
 
   public onToggleBottomSheet = (): void => {
-    const { isBottomSheetVisible } = this.state;
-    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
-    if (!isBottomSheetVisible) {
-      this.activeTenantList().then();
+    const { isBottomSheetVisible, isOwnerSheetVisible } = this.state;
+    const { assetData, isFromTenancies = false } = this.props;
+    if (!assetData || !assetData.assetStatusInfo) return;
+    const {
+      assetStatusInfo: {
+        leaseTenantInfo: { isInviteAccepted },
+      },
+    } = assetData;
+
+    if (isFromTenancies || isInviteAccepted) {
+      this.setState({ isOwnerSheetVisible: !isOwnerSheetVisible });
+    } else if (!isInviteAccepted) {
+      this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+      if (!isBottomSheetVisible) {
+        this.activeTenantList().then();
+      }
     }
   };
 
@@ -511,5 +556,12 @@ const styles = StyleSheet.create({
   },
   designation: {
     color: theme.colors.green,
+  },
+  name: {
+    marginVertical: 8,
+  },
+  ownerView: {
+    alignItems: 'center',
+    marginTop: 10,
   },
 });

@@ -230,7 +230,9 @@
     "uploadWarning": "You can upload a maximum of 10 images",
     "addPhoto": "Add Photos",
     "detail": "Detail",
-    "fileSizeWarning": "File size is too large"
+    "fileSizeWarning": "File size is too large",
+    "ownerInfo": "Owner Info",
+    "tenantInfo": "Tenant Info"
   },
   "auth": {
     "verifyNumber": "Verify your number",
