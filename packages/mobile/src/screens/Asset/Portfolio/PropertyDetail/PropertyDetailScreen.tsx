@@ -451,19 +451,23 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private onDeleteProperty = async (id: number): Promise<void> => {
-    const { navigation } = this.props;
+    const { t, navigation } = this.props;
+    this.setState({ isLoading: true });
     try {
       await AssetRepository.deleteAsset(id);
       this.setState(
         {
           isDeleteProperty: false,
+          isLoading: false,
         },
         () => {
+          AlertHelper.success({ message: t('property:propertyDeleted') });
           // @ts-ignore
           navigation.navigate(ScreensKeys.PortfolioLandingScreen);
         }
       );
     } catch (e) {
+      this.setState({ isDeleteProperty: false, isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
@@ -536,7 +540,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     if (value === MenuItems.EDIT_LEASE && assetStatusInfo?.leaseTransaction) {
       navigation.navigate(ScreensKeys.UpdateLeaseScreen, {
         transactionId: assetStatusInfo.leaseTransaction.id,
-        assetGroup: assetGroup.name,
+        assetGroup: assetGroup.code,
         user: assetStatusInfo.leaseTenantInfo.user,
       });
     }
@@ -570,6 +574,11 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       clearMessages,
       clearChatDetail,
     } = this.props;
+
+    if (!asset_id) {
+      return;
+    }
+
     const payload: IPropertyDetailPayload = {
       asset_id,
       id: listing_id,

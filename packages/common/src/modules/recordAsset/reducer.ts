@@ -151,6 +151,8 @@ export const recordAssetReducer = (
       };
     case RecordAssetActionTypes.SET.SELECTED_IMAGE:
       return { ...state, ['selectedImages']: action.payload as AssetGallery[] };
+    case RecordAssetActionTypes.CLEAR_ASSET_DATA:
+      return { ...state, ['assetDetails']: initialRecordAssetState.assetDetails };
     case RecordAssetActionTypes.RESET:
       return initialRecordAssetState;
     default:

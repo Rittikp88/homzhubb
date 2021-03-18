@@ -38,6 +38,7 @@ export const RecordAssetActionTypes = {
     EDIT_PROPERTY_FLOW_BOTTOM_SHEET: `${actionTypePrefix}EDIT_PROPERTY_FLOW_BOTTOM_SHEET`,
     SELECTED_IMAGE: `${actionTypePrefix}SELECTED_IMAGE`,
   },
+  CLEAR_ASSET_DATA: `${actionTypePrefix}CLEAR_ASSET_DATA`,
   RESET: `${actionTypePrefix}RESET`,
 };
 
@@ -140,6 +141,10 @@ const setSelectedImages = (payload: AssetGallery[]): IFluxStandardAction<AssetGa
   payload,
 });
 
+const clearAssetData = (): IFluxStandardAction => ({
+  type: RecordAssetActionTypes.CLEAR_ASSET_DATA,
+});
+
 const resetState = (): IFluxStandardAction => ({
   type: RecordAssetActionTypes.RESET,
 });
@@ -179,4 +184,5 @@ export const RecordAssetActions = {
   toggleEditPropertyFlowBottomSheet,
   resetState,
   setSelectedImages,
+  clearAssetData,
 };

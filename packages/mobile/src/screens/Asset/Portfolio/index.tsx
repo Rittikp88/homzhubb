@@ -89,6 +89,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const {
       navigation,
       clearMessages,
+      setAssetId,
       route: { params },
     } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
@@ -97,6 +98,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
       }
       this.getScreenData().then();
       clearMessages();
+      setAssetId(-1);
       this.setState({
         assetType: '',
       });

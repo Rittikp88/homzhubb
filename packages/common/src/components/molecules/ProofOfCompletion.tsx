@@ -12,6 +12,7 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { TOTAL_IMAGES } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 interface IProps {
   onUploadImage: () => void;
@@ -39,16 +40,16 @@ const ProofOfCompletion = ({ onUploadImage, onUpdateComment }: IProps): ReactEle
     }
   };
 
-  const onRemoveProof = (index: string): void => {
-    dispatch(TicketActions.removeAttachment(index));
+  const onRemoveProof = (key: string): void => {
+    dispatch(TicketActions.removeAttachment(key));
   };
   // HANDLERS
 
-  const renderImageView = ({ item }: { item: string }): ReactElement => {
+  const renderImageView = ({ item }: { item: IImageSource }): ReactElement => {
     return (
       <View style={styles.imageContainer}>
-        <ImageBackground source={{ uri: item }} style={styles.image}>
-          <TouchableOpacity style={styles.iconContainer} onPress={(): void => onRemoveProof(item)}>
+        <ImageBackground source={{ uri: item.path }} style={styles.image}>
+          <TouchableOpacity style={styles.iconContainer} onPress={(): void => onRemoveProof(item.filename)}>
             <Icon name={icons.close} color={theme.colors.white} size={18} />
           </TouchableOpacity>
         </ImageBackground>
@@ -110,10 +111,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   imageContainer: {
+    flex: 1,
     margin: 6,
   },
   image: {
-    width: 160,
     height: 100,
   },
   iconContainer: {

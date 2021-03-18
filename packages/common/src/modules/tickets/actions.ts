@@ -3,6 +3,7 @@ import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 const actionTypePrefix = 'Ticket/';
 export const TicketActionTypes = {
@@ -22,7 +23,7 @@ export const TicketActionTypes = {
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
 };
 
-const setAttachment = (payload: string[]): IFluxStandardAction<string[]> => ({
+const setAttachment = (payload: IImageSource[]): IFluxStandardAction<IImageSource[]> => ({
   type: TicketActionTypes.SET.PROOF_ATTACHMENT,
   payload,
 });
@@ -76,7 +77,8 @@ export type TicketActionPayloadTypes =
   | ITicket[]
   | ICurrentTicket
   | ITicket
-  | IGetTicketParam;
+  | IGetTicketParam
+  | IImageSource[];
 
 export const TicketActions = {
   setAttachment,

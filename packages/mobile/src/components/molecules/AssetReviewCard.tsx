@@ -19,14 +19,13 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import ReportReviewForm from '@homzhub/mobile/src/components/molecules/ReportReviewForm';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
-import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IAssetReviewProps {
   review: AssetReview;
-  reportCategories?: Unit[] | Pillar[];
+  reportCategories?: Unit[];
   hideButtons?: boolean;
   hideShowMore?: boolean;
 }

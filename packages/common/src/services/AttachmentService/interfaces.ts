@@ -14,3 +14,12 @@ export interface IDocumentSource {
   fileCopyUri: string;
   size: number;
 }
+
+export interface IImageSource {
+  filename: string;
+  mime: string;
+  path: string;
+  size?: number;
+  width?: number;
+  height?: number;
+}

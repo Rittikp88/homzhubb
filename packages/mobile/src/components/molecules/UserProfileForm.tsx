@@ -11,7 +11,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { AttachmentService, AttachmentType } from '@homzhub/common/src/services/AttachmentService';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -29,6 +29,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import PasswordVerificationForm from '@homzhub/mobile/src/components/molecules/PasswordVerificationForm';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IProps extends WithTranslation {
   onFormSubmitSuccess: (
@@ -386,7 +387,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
         AlertHelper.error({ message: error[0].message });
       }
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: e.message });
     }
   };
 

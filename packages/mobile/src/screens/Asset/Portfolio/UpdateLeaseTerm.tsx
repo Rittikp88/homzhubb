@@ -63,6 +63,7 @@ const UpdateLeaseTerm = (props: Props): React.ReactElement => {
       utilityBy: detail.utilityPaidBy,
       maintenanceBy: detail.maintenancePaidBy,
       maintenanceSchedule: detail.maintenancePaymentSchedule,
+      maintenanceUnit: detail.maintenanceUnit.id,
       annualIncrement: detail.annualRentIncrementPercentage ? detail.annualRentIncrementPercentage.toString() : '',
     };
   };
@@ -84,6 +85,7 @@ const UpdateLeaseTerm = (props: Props): React.ReactElement => {
       currency: currency.currencyCode,
       minimum_lease_period: Number(values[LeaseFormKeys.minimumLeasePeriod]),
       maintenance_amount: Number(values[LeaseFormKeys.maintenanceAmount]) || null,
+      maintenance_unit: values[LeaseFormKeys.maintenanceUnit],
     };
 
     try {

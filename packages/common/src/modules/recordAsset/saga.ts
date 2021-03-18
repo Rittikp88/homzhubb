@@ -3,14 +3,15 @@ import { call, put, takeEvery, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 export function* getAssetPlanList() {
   try {
@@ -37,8 +38,12 @@ export function* getAssetGroups() {
 export function* getAssetById() {
   try {
     const assetId = yield select(RecordAssetSelectors.getCurrentAssetId);
-    const data = yield call(AssetRepository.getAssetById, assetId);
-    yield put(RecordAssetActions.getAssetByIdSuccess(data));
+    if (assetId > 0) {
+      const data = yield call(AssetRepository.getAssetById, assetId);
+      yield put(RecordAssetActions.getAssetByIdSuccess(data));
+    } else {
+      AlertHelper.error({ message: I18nService.t('property:assetIdWarning') });
+    }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error });

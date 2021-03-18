@@ -94,6 +94,7 @@ export const assetReducer = (
     case AssetActionTypes.GET.ASSET_VISIT:
       return {
         ...state,
+        ['visits']: initialAssetState.visits,
         ['loaders']: { ...state.loaders, ['visits']: true },
         ['error']: { ...state.error, ['visits']: '' },
       };

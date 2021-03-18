@@ -3,6 +3,7 @@ import { TicketActionPayloadTypes, TicketActionTypes } from '@homzhub/common/src
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
+import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 export const initialTicketState: ITicketState = {
   proofAttachment: [],
@@ -23,7 +24,7 @@ export const ticketReducer = (
     case TicketActionTypes.SET.PROOF_ATTACHMENT:
       return {
         ...state,
-        ['proofAttachment']: [...state.proofAttachment, ...(action.payload as string[])],
+        ['proofAttachment']: [...state.proofAttachment, ...(action.payload as IImageSource[])],
       };
     case TicketActionTypes.REMOVE_ATTACHMENT:
       return {
@@ -74,6 +75,7 @@ export const ticketReducer = (
       return {
         ...state,
         proofAttachment: initialTicketState.proofAttachment,
+        currentTicket: initialTicketState.currentTicket,
       };
     default:
       return {

@@ -60,7 +60,6 @@ const SubmitQuote = (): ReactElement => {
     let updatePayload: IQuoteData[] = [];
     let attachmentIds: number[] = [];
     setLoader(true);
-
     if (attachments.length > 0) {
       /* Make an API call for uploading the document and extract the doc Id */
       const formData = new FormData();
@@ -135,7 +134,7 @@ const SubmitQuote = (): ReactElement => {
     const prevQuotes = cloneDeep(quotes);
     const prevAttachments = cloneDeep(attachments);
     DocumentPicker.pick({
-      type: [DocumentPicker.types.allFiles],
+      type: [DocumentPicker.types.pdf, DocumentPicker.types.images],
     })
       .then((doc) => {
         prevQuotes[index].document = doc;
@@ -149,8 +148,11 @@ const SubmitQuote = (): ReactElement => {
 
   const onRemovedDoc = (index: number): void => {
     const prevQuotes = cloneDeep(quotes);
+    const prevAttachment = cloneDeep(attachments);
     prevQuotes[index].document = null;
+    prevAttachment.splice(index, 1);
     setQuotes(prevQuotes);
+    setAttachments(prevAttachment);
   };
 
   const onCommentChange = (value: string): void => {

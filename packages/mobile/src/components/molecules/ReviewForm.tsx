@@ -10,9 +10,10 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
@@ -26,7 +27,7 @@ interface IProps {
   asset: VisitAssetDetail;
   ratingCategories: Pillar[];
   onClose: (reset?: boolean) => void;
-  deleted?: () => void;
+  onDelete?: () => void;
   editReview?: boolean;
   overallRatings?: number;
   review?: AssetReview;
@@ -39,7 +40,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
     ratingCategories,
     saleListingId,
     leaseListingId,
-    deleted = FunctionUtils.noop,
+    onDelete = FunctionUtils.noop,
     editReview,
     review,
   } = props;
@@ -47,6 +48,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
 
   const [overallRating, setOverallRating] = useState(0);
   const [description, setDescription] = useState('');
+  const [showDeleteView, setDeleteView] = useState(false);
   const [categoryRatings, setCategoryRatings] = useState<Pillar[]>([]);
 
   useEffect(() => {
@@ -110,14 +112,44 @@ const ReviewForm = (props: IProps): React.ReactElement => {
   }, [description, overallRating, categoryRatings, leaseListingId, saleListingId, review, onClose]);
 
   const onPress = (): void => {
-    if (editReview && deleted) {
-      deleted();
+    if (editReview) {
+      setDeleteView(!showDeleteView);
       return;
     }
     onClose();
   };
 
   const onClick = (): Promise<void> => (editReview ? update() : onSubmit());
+
+  const renderDeleteView = (): React.ReactElement => {
+    return (
+      <BottomSheet
+        visible={showDeleteView}
+        headerTitle={t('common:deleteReview')}
+        onCloseSheet={(): void => setDeleteView(false)}
+        sheetHeight={theme.viewport.height * 0.4}
+      >
+        <View style={styles.deleteView}>
+          <Text type="small">{t('common:deleteReviewText')}</Text>
+
+          <View style={styles.deleteViewText}>
+            <Text type="small">{t('common:doYouWantToRemove')}</Text>
+          </View>
+
+          <View style={styles.buttonContainer}>
+            <Button
+              onPress={(): void => setDeleteView(false)}
+              type="secondary"
+              title={t('common:no')}
+              titleStyle={styles.buttonTitle}
+            />
+            <Button onPress={onDelete} type="primary" title={t('common:yes')} containerStyle={styles.submitButton} />
+          </View>
+        </View>
+      </BottomSheet>
+    );
+  };
+
   return (
     <>
       <PropertyAddressCountry
@@ -171,6 +203,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
           />
         </View>
       </KeyboardAwareScrollView>
+      {renderDeleteView()}
     </>
   );
 };
@@ -221,5 +254,11 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     borderColor: theme.colors.error,
+  },
+  deleteView: {
+    margin: 10,
+  },
+  deleteViewText: {
+    marginVertical: 10,
   },
 });

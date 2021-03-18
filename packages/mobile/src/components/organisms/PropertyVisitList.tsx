@@ -39,6 +39,7 @@ import {
 } from '@homzhub/common/src/domain/models/AssetVisit';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IVisitActionParam, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -82,6 +83,7 @@ interface IScreenState {
   height: number;
   replyReview: boolean;
   reviewData: AssetReview;
+  reportCategories: Unit[];
 }
 
 type Props = IProps & WithTranslation;
@@ -96,10 +98,12 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     height: theme.viewport.height,
     replyReview: false,
     reviewData: new AssetReview(),
+    reportCategories: [],
   };
 
-  public componentDidMount = (): void => {
+  public componentDidMount = async (): Promise<void> => {
     this.openReviewForm();
+    await this.getReportCategory();
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
@@ -180,8 +184,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         <Loader visible={isLoading ?? false} />
         {this.renderCancelConfirmation()}
         {this.renderReviewForm()}
-        {this.deleteForm()}
-        {this.replyReviewForm()}
+        {this.renderReplyReviewForm()}
       </View>
     );
   }
@@ -374,7 +377,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         {reviewData && reviewData.id ? (
           <ReviewForm
             editReview
-            deleted={this.closeDeleteSheet}
+            onDelete={this.onDelete}
             onClose={this.onCancelReview}
             asset={asset}
             review={reviewData}
@@ -391,6 +394,24 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
             saleListingId={saleListing}
           />
         )}
+      </BottomSheet>
+    );
+  };
+
+  private renderReplyReviewForm = (): React.ReactNode => {
+    const { replyReview, reviewData, reportCategories } = this.state;
+    const { t } = this.props;
+    if (!reviewData) return null;
+    return (
+      <BottomSheet
+        visible={replyReview}
+        sheetHeight={theme.viewport.height * 0.65}
+        headerTitle={t('propertyReview')}
+        onCloseSheet={this.onCancelReviewReply}
+      >
+        <ScrollView>
+          <AssetReviewCard hideShowMore key={reviewData.id} review={reviewData} reportCategories={reportCategories} />
+        </ScrollView>
       </BottomSheet>
     );
   };
@@ -432,6 +453,22 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     );
   };
 
+  private onDelete = (): void => {
+    const { showDeleteForm, reviewData } = this.state;
+    const { resetData } = this.props;
+    this.setState({ showDeleteForm: !showDeleteForm });
+    AssetRepository.deleteReview(reviewData.id)
+      .then(() => {
+        if (resetData) {
+          this.closeBottomSheet();
+          resetData();
+        }
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      });
+  };
+
   private onLayout = (e: LayoutChangeEvent): void => {
     const { height } = this.state;
     const { height: newHeight } = e.nativeEvent.layout;
@@ -460,84 +497,9 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     }
   };
 
-  private replyReviewForm = (): React.ReactNode => {
-    const { replyReview, reviewData } = this.state;
-    const { t } = this.props;
-    if (!reviewData) return null;
-    return (
-      <BottomSheet
-        visible={replyReview}
-        sheetHeight={theme.viewport.height * 0.65}
-        headerTitle={t('propertyReview')}
-        onCloseSheet={this.onCancelReviewReply}
-      >
-        <ScrollView>
-          <AssetReviewCard
-            hideShowMore
-            key={reviewData.id}
-            review={reviewData}
-            reportCategories={reviewData.pillarRatings}
-          />
-        </ScrollView>
-      </BottomSheet>
-    );
-  };
-
-  private delete = (): void => {
-    const { showDeleteForm, reviewData } = this.state;
-    const { resetData } = this.props;
-    this.setState({ showDeleteForm: !showDeleteForm });
-    AssetRepository.deleteReview(reviewData.id)
-      .then(() => {
-        if (resetData) {
-          this.closeBottomSheet();
-          resetData();
-        }
-      })
-      .catch((e) => {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-      });
-  };
-
-  private closeDeleteSheet = (): void => {
-    const { showDeleteForm } = this.state;
-    this.setState({ showDeleteForm: !showDeleteForm });
-  };
-
   private closeBottomSheet = (): void => {
-    const { showDeleteForm, showReviewForm } = this.state;
-    this.setState({ showDeleteForm: !showDeleteForm, showReviewForm: !showReviewForm, reviewData: new AssetReview() });
-  };
-
-  private deleteForm = (): React.ReactElement => {
-    const { showDeleteForm } = this.state;
-    const { t } = this.props;
-    return (
-      <BottomSheet
-        visible={showDeleteForm}
-        headerTitle={t('common:deleteReview')}
-        onCloseSheet={this.onCancelSheet}
-        sheetHeight={theme.viewport.height * 0.4}
-      >
-        <View style={styles.deleteView}>
-          <Text type="small">{t('common:deleteReviewText')}</Text>
-
-          <View style={styles.deleteViewText}>
-            <Text type="small">{t('common:doYouWantToRemove')}</Text>
-          </View>
-
-          <View style={styles.buttonContaine}>
-            <Button
-              onPress={this.closeDeleteSheet}
-              type="secondary"
-              title={t('common:no')}
-              titleStyle={styles.buttonTitle}
-            />
-            <Button onPress={this.delete} type="primary" title={t('common:yes')} containerStyle={styles.submitButton} />
-          </View>
-        </View>
-      </BottomSheet>
-    );
+    const { showReviewForm } = this.state;
+    this.setState({ showReviewForm: !showReviewForm, reviewData: new AssetReview() });
   };
 
   private getActions = (action: string, isValidVisit: boolean): IVisitActions | null => {
@@ -679,6 +641,17 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
       this.setState({ reviewAsset: visitToReview, showReviewForm: true });
     }, 500);
   };
+
+  private getReportCategory = async (): Promise<void> => {
+    try {
+      const response = await AssetRepository.getReviewReportCategories();
+      this.setState({
+        reportCategories: response,
+      });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.property)(PropertyVisitList);
@@ -789,23 +762,5 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginHorizontal: 12,
-  },
-
-  buttonContaine: {
-    marginTop: 16,
-    flexDirection: 'row',
-    marginBottom: 12,
-  },
-  submitButton: {
-    marginStart: 16,
-  },
-  buttonTitle: {
-    marginHorizontal: 0,
-  },
-  deleteView: {
-    margin: 10,
-  },
-  deleteViewText: {
-    marginVertical: 10,
   },
 });

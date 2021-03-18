@@ -82,6 +82,7 @@ export default QuoteBox;
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
+    flex: 0.8,
   },
   container: {
     marginVertical: 12,

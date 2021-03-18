@@ -2,8 +2,9 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
-const getProofAttachment = (state: IState): string[] => {
+const getProofAttachment = (state: IState): IImageSource[] => {
   const {
     ticket: { proofAttachment },
   } = state;

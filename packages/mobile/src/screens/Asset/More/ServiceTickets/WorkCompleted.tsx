@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { cloneDeep } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -22,6 +21,7 @@ import { ICompleteTicketPayload, TicketAction } from '@homzhub/common/src/domain
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { TOTAL_IMAGES } from '@homzhub/common/src/constants/ServiceTickets';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 const WorkCompleted = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -29,14 +29,12 @@ const WorkCompleted = (): React.ReactElement => {
 
   const [comment, setComment] = useState('');
   const [isLoading, setLoader] = useState(false);
-  const [proofImages, setProofImages] = useState<ImagePickerResponse[]>([]);
   const attachments = useSelector(TicketSelectors.getProofAttachment);
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
   // HANDLERS
   const handleImageUpload = async (): Promise<void> => {
-    const prevAttachments: ImagePickerResponse[] = cloneDeep(proofImages);
     try {
       const response: ImagePickerResponse | ImagePickerResponse[] = await ImagePicker.openPicker({
         compressImageMaxWidth: 400,
@@ -49,11 +47,17 @@ const WorkCompleted = (): React.ReactElement => {
       });
 
       const images = response as ImagePickerResponse[];
-      let attachment: string[] = [];
+      let attachment: IImageSource[] = [];
       images.forEach((item) => {
-        attachment = [...attachment, item.path];
+        attachment = [
+          ...attachment,
+          {
+            filename: item.filename,
+            path: item.path,
+            mime: item.mime,
+          },
+        ];
       });
-      setProofImages([...prevAttachments, ...images]);
       dispatch(TicketActions.setAttachment(attachment));
     } catch (err) {
       AlertHelper.error({ message: err.message });
@@ -67,10 +71,15 @@ const WorkCompleted = (): React.ReactElement => {
   const onWorkDone = async (): Promise<void> => {
     const formData = new FormData();
     let attachmentIds: number[] = [];
-    setLoader(true);
 
-    if (proofImages.length > 0) {
-      proofImages.forEach((image) => {
+    if (attachments.length > 10) {
+      AlertHelper.error({ message: t('maxProof') });
+      return;
+    }
+
+    setLoader(true);
+    if (attachments.length > 0) {
+      attachments.forEach((image) => {
         // @ts-ignore
         formData.append('files[]', {
           // @ts-ignore

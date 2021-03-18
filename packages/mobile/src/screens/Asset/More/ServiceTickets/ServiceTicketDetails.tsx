@@ -5,6 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -36,6 +37,7 @@ interface ITicketAction {
 
 interface IDispatchProps {
   getTicketDetail: (payload: number) => void;
+  clearState: () => void;
 }
 
 interface IStateProps {
@@ -78,22 +80,17 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
 
   public render = (): React.ReactNode => {
     const { isActionSheet, selectedAction } = this.state;
-    const {
-      navigation: { goBack },
-      t,
-      ticketDetails,
-      isLoading,
-    } = this.props;
+    const { t, ticketDetails, isLoading } = this.props;
 
     const actionList = this.getActionList();
     const title = ticketDetails ? ticketDetails.asset.projectName : t('common:detail');
     return (
-      <>
+      <HandleBack onBack={this.handleGoBack}>
         <UserScreen
           title={title}
           pageTitle={t('serviceTickets:ticketDetails')}
           loading={isLoading}
-          onBackPress={goBack}
+          onBackPress={this.handleGoBack}
           contentContainerStyle={styles.userScreen}
         >
           <View style={styles.container}>
@@ -113,7 +110,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           onCloseDropDown={(): void => this.handleActionSheet(false)}
           isBottomSheetVisible={isActionSheet}
         />
-      </>
+      </HandleBack>
     );
   };
 
@@ -233,6 +230,13 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     this.setState({ isActionSheet: isOpen });
   };
 
+  private handleGoBack = (): void => {
+    const { navigation, clearState } = this.props;
+    this.setState({ isFullScreen: false });
+    clearState();
+    navigation.goBack();
+  };
+
   private enableFullScreenWithImage = (): void => {
     this.setState((prevState) => ({
       isFullScreen: !prevState.isFullScreen,
@@ -312,10 +316,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTicketDetail } = TicketActions;
+  const { getTicketDetail, clearState } = TicketActions;
   return bindActionCreators(
     {
       getTicketDetail,
+      clearState,
     },
     dispatch
   );

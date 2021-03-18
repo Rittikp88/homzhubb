@@ -1,6 +1,7 @@
 import { groupBy, cloneDeep } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { Message, Messages, IMessageKeyValue, IMessages } from '@homzhub/common/src/domain/models/Message';
+import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 class ReducerUtils {
   public formatMessages = (data: Messages, prevObj: IMessages | null, isNew?: boolean): IMessageKeyValue => {
@@ -27,10 +28,10 @@ class ReducerUtils {
     return resultObj;
   };
 
-  public removeAttachment = (key: string, prevData: string[]): string[] => {
+  public removeAttachment = (key: string, prevData: IImageSource[]): IImageSource[] => {
     const attachments = cloneDeep(prevData);
 
-    const index = attachments.indexOf(key);
+    const index = attachments.findIndex((item) => item.filename === key);
     attachments.splice(index, 1);
     return attachments;
   };
