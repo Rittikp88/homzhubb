@@ -34,7 +34,7 @@ class NotificationService {
     // Called when a new registration token is generated for the device/token expires/server invalidates the token.
     this.messageObject.onTokenRefresh(async (token) => {
       await StorageService.set(StorageKeys.DEVICE_TOKEN, token);
-      this.postDeviceToken();
+      await this.postDeviceToken();
     });
 
     await this.addNotificationListeners();
@@ -123,7 +123,7 @@ class NotificationService {
     const newDeviceToken = await this.messageObject.getToken();
     const oldDeviceToken = await this.getDeviceToken();
 
-    const isDeviceTokenChanged = !oldDeviceToken || newDeviceToken !== oldDeviceToken;
+    const isDeviceTokenChanged = !oldDeviceToken || !newDeviceToken || newDeviceToken !== oldDeviceToken;
 
     if (!newDeviceToken || !isDeviceTokenChanged) {
       return;

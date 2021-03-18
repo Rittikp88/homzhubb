@@ -278,7 +278,7 @@ export const BottomTabs = (): React.ReactElement => {
           blur: (): void => {
             dispatch(PortfolioActions.setInitialState());
             dispatch(CommonActions.clearMessages());
-            dispatch(RecordAssetActions.resetState());
+            dispatch(RecordAssetActions.clearAssetData());
           },
         }}
         options={({ route }): any => ({

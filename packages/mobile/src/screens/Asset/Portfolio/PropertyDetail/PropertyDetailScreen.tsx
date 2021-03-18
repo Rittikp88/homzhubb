@@ -562,6 +562,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   private handleResponder = (): boolean => {
     this.setState({
       isMenuVisible: false,
+      scrollEnabled: true,
     });
 
     return true;
@@ -653,7 +654,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       // @ts-ignore
       navigation.navigate(ScreensKeys.PropertyPostStack, {
         screen: ScreensKeys.AssetPlanSelection,
-        param: { isFromPortfolio: true },
+        params: { isFromPortfolio: true },
       });
     } else {
       navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });
@@ -740,5 +741,6 @@ const styles = StyleSheet.create({
   },
   heightStyle: {
     minHeight: theme.viewport.height,
+    paddingBottom: 80,
   },
 });

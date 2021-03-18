@@ -569,7 +569,9 @@
     "takeSelfie": "Take a selfie",
     "captureWeb": "Capture selfie",
     "sqft": "sq. ft",
-    "mo": "mo"
+    "mo": "mo",
+    "propertyDeleted": "Property Deleted Successfully",
+    "assetIdWarning": "Please use correct asset id"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -865,7 +867,7 @@
     "dataAndPrivacy": "Data & Privacy",
     "showLastName": "Show Last Name",
     "showMobileNumber": "Show Mobile Number",
-    "showEmail": "Show E-mail ID'",
+    "showEmail": "Show E-mail ID",
     "analyseAppIssuesAndEvents": "Analyse App Issues & Events",
     "communications": "Communications",
     "pushNotifications": "Push Notifications",
@@ -968,7 +970,7 @@
     "serviceTickets": "Service Tickets",
     "submitQuote": "Submit Quote",
     "submitYourQuotes": "Submit your Quotes",
-    "submitQuoteDescription": "Please upload your quotes in pdf format.",
+    "submitQuoteDescription": "Please upload your quotes in pdf, jpg and png formats.",
     "enterQuoteAmount": "Enter the quote amount below inclusive of all the taxes",
     "quotePrice": "Quote Price",
     "quote1": "Quote 1",
@@ -1038,8 +1040,9 @@
     "otherCategoryError": "Please enter other category.",
     "noPropertyAdded": "You haven't added any property yet. Start adding properties to generate ticket.",
     "quoteApproved": "Quote approved successfully",
-    "ticketComplete": "Successfully Ticket Completed",
+    "ticketComplete": "Ticket Completed Successfully",
     "noQuoteFound": "No quote found",
-    "noDetail": "There was an error while trying to fetch your data. Please try again"
+    "noDetail": "There was an error while trying to fetch your data. Please try again",
+    "maxProof": "Max 10 proofs are allowed"
   }
 }
