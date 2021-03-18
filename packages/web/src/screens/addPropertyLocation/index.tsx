@@ -19,10 +19,11 @@ interface IProps {
   setUpdatedLatLng: (latLng: ILatLng) => void;
   hasScriptLoaded: boolean;
   navigateScreen: (screen: AddPropertyStack) => void;
+  setProjectName: (name: string | null) => void;
 }
 
 const AddPropertyLocation: FC<IProps> = (props: IProps) => {
-  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen } = props;
+  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen, setProjectName } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = AddPropertyLocationStyles;
   return (
@@ -32,13 +33,14 @@ const AddPropertyLocation: FC<IProps> = (props: IProps) => {
         setUpdatedLatLng={setUpdatedLatLng}
         hasScriptLoaded={hasScriptLoaded}
         navigateScreen={navigateScreen}
+        setProjectName={setProjectName}
       />
     </View>
   );
 };
 
 const SearchView: FC<IProps> = (props: IProps) => {
-  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen } = props;
+  const { setUpdatedLatLng, hasScriptLoaded, navigateScreen, setProjectName } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = searchViewStyles();
@@ -74,6 +76,7 @@ const SearchView: FC<IProps> = (props: IProps) => {
           setUpdatedLatLng={setUpdatedLatLng}
           hasScriptLoaded={hasScriptLoaded}
           navigateAddProperty={navigateScreen}
+          setProjectName={setProjectName}
         />
         <Button type="secondaryOutline" containerStyle={styles.buttonContainer} onPress={onPressAutoDetect}>
           <Icon name={icons.location} size={15} color={theme.colors.white} />

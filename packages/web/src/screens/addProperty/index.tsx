@@ -68,6 +68,7 @@ const AddProperty: FC = () => {
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
   const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
+  const [projectName, setProjectName] = useState<string | null>(null);
   useEffect(() => {
     if (goBackClicked) {
       goBack();
@@ -171,6 +172,7 @@ const AddProperty: FC = () => {
             setUpdatedLatLng={setLatLng}
             hasScriptLoaded={hasScriptLoaded}
             navigateScreen={navigateScreen}
+            setProjectName={setProjectName}
           />
         );
     }
@@ -187,6 +189,8 @@ const AddProperty: FC = () => {
         addressDetails,
         setAddressDetails,
         goBack,
+        projectName,
+        setProjectName,
       }}
     >
       <View style={[styles.container, isTablet && styles.containerTablet]}>

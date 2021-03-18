@@ -25,11 +25,12 @@ interface ISearchBarProps {
   hasScriptLoaded?: boolean;
   navigateAddProperty?: (screen: AddPropertyStack) => void;
   onSuggestionPress?: (place: IAddressComponent[], address: string, latLng: ILatLng) => void;
+  setProjectName?: (name: string | null) => void;
 }
 
 const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) => {
   const history = useHistory();
-  const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty, onSuggestionPress } = props;
+  const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty, onSuggestionPress, setProjectName } = props;
   const { t } = useTranslation();
   const [popOverWidth, setPopoverWidth] = useState<string | number>('100%');
   const popupRef = useRef<PopupActions>(null);
@@ -64,7 +65,8 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
     setSearchText(selectedOption.label);
     if (selectedOption && selectedOption.value) {
       getDataFromPlaceID((selectedOption?.value as string) ?? '', (result) => {
-        if (setUpdatedLatLng) {
+        if (setUpdatedLatLng && setProjectName) {
+          setProjectName(selectedOption.label.split(',')[0]);
           setUpdatedLatLng({ lat: result.geometry.location.lat(), lng: result.geometry.location.lng() } as ILatLng);
         }
         if (onSuggestionPress) {

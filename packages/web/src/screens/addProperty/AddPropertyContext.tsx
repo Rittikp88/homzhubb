@@ -14,6 +14,8 @@ type AddPropertyContextType = {
   placeData: any;
   setAddressDetails: (addressComp: any) => void;
   addressDetails: any;
+  projectName: string | null;
+  setProjectName: (name: string | null) => void;
 };
 export const AddPropertyContext = React.createContext<AddPropertyContextType>({
   hasScriptLoaded: false,
@@ -25,4 +27,6 @@ export const AddPropertyContext = React.createContext<AddPropertyContextType>({
   setAddressDetails: FunctionUtils.noop,
   addressDetails: {},
   goBack: FunctionUtils.noop,
+  projectName: null,
+  setProjectName: FunctionUtils.noop,
 });

@@ -15,11 +15,15 @@ const PropertyDetailsMap: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [placeDetails, setPlaceDetails] = useState<google.maps.places.PlaceResult | undefined>(undefined);
-  const { hasScriptLoaded, latLng, setUpdatedLatLng } = useContext(AddPropertyContext);
+  const { hasScriptLoaded, latLng, setUpdatedLatLng, projectName, setProjectName } = useContext(AddPropertyContext);
   useEffect(() => {
     if (hasScriptLoaded && map !== null) {
       GooglePlacesService.getLocationData(latLng).then((r) => {
         getPlaceDetailsFromPlaceID(r.place_id, map, (result) => {
+          if (projectName) {
+            result.name = projectName;
+          }
+          setProjectName(null);
           setPlaceDetails(result);
         });
       });
