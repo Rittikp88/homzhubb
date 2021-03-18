@@ -325,7 +325,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
               </Label>
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity style={styles.writeReviewButton} onPress={onPress}>
+            <TouchableOpacity onPress={onPress}>
               <Rating isOverallRating value={item.review.rating ?? 0} />
             </TouchableOpacity>
           )}

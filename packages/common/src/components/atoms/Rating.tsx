@@ -34,6 +34,7 @@ const Rating = ({
 }: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
+  const mobileStyle = PlatformUtils.isMobile() ? null : isMobile && styles.widthMobile;
 
   const ratingColor = useCallback((): string => {
     if (value < 3) {
@@ -91,11 +92,7 @@ const Rating = ({
       <Label
         textType="regular"
         type={isOverallRating ? 'regular' : 'large'}
-        style={[
-          styles.countStyle,
-          overallRatingText,
-          isOverallRating && isMobile ? styles.widthOverall : isMobile && styles.widthMobile,
-        ]}
+        style={[styles.countStyle, overallRatingText, isOverallRating && isMobile ? styles.widthOverall : mobileStyle]}
       >
         {title}
       </Label>
