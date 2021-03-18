@@ -27,7 +27,11 @@ type Props = IProps & WithTranslation;
 export class PropertySearchList extends React.PureComponent<Props> {
   public render(): React.ReactNode {
     const { properties, t, favIds, handleToggle, handleSortToggle } = this.props;
-
+    const foundPropertyText = (): string => {
+      if (properties.count === 1) return `${properties.count} ${t('propertyFound')}`;
+      if (properties.count > 1) return `${properties.count} ${t('propertiesFound')}`;
+      return `0 ${t('propertiesFound')}`;
+    };
     return (
       <View>
         <FlatList
@@ -37,7 +41,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
           ListFooterComponent={this.renderFooter}
           ListHeaderComponent={(): React.ReactElement => (
             <Label type="large" textType="semiBold" style={styles.label}>
-              {properties.count ?? 0} {t('propertiesFound')}
+              {foundPropertyText()}
             </Label>
           )}
           onEndReached={this.loadMoreProperties}

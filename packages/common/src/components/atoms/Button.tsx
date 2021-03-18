@@ -32,6 +32,7 @@ export interface IButtonProps {
   iconColor?: string;
   iconStyle?: StyleProp<ImageStyle>;
   testID?: string;
+  maxLength?: number;
 }
 
 export class Button extends React.PureComponent<IButtonProps> {
@@ -66,7 +67,7 @@ export class Button extends React.PureComponent<IButtonProps> {
   };
 
   private getTextField = (): React.ReactElement => {
-    const { textType, title, textSize = 'small', fontType = 'semiBold' } = this.props;
+    const { textType, title, textSize = 'small', fontType = 'semiBold', maxLength } = this.props;
     let TextField = Text;
 
     if (textType === 'label') {
@@ -74,7 +75,7 @@ export class Button extends React.PureComponent<IButtonProps> {
     }
 
     return (
-      <TextField type={textSize} textType={fontType} style={this.getTextStyle()}>
+      <TextField type={textSize} textType={fontType} style={this.getTextStyle()} maxLength={maxLength}>
         {title}
       </TextField>
     );

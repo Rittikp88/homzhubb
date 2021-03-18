@@ -45,7 +45,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
       setCount((prev) => prev + 1);
       return;
     }
-    AlertHelper.error({ message: t('maxCount') });
+    AlertHelper.error({ message: t('maxCount', { count: maxCount }) });
   };
 
   const decrementCount = (): void => {
@@ -53,7 +53,7 @@ export const Counter = (props: ICounterProps): React.ReactElement => {
       setCount((prev) => prev - 1);
       return;
     }
-    AlertHelper.error({ message: t('minCount') });
+    AlertHelper.error({ message: t('minCount', { count: minCount }) });
   };
 
   const onCountChange = (value: string): void => {

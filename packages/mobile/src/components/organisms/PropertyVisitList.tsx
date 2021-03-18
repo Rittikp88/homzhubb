@@ -272,6 +272,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
               title={visitStatus?.title}
               containerStyle={styles.statusView}
               titleStyle={[styles.statusTitle, { color: visitStatus?.color }]}
+              maxLength={18}
             />
           )}
           {actions.map((action: string, index: number): React.ReactElement | null => {
