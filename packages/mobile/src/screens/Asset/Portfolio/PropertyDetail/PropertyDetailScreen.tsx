@@ -174,7 +174,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     return (
       <TouchableWithoutFeedback onPress={this.onCloseMenu}>
         <View style={styles.flexOne}>
-          <UserScreen isOuterScrollEnabled={scrollEnabled} title={title} backgroundColor={theme.colors.background}>
+          <UserScreen
+            isOuterScrollEnabled={scrollEnabled}
+            title={title}
+            backgroundColor={theme.colors.background}
+            keyboardShouldPersistTaps
+          >
             <View onStartShouldSetResponder={this.handleResponder}>
               <HeaderCard
                 title={t('propertyDetails')}

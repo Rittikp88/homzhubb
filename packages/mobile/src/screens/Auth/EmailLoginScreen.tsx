@@ -45,6 +45,7 @@ export class EmailLoginScreen extends React.PureComponent<Props> {
           contentTitle: t('auth:logInWithEmail'),
         }}
         backgroundColor={theme.colors.white}
+        keyboardShouldPersistTaps
         isLoading={isLoading}
       >
         <LoginForm

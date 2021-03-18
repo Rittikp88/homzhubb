@@ -154,7 +154,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
   const renderImages = useCallback(
     (attachments: Attachment[]): React.ReactElement => {
       return (
-        <View>
+        <>
           {attachments && attachments.length > 0 ? (
             <AssetDetailsImageCarousel
               enterFullScreen={onFullScreenToggle}
@@ -166,7 +166,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
           ) : (
             <ImagePlaceholder containerStyle={styles.imagePlaceHolder} />
           )}
-        </View>
+        </>
       );
     },
     [assets]
@@ -233,7 +233,6 @@ const styles = StyleSheet.create({
   },
   carouselStyle: {
     height: 200,
-    paddingHorizontal: 10,
   },
   imagePlaceHolder: {
     minHeight: 200,

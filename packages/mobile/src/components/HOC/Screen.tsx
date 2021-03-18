@@ -53,7 +53,7 @@ export const Screen = (props: IProps): React.ReactElement => {
       <SafeAreaView style={[styles.container, { backgroundColor }]}>
         {scrollEnabled ? (
           <AnimatedKeyboardAwareScrollView
-            keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'always' : 'never'}
+            keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'handled' : 'never'}
             showsVerticalScrollIndicator={false}
             style={[styles.container, containerStyle]}
             onScroll={onScroll}

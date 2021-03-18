@@ -91,7 +91,9 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
             {t('common:congratulations')}
           </Text>
           <Text type="small">{t('property:yourDetailsAdded')}</Text>
-          <Check style={styles.image} />
+          <View style={styles.image}>
+            <Check />
+          </View>
           <Label type="large" style={styles.continue}>
             {t('property:clickContinue')}
           </Label>
@@ -236,6 +238,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   image: {
+    height: 100,
     marginVertical: 24,
   },
   continue: {

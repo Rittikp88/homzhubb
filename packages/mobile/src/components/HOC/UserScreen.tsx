@@ -23,6 +23,7 @@ interface IUserScreenProps {
   isGradient?: boolean;
   loading?: boolean;
   isOuterScrollEnabled?: boolean;
+  keyboardShouldPersistTaps?: boolean;
   onBackPress?: () => void;
   rightNode?: React.ReactElement;
   hasLeftIcon?: boolean;
@@ -51,6 +52,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     onBackPress,
     rightNode,
     hasLeftIcon = true,
+    keyboardShouldPersistTaps = false,
     onNavigateCallback,
     contentContainerStyle,
   } = props;
@@ -140,6 +142,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
             showsVerticalScrollIndicator={false}
             scrollEnabled={isOuterScrollEnabled}
             nestedScrollEnabled
+            keyboardShouldPersistTaps={keyboardShouldPersistTaps ? 'handled' : 'never'}
           >
             {children}
           </KeyboardAwareScrollView>
