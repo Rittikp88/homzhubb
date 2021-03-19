@@ -24,7 +24,9 @@ class NotificationService {
     if (notificationIndex !== -1) {
       const newNotifications = cloneDeep(notifications);
       newNotifications.results[notificationIndex].isRead = true;
-      newNotifications.unreadCount -= 1;
+      if (newNotifications.unreadCount > 0) {
+        newNotifications.unreadCount -= 1;
+      }
       return newNotifications;
     }
     return notifications;

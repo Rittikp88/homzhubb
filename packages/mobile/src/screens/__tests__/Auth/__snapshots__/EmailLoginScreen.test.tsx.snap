@@ -16,6 +16,7 @@ exports[`Email Login Screen should render email login screen 1`] = `
       "type": "secondary",
     }
   }
+  keyboardShouldPersistTaps={true}
   pageHeaderProps={
     Object {
       "contentTitle": "auth:logInWithEmail",

@@ -232,7 +232,10 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   carouselStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
     height: 200,
+    paddingHorizontal: 10,
   },
   imagePlaceHolder: {
     minHeight: 200,
