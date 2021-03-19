@@ -273,6 +273,7 @@ export class AssetCard extends Component<Props, IState> {
       listingVisits: { upcomingVisits, missedVisits, completedVisits },
       lastVisitedStep: { assetCreation },
       isVerificationDocumentUploaded,
+      spaces,
     } = assetData;
     const isListed = leaseListingId || saleListingId;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
@@ -313,7 +314,7 @@ export class AssetCard extends Component<Props, IState> {
             />
           </>
         )}
-        {isVacant && assetCreation.percentage < 100 && !action && (
+        {isVacant && assetCreation.percentage < 100 && (spaces.length < 1 || !action) && (
           <Button
             type="primary"
             textType="label"
@@ -336,7 +337,7 @@ export class AssetCard extends Component<Props, IState> {
           />
         )}
         <View style={styles.buttonGroup}>
-          {action && (
+          {spaces.length > 0 && action && (
             <Button
               type="primary"
               textType="label"
