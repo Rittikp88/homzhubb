@@ -355,6 +355,10 @@ class DateUtils {
   public convertDateFormatted = (date: string, format = DateFormats.DDMMMYYYY_Hm): string => {
     return moment(date).format(format);
   };
+
+  public isPastDate = (date: string): boolean => {
+    return moment(date).isBefore(moment(), 'day');
+  };
 }
 
 const dateUtils = new DateUtils();

@@ -112,6 +112,7 @@ export class BookVisit extends Component<Props, IVisitState> {
       route: { params },
     } = this.props;
     const upcomingVisitTitle = PropertyUtils.getUpcomingSlotMessage(upcomingVisits[0]);
+    const isPastDate = DateUtils.isPastDate(selectedDate);
     const isButtonDisabled = (selectedDate === '' || selectedTimeSlot === 0) && !isUpcomingSlotSelected;
 
     return (
@@ -160,7 +161,7 @@ export class BookVisit extends Component<Props, IVisitState> {
           <Button
             type="primary"
             title={t('confirm')}
-            disabled={isButtonDisabled}
+            disabled={isButtonDisabled || isPastDate}
             titleStyle={styles.buttonTitleStyle}
             containerStyle={styles.buttonStyle}
             onPress={this.handleSubmit}
