@@ -3,7 +3,7 @@ import { View, StyleSheet, StatusBar, PickerItemProps, ScrollView } from 'react-
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
+import { PopupActions, PopupPosition, PopupProps } from 'reactjs-popup/dist/types';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -140,16 +140,21 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
       if (this.popupRef && this.popupRef.current) this.popupRef.current.close();
     };
 
-    const defaultDropDownProps = (height: number, mobile: boolean | undefined, width = 400): PopupProps => ({
-      position: 'bottom left',
+    const defaultDropDownProps = (
+      height: number,
+      mobile: boolean | undefined,
+      width = 400,
+      position = 'bottom center' as PopupPosition
+    ): PopupProps => ({
+      position,
       arrow: false,
       contentStyle: {
         minWidth: 10,
-        marginTop: 10,
+        marginTop: 20,
         width: mobile ? '90%' : width,
         height,
       },
-      closeOnDocumentClick: false,
+      closeOnDocumentClick: true,
       children: undefined,
     });
 
@@ -171,9 +176,9 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
     const assetFilterButtons = [
       {
         id: 1,
-        label: t('offerType'),
+        label: t(`${assetTransaction[selectedLookingType].title}`),
         content: (
-          <>
+          <View style={styles.selectionPickerContainer}>
             <Typography size="small" variant="text" fontWeight="semiBold" style={styles.filterLabels}>
               {t('lookingFor')}
             </Typography>
@@ -183,9 +188,9 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
               onValueChange={this.onChangeFlow}
               containerStyles={[styles.propertyTypeFilterButtons]}
             />
-          </>
+          </View>
         ),
-        popupProps: defaultDropDownProps(125, isMobile),
+        popupProps: defaultDropDownProps(125, isMobile, 400, 'bottom left'),
       },
       {
         id: 2,
@@ -200,7 +205,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
             />
           </View>
         ),
-        popupProps: defaultDropDownProps(400, isMobile, 420),
+        popupProps: defaultDropDownProps(304, isMobile, 420),
       },
       {
         id: 3,
@@ -211,6 +216,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
               bedCount={room_count ?? []}
               bathroomCount={[bath_count ?? 0]}
               onSelection={this.updateFilter}
+              textStyle={styles.textStyle}
             />
           </View>
         ),
@@ -273,6 +279,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
     const { setFilter, getProperties } = this.props;
     setFilter({ asset_transaction_type: value, min_price: -1, max_price: -1 });
     getProperties();
+    this.popupRef.current?.close();
   };
 
   private updateFilter = (type: string, value: number | number[]): void => {
@@ -404,7 +411,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
   },
   propertyTypes: {
+    marginTop: 24,
     width: 410,
     padding: 5,
+    marginLeft: 12,
+  },
+  selectionPickerContainer: {
+    marginTop: 24,
+  },
+  textStyle: {
+    marginVertical: 12,
   },
 });

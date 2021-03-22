@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, StyleSheet, LayoutChangeEvent } from 'react-native';
-import { PopupProps } from 'reactjs-popup/dist/types';
+import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
+
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -28,10 +29,9 @@ interface IProps {
 
 export const SortByFilter = (props: IProps): React.ReactElement | null => {
   const { filterData, onSelectSort } = props;
-
-  const [title, setTitle] = useState(filterData?.filters.defaultSort);
+  const [title, setTitle] = useState('');
   const [width, setWidth] = useState(0);
-
+  const popupRef = useRef<PopupActions>(null);
   if (!filterData) {
     return null;
   }
@@ -46,19 +46,20 @@ export const SortByFilter = (props: IProps): React.ReactElement | null => {
   const selectSort = (value: IPopupOptions): void => {
     onSelectSort(value);
     setTitle(value.label);
+    if (popupRef && popupRef.current) popupRef.current.close();
   };
 
   const popupContent = (): React.ReactElement | null => {
-    return <PopupMenuOptions options={sortDropDownData} onMenuOptionPress={selectSort} labelType="small" />;
+    return <PopupMenuOptions options={sortDropDownData} onMenuOptionPress={selectSort} labelType="regular" />;
   };
 
   return (
     <View>
-      <Popover content={popupContent()} popupProps={defaultDropDownProps(width)}>
+      <Popover forwardedRef={popupRef} content={popupContent()} popupProps={defaultDropDownProps(width)}>
         <View onLayout={onLayout}>
           <Button
             type="primary"
-            title={title || filterData?.filters.defaultSort}
+            title={title || filterData?.filters.sortBy[0].title}
             containerStyle={styles.filterButton}
             titleStyle={styles.filterButtonTitle}
             icon={icons.downArrow}

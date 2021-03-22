@@ -40,6 +40,7 @@ interface IDispatchProps {
   setFilter: (payload: IFilter) => void;
   clearProperties: () => void;
   setInitialMiscellaneous: () => void;
+  setInitialFilters: () => void;
 }
 interface IProps {
   property: Asset[];
@@ -57,6 +58,7 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     filterData,
     getFilterDetails,
     loader,
+    setInitialFilters,
   } = props;
 
   const toggleGridView = (): void => {
@@ -98,6 +100,7 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     }
     return (): void => {
       setInitialState();
+      setInitialFilters();
     };
   }, []);
 
@@ -236,6 +239,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 10,
+    justifyContent: 'center',
   },
   filters: {
     marginVertical: 20,
@@ -291,6 +295,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     setFilter,
     clearProperties,
     setInitialMiscellaneous,
+    setInitialFilters,
   } = SearchActions;
   return bindActionCreators(
     {
@@ -300,6 +305,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setFilter,
       clearProperties,
       setInitialMiscellaneous,
+      setInitialFilters,
     },
     dispatch
   );

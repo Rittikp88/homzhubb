@@ -301,12 +301,13 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
       filters,
       filters: { miscellaneous },
       isMobile,
+      isTablet,
     } = this.props;
     const updateSelectedDate = (day: string): void => {
       setFilter({ miscellaneous: { ...filters.miscellaneous, expected_move_in_date: day } });
     };
     return (
-      <View style={styles.dropdown}>
+      <View style={[styles.calendarDropdown, isTablet && styles.calendarDropdownTablet]}>
         <FormCalendar
           selectedValue={miscellaneous?.expected_move_in_date}
           name="expected_move_in_date"
@@ -317,7 +318,8 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
           textSize="small"
           fontType="semiBold"
           bubbleSelectedDate={updateSelectedDate}
-          containerStyle={[styles.dropdown, isMobile && styles.dropdownMobile]}
+          containerStyle={isMobile && styles.dropdownMobile}
+          dateContainerStyle={styles.dateStyle}
         />
       </View>
     );
@@ -339,7 +341,7 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
         <Text type="small" textType="semiBold" style={styles.filterHeader}>
           {t('facing', { totalFacing: facing.length })}
         </Text>
-        <View style={styles.moreRow}>
+        <View>
           <CheckboxGroup
             data={transformedFacing}
             onToggle={this.handleFacingSelection}
@@ -724,6 +726,7 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
+    marginLeft: 6,
   },
   flexOne: {
     flex: 1,
@@ -754,7 +757,6 @@ const styles = StyleSheet.create({
   },
   filterHeader: {
     marginTop: 10,
-    marginLeft: 10,
     color: theme.colors.darkTint3,
   },
   agentListed: {
@@ -780,7 +782,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexWrap: 'wrap',
     flex: 1,
-    marginTop: 16,
+    marginTop: 12,
   },
   checkboxGroupContainer: {
     width: 152,
@@ -792,12 +794,21 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     flexDirection: 'column',
+    marginLeft: 4,
   },
   dropdown: {
     width: 317,
     height: 48,
     marginVertical: 10,
     marginHorizontal: 2,
+  },
+  calendarDropdown: {
+    width: 317,
+    marginTop: 30,
+    marginLeft: 4,
+  },
+  calendarDropdownTablet: {
+    margin: 0,
   },
   dropdownMobile: {
     width: theme.viewport.width - 80,
@@ -813,11 +824,12 @@ const styles = StyleSheet.create({
   },
   facingViewContainer: {
     width: '65%',
+    marginTop: 16,
   },
   facingViewSubContainer: {
     flexDirection: 'column',
     flex: 1,
-    marginTop: 15,
+    marginTop: 24,
     marginLeft: 15,
   },
   facingTabView: {
@@ -882,5 +894,8 @@ const styles = StyleSheet.create({
   },
   buttonTitleStyle: {
     marginHorizontal: 0,
+  },
+  dateStyle: {
+    marginTop: 4,
   },
 });

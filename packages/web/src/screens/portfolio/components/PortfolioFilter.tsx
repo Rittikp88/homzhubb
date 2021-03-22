@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
@@ -18,7 +18,8 @@ interface IPortfolioFilterProps {
 type IProps = IPortfolioFilterProps;
 const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
-
+  const status = t('helpAndSupport:status');
+  const [selectedOption, setSelectedOption] = useState(status);
   const { filterData, getStatus } = props;
   const popupRef = useRef<PopupActions>(null);
   const popupProps = {
@@ -30,8 +31,9 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
     children: undefined,
   };
 
-  const selectedFilter = (selectedOption: AssetFilter): void => {
-    getStatus(selectedOption.label);
+  const selectedFilter = (selectedValue: AssetFilter): void => {
+    getStatus(selectedValue.label);
+    setSelectedOption(selectedValue.title);
     closePopup();
   };
   const closePopup = (): void => {
@@ -72,7 +74,7 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
           <TouchableOpacity activeOpacity={1}>
             <View style={styles.filterContainer}>
               <Typography size="small" fontWeight="semiBold" style={styles.filterText}>
-                {t('helpAndSupport:status')}
+                {selectedOption}
               </Typography>
               <Icon name={icons.downArrow} size={18} style={styles.icon} />
             </View>

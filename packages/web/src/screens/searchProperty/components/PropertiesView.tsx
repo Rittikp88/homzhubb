@@ -106,13 +106,13 @@ const styles = StyleSheet.create({
   },
   cardGrid: {
     display: 'flex',
-    maxWidth: '31%',
+    width: '31%',
     marginLeft: 18,
     alignItems: 'flex-start',
     alignSelf: 'flex-start',
   },
   cardGridTab: {
-    width: '45%',
+    width: '47%',
   },
   cardGridMobile: {
     width: '95%',

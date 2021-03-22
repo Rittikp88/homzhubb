@@ -2,11 +2,13 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, TextInput, LayoutChangeEvent } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
@@ -30,16 +32,16 @@ interface ISearchBarProps {
 
 const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) => {
   const history = useHistory();
+  const address = useSelector(SearchSelector.getSearchAddress);
+  const [searchText, setSearchText] = useState('');
   const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty, onSuggestionPress, setProjectName } = props;
   const { t } = useTranslation();
   const [popOverWidth, setPopoverWidth] = useState<string | number>('100%');
   const popupRef = useRef<PopupActions>(null);
   const searchInputRef = useRef<TextInput>(null);
-  const [searchText, setSearchText] = useState('');
   const [suggestions, setSuggestions] = useState<google.maps.places.QueryAutocompletePrediction[]>([]);
   const updateSearchValue = (value: string): void => setSearchText(value);
   const popupOptionStyle = { marginTop: '4px', alignItems: 'stretch', width: popOverWidth };
-
   const getAutocompleteSuggestions = (query: string): void => {
     if (hasScriptLoaded) {
       const service = new google.maps.places.AutocompleteService();
@@ -59,8 +61,13 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
       }
     } else if (popupRef && popupRef.current) {
       popupRef.current.close();
+      setSearchText(address);
     }
   }, [searchText]);
+
+  useEffect(() => {
+    setSearchText(address);
+  }, [address]);
   const handleSuggestionSelection = (selectedOption: IPopupOptions): void => {
     setSearchText(selectedOption.label);
     if (selectedOption && selectedOption.value) {

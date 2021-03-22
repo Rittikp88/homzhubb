@@ -2,6 +2,8 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { remove } from 'lodash';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -32,6 +34,7 @@ export class AssetTypeFilter extends React.PureComponent<Props> {
           selectedItem={[asset_group]}
           onValueChange={this.onAssetGroupListChanged}
           testID="assetGroupSelection"
+          containerStyles={PlatformUtils.isWeb() && styles.containerStyle}
         />
         <CheckboxGroup
           data={this.assetGroupsTypesData()}
@@ -97,6 +100,9 @@ const styles = StyleSheet.create({
   },
   checkboxLabel: {
     color: theme.colors.darkTint4,
+  },
+  containerStyle: {
+    width: '90%',
   },
 });
 

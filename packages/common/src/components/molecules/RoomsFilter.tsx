@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { remove } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -12,10 +12,11 @@ interface IProps {
   bedCount: number[];
   bathroomCount: number[];
   onSelection: (type: string, value: number | number[]) => void;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 export const RoomsFilter = (props: IProps): React.ReactElement => {
-  const { bedCount, bathroomCount, onSelection } = props;
+  const { bedCount, bathroomCount, onSelection, textStyle } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
 
@@ -51,7 +52,7 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
 
   return (
     <View style={styles.container}>
-      <Text type="small" textType="semiBold" style={styles.textStyle}>
+      <Text type="small" textType="semiBold" style={[styles.textStyle, textStyle]}>
         {t('beds')}
       </Text>
       <SelectionPicker
