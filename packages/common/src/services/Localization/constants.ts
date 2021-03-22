@@ -48,6 +48,7 @@ enum namespacesKey {
   moreProfile = 'moreProfile',
   serviceTickets = 'serviceTickets',
   helpAndSupport = 'helpAndSupport',
+  offers = 'offers',
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;

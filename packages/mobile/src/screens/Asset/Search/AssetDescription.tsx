@@ -290,6 +290,30 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  public renderButtonGroup = (): React.ReactElement => {
+    const { t } = this.props;
+    return (
+      <View style={styles.timelineContainer}>
+        <TouchableOpacity
+          style={[styles.offerButton, { backgroundColor: theme.colors.blueOpacity }]}
+          onPress={(): void => this.navigateToOfferScreen()}
+        >
+          <Icon name={icons.offers} color={theme.colors.blue} size={20} />
+          <Text style={styles.offerText} type="small">
+            {t('assetMore:makeAnOfferText')}
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.offerButton, { backgroundColor: theme.colors.blue }]}>
+          <Icon name={icons.schedule} color={theme.colors.white} size={20} />
+          <Text style={[styles.offerText, { color: theme.colors.white }]} type="small">
+            {t('assetDescription:BookVisit')}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   private renderHeaderSection = (): React.ReactElement | null => {
     const {
       assetDetails,
@@ -381,6 +405,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </TouchableOpacity>
         </View>
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
+        {this.renderButtonGroup()}
         <Divider />
         <View style={styles.timelineContainer}>{this.renderPropertyTimelines(propertyTimelineData)}</View>
         <Divider />
@@ -804,6 +829,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails?.contacts ?? null, propertyTermId });
   };
 
+  private navigateToOfferScreen = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ProspectProfile);
+  };
+
   public updateSlide = (slideNumber: number): void => {
     this.setState({ activeSlide: slideNumber });
   };
@@ -1033,5 +1063,14 @@ const styles = StyleSheet.create({
   },
   carousel: {
     borderRadius: 0,
+  },
+  offerButton: {
+    flexDirection: 'row',
+    padding: 16,
+    borderRadius: 5,
+    backgroundColor: theme.colors.blueTint11,
+  },
+  offerText: {
+    paddingLeft: 8,
   },
 });

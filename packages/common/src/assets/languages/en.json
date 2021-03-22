@@ -1045,5 +1045,17 @@
     "noQuoteFound": "No quote found",
     "noDetail": "There was an error while trying to fetch your data. Please try again",
     "maxProof": "Max 10 proofs are allowed"
+  },
+  "offers": {
+    "jobType": "Job Type",
+    "selfEmployed": "Self-employed",
+    "organizationName": "Name of Organization",
+    "enterName": "Enter name here",
+    "workEmail": "Work email ID",
+    "enterEmail": "Enter work email",
+    "occupants": "No of Occupants",
+    "enterNumber": "Enter Number",
+    "tenantType": "Type of Tenant",
+    "prospectProfile": "Prospect Profile"
   }
 }

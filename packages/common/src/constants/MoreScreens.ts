@@ -30,6 +30,7 @@ export enum MoreScreenTypes {
   REFER_FRIEND = 'referFriend',
   SUPPORT = 'support',
   LOGOUT = 'logout',
+  ProspectProfile = 'ProspectProfile',
 }
 
 const ICON_COLOR = theme.colors.lowPriority;

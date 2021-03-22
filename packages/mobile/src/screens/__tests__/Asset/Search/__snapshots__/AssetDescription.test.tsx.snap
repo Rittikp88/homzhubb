@@ -170,6 +170,73 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           }
           direction="row"
         />
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "paddingVertical": 16,
+            }
+          }
+        >
+          <ForwardRef
+            onPress={[Function]}
+            style={
+              Object {
+                "backgroundColor": "rgba(0, 132, 248, 0.1)",
+                "borderRadius": 5,
+                "flexDirection": "row",
+                "padding": 16,
+              }
+            }
+          >
+            <Icon
+              allowFontScaling={false}
+              color="#0084F8"
+              name="offers"
+              size={20}
+            />
+            <Text
+              style={
+                Object {
+                  "paddingLeft": 8,
+                }
+              }
+              type="small"
+            >
+              assetMore:makeAnOfferText
+            </Text>
+          </ForwardRef>
+          <ForwardRef
+            style={
+              Object {
+                "backgroundColor": "#0084F8",
+                "borderRadius": 5,
+                "flexDirection": "row",
+                "padding": 16,
+              }
+            }
+          >
+            <Icon
+              allowFontScaling={false}
+              color="#FFFFFF"
+              name="schedule"
+              size={20}
+            />
+            <Text
+              style={
+                Object {
+                  "color": "#FFFFFF",
+                  "paddingLeft": 8,
+                }
+              }
+              type="small"
+            >
+               
+              assetDescription:BookVisit
+            </Text>
+          </ForwardRef>
+        </View>
         <Divider />
         <View
           style={

@@ -15,6 +15,7 @@ import ContactForm from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
 import AssetFilters from '@homzhub/mobile/src/screens/Asset/Search/AssetFilters';
 import AssetSearchScreen from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchScreen';
 import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
+import ProspectProfile from '@homzhub/mobile/src/screens/Asset/More/Offers/ProspectProfile';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -28,6 +29,7 @@ export type SearchStackParamList = {
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.AssetReviews]: IGetListingReviews;
+  [ScreensKeys.ProspectProfile]: undefined;
 };
 
 const SearchStackNavigator = createStackNavigator<SearchStackParamList>();
@@ -49,6 +51,7 @@ export const SearchStack = (): React.ReactElement => {
       <SearchStackNavigator.Screen name={ScreensKeys.ContactForm} component={ContactForm} />
       <SearchStackNavigator.Screen name={ScreensKeys.BookVisit} component={BookVisit} />
       <SearchStackNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
+      <SearchStackNavigator.Screen name={ScreensKeys.ProspectProfile} component={ProspectProfile} />
     </SearchStackNavigator.Navigator>
   );
 };
