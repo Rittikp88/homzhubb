@@ -12,9 +12,12 @@ exports[`RoomsFilter should match snapshot 1`] = `
 >
   <Text
     style={
-      Object {
-        "color": "#4C5F72",
-      }
+      Array [
+        Object {
+          "color": "#4C5F72",
+        },
+        undefined,
+      ]
     }
     textType="semiBold"
     type="small"

@@ -290,8 +290,18 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  public renderButtonGroup = (): React.ReactElement => {
-    const { t } = this.props;
+  public renderButtonGroup = (): React.ReactElement | null => {
+    const {
+      t,
+      assetDetails,
+      route: {
+        params: { isPreview },
+      },
+    } = this.props;
+    if (!assetDetails) {
+      return null;
+    }
+    const { visitDate, appPermissions } = assetDetails;
     return (
       <View style={styles.timelineContainer}>
         <TouchableOpacity
@@ -303,13 +313,26 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             {t('assetMore:makeAnOfferText')}
           </Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.offerButton, { backgroundColor: theme.colors.blue }]}>
-          <Icon name={icons.schedule} color={theme.colors.white} size={20} />
-          <Text style={[styles.offerText, { color: theme.colors.white }]} type="small">
-            {t('assetDescription:BookVisit')}
-          </Text>
-        </TouchableOpacity>
+        {appPermissions?.addListingVisit ? (
+          visitDate ? (
+            <TouchableOpacity style={styles.textIcon} disabled={isPreview} onPress={this.onBookVisit}>
+              <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
+              <Text type="small" textType="regular" style={styles.primaryText}>
+                {DateUtils.getDisplayDate(visitDate, 'LL')}
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={[styles.offerButton, { backgroundColor: theme.colors.blue }]}
+              onPress={this.onBookVisit}
+            >
+              <Icon name={icons.schedule} color={theme.colors.white} size={20} />
+              <Text style={[styles.offerText, { color: theme.colors.white }]} type="small">
+                {t('assetDescription:BookVisit')}
+              </Text>
+            </TouchableOpacity>
+          )
+        ) : null}
       </View>
     );
   };
@@ -317,7 +340,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   private renderHeaderSection = (): React.ReactElement | null => {
     const {
       assetDetails,
-      t,
       filters: { asset_transaction_type },
       route: {
         params: { isPreview },
@@ -340,14 +362,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       unitNumber,
       blockNumber,
       country: { currencies },
-      visitDate,
       verifications: { description },
       assetGroup: { code, name },
-      appPermissions,
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
-
-    const scheduleVisit = visitDate ? DateUtils.getDisplayDate(visitDate, 'LL') : t('assetDescription:BookVisit');
 
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
@@ -383,14 +401,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         <ShieldGroup propertyType={propertyType} text={description} isInfoRequired />
         <View style={styles.apartmentContainer}>
           <PricePerUnit price={price} currency={currencyData} unit={asset_transaction_type === 0 ? 'mo' : ''} />
-          {appPermissions?.addListingVisit && (
-            <TouchableOpacity style={styles.textIcon} disabled={isPreview} onPress={this.onBookVisit}>
-              <Icon name={icons.timer} size={22} color={theme.colors.blue} style={styles.iconStyle} />
-              <Text type="small" textType="regular" style={styles.primaryText}>
-                {scheduleVisit}
-              </Text>
-            </TouchableOpacity>
-          )}
         </View>
         <View style={styles.apartmentContainer}>
           <PropertyAddress
@@ -1024,6 +1034,8 @@ const styles = StyleSheet.create({
   },
   textIcon: {
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   subAddress: {
     marginLeft: 0,
@@ -1068,7 +1080,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 16,
     borderRadius: 5,
-    backgroundColor: theme.colors.blueTint11,
   },
   offerText: {
     paddingLeft: 8,

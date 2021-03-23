@@ -111,7 +111,9 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             onPress={[Function]}
             style={
               Object {
+                "alignItems": "center",
                 "flexDirection": "row",
+                "justifyContent": "center",
               }
             }
           >
@@ -182,12 +184,16 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           <ForwardRef
             onPress={[Function]}
             style={
-              Object {
-                "backgroundColor": "rgba(0, 132, 248, 0.1)",
-                "borderRadius": 5,
-                "flexDirection": "row",
-                "padding": 16,
-              }
+              Array [
+                Object {
+                  "borderRadius": 5,
+                  "flexDirection": "row",
+                  "padding": 16,
+                },
+                Object {
+                  "backgroundColor": "rgba(0, 132, 248, 0.1)",
+                },
+              ]
             }
           >
             <Icon
@@ -205,35 +211,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               type="small"
             >
               assetMore:makeAnOfferText
-            </Text>
-          </ForwardRef>
-          <ForwardRef
-            style={
-              Object {
-                "backgroundColor": "#0084F8",
-                "borderRadius": 5,
-                "flexDirection": "row",
-                "padding": 16,
-              }
-            }
-          >
-            <Icon
-              allowFontScaling={false}
-              color="#FFFFFF"
-              name="schedule"
-              size={20}
-            />
-            <Text
-              style={
-                Object {
-                  "color": "#FFFFFF",
-                  "paddingLeft": 8,
-                }
-              }
-              type="small"
-            >
-               
-              assetDescription:BookVisit
             </Text>
           </ForwardRef>
         </View>
@@ -276,7 +253,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              19 Mar 2021
+              23 Mar 2021
             </Label>
           </View>
           <View
