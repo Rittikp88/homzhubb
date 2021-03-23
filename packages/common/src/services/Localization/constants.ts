@@ -48,6 +48,7 @@ enum namespacesKey {
   moreProfile = 'moreProfile',
   serviceTickets = 'serviceTickets',
   helpAndSupport = 'helpAndSupport',
+  microSite = 'microSite',
   offers = 'offers',
 }
 const namespaces = Object.values(namespacesKey);

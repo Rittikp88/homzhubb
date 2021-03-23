@@ -1046,6 +1046,17 @@
     "noDetail": "There was an error while trying to fetch your data. Please try again",
     "maxProof": "Max 10 proofs are allowed"
   },
+  "microSite": {
+    "downloadApp": "DOWNLOAD HOMZHUB APP",
+    "signUpAndPost": "SIGN UP & POST YOUR PROPERTY",
+    "verifyDocuments": "VERIFY YOUR DOCUMENTS",
+    "manageProperty": "MANAGE PROPERTY HASSLE FREE",
+    "homzhubTagLine": "Homzhub - one app for all your real estate needs!",
+    "freeDownload": "Hassle-free property management on our digital platform from anywhere, anytime. Download our app and start managing your properties for free.",
+    "PuneNagpurOwners": "For owners with properties in Pune and Nagpur, we offer end-to-end property management services at a premium.",
+    "pune": "PUNE",
+    "nagpur": "NAGPUR"
+  },
   "offers": {
     "jobType": "Job Type",
     "selfEmployed": "Self-employed",
