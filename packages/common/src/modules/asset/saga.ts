@@ -27,7 +27,6 @@ function* getAssetDetails(action: IFluxStandardAction<IGetAssetPayload>) {
     let reviewParams;
     try {
       const { asset_transaction_type } = yield select(SearchSelector.getFilters);
-
       if (asset_transaction_type === 0) {
         // RENT FLOW
         response = yield call(AssetRepository.getLeaseListing, propertyTermId);

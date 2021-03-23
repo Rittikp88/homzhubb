@@ -91,11 +91,6 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
     });
   };
 
-  public componentWillUnmount = (): void => {
-    const { setInitialState } = this.props;
-    setInitialState();
-  };
-
   public render(): React.ReactElement {
     const { isSearchBarFocused } = this.state;
     const { filterData, isLoading } = this.props;

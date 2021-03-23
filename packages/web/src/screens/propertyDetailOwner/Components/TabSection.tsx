@@ -2,16 +2,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
+import { useTranslation } from 'react-i18next';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import ReviewRatings from '@homzhub/web/src/components/organisms/ReviewRatings';
-import Amenitites from '@homzhub/web/src/screens/PropertyDetails/components/Amenities';
-import Description from '@homzhub/web/src/screens/PropertyDetails/components/Description';
+import DetailsTab from '@homzhub/web/src/screens/propertyDetailOwner/Components/DetailsTab';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { IRoutes, Tabs, PropertyDetailRoutes } from '@homzhub/common/src/constants/Tabs';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IRoutes, Tabs, PropertyDetailOwner } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
   assetDetails: Asset;
@@ -20,21 +20,30 @@ interface IProps {
 
 const TabSections = (propsData: IProps): React.ReactElement => {
   const [currentIndex, setcurrentIndex] = useState(0);
+  const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const {
     assetDetails: { description, features, leaseTerm, saleTerm, amenityGroup, highlights },
-    propertyTermId,
   } = propsData;
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const renderTabScene = (route: IRoutes): React.ReactElement | null => {
     switch (route.key) {
-      case Tabs.DESCRIPTION:
-        return <Description description={description} features={features} leaseTerm={leaseTerm} saleTerm={saleTerm} />;
-      case Tabs.AMENITIES:
-        return <Amenitites amenityGroup={amenityGroup} assetHighlights={highlights} />;
-      case Tabs.REVIEWS_RATING:
-        return <ReviewRatings propertyTermId={propertyTermId} />;
+      case Tabs.DETAILS:
+        return (
+          <DetailsTab
+            description={description}
+            features={features}
+            leaseTerm={leaseTerm}
+            saleTerm={saleTerm}
+            amenityGroup={amenityGroup}
+            assetHighlights={highlights}
+          />
+        );
       default:
-        return null;
+        return (
+          <View style={styles.comingSoonContent}>
+            <Text type="large">{t('comingSoonText')}</Text>
+          </View>
+        );
     }
   };
 
@@ -90,7 +99,7 @@ const TabSections = (propsData: IProps): React.ReactElement => {
         }}
         navigationState={{
           index: currentIndex,
-          routes: PropertyDetailRoutes,
+          routes: PropertyDetailOwner,
         }}
       />
     </View>
@@ -106,16 +115,24 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint3,
   },
   tabBarWidth: {
-    width: 240,
+    width: 140,
   },
   tabBarMobile: {
-    width: 200,
+    width: 100,
   },
   backgroundBlue: {
     backgroundColor: theme.colors.blue,
   },
   backgroundWhite: {
     backgroundColor: theme.colors.white,
+  },
+  comingSoonContent: {
+    alignItems: 'center',
+    minHeight: 350,
+    height: 'auto',
+    paddingVertical: 150,
+    backgroundColor: theme.colors.white,
+    marginBottom: 24,
   },
 });
 

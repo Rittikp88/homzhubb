@@ -73,6 +73,21 @@ export const Routes = [
   { key: Tabs.DETAILS, title: Tabs.DETAILS, icon: icons.detail },
 ];
 
+// (WEB)
+export const PropertyDetailOwner = [
+  { key: Tabs.DETAILS, title: Tabs.DETAILS, icon: icons.detail },
+  { key: Tabs.NOTIFICATIONS, title: Tabs.NOTIFICATIONS, icon: icons.alert },
+  { key: Tabs.MESSAGES, title: Tabs.MESSAGES, icon: icons.mail },
+  { key: Tabs.TICKETS, title: Tabs.TICKETS, icon: icons.headset },
+  { key: Tabs.SERVICES, title: Tabs.SERVICES, icon: icons.service },
+  { key: Tabs.FINANCIALS, title: Tabs.FINANCIALS, icon: icons.financials },
+  { key: Tabs.DOCUMENTS, title: Tabs.DOCUMENTS, icon: icons.documents },
+  { key: Tabs.TENANT_HISTORY, title: Tabs.TENANT_HISTORY, icon: icons.history },
+  { key: Tabs.SITE_VISITS, title: Tabs.SITE_VISITS, icon: icons.visit },
+  { key: Tabs.OFFERS, title: Tabs.OFFERS, icon: icons.offers },
+  { key: Tabs.REVIEWS, title: Tabs.REVIEWS, icon: icons.reviews },
+];
+
 export const PropertyDetailRoutes = [
   { key: Tabs.DESCRIPTION, title: Tabs.DESCRIPTION, icon: icons.detail },
   { key: Tabs.AMENITIES, title: Tabs.AMENITIES, icon: icons.swimmingPool },

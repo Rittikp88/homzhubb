@@ -22,7 +22,7 @@ interface IStateProps {
 }
 
 interface IRouteProps {
-  propertyId: number;
+  listingId: number;
 }
 interface IProps {
   history: History<IRouteProps>;
@@ -33,7 +33,7 @@ const PropertyDetails: FC<Props> = (props: Props) => {
   const { assetDetails, history } = props;
   const { location } = history;
   const {
-    state: { propertyId },
+    state: { listingId },
   } = location;
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
@@ -41,16 +41,16 @@ const PropertyDetails: FC<Props> = (props: Props) => {
   useEffect(() => {
     const { getAsset } = props;
     const payload: IGetAssetPayload = {
-      propertyTermId: propertyId,
+      propertyTermId: listingId,
     };
     getAsset(payload);
     scrollToTop();
-  }, [propertyId]);
+  }, [listingId]);
   return (
     <View style={styles.container}>
-      <PropertyCardDetails assetDetails={assetDetails} propertyTermId={propertyId} />
+      <PropertyCardDetails assetDetails={assetDetails} propertyTermId={listingId} />
       <View style={[styles.detail, isTablet && styles.detailTab, isMobile && styles.detailMobile]}>
-        <SimilarProperties isMobile={isMobile} isTablet={isTablet} propertyTermId={propertyId} />
+        <SimilarProperties isMobile={isMobile} isTablet={isTablet} propertyTermId={listingId} />
       </View>
     </View>
   );

@@ -172,6 +172,7 @@ export const icons = {
   neighborhood: 'neighbourhood',
   addImage: 'add-image',
   selectionMarker: 'selectedMarker',
+  service: 'services',
 
   // COMMUTE
   train: 'train',

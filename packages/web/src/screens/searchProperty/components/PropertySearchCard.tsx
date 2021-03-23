@@ -54,7 +54,6 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     blockNumber,
     leaseTerm,
     saleTerm,
-    id,
     attachments,
   } = investmentData;
 
@@ -99,7 +98,10 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     { color: theme.colors.completed },
   ];
   const navigateToSearchView = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PROPERTY_DETAIL, params: { propertyId: id } });
+    NavigationUtils.navigate(history, {
+      path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
+      params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },
+    });
   };
   return (
     <View style={[styles.card, isMobile && styles.cardMobile, containerStyleProp]}>
