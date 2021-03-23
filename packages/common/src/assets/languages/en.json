@@ -1067,6 +1067,9 @@
     "occupants": "No of Occupants",
     "enterNumber": "Enter Number",
     "tenantType": "Type of Tenant",
-    "prospectProfile": "Prospect Profile"
+    "prospectProfile": "Prospect Profile",
+    "acceptAndLease": "Accept Offer & Create lease",
+    "keepInMind": "Things to keep in mind:",
+    "aboutToRent": "You are about to rent out your property."
   }
 }
