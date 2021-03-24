@@ -172,6 +172,12 @@ export const icons = {
   neighborhood: 'neighbourhood',
   addImage: 'add-image',
   selectionMarker: 'selectedMarker',
+  arrowDown: 'arrow-down',
+  arrowUp: 'arrow-up',
+  circularCompare: 'circular-compare',
+  timeValid: 'time-valid',
+  message: 'message',
+  circularFilledInfo: 'circular-filled-info',
   service: 'services',
 
   // COMMUTE

@@ -134,6 +134,8 @@ const opacity = {
   darkOpacity: 'rgba(0, 0, 0, 0.8)',
   lightOpacity: 'rgba(0, 0, 0, 0.54)',
   darkPrimaryOpacity: 'rgba(0, 132, 248, 0.24)',
+  grayOpacity: 'rgba(51, 73, 94, 0.1)',
+  redOpacity: 'rgba(242, 60, 6, 0.1)',
 };
 const grayShades = {
   grey1: '#F9FCFE',

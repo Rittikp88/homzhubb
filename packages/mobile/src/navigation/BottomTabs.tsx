@@ -55,6 +55,8 @@ import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
+import OfferDetail from '@homzhub/mobile/src/screens/Asset/More/Offers/OfferDetail';
+import AcceptOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/AcceptOffer';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
@@ -128,6 +130,8 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SubmitQuote]: undefined;
   [ScreensKeys.ApproveQuote]: undefined;
   [ScreensKeys.WorkCompleted]: undefined;
+  [ScreensKeys.OfferDetail]: undefined;
+  [ScreensKeys.AcceptOffer]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -217,6 +221,8 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.SubmitQuote} component={SubmitQuote} />
       <MoreStackNavigator.Screen name={ScreensKeys.ApproveQuote} component={ApproveQuote} />
       <MoreStackNavigator.Screen name={ScreensKeys.WorkCompleted} component={WorkCompleted} />
+      <MoreStackNavigator.Screen name={ScreensKeys.OfferDetail} component={OfferDetail} />
+      <MoreStackNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
     </MoreStackNavigator.Navigator>
   );
 };

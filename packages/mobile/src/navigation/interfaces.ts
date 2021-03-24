@@ -122,6 +122,8 @@ export enum ScreensKeys {
   ApproveQuote = 'ApproveQuote',
   WorkCompleted = 'WorkCompleted',
   ProspectProfile = 'ProspectProfile',
+  OfferDetail = 'OfferDetail',
+  AcceptOffer = 'AcceptOffer',
 }
 
 export enum OtpNavTypes {

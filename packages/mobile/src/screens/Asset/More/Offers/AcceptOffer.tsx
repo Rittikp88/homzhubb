@@ -1,37 +1,45 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import Check from '@homzhub/common/src/assets/images/check.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { flags } from '@homzhub/common/src/components/atoms/Flag';
-import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { Offer } from '@homzhub/common/src/domain/models/Offer';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { acceptOffer } from '@homzhub/common/src/constants/ProspectProfile';
+import { offers } from '@homzhub/common/src/mocks/Offers';
 
-type Props = WithTranslation;
 interface IState {
   isBottomSheetVisible: boolean;
 }
 
 interface IOwner {
-  Text: string;
+  text: string;
 }
+
+type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.AcceptOffer>;
+
 class AcceptOffer extends Component<Props, IState> {
   public state = {
     isBottomSheetVisible: false,
   };
 
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const { t, navigation } = this.props;
     return (
-      <UserScreen isOuterScrollEnabled title={t('assetMore:Portfolio')} pageTitle={t('assetMore:propertyVisits')}>
+      <UserScreen
+        isOuterScrollEnabled
+        title={t('offers')}
+        pageTitle={t('offers:acceptOffer')}
+        onBackPress={navigation.goBack}
+      >
         {this.renderAcceptOffer()}
       </UserScreen>
     );
@@ -40,35 +48,22 @@ class AcceptOffer extends Component<Props, IState> {
   private renderAcceptOffer = (): React.ReactElement => {
     const { t } = this.props;
 
+    // TODO: Remove after API integration
+    const offerData = ObjectMapper.deserializeArray(Offer, offers);
+
     return (
       <View style={styles.container}>
-        <Avatar
-          fullName={acceptOffer.name}
-          isRightIcon
-          onPressRightIcon={FunctionUtils.noop}
-          designation={acceptOffer.designation}
-          date={acceptOffer.date}
-          rating={5.0}
+        <OfferCard offer={offerData[0]} isFromAccept />
+        <Button
+          type="primary"
+          iconSize={20}
+          icon={icons.circularCheckFilled}
+          iconColor={theme.colors.green}
+          title={t('common:accept')}
+          onPress={this.onOpenBottomSheet}
+          containerStyle={styles.acceptButton}
+          titleStyle={styles.acceptText}
         />
-        <PropertyAddressCountry
-          isIcon
-          primaryAddress={acceptOffer.propertyName}
-          countryFlag={flags.IN}
-          subAddress={acceptOffer.propertyAddress}
-          containerStyle={styles.marginVertical}
-        />
-        <Divider />
-        <View style={styles.acceptButtom}>
-          <TouchableOpacity
-            style={[styles.acceptButton, { backgroundColor: theme.colors.blueOpacity }]}
-            onPress={(): void => this.onOpenBottomSheet()}
-          >
-            <Icon name={icons.circularCheckFilled} color={theme.colors.green} size={20} />
-            <Text style={styles.acceptText} type="small">
-              {t('common:accept')}
-            </Text>
-          </TouchableOpacity>
-        </View>
         {this.renderBottomSheet()}
       </View>
     );
@@ -100,13 +95,17 @@ class AcceptOffer extends Component<Props, IState> {
               return (
                 <View key={index} style={styles.textView}>
                   <Label key={index} type="large" textType="regular" style={styles.text}>
-                    {item.Text}
+                    {item.text}
                   </Label>
                 </View>
               );
             })}
           </View>
-          <Button type="primary" title={t('offers:acceptAndLease')} containerStyle={styles.button} />
+          <Button
+            type="primary"
+            title={t('offers:acceptAndLease')}
+            containerStyle={[styles.button, styles.marginVertical]}
+          />
         </ScrollView>
       </BottomSheet>
     );
@@ -128,38 +127,21 @@ export default withTranslation()(AcceptOffer);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingVertical: 20,
-    padding: 16,
   },
   acceptButton: {
-    bottom: 0,
-    padding: 16,
-    borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-    flex: 1,
-    marginBottom: 36,
+    marginHorizontal: 16,
+    flexDirection: 'row-reverse',
+    backgroundColor: theme.colors.greenOpacity,
+    marginVertical: 60,
   },
   acceptText: {
-    paddingLeft: 8,
+    marginHorizontal: 8,
     color: theme.colors.green,
-  },
-  acceptButtom: {
-    width: '100%',
-    justifyContent: 'center',
-    marginTop: 250,
-  },
-  button: {
-    borderWidth: 0,
-    margin: 10,
-    flex: 0,
   },
   text: {
     color: theme.colors.darkTint4,
     justifyContent: 'center',
     alignItems: 'center',
-    alignContent: 'center',
     padding: 5,
   },
   bottomSheetContainer: {
@@ -171,5 +153,8 @@ const styles = StyleSheet.create({
   },
   textView: {
     marginLeft: 20,
+  },
+  button: {
+    marginHorizontal: 16,
   },
 });

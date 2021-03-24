@@ -233,7 +233,10 @@
     "detail": "Detail",
     "fileSizeWarning": "File size is too large",
     "ownerInfo": "Owner Info",
-    "tenantInfo": "Tenant Info"
+    "tenantInfo": "Tenant Info",
+    "minYear": "Min Year:",
+    "totalYear": "Total Year:",
+    "counter": "Counter"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -571,7 +574,9 @@
     "sqft": "sq. ft",
     "mo": "mo",
     "propertyDeleted": "Property Deleted Successfully",
-    "assetIdWarning": "Please use correct asset id"
+    "assetIdWarning": "Please use correct asset id",
+    "sellingPrice": "Selling Price",
+    "moveInDate": "Move in date"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -1068,8 +1073,16 @@
     "enterNumber": "Enter Number",
     "tenantType": "Type of Tenant",
     "prospectProfile": "Prospect Profile",
+    "lessInfo": "Less info",
+    "moreInfo": "More info",
+    "createdDate": "Created date: {{date}}",
+    "validFor": "Valid for: ",
     "acceptAndLease": "Accept Offer & Create lease",
+    "acceptOffer": "Accept Offer",
     "keepInMind": "Things to keep in mind:",
-    "aboutToRent": "You are about to rent out your property."
+    "aboutToRent": "You are about to rent out your property.",
+    "offerRejected": "Offer Rejected",
+    "offerAccepted": "Offer Accepted",
+    "cancelOffer": "Cancel Offer"
   }
 }

@@ -36,29 +36,24 @@ export const offerDropDown = [
 ];
 
 export const acceptOffer = {
-  name: 'jayanaveensai',
-  designation: 'Prospect',
-  propertyName: 'Kalyani',
-  propertyAddress: 'Kalyani, Kalkere, Bengaluru, Karnataka 560016',
-  date: '2021-03-15T12:54:09.397112Z',
   owner: [
-    { Text: '1. Your property will no longer appear in search results' },
-    { Text: '2. All the active offers will be automatically rejected.' },
-    { Text: '3. Your last name, phone number, email will be visible to the prospect should you accept this offer.' },
+    { text: '1. Your property will no longer appear in search results' },
+    { text: '2. All the active offers will be automatically rejected.' },
+    { text: '3. Your last name, phone number, email will be visible to the prospect should you accept this offer.' },
     {
-      Text:
+      text:
         '4. Homzhub is not legally liable for the actions of its user. Please do your own due diligence before transferring any amount',
     },
   ],
   tenant: [
     {
-      Text:
+      text:
         '1. Your last name, phone number, and email will be visible to the property owner should you accept this offer.',
     },
-    { Text: '2. The property owner will create a lease to connect you with the property' },
-    { Text: '3. Once the lease is created, you can chat with the owner via the messages feature in the app. ' },
+    { text: '2. The property owner will create a lease to connect you with the property' },
+    { text: '3. Once the lease is created, you can chat with the owner via the messages feature in the app. ' },
     {
-      Text:
+      text:
         '4. Homzhub is not legally liable for the actions of its user. Please do your own due diligence before transferring money.',
     },
   ],
