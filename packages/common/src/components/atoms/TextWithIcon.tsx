@@ -9,13 +9,18 @@ interface IProps {
   text: string;
   value?: string;
   icon?: string;
+  prefixIcon?: string;
   iconColor?: string;
+  prefixIconColor?: string;
   iconSize?: number;
   textSize?: TextSizeType;
   fontWeight?: FontWeightType;
   variant?: TextFieldType;
   containerStyle?: StyleProp<ViewStyle>;
+  subContainerStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  onPrefixIcon?: () => void;
+  onIcon?: () => void;
 }
 
 const TextWithIcon = (props: IProps): React.ReactElement => {
@@ -30,10 +35,25 @@ const TextWithIcon = (props: IProps): React.ReactElement => {
     iconColor = theme.colors.blue,
     containerStyle,
     textStyle,
+    subContainerStyle,
+    prefixIcon,
+    prefixIconColor,
+    onPrefixIcon,
+    onIcon,
   } = props;
+
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.container}>
+      {!!prefixIcon && (
+        <Icon
+          name={prefixIcon}
+          color={prefixIconColor}
+          size={iconSize}
+          style={styles.prefixIcon}
+          onPress={onPrefixIcon}
+        />
+      )}
+      <View style={[styles.container, subContainerStyle]}>
         <Typography size={textSize} variant={variant} fontWeight={fontWeight} style={[styles.textStyle, textStyle]}>
           {text}
         </Typography>
@@ -43,7 +63,7 @@ const TextWithIcon = (props: IProps): React.ReactElement => {
           </Typography>
         )}
       </View>
-      {!!icon && <Icon name={icon} color={iconColor} size={iconSize} />}
+      {!!icon && <Icon name={icon} color={iconColor} size={iconSize} onPress={onIcon} />}
     </View>
   );
 };
@@ -57,5 +77,9 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: theme.colors.darkTint3,
+  },
+  prefixIcon: {
+    alignSelf: 'flex-start',
+    marginEnd: 10,
   },
 });

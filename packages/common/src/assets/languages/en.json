@@ -1090,6 +1090,7 @@
     "aboutToRent": "You are about to rent out your property.",
     "offerRejected": "Offer Rejected",
     "offerAccepted": "Offer Accepted",
-    "cancelOffer": "Cancel Offer"
+    "cancelOffer": "Cancel Offer",
+    "offerInfo": "These are the offers that were made for property listings you own or manage."
   }
 }

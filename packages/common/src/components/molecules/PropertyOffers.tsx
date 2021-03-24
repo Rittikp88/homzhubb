@@ -19,10 +19,13 @@ import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
 
+export type OfferType = 'Offer Received' | 'Offer Made';
+
 interface IScreenProps {
   isCardExpanded: boolean;
   propertyOffer: Asset;
   containerStyles?: StyleProp<ViewStyle>;
+  offerType?: OfferType;
 }
 
 interface IScreenState {
@@ -161,7 +164,7 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
 
     return (
       <View style={[styles.container, containerStyles]}>
-        <View style={styles.justifyContent}>
+        <View style={[styles.justifyContent, styles.countWithIcon]}>
           {offerCount && (
             <View style={styles.offerCount}>
               <Icon name={icons.offers} color={theme.colors.blue} />
@@ -307,6 +310,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     backgroundColor: theme.colors.white,
+    borderRadius: 4,
   },
   justifyContent: {
     flexDirection: 'row',
@@ -357,7 +361,6 @@ const styles = StyleSheet.create({
     height: 24,
   },
   imageContainer: {
-    marginTop: 15,
     marginBottom: 8,
   },
   viewOfferButton: {
@@ -365,5 +368,8 @@ const styles = StyleSheet.create({
   },
   expectedItem: {
     flex: 2,
+  },
+  countWithIcon: {
+    marginBottom: 15,
   },
 });

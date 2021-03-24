@@ -19,7 +19,7 @@ import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/Bo
 export interface IProps {
   data: PickerItemProps[];
   value: number | string;
-  onDonePress: (value: string | number) => void;
+  onDonePress: (value: string | number, index?: number) => void;
   showImage?: boolean;
   image?: React.ReactElement | string;
   icon?: string;
@@ -43,6 +43,7 @@ export interface IProps {
   fontSize?: TextSizeType;
   fontWeight?: FontWeightType;
   isOutline?: boolean;
+  dropdownIndex?: number;
 }
 export const Dropdown = (props: IProps): React.ReactElement => {
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
@@ -63,7 +64,9 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     numColumns = 1,
     showImage = false,
     isOutline = false,
+    dropdownIndex = -1,
   } = props;
+
   let {
     icon = icons.downArrowFilled,
     fontWeight = 'regular',
@@ -72,10 +75,11 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     iconSize = 16,
     iconColor = theme.colors.darkTint7,
   } = props;
+
   const onValueChange = (changedValue: string | number): void => {
     const selectedValue = changedValue === placeholder ? '' : changedValue;
     if (onDonePress) {
-      onDonePress(selectedValue);
+      onDonePress(selectedValue, dropdownIndex);
       closeDropdown();
     }
   };

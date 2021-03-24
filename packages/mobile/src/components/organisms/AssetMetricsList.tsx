@@ -28,6 +28,8 @@ interface IProps {
   onPlusIconClicked?: () => void;
   onMetricsClicked?: (name: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  subTitleText?: string;
+  headerIcon?: string;
 }
 
 const COMPONENT_PADDING = 12;
@@ -43,6 +45,8 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     onMetricsClicked,
     numOfElements = 3,
     isSubTextRequired = true,
+    subTitleText,
+    headerIcon,
   } = props;
 
   // HOOKS
@@ -75,7 +79,6 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
               minWidth: (SLIDER_WIDTH - COMPONENT_PADDING * (numOfElements + 1)) / numOfElements,
             };
             const handlePress = (): void => onMetricsClicked && onMetricsClicked(item.name);
-
             return (
               <AssetMetrics
                 key={`${item.label ?? item.name}`}
@@ -98,7 +101,13 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.header, !isSubTextRequired && styles.financialView]}>
-        <Logo style={styles.logo} width={50} height={50} />
+        {headerIcon ? (
+          <View style={[styles.headerIcon, styles.logo]}>
+            <Icon name={headerIcon} size={30} style={styles.icon} color={theme.colors.blue} />
+          </View>
+        ) : (
+          <Logo style={styles.logo} width={50} height={50} />
+        )}
         <View style={styles.headerCenter}>
           <Text type="regular" textType="bold" style={styles.assetCount}>
             {title}
@@ -106,7 +115,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
           <View style={styles.propertiesRow}>
             {isSubTextRequired && (
               <Label type="large" textType="semiBold" style={styles.propertyText}>
-                {t('common:properties')}
+                {subTitleText || t('common:properties')}
               </Label>
             )}
             {subscription && (
@@ -204,5 +213,15 @@ const styles = StyleSheet.create({
   textStyle: {
     marginTop: 2,
     width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 48 : undefined,
+  },
+  headerIcon: {
+    backgroundColor: theme.colors.blue,
+    opacity: 0.1,
+    borderRadius: 30,
+    overflow: 'hidden',
+  },
+  icon: {
+    padding: 15,
+    backgroundColor: theme.colors.blue,
   },
 });
