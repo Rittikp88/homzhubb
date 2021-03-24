@@ -29,9 +29,9 @@ import { AssetReviews } from '@homzhub/mobile/src/components/organisms/AssetRevi
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import ServiceTicketList from '@homzhub/common/src/components/organisms/ServiceTicketList';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
+import OfferView from '@homzhub/common/src/components/organisms/OfferView';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
 import DetailTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DetailTab';
-import DummyView from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/DummyView';
 import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
 import MessageTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/MessageTab';
 import TenantHistoryScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistoryScreen';
@@ -56,6 +56,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
 import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 const { height, width } = theme.viewport;
@@ -320,7 +321,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.OFFERS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 2)}>
-            <DummyView />
+            <OfferView onPressAction={this.handleOfferActions} />
           </View>
         );
       case Tabs.REVIEWS:
@@ -680,6 +681,21 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   private handleMenuIcon = (): void => {
     const { isMenuVisible } = this.state;
     this.setState({ isMenuVisible: !isMenuVisible });
+  };
+
+  private handleOfferActions = (action: OfferAction): void => {
+    const { navigation } = this.props;
+    switch (action) {
+      case OfferAction.ACCEPT:
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.More, {
+          screen: ScreensKeys.AcceptOffer,
+        });
+        break;
+      case OfferAction.REJECT:
+      default:
+        FunctionUtils.noop();
+    }
   };
 
   private toggleScroll = (scrollEnabled: boolean): void => {

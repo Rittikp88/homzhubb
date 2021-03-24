@@ -99,6 +99,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
         isCardExpanded={isCardExpanded}
         propertyOffer={item}
         containerStyles={separatorStyle}
+        onViewOffer={this.navigateToDetail}
         offerType={offerType}
       />
     );
@@ -111,6 +112,12 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
   private onMetricsClicked = (name: string): void => {
     this.setState({ offerType: name as OfferType });
+  };
+
+  private navigateToDetail = (): void => {
+    const { navigation } = this.props;
+    // TODO: (Shikha) Pass listing Id
+    navigation.navigate(ScreensKeys.OfferDetail);
   };
 }
 

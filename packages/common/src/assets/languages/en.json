@@ -1091,6 +1091,9 @@
     "offerRejected": "Offer Rejected",
     "offerAccepted": "Offer Accepted",
     "cancelOffer": "Cancel Offer",
+    "sort": "Sort by",
+    "filterBy": "Filter by",
+    "offerDetails": "Offer Details",
     "offerInfo": "These are the offers that were made for property listings you own or manage."
   }
 }

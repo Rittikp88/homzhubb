@@ -57,6 +57,7 @@ exports[`PropertyAddressCountry should match snapshot 1`] = `
         Array [
           Object {
             "color": "#33495E",
+            "flex": 1,
             "marginVertical": 6,
           },
           undefined,

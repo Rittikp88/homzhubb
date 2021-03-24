@@ -43,6 +43,7 @@ export interface IProps {
   fontSize?: TextSizeType;
   fontWeight?: FontWeightType;
   isOutline?: boolean;
+  backgroundColor?: string;
   dropdownIndex?: number;
 }
 export const Dropdown = (props: IProps): React.ReactElement => {
@@ -64,6 +65,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     numColumns = 1,
     showImage = false,
     isOutline = false,
+    backgroundColor,
     dropdownIndex = -1,
   } = props;
 
@@ -94,7 +96,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
       containerStyle,
       {
         borderWidth: 0,
-        backgroundColor: theme.colors.lightGrayishBlue,
+        backgroundColor: backgroundColor || theme.colors.lightGrayishBlue,
         borderRadius: 2,
       },
     ]);
@@ -111,7 +113,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   return (
     <View pointerEvents={disable ? 'none' : 'auto'} style={[disabledStyles, parentContainerStyle]}>
       <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
-        {showImage && !!image ? (
+        {showImage || !!image ? (
           image === 'globe' ? (
             <Icon name={icons.earthFilled} size={22} color={theme.colors.active} />
           ) : (

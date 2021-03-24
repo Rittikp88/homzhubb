@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, Image, StyleProp, ViewStyle, FlatList } from 'react-native';
-import { TFunction, WithTranslation, withTranslation } from 'react-i18next';
+import { StyleSheet, View, Image, StyleProp, ViewStyle, FlatList, TouchableOpacity } from 'react-native';
+import { WithTranslation, withTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { ShieldGroup } from '@homzhub/mobile/src/components';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
@@ -24,6 +24,8 @@ export type OfferType = 'Offer Received' | 'Offer Made';
 interface IScreenProps {
   isCardExpanded: boolean;
   propertyOffer: Asset;
+  onViewOffer?: () => void;
+  isDetailView?: boolean;
   containerStyles?: StyleProp<ViewStyle>;
   offerType?: OfferType;
 }
@@ -145,6 +147,8 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
       },
       containerStyles,
       t,
+      onViewOffer,
+      isDetailView = false,
     } = this.props;
     const { isExpanded } = this.state;
 
@@ -161,39 +165,46 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
     );
 
     const showAmenities = isExpanded && amenitiesData && amenitiesData.length > 0;
+    const customStyle = customStyles(isDetailView);
 
     return (
-      <View style={[styles.container, containerStyles]}>
-        <View style={[styles.justifyContent, styles.countWithIcon]}>
-          {offerCount && (
-            <View style={styles.offerCount}>
-              <Icon name={icons.offers} color={theme.colors.blue} />
-              <Label textType="semiBold" type="large" style={styles.offerText}>
-                {offerCountHeading}
-              </Label>
-            </View>
-          )}
-          <>
-            {isExpanded ? (
-              <Icon
-                name={icons.upArrow}
-                size={15}
-                color={theme.colors.blue}
-                onPress={(): void => this.setState({ isExpanded: false })}
-              />
-            ) : (
-              <Icon
-                name={icons.downArrow}
-                size={15}
-                color={theme.colors.blue}
-                onPress={(): void => this.setState({ isExpanded: true })}
-              />
+      <TouchableOpacity
+        style={[styles.container, containerStyles]}
+        activeOpacity={!isDetailView ? 0.7 : 1}
+        onPress={onViewOffer}
+      >
+        {!isDetailView && (
+          <View style={[styles.justifyContent, styles.countWithIcon]}>
+            {offerCount && (
+              <View style={styles.offerCount}>
+                <Icon name={icons.offers} color={theme.colors.blue} />
+                <Label textType="semiBold" type="large" style={styles.offerText}>
+                  {offerCountHeading}
+                </Label>
+              </View>
             )}
-          </>
-        </View>
+            <>
+              {isExpanded ? (
+                <Icon
+                  name={icons.upArrow}
+                  size={15}
+                  color={theme.colors.blue}
+                  onPress={(): void => this.setState({ isExpanded: false })}
+                />
+              ) : (
+                <Icon
+                  name={icons.downArrow}
+                  size={15}
+                  color={theme.colors.blue}
+                  onPress={(): void => this.setState({ isExpanded: true })}
+                />
+              )}
+            </>
+          </View>
+        )}
         <>
           {isExpanded && (
-            <View style={styles.imageContainer}>
+            <View style={customStyle.imageContainer}>
               {isAttechmentPresent ? (
                 <Image
                   source={{
@@ -229,7 +240,7 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
           )}
           {this.renderExpectation()}
         </>
-      </View>
+      </TouchableOpacity>
     );
   }
 
@@ -263,14 +274,6 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
             ItemSeparatorComponent={this.renderItemSeparator}
           />
         )}
-        <Button
-          textType="label"
-          textSize="large"
-          fontType="semiBold"
-          type="primary"
-          title={t('offers:viewOffers')}
-          containerStyle={styles.viewOfferButton}
-        />
       </>
     );
   };
@@ -360,9 +363,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 24,
   },
-  imageContainer: {
-    marginBottom: 8,
-  },
   viewOfferButton: {
     marginTop: 24,
   },
@@ -373,3 +373,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 });
+
+const customStyles = (isDetailView: boolean): { imageContainer: ViewStyle } => {
+  return StyleSheet.create({
+    imageContainer: {
+      marginTop: isDetailView ? 0 : 15,
+      marginBottom: 8,
+    },
+  });
+};

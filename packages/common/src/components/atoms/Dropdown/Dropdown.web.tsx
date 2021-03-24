@@ -42,6 +42,8 @@ export interface IProps {
   fontSize?: TextSizeType;
   fontWeight?: FontWeightType;
   isOutline?: boolean;
+  backgroundColor?: string;
+  dropdownIndex?: number;
 }
 
 export const Dropdown = (props: IProps): React.ReactElement => {

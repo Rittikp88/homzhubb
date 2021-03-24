@@ -30,7 +30,6 @@ export enum MoreScreenTypes {
   REFER_FRIEND = 'referFriend',
   SUPPORT = 'support',
   LOGOUT = 'logout',
-  ProspectProfile = 'ProspectProfile',
   OFFERS = 'Offers',
 }
 
@@ -92,7 +91,7 @@ export const MORE_SCREENS: IMoreScreens = {
     },
     {
       id: 6,
-      title: `${translationKey}:offers`,
+      title: 'common:offers',
       icon: icons.offers,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,

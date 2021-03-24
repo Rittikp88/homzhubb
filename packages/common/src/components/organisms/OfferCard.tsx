@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -16,7 +15,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps {
   offer: Offer;
   isFromAccept?: boolean;
-  onPressAccept?: () => void;
+  onPressAction?: (action: OfferAction) => void;
 }
 
 interface IOwnState {
@@ -169,6 +168,7 @@ class OfferCard extends Component<Props, IOwnState> {
     const {
       t,
       offer: { status, actions, isCounter },
+      onPressAction,
     } = this.props;
     const buttonData = OfferUtils.getButtonStatus(status);
     return (
@@ -191,7 +191,7 @@ class OfferCard extends Component<Props, IOwnState> {
               item,
               initialButtonStyle: styles.actionButton,
               initialTextStyle: styles.titleStyle,
-              onAction: this.handleAction,
+              onAction: onPressAction,
             });
             return (
               <Button
@@ -243,21 +243,6 @@ class OfferCard extends Component<Props, IOwnState> {
     const { hasMore } = this.state;
     this.setState({ hasMore: !hasMore });
   };
-
-  private handleAction = (action: OfferAction): void => {
-    const { onPressAccept } = this.props;
-    switch (action) {
-      case OfferAction.ACCEPT:
-        if (onPressAccept) {
-          onPressAccept();
-        }
-        break;
-      case OfferAction.REJECT:
-      case OfferAction.CANCEL:
-      default:
-        FunctionUtils.noop();
-    }
-  };
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.offers)(OfferCard);
@@ -265,7 +250,7 @@ export default withTranslation(LocaleConstants.namespacesKey.offers)(OfferCard);
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
-    marginVertical: 10,
+    marginBottom: 16,
   },
   textContainer: {
     backgroundColor: theme.colors.background,

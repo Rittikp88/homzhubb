@@ -29,6 +29,7 @@ interface IUserScreenProps {
   hasLeftIcon?: boolean;
   onNavigateCallback?: () => void;
   contentContainerStyle?: ViewStyle;
+  headerStyle?: ViewStyle;
 }
 
 // Constants for Gradient background
@@ -55,6 +56,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     keyboardShouldPersistTaps = false,
     onNavigateCallback,
     contentContainerStyle,
+    headerStyle,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -110,7 +112,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     }
 
     return (
-      <View style={[styles.pageHeaderContainer, styles.rowStyle]}>
+      <View style={[styles.pageHeaderContainer, styles.rowStyle, headerStyle]}>
         <View style={styles.rowStyle}>
           {hasLeftIcon && (
             <Icon

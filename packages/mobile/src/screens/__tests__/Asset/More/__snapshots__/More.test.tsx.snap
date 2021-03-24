@@ -360,7 +360,7 @@ exports[`Financials Screen should render snapshot 1`] = `
     onPress={[Function]}
   >
     <View
-      key="item-4"
+      key="item-5"
       style={
         Object {
           "alignItems": "center",
@@ -430,7 +430,77 @@ exports[`Financials Screen should render snapshot 1`] = `
     onPress={[Function]}
   >
     <View
-      key="item-5"
+      key="item-6"
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "padding": 20,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="offers"
+          size={22}
+          style={
+            Object {
+              "paddingHorizontal": 5,
+            }
+          }
+        />
+        <Text
+          allowFontScaling={true}
+          minimumFontScale={0.1}
+          numberOfLines={2}
+          style={
+            Array [
+              Object {
+                "marginStart": 10,
+              },
+              Object {
+                "color": "#000",
+              },
+            ]
+          }
+          textType="regular"
+          type="small"
+        >
+          common:offers
+        </Text>
+      </View>
+      <Icon
+        allowFontScaling={false}
+        color="#78B7FA"
+        name="right-arrow"
+        size={18}
+      />
+    </View>
+  </ForwardRef>
+  <Divider
+    containerStyles={
+      Object {
+        "borderColor": "#F2F9FF",
+        "borderWidth": 1,
+        "marginLeft": 65,
+      }
+    }
+  />
+  <ForwardRef
+    onPress={[Function]}
+  >
+    <View
+      key="item-7"
       style={
         Object {
           "alignItems": "center",
@@ -500,7 +570,7 @@ exports[`Financials Screen should render snapshot 1`] = `
     onPress={[Function]}
   >
     <View
-      key="item-6"
+      key="item-8"
       style={
         Object {
           "alignItems": "center",
@@ -570,7 +640,7 @@ exports[`Financials Screen should render snapshot 1`] = `
     onPress={[Function]}
   >
     <View
-      key="item-7"
+      key="item-9"
       style={
         Object {
           "alignItems": "center",
