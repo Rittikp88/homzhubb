@@ -7,12 +7,13 @@ import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListi
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
-import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
+import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
@@ -385,6 +386,9 @@ export class Asset {
   @JsonProperty('investment status', String, true)
   private _investmentStatus = '';
 
+  @JsonProperty('offers_count', Number, true)
+  private _offerCount = null;
+
   get investmentStatus(): string {
     return this._investmentStatus;
   }
@@ -522,7 +526,18 @@ export class Asset {
   }
 
   get maintenancePaymentSchedule(): string {
-    return this._maintenancePaymentSchedule;
+    if (this.leaseTerm && this.leaseTerm.maintenanceSchedule) {
+      const { maintenanceSchedule } = this.leaseTerm;
+
+      return maintenanceSchedule === ScheduleTypes.MONTHLY ? 'mo' : '';
+    }
+
+    if (this.saleTerm && this.saleTerm.maintenanceSchedule) {
+      const { maintenanceSchedule } = this.saleTerm;
+      return maintenanceSchedule === ScheduleTypes.MONTHLY ? 'mo' : '';
+    }
+
+    return this._maintenancePaymentSchedule === ScheduleTypes.MONTHLY ? 'mo' : this._maintenancePaymentSchedule;
   }
 
   get furnishing(): FurnishingTypes {
@@ -684,5 +699,43 @@ export class Asset {
 
   get isActive(): boolean {
     return this._isActive;
+  }
+
+  get offerCount(): number | null {
+    return this._offerCount;
+  }
+
+  get isLeaseListing(): boolean {
+    return !!this._leaseTerm;
+  }
+
+  get pricePerUnit(): number {
+    if (this.isLeaseListing && this.leaseTerm) {
+      const { expectedPrice } = this.leaseTerm;
+      return expectedPrice > 0 ? expectedPrice : 0;
+    }
+    const salePrice =
+      this.saleTerm && Number(this.saleTerm.expectedPrice) > 0 ? Number(this.saleTerm.expectedPrice) : 0;
+    return salePrice;
+  }
+
+  get currencyData(): Currency {
+    if (this.leaseTerm && this.leaseTerm.currency) {
+      const { currency } = this.leaseTerm;
+
+      return currency;
+    }
+
+    if (this.saleTerm && this.saleTerm.currency) {
+      const { currency } = this.saleTerm;
+      return currency;
+    }
+
+    return this.country.currencies[0];
+  }
+
+  get currencySymbol(): string {
+    const { currencySymbol } = this.currencyData;
+    return currencySymbol;
   }
 }

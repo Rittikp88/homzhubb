@@ -39,6 +39,7 @@ export const DateFormats = {
   HHMM_A: 'hh:mm a',
   HHMM_AP: 'hh:mm A',
   DDMM_YYYY_HH_MM: 'DD MMM, YYYY - H:mm ',
+  D_MMM_YYYY: 'D MMM, YYYY',
 };
 
 class DateUtils {

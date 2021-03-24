@@ -64,6 +64,7 @@ import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/S
 import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
+import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
@@ -130,6 +131,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SubmitQuote]: undefined;
   [ScreensKeys.ApproveQuote]: undefined;
   [ScreensKeys.WorkCompleted]: undefined;
+  [ScreensKeys.PropertyOfferList]: undefined;
   [ScreensKeys.OfferDetail]: undefined;
   [ScreensKeys.AcceptOffer]: undefined;
 };
@@ -221,6 +223,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.SubmitQuote} component={SubmitQuote} />
       <MoreStackNavigator.Screen name={ScreensKeys.ApproveQuote} component={ApproveQuote} />
       <MoreStackNavigator.Screen name={ScreensKeys.WorkCompleted} component={WorkCompleted} />
+      <MoreStackNavigator.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
       <MoreStackNavigator.Screen name={ScreensKeys.OfferDetail} component={OfferDetail} />
       <MoreStackNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
     </MoreStackNavigator.Navigator>

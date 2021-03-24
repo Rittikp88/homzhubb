@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subAddress: {
+    flex: 1,
     color: theme.colors.darkTint3,
     marginVertical: 6,
   },

@@ -31,6 +31,7 @@ export enum MoreScreenTypes {
   SUPPORT = 'support',
   LOGOUT = 'logout',
   ProspectProfile = 'ProspectProfile',
+  OFFERS = 'Offers',
 }
 
 const ICON_COLOR = theme.colors.lowPriority;
@@ -82,7 +83,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.SAVED_PROPERTIES,
     },
     {
-      id: 4,
+      id: 5,
       title: `${translationKey}:propertyVisits`,
       icon: icons.visit,
       iconColor: ICON_COLOR,
@@ -90,7 +91,15 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.PROPERTY_VISITS,
     },
     {
-      id: 5,
+      id: 6,
+      title: `${translationKey}:offers`,
+      icon: icons.offers,
+      iconColor: ICON_COLOR,
+      textColor: TEXT_COLOR,
+      type: MoreScreenTypes.OFFERS,
+    },
+    {
+      id: 7,
       title: `${translationKey}:newLaunches`,
       icon: icons.newLaunch,
       iconColor: ICON_COLOR,
@@ -98,7 +107,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.NEW_LAUNCHES,
     },
     {
-      id: 6,
+      id: 8,
       title: `${translationKey}:marketTrends`,
       icon: icons.increase,
       iconColor: ICON_COLOR,
@@ -106,7 +115,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.MARKET_TRENDS,
     },
     {
-      id: 7,
+      id: 9,
       title: `${translationKey}:valueAddedServices`,
       icon: icons.settingOutline,
       iconColor: ICON_COLOR,

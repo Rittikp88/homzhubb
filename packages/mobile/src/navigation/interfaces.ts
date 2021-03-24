@@ -122,6 +122,7 @@ export enum ScreensKeys {
   ApproveQuote = 'ApproveQuote',
   WorkCompleted = 'WorkCompleted',
   ProspectProfile = 'ProspectProfile',
+  PropertyOfferList = 'PropertyOfferList',
   OfferDetail = 'OfferDetail',
   AcceptOffer = 'AcceptOffer',
 }
