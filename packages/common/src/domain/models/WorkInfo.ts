@@ -1,8 +1,10 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Company, ICompany } from '@homzhub/common/src/domain/models/Company';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface IWorkInfo {
   id: number;
+  jobType: IUnit;
   company_name: string;
   work_email: string;
   work_employee_id: string;
@@ -16,6 +18,9 @@ export class WorkInfo {
 
   @JsonProperty('company_name', String)
   private _companyName = '';
+
+  @JsonProperty('job_type', Unit, true)
+  private _jobType = new Unit();
 
   @JsonProperty('work_email', String)
   private _workEmail = '';
@@ -31,6 +36,10 @@ export class WorkInfo {
 
   get id(): number {
     return this._id;
+  }
+
+  get jobType(): Unit {
+    return this._jobType;
   }
 
   get companyName(): string {

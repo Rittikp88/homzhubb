@@ -1,41 +1,34 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
 
 export interface IProspectProfile {
-  jobType: IUnit;
-  companyName: string;
-  workEmail: string;
+  id: number;
   occupants: number;
   tenantType: IUnit;
+  user: IUser;
 }
 
 @JsonObject('ProspectProfile')
 export class ProspectProfile {
-  @JsonProperty('job_type', Unit)
-  private _jobType = new Unit();
-
-  @JsonProperty('company_name', String)
-  private _companyName = '';
-
-  @JsonProperty('work_email', String)
-  private _workEmail = '';
+  @JsonProperty('id', Number)
+  private _id = 0;
 
   @JsonProperty('number_of_occupants', Number)
   private _occupants = 0;
 
+  @JsonProperty('user', User)
+  private _user = new User();
+
   @JsonProperty('tenant_type', Unit)
   private _tenantType = new Unit();
 
-  get jobType(): Unit {
-    return this._jobType;
+  get id(): number {
+    return this._id;
   }
 
-  get workEmail(): string {
-    return this._workEmail;
-  }
-
-  get companyName(): string {
-    return this._companyName;
+  get user(): User {
+    return this._user;
   }
 
   get occupants(): number {

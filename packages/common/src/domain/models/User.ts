@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { IWorkInfo, WorkInfo } from '@homzhub/common/src/domain/models/WorkInfo';
 
 export enum UserRole {
   OWNER = 'OWNER',
@@ -17,6 +18,7 @@ export interface IUser {
   profile_picture?: string;
   rating?: number;
   is_asset_owner?: boolean;
+  workInfo: IWorkInfo;
 }
 @JsonObject('User')
 export class User {
@@ -55,6 +57,9 @@ export class User {
 
   @JsonProperty('is_asset_owner', Boolean, true)
   private _isAssetOwner = false;
+
+  @JsonProperty('work_info', WorkInfo, true)
+  private _workInfo = new WorkInfo();
 
   get refreshToken(): string {
     return this._refreshToken;
@@ -106,5 +111,9 @@ export class User {
 
   get isAssetOwner(): boolean {
     return this._isAssetOwner;
+  }
+
+  get workInfo(): WorkInfo {
+    return this._workInfo;
   }
 }

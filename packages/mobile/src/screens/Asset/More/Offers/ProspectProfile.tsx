@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import { Formik, FormikProps } from 'formik';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -14,9 +16,11 @@ import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/mo
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
-import { offerDropDown, sampleData, tenantType } from '@homzhub/common/src/constants/ProspectProfile';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
+import { User } from '@homzhub/common/src/domain/models/User';
+import { sampleData } from '@homzhub/common/src/constants/ProspectProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IUpdateProspectProfile } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IOfferForm {
   jobType: number;
@@ -29,7 +33,10 @@ interface IOfferForm {
 interface IState {
   offerForm: IOfferForm;
   userType: number;
-  categories: IDropdownOption[];
+  categories: IUnit[];
+  tenantType: IUnit[];
+  userDetails: User;
+  loading: boolean;
 }
 
 interface IProp {
@@ -47,30 +54,42 @@ class ProspectProfile extends Component<Props, IState> {
       occupants: '',
       tenantType: 0,
     },
-    userType: 1,
-    categories: offerDropDown,
+    userType: 0,
+    categories: [],
+    tenantType: [],
+    userDetails: new User(),
+    loading: false,
   };
 
-  public componentDidMount(): void {
+  public async componentDidMount(): Promise<void> {
     const { editData } = this.props;
-
+    const prospectsData = await OffersRepository.getProspectsInfo();
+    const tenant = await OffersRepository.getTenantTypes();
+    const jobType = await OffersRepository.getJobType();
+    this.setState({ categories: jobType, tenantType: tenant, userDetails: prospectsData.user });
+    const {
+      user: { workInfo },
+      occupants,
+      tenantType,
+    } = prospectsData;
     if (editData) {
       this.setState({
         offerForm: {
-          jobType: sampleData.job_type.id,
-          occupants: String(sampleData.number_of_occupants),
-          companyName: sampleData.company_name,
-          workEmail: sampleData.work_email,
-          tenantType: sampleData.tenant_type.id,
+          jobType: workInfo.jobType.id,
+          occupants: String(occupants),
+          companyName: workInfo.companyName,
+          workEmail: workInfo.workEmail,
+          tenantType: tenantType.id,
         },
-        userType: sampleData.tenant_type.id,
+        userType: tenantType.id,
       });
     }
   }
 
   public render = (): React.ReactNode => {
     const { t, navigation } = this.props;
-    const { offerForm, userType, categories } = this.state;
+    const { offerForm, userType, tenantType, userDetails, loading } = this.state;
+    if (!userDetails) return null;
     return (
       <Screen
         backgroundColor={theme.colors.white}
@@ -79,15 +98,16 @@ class ProspectProfile extends Component<Props, IState> {
           title: t('offers:prospectProfile'),
           onIconPress: navigation.goBack,
         }}
+        isLoading={loading}
       >
         <View style={styles.container}>
-          <Avatar fullName={sampleData.userName} designation={sampleData.designation} />
+          <Avatar fullName={userDetails.name} designation={userDetails.email} image={userDetails.profilePicture} />
           <Label type="large" textType="regular" style={styles.radioGroup}>
             {sampleData.description}
           </Label>
 
           <Formik
-            onSubmit={FunctionUtils.noop}
+            onSubmit={this.onSubmit}
             initialValues={offerForm}
             enableReinitialize
             validate={FormUtils.validate(this.formSchema)}
@@ -97,14 +117,15 @@ class ProspectProfile extends Component<Props, IState> {
                 !formProps.values.workEmail ||
                 !formProps.values.occupants ||
                 !formProps.values.companyName ||
-                !formProps.values.jobType;
+                !formProps.values.jobType ||
+                !userType;
 
               return (
                 <>
                   <FormDropdown
                     formProps={formProps}
                     isMandatory
-                    options={categories}
+                    options={this.loadJobTypeCategories()}
                     name="jobType"
                     label={t('offers:jobType')}
                     placeholder={t('offers:selfEmployed')}
@@ -129,7 +150,7 @@ class ProspectProfile extends Component<Props, IState> {
                   <FormTextInput
                     formProps={formProps}
                     isMandatory
-                    inputType="default"
+                    inputType="number"
                     name="occupants"
                     label={t('offers:occupants')}
                     placeholder={t('offers:enterNumber')}
@@ -162,6 +183,27 @@ class ProspectProfile extends Component<Props, IState> {
     );
   };
 
+  public onSubmit = async (values: IOfferForm, formActions: FormikHelpers<IOfferForm>): Promise<void> => {
+    const { userType } = this.state;
+    this.setState({ loading: true });
+    formActions.setSubmitting(true);
+    const payload: IUpdateProspectProfile = {
+      job_type: values.jobType,
+      company_name: values.companyName,
+      work_email: values.workEmail,
+      number_of_occupants: Number(values.occupants),
+      tenant_type: userType,
+    };
+
+    try {
+      await OffersRepository.updateProspects(payload);
+      this.setState({ loading: false });
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      this.setState({ loading: false });
+    }
+  };
+
   private formSchema = (): yup.ObjectSchema<IOfferForm> => {
     const { t } = this.props;
     return yup.object().shape({
@@ -170,6 +212,16 @@ class ProspectProfile extends Component<Props, IState> {
       workEmail: yup.string().required(t('moreProfile:fieldRequiredError')),
       occupants: yup.string().required(t('moreProfile:fieldRequiredError')),
       tenantType: yup.number().required(t('moreProfile:fieldRequiredError')),
+    });
+  };
+
+  private loadJobTypeCategories = (): IDropdownOption[] => {
+    const { categories } = this.state;
+    return categories.map((category: IUnit) => {
+      return {
+        value: category.id,
+        label: category.label,
+      };
     });
   };
 

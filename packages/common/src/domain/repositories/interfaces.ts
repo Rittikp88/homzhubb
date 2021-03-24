@@ -836,3 +836,13 @@ export interface IGetTicketParam {
 }
 
 // SERVICE TICKETS END
+
+// OFFERS
+export interface IUpdateProspectProfile {
+  job_type: number;
+  company_name: string;
+  work_email: string;
+  number_of_occupants: number;
+  tenant_type: number;
+}
+// OFFERS END

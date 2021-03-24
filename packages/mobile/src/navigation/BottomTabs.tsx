@@ -253,6 +253,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.SubmitQuote,
       ScreensKeys.ApproveQuote,
       ScreensKeys.WorkCompleted,
+      ScreensKeys.ProspectProfile,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };
