@@ -77,9 +77,9 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           <Memo(PricePerUnit)
             currency={
               Object {
-                "currency_code": "",
-                "currency_name": "",
-                "currency_symbol": "",
+                "currency_code": "INR",
+                "currency_name": "Indian Rupee",
+                "currency_symbol": "₹",
               }
             }
             price={0}
@@ -253,7 +253,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              24 Mar 2021
+              25 Mar 2021
             </Label>
           </View>
           <View
@@ -434,15 +434,15 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             "country": Object {
               "currencies": Array [
                 Object {
-                  "currency_code": "",
-                  "currency_name": "",
-                  "currency_symbol": "",
+                  "currency_code": "INR",
+                  "currency_name": "Indian Rupee",
+                  "currency_symbol": "₹",
                 },
               ],
               "id": 1,
-              "iso2_code": "",
-              "iso3_code": "",
-              "name": "",
+              "iso2_code": "IN",
+              "iso3_code": "IN",
+              "name": "India",
               "phone_codes": Array [],
             },
             "country_name": "India",

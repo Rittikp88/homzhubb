@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import { Formik, FormikHelpers, FormikProps } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -18,14 +18,13 @@ import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/Radio
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { sampleData } from '@homzhub/common/src/constants/ProspectProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUpdateProspectProfile } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IOfferForm {
   jobType: number;
-  companyName: string;
-  workEmail: string;
+  companyName?: string;
+  workEmail?: string;
   occupants: string;
   tenantType: number;
 }
@@ -62,7 +61,11 @@ class ProspectProfile extends Component<Props, IState> {
   };
 
   public async componentDidMount(): Promise<void> {
-    const { editData } = this.props;
+    const {
+      route: {
+        params: { editData },
+      },
+    } = this.props;
     const prospectsData = await OffersRepository.getProspectsInfo();
     const tenant = await OffersRepository.getTenantTypes();
     const jobType = await OffersRepository.getJobType();
@@ -87,7 +90,7 @@ class ProspectProfile extends Component<Props, IState> {
   }
 
   public render = (): React.ReactNode => {
-    const { t, navigation } = this.props;
+    const { t } = this.props;
     const { offerForm, userType, tenantType, userDetails, loading } = this.state;
     if (!userDetails) return null;
     return (
@@ -96,14 +99,14 @@ class ProspectProfile extends Component<Props, IState> {
         headerProps={{
           type: 'secondary',
           title: t('offers:prospectProfile'),
-          onIconPress: navigation.goBack,
+          onIconPress: (): void => this.goBack(),
         }}
         isLoading={loading}
       >
         <View style={styles.container}>
           <Avatar fullName={userDetails.name} designation={userDetails.email} image={userDetails.profilePicture} />
           <Label type="large" textType="regular" style={styles.radioGroup}>
-            {sampleData.description}
+            {t('offers:tenantProfileInfo')}
           </Label>
 
           <Formik
@@ -113,12 +116,7 @@ class ProspectProfile extends Component<Props, IState> {
             validate={FormUtils.validate(this.formSchema)}
           >
             {(formProps: FormikProps<IOfferForm>): React.ReactNode => {
-              const disabledButton =
-                !formProps.values.workEmail ||
-                !formProps.values.occupants ||
-                !formProps.values.companyName ||
-                !formProps.values.jobType ||
-                !userType;
+              const disabledButton = !formProps.values.occupants || !formProps.values.jobType || !userType;
 
               return (
                 <>
@@ -133,7 +131,6 @@ class ProspectProfile extends Component<Props, IState> {
                   />
                   <FormTextInput
                     formProps={formProps}
-                    isMandatory
                     inputType="default"
                     name="companyName"
                     label={t('offers:organizationName')}
@@ -141,7 +138,6 @@ class ProspectProfile extends Component<Props, IState> {
                   />
                   <FormTextInput
                     formProps={formProps}
-                    isMandatory
                     inputType="email"
                     name="workEmail"
                     label={t('offers:workEmail')}
@@ -183,10 +179,10 @@ class ProspectProfile extends Component<Props, IState> {
     );
   };
 
-  public onSubmit = async (values: IOfferForm, formActions: FormikHelpers<IOfferForm>): Promise<void> => {
+  public onSubmit = async (values: IOfferForm): Promise<void> => {
+    const { navigation } = this.props;
     const { userType } = this.state;
     this.setState({ loading: true });
-    formActions.setSubmitting(true);
     const payload: IUpdateProspectProfile = {
       job_type: values.jobType,
       company_name: values.companyName,
@@ -198,6 +194,7 @@ class ProspectProfile extends Component<Props, IState> {
     try {
       await OffersRepository.updateProspects(payload);
       this.setState({ loading: false });
+      navigation.navigate(ScreensKeys.SubmitOffer);
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
       this.setState({ loading: false });
@@ -208,8 +205,6 @@ class ProspectProfile extends Component<Props, IState> {
     const { t } = this.props;
     return yup.object().shape({
       jobType: yup.number().required(t('moreProfile:fieldRequiredError')),
-      companyName: yup.string().required(t('moreProfile:fieldRequiredError')),
-      workEmail: yup.string().required(t('moreProfile:fieldRequiredError')),
       occupants: yup.string().required(t('moreProfile:fieldRequiredError')),
       tenantType: yup.number().required(t('moreProfile:fieldRequiredError')),
     });
@@ -227,6 +222,20 @@ class ProspectProfile extends Component<Props, IState> {
 
   private handleUserType = (id: number): void => {
     this.setState({ userType: id });
+  };
+
+  private goBack = (): void => {
+    const {
+      navigation,
+      route: {
+        params: { propertyTermId, editData },
+      },
+    } = this.props;
+    if (editData) {
+      navigation.navigate(ScreensKeys.SubmitOffer);
+    } else {
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
+    }
   };
 }
 

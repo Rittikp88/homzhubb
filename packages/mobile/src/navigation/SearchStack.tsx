@@ -30,7 +30,7 @@ export type SearchStackParamList = {
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.AssetReviews]: IGetListingReviews;
-  [ScreensKeys.ProspectProfile]: undefined;
+  [ScreensKeys.ProspectProfile]: IAssetDescriptionProps;
   [ScreensKeys.SubmitOffer]: undefined;
 };
 

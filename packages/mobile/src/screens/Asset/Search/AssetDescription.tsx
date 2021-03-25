@@ -13,6 +13,7 @@ import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
@@ -92,6 +93,7 @@ interface IOwnState {
   startDate: string;
   isSharing: boolean;
   sharingMessage: string;
+  prospectsData: boolean;
 }
 
 const { width, height } = theme.viewport;
@@ -109,6 +111,7 @@ const initialState = {
   isFavourite: false,
   startDate: '',
   isSharing: false,
+  prospectsData: false,
   sharingMessage: I18nService.t('common:homzhub'),
 };
 
@@ -125,6 +128,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetData();
     });
+    const prospectsData = await OffersRepository.getProspectsInfo();
+    this.setState({ prospectsData: Boolean(prospectsData) });
     await this.setSharingMessage();
   };
 
@@ -306,7 +311,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       <View style={styles.timelineContainer}>
         <TouchableOpacity
           style={[styles.offerButton, { backgroundColor: theme.colors.blueOpacity }]}
-          onPress={(): void => this.navigateToOfferScreen()}
+          onPress={(): void => this.onMakeonOffer()}
         >
           <Icon name={icons.offers} color={theme.colors.blue} size={20} />
           <Text style={styles.offerText} type="small">
@@ -709,6 +714,19 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
+  private onMakeonOffer = (): void => {
+    const { navigation, isLoggedIn, setChangeStack } = this.props;
+    if (!isLoggedIn) {
+      setChangeStack(false);
+      navigation.navigate(ScreensKeys.AuthStack, {
+        screen: ScreensKeys.SignUp,
+        params: { onCallback: this.navigateToOfferScreen },
+      });
+    } else {
+      this.navigateToOfferScreen();
+    }
+  };
+
   private onBookVisit = (): void => {
     const { navigation, isLoggedIn, setChangeStack } = this.props;
     if (!isLoggedIn) {
@@ -840,8 +858,22 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToOfferScreen = (): void => {
-    const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.ProspectProfile);
+    const { prospectsData } = this.state;
+    const {
+      navigation,
+      assetDetails,
+      route: {
+        params: { propertyTermId },
+      },
+    } = this.props;
+    if (!assetDetails) return;
+
+    const { leaseTerm, saleTerm } = assetDetails;
+    if (leaseTerm) {
+      navigation.navigate(ScreensKeys.ProspectProfile, { propertyTermId });
+    } else if (saleTerm || prospectsData) {
+      navigation.navigate(ScreensKeys.SubmitOffer);
+    }
   };
 
   public updateSlide = (slideNumber: number): void => {

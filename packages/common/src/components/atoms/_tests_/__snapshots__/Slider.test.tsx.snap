@@ -11,6 +11,11 @@ exports[`Slider should match snapshot 1`] = `
       enableLabel={false}
       isMarkersSeparated={true}
       onValuesChange={[Function]}
+      selectedStyle={
+        Object {
+          "backgroundColor": "#0084F8",
+        }
+      }
       sliderLength={350}
       values={
         Array [

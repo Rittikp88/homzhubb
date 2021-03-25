@@ -202,6 +202,7 @@ export interface IAssetDescriptionProps {
   propertyTermId: number;
   propertyId?: number;
   isPreview?: boolean;
+  editData?: boolean;
 }
 
 export interface IContactProps {

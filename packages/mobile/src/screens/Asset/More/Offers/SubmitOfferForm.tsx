@@ -43,6 +43,7 @@ const SubmitOfferForm = (): React.ReactElement => {
         testID: 'submitOfferForm',
         ...(isRentFlow && {
           textRight: t('moreProfile:editProfile'),
+          onIconRightPress: (): void => navigate(ScreensKeys.ProspectProfile, { editData: true }),
           // ToDo (Praharsh) : Handle right text onPress logic after linking navigation.
         }),
       }}
