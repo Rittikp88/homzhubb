@@ -51,7 +51,7 @@ export class SaleTerm {
   @JsonProperty('maintenance_payment_schedule', String, true)
   private _maintenanceSchedule: ScheduleTypes | null = ScheduleTypes.MONTHLY;
 
-  @JsonProperty('description', String)
+  @JsonProperty('description', String, true)
   private _description = '';
 
   @JsonProperty('currency', Currency, true)

@@ -16,6 +16,8 @@ interface ISliderProps {
   onChangeFinish?: (value: number[]) => void;
   labelText?: string;
   testID?: string;
+  sliderLength?: number;
+  isDoubleDigited?: boolean;
 }
 
 interface IOwnState {
@@ -37,6 +39,7 @@ export class Slider extends Component<ISliderProps, IOwnState> {
 
   private renderMultipleSlider = (): React.ReactElement => {
     let { maxSliderValue = 0 } = this.props;
+    const { sliderLength } = this.props;
     const { maxSliderRange = 10, minSliderRange = 0, isLabelRequired, minSliderValue = 0, onChangeFinish } = this.props;
     if (maxSliderValue && maxSliderValue <= 0) {
       maxSliderValue = maxSliderRange;
@@ -46,7 +49,7 @@ export class Slider extends Component<ISliderProps, IOwnState> {
       <View>
         <MultiSlider
           values={[minSliderValue, maxSliderValue]}
-          sliderLength={SLIDER_LENGTH}
+          sliderLength={sliderLength ?? SLIDER_LENGTH}
           onValuesChange={this.multiSliderValuesChange}
           min={minSliderRange}
           max={maxSliderRange}
@@ -65,12 +68,12 @@ export class Slider extends Component<ISliderProps, IOwnState> {
   };
 
   private renderSingleSlider = (): React.ReactElement => {
-    const { isLabelRequired = false, maxSliderRange, minSliderRange, minSliderValue = 0 } = this.props;
+    const { isLabelRequired = false, maxSliderRange, minSliderRange, minSliderValue = 0, sliderLength } = this.props;
     return (
       <View onLayout={this.onLayout}>
         <MultiSlider
           values={[minSliderValue]}
-          sliderLength={SLIDER_LENGTH}
+          sliderLength={sliderLength || SLIDER_LENGTH}
           min={minSliderRange}
           max={maxSliderRange}
           isMarkersSeparated
@@ -78,17 +81,23 @@ export class Slider extends Component<ISliderProps, IOwnState> {
           customLabel={(e): React.ReactElement => this.renderLabel(e)}
           onValuesChange={this.singleSliderValuesChange}
           customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
+          selectedStyle={styles.selectedStyle}
         />
       </View>
     );
   };
 
   private renderLabel = (e: LabelProps): React.ReactElement => {
-    const { labelText = '' } = this.props;
+    const { labelText = '', isDoubleDigited = false } = this.props;
     const { width } = this.state;
 
     const calcWidth = width - 60;
-    const { oneMarkerLeftPosition: left } = e;
+    const { oneMarkerLeftPosition: left, oneMarkerValue } = e;
+    const sliderNumber = (): string => {
+      if (isDoubleDigited && oneMarkerValue.valueOf() >= 0 && oneMarkerValue.valueOf() < 10)
+        return `0${oneMarkerValue} `;
+      return `${e.oneMarkerValue} `;
+    };
 
     const translateX = (): number => {
       if (left <= 40) {
@@ -113,7 +122,9 @@ export class Slider extends Component<ISliderProps, IOwnState> {
           styles.textContainer,
         ]}
       >
-        <Text textType="regular" type="regular">{`${e.oneMarkerValue} `}</Text>
+        <Text textType="regular" type="regular">
+          {sliderNumber()}
+        </Text>
         <Label type="regular" textType="regular">
           {labelText}
         </Label>

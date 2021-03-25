@@ -64,7 +64,7 @@ export class LeaseTerm {
   @JsonProperty('utility_paid_by', String)
   private _utilityPaidBy = PaidByTypes.TENANT;
 
-  @JsonProperty('maintenance_unit', Unit)
+  @JsonProperty('maintenance_unit', Unit, true)
   private _maintenanceUnit: Unit | null = null;
 
   @JsonProperty('maintenance_amount', Number, true)

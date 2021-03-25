@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { FlatList, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
@@ -17,23 +17,39 @@ export interface ICheckboxGroupProps {
   labelStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
   testID?: string;
+  numOfColumns?: number;
 }
 
 type IProps = ICheckboxGroupProps & IWithMediaQuery;
 
 class CheckboxGroup extends React.PureComponent<IProps, {}> {
   public render = (): React.ReactNode => {
-    const { data, containerStyle = {}, isMobile } = this.props;
+    const { data, containerStyle = {}, isMobile, numOfColumns } = this.props;
     const styles = checkBoxGrpStyles(isMobile);
+
+    const renderItem = ({ item }: { item: ICheckboxGroupData }): React.ReactElement => {
+      const numColumns = numOfColumns || 2;
+      // ToDo (Praharsh: 19 Mar 2021) : Check if web has chances to break here (isMobile : false).
+      const style = checkBoxGrpStyles(false, numColumns);
+      return <View style={style.checkBoxItem}>{this.renderCheckbox(item)}</View>;
+    };
+
+    const keyExtractor = (item: ICheckboxGroupData): string => item.id.toString();
+
+    // ToDo (Praharsh: 19 Mar 2021) : Check if both cases can be covered using FlatList alone.
     return PlatformUtils.isMobile() ? (
-      <View style={[styles.container, containerStyle]}>
-        <View style={styles.col}>
-          {data.filter((item, index) => index % 2 === 0).map((item) => this.renderCheckbox(item))}
+      !numOfColumns ? (
+        <View style={[styles.container, containerStyle]}>
+          <View style={styles.col}>
+            {data.filter((item, index) => index % 2 === 0).map((item) => this.renderCheckbox(item))}
+          </View>
+          <View style={styles.col}>
+            {data.filter((item, index) => index % 2 !== 0).map((item) => this.renderCheckbox(item))}
+          </View>
         </View>
-        <View style={styles.col}>
-          {data.filter((item, index) => index % 2 !== 0).map((item) => this.renderCheckbox(item))}
-        </View>
-      </View>
+      ) : (
+        <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor} numColumns={numOfColumns} />
+      )
     ) : (
       <View style={styles.checkboxStyle}>{data.map((item) => this.renderCheckbox(item))}</View>
     );
@@ -69,10 +85,14 @@ interface ICheckBoxGrpStyle {
   disabled: ViewStyle;
   checkboxContainer: ViewStyle;
   checkboxStyle: ViewStyle;
+  checkBoxItem: ViewStyle;
 }
 
-const checkBoxGrpStyles = (isMobile: boolean): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
+const checkBoxGrpStyles = (isMobile: boolean, numOfColumns?: number): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
   StyleSheet.create({
+    checkBoxItem: {
+      flex: 1 / numOfColumns,
+    },
     container: {
       flexDirection: 'row',
     },

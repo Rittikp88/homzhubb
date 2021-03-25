@@ -6,6 +6,9 @@ import {
   INegotiationParam,
   INegotiationPayload,
   IUpdateProspectProfile,
+  IPostOfferLease,
+  IPostOfferSell,
+  ISubmitOffer,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
@@ -13,6 +16,8 @@ const ENDPOINTS = {
   prospects: 'prospects/',
   tenantTypes: 'list-of-values/prospect-tenant-types/',
   jobTypes: 'list-of-values/user-employer-job-types/',
+  submitOffer: (param: INegotiationParam): string =>
+    `${param.listingType}/${param.listingId}/${param.negotiationType}/`,
   listingNegotiations: (param: INegotiationParam): string =>
     `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
 };
@@ -41,6 +46,11 @@ class OffersRepository {
 
   public updateProspects = async (body: IUpdateProspectProfile): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.prospects, body);
+  };
+
+  public postOffer = async (payload: ISubmitOffer): Promise<IPostOfferLease | IPostOfferSell> => {
+    const { param, data } = payload;
+    return await this.apiClient.post(ENDPOINTS.submitOffer(param), data);
   };
 
   public updateNegotiation = async (payload: INegotiationPayload): Promise<void> => {

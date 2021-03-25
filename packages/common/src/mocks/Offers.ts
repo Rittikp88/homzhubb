@@ -1,3 +1,69 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
+
+// ToDo (Praharsh : 19 Mar 2021) : Replace with API data.
+export const mockOfferPreferences = [
+  {
+    id: 1,
+    label: 'Pets',
+    isSelected: false,
+  },
+  {
+    id: 2,
+    label: 'Vegetarian',
+    isSelected: false,
+  },
+  {
+    id: 3,
+    label: 'Bachelors',
+    isSelected: false,
+  },
+];
+
+export enum OfferFormKeys {
+  expectedRent = 'expectedPrice',
+  securityDeposit = 'securityDeposit',
+  minimumLeasePeriod = 'minimumLeasePeriod',
+  maximumLeasePeriod = 'maximumLeasePeriod',
+  annualRentIncrementPercentage = 'annualRentIncrementPercentage',
+  availableFromDate = 'availableFromDate',
+  tenantPreferences = 'tenantPreferences',
+  message = 'message',
+  // Sale Flow
+  expectedSellPrice = 'expectedPrice',
+  expectedBookingAmount = 'expectedBookingAmount',
+}
+
+export const initialRentFormValues = {
+  expectedPrice: '',
+  securityDeposit: '',
+  minimumLeasePeriod: 0,
+  maximumLeasePeriod: 0,
+  annualRentIncrementPercentage: '',
+  availableFromDate: DateUtils.getCurrentDate(),
+  maintenancePaidBy: PaidByTypes.OWNER,
+  utilityPaidBy: PaidByTypes.TENANT,
+  tenantPreferences: [],
+};
+
+// Todo (Praharsh) : Remove after API addition.
+export const unCheckedRentFormValues = {
+  expectedPrice: '20000',
+  securityDeposit: '40000',
+  minimumLeasePeriod: 11,
+  maximumLeasePeriod: 3 * 13,
+  annualRentIncrementPercentage: '11',
+  availableFromDate: '2020-07-03',
+  maintenancePaidBy: PaidByTypes.OWNER,
+  utilityPaidBy: PaidByTypes.OWNER,
+  tenantPreferences: [1, 2],
+};
+
+export const initialSaleFormValues = {
+  expectedPrice: '',
+  expectedBookingAmount: '',
+};
+
 export const offers = [
   {
     prospect: {

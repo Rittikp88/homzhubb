@@ -56,15 +56,15 @@ export const mockAsset = {
   },
   country: {
     id: 1,
-    name: '',
-    iso2_code: '',
-    iso3_code: '',
+    name: 'India',
+    iso2_code: 'IN',
+    iso3_code: 'IN',
     phone_codes: [],
     currencies: [
       {
-        currency_name: '',
-        currency_symbol: '',
-        currency_code: '',
+        currency_name: 'Indian Rupee',
+        currency_symbol: '₹',
+        currency_code: 'INR',
       },
     ],
   },

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -17,6 +17,7 @@ export interface IHeaderProps {
   onIconPress?: () => void;
   onIconRightPress?: () => void;
   testID?: string;
+  textRight?: string;
 }
 const BOTTOM_PADDING = 12;
 
@@ -33,7 +34,11 @@ const Header = (props: IHeaderProps): React.ReactElement => {
     opacity = 1,
     onIconPress,
     onIconRightPress,
+    onIconRightPress: onRightTextPress,
+    textRight,
   } = props;
+
+  const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
   let backgroundColor = theme.colors.primaryColor;
   let textColor = theme.colors.white;
@@ -57,7 +62,14 @@ const Header = (props: IHeaderProps): React.ReactElement => {
           {title ?? ''}
         </Animated.Text>
         {iconRight && (
-          <Icon name={iconRight} size={22} color={textColor} style={styles.iconRight} onPress={onIconRightPress} />
+          <Icon name={iconRight} size={22} color={textColor} style={styles.itemRight} onPress={onIconRightPress} />
+        )}
+        {!iconRight && textRight && (
+          <AnimatedTouchableOpacity style={[styles.itemRight, { opacity }]} onPress={onRightTextPress}>
+            <Animated.Text numberOfLines={1} style={styles.textRight}>
+              {textRight}
+            </Animated.Text>
+          </AnimatedTouchableOpacity>
         )}
       </View>
       {children}
@@ -94,10 +106,14 @@ const styles = StyleSheet.create({
     bottom: BOTTOM_PADDING,
     left: 12,
   },
-  iconRight: {
+  itemRight: {
     position: 'absolute',
     bottom: BOTTOM_PADDING,
     right: 16,
+  },
+  textRight: {
+    color: theme.colors.primaryColor,
+    fontSize: 16,
   },
   animatedDivider: {
     height: 0,

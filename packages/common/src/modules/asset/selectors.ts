@@ -28,6 +28,12 @@ const getAsset = (state: IState): Asset | null => {
   return ObjectMapper.deserialize(Asset, asset);
 };
 
+const getAssetListingType = (state: IState): number => {
+  const asset = getAsset(state);
+  if (asset?.saleTerm) return 1;
+  return 0;
+};
+
 const getLoadingState = (state: IState): boolean => {
   const {
     asset: {
@@ -175,6 +181,7 @@ const isActiveAssetsLoading = (state: IState): boolean => {
 export const AssetSelectors = {
   getAssetReviews,
   getAsset,
+  getAssetListingType,
   getLoadingState,
   getAssetDocuments,
   getAssetVisits,

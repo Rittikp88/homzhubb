@@ -849,6 +849,30 @@ export interface IGetTicketParam {
 
 // OFFERS
 
+export interface ISubmitOfferLease {
+  proposed_rent: number;
+  proposed_security_deposit: number;
+  proposed_rent_increment_percentage: number;
+  proposed_move_in_date: string;
+  proposed_lease_period: number;
+  proposed_min_lock_in_period: number;
+  tenant_preferences: number[];
+  comment?: string;
+}
+
+export interface IPostOfferLease {
+  id: number;
+}
+
+export interface ISubmitOfferSell {
+  proposed_price: number;
+  proposed_booking_amount: number;
+  comment?: string;
+}
+
+export interface IPostOfferSell {
+  sale_negotiation: number;
+}
 export interface IUpdateProspectProfile {
   job_type: number;
   company_name: string;
@@ -861,7 +885,7 @@ export interface INegotiationParam {
   listingType: ListingType;
   listingId: number;
   negotiationType: NegotiationType;
-  negotiationId: number;
+  negotiationId?: number;
 }
 
 export interface INegotiationBody {
@@ -875,5 +899,10 @@ export interface INegotiationBody {
 export interface INegotiationPayload {
   param: INegotiationParam;
   data: INegotiationBody;
+}
+
+export interface ISubmitOffer {
+  param: INegotiationParam;
+  data: ISubmitOfferLease | ISubmitOfferSell;
 }
 // OFFERS END

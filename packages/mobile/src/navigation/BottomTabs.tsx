@@ -132,6 +132,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SubmitQuote]: undefined;
   [ScreensKeys.ApproveQuote]: undefined;
   [ScreensKeys.WorkCompleted]: undefined;
+  [ScreensKeys.Offers]: undefined;
   [ScreensKeys.PropertyOfferList]: undefined;
   [ScreensKeys.OfferDetail]: undefined;
   [ScreensKeys.AcceptOffer]: undefined;
@@ -257,6 +258,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.ApproveQuote,
       ScreensKeys.WorkCompleted,
       ScreensKeys.ProspectProfile,
+      ScreensKeys.SubmitOffer,
       ScreensKeys.AcceptOffer,
       ScreensKeys.RejectOffer,
     ];
