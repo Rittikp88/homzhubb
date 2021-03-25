@@ -1,20 +1,30 @@
 import React from 'react';
-import { FlatList, PickerItemProps, View, StyleSheet } from 'react-native';
+import { FlatList, PickerItemProps, View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 
-interface IDropdownData {
+export interface IDropdownData {
+  key: string;
   dropdownData: PickerItemProps[];
   selectedValue: string;
+  placeholder: string;
 }
 
 interface IProps {
   data: IDropdownData[];
-  onDropdown: (selectedValues: string[]) => void;
+  onDropdown: (selectedValues: ISelectedValue[]) => void;
+  containerStyle?: StyleProp<ViewStyle>;
+}
+
+export interface ISelectedValue {
+  key: string;
+  value: string;
 }
 
 interface IScreenState {
   data: IDropdownData[];
-  selectedValues: string[];
+  selectedValues: ISelectedValue[];
 }
 class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
   constructor(props: IProps) {
@@ -46,9 +56,25 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
   private renderKeyExtractor = (item: IDropdownData, index: number): string => `${index}`;
 
   private renderDropdown = ({ item, index }: { item: IDropdownData; index: number }): React.ReactElement => {
-    const { dropdownData, selectedValue } = item;
+    const { dropdownData, selectedValue, placeholder } = item;
+    const { containerStyle } = this.props;
 
-    return <Dropdown data={dropdownData} value={selectedValue} onDonePress={this.onDropdownSelect} />;
+    return (
+      <Dropdown
+        data={dropdownData}
+        value={selectedValue}
+        onDonePress={this.onDropdownSelect}
+        dropdownIndex={index}
+        placeholder={placeholder}
+        containerStyle={[styles.dropdownContainer, containerStyle]}
+        textStyle={styles.placeholder}
+        iconColor={theme.colors.blue}
+        icon={icons.downArrow}
+        fontSize="large"
+        fontWeight="semiBold"
+        iconStyle={styles.drodownIcon}
+      />
+    );
   };
 
   private onDropdownSelect = (value: string, index: number): void => {
@@ -58,12 +84,15 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
 
     this.setState(
       (oldState: IScreenState): IScreenState => {
-        const { onDropdown } = this.props;
+        const { onDropdown, data } = this.props;
 
         const updatedData = [...oldState.data];
-        updatedData[index].selectedValue = value;
         const updatedSelectedValues = [...oldState.selectedValues];
-        updatedSelectedValues[index] = value;
+
+        updatedData[index].selectedValue = value;
+
+        const { key } = data[index];
+        updatedSelectedValues[index] = { key, value };
 
         onDropdown(updatedSelectedValues);
         return { data: updatedData, selectedValues: updatedSelectedValues };
@@ -78,5 +107,17 @@ const styles = StyleSheet.create({
   separator: {
     width: 12,
     height: 12,
+  },
+  dropdownContainer: {
+    backgroundColor: theme.colors.white,
+    borderWidth: 0,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+  },
+  placeholder: {
+    color: theme.colors.blue,
+  },
+  drodownIcon: {
+    marginStart: 12,
   },
 });

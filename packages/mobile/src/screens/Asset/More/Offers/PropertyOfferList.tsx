@@ -10,6 +10,10 @@ import { AssetMetricsList } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import TextWithIcon from '@homzhub/common/src/components/atoms/TextWithIcon';
 import PropertyOffers, { OfferType } from '@homzhub/common/src/components/molecules/PropertyOffers';
+import ScrollableDropdownList, {
+  IDropdownData,
+  ISelectedValue,
+} from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { propertyOffer } from '@homzhub/common/src/mocks/PropertyOffer';
@@ -21,9 +25,44 @@ interface IScreenState {
 
 type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyOfferList>;
 
+// TODO: (shivam) remove mock data.
 const metricData = [
   { name: 'Offer Received', count: 4, colorCode: '#FF8576' },
   { name: 'Offer Made', count: 4, colorCode: '#47C2B1' },
+];
+
+// TODO: (shivam) remove mock data.
+const dropdownFilters: IDropdownData[] = [
+  {
+    dropdownData: [
+      { label: 'D1-label1', value: 'D1-value1' },
+      { label: 'D1-label2', value: 'D1-value2' },
+      { label: 'D1-label3', value: 'D1-value3' },
+    ],
+    selectedValue: '',
+    placeholder: 'Select Countary',
+    key: 'Selected Countary',
+  },
+  {
+    dropdownData: [
+      { label: 'D2-label1', value: 'D2-value1' },
+      { label: 'D2-label2', value: 'D2-value2' },
+      { label: 'D2-label3', value: 'D2-value3' },
+    ],
+    selectedValue: '',
+    placeholder: 'Select Type',
+    key: 'Select Type',
+  },
+  {
+    dropdownData: [
+      { label: 'D3-label1', value: 'D3-value1' },
+      { label: 'D3-label2', value: 'D3-value2' },
+      { label: 'D3-label3', value: 'D3-value3' },
+    ],
+    selectedValue: '',
+    placeholder: 'Select Property',
+    key: 'Select Property',
+  },
 ];
 
 export interface IMetricsData {
@@ -81,6 +120,11 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
               onIcon={this.onCloseOfferInfo}
             />
           )}
+          <ScrollableDropdownList
+            data={dropdownFilters}
+            onDropdown={this.onSelectFromDropdown}
+            containerStyle={styles.scrollableDropdown}
+          />
           {data.map((property: Asset, index: number) => {
             return this.renderPropertyOffer(property, index);
           })}
@@ -114,6 +158,10 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     this.setState({ offerType: name as OfferType });
   };
 
+  private onSelectFromDropdown = (selectedValues: ISelectedValue[]): void => {
+    // TODO: shivam call api
+  };
+
   private navigateToDetail = (): void => {
     const { navigation } = this.props;
     // TODO: (Shikha) Pass listing Id
@@ -143,5 +191,8 @@ const styles = StyleSheet.create({
   },
   textIconSubContainer: {
     flex: 1,
+  },
+  scrollableDropdown: {
+    marginBottom: 20,
   },
 });
