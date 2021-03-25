@@ -86,6 +86,11 @@ export enum NegotiationType {
   SALE_NEGOTIATIONS = 'sale-negotiations',
 }
 
+export enum NegotiationOfferType {
+  CREATED = 'created',
+  RECEIVED = 'received',
+}
+
 export enum NegotiationAction {
   REJECT = 'REJECT',
 }
@@ -898,6 +903,11 @@ export interface INegotiationBody {
 export interface INegotiationPayload {
   param: INegotiationParam;
   data: INegotiationBody;
+}
+
+export interface IPropertyNegotiationParam {
+  type: NegotiationOfferType;
+  params?: IReceivedNegotiationParam;
 }
 
 export interface IReceivedNegotiationParam {

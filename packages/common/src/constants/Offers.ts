@@ -4,6 +4,12 @@ export const offerSortBy = [
   { label: 'Best offer', value: 'BEST' },
 ];
 
+export const offerMadeSortBy = [
+  { label: 'Newest offer', value: 'NEWEST' },
+  { label: 'Price - low to high', value: 'LOW_HIGH' },
+  { label: 'Price - high to low', value: 'HIGH_LOW' },
+];
+
 export const offerFilterBy = [
   { label: 'Pending action with me', value: 'PENDING_ACTION' },
   { label: 'Waiting for prospect', value: 'WAITING' },

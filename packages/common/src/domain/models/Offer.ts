@@ -1,6 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
+import { User } from '@homzhub/common/src/domain/models/User';
 
 // TODO: (Shikha) Verify status with BE
 export enum Status {
@@ -25,10 +26,13 @@ export interface IOfferValue {
 @JsonObject('Offer')
 export class Offer {
   @JsonProperty('prospect', ProspectProfile, true)
-  private _count = 0;
+  private _prospect = new ProspectProfile();
 
   @JsonProperty('created_at', String)
   private _createdAt = '';
+
+  @JsonProperty('expires_at', String, true)
+  private _expiresAt = '';
 
   @JsonProperty('proposed_rent', Number, true)
   private _rent = -1;
@@ -43,7 +47,7 @@ export class Offer {
   private _bookingAmount = -1;
 
   @JsonProperty('proposed_annual_rent_increment_percentage', Number, true)
-  private _annualRentIncrementPercentage = -1;
+  private _annualRentIncrementPercentage = null;
 
   @JsonProperty('proposed_move_in_date', String, true)
   private _moveInDate = '';
@@ -54,8 +58,8 @@ export class Offer {
   @JsonProperty('proposed_min_lock_in_period', Number, true)
   private _minLockInPeriod = -1;
 
-  @JsonProperty('tenant_preferences', [Unit], true)
-  private _tenantPreferences = [new Unit()];
+  @JsonProperty('tenant_preferences', [TenantPreference], true)
+  private _tenantPreferences = [];
 
   @JsonProperty('actions', [String])
   private _actions = [];
@@ -63,11 +67,23 @@ export class Offer {
   @JsonProperty('status', String)
   private _status = '';
 
-  @JsonProperty('is_counter', Boolean, true)
-  private _isCounter = false;
+  @JsonProperty('role', String, true)
+  private _role = '';
 
-  get count(): number {
-    return this._count;
+  @JsonProperty('status_updated_at', String, true)
+  private _statusUpdatedAt = null;
+
+  @JsonProperty('status_updated_by', String, true)
+  private _statusUpdatedBy = null;
+
+  @JsonProperty('can_counter', Boolean, true)
+  private _canCounter = false;
+
+  @JsonProperty('user', User, true)
+  private _user = new User();
+
+  get prospect(): ProspectProfile {
+    return this._prospect;
   }
 
   get createdAt(): string {
@@ -82,7 +98,7 @@ export class Offer {
     return this._securityDeposit;
   }
 
-  get annualRentIncrementPercentage(): number {
+  get annualRentIncrementPercentage(): number | null {
     return this._annualRentIncrementPercentage;
   }
 
@@ -98,7 +114,7 @@ export class Offer {
     return this._minLockInPeriod;
   }
 
-  get tenantPreferences(): Unit[] {
+  get tenantPreferences(): TenantPreference[] {
     return this._tenantPreferences;
   }
 
@@ -110,8 +126,8 @@ export class Offer {
     return this._status as Status;
   }
 
-  get isCounter(): boolean {
-    return this._isCounter;
+  get canCounter(): boolean {
+    return this._canCounter;
   }
 
   get price(): number {
@@ -120,5 +136,25 @@ export class Offer {
 
   get bookingAmount(): number {
     return this._bookingAmount;
+  }
+
+  get role(): string {
+    return this._role;
+  }
+
+  get statusUpdatedAt(): string | null {
+    return this._statusUpdatedAt;
+  }
+
+  get statusUpdatedBy(): string | null {
+    return this._statusUpdatedBy;
+  }
+
+  get user(): User {
+    return this._user;
+  }
+
+  get expiresAt(): string {
+    return this._expiresAt;
   }
 }

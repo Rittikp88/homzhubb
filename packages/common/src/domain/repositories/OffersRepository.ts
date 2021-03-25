@@ -8,11 +8,12 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import {
   INegotiationParam,
   INegotiationPayload,
-  IReceivedNegotiationParam,
   IUpdateProspectProfile,
   IPostOfferLease,
   IPostOfferSell,
   ISubmitOffer,
+  IPropertyNegotiationParam,
+  NegotiationOfferType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
@@ -24,7 +25,7 @@ const ENDPOINTS = {
     `${param.listingType}/${param.listingId}/${param.negotiationType}/`,
   listingNegotiations: (param: INegotiationParam): string =>
     `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
-  receivedListingNegotiations: (): string => 'listings-negotiations/received',
+  negotiationOffers: (type: NegotiationOfferType): string => `listings-negotiations/${type}/`,
   offerManagement: (): string => 'offers/management-tab/',
   receivedOfferFilters: (): string => 'filters/offers-received',
 };
@@ -65,8 +66,9 @@ class OffersRepository {
     return await this.apiClient.patch(ENDPOINTS.listingNegotiations(param), data);
   };
 
-  public getReceivedOffers = async (params: IReceivedNegotiationParam): Promise<Asset[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.receivedListingNegotiations(), params);
+  public getOffers = async (payload: IPropertyNegotiationParam): Promise<Asset[]> => {
+    const { type, params } = payload;
+    const response = await this.apiClient.get(ENDPOINTS.negotiationOffers(type), params);
     return ObjectMapper.deserializeArray(Asset, response);
   };
 

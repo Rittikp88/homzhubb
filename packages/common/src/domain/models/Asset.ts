@@ -10,6 +10,7 @@ import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { Offer } from '@homzhub/common/src/domain/models/Offer';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
@@ -389,6 +390,12 @@ export class Asset {
   @JsonProperty('offers_count', Number, true)
   private _offerCount = null;
 
+  @JsonProperty('lease_negotiation', Offer, true)
+  private _leaseNegotiation = null;
+
+  @JsonProperty('sale_negotiation', Offer, true)
+  private _saleNegotiation = null;
+
   get investmentStatus(): string {
     return this._investmentStatus;
   }
@@ -737,5 +744,13 @@ export class Asset {
   get currencySymbol(): string {
     const { currencySymbol } = this.currencyData;
     return currencySymbol;
+  }
+
+  get leaseNegotiation(): Offer | null {
+    return this._leaseNegotiation;
+  }
+
+  get saleNegotiation(): Offer | null {
+    return this._saleNegotiation;
   }
 }

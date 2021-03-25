@@ -12,7 +12,8 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import TextWithIcon from '@homzhub/common/src/components/atoms/TextWithIcon';
-import PropertyOffers, { OfferType } from '@homzhub/common/src/components/molecules/PropertyOffers';
+import OfferMade from '@homzhub/common/src/components/molecules/OfferMade';
+import PropertyOffers from '@homzhub/common/src/components/molecules/PropertyOffers';
 import ScrollableDropdownList, {
   IDropdownData,
   ISelectedValue,
@@ -21,6 +22,13 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { offerFilterBy, offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
+import { NegotiationOfferType } from '@homzhub/common/src/domain/repositories/interfaces';
+
+export enum OfferType {
+  OFFER_RECEIVED = 'Offer Received',
+  OFFER_MADE = 'Offer Made',
+}
 
 interface IScreenState {
   offerType: OfferType;
@@ -28,6 +36,7 @@ interface IScreenState {
   propertyListingData: Asset[];
   offerCountData: OfferManagement | null;
   receivedDropdownData: IDropdownData[];
+  madeDropdownData: IDropdownData[];
   isScreenLoading: boolean;
   isTabLoading: boolean;
   filters: Record<string, string>;
@@ -48,12 +57,13 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      offerType: 'Offer Received',
+      offerType: OfferType.OFFER_RECEIVED,
       isOfferInfoRead: false,
       propertyListingData: [],
       offerCountData: null,
       isScreenLoading: false,
       receivedDropdownData: [],
+      madeDropdownData: [],
       isTabLoading: false,
       filters: {},
     };
@@ -66,11 +76,15 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       const offerCountData = await OffersRepository.getOfferData();
       const receivedOffersFilters = await OffersRepository.getReceivedOfferFilters();
       const receivedDropdownData = this.getReceivedDropdownData(receivedOffersFilters);
+      const madeDropdownData = this.getMadeDropdownData();
 
       const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
-      this.setState({ isOfferInfoRead, offerCountData, isScreenLoading: false, receivedDropdownData }, () => {
-        this.getPropertyListData();
-      });
+      this.setState(
+        { isOfferInfoRead, offerCountData, isScreenLoading: false, receivedDropdownData, madeDropdownData },
+        () => {
+          this.getPropertyListData();
+        }
+      );
     } catch (e) {
       AlertHelper.error({ message: e.message });
       this.setState({ isScreenLoading: false });
@@ -86,11 +100,12 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       offerCountData,
       isScreenLoading: screenLoading,
       receivedDropdownData,
+      madeDropdownData,
       isTabLoading,
     } = this.state;
 
     const totalOffers = offerCountData?.totalOffers;
-    const isReceivedOffer = offerType === 'Offer Received';
+    const isReceivedOffer = offerType === OfferType.OFFER_RECEIVED;
 
     if (screenLoading) {
       return <Loader visible />;
@@ -134,7 +149,9 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
                 />
               )}
               <ScrollableDropdownList
-                data={isReceivedOffer ? receivedDropdownData : []}
+                data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
+                isScrollable={isReceivedOffer}
+                dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
                 onDropdown={this.onSelectFromDropdown}
                 containerStyle={styles.scrollableDropdown}
               />
@@ -159,15 +176,20 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     const isCardExpanded = index === 0;
     const { offerType } = this.state;
 
-    return (
-      <PropertyOffers
-        isCardExpanded={isCardExpanded}
-        propertyOffer={item}
-        containerStyles={separatorStyle}
-        onViewOffer={this.navigateToDetail}
-        offerType={offerType}
-      />
-    );
+    switch (offerType) {
+      case OfferType.OFFER_RECEIVED:
+        return (
+          <PropertyOffers
+            isCardExpanded={isCardExpanded}
+            propertyOffer={item}
+            containerStyles={separatorStyle}
+            onViewOffer={this.navigateToDetail}
+          />
+        );
+      case OfferType.OFFER_MADE:
+      default:
+        return <OfferMade propertyOffer={item} />;
+    }
   };
 
   private renderNoOffer = (): React.ReactElement => {
@@ -191,7 +213,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     });
 
     this.setState({ filters }, () => {
-      this.getPropertyListData();
+      this.getPropertyListData().then();
     });
   };
 
@@ -205,7 +227,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     });
 
     this.setState({ offerType: name as OfferType, filters: {}, receivedDropdownData: updatedDropdownData }, () => {
-      this.getPropertyListData();
+      this.getPropertyListData().then();
     });
   };
 
@@ -230,6 +252,20 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     ];
   };
 
+  private getMadeDropdownData = (): IDropdownData[] => {
+    const { t } = this.props;
+
+    return [
+      {
+        dropdownData: offerMadeSortBy,
+        key: 'sort_by',
+        selectedValue: '',
+        placeholder: t('offers:sort'),
+      },
+      { dropdownData: offerFilterBy, key: 'filter_by', selectedValue: '', placeholder: t('offers:filterBy') },
+    ];
+  };
+
   private getPropertyListData = async (): Promise<void> => {
     const { offerType, filters, offerCountData } = this.state;
     const isThereOfferReceived =
@@ -237,13 +273,21 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
     let propertyListingData: Asset[] = [];
 
-    // TODO: call offer made api
+    if (offerType === OfferType.OFFER_RECEIVED && !isThereOfferReceived) return;
     this.setState({ isTabLoading: true });
-    if (isThereOfferReceived && offerType === 'Offer Received') {
-      propertyListingData = await OffersRepository.getReceivedOffers(filters);
-    }
 
-    this.setState({ propertyListingData, isTabLoading: false });
+    const payload = {
+      type: offerType === OfferType.OFFER_RECEIVED ? NegotiationOfferType.RECEIVED : NegotiationOfferType.CREATED,
+      ...(offerType === OfferType.OFFER_RECEIVED && { params: filters }),
+    };
+
+    try {
+      propertyListingData = await OffersRepository.getOffers(payload);
+      this.setState({ propertyListingData, isTabLoading: false });
+    } catch (e) {
+      this.setState({ isTabLoading: false });
+      // TODO: Add error utils
+    }
   };
 
   private getMetricData = (): IMetricsData[] => {
@@ -256,12 +300,10 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
     const { offerReceived, offerMade } = offerCountData;
 
-    const metricData = [
+    return [
       { name: t('offers:offerReceived'), count: offerReceived, colorCode: theme.colors.highPriority },
       { name: t('offers:offerMade'), count: offerMade, colorCode: theme.colors.greenTint8 },
     ];
-
-    return metricData;
   };
 
   private navigateToDetail = (): void => {

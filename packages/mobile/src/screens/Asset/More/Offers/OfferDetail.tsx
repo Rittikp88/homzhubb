@@ -41,7 +41,7 @@ const OfferDetail = (): React.ReactElement => {
       headerStyle={styles.headerStyle}
     >
       <PropertyOffers propertyOffer={data[0]} isCardExpanded isDetailView />
-      <OfferView onPressAction={handleActions} isDetailView filterStyle={styles.filter} />
+      <OfferView onPressAction={handleActions} isDetailView />
     </UserScreen>
   );
 };
@@ -51,9 +51,5 @@ export default OfferDetail;
 const styles = StyleSheet.create({
   headerStyle: {
     backgroundColor: theme.colors.white,
-  },
-  filter: {
-    backgroundColor: theme.colors.background,
-    paddingHorizontal: 0,
   },
 });

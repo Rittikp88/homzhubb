@@ -68,11 +68,18 @@ export class TenantPreference {
   @JsonProperty('name', String)
   private _name = 'Family';
 
+  @JsonProperty('is_choosed', Boolean, true)
+  private _isSelected = false;
+
   get id(): number {
     return this._id;
   }
 
   get name(): string {
     return this._name;
+  }
+
+  get isSelected(): boolean {
+    return this._isSelected;
   }
 }

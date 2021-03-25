@@ -3,6 +3,7 @@ import { FlatList, PickerItemProps, View, StyleSheet, ViewStyle, StyleProp } fro
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 export interface IDropdownData {
   key: string;
@@ -14,7 +15,11 @@ export interface IDropdownData {
 interface IProps {
   data: IDropdownData[];
   onDropdown: (selectedValues: (ISelectedValue | undefined)[]) => void;
+  dropDownTitle?: string;
+  isScrollable?: boolean;
+  isOutlineView?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  mainContainerStyle?: StyleProp<ViewStyle>;
   allowDeselect?: boolean;
 }
 
@@ -31,7 +36,6 @@ interface IScreenState {
 class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
   constructor(props: IProps) {
     super(props);
-
     const { data } = this.props;
     this.state = {
       data,
@@ -39,19 +43,37 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
     };
   }
 
+  public static getDerivedStateFromProps = (props: IProps, state: IScreenState): IScreenState => {
+    if (JSON.stringify(props.data) !== JSON.stringify(state.data)) {
+      return {
+        ...state,
+        data: props.data,
+      };
+    }
+
+    return state;
+  };
+
   public render(): React.ReactElement {
     const { data } = this.state;
-    const { data: dropdownData } = this.props;
+    const { data: dropdownData, dropDownTitle, isScrollable = true, mainContainerStyle } = this.props;
 
     return (
-      <FlatList
-        extraData={dropdownData}
-        horizontal
-        data={data}
-        renderItem={this.renderDropdown}
-        ItemSeparatorComponent={this.renderItemSeparator}
-        keyExtractor={this.renderKeyExtractor}
-      />
+      <View style={[styles.mainContainer, mainContainerStyle]}>
+        {!!dropDownTitle && <Text>{dropDownTitle}</Text>}
+        <View>
+          <FlatList
+            extraData={dropdownData}
+            horizontal
+            data={data}
+            scrollEnabled={isScrollable}
+            renderItem={this.renderDropdown}
+            ItemSeparatorComponent={this.renderItemSeparator}
+            keyExtractor={this.renderKeyExtractor}
+            showsHorizontalScrollIndicator={false}
+          />
+        </View>
+      </View>
     );
   }
 
@@ -61,7 +83,7 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
 
   private renderDropdown = ({ item, index }: { item: IDropdownData; index: number }): React.ReactElement => {
     const { dropdownData, selectedValue, placeholder } = item;
-    const { containerStyle } = this.props;
+    const { containerStyle, isOutlineView = false } = this.props;
     return (
       <Dropdown
         data={dropdownData}
@@ -69,13 +91,15 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
         onDonePress={this.onDropdownSelect}
         dropdownIndex={index}
         placeholder={placeholder}
+        listHeight={500}
+        isOutline={isOutlineView}
         containerStyle={[styles.dropdownContainer, containerStyle]}
         textStyle={styles.placeholder}
         iconColor={theme.colors.blue}
         icon={icons.downArrow}
         fontSize="large"
         fontWeight="semiBold"
-        iconStyle={styles.drodownIcon}
+        iconStyle={styles.dropdownIcon}
       />
     );
   };
@@ -108,12 +132,16 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
   };
 }
 
-export default React.memo(ScrollableDropdownList);
+export default ScrollableDropdownList;
 
 const styles = StyleSheet.create({
   separator: {
     width: 12,
     height: 12,
+  },
+  mainContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   dropdownContainer: {
     backgroundColor: theme.colors.white,
@@ -124,7 +152,7 @@ const styles = StyleSheet.create({
   placeholder: {
     color: theme.colors.blue,
   },
-  drodownIcon: {
+  dropdownIcon: {
     marginStart: 12,
   },
 });

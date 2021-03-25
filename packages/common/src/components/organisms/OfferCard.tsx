@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -16,6 +18,7 @@ interface IProps {
   offer: Offer;
   isFromAccept?: boolean;
   onPressAction?: (action: OfferAction) => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IOwnState {
@@ -33,14 +36,15 @@ class OfferCard extends Component<Props, IOwnState> {
     const { hasMore } = this.state;
     const {
       t,
-      offer: { isCounter },
+      offer: { canCounter },
+      containerStyle,
     } = this.props;
 
     // TODO: (Shikha) Add more list view once counter flow is ready
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle]}>
         {this.renderCardContent()}
-        {isCounter && (
+        {canCounter && (
           <Button
             iconSize={20}
             type="primary"
@@ -61,7 +65,14 @@ class OfferCard extends Component<Props, IOwnState> {
     const {
       t,
       isFromAccept = false,
-      offer: { minLockInPeriod, leasePeriod, price },
+      offer: {
+        minLockInPeriod,
+        leasePeriod,
+        price,
+        role,
+        createdAt,
+        user: { name },
+      },
       offer,
     } = this.props;
 
@@ -70,7 +81,7 @@ class OfferCard extends Component<Props, IOwnState> {
     // TODO: Use values from API
     return (
       <View style={styles.cardContainer}>
-        <Avatar fullName="Shikha Rai" designation="owner" />
+        <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
         {isFromAccept ? (
           <PropertyAddressCountry
             isIcon
@@ -82,7 +93,7 @@ class OfferCard extends Component<Props, IOwnState> {
         ) : (
           <View style={styles.dateView}>
             <Label type="regular" style={styles.date}>
-              {t('createdDate', { date: '26 Jan' })}
+              {t('createdDate', { date: DateUtils.getDisplayDate(createdAt, DateFormats.DoMMM_YYYY) })}
             </Label>
             <TextWithIcon
               icon={icons.timeValid}
@@ -167,7 +178,7 @@ class OfferCard extends Component<Props, IOwnState> {
   private renderActionView = (): React.ReactElement => {
     const {
       t,
-      offer: { status, actions, isCounter },
+      offer: { status, actions, canCounter },
       onPressAction,
     } = this.props;
     const buttonData = OfferUtils.getButtonStatus(status);
@@ -210,31 +221,31 @@ class OfferCard extends Component<Props, IOwnState> {
             );
           })}
         </View>
-        {isCounter && <Button type="primary" title={t('common:counter')} />}
+        {canCounter && <Button type="primary" title={t('common:counter')} />}
       </>
     );
   };
 
-  // TODO: (Shikha) - Map with listing data
   private renderPreferences = (): React.ReactElement => {
     const {
       offer: { tenantPreferences },
     } = this.props;
     return (
       <View style={styles.preferenceView}>
-        {tenantPreferences.map((item, index) => {
-          return (
-            <TextWithIcon
-              key={index}
-              icon={icons.check}
-              text={item.name}
-              variant="label"
-              textSize="large"
-              iconColor={theme.colors.green}
-              containerStyle={styles.preferenceContent}
-            />
-          );
-        })}
+        {!!tenantPreferences.length &&
+          tenantPreferences.map((item, index) => {
+            return (
+              <TextWithIcon
+                key={index}
+                icon={item.isSelected ? icons.check : icons.close}
+                text={item.name}
+                variant="label"
+                textSize="large"
+                iconColor={item.isSelected ? theme.colors.green : theme.colors.error}
+                containerStyle={styles.preferenceContent}
+              />
+            );
+          })}
       </View>
     );
   };

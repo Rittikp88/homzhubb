@@ -1,4 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { DateUtils, DateFormats } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
@@ -24,7 +25,13 @@ interface IActionPayload {
 
 class OfferUtils {
   public getOfferValues = (offer: Offer): IOfferValue[] => {
-    const { annualRentIncrementPercentage, securityDeposit, moveInDate, price, bookingAmount } = offer;
+    const { annualRentIncrementPercentage: percentage, securityDeposit, moveInDate, price, bookingAmount } = offer;
+    const annualRent = {
+      key: I18nService.t('property:annualIncrementSuffix'),
+      value: percentage ? percentage.toString() : '',
+      icon: icons.arrowUp,
+      iconColor: theme.colors.green,
+    };
 
     if (price > 0) {
       return [
@@ -38,12 +45,7 @@ class OfferUtils {
     }
 
     return [
-      {
-        key: I18nService.t('property:annualIncrementSuffix'),
-        value: annualRentIncrementPercentage.toString(),
-        icon: icons.arrowUp,
-        iconColor: theme.colors.green,
-      },
+      ...(percentage ? [annualRent] : []),
       {
         key: I18nService.t('property:securityDeposit'),
         value: securityDeposit.toString(),
@@ -52,7 +54,7 @@ class OfferUtils {
       },
       {
         key: I18nService.t('property:moveInDate'),
-        value: moveInDate,
+        value: DateUtils.getUtcFormatted(moveInDate, DateFormats.YYYYMMDD, DateFormats.DoMMM_YYYY),
       },
     ];
   };

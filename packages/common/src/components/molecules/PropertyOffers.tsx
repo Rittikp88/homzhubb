@@ -1,25 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, Image, StyleProp, ViewStyle, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, StyleProp, ViewStyle, FlatList, TouchableOpacity } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { ShieldGroup } from '@homzhub/mobile/src/components';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
-import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
-import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import TextWithIcon from '@homzhub/common/src/components/atoms/TextWithIcon';
+import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
-import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
-
-export type OfferType = 'Offer Received' | 'Offer Made';
 
 interface IScreenProps {
   isCardExpanded: boolean;
@@ -27,7 +20,6 @@ interface IScreenProps {
   onViewOffer?: () => void;
   isDetailView?: boolean;
   containerStyles?: StyleProp<ViewStyle>;
-  offerType?: OfferType;
 }
 
 interface IScreenState {
@@ -126,46 +118,16 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
 
   public render(): React.ReactElement {
     const {
-      propertyOffer: {
-        offerCount,
-        images,
-        assetType: { name: assetType },
-        projectName,
-        address,
-        unitNumber,
-        blockNumber,
-        country: { flag },
-        verifications: { description },
-        currencyData,
-        pricePerUnit,
-        maintenancePaymentSchedule,
-        carpetArea,
-        carpetAreaUnit,
-        furnishing,
-        spaces,
-        assetGroup: { code },
-      },
+      propertyOffer: { offerCount },
       containerStyles,
       t,
       onViewOffer,
       isDetailView = false,
+      propertyOffer,
     } = this.props;
     const { isExpanded } = this.state;
 
     const offerCountHeading = `${offerCount} ${t('common:offers')}`;
-    const isAttechmentPresent = images && images.length > 0;
-
-    const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
-      spaces,
-      furnishing,
-      code,
-      carpetArea,
-      carpetAreaUnit?.title ?? '',
-      true
-    );
-
-    const showAmenities = isExpanded && amenitiesData && amenitiesData.length > 0;
-    const customStyle = customStyles(isDetailView);
 
     return (
       <TouchableOpacity
@@ -203,41 +165,7 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
           </View>
         )}
         <>
-          {isExpanded && (
-            <View style={customStyle.imageContainer}>
-              {isAttechmentPresent ? (
-                <Image
-                  source={{
-                    uri: images[0].link,
-                  }}
-                  style={styles.carouselImage}
-                  resizeMode="contain"
-                />
-              ) : (
-                <ImagePlaceholder containerStyle={styles.placeholder} />
-              )}
-            </View>
-          )}
-          {isExpanded && <ShieldGroup propertyType={assetType} text={description} isInfoRequired />}
-          <PropertyAddressCountry
-            primaryAddress={projectName}
-            countryFlag={flag}
-            subAddress={address ?? `${unitNumber} ${blockNumber}`}
-            isIcon
-          />
-          {isExpanded && (
-            <PricePerUnit price={pricePerUnit} currency={currencyData} unit={maintenancePaymentSchedule} />
-          )}
-          {showAmenities && (
-            <>
-              <PropertyAmenities
-                data={amenitiesData}
-                direction="row"
-                containerStyle={styles.amenitiesContainer}
-                contentContainerStyle={styles.amenities}
-              />
-            </>
-          )}
+          <PropertyCard isExpanded={isExpanded} asset={propertyOffer} />
           {this.renderExpectation()}
         </>
       </TouchableOpacity>
@@ -287,8 +215,30 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
     }
 
     if (title === t('moreSettings:preferencesText')) {
-      // TODO: add preference component
-      return null;
+      const preferences = value as TenantPreference[];
+      return (
+        <View>
+          <Label textType="regular" type="small" style={styles.tintColor}>
+            {title}
+          </Label>
+          <View style={styles.preferenceView}>
+            {!!preferences.length &&
+              preferences.map((preference, valueIndex) => {
+                return (
+                  <TextWithIcon
+                    key={valueIndex}
+                    icon={preference.isSelected ? icons.check : icons.close}
+                    text={preference.name}
+                    variant="label"
+                    textSize="large"
+                    iconColor={preference.isSelected ? theme.colors.green : theme.colors.error}
+                    containerStyle={styles.preferenceContent}
+                  />
+                );
+              })}
+          </View>
+        </View>
+      );
     }
     return (
       <View key={index} style={styles.expectedItem}>
@@ -320,25 +270,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
-  placeholder: {
-    backgroundColor: theme.colors.darkTint5,
-  },
-  carouselImage: {
-    height: '100%',
-    width: '100%',
-  },
   offerCount: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  amenitiesContainer: {
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    marginTop: 12,
-  },
-  amenities: {
-    marginEnd: 16,
   },
   divider: {
     marginVertical: 16,
@@ -372,13 +307,11 @@ const styles = StyleSheet.create({
   countWithIcon: {
     marginBottom: 15,
   },
+  preferenceView: {
+    flexDirection: 'row',
+    marginVertical: 4,
+  },
+  preferenceContent: {
+    flexDirection: 'row-reverse',
+  },
 });
-
-const customStyles = (isDetailView: boolean): { imageContainer: ViewStyle } => {
-  return StyleSheet.create({
-    imageContainer: {
-      marginTop: isDetailView ? 0 : 15,
-      marginBottom: 8,
-    },
-  });
-};
