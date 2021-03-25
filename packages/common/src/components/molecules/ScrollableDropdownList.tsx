@@ -13,8 +13,9 @@ export interface IDropdownData {
 
 interface IProps {
   data: IDropdownData[];
-  onDropdown: (selectedValues: ISelectedValue[]) => void;
+  onDropdown: (selectedValues: (ISelectedValue | undefined)[]) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  allowDeselect?: boolean;
 }
 
 export interface ISelectedValue {
@@ -24,8 +25,9 @@ export interface ISelectedValue {
 
 interface IScreenState {
   data: IDropdownData[];
-  selectedValues: ISelectedValue[];
+  selectedValues: (ISelectedValue | undefined)[];
 }
+
 class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
   constructor(props: IProps) {
     super(props);
@@ -39,9 +41,11 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
 
   public render(): React.ReactElement {
     const { data } = this.state;
+    const { data: dropdownData } = this.props;
 
     return (
       <FlatList
+        extraData={dropdownData}
         horizontal
         data={data}
         renderItem={this.renderDropdown}
@@ -58,7 +62,6 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
   private renderDropdown = ({ item, index }: { item: IDropdownData; index: number }): React.ReactElement => {
     const { dropdownData, selectedValue, placeholder } = item;
     const { containerStyle } = this.props;
-
     return (
       <Dropdown
         data={dropdownData}
@@ -81,19 +84,23 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
     if (index < 0) {
       return;
     }
-
     this.setState(
       (oldState: IScreenState): IScreenState => {
-        const { onDropdown, data } = this.props;
+        const { onDropdown, data, allowDeselect = true } = this.props;
 
         const updatedData = [...oldState.data];
-        const updatedSelectedValues = [...oldState.selectedValues];
+        const updatedSelectedValues: (ISelectedValue | undefined)[] = [...oldState.selectedValues];
 
-        updatedData[index].selectedValue = value;
+        const oldSelectedValue = updatedData[index].selectedValue;
 
-        const { key } = data[index];
-        updatedSelectedValues[index] = { key, value };
-
+        if (allowDeselect && oldSelectedValue === value) {
+          updatedData[index].selectedValue = '';
+          updatedSelectedValues[index] = undefined;
+        } else {
+          updatedData[index].selectedValue = value;
+          const { key } = data[index];
+          updatedSelectedValues[index] = { key, value };
+        }
         onDropdown(updatedSelectedValues);
         return { data: updatedData, selectedValues: updatedSelectedValues };
       }

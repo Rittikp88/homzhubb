@@ -1131,6 +1131,12 @@
     "offerInfo": "These are the offers that were made for property listings you own or manage.",
     "rejectOffer": "Reject Offer",
     "rejectThisOffer": "Reject this offer",
-    "rejectReason": "Eg. Reject reason"
+    "rejectReason": "Eg. Reject reason",
+    "offerReceived": "Offer Received",
+    "offerMade": "Offer Made",
+    "selectType": "Select Type",
+    "selectProperty": "Select Property",
+    "noOfferReceived": "No Offer Received",
+    "noOfferMade": "No Offer Made"
   }
 }

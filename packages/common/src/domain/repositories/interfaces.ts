@@ -901,6 +901,12 @@ export interface INegotiationPayload {
   data: INegotiationBody;
 }
 
+export interface IReceivedNegotiationParam {
+  countary_id?: number;
+  type?: string;
+  asset_id?: number;
+}
+
 export interface ISubmitOffer {
   param: INegotiationParam;
   data: ISubmitOfferLease | ISubmitOfferSell;

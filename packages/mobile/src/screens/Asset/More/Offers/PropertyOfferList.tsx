@@ -1,13 +1,16 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetMetricsList } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import TextWithIcon from '@homzhub/common/src/components/atoms/TextWithIcon';
 import PropertyOffers, { OfferType } from '@homzhub/common/src/components/molecules/PropertyOffers';
 import ScrollableDropdownList, {
@@ -15,55 +18,22 @@ import ScrollableDropdownList, {
   ISelectedValue,
 } from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
+import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { propertyOffer } from '@homzhub/common/src/mocks/PropertyOffer';
 
 interface IScreenState {
   offerType: OfferType;
   isOfferInfoRead: boolean;
+  propertyListingData: Asset[];
+  offerCountData: OfferManagement | null;
+  receivedDropdownData: IDropdownData[];
+  isScreenLoading: boolean;
+  isTabLoading: boolean;
+  filters: Record<string, string>;
 }
 
 type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyOfferList>;
-
-// TODO: (shivam) remove mock data.
-const metricData = [
-  { name: 'Offer Received', count: 4, colorCode: '#FF8576' },
-  { name: 'Offer Made', count: 4, colorCode: '#47C2B1' },
-];
-
-// TODO: (shivam) remove mock data.
-const dropdownFilters: IDropdownData[] = [
-  {
-    dropdownData: [
-      { label: 'D1-label1', value: 'D1-value1' },
-      { label: 'D1-label2', value: 'D1-value2' },
-      { label: 'D1-label3', value: 'D1-value3' },
-    ],
-    selectedValue: '',
-    placeholder: 'Select Countary',
-    key: 'Selected Countary',
-  },
-  {
-    dropdownData: [
-      { label: 'D2-label1', value: 'D2-value1' },
-      { label: 'D2-label2', value: 'D2-value2' },
-      { label: 'D2-label3', value: 'D2-value3' },
-    ],
-    selectedValue: '',
-    placeholder: 'Select Type',
-    key: 'Select Type',
-  },
-  {
-    dropdownData: [
-      { label: 'D3-label1', value: 'D3-value1' },
-      { label: 'D3-label2', value: 'D3-value2' },
-      { label: 'D3-label3', value: 'D3-value3' },
-    ],
-    selectedValue: '',
-    placeholder: 'Select Property',
-    key: 'Select Property',
-  },
-];
 
 export interface IMetricsData {
   name: string;
@@ -80,54 +50,105 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     this.state = {
       offerType: 'Offer Received',
       isOfferInfoRead: false,
+      propertyListingData: [],
+      offerCountData: null,
+      isScreenLoading: false,
+      receivedDropdownData: [],
+      isTabLoading: false,
+      filters: {},
     };
   }
 
   public async componentDidMount(): Promise<void> {
-    const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
-    this.setState({ isOfferInfoRead });
+    this.setState({ isScreenLoading: true });
+
+    try {
+      const offerCountData = await OffersRepository.getOfferData();
+      const receivedOffersFilters = await OffersRepository.getReceivedOfferFilters();
+      const receivedDropdownData = this.getReceivedDropdownData(receivedOffersFilters);
+
+      const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
+      this.setState({ isOfferInfoRead, offerCountData, isScreenLoading: false, receivedDropdownData }, () => {
+        this.getPropertyListData();
+      });
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+      this.setState({ isScreenLoading: false });
+    }
   }
 
   public render(): React.ReactElement {
     const { t } = this.props;
-    const { offerType, isOfferInfoRead } = this.state;
+    const {
+      offerType,
+      isOfferInfoRead,
+      propertyListingData,
+      offerCountData,
+      isScreenLoading: screenLoading,
+      receivedDropdownData,
+      isTabLoading,
+    } = this.state;
 
-    const data = ObjectMapper.deserializeArray(Asset, propertyOffer);
+    const totalOffers = offerCountData?.totalOffers;
+    const isReceivedOffer = offerType === 'Offer Received';
+
+    if (screenLoading) {
+      return <Loader visible />;
+    }
+
     return (
       <>
-        <UserScreen title={t('assetDashboard:dashboard')} scrollEnabled backgroundColor={theme.colors.transparent}>
-          <AssetMetricsList
-            data={metricData}
-            onMetricsClicked={this.onMetricsClicked}
-            selectedAssetType={offerType}
-            numOfElements={2}
-            subTitleText={t('assetPortfolio:totalOffers')}
-            isSubTextRequired
-            headerIcon={icons.offers}
-            containerStyle={[styles.metricList, styles.borderRadius]}
-          />
-          {!isOfferInfoRead && (
-            <TextWithIcon
-              text={t('offers:offerInfo')}
-              containerStyle={[styles.offerInfo, styles.borderRadius]}
-              icon={icons.close}
-              iconSize={15}
-              prefixIcon={icons.circularFilledInfo}
-              iconColor={theme.colors.darkTint4}
-              prefixIconColor={theme.colors.darkTint3}
-              variant="label"
-              subContainerStyle={styles.textIconSubContainer}
-              onIcon={this.onCloseOfferInfo}
-            />
+        <UserScreen
+          title={t('assetDashboard:dashboard')}
+          scrollEnabled
+          backgroundColor={theme.colors.transparent}
+          loading={isTabLoading}
+        >
+          {totalOffers === 0 ? (
+            this.renderNoOffer()
+          ) : (
+            <>
+              <AssetMetricsList
+                title={offerCountData?.totalOffers?.toString()}
+                data={this.getMetricData()}
+                onMetricsClicked={this.onMetricsClicked}
+                selectedAssetType={offerType}
+                numOfElements={2}
+                subTitleText={t('assetPortfolio:totalOffers')}
+                isSubTextRequired
+                headerIcon={icons.offers}
+                containerStyle={[styles.metricList, styles.borderRadius]}
+              />
+              {!isOfferInfoRead && (
+                <TextWithIcon
+                  text={t('offers:offerInfo')}
+                  containerStyle={[styles.offerInfo, styles.borderRadius]}
+                  icon={icons.close}
+                  iconSize={15}
+                  prefixIcon={icons.circularFilledInfo}
+                  iconColor={theme.colors.darkTint4}
+                  prefixIconColor={theme.colors.darkTint3}
+                  variant="label"
+                  subContainerStyle={styles.textIconSubContainer}
+                  onIcon={this.onCloseOfferInfo}
+                />
+              )}
+              <ScrollableDropdownList
+                data={isReceivedOffer ? receivedDropdownData : []}
+                onDropdown={this.onSelectFromDropdown}
+                containerStyle={styles.scrollableDropdown}
+              />
+              {propertyListingData && propertyListingData.length > 0 ? (
+                <>
+                  {propertyListingData.map((property: Asset, index: number) => {
+                    return this.renderPropertyOffer(property, index);
+                  })}
+                </>
+              ) : (
+                this.renderNoOffer()
+              )}
+            </>
           )}
-          <ScrollableDropdownList
-            data={dropdownFilters}
-            onDropdown={this.onSelectFromDropdown}
-            containerStyle={styles.scrollableDropdown}
-          />
-          {data.map((property: Asset, index: number) => {
-            return this.renderPropertyOffer(property, index);
-          })}
         </UserScreen>
       </>
     );
@@ -149,17 +170,98 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     );
   };
 
+  private renderNoOffer = (): React.ReactElement => {
+    const { t } = this.props;
+    const { offerType } = this.state;
+
+    const title = offerType === 'Offer Received' ? t('offers:noOfferReceived') : t('offers:noOfferMade');
+    return <EmptyState title={title} />;
+  };
+
+  private onSelectFromDropdown = (selectedValues: (ISelectedValue | undefined)[]): void => {
+    const filters = {};
+
+    selectedValues.forEach((selectedValue: ISelectedValue | undefined) => {
+      if (!selectedValue) {
+        return;
+      }
+      const { key, value } = selectedValue;
+      // @ts-ignore
+      filters[key] = value;
+    });
+
+    this.setState({ filters }, () => {
+      this.getPropertyListData();
+    });
+  };
+
+  private onMetricsClicked = (name: string): void => {
+    const { receivedDropdownData } = this.state;
+
+    const updatedDropdownData = [...receivedDropdownData];
+
+    updatedDropdownData.forEach((data: IDropdownData) => {
+      data.selectedValue = '';
+    });
+
+    this.setState({ offerType: name as OfferType, filters: {}, receivedDropdownData: updatedDropdownData }, () => {
+      this.getPropertyListData();
+    });
+  };
+
   private onCloseOfferInfo = (): void => {
     this.setState({ isOfferInfoRead: true });
     StorageService.set(StorageKeys.IS_OFFER_INFO_READ, true);
   };
 
-  private onMetricsClicked = (name: string): void => {
-    this.setState({ offerType: name as OfferType });
+  private getReceivedDropdownData = (receivedOffers: ReceivedOfferFilter): IDropdownData[] => {
+    const { t } = this.props;
+    const { assetsDropdownData, countryDropdownData, listingDropdownData } = receivedOffers;
+
+    return [
+      {
+        dropdownData: countryDropdownData,
+        key: 'country_id',
+        selectedValue: '',
+        placeholder: t('assetPortfolio:selectCountry'),
+      },
+      { dropdownData: listingDropdownData, key: 'type', selectedValue: '', placeholder: t('offers:selectType') },
+      { dropdownData: assetsDropdownData, key: 'asset_id', selectedValue: '', placeholder: t('offers:selectProperty') },
+    ];
   };
 
-  private onSelectFromDropdown = (selectedValues: ISelectedValue[]): void => {
-    // TODO: shivam call api
+  private getPropertyListData = async (): Promise<void> => {
+    const { offerType, filters, offerCountData } = this.state;
+    const isThereOfferReceived =
+      offerCountData && offerCountData.offerReceived ? offerCountData.offerReceived > 0 : false;
+
+    let propertyListingData: Asset[] = [];
+
+    // TODO: call offer made api
+    this.setState({ isTabLoading: true });
+    if (isThereOfferReceived && offerType === 'Offer Received') {
+      propertyListingData = await OffersRepository.getReceivedOffers(filters);
+    }
+
+    this.setState({ propertyListingData, isTabLoading: false });
+  };
+
+  private getMetricData = (): IMetricsData[] => {
+    const { offerCountData } = this.state;
+    const { t } = this.props;
+
+    if (!offerCountData) {
+      return [];
+    }
+
+    const { offerReceived, offerMade } = offerCountData;
+
+    const metricData = [
+      { name: t('offers:offerReceived'), count: offerReceived, colorCode: theme.colors.highPriority },
+      { name: t('offers:offerMade'), count: offerMade, colorCode: theme.colors.greenTint8 },
+    ];
+
+    return metricData;
   };
 
   private navigateToDetail = (): void => {
