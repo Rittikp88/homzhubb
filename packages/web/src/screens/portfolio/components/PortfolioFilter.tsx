@@ -44,7 +44,9 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
 
   return (
     <View style={styles.filterSection}>
-      <View style={styles.filterContainer}>
+      {
+        // TODO : Enable filters once logic is done
+        /* <View style={styles.filterContainer}>
         <Typography size="small" fontWeight="semiBold" style={styles.filterText}>
           {t('assetPortfolio:selectCountry')}
         </Typography>
@@ -63,8 +65,8 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
           {t('propertySearch:type')}
         </Typography>
         <Icon name={icons.downArrow} size={18} style={styles.icon} />
-      </View>
-
+      </View> */
+      }
       <View>
         <Popover
           forwardedRef={popupRef}

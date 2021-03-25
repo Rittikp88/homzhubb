@@ -121,7 +121,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
       },
     } = assetDetail;
     return (
-      <>
+      <View style={PlatformUtils.isWeb() && styles.flexOne}>
         <AddressWithStepIndicator
           icon={icons.noteBook}
           steps={AddPropertySteps}
@@ -148,7 +148,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
           }}
           style={{ height: heights[currentIndex] }}
         />
-      </>
+      </View>
     );
   }
 
@@ -222,7 +222,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
               lastVisitedStep={lastVisitedStep}
               onUploadImage={onUploadImage}
               setSelectedImages={setSelectedImages}
-              containerStyle={isMobile ? styles.propertyImagesContainerMobile : styles.propertyImagesContainer}
+              containerStyle={isMobile ? styles.flexOne : styles.propertyImagesContainer}
             />
           </View>
         );
@@ -408,7 +408,7 @@ const styles = StyleSheet.create({
   propertyImagesContainer: {
     margin: theme.layout.screenPadding,
   },
-  propertyImagesContainerMobile: {
+  flexOne: {
     flex: 1,
   },
 });

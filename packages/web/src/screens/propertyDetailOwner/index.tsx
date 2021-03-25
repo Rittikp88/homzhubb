@@ -26,25 +26,21 @@ interface IProps {
 type Props = IDispatchProps & IStateProps & IProps;
 
 const PropertyDetailsOwner: FC<Props> = (props: Props) => {
-  const { assetDetails } = props;
-  //  TODO: Ashwin - enable this once on click action is added
-  //   const { assetDetails, history } = props;
-  //   const { location } = history;
-  //   const {
-  //     state: { propertyId },
-  //   } = location;
-
-  // TODO: Ashwin (WEB) Remove this once your redirection flow is connected,this is just for testing purpose
+  const { assetDetails, history } = props;
+  const { location } = history;
+  const {
+    state: { propertyId },
+  } = location;
   const dispatch = useDispatch();
   useEffect(() => {
     const { getAssetById } = props;
-    dispatch(RecordAssetActions.setAssetId(906));
+    dispatch(RecordAssetActions.setAssetId(propertyId));
     getAssetById();
   }, []);
 
   return (
     <View style={styles.container}>
-      <PropertyCard assetDetails={assetDetails} propertyTermId={824} />
+      <PropertyCard assetDetails={assetDetails} propertyTermId={propertyId} />
     </View>
   );
 };

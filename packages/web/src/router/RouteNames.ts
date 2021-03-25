@@ -22,6 +22,7 @@ export const RouteNames = {
     ADD_LISTING: '/dashboard/addListing',
     PROPERTY_DETAIL: '/dashboard/propertyDetail',
     SEARCH_PROPERTY: '/dashboard/searchProperty',
+    PROPERTY_VIEW: '/dashboard/propertyView',
     PROPERTY_SELECTED: '/dashboard/portfolio/propertySelected',
     // WRITE YOUR routes here accordingly
     NOTIFICATIONS: '',

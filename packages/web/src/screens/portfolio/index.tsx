@@ -3,16 +3,19 @@ import { PickerItemProps, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { History } from 'history';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from 'utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
@@ -22,14 +25,27 @@ import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IGetPropertiesPayload, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import {
+  IGetPropertiesPayload,
+  IGetTenanciesPayload,
+  ISetAssetPayload,
+} from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IClosureReasonPayload, IListingParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IStateProps {
+  tenancies: Asset[] | null;
   properties: Asset[] | null;
   isTenanciesLoading: boolean;
   currentFilter: Filters;
 }
+
+export enum UpdatePropertyFormTypes {
+  CancelListing = 'CANCEL_LISTING',
+  TerminateListing = 'TERMINATE_LISTING',
+  RenewListing = 'RENEW_LISTING',
+}
 interface IDispatchProps {
+  getTenanciesDetails: (payload: IGetTenanciesPayload) => void;
   getPropertyDetails: (payload: IGetPropertiesPayload) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setEditPropertyFlow: (payload: boolean) => void;
@@ -39,9 +55,12 @@ interface IPortfolioState {
   filters: PickerItemProps[];
   assetType: string;
 }
-type Props = WithTranslation & IStateProps & IDispatchProps & IWithMediaQuery;
 
-// TODO : Navigation logic for onclick events
+interface IAssetCardProps {
+  history: History;
+}
+type Props = WithTranslation & IStateProps & IDispatchProps & IWithMediaQuery & IAssetCardProps;
+
 export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   public state = {
     filters: [],
@@ -63,13 +82,35 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   public render = (): React.ReactElement => {
-    const { properties } = this.props;
+    const { properties, tenancies } = this.props;
     const { filters } = this.state;
     return (
       <View style={styles.filterContainer}>
-        <PortfolioOverview />
+        <PortfolioOverview onMetricsClicked={this.onMetricsClicked} />
         <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
+        {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
         {this.renderPortfolio(properties)}
+      </View>
+    );
+  };
+
+  private renderTenancies = (tenancies: Asset[]): React.ReactElement | null => {
+    const { t } = this.props;
+    const { assetType } = this.state;
+    const filteredData = tenancies.filter((item) => item.assetGroup.name === assetType);
+
+    if (assetType && filteredData.length < 1) {
+      return null;
+    }
+
+    return (
+      <View>
+        <Text type="small" textType="semiBold" style={styles.title}>
+          {t('tenancies')}
+        </Text>
+        {(assetType ? filteredData : tenancies).map((tenancy, index) =>
+          this.renderList(tenancy, index, DataType.TENANCIES)
+        )}
       </View>
     );
   };
@@ -86,13 +127,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
           <Text type="small" textType="semiBold" style={styles.title}>
             {t('propertyPortfolio')}
           </Text>
-          <Icon
-            name={icons.verticalDots}
-            color={theme.colors.darkTint4}
-            size={18}
-            onPress={FunctionUtils.noop}
-            testID="menu"
-          />
         </View>
         {isEmpty ? (
           <EmptyState title={title} icon={icons.home} containerStyle={styles.emptyView} />
@@ -104,23 +138,69 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
-    const { isTablet } = this.props;
+    const { isTablet, history } = this.props;
+    const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
+      this.handleActions(item, payload, param);
+    };
     return (
       <AssetCard
         assetData={item}
         key={index}
         isFromTenancies={type === DataType.TENANCIES}
-        onViewProperty={FunctionUtils.noop}
+        onViewProperty={this.navigateToDetailView}
         onPressArrow={FunctionUtils.noop}
-        onCompleteDetails={FunctionUtils.noop}
+        onCompleteDetails={this.onCompleteDetails}
         onOfferVisitPress={FunctionUtils.noop}
-        onHandleAction={FunctionUtils.noop}
+        onHandleAction={onPressAction}
         containerStyle={isTablet && styles.assetCardContainer}
+        history={history}
       />
     );
   };
 
+  private onMetricsClicked = (name: string): void => {
+    const { assetType } = this.state;
+    if (assetType === name) {
+      name = '';
+    }
+    this.setState({ assetType: name });
+  };
+
   private onPropertiesCallback = (): void => {};
+
+  private onCompleteDetails = (assetId: number): void => {
+    const { setAssetId, setEditPropertyFlow, history } = this.props;
+    setAssetId(assetId);
+    setEditPropertyFlow(true);
+    NavigationUtils.navigate(history, {
+      path: RouteNames.protectedRoutes.PROPERTY_VIEW,
+      params: {
+        previousScreen: 'Dashboard',
+      },
+    });
+  };
+
+  private handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
+    const { setAssetId, history } = this.props;
+    const { id } = asset;
+    setAssetId(id);
+    const onNavigateToPlanSelection = (): void => {
+      NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING });
+    };
+    if (param && param.hasTakeAction) {
+      onNavigateToPlanSelection();
+    } else {
+      // TODO : Handle logic for cancel and terminate once the screens are ready
+    }
+  };
+
+  private navigateToDetailView = (id: number): void => {
+    const { history } = this.props;
+    NavigationUtils.navigate(history, {
+      path: RouteNames.protectedRoutes.PROPERTY_SELECTED,
+      params: { propertyId: id },
+    });
+  };
 
   private getStatus = (filter: string): void => {
     const { getPropertyDetails } = this.props;
@@ -128,7 +208,13 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private getScreenData = (): void => {
+    this.getTenancies();
     this.getPortfolioProperty();
+  };
+
+  private getTenancies = (): void => {
+    const { getTenanciesDetails } = this.props;
+    getTenanciesDetails({ onCallback: this.onPropertiesCallback });
   };
 
   private getPortfolioProperty = (isFromFilter?: boolean): void => {
@@ -138,16 +224,18 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 }
 const mapStateToProps = (state: IState): IStateProps => {
   return {
+    tenancies: PortfolioSelectors.getTenancies(state),
     properties: PortfolioSelectors.getProperties(state),
     currentFilter: PortfolioSelectors.getCurrentFilter(state),
     isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getPropertyDetails, setCurrentAsset } = PortfolioActions;
+  const { getPropertyDetails, setCurrentAsset, getTenanciesDetails } = PortfolioActions;
   const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
   return bindActionCreators(
     {
+      getTenanciesDetails,
       getPropertyDetails,
       setCurrentAsset,
       setAssetId,
@@ -179,7 +267,6 @@ const styles = StyleSheet.create({
   },
   headingView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
   },
   emptyView: {

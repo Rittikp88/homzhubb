@@ -13,7 +13,12 @@ import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const PortfolioOverview: React.FC = () => {
+interface IProps {
+  onMetricsClicked: (name: string) => void;
+}
+
+const PortfolioOverview: React.FC<IProps> = (props: IProps) => {
+  const { onMetricsClicked } = props;
   const [portfolioMetrics, setPortfolioMetrics] = useState<IOverviewCarousalData[]>([]);
   const [portfolioDetailsList, setPortfolioDetailsList] = useState<Asset[]>([]);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -35,7 +40,7 @@ const PortfolioOverview: React.FC = () => {
   return (
     <View style={styles.container}>
       <EstPortfolioValue propertiesCount={portfolioDetailsList.length} />
-      {total > 0 ? <OverviewCarousel data={portfolioMetrics} /> : null}
+      {total > 0 ? <OverviewCarousel data={portfolioMetrics} onMetricsClicked={onMetricsClicked} /> : null}
     </View>
   );
 };

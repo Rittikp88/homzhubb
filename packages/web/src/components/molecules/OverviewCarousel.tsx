@@ -21,8 +21,9 @@ export interface IOverviewCarousalData {
 }
 interface IProps {
   data: IOverviewCarousalData[];
+  onMetricsClicked?: (name: string) => void;
 }
-const OverviewCarousel: React.FC<IProps> = ({ data }: IProps) => {
+const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked }: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<IOverviewCarousalData[]>([]);
   const [selectedCard, setSelectedCard] = useState('');
   const updateOptions = (updatedOptions: IOverviewCarousalData[]): void => {
@@ -42,11 +43,17 @@ const OverviewCarousel: React.FC<IProps> = ({ data }: IProps) => {
   }, [data]);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = overviewCarousalStyle(isMobile);
+  const onSelection = (item: string): void => {
+    setSelectedCard(item);
+    if (onMetricsClicked) {
+      onMetricsClicked(item);
+    }
+  };
   return (
     <View style={styles.carouselContainer}>
       <MultiCarousel passedProps={customCarouselProps}>
         {detailsOptions.map((item: IOverviewCarousalData) => {
-          const onCardPress = (): void => setSelectedCard(item.label);
+          const onCardPress = (): void => onSelection(item.label);
           return (
             <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
           );

@@ -2,10 +2,12 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export enum OffersVisitsType {
   offers = 'Offers',
@@ -41,9 +43,11 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
   const { values } = props;
   const { t } = useTranslation();
   const data = PlatformUtils.isWeb() ? Data : Data.slice(1);
+  const isTablet = useDown(deviceBreakpoint.TABLET);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, PlatformUtils.isWeb() && isTablet && !isMobile && styles.containerTablet]}>
       {data.map((item) => {
         // const onPress = (): void => onNav && onNav(item.type);
         return (
@@ -122,5 +126,9 @@ const styles = StyleSheet.create({
   },
   subSectionText: {
     color: theme.colors.darkTint3,
+  },
+  containerTablet: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

@@ -129,6 +129,11 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
     }
   };
 
+  public componentWillUnmount = (): void => {
+    const { resetState } = this.props;
+    resetState();
+  };
+
   public render(): React.ReactNode {
     const { currentIndex, isStepDone, isSheetVisible, tabViewHeights } = this.state;
     const {

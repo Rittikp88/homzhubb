@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { History } from 'history';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -12,10 +14,10 @@ import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlac
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
@@ -26,7 +28,6 @@ import { User } from '@homzhub/common/src/domain/models/User';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
-import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import {
   ClosureReasonType,
   IClosureReasonPayload,
@@ -52,14 +53,15 @@ interface IListProps {
   onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
   enterFullScreen?: (attachments: Attachment[]) => void;
-  onViewProperty?: (data: ISetAssetPayload, key?: Tabs) => void;
+  onViewProperty?: (id: number) => void;
   onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
+  history: History;
 }
 
-type Props = WithTranslation & IListProps;
+type Props = WithTranslation & IListProps & IWithMediaQuery;
 export class AssetCard extends Component<Props> {
   public render(): React.ReactElement {
-    const { assetData, isDetailView, onViewProperty, containerStyle } = this.props;
+    const { assetData, isDetailView, onViewProperty, containerStyle, isTablet, isMobile } = this.props;
     const {
       id,
       projectName,
@@ -77,10 +79,7 @@ export class AssetCard extends Component<Props> {
       furnishing,
       spaces,
     } = assetData;
-    let detailPayload: ISetAssetPayload;
-    if (assetStatusInfo) {
-      detailPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
-    }
+
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces ?? ([] as Data[]),
       furnishing,
@@ -89,56 +88,66 @@ export class AssetCard extends Component<Props> {
       carpetAreaUnit?.title ?? '',
       true
     );
-    const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(detailPayload, key);
+    const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(id);
     return (
       <View style={styles.mainContainer}>
-        <View style={[styles.container, containerStyle]}>
-          {this.renderAttachmentView(attachments)}
-          <View style={styles.topView}>
-            <View style={styles.topLeftView}>
-              <View style={styles.subContainer}>
-                <Badge
-                  title={assetStatusInfo?.tag.label ?? ''}
-                  badgeColor={assetStatusInfo?.tag.color ?? ''}
-                  badgeStyle={styles.badgeStyle}
-                />
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                <TouchableOpacity
-                  style={styles.topLeftView}
-                  onPress={(): void => handlePropertyView(Tabs.NOTIFICATIONS)}
-                >
-                  <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                  <Label type="large" style={styles.count}>
-                    {notifications?.count}
-                  </Label>
-                </TouchableOpacity>
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                <TouchableOpacity style={styles.topLeftView} onPress={(): void => handlePropertyView(Tabs.TICKETS)}>
-                  <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                  <Label type="large" style={styles.count}>
-                    {serviceTickets?.count}
-                  </Label>
+        <View
+          style={[
+            styles.container,
+            containerStyle,
+            isTablet && styles.containerTablet,
+            isMobile && styles.containerMobile,
+          ]}
+        >
+          <View style={!isMobile && styles.attachmentView}>
+            <>{this.renderAttachmentView(attachments)}</>
+
+            <View style={[styles.topView, isMobile && styles.topViewMobile]}>
+              <View style={styles.topLeftView}>
+                <View style={styles.subContainer}>
+                  <Badge
+                    title={assetStatusInfo?.tag.label ?? ''}
+                    badgeColor={assetStatusInfo?.tag.color ?? ''}
+                    badgeStyle={styles.badgeStyle}
+                  />
+                  <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+                  <TouchableOpacity
+                    style={styles.topLeftView}
+                    onPress={(): void => handlePropertyView(Tabs.NOTIFICATIONS)}
+                  >
+                    <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                    <Label type="large" style={styles.count}>
+                      {notifications?.count}
+                    </Label>
+                  </TouchableOpacity>
+                  <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+                  <TouchableOpacity style={styles.topLeftView} onPress={(): void => handlePropertyView(Tabs.TICKETS)}>
+                    <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                    <Label type="large" style={styles.count}>
+                      {serviceTickets?.count}
+                    </Label>
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity onPress={(): void => handlePropertyView()} activeOpacity={isDetailView ? 1 : 0.3}>
+                  <View style={styles.addressContainer}>
+                    <PropertyAddressCountry
+                      primaryAddress={projectName}
+                      countryFlag={flag}
+                      subAddress={address ?? `${unitNumber} ${blockNumber}`}
+                      containerStyle={styles.addressStyle}
+                      primaryAddressTextStyles={{ size: 'small' }}
+                    />
+                    {amenitiesData.length > 0 && (
+                      <PropertyAmenities
+                        data={amenitiesData}
+                        direction="row"
+                        containerStyle={styles.propertyInfoBox}
+                        contentContainerStyle={styles.cardIcon}
+                      />
+                    )}
+                  </View>
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity onPress={(): void => handlePropertyView()} activeOpacity={isDetailView ? 1 : 0.3}>
-                <View style={styles.addressContainer}>
-                  <PropertyAddressCountry
-                    primaryAddress={projectName}
-                    countryFlag={flag}
-                    subAddress={address ?? `${unitNumber} ${blockNumber}`}
-                    containerStyle={styles.addressStyle}
-                    primaryAddressTextStyles={{ size: 'small' }}
-                  />
-                  {amenitiesData.length > 0 && (
-                    <PropertyAmenities
-                      data={amenitiesData}
-                      direction="row"
-                      containerStyle={styles.propertyInfoBox}
-                      contentContainerStyle={styles.cardIcon}
-                    />
-                  )}
-                </View>
-              </TouchableOpacity>
             </View>
           </View>
           {this.renderExpandedView()}
@@ -185,7 +194,7 @@ export class AssetCard extends Component<Props> {
   };
 
   private renderExpandedView = (): React.ReactNode => {
-    const { assetData, t } = this.props;
+    const { assetData, t, isTablet, isMobile, isOnlyTablet } = this.props;
     if (!assetData || !assetData.assetStatusInfo) return null;
 
     const {
@@ -207,12 +216,14 @@ export class AssetCard extends Component<Props> {
     const isTakeActions = label === Filters.VACANT;
     return (
       <>
-        <Divider containerStyles={styles.divider} />
-        <View style={styles.topRightView}>
+        <Divider containerStyles={[styles.divider, isTablet && styles.dividerTablet]} />
+
+        <View
+          style={[styles.topRightView, isTablet && styles.topRightViewTablet, isMobile && styles.topRightViewMobile]}
+        >
           {!isVacant && (
             <>
               <Avatar
-                isRightIcon
                 onPressRightIcon={FunctionUtils.noop}
                 fullName={userData.name}
                 image={userData.profilePicture}
@@ -221,40 +232,58 @@ export class AssetCard extends Component<Props> {
               />
             </>
           )}
-          {rent && securityDeposit && (
-            <View style={styles.rentAndMaintenanceView}>
-              <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
-            </View>
-          )}
-          {!isVacant && (
-            <View style={styles.progressBar}>
+          <View style={isOnlyTablet && styles.rentViewContainer}>
+            {rent && securityDeposit && (
+              <View style={styles.rentAndMaintenanceView}>
+                <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
+              </View>
+            )}
+            {!isVacant && (
+              <View
+                style={[
+                  styles.progressBar,
+                  isOnlyTablet && styles.progressBarTablet,
+                  isMobile && styles.progressBarMobile,
+                ]}
+              >
+                <ProgressBar
+                  progress={totalSpendPeriod || assetCreation.percentage / 100}
+                  isPropertyVacant={isVacant}
+                  fromDate={leaseStartDate}
+                  toDate={leaseEndDate}
+                />
+              </View>
+            )}
+          </View>
+          {isVacant && assetCreation.percentage < 100 && !action && (
+            <View>
+              <Text type="small" style={styles.title} textType="semiBold">
+                {t('assetPortfolio:detailsCompletionText')}
+              </Text>
               <ProgressBar
                 progress={totalSpendPeriod || assetCreation.percentage / 100}
                 isPropertyVacant={isVacant}
-                fromDate={leaseStartDate}
-                toDate={leaseEndDate}
+                isTakeActions={isTakeActions}
+              />
+              <Button
+                type="primary"
+                textType="label"
+                textSize="regular"
+                fontType="semiBold"
+                containerStyle={[styles.completeButton, isTablet && styles.buttonStyleTablet]}
+                title={t('complete')}
+                titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
+                onPress={this.onCompleteDetails}
               />
             </View>
           )}
-          {isVacant && assetCreation.percentage < 100 && !action && (
-            <Button
-              type="primary"
-              textType="label"
-              textSize="regular"
-              fontType="semiBold"
-              containerStyle={styles.buttonStyle}
-              title={t('complete')}
-              titleStyle={styles.buttonTitle}
-              onPress={this.onCompleteDetails}
-            />
-          )}
           {isListed && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
-            <View style={styles.latestUpdates}>
+            <View style={[styles.latestUpdates, isTablet && styles.latestUpdatesMobile]}>
               <LatestUpdates propertyVisitsData={assetData.listingVisits} />
             </View>
           )}
-          {action && !isVacant && (
-            <View style={styles.buttonGroup}>
+          {action && label !== Filters.VACANT && (
+            <View style={[styles.buttonGroup, isTablet && styles.buttonStyleTablet]}>
               <Button
                 type="primary"
                 textType="label"
@@ -277,27 +306,33 @@ export class AssetCard extends Component<Props> {
           {action && isTakeActions && (
             <View>
               {assetCreation.percentage < 100 && (
-                <View>
-                  <Text type="small" style={styles.title} textType="semiBold">
-                    {t('assetPortfolio:detailsCompletionText')}
-                  </Text>
-                  <ProgressBar
-                    progress={totalSpendPeriod || assetCreation.percentage / 100}
-                    isPropertyVacant={isVacant}
-                    isTakeActions={isTakeActions}
-                  />
-                  <Button
-                    type="primary"
-                    textType="label"
-                    textSize="regular"
-                    fontType="semiBold"
-                    containerStyle={styles.buttonStyle}
-                    title={t('complete')}
-                    titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
-                    onPress={this.onCompleteDetails}
-                  />
-                  <View style={styles.sectionSeperator}>
-                    <Typography variant="label" size="regular" style={styles.actionHeader}>
+                <View style={isOnlyTablet && styles.completeButtonContainer}>
+                  <View>
+                    <Text type="small" style={styles.title} textType="semiBold">
+                      {t('assetPortfolio:detailsCompletionText')}
+                    </Text>
+                    <ProgressBar
+                      progress={totalSpendPeriod || assetCreation.percentage / 100}
+                      isPropertyVacant={isVacant}
+                      isTakeActions={isTakeActions}
+                    />
+                    <Button
+                      type="primary"
+                      textType="label"
+                      textSize="regular"
+                      fontType="semiBold"
+                      containerStyle={styles.completeButton}
+                      title={t('complete')}
+                      titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
+                      onPress={this.onCompleteDetails}
+                    />
+                  </View>
+                  <View style={[styles.sectionSeperator, isOnlyTablet && styles.sectionSeperatorTablet]}>
+                    <Typography
+                      variant="label"
+                      size="regular"
+                      style={[styles.actionHeader, isOnlyTablet && styles.actionHeaderTablet]}
+                    >
                       {t('assetPortfolio:takeActionsHeader')}
                     </Typography>
                     <Button
@@ -305,10 +340,10 @@ export class AssetCard extends Component<Props> {
                       textType="label"
                       textSize="regular"
                       fontType="semiBold"
-                      containerStyle={styles.buttonContainer}
+                      containerStyle={[styles.buttonContainer, isOnlyTablet && styles.buttonContainerTablet]}
                       title={action.label}
                       titleStyle={[styles.buttonTitle, { color: action.color }]}
-                      onPress={this.onCompleteDetails}
+                      onPress={this.onPressAction}
                     />
                   </View>
                 </View>
@@ -318,40 +353,22 @@ export class AssetCard extends Component<Props> {
                   <Text type="small" style={styles.title} textType="semiBold">
                     {t('Take Actions')}
                   </Text>
-                  <Typography variant="label" size="large" style={styles.actionHeader}>
+                  <Typography
+                    variant="label"
+                    size="regular"
+                    style={[styles.actionHeader, isOnlyTablet && styles.actionHeaderTablet]}
+                  >
                     {t('assetPortfolio:takeActionsHeader')}
                   </Typography>
-                  <View style={styles.flexRow}>
-                    <Button
-                      type="primary"
-                      textType="label"
-                      textSize="regular"
-                      fontType="semiBold"
-                      containerStyle={styles.buttonFlexContainer}
-                      title={t('assetPortfolio:rentButton')}
-                      titleStyle={[styles.buttonTitle, { color: action.color }]}
-                      onPress={this.onCompleteDetails}
-                    />
-                    <Button
-                      type="primary"
-                      textType="label"
-                      textSize="regular"
-                      fontType="semiBold"
-                      containerStyle={styles.buttonFlexContainer}
-                      title={t('assetPortfolio:sellButton')}
-                      titleStyle={[styles.buttonTitle, { color: action.color }]}
-                      onPress={this.onCompleteDetails}
-                    />
-                  </View>
                   <Button
                     type="primary"
                     textType="label"
                     textSize="regular"
                     fontType="semiBold"
-                    containerStyle={styles.buttonContainer}
-                    title={t('assetPortfolio:manageButton')}
+                    containerStyle={[styles.buttonContainer, isOnlyTablet && styles.buttonContainerTablet]}
+                    title={action.label}
                     titleStyle={[styles.buttonTitle, { color: action.color }]}
-                    onPress={this.onCompleteDetails}
+                    onPress={this.onPressAction}
                   />
                 </View>
               )}
@@ -426,7 +443,9 @@ export class AssetCard extends Component<Props> {
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(AssetCard);
+const translatedAssetCard = withTranslation(LocaleConstants.namespacesKey.assetPortfolio)(AssetCard);
+
+export default withMediaQuery<any>(translatedAssetCard);
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -439,6 +458,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 16,
     marginBottom: 2,
+    marginRight: 80,
     flexDirection: 'row',
   },
   subContainer: { flexDirection: 'row', flexWrap: 'wrap' },
@@ -446,12 +466,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
-    width: '40%',
+    width: '50%',
   },
   topLeftView: {
     flexDirection: 'column',
     marginLeft: '10px',
     width: 'fit-content',
+    maxWidth: '100%',
   },
   topRightView: {
     flexDirection: 'column',
@@ -482,6 +503,7 @@ const styles = StyleSheet.create({
   },
   addressStyle: {
     marginTop: 14,
+    maxWidth: '100%',
   },
   divider: {
     marginVertical: 12,
@@ -502,11 +524,9 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 1,
     width: 310,
-    padding: 6,
     borderRadius: 2,
-    marginTop: 12,
-    opacity: 0.1,
-    backgroundColor: theme.colors.blue,
+    marginTop: 24,
+    backgroundColor: theme.colors.greenLightOpacity,
     marginBottom: 12,
   },
   buttonTitle: {
@@ -565,8 +585,7 @@ const styles = StyleSheet.create({
     width: 310,
     padding: 6,
     textAlign: 'center',
-    opacity: 0.1,
-    backgroundColor: theme.colors.blue,
+    backgroundColor: theme.colors.greenLightOpacity,
     marginBottom: 12,
   },
   title: {
@@ -581,6 +600,12 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.background,
     borderTopWidth: 2,
   },
+  sectionSeperatorTablet: {
+    borderColor: theme.colors.background,
+    borderLeftWidth: 2,
+    borderTopWidth: 0,
+    marginHorizontal: 12,
+  },
   buttonFlexContainer: {
     width: 140,
     padding: 6,
@@ -592,5 +617,68 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
+  },
+  containerTablet: {
+    flexDirection: 'column',
+    marginRight: 12,
+  },
+  buttonStyleTablet: {
+    flex: 1,
+    marginLeft: 'auto',
+    alignSelf: 'flex-end',
+    marginRight: 40,
+  },
+  topRightViewTablet: {
+    width: '100%',
+  },
+  progressBarTablet: {
+    flex: 0.8,
+  },
+  actionHeaderTablet: {
+    marginHorizontal: 12,
+  },
+  buttonContainerTablet: {
+    marginHorizontal: 12,
+  },
+  completeButton: {
+    flex: 1,
+    width: 310,
+    borderRadius: 2,
+    marginTop: 24,
+    backgroundColor: theme.colors.greenLightOpacity,
+    marginBottom: 12,
+    padding: 6,
+  },
+  attachmentView: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  containerMobile: {
+    flexDirection: 'column',
+    marginRight: 0,
+  },
+  topViewMobile: {
+    width: '100%',
+  },
+  dividerTablet: {
+    marginTop: 20,
+  },
+  topRightViewMobile: {
+    marginLeft: 12,
+  },
+  rentViewContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    flex: 1,
+  },
+  progressBarMobile: {
+    flex: 1,
+    marginRight: 12,
+  },
+  completeButtonContainer: {
+    flexDirection: 'row',
+  },
+  latestUpdatesMobile: {
+    marginRight: 36,
   },
 });
