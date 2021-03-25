@@ -236,7 +236,8 @@
     "tenantInfo": "Tenant Info",
     "minYear": "Min Year:",
     "totalYear": "Total Year:",
-    "counter": "Counter"
+    "counter": "Counter",
+    "additionalComment": "Additional comments"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1094,6 +1095,9 @@
     "sort": "Sort by",
     "filterBy": "Filter by",
     "offerDetails": "Offer Details",
-    "offerInfo": "These are the offers that were made for property listings you own or manage."
+    "offerInfo": "These are the offers that were made for property listings you own or manage.",
+    "rejectOffer": "Reject Offer",
+    "rejectThisOffer": "Reject this offer",
+    "rejectReason": "Eg. Reject reason"
   }
 }

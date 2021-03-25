@@ -73,11 +73,21 @@ export enum ClosureReasonType {
   LEASE_TRANSACTION_TERMINATION = 'LEASE_TRANSACTION_TERMINATION',
   LEASE_LISTING_CANCELLATION = 'LEASE_LISTING_CANCELLATION',
   SALE_LISTING_CANCELLATION = 'SALE_LISTING_CANCELLATION',
+  LEASE_NEGOTIATION_REJECTION = 'LEASE_NEGOTIATION_REJECTION',
 }
 
 export enum ListingType {
   LEASE_LISTING = 'lease-listings',
   SALE_LISTING = 'sale-listings',
+}
+
+export enum NegotiationType {
+  LEASE_NEGOTIATIONS = 'lease-negotiations',
+  SALE_NEGOTIATIONS = 'sale-negotiations',
+}
+
+export enum NegotiationAction {
+  REJECT = 'REJECT',
 }
 
 export enum MessageAction {
@@ -838,11 +848,32 @@ export interface IGetTicketParam {
 // SERVICE TICKETS END
 
 // OFFERS
+
 export interface IUpdateProspectProfile {
   job_type: number;
   company_name: string;
   work_email: string;
   number_of_occupants: number;
   tenant_type: number;
+}
+
+export interface INegotiationParam {
+  listingType: ListingType;
+  listingId: number;
+  negotiationType: NegotiationType;
+  negotiationId: number;
+}
+
+export interface INegotiationBody {
+  action: NegotiationAction;
+  payload: {
+    reject_reason?: number;
+    reject_comment?: string;
+  };
+}
+
+export interface INegotiationPayload {
+  param: INegotiationParam;
+  data: INegotiationBody;
 }
 // OFFERS END

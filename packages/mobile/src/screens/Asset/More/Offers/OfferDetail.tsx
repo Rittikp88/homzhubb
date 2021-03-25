@@ -25,6 +25,8 @@ const OfferDetail = (): React.ReactElement => {
         navigate(ScreensKeys.AcceptOffer);
         break;
       case OfferAction.REJECT:
+        navigate(ScreensKeys.RejectOffer);
+        break;
       default:
         FunctionUtils.noop();
     }

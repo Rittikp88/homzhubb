@@ -2,13 +2,19 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
-import { IUpdateProspectProfile } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  INegotiationParam,
+  INegotiationPayload,
+  IUpdateProspectProfile,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 const ENDPOINTS = {
   prospects: 'prospects/',
   tenantTypes: 'list-of-values/prospect-tenant-types/',
   jobTypes: 'list-of-values/user-employer-job-types/',
+  listingNegotiations: (param: INegotiationParam): string =>
+    `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
 };
 
 class OffersRepository {
@@ -35,6 +41,11 @@ class OffersRepository {
 
   public updateProspects = async (body: IUpdateProspectProfile): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.prospects, body);
+  };
+
+  public updateNegotiation = async (payload: INegotiationPayload): Promise<void> => {
+    const { param, data } = payload;
+    return await this.apiClient.patch(ENDPOINTS.listingNegotiations(param), data);
   };
 }
 

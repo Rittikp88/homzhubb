@@ -693,6 +693,11 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         });
         break;
       case OfferAction.REJECT:
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.More, {
+          screen: ScreensKeys.RejectOffer,
+        });
+        break;
       default:
         FunctionUtils.noop();
     }
