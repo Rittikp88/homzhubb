@@ -309,15 +309,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { visitDate, appPermissions } = assetDetails;
     return (
       <View style={styles.timelineContainer}>
-        <TouchableOpacity
-          style={[styles.offerButton, { backgroundColor: theme.colors.blueOpacity }]}
-          onPress={(): void => this.onMakeonOffer()}
-        >
-          <Icon name={icons.offers} color={theme.colors.blue} size={20} />
-          <Text style={styles.offerText} type="small">
-            {t('assetMore:makeAnOfferText')}
-          </Text>
-        </TouchableOpacity>
+        {appPermissions?.addListingVisit && (
+          <TouchableOpacity
+            style={[styles.offerButton, { backgroundColor: theme.colors.blueOpacity }]}
+            onPress={(): void => this.onMakeonOffer()}
+          >
+            <Icon name={icons.offers} color={theme.colors.blue} size={20} />
+            <Text style={styles.offerText} type="small">
+              {t('assetMore:makeAnOfferText')}
+            </Text>
+          </TouchableOpacity>
+        )}
         {appPermissions?.addListingVisit ? (
           visitDate ? (
             <TouchableOpacity style={styles.textIcon} disabled={isPreview} onPress={this.onBookVisit}>
@@ -720,7 +722,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       setChangeStack(false);
       navigation.navigate(ScreensKeys.AuthStack, {
         screen: ScreensKeys.SignUp,
-        params: { onCallback: this.navigateToOfferScreen },
+        params: { onCallback: this.navigateHandler },
       });
     } else {
       this.navigateToOfferScreen();
@@ -857,6 +859,15 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails?.contacts ?? null, propertyTermId });
   };
 
+  private navigateHandler = (): void => {
+    const { navigation, assetDetails } = this.props;
+    if (assetDetails?.appPermissions?.addListingVisit) {
+      navigation.navigate(ScreensKeys.PropertySearchScreen);
+    } else {
+      this.navigateToOfferScreen();
+    }
+  };
+
   private navigateToOfferScreen = (): void => {
     const { prospectsData } = this.state;
     const {
@@ -867,12 +878,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       },
     } = this.props;
     if (!assetDetails) return;
-
-    const { leaseTerm, saleTerm } = assetDetails;
-    if (leaseTerm) {
-      navigation.navigate(ScreensKeys.ProspectProfile, { propertyTermId });
-    } else if (saleTerm || prospectsData) {
+    const { saleTerm } = assetDetails;
+    if (prospectsData || saleTerm) {
       navigation.navigate(ScreensKeys.SubmitOffer);
+    } else {
+      navigation.navigate(ScreensKeys.ProspectProfile, { propertyTermId });
     }
   };
 

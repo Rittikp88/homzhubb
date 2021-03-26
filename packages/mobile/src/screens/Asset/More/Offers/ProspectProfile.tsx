@@ -66,9 +66,9 @@ class ProspectProfile extends Component<Props, IState> {
         params: { editData },
       },
     } = this.props;
-    const prospectsData = await OffersRepository.getProspectsInfo();
     const tenant = await OffersRepository.getTenantTypes();
     const jobType = await OffersRepository.getJobType();
+    const prospectsData = await OffersRepository.getProspectsInfo();
     this.setState({ categories: jobType, tenantType: tenant, userDetails: prospectsData.user });
     const {
       user: { workInfo },
