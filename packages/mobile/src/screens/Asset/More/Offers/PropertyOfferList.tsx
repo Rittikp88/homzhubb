@@ -20,10 +20,11 @@ import ScrollableDropdownList, {
 } from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { offerFilterBy, offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
-import { NegotiationOfferType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
+import { NegotiationOfferType, OfferFilterType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export enum OfferType {
   OFFER_RECEIVED = 'Offer Received',
@@ -74,17 +75,11 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
     try {
       const offerCountData = await OffersRepository.getOfferData();
-      const receivedOffersFilters = await OffersRepository.getReceivedOfferFilters();
-      const receivedDropdownData = this.getReceivedDropdownData(receivedOffersFilters);
-      const madeDropdownData = this.getMadeDropdownData();
-
+      await this.getFilters();
       const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
-      this.setState(
-        { isOfferInfoRead, offerCountData, isScreenLoading: false, receivedDropdownData, madeDropdownData },
-        () => {
-          this.getPropertyListData();
-        }
-      );
+      this.setState({ isOfferInfoRead, offerCountData, isScreenLoading: false }, () => {
+        this.getPropertyListData();
+      });
     } catch (e) {
       AlertHelper.error({ message: e.message });
       this.setState({ isScreenLoading: false });
@@ -110,7 +105,6 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     if (screenLoading) {
       return <Loader visible />;
     }
-
     return (
       <>
         <UserScreen
@@ -153,7 +147,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
                 isScrollable={isReceivedOffer}
                 dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
                 onDropdown={this.onSelectFromDropdown}
-                containerStyle={styles.scrollableDropdown}
+                containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
               />
               {propertyListingData && propertyListingData.length > 0 ? (
                 <>
@@ -228,6 +222,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
     this.setState({ offerType: name as OfferType, filters: {}, receivedDropdownData: updatedDropdownData }, () => {
       this.getPropertyListData().then();
+      this.getFilters().then();
     });
   };
 
@@ -236,9 +231,9 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     StorageService.set(StorageKeys.IS_OFFER_INFO_READ, true);
   };
 
-  private getReceivedDropdownData = (receivedOffers: ReceivedOfferFilter): IDropdownData[] => {
+  private getReceivedDropdownData = (receivedOffers: ReceivedOfferFilter | Unit[]): IDropdownData[] => {
     const { t } = this.props;
-    const { assetsDropdownData, countryDropdownData, listingDropdownData } = receivedOffers;
+    const { assetsDropdownData, countryDropdownData, listingDropdownData } = receivedOffers as ReceivedOfferFilter;
 
     return [
       {
@@ -252,8 +247,16 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     ];
   };
 
-  private getMadeDropdownData = (): IDropdownData[] => {
+  private getMadeDropdownData = (filters: ReceivedOfferFilter | Unit[]): IDropdownData[] => {
     const { t } = this.props;
+    const data = filters as Unit[];
+
+    const offerFilter = data.map((item) => {
+      return {
+        label: item.label,
+        value: item.name,
+      };
+    });
 
     return [
       {
@@ -262,8 +265,33 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
         selectedValue: '',
         placeholder: t('offers:sort'),
       },
-      { dropdownData: offerFilterBy, key: 'filter_by', selectedValue: '', placeholder: t('offers:filterBy') },
+      { dropdownData: offerFilter, key: 'filter_by', selectedValue: '', placeholder: t('offers:filterBy') },
     ];
+  };
+
+  private getFilters = async (): Promise<void> => {
+    const { offerType } = this.state;
+
+    const offersFilters = await OffersRepository.getOfferFilters(
+      offerType === OfferType.OFFER_RECEIVED ? OfferFilterType.RECEIVED : OfferFilterType.CREATED
+    );
+    switch (offerType) {
+      case OfferType.OFFER_RECEIVED:
+        this.setState({
+          receivedDropdownData: this.getReceivedDropdownData(offersFilters),
+        });
+        break;
+      case OfferType.OFFER_MADE:
+        this.setState({
+          madeDropdownData: this.getMadeDropdownData(offersFilters),
+        });
+        break;
+      default:
+        this.setState({
+          receivedDropdownData: [],
+          madeDropdownData: [],
+        });
+    }
   };
 
   private getPropertyListData = async (): Promise<void> => {
@@ -338,5 +366,8 @@ const styles = StyleSheet.create({
   },
   scrollableDropdown: {
     marginBottom: 20,
+  },
+  dropDown: {
+    width: 140,
   },
 });

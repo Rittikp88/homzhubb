@@ -1,3 +1,4 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
@@ -156,5 +157,16 @@ export class Offer {
 
   get expiresAt(): string {
     return this._expiresAt;
+  }
+
+  get validCount(): number {
+    return DateUtils.getCountInDays(this.expiresAt);
+  }
+
+  get validDays(): string {
+    const count = this.validCount;
+    // TODO: Add translation
+    const text = count > 1 ? 'days' : 'day';
+    return `${count} ${text}`;
   }
 }

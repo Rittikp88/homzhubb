@@ -91,6 +91,11 @@ export enum NegotiationOfferType {
   RECEIVED = 'received',
 }
 
+export enum OfferFilterType {
+  CREATED = 'offers-created',
+  RECEIVED = 'offers-received',
+}
+
 export enum NegotiationAction {
   REJECT = 'REJECT',
 }

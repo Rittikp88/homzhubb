@@ -353,6 +353,11 @@ class DateUtils {
     return this.getDateDiff(currentDate, date, 'days');
   };
 
+  public getCountInDays = (date: string): number => {
+    const currentDate = new Date().toISOString();
+    return this.getDateDiff(date, currentDate, 'days');
+  };
+
   public convertDateFormatted = (date: string, format = DateFormats.DDMMMYYYY_Hm): string => {
     return moment(date).format(format);
   };

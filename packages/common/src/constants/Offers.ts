@@ -1,3 +1,8 @@
+export enum MadeSort {
+  NEWEST = 'NEWEST',
+  LOW_HIGH = 'LOW_HIGH',
+  HIGH_LOW = 'HIGH_LOW',
+}
 export const offerSortBy = [
   { label: 'Newest offer', value: 'NEWEST' },
   { label: 'Oldest offers', value: 'OLDEST' },
@@ -5,9 +10,9 @@ export const offerSortBy = [
 ];
 
 export const offerMadeSortBy = [
-  { label: 'Newest offer', value: 'NEWEST' },
-  { label: 'Price - low to high', value: 'LOW_HIGH' },
-  { label: 'Price - high to low', value: 'HIGH_LOW' },
+  { label: 'Newest offer', value: MadeSort.NEWEST },
+  { label: 'Price - low to high', value: MadeSort.LOW_HIGH },
+  { label: 'Price - high to low', value: MadeSort.HIGH_LOW },
 ];
 
 export const offerFilterBy = [

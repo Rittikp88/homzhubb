@@ -8,17 +8,19 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import {
   INegotiationParam,
   INegotiationPayload,
-  IUpdateProspectProfile,
   IPostOfferLease,
   IPostOfferSell,
-  ISubmitOffer,
   IPropertyNegotiationParam,
+  ISubmitOffer,
+  IUpdateProspectProfile,
   NegotiationOfferType,
+  OfferFilterType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 const ENDPOINTS = {
   prospects: 'prospects/',
+  offerManagement: 'offers/management-tab/',
   tenantTypes: 'list-of-values/prospect-tenant-types/',
   jobTypes: 'list-of-values/user-employer-job-types/',
   submitOffer: (param: INegotiationParam): string =>
@@ -26,8 +28,7 @@ const ENDPOINTS = {
   listingNegotiations: (param: INegotiationParam): string =>
     `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
   negotiationOffers: (type: NegotiationOfferType): string => `listings-negotiations/${type}/`,
-  offerManagement: (): string => 'offers/management-tab/',
-  receivedOfferFilters: (): string => 'filters/offers-received',
+  offerFilters: (type: OfferFilterType): string => `filters/${type}`,
 };
 
 class OffersRepository {
@@ -73,13 +74,16 @@ class OffersRepository {
   };
 
   public getOfferData = async (): Promise<OfferManagement> => {
-    const response = await this.apiClient.get(ENDPOINTS.offerManagement());
+    const response = await this.apiClient.get(ENDPOINTS.offerManagement);
     return ObjectMapper.deserialize(OfferManagement, response);
   };
 
-  public getReceivedOfferFilters = async (): Promise<ReceivedOfferFilter> => {
-    const response = await this.apiClient.get(ENDPOINTS.receivedOfferFilters());
-    return ObjectMapper.deserialize(ReceivedOfferFilter, response);
+  public getOfferFilters = async (type: OfferFilterType): Promise<ReceivedOfferFilter | Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.offerFilters(type));
+    if (type === OfferFilterType.RECEIVED) {
+      return ObjectMapper.deserialize(ReceivedOfferFilter, response);
+    }
+    return ObjectMapper.deserializeArray(Unit, response);
   };
 }
 

@@ -71,10 +71,15 @@ class OfferCard extends Component<Props, IOwnState> {
         price,
         role,
         createdAt,
+        validDays,
+        validCount,
         user: { name },
       },
       offer,
     } = this.props;
+
+    const isOfferValid = validCount > 1;
+    const isOfferExpired = validCount < 1;
 
     const offerValues = OfferUtils.getOfferValues(offer);
 
@@ -95,16 +100,18 @@ class OfferCard extends Component<Props, IOwnState> {
             <Label type="regular" style={styles.date}>
               {t('createdDate', { date: DateUtils.getDisplayDate(createdAt, DateFormats.DoMMM_YYYY) })}
             </Label>
-            <TextWithIcon
-              icon={icons.timeValid}
-              text={t('validFor')}
-              value="1 day"
-              variant="label"
-              textSize="regular"
-              iconColor={theme.colors.red}
-              textStyle={styles.time}
-              containerStyle={styles.timeView}
-            />
+            {!isOfferExpired && (
+              <TextWithIcon
+                icon={icons.timeValid}
+                text={t('validFor')}
+                value={validDays}
+                variant="label"
+                textSize="regular"
+                iconColor={isOfferValid ? theme.colors.darkTint5 : theme.colors.red}
+                textStyle={[styles.time, isOfferValid && styles.validTime]}
+                containerStyle={[styles.timeView, isOfferValid && styles.validOffer]}
+              />
+            )}
           </View>
         )}
         {this.renderOfferHeader()}
@@ -143,7 +150,7 @@ class OfferCard extends Component<Props, IOwnState> {
           )}
         </View>
         {!hasMore && this.renderPreferences()}
-        {!hasMore && !isFromAccept && this.renderActionView()}
+        {!hasMore && !isFromAccept && !isOfferExpired && this.renderActionView()}
       </View>
     );
   };
@@ -298,8 +305,14 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 8,
   },
+  validOffer: {
+    backgroundColor: theme.colors.background,
+  },
   time: {
     color: theme.colors.red,
+  },
+  validTime: {
+    color: theme.colors.darkTint1,
   },
   headerView: {
     paddingVertical: 10,
