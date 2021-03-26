@@ -14,6 +14,7 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -44,6 +45,7 @@ import {
   IClosureReasonPayload,
   IListingParam,
   IPropertyDetailPayload,
+  ListingType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
   IBookVisitProps,
@@ -53,11 +55,12 @@ import {
 } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Tabs, Routes } from '@homzhub/common/src/constants/Tabs';
+import { Routes, Tabs } from '@homzhub/common/src/constants/Tabs';
 import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
+import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 
 const { height, width } = theme.viewport;
 const TAB_LAYOUT = {
@@ -87,6 +90,7 @@ interface IDispatchProps {
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
   setCurrentChatDetail: (payload: IChatPayload) => void;
+  setCurrentOffer: (payload: ICurrentOffer) => void;
 }
 
 interface IDetailState {
@@ -580,6 +584,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       setCurrentChatDetail,
       clearMessages,
       clearChatDetail,
+      setCurrentOffer,
     } = this.props;
 
     if (!asset_id) {
@@ -607,6 +612,13 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
             setCurrentChatDetail({
               groupName: response.projectName,
               groupId: info.leaseTransaction.messageGroupId,
+            });
+          }
+
+          if (info && (info.leaseListingId || info.saleListingId)) {
+            setCurrentOffer({
+              type: info.leaseListingId ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+              listingId: info.leaseListingId || info.saleListingId || 0,
             });
           }
         }
@@ -724,6 +736,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   } = RecordAssetActions;
   const { clearAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
+  const { setCurrentOffer } = OfferActions;
   return bindActionCreators(
     {
       setAssetId,
@@ -735,6 +748,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       clearChatDetail,
       clearMessages,
       setCurrentChatDetail,
+      setCurrentOffer,
     },
     dispatch
   );
