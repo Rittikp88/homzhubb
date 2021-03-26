@@ -1,5 +1,5 @@
-import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
 import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
+import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 
 export interface IOwnerProposalsLease {
   expectedPrice: string;
@@ -10,7 +10,7 @@ export interface IOwnerProposalsLease {
   availableFromDate: string;
   maintenancePaidBy: PaidByTypes;
   utilityPaidBy: PaidByTypes;
-  tenantPreferences: TenantPreference[];
+  tenantPreferences: ICheckboxGroupData[];
 }
 
 export interface IOwnerProposalsSale {

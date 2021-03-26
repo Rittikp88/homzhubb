@@ -15,6 +15,9 @@ class ErrorUtils {
       if (data[0].field && isFieldRequired) {
         return `${data[0].field} - ${data[0].message}`;
       }
+      if (data[0].message.non_field_errors) {
+        return `${data[0].message.non_field_errors[0]}`;
+      }
       return data[0].message;
     }
 

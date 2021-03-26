@@ -1,25 +1,6 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 
-// ToDo (Praharsh : 19 Mar 2021) : Replace with API data.
-export const mockOfferPreferences = [
-  {
-    id: 1,
-    label: 'Pets',
-    isSelected: false,
-  },
-  {
-    id: 2,
-    label: 'Vegetarian',
-    isSelected: false,
-  },
-  {
-    id: 3,
-    label: 'Bachelors',
-    isSelected: false,
-  },
-];
-
 export enum OfferFormKeys {
   expectedRent = 'expectedPrice',
   securityDeposit = 'securityDeposit',

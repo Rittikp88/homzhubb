@@ -2,6 +2,7 @@ import React from 'react';
 import { View, FlatList, StyleSheet, ImageStyle, ViewStyle, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -39,7 +40,7 @@ const OfferDetails = (props: IDetailsProps): React.ReactElement => {
       saleTerm,
       country: { currencies },
     } = assetDetails;
-    const { currencySymbol } = currencies[0];
+    const { currencySymbol, currencyCode } = currencies[0];
     if (isRentFlow && leaseTerm) {
       const {
         expectedPrice,
@@ -53,11 +54,11 @@ const OfferDetails = (props: IDetailsProps): React.ReactElement => {
       const formattedRent = [
         {
           type: t('property:rent'),
-          value: `${currencySymbol} ${expectedPrice}`,
+          value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode ?? currencies[0], expectedPrice)}`,
         },
         {
           type: t('property:securityDeposit'),
-          value: `${currencySymbol} ${securityDeposit}`,
+          value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode ?? currencies[0], securityDeposit)}`,
         },
         {
           type: t('offers:lockInPeriod'),
@@ -89,11 +90,14 @@ const OfferDetails = (props: IDetailsProps): React.ReactElement => {
       const formattedSale = [
         {
           type: t('offers:sellPrice'),
-          value: `${currencySymbol} ${expectedPrice}`,
+          value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode ?? currencies[0], Number(expectedPrice))}`,
         },
         {
           type: t('property:bookingAmount'),
-          value: `${currencySymbol} ${expectedBookingAmount}`,
+          value: `${currencySymbol} ${CurrencyUtils.getCurrency(
+            currencyCode ?? currencies[0],
+            Number(expectedBookingAmount)
+          )}`,
         },
       ];
       return formattedSale;

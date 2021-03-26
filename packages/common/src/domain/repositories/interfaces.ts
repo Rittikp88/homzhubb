@@ -861,7 +861,7 @@ export interface IGetTicketParam {
 export interface ISubmitOfferLease {
   proposed_rent: number;
   proposed_security_deposit: number;
-  proposed_rent_increment_percentage: number;
+  proposed_rent_increment_percentage: number | null;
   proposed_move_in_date: string;
   proposed_lease_period: number;
   proposed_min_lock_in_period: number;

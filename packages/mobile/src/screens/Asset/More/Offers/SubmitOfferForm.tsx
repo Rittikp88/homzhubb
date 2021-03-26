@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import { useIsFocused } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -22,6 +25,24 @@ const SubmitOfferForm = (): React.ReactElement => {
   // HOOKS START
   const { t } = useTranslation();
   const isRentFlow = !useSelector(AssetSelectors.getAssetListingType);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
+  useEffect(() => {
+    const getOfferCount = async (): Promise<void> => {
+      try {
+        setLoading(true);
+        const {
+          offerLeft: { sale, lease },
+        } = await OffersRepository.getOfferData();
+        setLoading(false);
+        setCount(isRentFlow ? lease : sale);
+      } catch (e) {
+        setLoading(false);
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
+    };
+    getOfferCount().then();
+  }, []);
   // HOOKS END
 
   // HANDLERS START
@@ -30,12 +51,18 @@ const SubmitOfferForm = (): React.ReactElement => {
   };
 
   const onSuccess = (): void => setIsSuccess(true);
+
+  const onCloseBottomSheet = (): void => {
+    setIsSuccess(false);
+    goBack();
+  };
   // HANDLERS END
 
   return (
     <Screen
       scrollEnabled
       backgroundColor={theme.colors.white}
+      isLoading={loading}
       headerProps={{
         type: 'secondary',
         title: t('offers:submitOffer'),
@@ -44,14 +71,14 @@ const SubmitOfferForm = (): React.ReactElement => {
         ...(isRentFlow && {
           textRight: t('moreProfile:editProfile'),
           onIconRightPress: (): void => navigate(ScreensKeys.ProspectProfile, { editData: true }),
-          // ToDo (Praharsh) : Handle right text onPress logic after linking navigation.
         }),
       }}
       contentContainerStyle={styles.screen}
     >
-      {isFocused && <OfferForm onPressTerms={handleTermsCondition} onSuccess={onSuccess} />}
+      {/* Todo : handle ts error  */}
+      {isFocused && <OfferForm onPressTerms={handleTermsCondition} onSuccess={onSuccess} offersLeft={count} />}
       {isSuccess && (
-        <BottomSheet visible={isSuccess} onCloseSheet={goBack} sheetHeight={400}>
+        <BottomSheet visible={isSuccess} onCloseSheet={onCloseBottomSheet} sheetHeight={400}>
           <>
             <View style={styles.bottomSheet}>
               <Text type="large" textType="semiBold">
@@ -62,7 +89,12 @@ const SubmitOfferForm = (): React.ReactElement => {
               </Text>
               <Icon name={icons.doubleCheck} size={60} color={theme.colors.completed} />
             </View>
-            <Button title={t('common:done')} type="primary" containerStyle={styles.doneButton} onPress={onSuccess} />
+            <Button
+              title={t('common:done')}
+              type="primary"
+              containerStyle={styles.doneButton}
+              onPress={onCloseBottomSheet}
+            />
           </>
         </BottomSheet>
       )}

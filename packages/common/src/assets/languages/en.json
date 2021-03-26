@@ -27,7 +27,7 @@
     "continue": "Continue",
     "change": "Change",
     "onlyNumeric": "Only numeric values allowed",
-    "onlyNonNegativeNumeric": "Only non-negative numeric values allowed",
+    "onlyNonNegativeNumeric": "Only non-negative percent values allowed",
     "stepIndicator": "STEP {{position}}",
     "details": "DETAILS",
     "images": "IMAGES",

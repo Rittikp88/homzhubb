@@ -24,20 +24,16 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import OfferDetailsCard from '@homzhub/common/src/components/molecules/OfferDetailsCard';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import {
-  initialRentFormValues,
-  initialSaleFormValues,
-  mockOfferPreferences,
-  OfferFormKeys,
-} from '@homzhub/common/src/mocks/Offers';
+import { initialRentFormValues, initialSaleFormValues, OfferFormKeys } from '@homzhub/common/src/mocks/Offers';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISubmitOffer, ListingType, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IOwnerProposalsLease, IOwnerProposalsSale } from '@homzhub/common/src/modules/offers/interfaces';
 
-// ToDo (Praharsh) : Remove mocks and resolve ts-ignores after API integration.
+// ToDo (Praharsh) : Resolve ts-ignores.
 interface IProps {
   onPressTerms: () => void;
   onSuccess: () => void;
+  offersLeft: number;
 }
 
 interface IReduxProps {
@@ -45,12 +41,13 @@ interface IReduxProps {
   asset: Asset | null;
   ownerLeaseTerms: IOwnerProposalsLease | null;
   ownerSaleTerms: IOwnerProposalsSale | null;
+  tenantPreferences: ICheckboxGroupData[];
 }
 
 type Props = WithTranslation & IProps & IReduxProps;
 
 interface IScreenState {
-  preferenceData: ICheckboxGroupData[];
+  preferenceData: [];
   checkBox: boolean;
   formData: FormikValues;
   message: string;
@@ -67,13 +64,11 @@ interface IInfoBox {
 class OfferForm extends React.Component<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
-    const { isRentFlow } = this.props;
     this.state = {
-      preferenceData: mockOfferPreferences,
       checkBox: false,
       message: '',
       showLeaseDurationError: false,
-      formData: isRentFlow ? initialRentFormValues : initialSaleFormValues,
+      formData: this.initialValues(),
       loading: false,
     };
   }
@@ -91,18 +86,32 @@ class OfferForm extends React.Component<Props, IScreenState> {
 
   private renderBottomFields = (formProps: FormikProps<FormikValues>): React.ReactElement => {
     const { state, props, renderInfoBox, onMessageChange } = this;
-    const { preferenceData, message } = state;
-    const { t, onPressTerms, isRentFlow, asset } = props;
-    return (
-      <>
-        {isRentFlow && asset?.leaseTerm?.tenantPreferences && (
+    const { setFieldValue, values } = formProps;
+    const { message } = state;
+    const { t, onPressTerms, isRentFlow, asset, offersLeft } = props;
+
+    const Preferences = (): React.ReactElement | null => {
+      if (isRentFlow && asset?.leaseTerm?.tenantPreferences.length) {
+        const onToggleCheckBox = (id: number, isSelected: boolean): void => {
+          const prefs: ICheckboxGroupData[] = values[OfferFormKeys.tenantPreferences];
+          const updatedPrefs = prefs.map((item) => (item.id === id ? { ...item, isSelected } : item));
+          setFieldValue(OfferFormKeys.tenantPreferences, updatedPrefs);
+        };
+        return (
           <>
             <Label type="large" textType="semiBold">
               {t('offers:preference')}
             </Label>
-            <CheckboxGroup data={preferenceData} numOfColumns={3} onToggle={this.onCheckPreferences} />
+            <CheckboxGroup data={values.tenantPreferences} onToggle={onToggleCheckBox} />
           </>
-        )}
+        );
+      }
+      return null;
+    };
+
+    return (
+      <>
+        <Preferences />
 
         <TextArea
           label={t('offers:sendAMessage')}
@@ -124,22 +133,13 @@ class OfferForm extends React.Component<Props, IScreenState> {
           </Label>
         </View>
 
-        {renderInfoBox(2)}
-
-        <FormButton
-          type="primary"
-          formProps={formProps}
-          // @ts-ignore
-          onPress={formProps.handleSubmit}
-          title="Submit"
-        />
+        {renderInfoBox(offersLeft)}
       </>
     );
   };
 
   private renderFormHeader = (): React.ReactElement => {
-    const { t } = this.props;
-    const offersLeft = 1; // ToDo (Praharsh) : Handle after API integration
+    const { t, offersLeft } = this.props;
     const offersText =
       offersLeft === 1 ? `${t('offers:oneOfferLeft')}` : `${t('offers:offersCount', { count: offersLeft })}`;
     return (
@@ -159,7 +159,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private renderForm = (): React.ReactElement => {
-    const { t, isRentFlow } = this.props;
+    const { t, isRentFlow, offersLeft } = this.props;
     const { formData } = this.state;
     const { renderFormHeader, renderBottomFields } = this;
     return (
@@ -172,7 +172,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
           validateOnMount
         >
           {(formProps: FormikProps<FormikValues>): React.ReactElement => {
-            const { setFieldValue, values, errors, dirty } = formProps;
+            const { setFieldValue, values, errors, dirty, handleSubmit } = formProps;
             const { checkBox, showLeaseDurationError } = this.state;
             const onMinDurationChange = (value: number): void => setFieldValue(OfferFormKeys.minimumLeasePeriod, value);
             const onMaxDurationChange = (value: number): void => setFieldValue(OfferFormKeys.maximumLeasePeriod, value);
@@ -185,9 +185,12 @@ class OfferForm extends React.Component<Props, IScreenState> {
               }));
             };
             const maxLength = (field: string): number => (field.includes('.') ? 13 : 12);
-
+            const rentDisabled = !values?.expectedPrice?.length || !values?.securityDeposit?.length;
+            const saleDisabled = !values?.expectedPrice?.length || !values?.expectedBookingAmount?.length;
+            const disabled = isRentFlow ? rentDisabled : saleDisabled;
             return (
               <>
+                {/* Todo : Handle slider's odd behaviour when edited */}
                 {dirty &&
                   this.setState({
                     checkBox: false,
@@ -300,6 +303,14 @@ class OfferForm extends React.Component<Props, IScreenState> {
                     </>
                   )}
                   {renderBottomFields(formProps)}
+                  <FormButton
+                    type="primary"
+                    formProps={formProps}
+                    disabled={offersLeft === 0 || disabled}
+                    // @ts-ignore
+                    onPress={handleSubmit}
+                    title={t('common:submit')}
+                  />
                 </View>
               </>
             );
@@ -314,7 +325,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
     const getData = (): IInfoBox => {
       if (countLeft === 2) {
         return {
-          icon: icons.info,
+          icon: icons.circularFilledInfo,
           text: t('offers:textWithTwoOffersLeft'),
           color: theme.colors.darkTint4,
         };
@@ -352,8 +363,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
       const { message } = this.state;
       const { asset } = this.props;
       if (asset) {
-        // Todo (Praharsh) : Handle Rent API
-        let payload: ISubmitOffer;
+        let payload: ISubmitOffer = {};
         if (!isRentFlow && asset?.saleTerm?.id) {
           const { expectedPrice, expectedBookingAmount } = values;
           const salePayload = {
@@ -369,25 +379,49 @@ class OfferForm extends React.Component<Props, IScreenState> {
             },
             data: salePayload,
           };
-          this.setState({ loading: true });
-          await OffersRepository.postOffer(payload);
-          this.setState({ loading: false });
-          onSuccess();
-          return;
         }
+        if (isRentFlow && asset?.leaseTerm?.id) {
+          const {
+            expectedPrice,
+            securityDeposit,
+            minimumLeasePeriod,
+            maximumLeasePeriod,
+            annualRentIncrementPercentage,
+            availableFromDate,
+            tenantPreferences,
+          } = values;
+          const rentPayload = {
+            proposed_rent: parseFloat(expectedPrice),
+            proposed_security_deposit: parseFloat(securityDeposit),
+            proposed_rent_increment_percentage: annualRentIncrementPercentage.length
+              ? parseFloat(annualRentIncrementPercentage)
+              : null,
+            proposed_move_in_date: availableFromDate,
+            proposed_lease_period: maximumLeasePeriod,
+            proposed_min_lock_in_period: minimumLeasePeriod,
+            tenant_preferences: tenantPreferences
+              .filter((item: ICheckboxGroupData) => item.isSelected)
+              .map((item: ICheckboxGroupData) => item.id),
+            ...(message.length && { comment: message }),
+          };
+          payload = {
+            param: {
+              listingType: ListingType.LEASE_LISTING,
+              listingId: asset?.leaseTerm?.id,
+              negotiationType: NegotiationType.LEASE_NEGOTIATIONS,
+            },
+            data: rentPayload,
+          };
+        }
+        this.setState({ loading: true });
+        await OffersRepository.postOffer(payload);
+        this.setState({ loading: false });
+        onSuccess();
       }
     } catch (e) {
       this.setState({ loading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
-  };
-
-  private onCheckPreferences = (id: number, isSelected: boolean): void => {
-    const { preferenceData } = this.state;
-    const updatedPreferenceData: ICheckboxGroupData[] = preferenceData.map((item) =>
-      item.id === id ? { ...item, isSelected } : item
-    );
-    this.setState({ preferenceData: updatedPreferenceData });
   };
 
   private onMessageChange = (text: string): void => {
@@ -402,10 +436,10 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private initialValues = (): IOwnerProposalsLease | IOwnerProposalsSale | null => {
-    const { isRentFlow } = this.props;
-    return isRentFlow ? initialRentFormValues : initialSaleFormValues;
+    const { isRentFlow, tenantPreferences } = this.props;
+    const updatedInitialLease: IOwnerProposalsLease = { ...initialRentFormValues, tenantPreferences };
+    return isRentFlow ? updatedInitialLease : initialSaleFormValues;
   };
-
   //  HANDLERS END
 
   // FORM VALIDATIONS START
@@ -420,9 +454,11 @@ class OfferForm extends React.Component<Props, IScreenState> {
         .string()
         .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
         .required(t('property:securityDepositRequired')),
-      [OfferFormKeys.annualRentIncrementPercentage]: yup
-        .string()
-        .matches(FormUtils.percentageRegex, t('common:onlyNonNegativeNumeric')),
+      [OfferFormKeys.annualRentIncrementPercentage]: yup.string().test({
+        name: 'onlyNonNegativeNumericTest',
+        message: t('common:onlyNonNegativeNumeric'),
+        test: (value: string) => (value.length ? Boolean(FormUtils.percentageRegex.exec(value)?.length) : true),
+      }),
       [OfferFormKeys.availableFromDate]: yup.string(),
       [OfferFormKeys.minimumLeasePeriod]: yup.number(),
       [OfferFormKeys.maximumLeasePeriod]: yup.number(),
@@ -458,6 +494,7 @@ const mapStateToProps = (state: IState): IReduxProps => ({
   asset: AssetSelectors.getAsset(state),
   ownerLeaseTerms: OfferSelectors.getOwnerProposalsRent(state),
   ownerSaleTerms: OfferSelectors.getOwnerProposalsSale(state),
+  tenantPreferences: OfferSelectors.getFormattedTenantPreferences(state, false),
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(OfferForm));
