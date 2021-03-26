@@ -137,7 +137,7 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
       >
         {!isDetailView && (
           <View style={[styles.justifyContent, styles.countWithIcon]}>
-            {offerCount && (
+            {!!offerCount && (
               <View style={styles.offerCount}>
                 <Icon name={icons.offers} color={theme.colors.blue} />
                 <Label textType="semiBold" type="large" style={styles.offerText}>

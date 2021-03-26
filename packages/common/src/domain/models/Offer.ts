@@ -1,8 +1,8 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
-import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
-import { User } from '@homzhub/common/src/domain/models/User';
+import { IProspectProfile, ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
+import { ITenantPreference, TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
 
 // TODO: (Shikha) Verify status with BE
 export enum Status {
@@ -22,6 +22,28 @@ export interface IOfferValue {
   value: string;
   icon?: string;
   iconColor?: string;
+}
+
+export interface IOffer {
+  prospect: IProspectProfile;
+  created_at: string;
+  expires_at: string;
+  proposed_rent?: number;
+  proposed_price?: number;
+  proposed_security_deposit?: number;
+  proposed_booking_amount?: number;
+  proposed_annual_rent_increment_percentage?: number;
+  proposed_move_in_date?: string;
+  proposed_lease_period?: number;
+  proposed_min_lock_in_period?: number;
+  tenant_preferences?: ITenantPreference[];
+  actions?: string[];
+  status?: string;
+  role?: string;
+  status_updated_at?: string;
+  status_updated_by?: string;
+  can_counter?: boolean;
+  user?: IUser;
 }
 
 @JsonObject('Offer')

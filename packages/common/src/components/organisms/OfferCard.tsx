@@ -13,9 +13,11 @@ import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IProps {
   offer: Offer;
+  compareData: IOfferCompare;
   isFromAccept?: boolean;
   onPressAction?: (action: OfferAction) => void;
   containerStyle?: StyleProp<ViewStyle>;
@@ -76,12 +78,13 @@ class OfferCard extends Component<Props, IOwnState> {
         user: { name },
       },
       offer,
+      compareData,
     } = this.props;
 
     const isOfferValid = validCount > 1;
     const isOfferExpired = validCount < 1;
 
-    const offerValues = OfferUtils.getOfferValues(offer);
+    const offerValues = OfferUtils.getOfferValues(offer, compareData);
 
     // TODO: Use values from API
     return (
@@ -156,8 +159,8 @@ class OfferCard extends Component<Props, IOwnState> {
   };
 
   private renderOfferHeader = (): React.ReactElement => {
-    const { offer } = this.props;
-    const offerHeader = OfferUtils.getOfferHeader(offer);
+    const { offer, compareData } = this.props;
+    const offerHeader = OfferUtils.getOfferHeader(offer, compareData);
     return (
       <View style={styles.headerView}>
         <TextWithIcon

@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetMetricsList } from '@homzhub/mobile/src/components';
@@ -20,15 +23,20 @@ import ScrollableDropdownList, {
 } from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 import { offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
-import { NegotiationOfferType, OfferFilterType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export enum OfferType {
   OFFER_RECEIVED = 'Offer Received',
   OFFER_MADE = 'Offer Made',
+}
+
+interface IDispatchProps {
+  setCurrentOffer: (payload: ICurrentOffer) => void;
 }
 
 interface IScreenState {
@@ -43,7 +51,8 @@ interface IScreenState {
   filters: Record<string, string>;
 }
 
-type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyOfferList>;
+type LibProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyOfferList>;
+type Props = LibProps & IDispatchProps;
 
 export interface IMetricsData {
   name: string;
@@ -169,6 +178,19 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     const separatorStyle = index !== 0 ? styles.separator : {};
     const isCardExpanded = index === 0;
     const { offerType } = this.state;
+    let payload: ICurrentOffer | null = null;
+    const { saleTerm, leaseTerm } = item;
+    if (saleTerm) {
+      payload = {
+        type: ListingType.SALE_LISTING,
+        listingId: saleTerm.id,
+      };
+    } else if (leaseTerm) {
+      payload = {
+        type: ListingType.LEASE_LISTING,
+        listingId: leaseTerm.id,
+      };
+    }
 
     switch (offerType) {
       case OfferType.OFFER_RECEIVED:
@@ -177,12 +199,12 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
             isCardExpanded={isCardExpanded}
             propertyOffer={item}
             containerStyles={separatorStyle}
-            onViewOffer={this.navigateToDetail}
+            onViewOffer={(): void => this.navigateToDetail(payload)}
           />
         );
       case OfferType.OFFER_MADE:
       default:
-        return <OfferMade propertyOffer={item} />;
+        return <OfferMade propertyOffer={item} onViewOffer={(): void => this.navigateToDetail(payload)} />;
     }
   };
 
@@ -334,14 +356,26 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     ];
   };
 
-  private navigateToDetail = (): void => {
-    const { navigation } = this.props;
-    // TODO: (Shikha) Pass listing Id
+  private navigateToDetail = (payload: ICurrentOffer | null): void => {
+    const { navigation, setCurrentOffer } = this.props;
+    if (payload) {
+      setCurrentOffer(payload);
+    }
     navigation.navigate(ScreensKeys.OfferDetail);
   };
 }
 
-export default withTranslation()(PropertyOfferList);
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentOffer } = OfferActions;
+  return bindActionCreators(
+    {
+      setCurrentOffer,
+    },
+    dispatch
+  );
+};
+
+export default connect(null, mapDispatchToProps)(withTranslation()(PropertyOfferList));
 
 const styles = StyleSheet.create({
   separator: {

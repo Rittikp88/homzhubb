@@ -60,13 +60,19 @@ export class TenantInfo {
   }
 }
 
+export interface ITenantPreference {
+  id: number;
+  name: string;
+  is_choosed?: boolean;
+}
+
 @JsonObject('TenantPreference')
 export class TenantPreference {
   @JsonProperty('id', Number)
-  private _id = 1;
+  private _id = 0;
 
   @JsonProperty('name', String)
-  private _name = 'Family';
+  private _name = '';
 
   @JsonProperty('is_choosed', Boolean, true)
   private _isSelected = false;

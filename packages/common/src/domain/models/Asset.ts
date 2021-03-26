@@ -10,7 +10,7 @@ import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
-import { Offer } from '@homzhub/common/src/domain/models/Offer';
+import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
@@ -85,6 +85,8 @@ export interface IAsset {
   floor_type: string;
   last_visited_step: ILastVisitedStep;
   investmentStatus?: string;
+  lease_negotiation?: IOffer | null;
+  sale_negotiation?: IOffer | null;
 }
 
 export interface IData {

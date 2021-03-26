@@ -2,6 +2,7 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Offer } from '@homzhub/common/src/domain/models/Offer';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
@@ -23,7 +24,7 @@ const ENDPOINTS = {
   offerManagement: 'offers/management-tab/',
   tenantTypes: 'list-of-values/prospect-tenant-types/',
   jobTypes: 'list-of-values/user-employer-job-types/',
-  submitOffer: (param: INegotiationParam): string =>
+  negotiations: (param: INegotiationParam): string =>
     `${param.listingType}/${param.listingId}/${param.negotiationType}/`,
   listingNegotiations: (param: INegotiationParam): string =>
     `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
@@ -59,7 +60,7 @@ class OffersRepository {
 
   public postOffer = async (payload: ISubmitOffer): Promise<IPostOfferLease | IPostOfferSell> => {
     const { param, data } = payload;
-    return await this.apiClient.post(ENDPOINTS.submitOffer(param), data);
+    return await this.apiClient.post(ENDPOINTS.negotiations(param), data);
   };
 
   public updateNegotiation = async (payload: INegotiationPayload): Promise<void> => {
@@ -84,6 +85,11 @@ class OffersRepository {
       return ObjectMapper.deserialize(ReceivedOfferFilter, response);
     }
     return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public getNegotiations = async (param: INegotiationParam): Promise<Offer[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.negotiations(param));
+    return ObjectMapper.deserializeArray(Offer, response);
   };
 }
 

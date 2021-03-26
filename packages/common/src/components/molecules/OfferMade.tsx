@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
@@ -8,21 +10,24 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
 interface IProps {
   propertyOffer: Asset;
+  onViewOffer: () => void;
 }
 
 const OfferMade = (props: IProps): React.ReactElement => {
   const {
     propertyOffer,
     propertyOffer: { leaseNegotiation, saleNegotiation },
+    onViewOffer,
   } = props;
   const offer = leaseNegotiation || saleNegotiation;
+  const compareData = useSelector(OfferSelectors.getOfferCompareData);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onViewOffer}>
       <PropertyCard asset={propertyOffer} isExpanded containerStyle={styles.cardContainer} />
-      {offer && <OfferCard offer={offer} containerStyle={styles.offerCard} />}
+      {offer && <OfferCard offer={offer} containerStyle={styles.offerCard} compareData={compareData} />}
       <Divider containerStyles={styles.divider} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

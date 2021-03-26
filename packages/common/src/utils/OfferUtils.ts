@@ -6,6 +6,7 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IOfferValue, Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
+import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IActionStyle {
   title: string;
@@ -24,13 +25,14 @@ interface IActionPayload {
 }
 
 class OfferUtils {
-  public getOfferValues = (offer: Offer): IOfferValue[] => {
+  public getOfferValues = (offer: Offer, compareData: IOfferCompare): IOfferValue[] => {
     const { annualRentIncrementPercentage: percentage, securityDeposit, moveInDate, price, bookingAmount } = offer;
+
     const annualRent = {
       key: I18nService.t('property:annualIncrementSuffix'),
       value: percentage ? percentage.toString() : '',
-      icon: icons.arrowUp,
-      iconColor: theme.colors.green,
+      icon: this.offerComparison(percentage ?? 0, compareData.incrementPercentage).icon,
+      iconColor: this.offerComparison(percentage ?? 0, compareData.incrementPercentage).color,
     };
 
     if (price > 0) {
@@ -38,8 +40,8 @@ class OfferUtils {
         {
           key: I18nService.t('property:bookingAmount'),
           value: bookingAmount.toString(),
-          icon: icons.arrowUp,
-          iconColor: theme.colors.green,
+          icon: this.offerComparison(bookingAmount, compareData.bookingAmount).icon,
+          iconColor: this.offerComparison(bookingAmount, compareData.bookingAmount).color,
         },
       ];
     }
@@ -49,8 +51,8 @@ class OfferUtils {
       {
         key: I18nService.t('property:securityDeposit'),
         value: securityDeposit.toString(),
-        icon: icons.arrowDown,
-        iconColor: theme.colors.red,
+        icon: this.offerComparison(securityDeposit, compareData.deposit).icon,
+        iconColor: this.offerComparison(securityDeposit, compareData.deposit).color,
       },
       {
         key: I18nService.t('property:moveInDate'),
@@ -59,23 +61,23 @@ class OfferUtils {
     ];
   };
 
-  public getOfferHeader = (offer: Offer): IOfferValue => {
+  public getOfferHeader = (offer: Offer, compareData: IOfferCompare): IOfferValue => {
     const { rent, price } = offer;
 
     if (rent > 1) {
       return {
         key: I18nService.t('property:rent'),
         value: rent.toString(),
-        icon: icons.arrowUp,
-        iconColor: theme.colors.green,
+        icon: this.offerComparison(rent, compareData.rent).icon,
+        iconColor: this.offerComparison(rent, compareData.rent).color,
       };
     }
 
     return {
       key: I18nService.t('property:sellingPrice'),
       value: price.toString(),
-      icon: icons.arrowDown,
-      iconColor: theme.colors.red,
+      icon: this.offerComparison(price, compareData.price).icon,
+      iconColor: this.offerComparison(price, compareData.price).color,
     };
   };
 
@@ -171,6 +173,26 @@ class OfferUtils {
           },
         };
     }
+  };
+
+  public offerComparison = (value: number, compareValue = 0): { icon: string; color: string } => {
+    if (value > compareValue) {
+      return {
+        icon: icons.arrowUp,
+        color: theme.colors.green,
+      };
+    }
+    if (value < compareValue) {
+      return {
+        icon: icons.arrowDown,
+        color: theme.colors.error,
+      };
+    }
+
+    return {
+      icon: '',
+      color: '',
+    };
   };
 }
 

@@ -1,7 +1,15 @@
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
-import { IOwnerProposalsLease, IOwnerProposalsSale } from '@homzhub/common/src/modules/offers/interfaces';
-import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Offer } from '@homzhub/common/src/domain/models/Offer';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import {
+  ICurrentOffer,
+  IOfferCompare,
+  IOwnerProposalsLease,
+  IOwnerProposalsSale,
+} from '@homzhub/common/src/modules/offers/interfaces';
 
 const getOwnerProposalsRent = (state: IState): IOwnerProposalsLease | null => {
   const asset = AssetSelectors.getAsset(state);
@@ -44,15 +52,46 @@ const getOwnerProposalsSale = (state: IState): IOwnerProposalsSale | null => {
   return null;
 };
 
+const getOfferPayload = (state: IState): ICurrentOffer | null => {
+  const {
+    offer: { currentOffer },
+  } = state;
+
+  return currentOffer;
+};
+
+const getOfferCompareData = (state: IState): IOfferCompare => {
+  const {
+    offer: { compareData },
+  } = state;
+
+  return compareData;
+};
+
+const getListingDetail = (state: IState): Asset | null => {
+  const {
+    offer: { listingDetail },
+  } = state;
+  if (!listingDetail) return null;
+  return ObjectMapper.deserialize(Asset, listingDetail);
+};
+
+const getNegotiations = (state: IState): Offer[] => {
+  const {
+    offer: { negotiations },
+  } = state;
+  if (!negotiations.length) return [];
+  return ObjectMapper.deserializeArray(Offer, negotiations);
+};
+
 const getFormattedTenantPreferences = (state: IState, value = true): ICheckboxGroupData[] => {
   const asset = AssetSelectors.getAsset(state);
   if (asset && asset.leaseTerm?.tenantPreferences) {
-    const formatted: ICheckboxGroupData[] = asset.leaseTerm?.tenantPreferences.map((item) => ({
+    return asset.leaseTerm?.tenantPreferences.map((item) => ({
       id: item.id,
       label: item.name,
       isSelected: value,
     }));
-    return formatted;
   }
   return [];
 };
@@ -60,5 +99,9 @@ const getFormattedTenantPreferences = (state: IState, value = true): ICheckboxGr
 export const OfferSelectors = {
   getOwnerProposalsRent,
   getOwnerProposalsSale,
+  getListingDetail,
+  getOfferPayload,
+  getNegotiations,
+  getOfferCompareData,
   getFormattedTenantPreferences,
 };
