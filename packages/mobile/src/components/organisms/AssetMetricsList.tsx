@@ -102,8 +102,9 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.header, !isSubTextRequired && styles.financialView]}>
         {headerIcon ? (
-          <View style={[styles.headerIcon, styles.logo]}>
+          <View>
             <Icon name={headerIcon} size={30} style={styles.icon} color={theme.colors.blue} />
+            <View style={[styles.headerIcon, styles.logo]} />
           </View>
         ) : (
           <Logo style={styles.logo} width={50} height={50} />
@@ -216,12 +217,14 @@ const styles = StyleSheet.create({
   },
   headerIcon: {
     backgroundColor: theme.colors.blue,
+    width: 50,
+    height: 50,
     opacity: 0.1,
     borderRadius: 30,
-    overflow: 'hidden',
   },
   icon: {
-    padding: 15,
-    backgroundColor: theme.colors.blue,
+    position: 'absolute',
+    left: 10,
+    top: 10,
   },
 });
