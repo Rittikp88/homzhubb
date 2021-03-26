@@ -23,4 +23,5 @@ export enum EventType {
   NewMessage = 'new_message',
   NewServiceTicket = 'new_service_ticket',
   ClosedServiceTicket = 'closed_service_ticket',
+  NewOffer = 'new_offer',
 }

@@ -82,6 +82,7 @@ export class Slider extends Component<ISliderProps, IOwnState> {
           onValuesChange={this.singleSliderValuesChange}
           customMarkerLeft={(e): React.ReactElement => this.customMarkerLeft(e)}
           selectedStyle={styles.selectedStyle}
+          allowOverlap
         />
       </View>
     );

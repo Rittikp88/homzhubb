@@ -190,7 +190,6 @@ class OfferForm extends React.Component<Props, IScreenState> {
             const disabled = isRentFlow ? rentDisabled : saleDisabled;
             return (
               <>
-                {/* Todo : Handle slider's odd behaviour when edited */}
                 {dirty &&
                   this.setState({
                     checkBox: false,

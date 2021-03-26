@@ -5,8 +5,11 @@ import { useNavigation } from '@react-navigation/core';
 import { useIsFocused } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -25,6 +28,7 @@ const SubmitOfferForm = (): React.ReactElement => {
   // HOOKS START
   const { t } = useTranslation();
   const isRentFlow = !useSelector(AssetSelectors.getAssetListingType);
+  const asset = useSelector(AssetSelectors.getAsset);
   const [loading, setLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   useEffect(() => {
@@ -50,7 +54,13 @@ const SubmitOfferForm = (): React.ReactElement => {
     navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
   };
 
-  const onSuccess = (): void => setIsSuccess(true);
+  const onSuccess = (): void => {
+    if (asset) {
+      const trackData = AnalyticsHelper.getPropertyTrackData(asset);
+      AnalyticsService.track(EventType.NewOffer, trackData);
+    }
+    setIsSuccess(true);
+  };
 
   const onCloseBottomSheet = (): void => {
     setIsSuccess(false);
