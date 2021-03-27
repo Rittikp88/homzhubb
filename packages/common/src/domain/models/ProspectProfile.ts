@@ -11,16 +11,16 @@ export interface IProspectProfile {
 
 @JsonObject('ProspectProfile')
 export class ProspectProfile {
-  @JsonProperty('id', Number)
+  @JsonProperty('id', Number, true)
   private _id = 0;
 
-  @JsonProperty('number_of_occupants', Number)
+  @JsonProperty('number_of_occupants', Number, true)
   private _occupants = 0;
 
-  @JsonProperty('user', User)
+  @JsonProperty('user', User, true)
   private _user = new User();
 
-  @JsonProperty('tenant_type', Unit)
+  @JsonProperty('tenant_type', Unit, true)
   private _tenantType = new Unit();
 
   get id(): number {

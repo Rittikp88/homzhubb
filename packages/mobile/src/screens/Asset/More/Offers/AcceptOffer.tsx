@@ -4,8 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
-import Check from '@homzhub/common/src/assets/images/check.svg';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
@@ -86,12 +85,15 @@ class AcceptOffer extends Component<Props, IState> {
             <Text textType="regular" type="small" style={styles.marginVertical}>
               {t('offers:aboutToRent')}
             </Text>
-            <Check />
+            <View style={styles.icon}>
+              <Icon name={icons.doubleCheck} size={60} color={theme.colors.completed} />
+            </View>
+
             <Label type="large" textType="semiBold" style={styles.marginVertical}>
               {t('offers:keepInMind')}
             </Label>
 
-            {acceptOffer.owner.map((item: IOwner, index: number) => {
+            {acceptOffer.tenant.map((item: IOwner, index: number) => {
               return (
                 <View key={index} style={styles.textView}>
                   <Label key={index} type="large" textType="regular" style={styles.text}>
@@ -112,9 +114,7 @@ class AcceptOffer extends Component<Props, IState> {
   };
 
   public onOpenBottomSheet = (): void => {
-    const { isBottomSheetVisible } = this.state;
-
-    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
+    this.setState({ isBottomSheetVisible: true });
   };
 
   public onCloseBottomSheet = (): void => {
@@ -156,5 +156,11 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 16,
+  },
+  icon: {
+    borderWidth: 10,
+    borderRadius: 120 / 2,
+    backgroundColor: theme.colors.greenOpacity,
+    borderColor: theme.colors.greenOpacity,
   },
 });

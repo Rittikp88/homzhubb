@@ -129,7 +129,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       this.getAssetData();
     });
     const prospectsData = await OffersRepository.getProspectsInfo();
-    this.setState({ prospectsData: Boolean(prospectsData) });
+    this.setState({ prospectsData: Boolean(prospectsData.id) });
     await this.setSharingMessage();
   };
 
@@ -878,11 +878,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       },
     } = this.props;
     if (!assetDetails) return;
-    const { saleTerm } = assetDetails;
-    if (prospectsData || saleTerm) {
-      navigation.navigate(ScreensKeys.SubmitOffer);
-    } else {
+    const { leaseTerm } = assetDetails;
+    if (leaseTerm && !prospectsData) {
       navigation.navigate(ScreensKeys.ProspectProfile, { propertyTermId });
+    } else {
+      navigation.navigate(ScreensKeys.SubmitOffer);
     }
   };
 

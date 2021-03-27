@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import * as yup from 'yup';
 import { Formik, FormikProps } from 'formik';
+import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
@@ -17,9 +19,10 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import { RadioButtonGroup } from '@homzhub/common/src/components/molecules/RadioButtonGroup';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
-import { User } from '@homzhub/common/src/domain/models/User';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IUpdateProspectProfile } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IOfferForm {
   jobType: number;
@@ -29,13 +32,16 @@ interface IOfferForm {
   tenantType: number;
 }
 
-interface IState {
+interface IScreenState {
   offerForm: IOfferForm;
   userType: number;
   categories: IUnit[];
   tenantType: IUnit[];
-  userDetails: User;
   loading: boolean;
+}
+
+interface IStateToProps {
+  userDetails: UserProfile | null;
 }
 
 interface IProp {
@@ -43,8 +49,8 @@ interface IProp {
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.ProspectProfile>;
-type Props = libraryProps & IProp;
-class ProspectProfile extends Component<Props, IState> {
+type Props = libraryProps & IProp & IStateToProps;
+class ProspectProfile extends Component<Props, IScreenState> {
   public state = {
     offerForm: {
       jobType: 0,
@@ -56,7 +62,6 @@ class ProspectProfile extends Component<Props, IState> {
     userType: 0,
     categories: [],
     tenantType: [],
-    userDetails: new User(),
     loading: false,
   };
 
@@ -65,11 +70,21 @@ class ProspectProfile extends Component<Props, IState> {
       route: {
         params: { editData },
       },
+      userDetails,
     } = this.props;
+    const { offerForm } = this.state;
     const tenant = await OffersRepository.getTenantTypes();
     const jobType = await OffersRepository.getJobType();
+    this.setState({
+      categories: jobType,
+      tenantType: tenant,
+      offerForm: {
+        ...offerForm,
+        workEmail: userDetails?.workInfo.workEmail,
+        companyName: userDetails?.workInfo.companyName,
+      },
+    });
     const prospectsData = await OffersRepository.getProspectsInfo();
-    this.setState({ categories: jobType, tenantType: tenant, userDetails: prospectsData.user });
     const {
       user: { workInfo },
       occupants,
@@ -90,8 +105,8 @@ class ProspectProfile extends Component<Props, IState> {
   }
 
   public render = (): React.ReactNode => {
-    const { t } = this.props;
-    const { offerForm, userType, tenantType, userDetails, loading } = this.state;
+    const { t, userDetails } = this.props;
+    const { offerForm, userType, tenantType, loading } = this.state;
     if (!userDetails) return null;
     return (
       <Screen
@@ -239,7 +254,13 @@ class ProspectProfile extends Component<Props, IState> {
   };
 }
 
-export default withTranslation()(ProspectProfile);
+const mapStateToProps = (state: IState): IStateToProps => {
+  return {
+    userDetails: UserSelector.getUserProfile(state),
+  };
+};
+
+export default connect(mapStateToProps, null)(withTranslation()(ProspectProfile));
 
 const styles = StyleSheet.create({
   container: {
