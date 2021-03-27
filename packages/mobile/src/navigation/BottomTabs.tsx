@@ -10,6 +10,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -355,6 +356,9 @@ export const BottomTabs = (): React.ReactElement => {
         listeners={{
           blur: (): void => {
             dispatch(CommonActions.clearMessages());
+          },
+          focus: (): void => {
+            dispatch(OfferActions.clearState());
           },
         }}
         options={({ route }): any => ({

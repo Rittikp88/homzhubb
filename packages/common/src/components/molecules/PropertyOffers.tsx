@@ -227,11 +227,11 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
                 return (
                   <TextWithIcon
                     key={valueIndex}
-                    icon={preference.isSelected ? icons.check : icons.close}
+                    icon={icons.check}
                     text={preference.name}
                     variant="label"
                     textSize="large"
-                    iconColor={preference.isSelected ? theme.colors.green : theme.colors.error}
+                    iconColor={theme.colors.green}
                     containerStyle={styles.preferenceContent}
                   />
                 );
@@ -310,8 +310,10 @@ const styles = StyleSheet.create({
   preferenceView: {
     flexDirection: 'row',
     marginVertical: 4,
+    flexWrap: 'wrap',
   },
   preferenceContent: {
     flexDirection: 'row-reverse',
+    marginLeft: 4,
   },
 });

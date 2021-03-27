@@ -14,7 +14,9 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -58,9 +60,13 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { Routes, Tabs } from '@homzhub/common/src/constants/Tabs';
 import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
-import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
+import { ICurrentOffer, IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
+import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
+
+// TODO: (Shikha) - Refactor component
 
 const { height, width } = theme.viewport;
 const TAB_LAYOUT = {
@@ -78,6 +84,7 @@ enum MenuItems {
 
 interface IStateProps {
   assetPayload: ISetAssetPayload;
+  asset: Asset | null;
 }
 
 interface IDispatchProps {
@@ -91,6 +98,9 @@ interface IDispatchProps {
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
   setCurrentChatDetail: (payload: IChatPayload) => void;
   setCurrentOfferPayload: (payload: ICurrentOffer) => void;
+  getAsset: (payload: IGetAssetPayload) => void;
+  setFilter: (payload: IFilter) => void;
+  setCompareDetail: (payload: IOfferCompare) => void;
 }
 
 interface IDetailState {
@@ -145,6 +155,26 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetDetail().then();
     });
+  };
+
+  public componentDidUpdate = (prevProps: Readonly<Props>): void => {
+    const { asset, setCompareDetail } = this.props;
+    if (JSON.stringify(asset) !== JSON.stringify(prevProps.asset)) {
+      if (asset && asset.leaseTerm) {
+        setCompareDetail({
+          rent: asset.leaseTerm.expectedPrice,
+          deposit: asset.leaseTerm.securityDeposit,
+          incrementPercentage: asset.leaseTerm.annualRentIncrementPercentage ?? 0,
+        });
+      }
+
+      if (asset && asset.saleTerm) {
+        setCompareDetail({
+          price: Number(asset.saleTerm.expectedPrice) ?? 0,
+          bookingAmount: Number(asset.saleTerm.expectedBookingAmount) ?? 0,
+        });
+      }
+    }
   };
 
   public componentWillUnmount(): void {
@@ -376,7 +406,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.DETAILS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 9)}>
-            <DetailTab assetStatusInfo={assetStatusInfo} />
+            <DetailTab />
           </View>
         );
       default:
@@ -585,6 +615,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       clearMessages,
       clearChatDetail,
       setCurrentOfferPayload,
+      getAsset,
+      setFilter,
     } = this.props;
 
     if (!asset_id) {
@@ -620,6 +652,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
               type: info.leaseListingId ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
               listingId: info.leaseListingId || info.saleListingId || 0,
             });
+            setFilter({ asset_transaction_type: info.leaseListingId && info.leaseListingId > 0 ? 0 : 1 });
+            getAsset({ propertyTermId: info.leaseListingId || info.saleListingId || 0 });
           }
         }
       );
@@ -702,12 +736,14 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         // @ts-ignore
         navigation.navigate(ScreensKeys.More, {
           screen: ScreensKeys.AcceptOffer,
+          initial: false,
         });
         break;
       case OfferAction.REJECT:
         // @ts-ignore
         navigation.navigate(ScreensKeys.More, {
           screen: ScreensKeys.RejectOffer,
+          initial: false,
         });
         break;
       default:
@@ -723,6 +759,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     assetPayload: PortfolioSelectors.getCurrentAssetPayload(state),
+    asset: AssetSelectors.getAsset(state),
   };
 };
 
@@ -734,9 +771,10 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     setEditPropertyFlow,
     toggleEditPropertyFlowBottomSheet,
   } = RecordAssetActions;
-  const { clearAsset } = AssetActions;
+  const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
-  const { setCurrentOfferPayload } = OfferActions;
+  const { setCurrentOfferPayload, setCompareDetail } = OfferActions;
+  const { setFilter } = SearchActions;
   return bindActionCreators(
     {
       setAssetId,
@@ -749,6 +787,9 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       clearMessages,
       setCurrentChatDetail,
       setCurrentOfferPayload,
+      getAsset,
+      setFilter,
+      setCompareDetail,
     },
     dispatch
   );

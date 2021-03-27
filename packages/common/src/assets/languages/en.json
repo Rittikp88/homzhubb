@@ -1147,6 +1147,7 @@
     "offerAcceptedSuccess": "Offer Accepted Successfully",
     "offerRejectedSuccess": "Offer Rejected Successfully",
     "rejectionReason": "Reason for Rejection",
-    "seeRejectReason": "See Reject Reason"
+    "seeRejectReason": "See Reject Reason",
+    "noOfferFound": "No offer Found"
   }
 }

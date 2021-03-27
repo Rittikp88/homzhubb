@@ -89,6 +89,7 @@ class OfferCard extends Component<Props, IOwnState> {
         createdAt,
         validDays,
         validCount,
+        status,
         user: { name },
       },
       offer,
@@ -99,7 +100,9 @@ class OfferCard extends Component<Props, IOwnState> {
     const isOfferValid = validCount > 1;
     const isOfferExpired = validCount < 0;
 
-    const offerValues = OfferUtils.getOfferValues(offer, compareData);
+    const currency = asset && asset.country ? asset.country.currencies[0].currencySymbol : 'INR';
+
+    const offerValues = OfferUtils.getOfferValues(offer, compareData, currency);
 
     // TODO: Use values from API
     return (
@@ -118,7 +121,7 @@ class OfferCard extends Component<Props, IOwnState> {
             <Label type="regular" style={styles.date}>
               {t('createdDate', { date: DateUtils.getDisplayDate(createdAt, DateFormats.DoMMM_YYYY) })}
             </Label>
-            {!isOfferExpired && (
+            {!isOfferExpired && status === Status.PENDING && (
               <TextWithIcon
                 icon={icons.timeValid}
                 text={t('validFor')}
@@ -132,7 +135,7 @@ class OfferCard extends Component<Props, IOwnState> {
             )}
           </View>
         )}
-        {this.renderOfferHeader()}
+        {this.renderOfferHeader(currency)}
         <View style={styles.valuesView}>
           {offerValues.map((item, index) => {
             return (
@@ -154,15 +157,15 @@ class OfferCard extends Component<Props, IOwnState> {
                 text={t('common:minMonth')}
                 variant="label"
                 textSize="large"
-                value={`${minLockInPeriod} Month`}
+                value={`${minLockInPeriod} Months`}
                 containerStyle={styles.textContainer}
               />
               <TextWithIcon
                 text={t('common:totalMonth')}
                 variant="label"
                 textSize="large"
-                value={`${leasePeriod} Month`}
-                containerStyle={[styles.textContainer, { marginHorizontal: 30 }]}
+                value={`${leasePeriod} Months`}
+                containerStyle={[styles.textContainer, { marginHorizontal: 10 }]}
               />
             </View>
           )}
@@ -173,9 +176,9 @@ class OfferCard extends Component<Props, IOwnState> {
     );
   };
 
-  private renderOfferHeader = (): React.ReactElement => {
+  private renderOfferHeader = (currency: string): React.ReactElement => {
     const { offer, compareData } = this.props;
-    const offerHeader = OfferUtils.getOfferHeader(offer, compareData);
+    const offerHeader = OfferUtils.getOfferHeader(offer, compareData, currency);
     return (
       <View style={styles.headerView}>
         <TextWithIcon
@@ -229,20 +232,25 @@ class OfferCard extends Component<Props, IOwnState> {
               initialTextStyle: styles.titleStyle,
               onAction: onPressAction,
             });
+            // TODO: (Shikha) - Remove icon condition once cancel offer flow is ready
             return (
-              <Button
-                key={index}
-                type="primary"
-                title={title}
-                icon={icon}
-                iconSize={20}
-                textType="label"
-                textSize="large"
-                iconColor={iconColor}
-                containerStyle={container}
-                titleStyle={textStyle}
-                onPress={onAction}
-              />
+              <>
+                {!!icon && (
+                  <Button
+                    key={index}
+                    type="primary"
+                    title={title}
+                    icon={icon}
+                    iconSize={20}
+                    textType="label"
+                    textSize="large"
+                    iconColor={iconColor}
+                    containerStyle={container}
+                    titleStyle={textStyle}
+                    onPress={onAction}
+                  />
+                )}
+              </>
             );
           })}
         </View>
@@ -347,7 +355,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     backgroundColor: theme.colors.background,
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
     paddingVertical: 2,
     alignSelf: 'flex-start',
     marginBottom: 16,
@@ -405,6 +413,7 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   actionButton: {
     flexDirection: 'row-reverse',
@@ -431,6 +440,7 @@ const styles = StyleSheet.create({
   preferenceView: {
     flexDirection: 'row',
     marginBottom: 16,
+    flexWrap: 'wrap',
   },
   rejectionButton: {
     backgroundColor: theme.colors.transparent,

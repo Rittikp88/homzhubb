@@ -1,5 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { DateUtils, DateFormats } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
@@ -7,6 +7,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IOfferValue, Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
+import { OfferFilter, OfferSort } from '@homzhub/common/src/constants/Offers';
 
 interface IActionStyle {
   title: string;
@@ -25,12 +26,12 @@ interface IActionPayload {
 }
 
 class OfferUtils {
-  public getOfferValues = (offer: Offer, compareData: IOfferCompare): IOfferValue[] => {
+  public getOfferValues = (offer: Offer, compareData: IOfferCompare, currency: string): IOfferValue[] => {
     const { annualRentIncrementPercentage: percentage, securityDeposit, moveInDate, price, bookingAmount } = offer;
 
     const annualRent = {
       key: I18nService.t('property:annualIncrementSuffix'),
-      value: percentage ? percentage.toString() : '',
+      value: percentage ? `${currency} ${percentage}` : '',
       icon: this.offerComparison(percentage ?? 0, compareData.incrementPercentage).icon,
       iconColor: this.offerComparison(percentage ?? 0, compareData.incrementPercentage).color,
     };
@@ -39,7 +40,7 @@ class OfferUtils {
       return [
         {
           key: I18nService.t('property:bookingAmount'),
-          value: bookingAmount.toString(),
+          value: `${currency} ${bookingAmount}`,
           icon: this.offerComparison(bookingAmount, compareData.bookingAmount).icon,
           iconColor: this.offerComparison(bookingAmount, compareData.bookingAmount).color,
         },
@@ -50,24 +51,24 @@ class OfferUtils {
       ...(percentage ? [annualRent] : []),
       {
         key: I18nService.t('property:securityDeposit'),
-        value: securityDeposit.toString(),
+        value: `${currency} ${securityDeposit}`,
         icon: this.offerComparison(securityDeposit, compareData.deposit).icon,
         iconColor: this.offerComparison(securityDeposit, compareData.deposit).color,
       },
       {
         key: I18nService.t('property:moveInDate'),
-        value: DateUtils.getUtcFormatted(moveInDate, DateFormats.YYYYMMDD, DateFormats.DoMMM_YYYY),
+        value: DateUtils.getUtcFormatted(moveInDate, DateFormats.YYYYMMDD, 'DD MMM, YYYY'),
       },
     ];
   };
 
-  public getOfferHeader = (offer: Offer, compareData: IOfferCompare): IOfferValue => {
+  public getOfferHeader = (offer: Offer, compareData: IOfferCompare, currency: string): IOfferValue => {
     const { rent, price } = offer;
 
     if (rent > 1) {
       return {
         key: I18nService.t('property:rent'),
-        value: rent.toString(),
+        value: `${currency} ${rent}`,
         icon: this.offerComparison(rent, compareData.rent).icon,
         iconColor: this.offerComparison(rent, compareData.rent).color,
       };
@@ -75,7 +76,7 @@ class OfferUtils {
 
     return {
       key: I18nService.t('property:sellingPrice'),
-      value: price.toString(),
+      value: `${currency} ${price}`,
       icon: this.offerComparison(price, compareData.price).icon,
       iconColor: this.offerComparison(price, compareData.price).color,
     };
@@ -137,6 +138,7 @@ class OfferUtils {
           container: {
             backgroundColor: theme.colors.greenOpacity,
             flexDirection: 'row-reverse',
+            flex: 0,
           },
           textStyle: {
             color: theme.colors.green,
@@ -151,6 +153,7 @@ class OfferUtils {
           container: {
             backgroundColor: theme.colors.redOpacity,
             flexDirection: 'row-reverse',
+            flex: 0,
           },
           textStyle: {
             color: theme.colors.error,
@@ -166,6 +169,7 @@ class OfferUtils {
           container: {
             backgroundColor: theme.colors.grayOpacity,
             flexDirection: 'row-reverse',
+            flex: 0,
           },
           textStyle: {
             color: theme.colors.darkTint3,
@@ -193,6 +197,35 @@ class OfferUtils {
       icon: '',
       color: '',
     };
+  };
+
+  public getFilteredOffer = (key: string, data: Offer[]): Offer[] => {
+    switch (key) {
+      case OfferFilter.PENDING_ACTION:
+        return data.filter((item) => item.actions.length === 2);
+      case OfferFilter.WAITING_PROSPECT:
+        return data.filter((item) => item.actions.length === 1);
+      case OfferFilter.ACCEPTED:
+        return data.filter((item) => item.status === Status.ACCEPTED);
+      case OfferFilter.REJECTED:
+      case OfferFilter.REJECTED_PROSPECT:
+        return data.filter((item) => item.status === Status.REJECTED);
+      case OfferFilter.EXPIRING:
+        return data.filter((item) => DateUtils.getTimeElapsedInDays(item.expiresAt, 'hours') > -13);
+      default:
+        return data;
+    }
+  };
+
+  public getSortedOffer = (key: string, data: Offer[]): Offer[] => {
+    switch (key) {
+      case OfferSort.OLDEST:
+        return data.slice().sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      case OfferSort.NEWEST:
+        return data.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      default:
+        return data;
+    }
   };
 }
 

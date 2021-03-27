@@ -348,9 +348,9 @@ class DateUtils {
     return moment(date, DateFormats.ISO8601).format(format);
   };
 
-  public getTimeElapsedInDays = (date: string): number => {
+  public getTimeElapsedInDays = (date: string, unit?: unitOfTime.Diff): number => {
     const currentDate = new Date().toISOString();
-    return this.getDateDiff(currentDate, date, 'days');
+    return this.getDateDiff(currentDate, date, unit ?? 'days');
   };
 
   public getCountInDays = (date: string): number => {

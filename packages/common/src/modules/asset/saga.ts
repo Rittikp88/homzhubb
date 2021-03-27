@@ -5,6 +5,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AssetActions, AssetActionTypes } from '@homzhub/common/src/modules/asset/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -38,6 +39,7 @@ function* getAssetDetails(action: IFluxStandardAction<IGetAssetPayload>) {
       }
 
       yield put(AssetActions.getAssetSuccess(response));
+      yield put(OfferActions.getListingDetailSuccess(response));
       yield put(AssetActions.getAssetReviews(reviewParams));
 
       if (onCallback) onCallback({ status: true });

@@ -25,8 +25,13 @@ const OfferDetail = (): React.ReactElement => {
       if (offerPayload) {
         dispatch(OfferActions.getListingDetail(offerPayload));
       }
-    }, [offerPayload])
+    }, [])
   );
+
+  const handleBack = (): void => {
+    dispatch(OfferActions.clearState());
+    goBack();
+  };
 
   const handleActions = (action: OfferAction): void => {
     switch (action) {
@@ -46,7 +51,7 @@ const OfferDetail = (): React.ReactElement => {
       title={t('offers')}
       backgroundColor={theme.colors.background}
       pageTitle={t('offers:offerDetails')}
-      onBackPress={goBack}
+      onBackPress={handleBack}
       headerStyle={styles.headerStyle}
       loading={!listingDetail}
     >

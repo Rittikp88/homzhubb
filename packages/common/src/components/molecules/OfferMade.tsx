@@ -50,6 +50,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
           containerStyle={styles.offerCard}
           compareData={compareData}
           onPressAction={handleActions}
+          asset={propertyOffer}
         />
       )}
       <Divider containerStyles={styles.divider} />

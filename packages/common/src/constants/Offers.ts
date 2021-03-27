@@ -3,6 +3,22 @@ export enum MadeSort {
   LOW_HIGH = 'LOW_HIGH',
   HIGH_LOW = 'HIGH_LOW',
 }
+
+export enum OfferFilter {
+  PENDING_ACTION = 'PENDING_ACTION',
+  WAITING_PROSPECT = 'WAITING_PROSPECT',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+  REJECTED_PROSPECT = 'REJECTED_PROSPECT',
+  EXPIRING = 'EXPIRING',
+}
+
+export enum OfferSort {
+  NEWEST = 'NEWEST',
+  OLDEST = 'OLDEST',
+  BEST = 'BEST',
+}
+
 export const offerSortBy = [
   { label: 'Newest offer', value: 'NEWEST' },
   { label: 'Oldest offers', value: 'OLDEST' },
@@ -16,10 +32,10 @@ export const offerMadeSortBy = [
 ];
 
 export const offerFilterBy = [
-  { label: 'Pending action with me', value: 'PENDING_ACTION' },
-  { label: 'Waiting for prospect', value: 'WAITING' },
-  { label: 'Accepted Offers', value: 'ACCEPTED' },
-  { label: 'Rejected by me', value: 'REJECTED' },
-  { label: 'Rejected by prospect', value: 'REJECTED_PROSPECT' },
-  { label: 'Expiring soon (in 12 hours)', value: 'EXPIRING' },
+  { label: 'Pending action with me', value: OfferFilter.PENDING_ACTION },
+  { label: 'Waiting for prospect', value: OfferFilter.WAITING_PROSPECT },
+  { label: 'Accepted Offers', value: OfferFilter.ACCEPTED },
+  { label: 'Rejected by me', value: OfferFilter.REJECTED },
+  { label: 'Rejected by prospect', value: OfferFilter.REJECTED_PROSPECT },
+  { label: 'Expiring soon (in 12 hours)', value: OfferFilter.EXPIRING },
 ];

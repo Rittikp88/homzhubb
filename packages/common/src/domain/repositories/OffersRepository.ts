@@ -29,7 +29,7 @@ const ENDPOINTS = {
   listingNegotiations: (param: INegotiationParam): string =>
     `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
   negotiationOffers: (type: NegotiationOfferType): string => `listings-negotiations/${type}/`,
-  offerFilters: (type: OfferFilterType): string => `filters/${type}`,
+  offerFilters: (type: OfferFilterType): string => `filters/${type}/`,
 };
 
 class OffersRepository {
