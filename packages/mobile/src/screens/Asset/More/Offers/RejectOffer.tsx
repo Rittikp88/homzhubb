@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Formik, FormikProps } from 'formik';
+import { Formik, FormikHelpers, FormikProps } from 'formik';
+import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Offer } from '@homzhub/common/src/domain/models/Offer';
 import {
   ClosureReasonType,
   IClosureReasonPayload,
@@ -24,6 +31,7 @@ import {
   NegotiationAction,
   NegotiationType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IFormData {
@@ -34,69 +42,96 @@ const initialData = {
   reason: 0,
 };
 
+const { LEASE_NEGOTIATION_REJECTION, SALE_NEGOTIATION_REJECTION } = ClosureReasonType;
+const { LEASE_NEGOTIATIONS, SALE_NEGOTIATIONS } = NegotiationType;
+const { LEASE_LISTING } = ListingType;
+
 const RejectOffer = (): React.ReactElement => {
-  const { goBack } = useNavigation();
-  const { t } = useTranslation(LocaleConstants.namespacesKey.offers);
   const [formData] = useState(initialData);
   const [comment, setComment] = useState('');
   const [reasons, setReasons] = useState<IDropdownOption[]>([]);
 
-  useEffect(() => {
-    // TODO: (Shikha) - Add proper values in payload
-    const payload: IClosureReasonPayload = {
-      type: ClosureReasonType.LEASE_NEGOTIATION_REJECTION,
-      asset_group: 1,
-      asset_country: 1,
-    };
-    AssetRepository.getClosureReason(payload)
-      .then((res) => {
-        const formattedData = res.map((item) => {
-          return {
-            label: item.title,
-            value: item.id,
-          };
-        });
-        setReasons(formattedData);
-      })
-      .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
-  });
+  // HOOKS START
+  const { goBack } = useNavigation();
+  const listingData = useSelector(OfferSelectors.getListingDetail);
+  const offerData: Offer | null = useSelector(OfferSelectors.getCurrentOffer);
+  const offerPayload: ICurrentOffer | null = useSelector(OfferSelectors.getOfferPayload);
+  const { t } = useTranslation(LocaleConstants.namespacesKey.offers);
 
-  const handleSubmit = (): void => {
-    // TODO: (Shikha) - Add proper values in payload and Remove lint disable
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
-    const payload: INegotiationPayload = {
-      param: {
-        listingType: ListingType.LEASE_LISTING,
-        listingId: 302,
-        negotiationType: NegotiationType.LEASE_NEGOTIATIONS,
-        negotiationId: 1,
-      },
-      data: {
-        action: NegotiationAction.REJECT,
-        payload: {
-          reject_reason: formData.reason,
-          reject_comment: comment,
-        },
-      },
-    };
-    try {
-      // TODO: (Shikha) - Uncomment once payload is finalized
-      // await OffersRepository.updateNegotiation(payload);
-    } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+  useEffect(() => {
+    if (listingData && offerPayload) {
+      const {
+        assetGroup: { id },
+        country,
+      } = listingData as Asset;
+      const payload: IClosureReasonPayload = {
+        type: offerPayload.type === LEASE_LISTING ? LEASE_NEGOTIATION_REJECTION : SALE_NEGOTIATION_REJECTION,
+        asset_group: id,
+        asset_country: country.id,
+      };
+      AssetRepository.getClosureReason(payload)
+        .then((res) => {
+          const formattedData = res.map((item) => {
+            return {
+              label: item.title,
+              value: item.id,
+            };
+          });
+          setReasons(formattedData);
+        })
+        .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
     }
+  }, []);
+
+  // HOOKS END
+
+  const handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
+    if (offerData && offerPayload) {
+      formActions.setSubmitting(true);
+      const { type, listingId } = offerPayload;
+      const payload: INegotiationPayload = {
+        param: {
+          listingType: type,
+          listingId,
+          negotiationType: type === LEASE_LISTING ? LEASE_NEGOTIATIONS : SALE_NEGOTIATIONS,
+          negotiationId: offerData.id,
+        },
+        data: {
+          action: NegotiationAction.REJECT,
+          payload: {
+            reject_reason: values.reason,
+            ...(!!comment && { reject_comment: comment }),
+          },
+        },
+      };
+
+      try {
+        await OffersRepository.updateNegotiation(payload);
+        goBack();
+        AlertHelper.success({ message: t('offers:offerRejectedSuccess') });
+      } catch (e) {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
+    }
+    formActions.setSubmitting(false);
   };
 
-  // TODO: (Shikha) - Use Property and User values from API
+  if (!offerData || !listingData) return <EmptyState />;
+
+  const {
+    user: { name },
+    role,
+  } = offerData;
+
   return (
     <UserScreen title={t('common:offers')} pageTitle={t('rejectOffer')} onBackPress={goBack}>
       <View style={styles.container}>
-        <Avatar fullName="Brooklyn Simmons" designation="Tenant" />
+        <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
         <PropertyAddressCountry
-          countryFlag={null}
-          primaryAddress="Selway Apartments"
-          subAddress="2972 Westheimer Rd. Santa Ana, NY"
           isIcon
+          primaryAddress={listingData.projectName}
+          subAddress={listingData.address}
+          countryFlag={listingData.country.flag}
           containerStyle={styles.verticalStyle}
         />
         <Divider />
@@ -119,22 +154,25 @@ const RejectOffer = (): React.ReactElement => {
                   containerStyle={styles.verticalStyle}
                   onMessageChange={(value): void => setComment(value)}
                 />
+                <Label type="large" style={styles.helper}>
+                  {t('common:actionNotDone')}
+                </Label>
+                <FormButton
+                  // @ts-ignore
+                  onPress={formProps.handleSubmit}
+                  formProps={formProps}
+                  type="primary"
+                  title={t('rejectThisOffer')}
+                  iconSize={20}
+                  icon={icons.circularCrossFilled}
+                  iconColor={theme.colors.error}
+                  titleStyle={styles.buttonTitle}
+                  containerStyle={styles.button}
+                />
               </>
             );
           }}
         </Formik>
-        <Label type="large" style={styles.helper}>
-          {t('common:actionNotDone')}
-        </Label>
-        <Button
-          type="primary"
-          title={t('rejectThisOffer')}
-          iconSize={20}
-          icon={icons.circularCrossFilled}
-          iconColor={theme.colors.error}
-          titleStyle={styles.buttonTitle}
-          containerStyle={styles.button}
-        />
       </View>
     </UserScreen>
   );

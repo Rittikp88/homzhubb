@@ -6,6 +6,7 @@ exports[`Slider should match snapshot 1`] = `
     onLayout={[Function]}
   >
     <Component
+      allowOverlap={true}
       customLabel={[Function]}
       customMarkerLeft={[Function]}
       enableLabel={false}

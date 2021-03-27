@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -11,7 +12,7 @@ import ScrollableDropdownList, {
   ISelectedValue,
 } from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
-import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
+import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { INegotiationParam, ListingType, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { offerFilterBy, offerSortBy } from '@homzhub/common/src/constants/Offers';
@@ -29,22 +30,29 @@ const OfferView = (props: IProps): React.ReactElement => {
   const compareData = useSelector(OfferSelectors.getOfferCompareData);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (offerPayload) {
-      const payload: INegotiationParam = {
-        listingType: offerPayload.type,
-        listingId: offerPayload.listingId,
-        negotiationType:
-          offerPayload.type === ListingType.LEASE_LISTING
-            ? NegotiationType.LEASE_NEGOTIATIONS
-            : NegotiationType.SALE_NEGOTIATIONS,
-      };
-      dispatch(OfferActions.getNegotiations(payload));
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (offerPayload) {
+        const payload: INegotiationParam = {
+          listingType: offerPayload.type,
+          listingId: offerPayload.listingId,
+          negotiationType:
+            offerPayload.type === ListingType.LEASE_LISTING
+              ? NegotiationType.LEASE_NEGOTIATIONS
+              : NegotiationType.SALE_NEGOTIATIONS,
+        };
+        dispatch(OfferActions.getNegotiations(payload));
+      }
+    }, [offerPayload])
+  );
 
   const onSelectFromDropdown = (selectedValues: (ISelectedValue | undefined)[]): void => {
     // TODO: Add logic
+  };
+
+  const handleAction = (action: OfferAction, offer: Offer): void => {
+    dispatch(OfferActions.setCurrentOffer(offer));
+    onPressAction(action);
   };
 
   const getDropdownData = (): IDropdownData[] => {
@@ -75,7 +83,14 @@ const OfferView = (props: IProps): React.ReactElement => {
         containerStyle={styles.filterStyle}
       />
       {negotiations.map((offer, index) => {
-        return <OfferCard key={index} offer={offer} onPressAction={onPressAction} compareData={compareData} />;
+        return (
+          <OfferCard
+            key={index}
+            offer={offer}
+            onPressAction={(action): void => handleAction(action, offer)}
+            compareData={compareData}
+          />
+        );
       })}
     </>
   );

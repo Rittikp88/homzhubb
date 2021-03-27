@@ -1,12 +1,13 @@
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
-import { IOffer } from '@homzhub/common/src/domain/models/Offer';
+import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 
 export interface IOfferState {
-  currentOffer: ICurrentOffer | null;
+  currentOfferPayload: ICurrentOffer | null;
   negotiations: IOffer[];
+  currentOffer: Offer | null;
   listingDetail: IAsset | null;
   compareData: IOfferCompare;
   loaders: {

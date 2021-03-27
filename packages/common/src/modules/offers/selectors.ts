@@ -54,10 +54,10 @@ const getOwnerProposalsSale = (state: IState): IOwnerProposalsSale | null => {
 
 const getOfferPayload = (state: IState): ICurrentOffer | null => {
   const {
-    offer: { currentOffer },
+    offer: { currentOfferPayload },
   } = state;
 
-  return currentOffer;
+  return currentOfferPayload;
 };
 
 const getOfferCompareData = (state: IState): IOfferCompare => {
@@ -96,6 +96,14 @@ const getFormattedTenantPreferences = (state: IState, value = true): ICheckboxGr
   return [];
 };
 
+const getCurrentOffer = (state: IState): Offer | null => {
+  const {
+    offer: { currentOffer },
+  } = state;
+
+  return currentOffer;
+};
+
 export const OfferSelectors = {
   getOwnerProposalsRent,
   getOwnerProposalsSale,
@@ -104,4 +112,5 @@ export const OfferSelectors = {
   getNegotiations,
   getOfferCompareData,
   getFormattedTenantPreferences,
+  getCurrentOffer,
 };

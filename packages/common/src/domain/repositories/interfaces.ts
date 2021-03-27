@@ -74,6 +74,7 @@ export enum ClosureReasonType {
   LEASE_LISTING_CANCELLATION = 'LEASE_LISTING_CANCELLATION',
   SALE_LISTING_CANCELLATION = 'SALE_LISTING_CANCELLATION',
   LEASE_NEGOTIATION_REJECTION = 'LEASE_NEGOTIATION_REJECTION',
+  SALE_NEGOTIATION_REJECTION = 'SALE_NEGOTIATION_REJECTION',
 }
 
 export enum ListingType {
@@ -98,6 +99,7 @@ export enum OfferFilterType {
 
 export enum NegotiationAction {
   REJECT = 'REJECT',
+  ACCEPT = 'ACCEPT',
 }
 
 export enum MessageAction {

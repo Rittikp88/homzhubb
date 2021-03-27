@@ -36,7 +36,7 @@ export enum OfferType {
 }
 
 interface IDispatchProps {
-  setCurrentOffer: (payload: ICurrentOffer) => void;
+  setCurrentOfferPayload: (payload: ICurrentOffer) => void;
 }
 
 interface IScreenState {
@@ -64,6 +64,8 @@ export interface IMetricsData {
 }
 
 class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
+  public focusListener: any;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -79,21 +81,25 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     };
   }
 
-  public async componentDidMount(): Promise<void> {
+  public componentDidMount = (): void => {
+    const { navigation } = this.props;
     this.setState({ isScreenLoading: true });
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    this.focusListener = navigation.addListener('focus', async () => {
+      try {
+        const offerCountData = await OffersRepository.getOfferData();
 
-    try {
-      const offerCountData = await OffersRepository.getOfferData();
-      await this.getFilters();
-      const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
-      this.setState({ isOfferInfoRead, offerCountData, isScreenLoading: false }, () => {
-        this.getPropertyListData();
-      });
-    } catch (e) {
-      AlertHelper.error({ message: e.message });
-      this.setState({ isScreenLoading: false });
-    }
-  }
+        await this.getFilters();
+        const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
+        this.setState({ isOfferInfoRead, offerCountData, isScreenLoading: false }, () => {
+          this.getPropertyListData();
+        });
+      } catch (e) {
+        AlertHelper.error({ message: e.message });
+        this.setState({ isScreenLoading: false });
+      }
+    });
+  };
 
   public render(): React.ReactElement {
     const { t } = this.props;
@@ -108,7 +114,6 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       isTabLoading,
     } = this.state;
 
-    const totalOffers = offerCountData?.totalOffers;
     const isReceivedOffer = offerType === OfferType.OFFER_RECEIVED;
 
     if (screenLoading) {
@@ -122,53 +127,49 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
           backgroundColor={theme.colors.transparent}
           loading={isTabLoading}
         >
-          {totalOffers === 0 ? (
-            this.renderNoOffer()
-          ) : (
-            <>
-              <AssetMetricsList
-                title={offerCountData?.totalOffers?.toString()}
-                data={this.getMetricData()}
-                onMetricsClicked={this.onMetricsClicked}
-                selectedAssetType={offerType}
-                numOfElements={2}
-                subTitleText={t('assetPortfolio:totalOffers')}
-                isSubTextRequired
-                headerIcon={icons.offers}
-                containerStyle={[styles.metricList, styles.borderRadius]}
+          <>
+            <AssetMetricsList
+              title={offerCountData?.totalOffers?.toString()}
+              data={this.getMetricData()}
+              onMetricsClicked={this.onMetricsClicked}
+              selectedAssetType={offerType}
+              numOfElements={2}
+              subTitleText={t('assetPortfolio:totalOffers')}
+              isSubTextRequired
+              headerIcon={icons.offers}
+              containerStyle={[styles.metricList, styles.borderRadius]}
+            />
+            {!isOfferInfoRead && (
+              <TextWithIcon
+                text={t('offers:offerInfo')}
+                containerStyle={[styles.offerInfo, styles.borderRadius]}
+                icon={icons.close}
+                iconSize={15}
+                prefixIcon={icons.circularFilledInfo}
+                iconColor={theme.colors.darkTint4}
+                prefixIconColor={theme.colors.darkTint3}
+                variant="label"
+                subContainerStyle={styles.textIconSubContainer}
+                onIcon={this.onCloseOfferInfo}
               />
-              {!isOfferInfoRead && (
-                <TextWithIcon
-                  text={t('offers:offerInfo')}
-                  containerStyle={[styles.offerInfo, styles.borderRadius]}
-                  icon={icons.close}
-                  iconSize={15}
-                  prefixIcon={icons.circularFilledInfo}
-                  iconColor={theme.colors.darkTint4}
-                  prefixIconColor={theme.colors.darkTint3}
-                  variant="label"
-                  subContainerStyle={styles.textIconSubContainer}
-                  onIcon={this.onCloseOfferInfo}
-                />
-              )}
-              <ScrollableDropdownList
-                data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
-                isScrollable={isReceivedOffer}
-                dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
-                onDropdown={this.onSelectFromDropdown}
-                containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
-              />
-              {propertyListingData && propertyListingData.length > 0 ? (
-                <>
-                  {propertyListingData.map((property: Asset, index: number) => {
-                    return this.renderPropertyOffer(property, index);
-                  })}
-                </>
-              ) : (
-                this.renderNoOffer()
-              )}
-            </>
-          )}
+            )}
+            <ScrollableDropdownList
+              data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
+              isScrollable={isReceivedOffer}
+              dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
+              onDropdown={this.onSelectFromDropdown}
+              containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
+            />
+            {propertyListingData && propertyListingData.length > 0 ? (
+              <>
+                {propertyListingData.map((property: Asset, index: number) => {
+                  return this.renderPropertyOffer(property, index);
+                })}
+              </>
+            ) : (
+              this.renderNoOffer()
+            )}
+          </>
         </UserScreen>
       </>
     );
@@ -336,7 +337,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       this.setState({ propertyListingData, isTabLoading: false });
     } catch (e) {
       this.setState({ isTabLoading: false });
-      // TODO: Add error utils
+      AlertHelper.error({ message: e.message });
     }
   };
 
@@ -357,19 +358,19 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   };
 
   private navigateToDetail = (payload: ICurrentOffer | null): void => {
-    const { navigation, setCurrentOffer } = this.props;
+    const { navigation, setCurrentOfferPayload } = this.props;
     if (payload) {
-      setCurrentOffer(payload);
+      setCurrentOfferPayload(payload);
     }
     navigation.navigate(ScreensKeys.OfferDetail);
   };
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setCurrentOffer } = OfferActions;
+  const { setCurrentOfferPayload } = OfferActions;
   return bindActionCreators(
     {
-      setCurrentOffer,
+      setCurrentOfferPayload,
     },
     dispatch
   );

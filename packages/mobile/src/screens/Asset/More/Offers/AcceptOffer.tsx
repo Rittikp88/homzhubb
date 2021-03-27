@@ -1,21 +1,40 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer } from '@homzhub/common/src/domain/models/Offer';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  INegotiationPayload,
+  ListingType,
+  NegotiationAction,
+  NegotiationType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { acceptOffer } from '@homzhub/common/src/constants/ProspectProfile';
-import { offers } from '@homzhub/common/src/mocks/Offers';
 
-interface IState {
+interface IStateToProps {
+  offer: Offer | null;
+  listing: Asset | null;
+  compareData: IOfferCompare;
+}
+
+interface IScreenState {
   isBottomSheetVisible: boolean;
 }
 
@@ -23,9 +42,10 @@ interface IOwner {
   text: string;
 }
 
-type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.AcceptOffer>;
+type LibProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.AcceptOffer>;
+type Props = LibProps & IStateToProps;
 
-class AcceptOffer extends Component<Props, IState> {
+class AcceptOffer extends Component<Props, IScreenState> {
   public state = {
     isBottomSheetVisible: false,
   };
@@ -45,14 +65,15 @@ class AcceptOffer extends Component<Props, IState> {
   }
 
   private renderAcceptOffer = (): React.ReactElement => {
-    const { t } = this.props;
+    const { t, offer, listing, compareData } = this.props;
 
-    // TODO: Remove after API integration
-    const offerData = ObjectMapper.deserializeArray(Offer, offers);
+    if (!offer || !listing) {
+      return <EmptyState />;
+    }
 
     return (
       <View style={styles.container}>
-        <OfferCard offer={offerData[0]} isFromAccept />
+        <OfferCard offer={offer} asset={listing} isFromAccept compareData={compareData} />
         <Button
           type="primary"
           iconSize={20}
@@ -70,7 +91,10 @@ class AcceptOffer extends Component<Props, IState> {
 
   public renderBottomSheet = (): React.ReactNode => {
     const { isBottomSheetVisible } = this.state;
-    const { t } = this.props;
+    const { t, offer } = this.props;
+
+    const info = offer && offer.isAssetOwner ? acceptOffer.owner : acceptOffer.tenant;
+
     return (
       <BottomSheet
         visible={isBottomSheetVisible}
@@ -92,8 +116,7 @@ class AcceptOffer extends Component<Props, IState> {
             <Label type="large" textType="semiBold" style={styles.marginVertical}>
               {t('offers:keepInMind')}
             </Label>
-
-            {acceptOffer.tenant.map((item: IOwner, index: number) => {
+            {info.map((item: IOwner, index: number) => {
               return (
                 <View key={index} style={styles.textView}>
                   <Label key={index} type="large" textType="regular" style={styles.text}>
@@ -105,8 +128,9 @@ class AcceptOffer extends Component<Props, IState> {
           </View>
           <Button
             type="primary"
-            title={t('offers:acceptAndLease')}
+            title={t('offers:acceptOffer')}
             containerStyle={[styles.button, styles.marginVertical]}
+            onPress={this.handleAcceptOffer}
           />
         </ScrollView>
       </BottomSheet>
@@ -120,9 +144,45 @@ class AcceptOffer extends Component<Props, IState> {
   public onCloseBottomSheet = (): void => {
     this.setState({ isBottomSheetVisible: false });
   };
+
+  public handleAcceptOffer = async (): Promise<void> => {
+    const { t, listing, offer, navigation } = this.props;
+    if (!listing || !offer) return;
+    const { saleTerm, leaseTerm } = listing;
+    const payload: INegotiationPayload = {
+      param: {
+        listingType: saleTerm ? ListingType.SALE_LISTING : ListingType.LEASE_LISTING,
+        listingId: saleTerm ? saleTerm.id : leaseTerm?.id ?? 0,
+        negotiationType: saleTerm ? NegotiationType.SALE_NEGOTIATIONS : NegotiationType.LEASE_NEGOTIATIONS,
+        negotiationId: offer.id,
+      },
+      data: {
+        action: NegotiationAction.ACCEPT,
+        payload: {},
+      },
+    };
+    try {
+      await OffersRepository.updateNegotiation(payload);
+      this.onCloseBottomSheet();
+      navigation.goBack();
+      AlertHelper.success({ message: t('offers:offerAcceptedSuccess') });
+    } catch (e) {
+      this.onCloseBottomSheet();
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
 }
 
-export default withTranslation()(AcceptOffer);
+const mapStateToProps = (state: IState): IStateToProps => {
+  const { getCurrentOffer, getListingDetail, getOfferCompareData } = OfferSelectors;
+  return {
+    offer: getCurrentOffer(state),
+    listing: getListingDetail(state),
+    compareData: getOfferCompareData(state),
+  };
+};
+
+export default connect(mapStateToProps, null)(withTranslation()(AcceptOffer));
 
 const styles = StyleSheet.create({
   container: {

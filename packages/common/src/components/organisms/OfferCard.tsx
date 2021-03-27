@@ -7,17 +7,21 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import TextWithIcon from '@homzhub/common/src/components/atoms/TextWithIcon';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IProps {
   offer: Offer;
   compareData: IOfferCompare;
+  asset?: Asset;
   isFromAccept?: boolean;
   onPressAction?: (action: OfferAction) => void;
   containerStyle?: StyleProp<ViewStyle>;
@@ -25,6 +29,7 @@ interface IProps {
 
 interface IOwnState {
   hasMore: boolean;
+  isReasonSheetVisible: boolean;
 }
 
 type Props = IProps & WithTranslation;
@@ -32,10 +37,11 @@ type Props = IProps & WithTranslation;
 class OfferCard extends Component<Props, IOwnState> {
   public state = {
     hasMore: false,
+    isReasonSheetVisible: false,
   };
 
   public render(): React.ReactElement {
-    const { hasMore } = this.state;
+    const { hasMore, isReasonSheetVisible } = this.state;
     const {
       t,
       offer: { canCounter },
@@ -58,6 +64,14 @@ class OfferCard extends Component<Props, IOwnState> {
             onPress={this.onInfoToggle}
           />
         )}
+        <BottomSheet
+          sheetHeight={450}
+          visible={isReasonSheetVisible}
+          headerTitle={t('rejectionReason')}
+          onCloseSheet={this.onCloseReason}
+        >
+          {this.renderReasonView()}
+        </BottomSheet>
       </View>
     );
   }
@@ -79,10 +93,11 @@ class OfferCard extends Component<Props, IOwnState> {
       },
       offer,
       compareData,
+      asset,
     } = this.props;
 
     const isOfferValid = validCount > 1;
-    const isOfferExpired = validCount < 1;
+    const isOfferExpired = validCount < 0;
 
     const offerValues = OfferUtils.getOfferValues(offer, compareData);
 
@@ -90,12 +105,12 @@ class OfferCard extends Component<Props, IOwnState> {
     return (
       <View style={styles.cardContainer}>
         <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
-        {isFromAccept ? (
+        {isFromAccept && asset ? (
           <PropertyAddressCountry
             isIcon
-            primaryAddress="Selway Apartments"
-            subAddress="2972 Westheimer Rd. Santa Ana, NY"
-            countryFlag={null}
+            primaryAddress={asset.projectName}
+            subAddress={asset.address}
+            countryFlag={asset.country.flag}
             containerStyle={styles.addressView}
           />
         ) : (
@@ -136,17 +151,17 @@ class OfferCard extends Component<Props, IOwnState> {
           {price < 1 && (
             <View style={styles.flexRow}>
               <TextWithIcon
-                text={t('common:minYear')}
+                text={t('common:minMonth')}
                 variant="label"
                 textSize="large"
-                value={`${minLockInPeriod} Year`}
+                value={`${minLockInPeriod} Month`}
                 containerStyle={styles.textContainer}
               />
               <TextWithIcon
-                text={t('common:totalYear')}
+                text={t('common:totalMonth')}
                 variant="label"
                 textSize="large"
-                value={`${leasePeriod} Year`}
+                value={`${leasePeriod} Month`}
                 containerStyle={[styles.textContainer, { marginHorizontal: 30 }]}
               />
             </View>
@@ -232,6 +247,15 @@ class OfferCard extends Component<Props, IOwnState> {
           })}
         </View>
         {canCounter && <Button type="primary" title={t('common:counter')} />}
+        {status === Status.REJECTED && (
+          <Button
+            type="primary"
+            title={t('seeRejectReason')}
+            containerStyle={styles.rejectionButton}
+            titleStyle={styles.rejectionTitle}
+            onPress={this.onViewReason}
+          />
+        )}
       </>
     );
   };
@@ -260,9 +284,57 @@ class OfferCard extends Component<Props, IOwnState> {
     );
   };
 
+  private renderReasonView = (): React.ReactElement => {
+    const {
+      t,
+      offer: { statusUpdatedAt, statusUpdatedBy, role, rejectComment, rejectReason },
+    } = this.props;
+    // TODO: (Shikha) - Add role logic
+    return (
+      <View style={styles.cardContainer}>
+        <Label type="large">{t('offerRejectOn')}</Label>
+        {!!statusUpdatedAt && (
+          <Label type="large" textType="semiBold" style={styles.textStyle}>
+            {DateUtils.getDisplayDate(statusUpdatedAt, 'MMM DD, YYYY')}
+          </Label>
+        )}
+        <Divider containerStyles={styles.verticalStyle} />
+        <Avatar fullName={statusUpdatedBy?.name} designation={role} />
+        {rejectReason && (
+          <View style={styles.valuesView}>
+            <Label type="large" textType="semiBold">
+              {t('rejectReasonLabel')}
+            </Label>
+            <Label type="large" style={styles.textStyle}>
+              {rejectReason.title}
+            </Label>
+          </View>
+        )}
+        {!!rejectComment && (
+          <View style={styles.verticalStyle}>
+            <Label type="large" textType="semiBold">
+              {t('additionalComment')}
+            </Label>
+            <Label type="large" style={styles.textStyle}>
+              {rejectComment}
+            </Label>
+          </View>
+        )}
+      </View>
+    );
+  };
+
   private onInfoToggle = (): void => {
     const { hasMore } = this.state;
     this.setState({ hasMore: !hasMore });
+  };
+
+  private onViewReason = (): void => {
+    this.setState({ isReasonSheetVisible: true });
+  };
+
+  private onCloseReason = (): void => {
+    this.setState({ isReasonSheetVisible: false });
   };
 }
 
@@ -359,5 +431,17 @@ const styles = StyleSheet.create({
   preferenceView: {
     flexDirection: 'row',
     marginBottom: 16,
+  },
+  rejectionButton: {
+    backgroundColor: theme.colors.transparent,
+  },
+  rejectionTitle: {
+    color: theme.colors.primaryColor,
+  },
+  textStyle: {
+    marginTop: 4,
+  },
+  verticalStyle: {
+    marginVertical: 16,
   },
 });

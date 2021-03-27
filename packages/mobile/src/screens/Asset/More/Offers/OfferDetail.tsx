@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
@@ -20,11 +20,13 @@ const OfferDetail = (): React.ReactElement => {
   const listingDetail = useSelector(OfferSelectors.getListingDetail);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (offerPayload) {
-      dispatch(OfferActions.getListingDetail(offerPayload));
-    }
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      if (offerPayload) {
+        dispatch(OfferActions.getListingDetail(offerPayload));
+      }
+    }, [offerPayload])
+  );
 
   const handleActions = (action: OfferAction): void => {
     switch (action) {

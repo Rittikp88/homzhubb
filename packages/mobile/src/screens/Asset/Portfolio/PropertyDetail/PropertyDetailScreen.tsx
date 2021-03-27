@@ -90,7 +90,7 @@ interface IDispatchProps {
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
   setCurrentChatDetail: (payload: IChatPayload) => void;
-  setCurrentOffer: (payload: ICurrentOffer) => void;
+  setCurrentOfferPayload: (payload: ICurrentOffer) => void;
 }
 
 interface IDetailState {
@@ -584,7 +584,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       setCurrentChatDetail,
       clearMessages,
       clearChatDetail,
-      setCurrentOffer,
+      setCurrentOfferPayload,
     } = this.props;
 
     if (!asset_id) {
@@ -616,7 +616,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           }
 
           if (info && (info.leaseListingId || info.saleListingId)) {
-            setCurrentOffer({
+            setCurrentOfferPayload({
               type: info.leaseListingId ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
               listingId: info.leaseListingId || info.saleListingId || 0,
             });
@@ -736,7 +736,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   } = RecordAssetActions;
   const { clearAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
-  const { setCurrentOffer } = OfferActions;
+  const { setCurrentOfferPayload } = OfferActions;
   return bindActionCreators(
     {
       setAssetId,
@@ -748,7 +748,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       clearChatDetail,
       clearMessages,
       setCurrentChatDetail,
-      setCurrentOffer,
+      setCurrentOfferPayload,
     },
     dispatch
   );

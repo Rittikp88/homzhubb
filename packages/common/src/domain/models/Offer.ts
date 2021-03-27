@@ -3,10 +3,10 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { IProspectProfile, ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 import { ITenantPreference, TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
-// TODO: (Shikha) Verify status with BE
 export enum Status {
-  PENDING = 'PENDING',
+  PENDING = 'NEW',
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',
 }
@@ -25,6 +25,7 @@ export interface IOfferValue {
 }
 
 export interface IOffer {
+  id?: number;
   prospect: IProspectProfile;
   created_at: string;
   expires_at: string;
@@ -41,13 +42,17 @@ export interface IOffer {
   status?: string;
   role?: string;
   status_updated_at?: string;
-  status_updated_by?: string;
+  status_updated_by?: IUser;
   can_counter?: boolean;
+  is_asset_owner?: boolean;
   user?: IUser;
 }
 
 @JsonObject('Offer')
 export class Offer {
+  @JsonProperty('id', Number, true)
+  private _id = -1;
+
   @JsonProperty('prospect', ProspectProfile, true)
   private _prospect = new ProspectProfile();
 
@@ -96,14 +101,27 @@ export class Offer {
   @JsonProperty('status_updated_at', String, true)
   private _statusUpdatedAt = null;
 
-  @JsonProperty('status_updated_by', String, true)
+  @JsonProperty('status_updated_by', User, true)
   private _statusUpdatedBy = null;
 
   @JsonProperty('can_counter', Boolean, true)
   private _canCounter = false;
 
+  @JsonProperty('is_asset_owner', Boolean, true)
+  private _isAssetOwner = false;
+
   @JsonProperty('user', User, true)
   private _user = new User();
+
+  @JsonProperty('reject_comment', String, true)
+  private _rejectComment = '';
+
+  @JsonProperty('reject_reason', Unit, true)
+  private _rejectReason = null;
+
+  get id(): number {
+    return this._id;
+  }
 
   get prospect(): ProspectProfile {
     return this._prospect;
@@ -169,7 +187,7 @@ export class Offer {
     return this._statusUpdatedAt;
   }
 
-  get statusUpdatedBy(): string | null {
+  get statusUpdatedBy(): User | null {
     return this._statusUpdatedBy;
   }
 
@@ -190,5 +208,17 @@ export class Offer {
     // TODO: Add translation
     const text = count > 1 ? 'days' : 'day';
     return `${count} ${text}`;
+  }
+
+  get isAssetOwner(): boolean {
+    return this._isAssetOwner;
+  }
+
+  get rejectComment(): string {
+    return this._rejectComment;
+  }
+
+  get rejectReason(): Unit | null {
+    return this._rejectReason;
   }
 }

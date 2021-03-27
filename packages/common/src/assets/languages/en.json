@@ -237,7 +237,9 @@
     "ownerInfo": "Owner Info",
     "tenantInfo": "Tenant Info",
     "minYear": "Min Year:",
+    "minMonth": "Min Month:",
     "totalYear": "Total Year:",
+    "totalMonth": "Total Month:",
     "counter": "Counter",
     "additionalComment": "Additional comments"
   },
@@ -1138,6 +1140,13 @@
     "selectType": "Select Type",
     "selectProperty": "Select Property",
     "noOfferReceived": "No Offer Received",
-    "noOfferMade": "No Offer Made"
+    "noOfferMade": "No Offer Made",
+    "offerRejectOn": "This offer was rejected on:",
+    "rejectReasonLabel": "Reject Reason:",
+    "additionalComment": "Additional Comments:",
+    "offerAcceptedSuccess": "Offer Accepted Successfully",
+    "offerRejectedSuccess": "Offer Rejected Successfully",
+    "rejectionReason": "Reason for Rejection",
+    "seeRejectReason": "See Reject Reason"
   }
 }
