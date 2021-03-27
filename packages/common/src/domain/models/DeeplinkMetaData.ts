@@ -7,6 +7,7 @@ export enum NotificationType {
   PROPERTY_PREVIEW = 'PROPERTY_PREVIEW',
   REVIEW_AND_RATING = 'REVIEW_AND_RATING',
   SERVICE_TICKET = 'SERVICE_TICKET',
+  OFFER = 'OFFER',
 }
 
 @JsonObject('DeeplinkMetaData')

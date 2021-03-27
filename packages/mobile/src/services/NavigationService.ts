@@ -3,11 +3,14 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { CommonActions as StoreCommonActions } from '@homzhub/common/src/modules/common/actions';
 import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
+import { ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 
 class NavigationService {
   private navigator: any;
@@ -129,6 +132,16 @@ class NavigationService {
           },
         });
         break;
+      case DynamicLinkTypes.Offer:
+        store.dispatch(OfferActions.setCurrentOfferPayload(this.getOfferRedirectionPayload(url)));
+        this.navigateTo(ScreensKeys.BottomTabs, {
+          screen: ScreensKeys.More,
+          params: {
+            screen: ScreensKeys.OfferDetail,
+            initial: false,
+          },
+        });
+        break;
       default:
         AlertHelper.error({ message: I18nService.t('common:invalidLink') });
         break;
@@ -208,6 +221,19 @@ class NavigationService {
     }
 
     return match[0].split('=')[1];
+  };
+
+  private getOfferRedirectionPayload = (url: string): ICurrentOffer => {
+    if (url.includes(DynamicLinkParamKeys.LeaseListingId)) {
+      return {
+        type: ListingType.LEASE_LISTING,
+        listingId: Number(this.getValueOfParamFromUrl(DynamicLinkParamKeys.LeaseListingId, url)),
+      };
+    }
+    return {
+      type: ListingType.SALE_LISTING,
+      listingId: Number(this.getValueOfParamFromUrl(DynamicLinkParamKeys.SaleListingId, url)),
+    };
   };
 
   public notificationNavigation = (routeName: string, params: any = {}, tabName?: string): void => {

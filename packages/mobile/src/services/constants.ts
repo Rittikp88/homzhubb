@@ -9,6 +9,7 @@ export enum DynamicLinkTypes {
   PropertyVisitReview = 'PROPERTY_VISIT_REVIEW',
   TenantInvitation = 'TENANT_INVITATION',
   ServiceTicket = 'SERVICE_TICKET',
+  Offer = 'OFFER',
 }
 
 export enum RouteTypes {
@@ -25,6 +26,10 @@ export enum DynamicLinkParamKeys {
   VisitId = 'visitId',
   InviteId = 'inviteId',
   TicketId = 'ticketId',
+  SaleListingId = 'sale_listing_id',
+  SaleNegotiationId = 'sale_negotiation_id',
+  LeaseListingId = 'lease_listing_id',
+  LeaseNegotiationId = 'lease_negotiation_id',
 }
 
 // Enums related to dynamic linking - ends

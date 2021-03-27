@@ -8,6 +8,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
@@ -23,6 +24,8 @@ import {
 import { NotificationType } from '@homzhub/common/src/domain/models/DeeplinkMetaData';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -31,6 +34,7 @@ interface IDispatchProps {
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setFilter: (payload: IFilter) => void;
   setCurrentTicket: (payload: ICurrentTicket) => void;
+  setCurrentOfferPayload: (payload: ICurrentOffer) => void;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
@@ -111,7 +115,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
   public onNotificationClicked = async (data: NotificationModel): Promise<void> => {
     const { notifications } = this.state;
-    const { navigation, setFilter, setCurrentTicket } = this.props;
+    const { navigation, setFilter, setCurrentTicket, setCurrentOfferPayload } = this.props;
     const {
       id,
       deeplinkMetadata: { objectId, type, assetId, leaseListingId, saleListingId },
@@ -145,6 +149,19 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
         screen: ScreensKeys.More,
         params: {
           screen: ScreensKeys.ServiceTicketDetail,
+          initial: false,
+        },
+      });
+    } else if (type === NotificationType.OFFER) {
+      setCurrentOfferPayload({
+        type: leaseListingId === -1 ? ListingType.SALE_LISTING : ListingType.LEASE_LISTING,
+        listingId: leaseListingId === -1 ? saleListingId : leaseListingId,
+      });
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.More,
+        params: {
+          screen: ScreensKeys.OfferDetail,
           initial: false,
         },
       });
@@ -205,7 +222,8 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentAsset } = PortfolioActions;
   const { setFilter } = SearchActions;
   const { setCurrentTicket } = TicketActions;
-  return bindActionCreators({ setCurrentAsset, setFilter, setCurrentTicket }, dispatch);
+  const { setCurrentOfferPayload } = OfferActions;
+  return bindActionCreators({ setCurrentAsset, setFilter, setCurrentTicket, setCurrentOfferPayload }, dispatch);
 };
 
 export default connect(
