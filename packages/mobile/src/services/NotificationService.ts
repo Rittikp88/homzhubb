@@ -3,18 +3,20 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
-import { StorageService, StorageKeys } from '@homzhub/common/src/services/storage/StorageService';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { NotificationTypes } from '@homzhub/mobile/src/services/constants';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IDeviceTokenPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IDeviceTokenPayload, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const notificationScreenMap = {
   [NotificationTypes.Chat]: ScreensKeys.ChatScreen,
   [NotificationTypes.ServiceTicket]: ScreensKeys.ServiceTicketDetail,
+  [NotificationTypes.Offer]: ScreensKeys.OfferDetail,
 };
 
 interface INotificationData {
@@ -195,6 +197,21 @@ class NotificationService {
           store.dispatch(
             TicketActions.setCurrentTicket({
               ticketId: Number(object_id),
+            })
+          );
+
+          NavigationService.notificationNavigation(screeName, params, navigationTab);
+        }
+        break;
+      case NotificationTypes.Offer:
+        {
+          const { lease_listing_id, sale_listing_id } = JSONDeeplinkData;
+          navigationTab = ScreensKeys.More;
+
+          store.dispatch(
+            OfferActions.setCurrentOfferPayload({
+              type: lease_listing_id ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+              listingId: Number(lease_listing_id) ?? Number(sale_listing_id) ?? 0,
             })
           );
 
