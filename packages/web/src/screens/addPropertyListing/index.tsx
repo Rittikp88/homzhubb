@@ -61,8 +61,6 @@ const AddPropertyListing = (): React.ReactElement => {
     location: { state },
   } = history;
 
-
-  
   const { t } = useTranslation();
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);
@@ -70,16 +68,13 @@ const AddPropertyListing = (): React.ReactElement => {
   const Tablet = useOnly(deviceBreakpoint.TABLET);
 
   useEffect(() => {
-    if(state)
-    {
-      const {previousScreen} = state;
+    if (state) {
+      const { previousScreen } = state;
       if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
         setScene(ComponentName.Add_Listing_Detail);
       }
     }
-  
   });
- 
 
   // TODO: remove the commented code once the API issue from chrome is resolved
 

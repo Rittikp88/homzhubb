@@ -126,7 +126,16 @@ export const PendingPropertiesCard: FC<IProps> = ({
   };
 
   const renderPopOverContent = (): React.ReactElement => {
-    return <PopupMenuOptions options={actionButtons} onMenuOptionPress={selectSort} labelType="regular" />;
+    return (
+      <View style={styles.popupMenu}>
+        <PopupMenuOptions
+          options={actionButtons}
+          onMenuOptionPress={selectSort}
+          labelType="regular"
+          itemStyle={!isMobile && styles.itemStyleMobile}
+        />
+      </View>
+    );
   };
 
   const plan = actionButtons.find((item) => item.type === type);
@@ -368,7 +377,15 @@ const styles = StyleSheet.create({
   progress: {
     marginHorizontal: 16,
   },
-  takeActionContainer :{
-    marginTop: 'auto' 
-  }
+  takeActionContainer: {
+    marginTop: 'auto',
+  },
+  itemStyleMobile: {
+    width: 550,
+    justifyContent: 'center',
+  },
+  popupMenu: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

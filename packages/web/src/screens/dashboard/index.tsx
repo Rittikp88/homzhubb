@@ -27,7 +27,6 @@ import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { IActions } from '@homzhub/common/src/domain/models/AssetPlan';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-
 const Dashboard: FC = () => {
   const history = useHistory();
   const notMobile = useUp(deviceBreakpoint.TABLET);

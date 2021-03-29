@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -24,6 +24,7 @@ interface IProps<T extends IPopupOptions> {
   from?: string;
   autoDetect?: () => void;
   labelType?: TextSizeType;
+  itemStyle?: StyleProp<ViewStyle>;
 }
 
 const PopupMenuOptions = <T extends IPopupOptions>({
@@ -32,6 +33,7 @@ const PopupMenuOptions = <T extends IPopupOptions>({
   from,
   autoDetect,
   labelType = 'large',
+  itemStyle = {},
 }: IProps<T>): React.ReactElement => {
   const { primaryColor, darkTint4 } = theme.colors;
   const { t } = useTranslation();
@@ -56,7 +58,7 @@ const PopupMenuOptions = <T extends IPopupOptions>({
           {(isHovered: boolean): React.ReactNode => (
             <TouchableOpacity
               onPress={(): void => onMenuOptionPress(item)}
-              style={[styles.option, isHovered && styles.activeOption]}
+              style={[styles.option, isHovered && styles.activeOption, itemStyle]}
             >
               {item.icon && <Icon name={item.icon} color={isHovered ? primaryColor : darkTint4} style={styles.icon} />}
               <Label

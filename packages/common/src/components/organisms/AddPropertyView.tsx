@@ -77,6 +77,9 @@ class AddPropertyView extends Component<Props, IScreenState> {
     super(props);
     const { getAssetById, getAssetGroups, previousScreen, screenHeight } = this.props;
     const height = screenHeight as number;
+
+    getAssetGroups();
+
     if (previousScreen && previousScreen === ScreensKeys.Dashboard) {
       getAssetGroups();
     }

@@ -47,6 +47,11 @@ interface IPopupData {
   title: string;
 }
 
+interface IPopupData {
+  label: string;
+  title: string;
+}
+
 export enum UpdatePropertyFormTypes {
   CancelListing = 'CANCEL_LISTING',
   TerminateListing = 'TERMINATE_LISTING',
