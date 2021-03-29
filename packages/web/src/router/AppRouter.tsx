@@ -14,6 +14,7 @@ import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerificati
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
+import FAQ from '@homzhub/web/src/screens/faq';
 
 export const AppRouter = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ export const AppRouter = (): React.ReactElement => {
     OTP_VERIFICATION,
     MOBILE_VERIFICATION,
     MAHARASHTRA_CONNECT,
+    FAQS,
   } = RouteNames.publicRoutes;
   const { DASHBOARD } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
@@ -45,6 +47,7 @@ export const AppRouter = (): React.ReactElement => {
         <Route exact path={TERMS_CONDITION} component={TermsAndCondition} />
         <Route exact path={PRIVACY_POLICY} component={PrivacyPolicy} />
         <Route exact path={MAHARASHTRA_CONNECT} component={MicroSite} />
+        <Route exact path={FAQS} component={FAQ} />
         {isDebugMode && (
           <>
             <Route exact path={LOGIN} component={Login} />

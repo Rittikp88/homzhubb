@@ -241,7 +241,14 @@
     "totalYear": "Total Year:",
     "totalMonth": "Total Month:",
     "counter": "Counter",
-    "additionalComment": "Additional comments"
+    "additionalComment": "Additional comments",
+    "faqBannerText": "Hello, how can we help?",
+    "haveQuestion": "You still have a question?",
+    "faqText": "If you cannot find answer to your question in our FAQ, you can always contact us. We will answer to you shortly!",
+    "happyToHelp": "We are always happy to help.",
+    "answerFaster": "The best way to get answer faster.",
+    "faqSearchPlaceholder": "Ask a question...",
+    "questionSymbol": "Q."
   },
   "auth": {
     "verifyNumber": "Verify your number",

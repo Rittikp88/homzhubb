@@ -12,6 +12,7 @@ export const RouteNames = {
     PRIVACY_POLICY: '/privacyPolicy',
     UPLOAD: '/upload',
     MAHARASHTRA_CONNECT: '/maharashtra_connect',
+    FAQS: '/faqs',
   },
   protectedRoutes: {
     /* Mention protected route names here */
