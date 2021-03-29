@@ -63,7 +63,7 @@ const leaseListingExpectationData = (
     },
     {
       title: t('property:annualIncrementSuffix'),
-      value: annualRentIncrementPercentage ? `${annualRentIncrementPercentage}%` : '',
+      value: annualRentIncrementPercentage ? `${annualRentIncrementPercentage}%` : 'NA',
     },
     {
       title: t('property:moveInDate'),

@@ -100,6 +100,8 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
   [ScreensKeys.ManageTenantScreen]: IManageTenantProps;
   [ScreensKeys.UpdateLeaseScreen]: IEditLeaseProps;
+  [ScreensKeys.AcceptOffer]: undefined;
+  [ScreensKeys.RejectOffer]: undefined;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -175,6 +177,8 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
       <PortfolioNavigator.Screen name={ScreensKeys.ManageTenantScreen} component={ManageTenantScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.UpdateLeaseScreen} component={UpdateLeaseTerm} />
+      <PortfolioNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
+      <PortfolioNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
     </PortfolioNavigator.Navigator>
   );
 };

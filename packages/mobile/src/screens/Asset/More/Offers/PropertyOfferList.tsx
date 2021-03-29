@@ -198,7 +198,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     const isCardExpanded = index === 0;
     const { offerType } = this.state;
     let payload: ICurrentOffer | null = null;
-    const { saleTerm, leaseTerm } = item;
+    const { saleTerm, leaseTerm, id } = item;
     if (saleTerm) {
       payload = {
         type: ListingType.SALE_LISTING,
@@ -218,12 +218,12 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
             isCardExpanded={isCardExpanded}
             propertyOffer={item}
             containerStyles={separatorStyle}
-            onViewOffer={(): void => this.navigateToDetail(payload)}
+            onViewOffer={(): void => this.navigateToDetail(payload, id)}
           />
         );
       case OfferType.OFFER_MADE:
       default:
-        return <OfferMade propertyOffer={item} onViewOffer={(): void => this.navigateToDetail(payload)} />;
+        return <OfferMade propertyOffer={item} onViewOffer={(): void => this.navigateToDetail(payload, id)} />;
     }
   };
 
@@ -409,12 +409,33 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     ];
   };
 
-  private navigateToDetail = (payload: ICurrentOffer | null): void => {
-    const { navigation, setCurrentOfferPayload } = this.props;
-    if (payload) {
-      setCurrentOfferPayload(payload);
+  private navigateToDetail = (payload: ICurrentOffer | null, assetId: number): void => {
+    const { t, navigation, setCurrentOfferPayload } = this.props;
+    const { offerType } = this.state;
+    const isValidListing = payload && payload.listingId > 0;
+    if (!isValidListing) {
+      AlertHelper.error({ message: t('property:listingNotValid') });
+      return;
     }
-    navigation.navigate(ScreensKeys.OfferDetail);
+    if (offerType === OfferType.OFFER_MADE) {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.Search,
+        params: {
+          screen: ScreensKeys.PropertyAssetDescription,
+          initial: false,
+          params: {
+            propertyTermId: payload?.listingId,
+            propertyId: assetId,
+          },
+        },
+      });
+    } else {
+      if (payload) {
+        setCurrentOfferPayload(payload);
+      }
+      navigation.navigate(ScreensKeys.OfferDetail);
+    }
   };
 }
 

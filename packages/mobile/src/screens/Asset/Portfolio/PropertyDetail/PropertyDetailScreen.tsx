@@ -733,18 +733,10 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { navigation } = this.props;
     switch (action) {
       case OfferAction.ACCEPT:
-        // @ts-ignore
-        navigation.navigate(ScreensKeys.More, {
-          screen: ScreensKeys.AcceptOffer,
-          initial: false,
-        });
+        navigation.navigate(ScreensKeys.AcceptOffer);
         break;
       case OfferAction.REJECT:
-        // @ts-ignore
-        navigation.navigate(ScreensKeys.More, {
-          screen: ScreensKeys.RejectOffer,
-          initial: false,
-        });
+        navigation.navigate(ScreensKeys.RejectOffer);
         break;
       default:
         FunctionUtils.noop();

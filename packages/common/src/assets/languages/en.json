@@ -583,7 +583,8 @@
     "propertyDeleted": "Property Deleted Successfully",
     "assetIdWarning": "Please use correct asset id",
     "sellingPrice": "Selling Price",
-    "moveInDate": "Move in date"
+    "moveInDate": "Move in date",
+    "listingNotValid": "Listing is no longer available"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

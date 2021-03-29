@@ -158,14 +158,14 @@ class OfferCard extends Component<Props, IOwnState> {
                 variant="label"
                 textSize="large"
                 value={`${minLockInPeriod} Months`}
-                containerStyle={styles.textContainer}
+                containerStyle={[styles.textContainer, { marginRight: 10 }]}
               />
               <TextWithIcon
                 text={t('common:totalMonth')}
                 variant="label"
                 textSize="large"
                 value={`${leasePeriod} Months`}
-                containerStyle={[styles.textContainer, { marginHorizontal: 10 }]}
+                containerStyle={styles.textContainer}
               />
             </View>
           )}

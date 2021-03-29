@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
@@ -42,8 +42,10 @@ const OfferMade = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onViewOffer}>
-      <PropertyCard asset={propertyOffer} isExpanded containerStyle={styles.cardContainer} />
+    <View style={styles.container}>
+      <TouchableOpacity onPress={onViewOffer}>
+        <PropertyCard asset={propertyOffer} isExpanded containerStyle={styles.cardContainer} />
+      </TouchableOpacity>
       {offer && (
         <OfferCard
           offer={offer}
@@ -54,7 +56,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
         />
       )}
       <Divider containerStyles={styles.divider} />
-    </TouchableOpacity>
+    </View>
   );
 };
 
