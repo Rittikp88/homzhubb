@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useUp, useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import InfiniteScrollView from '@homzhub/web/src/components/hoc/InfiniteScroll';
-import PropertySearchCard from '@homzhub/web/src/screens/searchProperty/components/PropertySearchCard';
+import PropertyCard from '@homzhub/web/src/screens/searchProperty/components/PropertyCard';
 import SearchMapView from '@homzhub/web/src/screens/searchProperty/components/SearchMapView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
@@ -19,6 +19,8 @@ interface IProps {
   loader: boolean;
 }
 
+const noStyles = {};
+
 const PropertiesView: FC<IProps> = (props: IProps) => {
   const { isListView, property, fetchData, hasMore, limit, transaction_type, loader } = props;
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
@@ -28,7 +30,7 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       {isListView && isDesktop && <SearchMapView />}
-      <View style={isListView ? styles.containerList : styles.containerGrid}>
+      <View style={[styles.containerGrid, isListView && isMobile ? styles.containerListMobile : styles.containerList]}>
         <View style={styles.subContainerGrid}>
           <InfiniteScrollView
             data={property.results.length}
@@ -47,20 +49,28 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
                   isMobile && isListView && styles.cardListMobile,
                   isTab && !isListView && styles.cardGridTab,
                   isMobile && !isListView && styles.cardGridMobile,
+                  isTab && isListView && styles.listViewTablet,
                 ]}
               >
-                <PropertySearchCard
+                <PropertyCard
                   key={item.id}
                   investmentData={item}
-                  containerStyleProp={isListView && !isMobile ? styles.listView : styles.cardView}
+                  containerStyle={[styles.propertyCard, isListView && !isMobile ? styles.listView : styles.cardView]}
                   cardImageCarouselStyle={
                     isListView ? styles.cardImageCarouselStyleList : styles.cardImageCarouselStyleGrid
                   }
                   cardImageStyle={isListView ? styles.cardImageStyleList : styles.cardImageStyleGrid}
                   priceUnit={transaction_type === 0 ? 'mo' : ''}
-                  addressContainerStyleProp={isListView ? styles.addressContainerStyleProp : undefined}
-                  subContainerStyleProp={isListView ? styles.subContainerStyleProp : undefined}
-                  propertyAddressContainerStyle={isListView ? styles.propertyAddressContainerStyle : undefined}
+                  propertyTypeAndBadgesStyle={styles.propertyTypeAndBadges}
+                  priceAndAmenitiesStyle={isListView ? styles.priceAndAmenitiesList : styles.priceAndAmenitiesGrid}
+                  propertyAmenitiesStyle={styles.propertyAmenities}
+                  addressStyle={[styles.address, !isListView ? styles.addressGridView : noStyles]}
+                  detailsStyle={[
+                    styles.details,
+                    isListView && isDesktop ? styles.detailsListView : noStyles,
+                    isListView && isTab ? styles.detailsListTabView : noStyles,
+                    isListView && isMobile ? styles.detailsListMobileView : noStyles,
+                  ]}
                 />
               </View>
             ))}
@@ -79,9 +89,12 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   containerList: {
-    width: '45vw',
+    width: '55%',
     flexDirection: 'column',
     height: '1200px',
+  },
+  containerListMobile: {
+    width: '100%',
   },
   containerGrid: {
     flex: 1,
@@ -94,21 +107,17 @@ const styles = StyleSheet.create({
   },
   cardList: {
     width: '45vw',
+    alignItems: 'stretch',
+    paddingHorizontal: 16,
   },
   cardListMobile: {
     width: '85vw',
-  },
-  infiniteGrid: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    width: theme.layout.dashboardWidth,
-    backgroundColor: 'red',
   },
   cardGrid: {
     display: 'flex',
     width: '31%',
     marginLeft: 18,
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
     alignSelf: 'flex-start',
   },
   cardGridTab: {
@@ -139,17 +148,52 @@ const styles = StyleSheet.create({
   },
   cardView: {
     flexDirection: 'column',
+    minHeight: 450,
   },
-  listViewDetails: {
-    height: 230,
+
+  propertyCard: {
+    backgroundColor: theme.colors.white,
+    borderRadius: 4,
+    padding: 10,
+    marginHorizontal: 8,
+    marginVertical: 8,
   },
-  addressContainerStyleProp: {
-    flexDirection: 'column',
+  priceAndAmenitiesList: {
+    justifyContent: 'space-between',
   },
-  subContainerStyleProp: {
-    width: '45%',
+  priceAndAmenitiesGrid: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  propertyAddressContainerStyle: {
-    paddingTop: 36,
+  propertyAmenities: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
+  propertyTypeAndBadges: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 12,
+  },
+  address: {
+    marginTop: 5,
+    marginBottom: 16,
+  },
+  addressGridView: {
+    minHeight: 125,
+  },
+  details: {
+    marginLeft: 16,
+  },
+  detailsListTabView: {
+    width: '40vw',
+  },
+  detailsListView: {
+    width: '20vw',
+  },
+  detailsListMobileView: {
+    width: '60vw',
+  },
+  listViewTablet: {
+    width: '100%',
   },
 });
