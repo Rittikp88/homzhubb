@@ -19,6 +19,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import OfferForm from '@homzhub/common/src/components/organisms/OfferForm';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IOfferManagementParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const SubmitOfferForm = (): React.ReactElement => {
   const { goBack, navigate } = useNavigation();
@@ -32,12 +33,19 @@ const SubmitOfferForm = (): React.ReactElement => {
   const [loading, setLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   useEffect(() => {
+    let param: IOfferManagementParam;
+    if (asset) {
+      param = {
+        ...(asset.leaseTerm && { lease_listing_id: asset.leaseTerm.id }),
+        ...(asset.saleTerm && { sale_listing_id: asset.saleTerm.id }),
+      };
+    }
     const getOfferCount = async (): Promise<void> => {
       try {
         setLoading(true);
         const {
           offerLeft: { sale, lease },
-        } = await OffersRepository.getOfferData();
+        } = await OffersRepository.getOfferData(param);
         setLoading(false);
         setCount(isRentFlow ? lease : sale);
       } catch (e) {
@@ -86,6 +94,7 @@ const SubmitOfferForm = (): React.ReactElement => {
       contentContainerStyle={styles.screen}
     >
       {/* Todo : handle ts error  */}
+      {/* @ts-ignore */}
       {isFocused && <OfferForm onPressTerms={handleTermsCondition} onSuccess={onSuccess} offersLeft={count} />}
       {isSuccess && (
         <BottomSheet visible={isSuccess} onCloseSheet={onCloseBottomSheet} sheetHeight={400}>

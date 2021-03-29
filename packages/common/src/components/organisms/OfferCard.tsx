@@ -295,7 +295,7 @@ class OfferCard extends Component<Props, IOwnState> {
   private renderReasonView = (): React.ReactElement => {
     const {
       t,
-      offer: { statusUpdatedAt, statusUpdatedBy, role, rejectComment, rejectReason },
+      offer: { statusUpdatedAt, statusUpdatedBy, rejectComment, rejectReason },
     } = this.props;
     // TODO: (Shikha) - Add role logic
     return (
@@ -307,7 +307,7 @@ class OfferCard extends Component<Props, IOwnState> {
           </Label>
         )}
         <Divider containerStyles={styles.verticalStyle} />
-        <Avatar fullName={statusUpdatedBy?.name} designation={role} />
+        <Avatar fullName={statusUpdatedBy?.name} designation={t('property:owner')} />
         {rejectReason && (
           <View style={styles.valuesView}>
             <Label type="large" textType="semiBold">

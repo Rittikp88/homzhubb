@@ -927,4 +927,9 @@ export interface ISubmitOffer {
   param: INegotiationParam;
   data: ISubmitOfferLease | ISubmitOfferSell;
 }
+
+export interface IOfferManagementParam {
+  sale_listing_id?: number;
+  lease_listing_id?: number;
+}
 // OFFERS END

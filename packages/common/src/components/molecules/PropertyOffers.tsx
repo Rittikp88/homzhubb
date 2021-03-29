@@ -63,7 +63,7 @@ const leaseListingExpectationData = (
     },
     {
       title: t('property:annualIncrementSuffix'),
-      value: `${annualRentIncrementPercentage}%`,
+      value: annualRentIncrementPercentage ? `${annualRentIncrementPercentage}%` : '',
     },
     {
       title: t('property:moveInDate'),
@@ -187,15 +187,17 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
       ? leaseListingExpectationData(leaseTerm, currencySymbol, t)
       : saleListingExpectationData(saleTerm, currencySymbol, t);
 
+    const filteredData = expectationData?.filter((item) => item.value);
+
     return (
       <>
         <Divider containerStyles={styles.divider} />
         <Label textType="semiBold" type="large" style={[styles.expectationHeading, styles.tintColor]}>
           {`${t('offers:yourExpectationFor')} ${projectName}`}
         </Label>
-        {expectationData && (
+        {filteredData && (
           <FlatList
-            data={expectationData}
+            data={filteredData}
             renderItem={this.renderExpectedItem}
             keyExtractor={this.renderKeyExtractor}
             numColumns={2}
@@ -216,6 +218,7 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
 
     if (title === t('moreSettings:preferencesText')) {
       const preferences = value as TenantPreference[];
+      if (!preferences.length) return null;
       return (
         <View>
           <Label textType="regular" type="small" style={styles.tintColor}>

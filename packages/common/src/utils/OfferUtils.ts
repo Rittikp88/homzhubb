@@ -5,9 +5,10 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IOfferValue, Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
-import { OfferFilter, OfferSort } from '@homzhub/common/src/constants/Offers';
+import { MadeSort, OfferFilter, OfferSort } from '@homzhub/common/src/constants/Offers';
 
 interface IActionStyle {
   title: string;
@@ -199,6 +200,7 @@ class OfferUtils {
     };
   };
 
+  // Filter By logic for Offer Detail Section
   public getFilteredOffer = (key: string, data: Offer[]): Offer[] => {
     switch (key) {
       case OfferFilter.PENDING_ACTION:
@@ -217,12 +219,47 @@ class OfferUtils {
     }
   };
 
+  // Sort By logic for Offer Detail Section
   public getSortedOffer = (key: string, data: Offer[]): Offer[] => {
     switch (key) {
       case OfferSort.OLDEST:
         return data.slice().sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
       case OfferSort.NEWEST:
         return data.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      case OfferSort.BEST:
+        return data.slice().sort((a, b) => (b.rent || b.price) - (a.rent || a.price));
+      default:
+        return data;
+    }
+  };
+
+  // Sort By logic for Offer Made Section
+  public getSortedOfferMade = (key: string, data: Asset[]): Asset[] => {
+    switch (key) {
+      case MadeSort.NEWEST:
+        return data
+          .slice()
+          .sort(
+            (a, b) =>
+              new Date(b.leaseNegotiation?.createdAt || b.saleNegotiation?.createdAt || '').getTime() -
+              new Date(a.leaseNegotiation?.createdAt || a.saleNegotiation?.createdAt || '').getTime()
+          );
+      case MadeSort.HIGH_LOW:
+        return data
+          .slice()
+          .sort(
+            (a, b) =>
+              (b.leaseNegotiation?.rent || b.saleNegotiation?.price || 0) -
+              (a.leaseNegotiation?.rent || a.saleNegotiation?.price || 0)
+          );
+      case MadeSort.LOW_HIGH:
+        return data
+          .slice()
+          .sort(
+            (a, b) =>
+              (a.leaseNegotiation?.rent || a.saleNegotiation?.price || 0) -
+              (b.leaseNegotiation?.rent || b.saleNegotiation?.price || 0)
+          );
       default:
         return data;
     }

@@ -9,6 +9,7 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import {
   INegotiationParam,
   INegotiationPayload,
+  IOfferManagementParam,
   IPostOfferLease,
   IPostOfferSell,
   IPropertyNegotiationParam,
@@ -74,8 +75,8 @@ class OffersRepository {
     return ObjectMapper.deserializeArray(Asset, response);
   };
 
-  public getOfferData = async (): Promise<OfferManagement> => {
-    const response = await this.apiClient.get(ENDPOINTS.offerManagement);
+  public getOfferData = async (params?: IOfferManagementParam): Promise<OfferManagement> => {
+    const response = await this.apiClient.get(ENDPOINTS.offerManagement, params);
     return ObjectMapper.deserialize(OfferManagement, response);
   };
 

@@ -92,6 +92,7 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
         dropdownIndex={index}
         placeholder={placeholder}
         listHeight={500}
+        listTitle={placeholder}
         isOutline={isOutlineView}
         containerStyle={[styles.dropdownContainer, containerStyle]}
         textStyle={styles.placeholder}

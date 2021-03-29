@@ -143,6 +143,14 @@ const getUserAssets = (state: IState): Asset[] => {
   return ObjectMapper.deserializeArray(Asset, assets);
 };
 
+const getUserAssetsCount = (state: IState): number => {
+  const {
+    user: { assets },
+  } = state;
+
+  return assets.length;
+};
+
 const getFavouritePropertyIds = (state: IState): Wishlist[] => {
   const {
     user: { favouriteProperties },
@@ -195,4 +203,5 @@ export const UserSelector = {
   getFavouritePropertyIds,
   getFavouriteProperties,
   getReferralCode,
+  getUserAssetsCount,
 };

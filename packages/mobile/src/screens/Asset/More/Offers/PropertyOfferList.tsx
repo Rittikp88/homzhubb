@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetMetricsList } from '@homzhub/mobile/src/components';
@@ -25,6 +27,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
@@ -33,6 +36,10 @@ import { offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
 export enum OfferType {
   OFFER_RECEIVED = 'Offer Received',
   OFFER_MADE = 'Offer Made',
+}
+
+interface IStateProps {
+  assetCount: number;
 }
 
 interface IDispatchProps {
@@ -52,7 +59,7 @@ interface IScreenState {
 }
 
 type LibProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyOfferList>;
-type Props = LibProps & IDispatchProps;
+type Props = LibProps & IDispatchProps & IStateProps;
 
 export interface IMetricsData {
   name: string;
@@ -69,7 +76,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      offerType: OfferType.OFFER_RECEIVED,
+      offerType: props.assetCount > 0 ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE,
       isOfferInfoRead: false,
       propertyListingData: [],
       offerCountData: null,
@@ -83,7 +90,9 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
   public componentDidMount = (): void => {
     const { navigation } = this.props;
-    this.setState({ isScreenLoading: true });
+    this.setState({
+      isScreenLoading: true,
+    });
     // eslint-disable-next-line @typescript-eslint/no-misused-promises
     this.focusListener = navigation.addListener('focus', async () => {
       try {
@@ -218,6 +227,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   };
 
   private onSelectFromDropdown = (selectedValues: (ISelectedValue | undefined)[]): void => {
+    const { offerType, propertyListingData } = this.state;
     const filters = {};
 
     selectedValues.forEach((selectedValue: ISelectedValue | undefined) => {
@@ -230,12 +240,20 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     });
 
     this.setState({ filters }, () => {
-      this.getPropertyListData().then();
+      if (offerType === OfferType.OFFER_RECEIVED) {
+        this.getPropertyListData().then();
+      } else {
+        this.setState({
+          // @ts-ignore
+          propertyListingData: OfferUtils.getSortedOfferMade(filters.sort_by, propertyListingData),
+        });
+      }
     });
   };
 
   private onMetricsClicked = (name: string): void => {
     const { receivedDropdownData } = this.state;
+    this.setState({ propertyListingData: [] });
 
     const updatedDropdownData = [...receivedDropdownData];
 
@@ -366,6 +384,13 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   };
 }
 
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserAssetsCount } = UserSelector;
+  return {
+    assetCount: getUserAssetsCount(state),
+  };
+};
+
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentOfferPayload } = OfferActions;
   return bindActionCreators(
@@ -376,7 +401,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(withTranslation()(PropertyOfferList));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(PropertyOfferList));
 
 const styles = StyleSheet.create({
   separator: {

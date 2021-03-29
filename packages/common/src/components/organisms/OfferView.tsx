@@ -44,7 +44,7 @@ const OfferView = (props: IProps): React.ReactElement => {
   const compareData = useSelector(OfferSelectors.getOfferCompareData);
 
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [filters, setFilters] = useState<IFilters>(initialObj);
+  const [filters, setFilters] = useState<IFilters>({ filter_by: '', sort_by: OfferSort.NEWEST });
 
   useFocusEffect(
     useCallback(() => {
@@ -59,23 +59,16 @@ const OfferView = (props: IProps): React.ReactElement => {
         };
         dispatch(OfferActions.getNegotiations(payload));
       }
+
+      return (): void => {
+        setFilters({ filter_by: '', sort_by: OfferSort.NEWEST });
+      };
     }, [])
   );
 
   useEffect(() => {
     setOffers(negotiations);
   }, [negotiations]);
-
-  useEffect(() => {
-    if (!filters) return;
-    if (filters.filter_by) {
-      setOffers(OfferUtils.getFilteredOffer(filters.filter_by, negotiations));
-    }
-    // TODO: (Shikha) - Need too discuss
-    // if (filters.sort_by) {
-    //   setOffers(OfferUtils.getSortedOffer(filters.sort_by, offers));
-    // }
-  }, [filters]);
 
   const onSelectFromDropdown = (selectedValues: (ISelectedValue | undefined)[]): void => {
     const filtersObj = initialObj;
@@ -90,6 +83,14 @@ const OfferView = (props: IProps): React.ReactElement => {
     });
 
     setFilters(filtersObj);
+    handleFilter();
+  };
+
+  const handleFilter = (): void => {
+    if (filters) {
+      const filteredOffer = OfferUtils.getFilteredOffer(filters.filter_by, negotiations);
+      setOffers(OfferUtils.getSortedOffer(filters.sort_by, filteredOffer));
+    }
   };
 
   const handleAction = (action: OfferAction, offer: Offer): void => {
