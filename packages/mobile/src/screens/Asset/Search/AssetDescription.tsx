@@ -122,14 +122,16 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = initialState;
 
   public componentDidMount = async (): Promise<void> => {
-    const { navigation } = this.props;
+    const { navigation, isLoggedIn } = this.props;
     const startDate = this.getFormattedDate();
     this.setState({ startDate });
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetData();
     });
-    const prospectsData = await OffersRepository.getProspectsInfo();
-    this.setState({ prospectsData: Boolean(prospectsData.id) });
+    if (isLoggedIn) {
+      const prospectsData = await OffersRepository.getProspectsInfo();
+      this.setState({ prospectsData: Boolean(prospectsData.id) });
+    }
     await this.setSharingMessage();
   };
 
