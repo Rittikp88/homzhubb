@@ -9,11 +9,11 @@ import AppLayout from '@homzhub/web/src/screens/appLayout';
 import Login from '@homzhub/web/src/screens/login';
 import SignUp from '@homzhub/web/src/screens/signUp';
 import Landing from '@homzhub/web/src/screens/landing';
+import MicroSite from '@homzhub/web/src/screens/microSite';
 import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerification';
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
-import MicroSite from '@homzhub/web/src/screens/microSite';
 
 export const AppRouter = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -38,6 +38,7 @@ export const AppRouter = (): React.ReactElement => {
     <Suspense fallback={<div>{t('webLoader:loadingText')}</div>}>
       <Switch>
         <Route exact path={APP_BASE} component={Landing} />
+        <Route exact path={MAHARASHTRA_CONNECT} component={MicroSite} />
         <Route exact path={MOBILE_VERIFICATION} component={MobileVerification} />
         <Route exact path={OTP_VERIFICATION} component={OtpVerification} />
         <Route exact path={SIGNUP} component={SignUp} />

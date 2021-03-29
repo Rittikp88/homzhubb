@@ -179,6 +179,7 @@ export const icons = {
   message: 'message',
   circularFilledInfo: 'circular-filled-info',
   service: 'services',
+  arrowRight: 'arrow-right',
 
   // COMMUTE
   train: 'train',

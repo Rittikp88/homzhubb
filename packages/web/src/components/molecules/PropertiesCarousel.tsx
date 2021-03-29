@@ -1,4 +1,5 @@
 import React from 'react';
+import { CarouselProps } from 'react-multi-carousel';
 import { IFeaturedProperties } from '@homzhub/common/src/domain/repositories/GraphQLRepository';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import InvestmentsCard from '@homzhub/web/src/screens/dashboard/components/InvestmentsCard';
@@ -10,13 +11,14 @@ import {
 
 interface IProps {
   featuredProperties?: IFeaturedProperties[];
+  carouselProps?: CarouselProps;
 }
 const PropertiesCarousel: React.FC<IProps> = (props: IProps) => {
   const investmentDataArray = InvestmentMockData;
-  const { featuredProperties } = props;
+  const { featuredProperties, carouselProps } = props;
   if (featuredProperties) {
     return (
-      <MultiCarousel>
+      <MultiCarousel passedProps={carouselProps}>
         {featuredProperties.map((item: IFeaturedProperties) => (
           <PropertiesCard key={item.id} investmentData={item} />
         ))}

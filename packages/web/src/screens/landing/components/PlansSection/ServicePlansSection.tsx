@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, ViewStyle } from 'react-native';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -8,9 +8,14 @@ import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { ServicePlansData } from '@homzhub/common/src/mocks/ServicePlansMockData';
 
-const ServicePlansSection: FC = () => {
+interface IProps {
+  cardStyle?: ViewStyle;
+  scrollStyle?: ViewStyle;
+}
+const ServicePlansSection: FC<IProps> = (props: IProps) => {
+  const { cardStyle, scrollStyle } = props;
   const [servicePlansList, setServicePlansList] = useState([] as ServicePlans[]);
-  // TODO Get this data from API.
+
   useEffect(() => {
     setServicePlansList(ObjectMapper.deserializeArray(ServicePlans, ServicePlansData));
   }, []);
@@ -19,7 +24,11 @@ const ServicePlansSection: FC = () => {
   return (
     <>
       {!isDesktop ? (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.servicePlansContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={[styles.servicePlansContainer, scrollStyle]}
+        >
           <ServicePlansCard
             servicePlansCardStyle={styles.servicePlansCardsContainer}
             servicePlansList={servicePlansList}
@@ -29,6 +38,7 @@ const ServicePlansSection: FC = () => {
         <ServicePlansCard
           servicePlansCardStyle={styles.servicePlansContainerDesktop}
           servicePlansList={servicePlansList}
+          cardStyle={cardStyle}
         />
       )}
     </>
@@ -40,6 +50,8 @@ const styles = StyleSheet.create({
   servicePlansContainer: {
     backgroundColor: theme.colors.background,
     marginBottom: 120,
+    width: '100%',
+    paddingVertical: 20,
   },
   servicePlansCardsContainer: {
     flexDirection: 'row',

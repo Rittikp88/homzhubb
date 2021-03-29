@@ -7,7 +7,7 @@ interface IProps {
   cardImage: string;
   cardTitle: string;
   cardDescription: string;
-  cardStyle: ViewStyle;
+  cardStyle?: ViewStyle[];
 }
 const CardWithIcon: FC<IProps> = (props: IProps) => {
   const { cardTitle, cardDescription, cardImage, cardStyle } = props;

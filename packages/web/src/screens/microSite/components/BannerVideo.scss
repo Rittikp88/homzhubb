@@ -1,0 +1,15 @@
+.wistia_responsive_padding {
+  padding-top: 15%;
+  position: static;
+}
+.wistia_embed {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+#image {
+  filter: blur(5px);
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+}

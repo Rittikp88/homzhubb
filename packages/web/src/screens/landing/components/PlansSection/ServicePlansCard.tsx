@@ -8,10 +8,11 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 interface IProps {
   servicePlansList: ServicePlans[];
   servicePlansCardStyle: ViewStyle;
+  cardStyle?: ViewStyle;
 }
 
 const ServicePlansCard: FC<IProps> = (props: IProps) => {
-  const { servicePlansList, servicePlansCardStyle } = props;
+  const { servicePlansList, servicePlansCardStyle, cardStyle = {} } = props;
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
 
   return (
@@ -22,7 +23,7 @@ const ServicePlansCard: FC<IProps> = (props: IProps) => {
           cardTitle={plans.label}
           cardDescription={plans.description}
           key={`service-plan-${plans.id}`}
-          cardStyle={isDesktop ? styles.servicePlansCard : styles.servicePlansCardMobile}
+          cardStyle={[isDesktop ? styles.servicePlansCard : styles.servicePlansCardMobile, cardStyle]}
         />
       ))}
     </View>
