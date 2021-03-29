@@ -4,9 +4,12 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PopupActions, PopupPosition, PopupProps } from 'reactjs-popup/dist/types';
+import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { initialSearchState } from '@homzhub/common/src/modules/search/reducer';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
@@ -43,7 +46,11 @@ interface IDispatchProps {
   setInitialState: () => void;
 }
 
-type Props = IStateProps & IDispatchProps & WithTranslation & IWithMediaQuery;
+interface IComponentProps {
+  history: History;
+}
+
+type Props = IStateProps & IDispatchProps & WithTranslation & IWithMediaQuery & IComponentProps;
 
 interface ILandingState {
   isSearchBarFocused: boolean;
@@ -63,14 +70,31 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
   };
 
   public componentDidMount = (): void => {
-    const { getFilterDetails, filters } = this.props;
+    const { getFilterDetails, filters, history, setFilter } = this.props;
     const { asset_transaction_type, min_price, max_price } = filters;
-    this.setState({
-      selectedLookingType: asset_transaction_type ?? 0,
-      minPriceRange: min_price ?? 0,
-      maxPriceRange: max_price ?? 0,
-    });
-    getFilterDetails({ asset_group: filters.asset_group });
+
+    if (history.action === 'POP') {
+      const setFilters = initialSearchState.filter;
+      const searchParams = new URLSearchParams(history.location.search.substring(1));
+
+      let payload = {};
+      Object.keys(setFilters).forEach((key) => {
+        if (Number(searchParams.get(key))) {
+          payload = { ...payload, [key]: Number(searchParams.get(key)) };
+          setFilter({
+            ...payload,
+            currency_code: 'INR',
+          });
+        }
+      });
+    } else {
+      this.setState({
+        selectedLookingType: asset_transaction_type ?? 0,
+        minPriceRange: min_price ?? 0,
+        maxPriceRange: max_price ?? 0,
+      });
+      getFilterDetails({ asset_group: filters.asset_group });
+    }
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
@@ -116,6 +140,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
       isMobile,
       isTablet,
     } = this.props;
+
     const {
       currency,
       filters: { transactionType },
@@ -271,14 +296,29 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
   };
 
   private onChangeFlow = (value: number): void => {
-    const { setFilter, getProperties } = this.props;
-    setFilter({ asset_transaction_type: value, min_price: -1, max_price: -1 });
+    const { setFilter, getProperties, history } = this.props;
+    const filterValues = { asset_transaction_type: value, min_price: -1, max_price: -1 };
+
+    let searchParams = history.location.search;
+    for (const [key, values] of Object.entries(filterValues)) {
+      if (searchParams) searchParams += `&${key}=${values}`;
+      else searchParams += `?${key}=${values}`;
+    }
+
+    history.push(`${RouteNames.protectedRoutes.SEARCH_PROPERTY}${searchParams}`);
+    setFilter(filterValues);
+
     getProperties();
     this.popupRef.current?.close();
   };
 
   private updateFilter = (type: string, value: number | number[]): void => {
-    const { setFilter, getProperties } = this.props;
+    const { setFilter, getProperties, history } = this.props;
+    let searchParams = history.location.search;
+    if (searchParams) searchParams += `&${type}=${value}`;
+    else searchParams += `?${type}=${value}`;
+    history.push(`${RouteNames.protectedRoutes.SEARCH_PROPERTY}${searchParams}`);
+
     setFilter({ [type]: value });
     getProperties();
   };

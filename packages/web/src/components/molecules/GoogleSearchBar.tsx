@@ -24,21 +24,16 @@ interface IAddressComponent {
   short_name: string;
   types: Array<string>;
 }
-
 interface IStateProps {
   countryData: Country[];
 }
-
 type SearchBarProps = IDispatchProps & IStateProps;
-
 const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
   const history = useHistory();
-
   const updateLatLng = (result: IAddressComponent[], formatedAddress: string, { lat, lng }: ILatLng): void => {
     const { lngValue, latValue } = GeolocationService.getFormattedCords(lat, lng);
     const { setFilter, getProperties } = props;
-
     setSearchedPropertyCurrency(result);
     setFilter({
       search_address: formatedAddress,
@@ -46,7 +41,8 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
       search_longitude: lngValue,
     });
 
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.SEARCH_PROPERTY });
+    const locationParams = `?search_latitude=${latValue}&search_longitude=${lngValue}`;
+    NavigationUtils.navigate(history, { path: `${RouteNames.protectedRoutes.SEARCH_PROPERTY}${locationParams}` });
     getProperties();
   };
   const setSearchedPropertyCurrency = (placeDetail: IAddressComponent[]): void => {
@@ -57,7 +53,6 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
       currency_code: country?.currencies[0].currencyCode,
     });
   };
-
   return (
     <>
       <AutoCompletionSearchBar hasScriptLoaded={hasScriptLoaded} onSuggestionPress={updateLatLng} />
@@ -68,14 +63,12 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
     </>
   );
 };
-
 const mapStateToProps = (state: any): IStateProps => {
   const { getCountryList } = CommonSelectors;
   return {
     countryData: getCountryList(state),
   };
 };
-
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setFilter, getProperties, getPropertiesListView } = SearchActions;
   return bindActionCreators(
@@ -87,5 +80,4 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     dispatch
   );
 };
-
 export default connect(mapStateToProps, mapDispatchToProps)(GoogleSearchBar);

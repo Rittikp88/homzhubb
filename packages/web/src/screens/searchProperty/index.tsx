@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
-import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -104,12 +102,6 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     };
   }, []);
 
-  useEffect(() => {
-    if (!filters.search_latitude && !filters.search_longitude) {
-      NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
-    }
-  }, [filters]);
-
   const clearForm = (): void => {
     const { setInitialMiscellaneous } = props;
     setInitialMiscellaneous();
@@ -141,7 +133,7 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
           </Button>
         </View>
         <View style={styles.filters}>
-          <AssetFilters />
+          <AssetFilters history={history} />
         </View>
       </View>
       <View style={styles.sortAndToggleButtons}>
