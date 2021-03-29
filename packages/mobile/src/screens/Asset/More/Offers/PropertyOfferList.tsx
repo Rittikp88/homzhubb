@@ -31,7 +31,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
-import { offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
+import { MadeSort, offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
 
 export enum OfferType {
   OFFER_RECEIVED = 'Offer Received',
@@ -56,6 +56,7 @@ interface IScreenState {
   isScreenLoading: boolean;
   isTabLoading: boolean;
   filters: Record<string, string>;
+  currencies: string[];
 }
 
 type LibProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyOfferList>;
@@ -85,6 +86,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       madeDropdownData: [],
       isTabLoading: false,
       filters: {},
+      currencies: [],
     };
   }
 
@@ -100,9 +102,16 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
         await this.getFilters();
         const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
-        this.setState({ isOfferInfoRead, offerCountData, isScreenLoading: false }, () => {
-          this.getPropertyListData();
-        });
+        this.setState(
+          {
+            isOfferInfoRead,
+            offerCountData,
+            isScreenLoading: false,
+          },
+          () => {
+            this.getPropertyListData();
+          }
+        );
       } catch (e) {
         AlertHelper.error({ message: e.message });
         this.setState({ isScreenLoading: false });
@@ -227,7 +236,6 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   };
 
   private onSelectFromDropdown = (selectedValues: (ISelectedValue | undefined)[]): void => {
-    const { offerType, propertyListingData } = this.state;
     const filters = {};
 
     selectedValues.forEach((selectedValue: ISelectedValue | undefined) => {
@@ -240,14 +248,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     });
 
     this.setState({ filters }, () => {
-      if (offerType === OfferType.OFFER_RECEIVED) {
-        this.getPropertyListData().then();
-      } else {
-        this.setState({
-          // @ts-ignore
-          propertyListingData: OfferUtils.getSortedOfferMade(filters.sort_by, propertyListingData),
-        });
-      }
+      this.getPropertyListData().then();
     });
   };
 
@@ -290,6 +291,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
   private getMadeDropdownData = (filters: ReceivedOfferFilter | Unit[]): IDropdownData[] => {
     const { t } = this.props;
+    const { currencies } = this.state;
     const data = filters as Unit[];
 
     const offerFilter = data.map((item) => {
@@ -299,15 +301,21 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       };
     });
 
-    return [
+    const list = [
       {
         dropdownData: offerMadeSortBy,
         key: 'sort_by',
-        selectedValue: '',
+        selectedValue: MadeSort.NEWEST,
         placeholder: t('offers:sort'),
       },
       { dropdownData: offerFilter, key: 'filter_by', selectedValue: '', placeholder: t('offers:filterBy') },
     ];
+
+    if (currencies.length > 1) {
+      list.shift();
+    }
+
+    return list;
   };
 
   private getFilters = async (): Promise<void> => {
@@ -341,6 +349,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       offerCountData && offerCountData.offerReceived ? offerCountData.offerReceived > 0 : false;
 
     let propertyListingData: Asset[] = [];
+    let currencies: string[] = [];
 
     if (offerType === OfferType.OFFER_RECEIVED && !isThereOfferReceived) return;
     this.setState({ isTabLoading: true });
@@ -348,11 +357,36 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     const payload = {
       type: offerType === OfferType.OFFER_RECEIVED ? NegotiationOfferType.RECEIVED : NegotiationOfferType.CREATED,
       ...(offerType === OfferType.OFFER_RECEIVED && { params: filters }),
+      ...(offerType === OfferType.OFFER_MADE && {
+        params: {
+          filter_by: filters.filter_by,
+        },
+      }),
     };
 
     try {
       propertyListingData = await OffersRepository.getOffers(payload);
-      this.setState({ propertyListingData, isTabLoading: false });
+
+      // For hiding sorting during multiple currencies
+      propertyListingData.forEach((item) => {
+        item.country.currencies.forEach((currency) => {
+          if (!currencies.includes(currency.currencyCode)) {
+            currencies = [...currencies, currency.currencyCode];
+          }
+        });
+      });
+
+      if (offerType === OfferType.OFFER_MADE) {
+        this.setState({
+          propertyListingData: OfferUtils.getSortedOfferMade(filters.sort_by, propertyListingData),
+        });
+      } else {
+        this.setState({
+          propertyListingData,
+        });
+      }
+
+      this.setState({ isTabLoading: false, currencies });
     } catch (e) {
       this.setState({ isTabLoading: false });
       AlertHelper.error({ message: e.message });

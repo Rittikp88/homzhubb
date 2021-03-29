@@ -921,6 +921,7 @@ export interface IReceivedNegotiationParam {
   countary_id?: number;
   type?: string;
   asset_id?: number;
+  filter_by?: string;
 }
 
 export interface ISubmitOffer {

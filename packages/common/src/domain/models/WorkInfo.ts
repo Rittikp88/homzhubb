@@ -22,8 +22,8 @@ export class WorkInfo {
   @JsonProperty('job_type', Unit, true)
   private _jobType = new Unit();
 
-  @JsonProperty('work_email', String)
-  private _workEmail = '';
+  @JsonProperty('work_email', String, true)
+  private _workEmail = null;
 
   @JsonProperty('work_employee_id', String)
   private _workEmployeeId = '';
@@ -46,7 +46,7 @@ export class WorkInfo {
     return this._companyName;
   }
 
-  get workEmail(): string {
+  get workEmail(): string | null {
     return this._workEmail;
   }
 
