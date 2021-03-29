@@ -1,27 +1,38 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, TouchableOpacity, TextStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import {
+  ClosureReasonType,
+  IClosureReasonPayload,
+  IListingParam,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
-import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import CardCarousel from '@homzhub/web/src/components/molecules/CardCarousel';
 import GalleryView from '@homzhub/web/src/components/molecules/GalleryView';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
-import { ShieldGroup } from '@homzhub/web/src/components/molecules/ShieldGroupHeader';
+import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
+import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
 import TabSections from '@homzhub/web/src/screens/propertyDetailOwner/Components/TabSection';
+import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { IFilter, IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IStateProps {
@@ -30,6 +41,16 @@ interface IStateProps {
 interface IProp {
   assetDetails: Asset | null;
   propertyTermId: number;
+  isFromTenancies?: boolean;
+  onCompleteDetails: (id: number) => void;
+  onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
+}
+interface IUserInfo {
+  name: string;
+  icon?: string;
+  image?: string;
+  designation: string;
+  designationStyle?: TextStyle;
 }
 
 type Props = IProp & IStateProps & WithTranslation & IWithMediaQuery;
@@ -38,11 +59,9 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
   public render = (): React.ReactNode => {
     const {
       assetDetails,
-      filters: { asset_transaction_type },
       isTablet,
       isMobile,
-      isIpadPro,
-      t,
+
       propertyTermId,
     } = this.props;
     if (!assetDetails) {
@@ -58,23 +77,12 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
       carpetAreaUnit,
       furnishing,
       spaces,
-      assetType,
-      leaseTerm,
-      saleTerm,
-      postedOn,
-      contacts: { fullName, profilePicture },
-      country: { currencies },
-      assetGroup: { code, name },
+      assetGroup: { code },
+      assetStatusInfo,
+      notifications,
+      serviceTickets,
     } = assetDetails;
 
-    const propertyType = assetType ? assetDetails.assetType.name : '';
-    const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
-      name,
-      postedOn,
-      (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? '',
-      asset_transaction_type || 0,
-      saleTerm
-    );
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
       furnishing,
@@ -85,17 +93,6 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     );
     const styles = propertyDetailStyle(isMobile, isTablet);
 
-    let currencyData = currencies[0];
-
-    if (leaseTerm && leaseTerm.currency) {
-      currencyData = leaseTerm.currency;
-    }
-
-    if (saleTerm && saleTerm.currency) {
-      currencyData = saleTerm.currency;
-    }
-    const salePrice = saleTerm && Number(saleTerm.expectedPrice) > 0 ? Number(saleTerm.expectedPrice) : 0;
-    const price = leaseTerm && leaseTerm.expectedPrice > 0 ? leaseTerm.expectedPrice : salePrice;
     return (
       <>
         <View style={styles.container}>
@@ -109,7 +106,27 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
             {isMobile && <CardCarousel data={assetDetails.attachments} />}
           </View>
           <View style={styles.cardDetails}>
-            <ShieldGroup propertyType={propertyType} isInfoRequired />
+            <View style={styles.subContainer}>
+              <Badge
+                title={assetStatusInfo?.tag.label ?? ''}
+                badgeColor={assetStatusInfo?.tag.color ?? ''}
+                badgeStyle={styles.badgeStyle}
+              />
+              <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+              <TouchableOpacity style={styles.topLeftView}>
+                <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                <Label type="large" style={styles.count}>
+                  {notifications?.count}
+                </Label>
+              </TouchableOpacity>
+              <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+              <TouchableOpacity style={styles.topLeftView}>
+                <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+                <Label type="large" style={styles.count}>
+                  {serviceTickets?.count}
+                </Label>
+              </TouchableOpacity>
+            </View>
 
             <PropertyAddressCountry
               isIcon
@@ -119,44 +136,15 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
               containerStyle={styles.addressStyle}
               primaryAddressTextStyles={{ size: 'regular' }}
             />
-            <PricePerUnit
-              price={price}
-              currency={currencyData}
-              unit={asset_transaction_type === 0 ? 'mo' : ''}
-              textStyle={styles.pricing}
-              textSizeType="large"
-            />
+
             <PropertyAmenities
               data={amenitiesData}
               direction="row"
               containerStyle={styles.amenitiesContainer}
               contentContainerStyle={styles.amenities}
             />
-            <Divider />
-            <View style={styles.timelineContainer}>{this.renderPropertyTimelines(propertyTimelineData)}</View>
-            <Divider />
-            <View style={styles.avatar}>
-              <Avatar fullName={fullName} imageSize={50} image={profilePicture} designation={t('property:Owner')} />
-            </View>
-            <Divider />
-            <View style={styles.footer}>
-              <View style={(isMobile || isTablet || isIpadPro) && styles.enquireContainer}>
-                <Button type="primary" containerStyle={styles.enquire}>
-                  <Icon name={icons.envelope} size={24} color={theme.colors.primaryColor} />
-                  <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleEnquire}>
-                    {t('propertySearch:enquire')}
-                  </Typography>
-                </Button>
-              </View>
-              <View style={(isMobile || isTablet || isIpadPro) && styles.scheduleContainer}>
-                <Button type="primary" containerStyle={[styles.enquire, styles.schedule]}>
-                  <Icon name={icons.timer} size={22} color={theme.colors.white} />
-                  <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleSchedule}>
-                    {t('propertySearch:scheduleVisit')}
-                  </Typography>
-                </Button>
-              </View>
-            </View>
+
+            {this.renderExpandedView()}
           </View>
         </View>
         <View style={styles.dividerContainer}>
@@ -166,28 +154,252 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     );
   };
 
-  private renderPropertyTimelines = (data: { label: string; value: string }[]): React.ReactElement => {
-    const { isMobile, isTablet } = this.props;
+  private renderExpandedView = (): React.ReactNode => {
+    const { assetDetails, t, isTablet, isMobile } = this.props;
+    if (!assetDetails || !assetDetails.assetStatusInfo) return null;
+
+    const {
+      assetStatusInfo: {
+        action,
+        tag: { label },
+        leaseListingId,
+        saleListingId,
+        leaseTenantInfo: { user, isInviteAccepted },
+        leaseTransaction: { rent, securityDeposit, totalSpendPeriod, leaseEndDate, leaseStartDate, currency },
+      },
+      lastVisitedStep: { assetCreation },
+    } = assetDetails;
+
+    const userData: User = user;
+    const isListed = leaseListingId || saleListingId;
+    const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
+    const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
+    const isTakeActions = label === Filters.VACANT;
     const styles = propertyDetailStyle(isMobile, isTablet);
 
     return (
       <>
-        {data.map((item: { label: string; value: string }, index: number) => {
-          return (
-            <View key={index} style={styles.utilityItem}>
-              <Label type="large" textType="regular" style={styles.utilityItemText}>
-                {item.label}
-              </Label>
-              <Label type="large" textType="semiBold" style={styles.utilityItemSubText}>
-                {item.value}
-              </Label>
+        <View>
+          {!isVacant && (
+            <>
+              <Divider />
+
+              <View style={styles.avatar}>
+                <Avatar
+                  onPressRightIcon={FunctionUtils.noop}
+                  fullName={userData.name}
+                  image={userData.profilePicture}
+                  designation={userInfo.designation}
+                  customDesignation={userInfo.designationStyle}
+                />
+              </View>
+            </>
+          )}
+          <Divider />
+
+          <View>
+            {rent && securityDeposit && (
+              <>
+                <View style={styles.rentAndMaintenanceView}>
+                  <RentAndMaintenance currency={currency} rentData={rent} depositData={securityDeposit} />
+                </View>
+                <Divider />
+              </>
+            )}
+            {!isVacant && (
+              <View style={[styles.progressBar]}>
+                <ProgressBar
+                  progress={totalSpendPeriod || assetCreation.percentage / 100}
+                  isPropertyVacant={isVacant}
+                  fromDate={leaseStartDate}
+                  toDate={leaseEndDate}
+                />
+              </View>
+            )}
+          </View>
+          {isVacant && assetCreation.percentage < 100 && !action && (
+            <View style={styles.expandedContainer}>
+              <Text type="small" style={styles.title} textType="semiBold">
+                {t('assetPortfolio:detailsCompletionText')}
+              </Text>
+              <ProgressBar
+                progress={totalSpendPeriod || assetCreation.percentage / 100}
+                isPropertyVacant={isVacant}
+                isTakeActions={isTakeActions}
+              />
+              <Button
+                type="primary"
+                textType="label"
+                textSize="regular"
+                fontType="semiBold"
+                containerStyle={styles.completeButton}
+                title={t('complete')}
+                titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
+                onPress={this.onCompleteDetails}
+              />
             </View>
-          );
-        })}
+          )}
+          {isListed && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
+            <View style={styles.latestUpdates}>
+              <LatestUpdates propertyVisitsData={assetDetails.listingVisits} propertyDetailTab />
+            </View>
+          )}
+          {action && label !== Filters.VACANT && (
+            <View style={styles.buttonGroup}>
+              <Button
+                type="primary"
+                textType="label"
+                textSize="regular"
+                fontType="semiBold"
+                containerStyle={[
+                  styles.buttonStyle,
+                  { backgroundColor: action.color },
+                  (action.label === ActionType.CANCEL || action.label === ActionType.TERMINATE) && styles.cancelButton,
+                ]}
+                title={action.label}
+                titleStyle={[
+                  styles.buttonTitle,
+                  (action.label === ActionType.CANCEL || action.label === ActionType.TERMINATE) && styles.cancelTitle,
+                ]}
+                onPress={this.onPressAction}
+              />
+            </View>
+          )}
+          {action && isTakeActions && (
+            <View>
+              {assetCreation.percentage < 100 && (
+                <View>
+                  <View>
+                    <Text type="small" style={styles.title} textType="semiBold">
+                      {t('assetPortfolio:detailsCompletionText')}
+                    </Text>
+                    <ProgressBar
+                      progress={totalSpendPeriod || assetCreation.percentage / 100}
+                      isPropertyVacant={isVacant}
+                      isTakeActions={isTakeActions}
+                    />
+                    <Button
+                      type="primary"
+                      textType="label"
+                      textSize="regular"
+                      fontType="semiBold"
+                      containerStyle={styles.completeButton}
+                      title={t('complete')}
+                      titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
+                      onPress={this.onCompleteDetails}
+                    />
+                  </View>
+                  <View style={styles.sectionSeperator}>
+                    <Typography variant="label" size="regular" style={styles.actionHeader}>
+                      {t('assetPortfolio:takeActionsHeader')}
+                    </Typography>
+                    <Button
+                      type="primary"
+                      textType="label"
+                      textSize="regular"
+                      fontType="semiBold"
+                      containerStyle={styles.buttonContainer}
+                      title={action.label}
+                      titleStyle={[styles.buttonTitle, { color: action.color }]}
+                      onPress={this.onPressAction}
+                    />
+                  </View>
+                </View>
+              )}
+              {assetCreation.percentage >= 100 && (
+                <View>
+                  <Text type="small" style={styles.title} textType="semiBold">
+                    {t('Take Actions')}
+                  </Text>
+                  <Typography variant="label" size="regular" style={styles.actionHeader}>
+                    {t('assetPortfolio:takeActionsHeader')}
+                  </Typography>
+                  <Button
+                    type="primary"
+                    textType="label"
+                    textSize="regular"
+                    fontType="semiBold"
+                    containerStyle={styles.buttonContainer}
+                    title={action.label}
+                    titleStyle={[styles.buttonTitle, { color: action.color }]}
+                    onPress={this.onPressAction}
+                  />
+                </View>
+              )}
+            </View>
+          )}
+        </View>
       </>
     );
   };
+
+  private onPressAction = (): void => {
+    const { onHandleAction, assetDetails } = this.props;
+    if (!assetDetails) {
+      return;
+    }
+    const { assetGroup, country, assetStatusInfo } = assetDetails;
+    const { LEASE_LISTING_CANCELLATION, SALE_LISTING_CANCELLATION, LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
+    if (assetStatusInfo) {
+      const {
+        action,
+        leaseListingId,
+        leaseTransaction: { id, leaseEndDate },
+      } = assetStatusInfo;
+      const type =
+        action?.label === ActionType.CANCEL
+          ? leaseListingId
+            ? LEASE_LISTING_CANCELLATION
+            : SALE_LISTING_CANCELLATION
+          : LEASE_TRANSACTION_TERMINATION;
+      const payload = {
+        type,
+        asset_group: assetGroup.id,
+        asset_country: country.id,
+      };
+      if (onHandleAction) {
+        onHandleAction(payload, {
+          id,
+          endDate: leaseEndDate,
+          hasTakeAction: action?.label === ActionType.ACTION,
+        });
+      }
+    }
+  };
+
+  private onCompleteDetails = (): void => {
+    const { onCompleteDetails, propertyTermId } = this.props;
+    onCompleteDetails(propertyTermId);
+  };
+
+  private getFormattedInfo = (user: User, isInviteAccepted: boolean): IUserInfo => {
+    const { t, isFromTenancies = false, isMobile, isTablet } = this.props;
+    const styles = propertyDetailStyle(isMobile, isTablet);
+
+    let icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
+    let name = isInviteAccepted ? user.name : user.email;
+    let image = isInviteAccepted ? user.profilePicture : undefined;
+    let designation = t('property:tenant');
+    let designationStyle = isInviteAccepted ? undefined : styles.designation;
+
+    if (isFromTenancies) {
+      icon = undefined;
+      name = user.name;
+      image = user.profilePicture;
+      designation = t('property:owner');
+      designationStyle = undefined;
+    }
+
+    return {
+      name,
+      designation,
+      icon,
+      image,
+      designationStyle,
+    };
+  };
 }
+
 const propertyCardDetails = withMediaQuery<Props>(PropertyCardDetails);
 
 const mapStateToProps = (state: IState): IStateProps => {
@@ -199,38 +411,39 @@ const mapStateToProps = (state: IState): IStateProps => {
 export default connect(mapStateToProps)(withTranslation()(propertyCardDetails));
 
 interface IPropertyDetailStyles {
-  parentContainer: ViewStyle;
   dividerContainer: ViewStyle;
   container: ViewStyle;
   gallery: ViewStyle;
   cardDetails: ViewStyle;
   addressStyle: ViewStyle;
-  pricing: ViewStyle;
   amenitiesContainer: ViewStyle;
   amenities: ViewStyle;
-  timelineContainer: ViewStyle;
-  utilityItem: ViewStyle;
   avatar: ViewStyle;
-  footer: ViewStyle;
-  enquire: ViewStyle;
-  schedule: ViewStyle;
-  textStyleEnquire: ViewStyle;
-  textStyleSchedule: ViewStyle;
-  utilityItemText: ViewStyle;
-  utilityItemSubText: ViewStyle;
   placeholder: ViewStyle;
-  scheduleContainer: ViewStyle;
-  enquireContainer: ViewStyle;
+  badgeStyle: ViewStyle;
+  dotStyle: ViewStyle;
+  topLeftView: ViewStyle;
+  subContainer: ViewStyle;
+  count: ViewStyle;
+  iconStyle: ViewStyle;
+  designation: ViewStyle;
+  progressBar: ViewStyle;
+  expandedContainer: ViewStyle;
+  rentAndMaintenanceView: ViewStyle;
+  completeButton: ViewStyle;
+  buttonTitle: ViewStyle;
+  latestUpdates: ViewStyle;
+  buttonGroup: ViewStyle;
+  buttonStyle: ViewStyle;
+  cancelButton: ViewStyle;
+  cancelTitle: ViewStyle;
+  sectionSeperator: ViewStyle;
+  buttonContainer: ViewStyle;
+  actionHeader: ViewStyle;
+  title: ViewStyle;
 }
-const propertyDetailStyle = (
-  isMobile?: boolean,
-  isTablet?: boolean,
-  isIpadPro?: boolean
-): StyleSheet.NamedStyles<IPropertyDetailStyles> =>
+const propertyDetailStyle = (isMobile?: boolean, isTablet?: boolean): StyleSheet.NamedStyles<IPropertyDetailStyles> =>
   StyleSheet.create<IPropertyDetailStyles>({
-    parentContainer: {
-      flex: 1,
-    },
     dividerContainer: {
       marginTop: 24,
       height: 'auto',
@@ -254,9 +467,7 @@ const propertyDetailStyle = (
     addressStyle: {
       width: '100%',
     },
-    pricing: {
-      marginTop: 20,
-    },
+
     amenitiesContainer: {
       justifyContent: 'flex-start',
       flexWrap: 'wrap',
@@ -265,60 +476,111 @@ const propertyDetailStyle = (
     amenities: {
       marginEnd: 16,
     },
-    timelineContainer: {
-      paddingVertical: 16,
-      flexDirection: 'row',
-    },
-    utilityItem: {
-      marginEnd: '35%',
-    },
+
     avatar: {
       marginVertical: 16,
     },
-    footer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginVertical: 20,
-      width: '100%',
-    },
-    enquire: {
-      height: 44,
-      width: !isMobile ? (isTablet || isIpadPro ? '100%' : 216) : '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: theme.colors.blueOpacity,
-      flexDirection: 'row',
-    },
-    enquireContainer: {
-      width: '38%',
-    },
-    scheduleContainer: {
-      width: '60%',
-      left: 'auto',
-    },
-    schedule: {
-      width: !isMobile ? (isTablet || isIpadPro ? '100%' : 216) : '100%',
 
-      backgroundColor: theme.colors.primaryColor,
-    },
-
-    textStyleEnquire: {
-      color: theme.colors.primaryColor,
-      marginStart: '5%',
-    },
-    textStyleSchedule: {
-      color: theme.colors.white,
-      marginStart: '5%',
-    },
-
-    utilityItemText: {
-      color: theme.colors.darkTint4,
-    },
-    utilityItemSubText: {
-      color: theme.colors.darkTint2,
-    },
     placeholder: {
       backgroundColor: theme.colors.darkTint9,
       height: !isMobile ? 442 : '100%',
+    },
+    badgeStyle: {
+      minWidth: 75,
+      paddingHorizontal: 8,
+      paddingVertical: 1,
+      alignSelf: 'flex-start',
+      letterSpacing: 2,
+    },
+    dotStyle: {
+      marginTop: 8,
+      marginHorizontal: 12,
+    },
+    topLeftView: {
+      flexDirection: 'row',
+      marginLeft: '10px',
+      width: 'fit-content',
+      maxWidth: '100%',
+    },
+    subContainer: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: 12 },
+    count: {
+      color: theme.colors.primaryColor,
+      marginLeft: 6,
+    },
+    iconStyle: {
+      marginTop: 2,
+    },
+    designation: {
+      color: theme.colors.green,
+    },
+
+    progressBar: {
+      marginTop: 14,
+    },
+    rentAndMaintenanceView: {
+      marginVertical: 14,
+    },
+    expandedContainer: {
+      top: 12,
+    },
+    completeButton: {
+      flex: 1,
+      width: '100%',
+      borderRadius: 2,
+      marginTop: 24,
+      backgroundColor: theme.colors.greenLightOpacity,
+      marginBottom: 12,
+      padding: 6,
+    },
+    buttonTitle: {
+      marginVertical: 1,
+      marginHorizontal: 18,
+    },
+    latestUpdates: {
+      flex: 1,
+      marginTop: 16,
+    },
+    buttonGroup: {
+      flexDirection: 'row',
+      width: 147,
+      height: 33,
+      marginTop: 14,
+      marginLeft: 'auto',
+    },
+    buttonStyle: {
+      flex: 1,
+      width: 310,
+      borderRadius: 2,
+      marginTop: 24,
+      backgroundColor: theme.colors.greenLightOpacity,
+      marginBottom: 12,
+    },
+    cancelButton: {
+      flex: 1,
+      backgroundColor: theme.colors.ratingLow,
+      alignSelf: 'flex-end',
+    },
+    cancelTitle: {
+      marginVertical: 10,
+      color: theme.colors.error,
+    },
+    sectionSeperator: {
+      borderColor: theme.colors.background,
+      borderTopWidth: 2,
+    },
+    buttonContainer: {
+      width: '100%',
+      padding: 6,
+      textAlign: 'center',
+      backgroundColor: theme.colors.greenLightOpacity,
+      marginBottom: 12,
+    },
+    actionHeader: {
+      color: theme.colors.darkTint6,
+      marginBottom: 12,
+    },
+    title: {
+      color: theme.colors.darkTint4,
+      marginBottom: 12,
     },
   });

@@ -37,7 +37,7 @@ const CardCarousel: FC<IProps> = (props: IProps) => {
     setShowPopover(false);
   };
   const popOverContentStyle = {
-    width: '100vh',
+    width: '100%',
     height: '260px',
     alignItems: 'center',
   };
@@ -103,29 +103,31 @@ const CardCarousel: FC<IProps> = (props: IProps) => {
               </View>
             </TouchableOpacity>
           ))}
-          <Popover
-            content={renderPopOverContent}
-            popupProps={{
-              open: showPopover,
-              onClose: onClosePopover,
-              modal: true,
-              arrow: false,
-              contentStyle: popOverContentStyle,
-              closeOnDocumentClick: true,
-              children: undefined,
-              overlayStyle: popOverOverlayStyle,
-            }}
-          />
         </MultiCarousel>
       </View>
+      <Popover
+        content={renderPopOverContent}
+        popupProps={{
+          open: showPopover,
+          onClose: onClosePopover,
+          modal: true,
+          arrow: false,
+          contentStyle: popOverContentStyle,
+          closeOnDocumentClick: true,
+          children: undefined,
+          overlayStyle: popOverOverlayStyle,
+        }}
+      />
 
-      <View style={styles.pagination}>
-        <ImageVideoPagination
-          totalSlides={data.length}
-          currentSlide={active}
-          type={currentSlide?.mediaType ?? 'IMAGE'}
-        />
-      </View>
+      {data.length > 1 && (
+        <View style={styles.pagination}>
+          <ImageVideoPagination
+            totalSlides={data.length}
+            currentSlide={active}
+            type={currentSlide?.mediaType ?? 'IMAGE'}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    width: 375,
+    width: '100%',
     height: 210,
   },
   imagePopup: {
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   rightButton: {
-    right: 0,
+    left: '94%',
   },
   favouriteIcon: {
     position: 'absolute',
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
   },
   fullimage: {
     height: 260,
-    width: 375,
+    width: '100%',
     resizeMode: 'contain',
   },
   pagination: {

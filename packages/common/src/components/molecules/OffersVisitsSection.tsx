@@ -31,6 +31,8 @@ const Data = [
 
 interface IProps {
   isDetailView?: boolean;
+  propertyDetailTab?: boolean;
+
   onNav?: (from: OffersVisitsType) => void;
   values: {
     [OffersVisitsType.offers]: number[];
@@ -40,14 +42,20 @@ interface IProps {
 
 // TODO: Display the Offer section post the MVP
 const OffersVisitsSection = (props: IProps): React.ReactElement => {
-  const { values } = props;
+  const { values, propertyDetailTab } = props;
   const { t } = useTranslation();
   const data = PlatformUtils.isWeb() ? Data : Data.slice(1);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-
   return (
-    <View style={[styles.container, PlatformUtils.isWeb() && isTablet && !isMobile && styles.containerTablet]}>
+    <View
+      style={[
+        styles.container,
+        propertyDetailTab
+          ? PlatformUtils.isWeb() && isTablet && !isMobile && styles.container
+          : PlatformUtils.isWeb() && isTablet && !isMobile && styles.containerTablet,
+      ]}
+    >
       {data.map((item) => {
         // const onPress = (): void => onNav && onNav(item.type);
         return (

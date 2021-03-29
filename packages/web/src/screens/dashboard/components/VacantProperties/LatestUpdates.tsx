@@ -8,20 +8,28 @@ import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListi
 
 interface IProps {
   propertyVisitsData: AssetListingVisits;
+  propertyDetailTab?: boolean;
 }
 
 // TODO: (Bishal) replace offers dummy data once api is ready
-const LatestUpdates: FC<IProps> = ({ propertyVisitsData }: IProps) => {
+const LatestUpdates: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
+  const { propertyDetailTab, propertyVisitsData } = props;
+
   const { upcomingVisits, missedVisits, completedVisits } = propertyVisitsData;
+  const totalOffers=3000;
+  const highestOffer=2000;
+  const lowestOffer= 1200;
+
   return (
     <>
       <Text type="small" style={styles.title} textType="semiBold">
         {t('assetDashboard:latestUpdates')}
       </Text>
       <OffersVisitsSection
+        propertyDetailTab={propertyDetailTab}
         values={{
-          [OffersVisitsType.offers]: [3000, 2000, 1200],
+          [OffersVisitsType.offers]: [totalOffers, highestOffer, lowestOffer],
           [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
         }}
       />

@@ -27,7 +27,7 @@ const GalleryView: FC<IProps> = (props: IProps) => {
   const isIPadPro = useIsIpadPro();
   const moreImages = !isTablet ? (isIPadPro ? attachments.length - 2 : attachments.length - 3) : attachments.length - 1;
   const popOverContentStyle = {
-    width: '1000px',
+    width: isTablet ? '100%' : '1000px',
     height: '520px',
     alignItems: 'center',
   };
@@ -178,7 +178,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    width: 1000,
+    width: '100%',
     height: 520,
   },
   displayImage: {

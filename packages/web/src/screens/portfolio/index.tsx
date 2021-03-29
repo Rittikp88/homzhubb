@@ -30,6 +30,8 @@ import {
   IGetTenanciesPayload,
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
+
 import { IClosureReasonPayload, IListingParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IStateProps {
@@ -37,6 +39,7 @@ interface IStateProps {
   properties: Asset[] | null;
   isTenanciesLoading: boolean;
   currentFilter: Filters;
+  assetPayload: ISetAssetPayload;
 }
 
 interface IPopupData {
@@ -117,6 +120,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
     const isEmpty = !data || data.length <= 0;
+
     return (
       <View style={styles.container}>
         <View style={styles.headingView}>
@@ -138,12 +142,19 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
       this.handleActions(item, payload, param);
     };
+    const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
+      const { setCurrentAsset } = this.props;
+
+      setCurrentAsset(data);
+
+      this.navigateToDetailView({ ...data, dataType: type }, key);
+    };
     return (
       <AssetCard
         assetData={item}
         key={index}
         isFromTenancies={type === DataType.TENANCIES}
-        onViewProperty={this.navigateToDetailView}
+        onViewProperty={handleViewProperty}
         onPressArrow={FunctionUtils.noop}
         onCompleteDetails={this.onCompleteDetails}
         onOfferVisitPress={FunctionUtils.noop}
@@ -190,11 +201,19 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     }
   };
 
-  private navigateToDetailView = (id: number): void => {
-    const { history } = this.props;
+  private navigateToDetailView = (data: ISetAssetPayload, key?: Tabs): void => {
+    const { history, setCurrentAsset } = this.props;
+    setCurrentAsset(data);
+    const { asset_id, assetType, listing_id } = data;
     NavigationUtils.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_SELECTED,
-      params: { propertyId: id },
+      params: {
+        isFromTenancies: data.dataType === DataType.TENANCIES,
+        ...(key && { tabKey: key }),
+        asset_id,
+        assetType,
+        listing_id,
+      },
     });
   };
 
@@ -214,7 +233,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     getTenanciesDetails({ onCallback: this.onPropertiesCallback });
   };
 
-  private getPortfolioProperty = (isFromFilter?: boolean): void => {
+  private getPortfolioProperty = (): void => {
     const { getPropertyDetails, currentFilter } = this.props;
     getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
   };
@@ -243,6 +262,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     properties: PortfolioSelectors.getProperties(state),
     currentFilter: PortfolioSelectors.getCurrentFilter(state),
     isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
+    assetPayload: PortfolioSelectors.getCurrentAssetPayload(state),
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {

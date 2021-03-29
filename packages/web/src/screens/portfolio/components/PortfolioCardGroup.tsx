@@ -33,6 +33,7 @@ import {
   IClosureReasonPayload,
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 interface IUserInfo {
   name: string;
@@ -53,7 +54,7 @@ interface IListProps {
   onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
   enterFullScreen?: (attachments: Attachment[]) => void;
-  onViewProperty?: (id: number) => void;
+  onViewProperty?: (data: ISetAssetPayload, key?: Tabs) => void;
   onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
   history: History;
 }
@@ -88,7 +89,12 @@ export class AssetCard extends Component<Props> {
       carpetAreaUnit?.title ?? '',
       true
     );
-    const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(id);
+    let detailPayload: ISetAssetPayload;
+    if (assetStatusInfo) {
+      detailPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
+    }
+
+    const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(detailPayload, key);
     return (
       <View style={styles.mainContainer}>
         <View
