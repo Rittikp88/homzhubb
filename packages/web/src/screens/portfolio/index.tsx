@@ -22,7 +22,7 @@ import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCa
 import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/PortfolioFilter';
 import PortfolioOverview from '@homzhub/web/src/screens/portfolio/components/PortfolioOverview';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
-import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { Filters, AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
@@ -37,6 +37,11 @@ interface IStateProps {
   properties: Asset[] | null;
   isTenanciesLoading: boolean;
   currentFilter: Filters;
+}
+
+interface IPopupData {
+  label: string;
+  title: string;
 }
 
 export enum UpdatePropertyFormTypes {
@@ -68,22 +73,13 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   public componentDidMount = (): void => {
-    this.getScreenData();
-    PortfolioRepository.getAssetFilters()
-      .then((response) => {
-        this.setState({
-          filters: response,
-        });
-      })
-      .catch((e) => {
-        const error = ErrorUtils.getErrorMessage(e.details);
-        AlertHelper.error({ message: error });
-      });
+    this.getScreenData().then();
   };
 
   public render = (): React.ReactElement => {
     const { properties, tenancies } = this.props;
     const { filters } = this.state;
+
     return (
       <View style={styles.filterContainer}>
         <PortfolioOverview onMetricsClicked={this.onMetricsClicked} />
@@ -207,7 +203,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     getPropertyDetails({ status: filter, onCallback: this.onPropertiesCallback });
   };
 
-  private getScreenData = (): void => {
+  private getScreenData = async (): Promise<void> => {
+    await this.getAssetFilters();
     this.getTenancies();
     this.getPortfolioProperty();
   };
@@ -220,6 +217,24 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private getPortfolioProperty = (isFromFilter?: boolean): void => {
     const { getPropertyDetails, currentFilter } = this.props;
     getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
+  };
+
+  private getAssetFilters = async (): Promise<void> => {
+    try {
+      const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
+      const filterData = response.map(
+        (item): IPopupData => {
+          return {
+            label: item.title,
+            title: item.label,
+          };
+        }
+      );
+      this.setState({ filters: filterData });
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error });
+    }
   };
 }
 const mapStateToProps = (state: IState): IStateProps => {

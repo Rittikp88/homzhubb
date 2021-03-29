@@ -42,3 +42,7 @@ export const RouteNames = {
     REFER_EARN: '/dashboard/refer&Earn',
   },
 };
+
+export enum ScreensKeys {
+  Dashboard = 'Dashboard',
+}

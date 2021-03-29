@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
@@ -15,6 +15,7 @@ interface IPortfolioFilterProps {
   filterData: AssetFilter[];
   getStatus: (status: string) => void;
 }
+
 type IProps = IPortfolioFilterProps;
 const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
@@ -32,8 +33,8 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
   };
 
   const selectedFilter = (selectedValue: AssetFilter): void => {
-    getStatus(selectedValue.label);
-    setSelectedOption(selectedValue.title);
+    getStatus(selectedValue.title);
+    setSelectedOption(selectedValue.label);
     closePopup();
   };
   const closePopup = (): void => {

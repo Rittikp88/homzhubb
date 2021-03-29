@@ -42,7 +42,7 @@ import { PropertyAddress } from '@homzhub/common/src/components/molecules/Proper
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { SocialMediaShare } from '@homzhub/common/src/components/molecules/SocialMediaShare';
 import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';
-import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
+import { PropertyReviewCard } from '@homzhub/common/src/components/molecules/PropertyReviewCard';
 import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
 import SimilarProperties from '@homzhub/mobile/src/components/organisms/SimilarProperties';
 import {

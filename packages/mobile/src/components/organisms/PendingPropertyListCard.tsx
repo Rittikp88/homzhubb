@@ -9,7 +9,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
 import { ShieldGroup } from '@homzhub/mobile/src/components';
-import { PropertyReviewCard } from '@homzhub/mobile/src/components/molecules/PropertyReviewCard';
+import { PropertyReviewCard } from '@homzhub/common/src/components/molecules/PropertyReviewCard';
 import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';

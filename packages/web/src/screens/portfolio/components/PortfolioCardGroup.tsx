@@ -214,6 +214,7 @@ export class AssetCard extends Component<Props> {
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const isTakeActions = label === Filters.VACANT;
+    const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
     return (
       <>
         <Divider containerStyles={[styles.divider, isTablet && styles.dividerTablet]} />
@@ -260,11 +261,10 @@ export class AssetCard extends Component<Props> {
               <Text type="small" style={styles.title} textType="semiBold">
                 {t('assetPortfolio:detailsCompletionText')}
               </Text>
-              <ProgressBar
-                progress={totalSpendPeriod || assetCreation.percentage / 100}
-                isPropertyVacant={isVacant}
-                isTakeActions={isTakeActions}
-              />
+              <ProgressBar progress={progress} isPropertyVacant={isVacant} isTakeActions={isTakeActions} />
+              <Label type="small" textType="semiBold" style={styles.labelStyle}>
+                {t('assetPortfolio:addPropertyHighlights')}
+              </Label>
               <Button
                 type="primary"
                 textType="label"
@@ -316,6 +316,9 @@ export class AssetCard extends Component<Props> {
                       isPropertyVacant={isVacant}
                       isTakeActions={isTakeActions}
                     />
+                    <Label type="small" textType="semiBold" style={styles.labelStyle}>
+                      {t('assetPortfolio:addPropertyHighlights')}
+                    </Label>
                     <Button
                       type="primary"
                       textType="label"
@@ -680,5 +683,9 @@ const styles = StyleSheet.create({
   },
   latestUpdatesMobile: {
     marginRight: 36,
+  },
+  labelStyle: {
+    marginLeft: 24,
+    color: theme.colors.darkTint6,
   },
 });
