@@ -507,8 +507,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         }
       );
     } catch (e) {
-      this.setState({ isDeleteProperty: false, isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      this.setState({ isDeleteProperty: false, isLoading: false });
     }
   };
 
