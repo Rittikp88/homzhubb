@@ -886,8 +886,8 @@ export interface IPostOfferSell {
 }
 export interface IUpdateProspectProfile {
   job_type: number;
-  company_name?: string;
-  work_email?: string;
+  company_name: string;
+  work_email: string | null;
   number_of_occupants: number;
   tenant_type: number;
 }

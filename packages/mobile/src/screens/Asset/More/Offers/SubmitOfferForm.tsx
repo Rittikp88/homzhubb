@@ -72,7 +72,13 @@ const SubmitOfferForm = (): React.ReactElement => {
 
   const onCloseBottomSheet = (): void => {
     setIsSuccess(false);
-    goBack();
+    navigate(ScreensKeys.Search, {
+      screen: ScreensKeys.PropertyAssetDescription,
+      initial: false,
+      params: {
+        propertyTermId: asset?.leaseTerm?.id ?? asset?.saleTerm?.id,
+      },
+    });
   };
   // HANDLERS END
 

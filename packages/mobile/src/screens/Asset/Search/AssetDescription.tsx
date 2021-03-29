@@ -861,7 +861,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
   private navigateHandler = (): void => {
     const { navigation, assetDetails } = this.props;
-    if (assetDetails?.appPermissions?.addListingVisit) {
+    if (!assetDetails?.appPermissions?.addListingVisit) {
       navigation.navigate(ScreensKeys.PropertySearchScreen);
     } else {
       this.navigateToOfferScreen();

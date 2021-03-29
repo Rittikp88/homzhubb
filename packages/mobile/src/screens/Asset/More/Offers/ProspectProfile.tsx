@@ -26,8 +26,8 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IOfferForm {
   jobType: number;
-  companyName?: string;
-  workEmail?: string;
+  companyName: string;
+  workEmail: string;
   occupants: string;
   tenantType: number;
 }
@@ -66,41 +66,48 @@ class ProspectProfile extends Component<Props, IScreenState> {
   };
 
   public async componentDidMount(): Promise<void> {
-    const {
-      route: {
-        params: { editData },
-      },
-      userDetails,
-    } = this.props;
-    const { offerForm } = this.state;
-    const tenant = await OffersRepository.getTenantTypes();
-    const jobType = await OffersRepository.getJobType();
-    this.setState({
-      categories: jobType,
-      tenantType: tenant,
-      offerForm: {
-        ...offerForm,
-        workEmail: userDetails?.workInfo.workEmail,
-        companyName: userDetails?.workInfo.companyName,
-      },
-    });
-    const prospectsData = await OffersRepository.getProspectsInfo();
-    const {
-      user: { workInfo },
-      occupants,
-      tenantType,
-    } = prospectsData;
-    if (editData) {
-      this.setState({
-        offerForm: {
-          jobType: workInfo.jobType.id,
-          occupants: String(occupants),
-          companyName: workInfo.companyName,
-          workEmail: workInfo.workEmail,
-          tenantType: tenantType.id,
+    try {
+      const {
+        route: {
+          params: { editData },
         },
-        userType: tenantType.id,
+        userDetails,
+      } = this.props;
+      this.setState({ loading: true });
+      const { offerForm } = this.state;
+      const tenant = await OffersRepository.getTenantTypes();
+      const jobType = await OffersRepository.getJobType();
+      this.setState({
+        categories: jobType,
+        tenantType: tenant,
+        offerForm: {
+          ...offerForm,
+          workEmail: userDetails?.workInfo?.workEmail ?? '',
+          companyName: userDetails?.workInfo?.companyName ?? '',
+        },
       });
+      const prospectsData = await OffersRepository.getProspectsInfo();
+      const {
+        user: { workInfo },
+        occupants,
+        tenantType,
+      } = prospectsData;
+      if (editData) {
+        this.setState({
+          offerForm: {
+            jobType: workInfo.jobType.id,
+            occupants: String(occupants),
+            companyName: workInfo.companyName,
+            workEmail: workInfo.workEmail,
+            tenantType: tenantType.id,
+          },
+          userType: tenantType.id,
+        });
+      }
+      this.setState({ loading: false });
+    } catch (e) {
+      this.setState({ loading: false });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   }
 
@@ -132,7 +139,6 @@ class ProspectProfile extends Component<Props, IScreenState> {
           >
             {(formProps: FormikProps<IOfferForm>): React.ReactNode => {
               const disabledButton = !formProps.values.occupants || !formProps.values.jobType || !userType;
-
               return (
                 <>
                   <FormDropdown
@@ -201,7 +207,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
     const payload: IUpdateProspectProfile = {
       job_type: values.jobType,
       company_name: values.companyName,
-      work_email: values.workEmail,
+      work_email: values.workEmail.length === 0 ? null : values.workEmail,
       number_of_occupants: Number(values.occupants),
       tenant_type: userType,
     };
