@@ -249,7 +249,7 @@
     "answerFaster": "The best way to get answer faster.",
     "faqSearchPlaceholder": "Ask a question...",
     "questionSymbol": "Q.",
-    "Complete":"Complete"
+    "Complete": "Complete"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1097,7 +1097,7 @@
     "submitOffer": "Submit Offer",
     "lockInPeriod": "Lock-in Period",
     "maxLeasePeriod": "Max Lease Period",
-    "agreeToOwnerOffers": "I agree to above owners offers",
+    "agreeToOwnerOffers": "I accept the terms mentioned above",
     "enterFormDetails": "Enter your offer details",
     "offersCount": "{{count}} Offers left",
     "oneOfferLeft": "1 Offer left",

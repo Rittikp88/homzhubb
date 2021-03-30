@@ -84,7 +84,7 @@ const SubmitOfferForm = (): React.ReactElement => {
 
   return (
     <Screen
-      scrollEnabled
+      scrollEnabled={false}
       backgroundColor={theme.colors.white}
       isLoading={loading}
       headerProps={{

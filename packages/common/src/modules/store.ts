@@ -1,4 +1,4 @@
-import { applyMiddleware, compose, createStore, Store } from 'redux';
+import { applyMiddleware, createStore, Store } from 'redux';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from '@redux-saga/core';
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
@@ -21,12 +21,7 @@ export const configureStore = (): Store<IState> => {
   middleware.push(sagaMiddleware);
 
   // store setup
-  let store: Store = createStore(rootReducer, applyMiddleware(...middleware));
-  if (ConfigHelper.getAppMode() === AppModes.DEBUG) {
-    // @ts-ignore (To get actions seen in debugger more clearly in DEBUG mode alone)
-    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-    store = createStore(rootReducer, composeEnhancers(applyMiddleware(...middleware)));
-  }
+  const store: Store = createStore(rootReducer, applyMiddleware(...middleware));
 
   // Kick off root saga
   sagaMiddleware.run(rootSaga);

@@ -18,6 +18,10 @@ class ErrorUtils {
       if (data[0].message.non_field_errors) {
         return `${data[0].message.non_field_errors[0]}`;
       }
+      // Todo (Praharsh) : Check this.
+      if (data[0].message.length) {
+        return I18nService.t('genericErrorMessage');
+      }
       return data[0].message;
     }
 

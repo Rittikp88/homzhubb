@@ -4,6 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -196,120 +197,128 @@ class OfferForm extends React.Component<Props, IScreenState> {
                     formData: values,
                     showLeaseDurationError: values.minimumLeasePeriod > values.maximumLeasePeriod,
                   })}
-                <OfferDetailsCard checkBox={checkBox && !dirty} onClickCheckBox={handleCheckBox} />
-                {renderFormHeader()}
-                <View style={styles.formContainer}>
-                  {isRentFlow && (
-                    <>
-                      <FormTextInput
-                        name={OfferFormKeys.expectedRent}
-                        formProps={formProps}
-                        isMandatory
-                        inputType="number"
-                        label={t('offers:proposedRentalPrice')}
-                        placeholder={t('offers:enterPrice')}
-                        maxLength={maxLength(formProps.values.expectedPrice)}
-                      />
-                      <FormTextInput
-                        name={OfferFormKeys.securityDeposit}
-                        formProps={formProps}
-                        isMandatory
-                        inputType="number"
-                        label={t('offers:proposedSecurityDeposit')}
-                        placeholder={t('offers:enterPrice')}
-                        maxLength={maxLength(formProps.values.securityDeposit)}
-                      />
-                      <FormTextInput
-                        name={OfferFormKeys.annualRentIncrementPercentage}
-                        formProps={formProps}
-                        inputType="decimal"
-                        label={t('offers:proposedAnnualIncrement')}
-                        placeholder={t('offers:enterPercentage')}
-                      />
-                      <FormCalendar
-                        name={OfferFormKeys.availableFromDate}
-                        formProps={formProps}
-                        label={t('offers:proposedMoveInDate')}
-                        textType="label"
-                        textSize="regular"
-                        placeHolder={t('common:selectDate')}
-                        placeHolderStyle={styles.calendarText}
-                        minDate={values.availableFromDate}
-                        isMandatory
-                        allowPastDates={false}
-                      />
-
-                      <View key="min" style={styles.formSliderContainer}>
-                        <Label textType="semiBold" type="large" style={styles.sliderLabel}>
-                          {t('offers:proposedMinPeriod')}
-                        </Label>
-                        <WithFieldError error={errors[OfferFormKeys.minimumLeasePeriod]}>
-                          <Slider
-                            isLabelRequired
-                            labelText={t('common:months')}
-                            minSliderRange={0}
-                            maxSliderRange={12}
-                            isDoubleDigited
-                            minSliderValue={values[OfferFormKeys.minimumLeasePeriod]}
-                            onSliderChange={onMinDurationChange}
-                            sliderLength={theme.viewport.width - 32}
-                            key="minSlider"
+                <View style={styles.scrollContainer}>
+                  <KeyboardAwareScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+                    <OfferDetailsCard checkBox={checkBox && !dirty} onClickCheckBox={handleCheckBox} />
+                    {renderFormHeader()}
+                    <View style={styles.formContainer}>
+                      {isRentFlow && (
+                        <>
+                          <FormTextInput
+                            name={OfferFormKeys.expectedRent}
+                            formProps={formProps}
+                            isMandatory
+                            inputType="number"
+                            label={t('offers:proposedRentalPrice')}
+                            placeholder={t('offers:enterPrice')}
+                            maxLength={maxLength(formProps.values.expectedPrice)}
                           />
-                        </WithFieldError>
-                      </View>
-
-                      <View key="max" style={styles.formSliderContainer}>
-                        <Label textType="semiBold" type="large" style={styles.sliderLabel}>
-                          {t('offers:proposedTotalPeriod')}
-                        </Label>
-                        <WithFieldError error={showLeaseDurationError ? t('property:maximumLeaseError') : undefined}>
-                          <Slider
-                            isLabelRequired
-                            labelText={t('common:months')}
-                            minSliderRange={0}
-                            maxSliderRange={60}
-                            isDoubleDigited
-                            minSliderValue={values[OfferFormKeys.maximumLeasePeriod]}
-                            onSliderChange={onMaxDurationChange}
-                            sliderLength={theme.viewport.width - 32}
-                            key="maxSlider"
+                          <FormTextInput
+                            name={OfferFormKeys.securityDeposit}
+                            formProps={formProps}
+                            isMandatory
+                            inputType="number"
+                            label={t('offers:proposedSecurityDeposit')}
+                            placeholder={t('offers:enterPrice')}
+                            maxLength={maxLength(formProps.values.securityDeposit)}
                           />
-                        </WithFieldError>
-                      </View>
-                    </>
-                  )}
+                          <FormTextInput
+                            name={OfferFormKeys.annualRentIncrementPercentage}
+                            formProps={formProps}
+                            inputType="decimal"
+                            label={t('offers:proposedAnnualIncrement')}
+                            placeholder={t('offers:enterPercentage')}
+                          />
+                          <FormCalendar
+                            name={OfferFormKeys.availableFromDate}
+                            formProps={formProps}
+                            label={t('offers:proposedMoveInDate')}
+                            textType="label"
+                            textSize="regular"
+                            placeHolder={t('common:selectDate')}
+                            placeHolderStyle={styles.calendarText}
+                            minDate={values.availableFromDate}
+                            isMandatory
+                            allowPastDates={false}
+                          />
 
-                  {!isRentFlow && (
-                    <>
-                      <FormTextInput
-                        name={OfferFormKeys.expectedSellPrice}
-                        formProps={formProps}
-                        isMandatory
-                        inputType="number"
-                        label={t('offers:proposedSellPrice')}
-                        placeholder={t('offers:enterPrice')}
-                        maxLength={maxLength(formProps.values.expectedPrice)}
-                      />
-                      <FormTextInput
-                        name={OfferFormKeys.expectedBookingAmount}
-                        formProps={formProps}
-                        isMandatory
-                        inputType="number"
-                        label={t('offers:proposedBookingAmount')}
-                        placeholder={t('offers:enterPrice')}
-                        maxLength={maxLength(formProps.values.expectedPrice)}
-                      />
-                    </>
-                  )}
-                  {renderBottomFields(formProps)}
-                  <FormButton
-                    type="primary"
-                    formProps={formProps}
-                    disabled={offersLeft === 0 || disabled}
-                    // @ts-ignore
-                    onPress={handleSubmit}
-                    title={t('common:submit')}
-                  />
+                          <View key="min" style={styles.formSliderContainer}>
+                            <Label textType="semiBold" type="large" style={styles.sliderLabel}>
+                              {t('offers:proposedMinPeriod')}
+                            </Label>
+                            <WithFieldError error={errors[OfferFormKeys.minimumLeasePeriod]}>
+                              <Slider
+                                isLabelRequired
+                                labelText={t('common:months')}
+                                minSliderRange={0}
+                                maxSliderRange={12}
+                                isDoubleDigited
+                                minSliderValue={values[OfferFormKeys.minimumLeasePeriod]}
+                                onSliderChange={onMinDurationChange}
+                                sliderLength={theme.viewport.width - 32}
+                                key="minSlider"
+                              />
+                            </WithFieldError>
+                          </View>
+
+                          <View key="max" style={styles.formSliderContainer}>
+                            <Label textType="semiBold" type="large" style={styles.sliderLabel}>
+                              {t('offers:proposedTotalPeriod')}
+                            </Label>
+                            <WithFieldError
+                              error={showLeaseDurationError ? t('property:maximumLeaseError') : undefined}
+                            >
+                              <Slider
+                                isLabelRequired
+                                labelText={t('common:months')}
+                                minSliderRange={0}
+                                maxSliderRange={60}
+                                isDoubleDigited
+                                minSliderValue={values[OfferFormKeys.maximumLeasePeriod]}
+                                onSliderChange={onMaxDurationChange}
+                                sliderLength={theme.viewport.width - 32}
+                                key="maxSlider"
+                              />
+                            </WithFieldError>
+                          </View>
+                        </>
+                      )}
+
+                      {!isRentFlow && (
+                        <>
+                          <FormTextInput
+                            name={OfferFormKeys.expectedSellPrice}
+                            formProps={formProps}
+                            isMandatory
+                            inputType="number"
+                            label={t('offers:proposedSellPrice')}
+                            placeholder={t('offers:enterPrice')}
+                            maxLength={maxLength(formProps.values.expectedPrice)}
+                          />
+                          <FormTextInput
+                            name={OfferFormKeys.expectedBookingAmount}
+                            formProps={formProps}
+                            isMandatory
+                            inputType="number"
+                            label={t('offers:proposedBookingAmount')}
+                            placeholder={t('offers:enterPrice')}
+                            maxLength={maxLength(formProps.values.expectedPrice)}
+                          />
+                        </>
+                      )}
+                      {renderBottomFields(formProps)}
+                    </View>
+                  </KeyboardAwareScrollView>
+                  <View style={styles.formButtonContainer}>
+                    <FormButton
+                      type="primary"
+                      formProps={formProps}
+                      disabled={offersLeft === 0 || disabled}
+                      // @ts-ignore
+                      onPress={handleSubmit}
+                      title={t('common:submit')}
+                    />
+                  </View>
                 </View>
               </>
             );
@@ -531,7 +540,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderWidth: 1,
     borderColor: theme.colors.background,
-    marginBottom: 20,
     borderRadius: 4,
     justifyContent: 'center',
   },
@@ -556,5 +564,26 @@ const styles = StyleSheet.create({
   },
   sliderLabel: {
     marginBottom: 5,
+  },
+  formButtonContainer: {
+    flex: 0.1,
+    backgroundColor: theme.colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    shadowColor: theme.colors.boxShadow,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5,
+    elevation: 7,
+  },
+  scrollContainer: {
+    flex: 3,
+  },
+  scrollView: {
+    flex: 2.9,
   },
 });

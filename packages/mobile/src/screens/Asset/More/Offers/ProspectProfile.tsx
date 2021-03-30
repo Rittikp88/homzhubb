@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -98,7 +99,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
             jobType: workInfo.jobType.id,
             occupants: String(occupants),
             companyName: workInfo.companyName,
-            workEmail: workInfo.workEmail,
+            workEmail: workInfo.workEmail ?? '',
             tenantType: tenantType.id,
           },
           userType: tenantType.id,
@@ -124,78 +125,88 @@ class ProspectProfile extends Component<Props, IScreenState> {
           onIconPress: (): void => this.goBack(),
         }}
         isLoading={loading}
+        scrollEnabled={false}
+        contentContainerStyle={styles.screen}
       >
-        <View style={styles.container}>
-          <Avatar fullName={userDetails.name} designation={userDetails.email} image={userDetails.profilePicture} />
-          <Label type="large" textType="regular" style={styles.radioGroup}>
-            {t('offers:tenantProfileInfo')}
-          </Label>
+        <Formik
+          onSubmit={this.onSubmit}
+          initialValues={offerForm}
+          enableReinitialize
+          validate={FormUtils.validate(this.formSchema)}
+        >
+          {(formProps: FormikProps<IOfferForm>): React.ReactNode => {
+            const disabledButton = !formProps.values.occupants || !formProps.values.jobType || !userType;
+            return (
+              <>
+                <View style={styles.container}>
+                  <KeyboardAwareScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+                    <Avatar
+                      fullName={userDetails.name}
+                      designation={userDetails.email}
+                      image={userDetails.profilePicture}
+                    />
+                    <Label type="large" textType="regular" style={styles.radioGroup}>
+                      {t('offers:tenantProfileInfo')}
+                    </Label>
 
-          <Formik
-            onSubmit={this.onSubmit}
-            initialValues={offerForm}
-            enableReinitialize
-            validate={FormUtils.validate(this.formSchema)}
-          >
-            {(formProps: FormikProps<IOfferForm>): React.ReactNode => {
-              const disabledButton = !formProps.values.occupants || !formProps.values.jobType || !userType;
-              return (
-                <>
-                  <FormDropdown
-                    formProps={formProps}
-                    isMandatory
-                    options={this.loadJobTypeCategories()}
-                    name="jobType"
-                    label={t('offers:jobType')}
-                    placeholder={t('offers:selfEmployed')}
-                    dropdownContainerStyle={styles.dropdownStyle}
-                  />
-                  <FormTextInput
-                    formProps={formProps}
-                    inputType="default"
-                    name="companyName"
-                    label={t('offers:organizationName')}
-                    placeholder={t('offers:enterName')}
-                  />
-                  <FormTextInput
-                    formProps={formProps}
-                    inputType="email"
-                    name="workEmail"
-                    label={t('offers:workEmail')}
-                    placeholder={t('offers:enterEmail')}
-                  />
-                  <FormTextInput
-                    formProps={formProps}
-                    isMandatory
-                    inputType="number"
-                    name="occupants"
-                    label={t('offers:occupants')}
-                    placeholder={t('offers:enterNumber')}
-                  />
+                    <FormDropdown
+                      formProps={formProps}
+                      isMandatory
+                      options={this.loadJobTypeCategories()}
+                      name="jobType"
+                      label={t('offers:jobType')}
+                      placeholder={t('offers:selfEmployed')}
+                      dropdownContainerStyle={styles.dropdownStyle}
+                    />
+                    <FormTextInput
+                      formProps={formProps}
+                      inputType="default"
+                      name="companyName"
+                      label={t('offers:organizationName')}
+                      placeholder={t('offers:enterName')}
+                    />
+                    <FormTextInput
+                      formProps={formProps}
+                      inputType="email"
+                      name="workEmail"
+                      label={t('offers:workEmail')}
+                      placeholder={t('offers:enterEmail')}
+                    />
+                    <FormTextInput
+                      formProps={formProps}
+                      isMandatory
+                      inputType="number"
+                      name="occupants"
+                      label={t('offers:occupants')}
+                      placeholder={t('offers:enterNumber')}
+                    />
 
-                  <Text type="small" textType="semiBold" style={styles.radioGroup}>
-                    {t('offers:tenantType')}
-                  </Text>
-                  <RadioButtonGroup
-                    numColumns={3}
-                    data={tenantType as Unit[]}
-                    onToggle={this.handleUserType}
-                    selectedValue={userType}
-                  />
-                  <FormButton
-                    // @ts-ignore
-                    onPress={formProps.handleSubmit}
-                    formProps={formProps}
-                    disabled={disabledButton}
-                    type="primary"
-                    title={t('common:next')}
-                    containerStyle={styles.submitStyle}
-                  />
-                </>
-              );
-            }}
-          </Formik>
-        </View>
+                    <Text type="small" textType="semiBold" style={styles.radioGroup}>
+                      {t('offers:tenantType')}
+                    </Text>
+                    <RadioButtonGroup
+                      numColumns={3}
+                      data={tenantType as Unit[]}
+                      onToggle={this.handleUserType}
+                      selectedValue={userType}
+                    />
+                  </KeyboardAwareScrollView>
+
+                  <View style={styles.formButtonContainer}>
+                    <FormButton
+                      // @ts-ignore
+                      onPress={formProps.handleSubmit}
+                      formProps={formProps}
+                      disabled={disabledButton}
+                      type="primary"
+                      title={t('common:next')}
+                    />
+                  </View>
+                </View>
+              </>
+            );
+          }}
+        </Formik>
       </Screen>
     );
   };
@@ -222,7 +233,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
     }
   };
 
-  private formSchema = (): yup.ObjectSchema<IOfferForm> => {
+  private formSchema = (): yup.ObjectSchema => {
     const { t } = this.props;
     return yup.object().shape({
       jobType: yup.number().required(t('moreProfile:fieldRequiredError')),
@@ -269,18 +280,37 @@ const mapStateToProps = (state: IState): IStateToProps => {
 export default connect(mapStateToProps, null)(withTranslation()(ProspectProfile));
 
 const styles = StyleSheet.create({
+  screen: {
+    paddingHorizontal: 0,
+  },
   container: {
-    flex: 1,
+    flex: 3,
+    marginVertical: 5,
   },
   radioGroup: {
     marginVertical: 16,
     color: theme.colors.darkTint3,
   },
-  submitStyle: {
-    flex: 0,
-    marginVertical: 16,
-  },
   dropdownStyle: {
     paddingVertical: 12,
+  },
+  scrollView: {
+    flex: 2.9,
+    paddingHorizontal: 16,
+  },
+  formButtonContainer: {
+    flex: 0.1,
+    backgroundColor: theme.colors.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    shadowColor: theme.colors.boxShadow,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5,
+    elevation: 7,
   },
 });
