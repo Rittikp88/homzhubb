@@ -176,6 +176,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const isTakeActions = label === Filters.VACANT;
     const styles = propertyDetailStyle(isMobile, isTablet);
+    const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
 
     return (
       <>
@@ -222,18 +223,18 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
               <Text type="small" style={styles.title} textType="semiBold">
                 {t('assetPortfolio:detailsCompletionText')}
               </Text>
-              <ProgressBar
-                progress={totalSpendPeriod || assetCreation.percentage / 100}
-                isPropertyVacant={isVacant}
-                isTakeActions={isTakeActions}
-              />
+              <ProgressBar progress={progress} isPropertyVacant={isVacant} isTakeActions={isTakeActions} />
+              <Label type="small" textType="semiBold" style={styles.labelStyle}>
+                {t('assetPortfolio:addPropertyHighlights')}
+              </Label>
+
               <Button
                 type="primary"
                 textType="label"
                 textSize="regular"
                 fontType="semiBold"
                 containerStyle={styles.completeButton}
-                title={t('complete')}
+                title={t('assetPortfolio:complete')}
                 titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
                 onPress={this.onCompleteDetails}
               />
@@ -278,13 +279,16 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
                       isPropertyVacant={isVacant}
                       isTakeActions={isTakeActions}
                     />
+                    <Label type="small" textType="semiBold" style={styles.labelStyle}>
+                      {t('assetPortfolio:addPropertyHighlights')}
+                    </Label>
                     <Button
                       type="primary"
                       textType="label"
                       textSize="regular"
                       fontType="semiBold"
                       containerStyle={styles.completeButton}
-                      title={t('complete')}
+                      title={t('assetPortfolio:complete')}
                       titleStyle={[styles.buttonTitle, { color: theme.colors.blue }]}
                       onPress={this.onCompleteDetails}
                     />
@@ -441,6 +445,7 @@ interface IPropertyDetailStyles {
   buttonContainer: ViewStyle;
   actionHeader: ViewStyle;
   title: ViewStyle;
+  labelStyle: ViewStyle;
 }
 const propertyDetailStyle = (isMobile?: boolean, isTablet?: boolean): StyleSheet.NamedStyles<IPropertyDetailStyles> =>
   StyleSheet.create<IPropertyDetailStyles>({
@@ -582,5 +587,9 @@ const propertyDetailStyle = (isMobile?: boolean, isTablet?: boolean): StyleSheet
     title: {
       color: theme.colors.darkTint4,
       marginBottom: 12,
+    },
+    labelStyle: {
+      marginLeft: 24,
+      color: theme.colors.darkTint6,
     },
   });

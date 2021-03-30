@@ -248,7 +248,8 @@
     "happyToHelp": "We are always happy to help.",
     "answerFaster": "The best way to get answer faster.",
     "faqSearchPlaceholder": "Ask a question...",
-    "questionSymbol": "Q."
+    "questionSymbol": "Q.",
+    "Complete":"Complete"
   },
   "auth": {
     "verifyNumber": "Verify your number",

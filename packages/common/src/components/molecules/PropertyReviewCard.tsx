@@ -6,6 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Property from '@homzhub/common/src/assets/images/property.svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+
 interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
 }

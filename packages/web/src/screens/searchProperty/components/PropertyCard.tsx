@@ -54,7 +54,6 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
     blockNumber,
     leaseTerm,
     saleTerm,
-    id,
   } = investmentData;
   const primaryAddress = projectName;
   const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
@@ -65,7 +64,10 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
     { color: theme.colors.completed },
   ];
   const navigateToSearchView = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PROPERTY_DETAIL, params: { propertyId: id } });
+    NavigationUtils.navigate(history, {
+      path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
+      params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },
+    });
   };
   const getPrice = (): number => {
     if (leaseTerm) {
