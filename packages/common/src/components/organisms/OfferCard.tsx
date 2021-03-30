@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
@@ -13,6 +13,7 @@ import TextWithIcon from '@homzhub/common/src/components/atoms/TextWithIcon';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import UserView from '@homzhub/common/src/components/organisms/UserView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -30,6 +31,7 @@ interface IProps {
 interface IOwnState {
   hasMore: boolean;
   isReasonSheetVisible: boolean;
+  isProfileSheetVisible: boolean;
 }
 
 type Props = IProps & WithTranslation;
@@ -38,6 +40,7 @@ class OfferCard extends Component<Props, IOwnState> {
   public state = {
     hasMore: false,
     isReasonSheetVisible: false,
+    isProfileSheetVisible: false,
   };
 
   public render(): React.ReactElement {
@@ -77,21 +80,11 @@ class OfferCard extends Component<Props, IOwnState> {
   }
 
   private renderCardContent = (): React.ReactElement => {
-    const { hasMore } = this.state;
+    const { hasMore, isProfileSheetVisible } = this.state;
     const {
       t,
       isFromAccept = false,
-      offer: {
-        minLockInPeriod,
-        leasePeriod,
-        price,
-        role,
-        createdAt,
-        validDays,
-        validCount,
-        status,
-        user: { name },
-      },
+      offer: { minLockInPeriod, leasePeriod, price, role, createdAt, validDays, validCount, status, user },
       offer,
       compareData,
       asset,
@@ -107,7 +100,10 @@ class OfferCard extends Component<Props, IOwnState> {
     // TODO: Use values from API
     return (
       <View style={styles.cardContainer}>
-        <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
+        <TouchableOpacity onPress={this.onProfileSheet}>
+          <Avatar fullName={user.name} designation={StringUtils.toTitleCase(role)} />
+        </TouchableOpacity>
+        <UserView isVisible={isProfileSheetVisible} user={user} onClose={this.onCloseProfileSheet} />
         {isFromAccept && asset ? (
           <PropertyAddressCountry
             isIcon
@@ -343,6 +339,14 @@ class OfferCard extends Component<Props, IOwnState> {
 
   private onCloseReason = (): void => {
     this.setState({ isReasonSheetVisible: false });
+  };
+
+  private onProfileSheet = (): void => {
+    this.setState({ isProfileSheetVisible: true });
+  };
+
+  private onCloseProfileSheet = (): void => {
+    this.setState({ isProfileSheetVisible: false });
   };
 }
 

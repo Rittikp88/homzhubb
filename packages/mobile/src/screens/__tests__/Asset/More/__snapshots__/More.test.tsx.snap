@@ -984,7 +984,7 @@ exports[`Financials Screen should render snapshot 1`] = `
     }
   />
   <ForwardRef
-    onPress={[MockFunction]}
+    onPress={[Function]}
     style={
       Object {
         "alignItems": "center",

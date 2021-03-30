@@ -86,7 +86,7 @@ export class More extends React.PureComponent<Props> {
     return (
       <>
         {this.renderLogoutSeparator()}
-        <TouchableOpacity onPress={logout} style={styles.logout} testID="touchLogout">
+        <TouchableOpacity onPress={(): void => logout()} style={styles.logout} testID="touchLogout">
           {this.renderItemWithIcon(LOGOUT, true)}
         </TouchableOpacity>
       </>

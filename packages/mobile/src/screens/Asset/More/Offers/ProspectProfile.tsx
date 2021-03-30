@@ -28,7 +28,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 interface IOfferForm {
   jobType: number;
   companyName: string;
-  workEmail: string;
+  workEmail: string | null;
   occupants: string;
   tenantType: number;
 }

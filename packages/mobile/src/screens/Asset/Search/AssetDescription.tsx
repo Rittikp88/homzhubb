@@ -93,7 +93,6 @@ interface IOwnState {
   startDate: string;
   isSharing: boolean;
   sharingMessage: string;
-  prospectsData: boolean;
 }
 
 const { width, height } = theme.viewport;
@@ -111,7 +110,6 @@ const initialState = {
   isFavourite: false,
   startDate: '',
   isSharing: false,
-  prospectsData: false,
   sharingMessage: I18nService.t('common:homzhub'),
 };
 
@@ -122,16 +120,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public state = initialState;
 
   public componentDidMount = async (): Promise<void> => {
-    const { navigation, isLoggedIn } = this.props;
+    const { navigation } = this.props;
     const startDate = this.getFormattedDate();
     this.setState({ startDate });
+    this.getProspect();
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetData();
     });
-    if (isLoggedIn) {
-      const prospectsData = await OffersRepository.getProspectsInfo();
-      this.setState({ prospectsData: Boolean(prospectsData.id) });
-    }
+
     await this.setSharingMessage();
   };
 
@@ -871,7 +867,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToOfferScreen = (): void => {
-    const { prospectsData } = this.state;
     const {
       navigation,
       assetDetails,
@@ -879,13 +874,15 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { propertyTermId },
       },
     } = this.props;
-    if (!assetDetails) return;
-    const { leaseTerm } = assetDetails;
-    if (leaseTerm && !prospectsData) {
-      navigation.navigate(ScreensKeys.ProspectProfile, { propertyTermId });
-    } else {
-      navigation.navigate(ScreensKeys.SubmitOffer);
-    }
+    this.getProspect().then((response) => {
+      if (!assetDetails) return;
+      const { leaseTerm } = assetDetails;
+      if (leaseTerm && response <= 0) {
+        navigation.navigate(ScreensKeys.ProspectProfile, { propertyTermId });
+      } else {
+        navigation.navigate(ScreensKeys.SubmitOffer);
+      }
+    });
   };
 
   public updateSlide = (slideNumber: number): void => {
@@ -916,6 +913,15 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       propertyTermId,
     };
     getAsset(payload);
+  };
+
+  private getProspect = async (): Promise<number | void> => {
+    const { isLoggedIn } = this.props;
+    if (isLoggedIn) {
+      const prospectsData = await OffersRepository.getProspectsInfo();
+      return prospectsData.id;
+    }
+    return Promise.resolve();
   };
 
   private getFormattedDate = (): string => {
