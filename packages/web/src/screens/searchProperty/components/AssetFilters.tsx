@@ -300,6 +300,8 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
     const filterValues = { asset_transaction_type: value, min_price: -1, max_price: -1 };
 
     let searchParams = history.location.search;
+    // TODO: (Charit) - Fix lint issue
+    // eslint-disable-next-line no-restricted-syntax
     for (const [key, values] of Object.entries(filterValues)) {
       if (searchParams) searchParams += `&${key}=${values}`;
       else searchParams += `?${key}=${values}`;

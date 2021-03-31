@@ -15,6 +15,7 @@ import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { RootNavigator } from '@homzhub/mobile/src/navigation/RootNavigator';
 import { Toast } from '@homzhub/common/src/components/molecules/Toast';
+import ErrorBoundary from '@homzhub/mobile/src/components/HOC/ErrorBoundary';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 
 interface IState {
@@ -48,10 +49,12 @@ export default class App extends React.PureComponent<{}, IState> {
     const { booting } = this.state;
 
     return (
-      <Provider store={store}>
-        <RootNavigator booting={booting} />
-        <FlashMessage position="bottom" MessageComponent={this.renderToast} />
-      </Provider>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <RootNavigator booting={booting} />
+          <FlashMessage position="bottom" MessageComponent={this.renderToast} />
+        </Provider>
+      </ErrorBoundary>
     );
   };
 
