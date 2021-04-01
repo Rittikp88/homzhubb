@@ -1,13 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import ReactHtmlParser from 'react-html-parser';
 import { useTranslation } from 'react-i18next';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { IFAQs } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const Header = (isOpen: boolean, item: any): React.ReactElement => {
+const Header = (isOpen: boolean, item: IFAQs): React.ReactElement => {
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
@@ -41,7 +43,7 @@ const accordianContent = (html: any): React.ReactElement => {
 };
 
 interface IQuestionProps {
-  item: any;
+  item: IFAQs;
 }
 
 const QuestionCards: React.FC<IQuestionProps> = (props: IQuestionProps) => {
@@ -59,7 +61,7 @@ const QuestionCards: React.FC<IQuestionProps> = (props: IQuestionProps) => {
       <View style={styles.accordianContainer}>
         <TouchableOpacity onPress={toggleAccordion}>{Header(isOpen, item)}</TouchableOpacity>
         <View ref={content} style={[styles.accordianContent, { maxHeight: `${setHeight}` }]}>
-          {answerRichText && accordianContent(answerRichText.html)}
+          {answerRichText && accordianContent(ReactHtmlParser(answerRichText.html))}
         </View>
       </View>
     </View>

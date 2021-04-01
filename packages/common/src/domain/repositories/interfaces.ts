@@ -934,3 +934,18 @@ export interface IOfferManagementParam {
   lease_listing_id?: number;
 }
 // OFFERS END
+
+export interface IFAQCategory {
+  title: string;
+  id: string;
+  activeIcon?: string;
+  inactiveIcon?: string;
+}
+interface IFAQAnswerRichText {
+  html: any;
+}
+export interface IFAQs {
+  question: string;
+  answerRichText: IFAQAnswerRichText;
+  category: IFAQCategory;
+}

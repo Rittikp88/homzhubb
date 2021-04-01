@@ -15,7 +15,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   testID?: string;
   onLayoutChange?: (e: LayoutChangeEvent) => void;
-  onSearchPress: () => void;
+  onSearchPress: (value: string) => void;
 }
 
 export const SearchFieldButton: FC<IProps> = (props: IProps) => {
@@ -65,7 +65,7 @@ export const SearchFieldButton: FC<IProps> = (props: IProps) => {
         textStyle={styles.searchTextStyle}
         testID="btnSearch"
         disabled={!value}
-        onPress={onSearchPress}
+        onPress={(): void => onSearchPress(value)}
       />
     </View>
   );

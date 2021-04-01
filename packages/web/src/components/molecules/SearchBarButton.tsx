@@ -5,15 +5,19 @@ import { SearchFieldButton } from '@homzhub/web/src/components/atoms/SearchField
 
 interface ISearchBarProps {
   containerStyle: ViewStyle;
-  onSearchPress: () => void;
+  onSearchPress: (value: string) => void;
+  onSearchActive: (value: string) => void;
 }
 
 const SearchBarButton: FC<ISearchBarProps> = (props: ISearchBarProps) => {
-  const { containerStyle, onSearchPress } = props;
+  const { containerStyle, onSearchPress, onSearchActive } = props;
   const [searchText, setSearchText] = useState('');
   const { t } = useTranslation();
 
-  const updateSearchValue = (value: string): void => setSearchText(value);
+  const updateSearchValue = (value: string): void => {
+    setSearchText(value);
+    onSearchActive(value);
+  };
 
   return (
     <SearchFieldButton
@@ -21,7 +25,7 @@ const SearchBarButton: FC<ISearchBarProps> = (props: ISearchBarProps) => {
       value={searchText}
       updateValue={updateSearchValue}
       containerStyle={[styles.searchBar, containerStyle]}
-      onSearchPress={onSearchPress}
+      onSearchPress={(value): void => onSearchPress(value)}
     />
   );
 };

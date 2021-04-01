@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { GraphQLRepository } from '@homzhub/common/src/domain/repositories/GraphQLRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,66 +10,89 @@ import FooterWithSocialMedia from '@homzhub/web/src/screens/landing/components/F
 import { FAQBanner } from '@homzhub/web/src/screens/faq/components/FaqBanner';
 import QuestionCards from '@homzhub/web/src/screens/faq/components/questionCard';
 import ContactUs from '@homzhub/web/src/screens/faq/components/contactUs';
+import { IFAQCategory, IFAQs } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { categoriesData, faqsData } from '@homzhub/web/src/screens/faq/mockData';
 
 const FAQ: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
-  // const [categories, setCategories] = useState([]);
-  // const [faqs, setFAQs] = useState([]);
-  const getCategories = async (): Promise<void> => {
+  const [categories, setCategories] = useState<IFAQCategory[] | []>([]);
+  const [faqs, setFAQs] = useState<IFAQs[] | []>([]);
+  const getCategories = async (): Promise<IFAQCategory[]> => {
     const response = await GraphQLRepository.getFAQAllCategories();
-    // setCategories(response.data.categories); TODO: Lakshit: Remove once API Authorization is fixed.
-    // setCategories(response);
+    setCategories(response);
     return response;
   };
-  const getFAQs = async (): Promise<void> => {
+  const getFAQs = async (): Promise<IFAQs[]> => {
     const response = await GraphQLRepository.getFAQAllQuestions();
-    // setFAQs(response.data.faqs); TODO: Lakshit: Remove once API Authorization is fixed.
-    // setFAQs(response);
+    setFAQs(response);
     return response;
   };
   useEffect(() => {
     getCategories().then();
     getFAQs().then();
   }, []);
+  const onPressCategory = async (id: string): Promise<IFAQs[]> => {
+    const response = await GraphQLRepository.getFAQCategoryQuestions(id);
+    setFAQs(response);
+    return response;
+  };
+
+  const [isSearchActive, setSearchActive] = useState(false);
+
+  const onSearchActive = (value: string): void => {
+    if (value) {
+      setSearchActive(true);
+    } else {
+      setSearchActive(false);
+    }
+  };
+
   const HeaderSection = (): React.ReactElement => {
     return (
       <View style={styles.categoryContainer}>
-        {categoriesData.map((el) => (
-          <View style={[styles.imageBox, isMobile && styles.imageBoxMobile]} key={el.id}>
-            <Image
-              source={require('@homzhub/common/src/assets/images/gettingStarted.svg')}
-              style={[styles.imageContainer, isMobile && styles.imageContainerMobile]}
-            />
-            <Typography variant="label" size="large" fontWeight="semiBold" style={[styles.titleText]}>
-              {el.title}
-            </Typography>
-          </View>
-        ))}
+        {categories.length &&
+          (categories as IFAQCategory[]).map((el: IFAQCategory) => (
+            <TouchableOpacity key={el.id} onPress={(): Promise<IFAQs[]> => onPressCategory(el.id)}>
+              <View style={[styles.imageBox, isMobile && styles.imageBoxMobile]}>
+                <Image
+                  source={require('@homzhub/common/src/assets/images/gettingStarted.svg')}
+                  style={[styles.imageContainer, isMobile && styles.imageContainerMobile]}
+                />
+                <Typography variant="label" size="large" fontWeight="semiBold" style={[styles.titleText]}>
+                  {el.title}
+                </Typography>
+              </View>
+            </TouchableOpacity>
+          ))}
       </View>
     );
   };
-  const onSearchPress = (): void => {};
+  const onSearchPress = async (value: string): Promise<void> => {
+    const response = await GraphQLRepository.getFAQSearchQuestions(value);
+    setFAQs(response);
+  };
   return (
     <View style={styles.container}>
       <FAQBanner />
       <View style={styles.upperBackground}>
-        <SearchBarButton containerStyle={styles.searchBar} onSearchPress={onSearchPress} />
-        <View style={styles.headerContainer}>{HeaderSection()}</View>
-        {faqsData && (
-          <View style={[styles.faqCards, isTablet && styles.faqCardsMobile, isMobile && styles.faqCardsMobile]}>
-            {faqsData.map((item) => (
+        <SearchBarButton
+          containerStyle={styles.searchBar}
+          onSearchPress={onSearchPress}
+          onSearchActive={onSearchActive}
+        />
+        <View style={styles.headerContainer}>{!isSearchActive && HeaderSection()}</View>
+        <View style={[styles.faqCards, isTablet && styles.faqCardsMobile, isMobile && styles.faqCardsMobile]}>
+          {faqs.length &&
+            (faqs as IFAQs[]).map((item: IFAQs) => (
               <View
                 style={[styles.cards, isTablet && styles.cardsTablet, isMobile && styles.cardsMobile]}
-                key={item.category.id}
+                key={item.question}
               >
                 <QuestionCards item={item} />
               </View>
             ))}
-          </View>
-        )}
+        </View>
       </View>
       <View style={styles.contactUsSection}>
         <ContactUs />
@@ -124,7 +147,7 @@ const styles = StyleSheet.create({
   },
   imageBox: {
     height: 132,
-    width: 216,
+    width: 256,
     backgroundColor: 'white',
     border: `1px solid ${theme.colors.white}`,
     borderRadius: 8,
@@ -144,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   imageBoxMobile: {
-    height: 102,
+    height: 140,
     width: '34vw',
   },
   imageContainer: {
@@ -152,8 +175,8 @@ const styles = StyleSheet.create({
     width: 40,
   },
   imageContainerMobile: {
-    height: 24,
-    width: 40,
+    height: 32,
+    width: 32,
   },
   titleText: {
     marginTop: 18,

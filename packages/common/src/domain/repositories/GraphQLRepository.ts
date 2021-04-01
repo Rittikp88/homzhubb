@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IFAQCategory, IFAQs } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   HOMZHUB: 'https://api-ap-northeast-1.graphcms.com/v2/ckiqymr7djhfb01z1di6m4fjs/master',
@@ -67,7 +68,7 @@ const getQuery = (queryKey: string, param?: string): string => {
     }`;
     case 'faqSearchQuestions':
       return `query MyQuery {
-      faqs(where: {question_contains: ${param}}) {
+      faqs(where: {question_contains: "${param}"}) {
         question
         answerRichText{html}
         category{id title}
@@ -75,7 +76,7 @@ const getQuery = (queryKey: string, param?: string): string => {
     }`;
     case 'faqCategoryQuestions':
       return `query MyQuery {
-    faqs(where: {category: {AND: {id: ${param}}}}) {
+    faqs(where: {category: {AND: {id: "${param}"}}}) {
       question
       answerRichText{html}
       category{id title}
@@ -99,7 +100,7 @@ class GraphQLRepository {
     return response.data.properties;
   };
 
-  public getFAQAllCategories = async (): Promise<any> => {
+  public getFAQAllCategories = async (): Promise<IFAQCategory[]> => {
     const response = await axios({
       url: ENDPOINTS.FAQ,
       method: 'post',
@@ -109,10 +110,10 @@ class GraphQLRepository {
     }).then((result) => {
       return result.data;
     });
-    return response.data.properties;
+    return response.data.categories;
   };
 
-  public getFAQAllQuestions = async (): Promise<any> => {
+  public getFAQAllQuestions = async (): Promise<IFAQs[]> => {
     const response = await axios({
       url: ENDPOINTS.FAQ,
       method: 'post',
@@ -122,33 +123,33 @@ class GraphQLRepository {
     }).then((result) => {
       return result.data;
     });
-    return response.data.properties;
+    return response.data.faqs;
   };
 
-  public getFAQSearchQuestions = async (): Promise<any> => {
+  public getFAQSearchQuestions = async (param: string): Promise<IFAQs[]> => {
     const response = await axios({
       url: ENDPOINTS.FAQ,
       method: 'post',
       data: {
-        query: getQuery('faqSearchQuestions'),
+        query: getQuery('faqSearchQuestions', param),
       },
     }).then((result) => {
       return result.data;
     });
-    return response.data.properties;
+    return response.data.faqs;
   };
 
-  public getFAQCategoryQuestions = async (): Promise<any> => {
+  public getFAQCategoryQuestions = async (param: string): Promise<IFAQs[]> => {
     const response = await axios({
       url: ENDPOINTS.FAQ,
       method: 'post',
       data: {
-        query: getQuery('faqCategoryQuestions'),
+        query: getQuery('faqCategoryQuestions', param),
       },
     }).then((result) => {
       return result.data;
     });
-    return response.data.properties;
+    return response.data.faqs;
   };
 }
 
