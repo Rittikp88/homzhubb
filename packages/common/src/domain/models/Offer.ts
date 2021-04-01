@@ -15,6 +15,7 @@ export enum OfferAction {
   ACCEPT = 'ACCEPT',
   REJECT = 'REJECT',
   CANCEL = 'CANCEL',
+  COUNTER = 'COUNTER',
 }
 
 export interface IOfferValue {

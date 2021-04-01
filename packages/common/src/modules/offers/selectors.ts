@@ -1,5 +1,4 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer } from '@homzhub/common/src/domain/models/Offer';
@@ -7,13 +6,36 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   ICurrentOffer,
   IOfferCompare,
-  IOwnerProposalsLease,
-  IOwnerProposalsSale,
+  IExistingProposalsLease,
+  IExistingProposalsSale,
 } from '@homzhub/common/src/modules/offers/interfaces';
 
-const getOwnerProposalsRent = (state: IState): IOwnerProposalsLease | null => {
-  const asset = AssetSelectors.getAsset(state);
-  if (asset && asset?.leaseTerm) {
+const getPastProposalsRent = (state: IState): IExistingProposalsLease | null => {
+  const currentOffer = getCurrentOffer(state);
+  const offerListing = getListingDetail(state);
+  if (currentOffer) {
+    const {
+      rent,
+      securityDeposit,
+      minLockInPeriod,
+      moveInDate,
+      leasePeriod,
+      annualRentIncrementPercentage,
+      tenantPreferences,
+    } = currentOffer;
+    return {
+      expectedPrice: `${rent}`,
+      securityDeposit: `${securityDeposit}`,
+      minimumLeasePeriod: minLockInPeriod,
+      maximumLeasePeriod: leasePeriod,
+      annualRentIncrementPercentage: annualRentIncrementPercentage ? `${annualRentIncrementPercentage}` : '',
+      availableFromDate: `${moveInDate}`,
+      maintenancePaidBy: `${offerListing?.leaseTerm?.maintenancePaidBy}`,
+      utilityPaidBy: `${offerListing?.leaseTerm?.maintenancePaidBy}`,
+      tenantPreferences: tenantPreferences.map((item) => ({ id: item.id, label: item.name, isSelected: true })),
+    };
+  }
+  if (offerListing?.leaseTerm) {
     const {
       expectedPrice,
       securityDeposit,
@@ -24,7 +46,7 @@ const getOwnerProposalsRent = (state: IState): IOwnerProposalsLease | null => {
       maintenancePaidBy,
       utilityPaidBy,
       tenantPreferences,
-    } = asset.leaseTerm;
+    } = offerListing.leaseTerm;
     return {
       expectedPrice: `${expectedPrice}`,
       securityDeposit: `${securityDeposit}`,
@@ -40,15 +62,26 @@ const getOwnerProposalsRent = (state: IState): IOwnerProposalsLease | null => {
   return null;
 };
 
-const getOwnerProposalsSale = (state: IState): IOwnerProposalsSale | null => {
-  const asset = AssetSelectors.getAsset(state);
-  if (asset && asset?.saleTerm) {
-    const { expectedPrice, expectedBookingAmount } = asset.saleTerm;
+const getPastProposalsSale = (state: IState): IExistingProposalsSale | null => {
+  const currentOffer = getCurrentOffer(state);
+  const offerListing = getListingDetail(state);
+
+  if (currentOffer) {
+    const { price, bookingAmount } = currentOffer;
+    return {
+      expectedPrice: `${price}`,
+      expectedBookingAmount: `${bookingAmount}`,
+    };
+  }
+
+  if (offerListing?.saleTerm) {
+    const { expectedPrice, expectedBookingAmount } = offerListing.saleTerm;
     return {
       expectedPrice: `${expectedPrice}`,
       expectedBookingAmount: `${expectedBookingAmount}`,
     };
   }
+
   return null;
 };
 
@@ -84,8 +117,9 @@ const getNegotiations = (state: IState): Offer[] => {
   return ObjectMapper.deserializeArray(Offer, negotiations);
 };
 
+// Taking boolean value as i/p to handle the possible future need with desired value.
 const getFormattedTenantPreferences = (state: IState, value = true): ICheckboxGroupData[] => {
-  const asset = AssetSelectors.getAsset(state);
+  const asset = getListingDetail(state);
   if (asset && asset.leaseTerm?.tenantPreferences) {
     return asset.leaseTerm?.tenantPreferences.map((item) => ({
       id: item.id,
@@ -105,8 +139,8 @@ const getCurrentOffer = (state: IState): Offer | null => {
 };
 
 export const OfferSelectors = {
-  getOwnerProposalsRent,
-  getOwnerProposalsSale,
+  getPastProposalsRent,
+  getPastProposalsSale,
   getListingDetail,
   getOfferPayload,
   getNegotiations,

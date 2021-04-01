@@ -206,6 +206,7 @@ class OfferCard extends Component<Props, IOwnState> {
       onPressAction,
     } = this.props;
     const buttonData = OfferUtils.getButtonStatus(status);
+    const onPressCounter = (): void | undefined => (onPressAction ? onPressAction(OfferAction.COUNTER) : undefined);
     return (
       <>
         {actions.length < 2 && (
@@ -250,7 +251,8 @@ class OfferCard extends Component<Props, IOwnState> {
             );
           })}
         </View>
-        {canCounter && <Button type="primary" title={t('common:counter')} />}
+        {/* Todo (Praharsh) : Replace canCounter with true here to check the flow */}
+        {canCounter && <Button type="primary" title={t('common:counter')} onPress={onPressCounter} />}
         {status === Status.REJECTED && (
           <Button
             type="primary"

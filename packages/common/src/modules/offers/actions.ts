@@ -65,7 +65,7 @@ const setCompareDetail = (payload: IOfferCompare): IFluxStandardAction<IOfferCom
   payload,
 });
 
-const setCurrentOffer = (payload: Offer): IFluxStandardAction<Offer> => ({
+const setCurrentOffer = (payload: Offer | null): IFluxStandardAction<Offer | null> => ({
   type: OfferActionTypes.SET.CURRENT_OFFER,
   payload,
 });

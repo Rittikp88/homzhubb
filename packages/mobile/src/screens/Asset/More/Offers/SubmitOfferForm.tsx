@@ -3,14 +3,15 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import { useIsFocused } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
-import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -28,8 +29,10 @@ const SubmitOfferForm = (): React.ReactElement => {
 
   // HOOKS START
   const { t } = useTranslation();
-  const isRentFlow = !useSelector(AssetSelectors.getAssetListingType);
-  const asset = useSelector(AssetSelectors.getAsset);
+  const dispatch = useDispatch();
+  const isCounterFlow = useSelector(OfferSelectors.getCurrentOffer);
+  const asset = useSelector(OfferSelectors.getListingDetail);
+  const isRentFlow = asset?.isLeaseListing;
   const [loading, setLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   useEffect(() => {
@@ -53,7 +56,15 @@ const SubmitOfferForm = (): React.ReactElement => {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       }
     };
+
+    const nullifyCurrentOffer = (): void => {
+      dispatch(OfferActions.setCurrentOffer(null));
+    };
+
     getOfferCount().then();
+
+    // To set currentOffer to null to handle case where user can go to AssetDescription screen (Offer->Profile->Search)
+    return (): void => nullifyCurrentOffer();
   }, []);
   // HOOKS END
 
@@ -80,6 +91,7 @@ const SubmitOfferForm = (): React.ReactElement => {
       },
     });
   };
+  const showRightItems = isRentFlow && !isCounterFlow;
   // HANDLERS END
 
   return (
@@ -89,10 +101,11 @@ const SubmitOfferForm = (): React.ReactElement => {
       isLoading={loading}
       headerProps={{
         type: 'secondary',
+        // Todo (Praharsh) : Get confirmation about the header text and Edit Profile button, in Counter Offer flow.
         title: t('offers:submitOffer'),
         onIconPress: goBack,
         testID: 'submitOfferForm',
-        ...(isRentFlow && {
+        ...(showRightItems && {
           textRight: t('moreProfile:editProfile'),
           onIconRightPress: (): void => navigate(ScreensKeys.ProspectProfile, { editData: true }),
         }),

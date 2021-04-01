@@ -2,25 +2,18 @@ import React from 'react';
 import { View, FlatList, StyleSheet, ImageStyle, ViewStyle, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
-import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
-
-interface IFormattedDetails {
-  type: string;
-  value: string | number | null;
-}
+import { IFormattedDetails } from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IDetailsProps {
   onClickCheckBox: () => void;
   checkBox: boolean;
-  asset: Asset;
   isRentFlow: boolean;
 }
 
@@ -29,172 +22,122 @@ interface IProps {
   checkBox: boolean;
 }
 
-const OfferDetails = (props: IDetailsProps): React.ReactElement => {
-  const { asset, onClickCheckBox, checkBox, isRentFlow } = props;
-  const { t } = useTranslation();
-  const styles = getStyles();
+const OfferDetails = React.memo(
+  (props: IDetailsProps): React.ReactElement => {
+    const { onClickCheckBox, checkBox, isRentFlow } = props;
+    const { t } = useTranslation();
+    const previousOfferDetailsRent = useSelector(OfferSelectors.getPastProposalsRent);
+    const previousOfferDetailsSale = useSelector(OfferSelectors.getPastProposalsSale);
+    const isCounterOfferFlow = Boolean(useSelector(OfferSelectors.getCurrentOffer));
+    const listing = useSelector(OfferSelectors.getListingDetail);
 
-  const formatDetails = (assetDetails: Asset): IFormattedDetails[] => {
-    const {
-      leaseTerm,
-      saleTerm,
-      country: { currencies },
-    } = assetDetails;
-    const { currencySymbol, currencyCode } = currencies[0];
-    if (isRentFlow && leaseTerm) {
-      const {
-        expectedPrice,
-        securityDeposit,
-        minimumLeasePeriod,
-        maximumLeasePeriod,
-        annualRentIncrementPercentage,
-        maintenancePaidBy,
-        utilityPaidBy,
-      } = leaseTerm;
-      const formattedRent = [
-        {
-          type: t('property:rent'),
-          value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode ?? currencies[0], expectedPrice)}`,
-        },
-        {
-          type: t('property:securityDeposit'),
-          value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode ?? currencies[0], securityDeposit)}`,
-        },
-        {
-          type: t('offers:lockInPeriod'),
-          value: `${minimumLeasePeriod} ${t('common:months')}`,
-        },
-        {
-          type: t('offers:maxLeasePeriod'),
-          value: `${maximumLeasePeriod} ${t('common:months')}`,
-        },
-        {
-          type: t('property:maintenanceBy'),
-          value: `${StringUtils.toTitleCase(maintenancePaidBy)}`,
-        },
-        {
-          type: t('property:utilityBy'),
-          value: `${StringUtils.toTitleCase(utilityPaidBy)}`,
-        },
-      ];
-      if (annualRentIncrementPercentage) {
-        formattedRent.splice(4, 0, {
-          type: t('property:annualIncrementSuffix'),
-          value: `${annualRentIncrementPercentage}%`,
-        });
-      }
-      return formattedRent;
-    }
-    if (!isRentFlow && saleTerm) {
-      const { expectedBookingAmount, expectedPrice } = saleTerm;
-      const formattedSale = [
-        {
-          type: t('offers:sellPrice'),
-          value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode ?? currencies[0], Number(expectedPrice))}`,
-        },
-        {
-          type: t('property:bookingAmount'),
-          value: `${currencySymbol} ${CurrencyUtils.getCurrency(
-            currencyCode ?? currencies[0],
-            Number(expectedBookingAmount)
-          )}`,
-        },
-      ];
-      return formattedSale;
-    }
-    return [];
-  };
-
-  const formattedDetails = formatDetails(asset);
-  const onToggleCheckBox = (): void => onClickCheckBox();
-
-  const renderItem = ({ item, index }: { item: IFormattedDetails; index: number }): React.ReactElement => {
-    const style = getStyles(index);
-    return (
-      <View style={style.detailItem}>
-        <Label textType="light" type="large">
-          {item.type}
-        </Label>
-        <Label textType="semiBold" type="large">
-          {item.value}
-        </Label>
-      </View>
-    );
-  };
-
-  const keyExtractor = (item: IFormattedDetails, index: number): string => `${item} [${index}]`;
-  return (
-    <>
-      <FlatList
-        data={formattedDetails}
-        renderItem={renderItem}
-        numColumns={3}
-        keyExtractor={keyExtractor}
-        contentContainerStyle={styles.flatList}
-      />
-      <RNCheckbox selected={checkBox} label={t('offers:agreeToOwnerOffers')} onToggle={onToggleCheckBox} />
-    </>
-  );
-};
-
-const OfferDetailsCard = (props: IProps): React.ReactElement | null => {
-  const { onClickCheckBox, checkBox } = props;
-  const isRentFlow = !useSelector(AssetSelectors.getAssetListingType);
-  const asset = useSelector(AssetSelectors.getAsset);
-  if (asset) {
-    const {
-      id,
-      projectName,
-      unitNumber,
-      blockNumber,
-      city,
-      countryIsoCode,
-      attachments,
-      state,
-      country: { flag },
-    } = asset;
-    const detailedAddress = `${unitNumber} ${blockNumber}, ${city}, ${state}, ${countryIsoCode}`;
     const styles = getStyles();
-    const image = (): React.ReactElement => {
-      if (attachments.length)
-        return (
-          <Image
-            source={{ uri: attachments[0].link }}
-            width={60}
-            height={60}
-            style={styles.assetImage}
-            borderRadius={4}
-          />
-        );
-      return <ImagePlaceholder width={60} height={60} containerStyle={styles.placeholder} />;
+
+    const formattedDetails = OfferUtils.getFormattedOfferDetails(
+      isRentFlow,
+      isCounterOfferFlow,
+      listing,
+      previousOfferDetailsRent,
+      previousOfferDetailsSale
+    );
+
+    const onToggleCheckBox = (): void => onClickCheckBox();
+
+    const renderItem = ({ item, index }: { item: IFormattedDetails; index: number }): React.ReactElement => {
+      const style = getStyles(index);
+      return (
+        <View style={style.detailItem}>
+          <Label textType="light" type="large">
+            {item.type}
+          </Label>
+          <Label textType="semiBold" type="large">
+            {item.value}
+          </Label>
+        </View>
+      );
     };
+
+    const keyExtractor = (item: IFormattedDetails, index: number): string => `${item} [${index}]`;
     return (
       <>
-        <View key={id} style={styles.OfferDetailsCard}>
-          <View style={styles.ownerOfferHeader}>
-            <View style={styles.flexOne}>{image()}</View>
-            <View style={styles.assetAddress}>
-              <PropertyAddressCountry
-                primaryAddress={projectName}
-                countryFlag={flag}
-                subAddress={detailedAddress}
-                isIcon
-                primaryAddressTextStyles={{
-                  size: 'small',
-                }}
-                subAddressTextStyles={{
-                  variant: 'label',
-                  size: 'large',
-                }}
-              />
-            </View>
-          </View>
-          <OfferDetails asset={asset} isRentFlow={isRentFlow} checkBox={checkBox} onClickCheckBox={onClickCheckBox} />
-        </View>
+        <FlatList
+          data={formattedDetails}
+          renderItem={renderItem}
+          numColumns={3}
+          keyExtractor={keyExtractor}
+          contentContainerStyle={styles.flatList}
+        />
+        {formattedDetails.length > 0 && (
+          <RNCheckbox
+            selected={checkBox}
+            label={t('offers:agreeToOwnerOffers')}
+            onToggle={onToggleCheckBox}
+            containerStyle={styles.checkBox}
+          />
+        )}
       </>
     );
   }
-  return null;
+);
+
+const OfferDetailsCard = (props: IProps): React.ReactElement | null => {
+  const { onClickCheckBox, checkBox } = props;
+  const listing = useSelector(OfferSelectors.getListingDetail);
+
+  if (!listing) return null;
+
+  const {
+    id,
+    projectName,
+    unitNumber,
+    blockNumber,
+    city,
+    countryIsoCode,
+    attachments,
+    state,
+    country: { flag },
+  } = listing;
+
+  const detailedAddress = `${unitNumber} ${blockNumber}, ${city}, ${state}, ${countryIsoCode}`;
+  const styles = getStyles();
+  const image = (): React.ReactElement => {
+    if (attachments.length)
+      return (
+        <Image
+          source={{ uri: attachments[0].link }}
+          width={60}
+          height={60}
+          style={styles.assetImage}
+          borderRadius={4}
+        />
+      );
+    return <ImagePlaceholder width={60} height={60} containerStyle={styles.placeholder} />;
+  };
+  return (
+    <>
+      <View key={id} style={styles.OfferDetailsCard}>
+        <View style={styles.ownerOfferHeader}>
+          <View style={styles.flexOne}>{image()}</View>
+          <View style={styles.assetAddress}>
+            <PropertyAddressCountry
+              primaryAddress={projectName}
+              countryFlag={flag}
+              subAddress={detailedAddress}
+              isIcon
+              primaryAddressTextStyles={{
+                size: 'small',
+              }}
+              subAddressTextStyles={{
+                variant: 'label',
+                size: 'large',
+              }}
+            />
+          </View>
+        </View>
+        <OfferDetails isRentFlow={listing.isLeaseListing} checkBox={checkBox} onClickCheckBox={onClickCheckBox} />
+      </View>
+    </>
+  );
 };
 
 export default React.memo(OfferDetailsCard);
@@ -208,6 +151,7 @@ interface IStyles {
   flatList: ViewStyle;
   placeholder: ViewStyle;
   flexOne: ViewStyle;
+  checkBox: ViewStyle;
 }
 
 const getStyles = (index = 0): IStyles =>
@@ -245,6 +189,9 @@ const getStyles = (index = 0): IStyles =>
       marginLeft: (index + 1) % 3 ? 0 : 24,
     },
     flatList: {
-      marginVertical: 10,
+      marginTop: 10,
+    },
+    checkBox: {
+      marginTop: 10,
     },
   });

@@ -1,4 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
@@ -7,8 +8,13 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IOfferValue, Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
-import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 import { MadeSort, OfferFilter, OfferSort } from '@homzhub/common/src/constants/Offers';
+import {
+  IExistingProposalsLease,
+  IExistingProposalsSale,
+  IFormattedDetails,
+  IOfferCompare,
+} from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IActionStyle {
   title: string;
@@ -263,6 +269,92 @@ class OfferUtils {
       default:
         return data;
     }
+  };
+
+  // Used in OfferDetailsCard
+  public getFormattedOfferDetails = (
+    isRentFlow: boolean,
+    isCounterOfferFlow: boolean,
+    listing: Asset | null,
+    previousOfferDetailsRent: IExistingProposalsLease | null,
+    previousOfferDetailsSale: IExistingProposalsSale | null
+  ): IFormattedDetails[] => {
+    const { t } = I18nService;
+
+    if (listing) {
+      const currency = listing.currencyData;
+      const { currencySymbol, currencyCode } = currency;
+
+      if (isRentFlow && previousOfferDetailsRent && Number(previousOfferDetailsRent.expectedPrice) !== -1) {
+        const {
+          expectedPrice,
+          minimumLeasePeriod,
+          maximumLeasePeriod,
+          maintenancePaidBy,
+          utilityPaidBy,
+          securityDeposit,
+          annualRentIncrementPercentage,
+          availableFromDate,
+        } = previousOfferDetailsRent;
+        const formattedRent = [
+          {
+            type: t('property:rent'),
+            value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode, Number(expectedPrice))}`,
+          },
+          {
+            type: t('property:securityDeposit'),
+            value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode, Number(securityDeposit))}`,
+          },
+          {
+            type: t('offers:lockInPeriod'),
+            value: `${minimumLeasePeriod} ${t('common:months')}`,
+          },
+          {
+            type: t('offers:maxLeasePeriod'),
+            value: `${maximumLeasePeriod} ${t('common:months')}`,
+          },
+          {
+            type: t('property:maintenanceBy'),
+            value: `${StringUtils.toTitleCase(maintenancePaidBy)}`,
+          },
+          {
+            type: t('property:utilityBy'),
+            value: `${StringUtils.toTitleCase(utilityPaidBy)}`,
+          },
+        ];
+        // Todo (Praharsh) : Check with BE why it is null, in offers-created response
+        if (annualRentIncrementPercentage) {
+          formattedRent.splice(4, 0, {
+            type: t('property:annualIncrementSuffix'),
+            value: `${annualRentIncrementPercentage}%`,
+          });
+        }
+
+        if (isCounterOfferFlow) {
+          formattedRent.splice(5, 0, {
+            type: t('property:moveInDate'),
+            value: `${DateUtils.getDisplayDate(availableFromDate, DateFormats.DDMMMYYYY)}`,
+          });
+        }
+        return formattedRent;
+      }
+
+      if (!isRentFlow && previousOfferDetailsSale && Number(previousOfferDetailsSale.expectedPrice) !== -1) {
+        const { expectedBookingAmount, expectedPrice } = previousOfferDetailsSale;
+        const formattedSale = [
+          {
+            type: t('offers:sellPrice'),
+            value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode, Number(expectedPrice))}`,
+          },
+          {
+            type: t('property:bookingAmount'),
+            value: `${currencySymbol} ${CurrencyUtils.getCurrency(currencyCode, Number(expectedBookingAmount))}`,
+          },
+        ];
+        return formattedSale;
+      }
+    }
+    return [];
   };
 }
 

@@ -139,12 +139,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     }
     return (
       <>
-        <UserScreen
-          title={t('assetDashboard:dashboard')}
-          scrollEnabled
-          backgroundColor={theme.colors.transparent}
-          loading={isTabLoading}
-        >
+        <UserScreen title={t('offers')} scrollEnabled backgroundColor={theme.colors.transparent} loading={isTabLoading}>
           <>
             <AssetMetricsList
               title={offerCountData?.totalOffers?.toString()}

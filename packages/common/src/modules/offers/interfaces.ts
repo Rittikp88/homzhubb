@@ -1,7 +1,6 @@
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
-import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 
 export interface IOfferState {
@@ -21,19 +20,19 @@ export interface ICurrentOffer {
   listingId: number;
 }
 
-export interface IOwnerProposalsLease {
+export interface IExistingProposalsLease {
   expectedPrice: string;
   securityDeposit: string;
   minimumLeasePeriod: number;
   maximumLeasePeriod: number;
   annualRentIncrementPercentage: string;
   availableFromDate: string;
-  maintenancePaidBy: PaidByTypes;
-  utilityPaidBy: PaidByTypes;
+  maintenancePaidBy: string;
+  utilityPaidBy: string;
   tenantPreferences: ICheckboxGroupData[];
 }
 
-export interface IOwnerProposalsSale {
+export interface IExistingProposalsSale {
   expectedPrice: string;
   expectedBookingAmount: string;
 }
@@ -44,4 +43,9 @@ export interface IOfferCompare {
   deposit?: number;
   bookingAmount?: number;
   incrementPercentage?: number;
+}
+
+export interface IFormattedDetails {
+  type: string;
+  value: string | number | null;
 }

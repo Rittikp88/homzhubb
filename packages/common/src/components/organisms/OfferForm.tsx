@@ -9,7 +9,6 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
-import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -28,7 +27,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { initialRentFormValues, initialSaleFormValues, OfferFormKeys } from '@homzhub/common/src/mocks/Offers';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISubmitOffer, ListingType, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IOwnerProposalsLease, IOwnerProposalsSale } from '@homzhub/common/src/modules/offers/interfaces';
+import { IExistingProposalsLease, IExistingProposalsSale } from '@homzhub/common/src/modules/offers/interfaces';
 
 // ToDo (Praharsh) : Resolve ts-ignores.
 interface IProps {
@@ -40,9 +39,10 @@ interface IProps {
 interface IReduxProps {
   isRentFlow: boolean;
   asset: Asset | null;
-  ownerLeaseTerms: IOwnerProposalsLease | null;
-  ownerSaleTerms: IOwnerProposalsSale | null;
+  existingLeaseTerms: IExistingProposalsLease | null;
+  existingSaleTerms: IExistingProposalsSale | null;
   tenantPreferences: ICheckboxGroupData[];
+  isAssetOwner: boolean;
 }
 
 type Props = WithTranslation & IProps & IReduxProps;
@@ -69,6 +69,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
       checkBox: false,
       message: '',
       showLeaseDurationError: false,
+      // @ts-ignore
       formData: this.initialValues(),
       loading: false,
     };
@@ -89,10 +90,10 @@ class OfferForm extends React.Component<Props, IScreenState> {
     const { state, props, renderInfoBox, onMessageChange } = this;
     const { setFieldValue, values } = formProps;
     const { message } = state;
-    const { t, onPressTerms, isRentFlow, asset, offersLeft } = props;
+    const { t, onPressTerms, isRentFlow, asset, offersLeft, isAssetOwner } = props;
 
     const Preferences = (): React.ReactElement | null => {
-      if (isRentFlow && asset?.leaseTerm?.tenantPreferences.length) {
+      if (isRentFlow && asset?.leaseTerm?.tenantPreferences.length && !isAssetOwner) {
         const onToggleCheckBox = (id: number, isSelected: boolean): void => {
           const prefs: ICheckboxGroupData[] = values[OfferFormKeys.tenantPreferences];
           const updatedPrefs = prefs.map((item) => (item.id === id ? { ...item, isSelected } : item));
@@ -438,14 +439,14 @@ class OfferForm extends React.Component<Props, IScreenState> {
     });
   };
 
-  private checkedFormValues = (): IOwnerProposalsSale | IOwnerProposalsLease | null => {
-    const { isRentFlow, ownerLeaseTerms, ownerSaleTerms } = this.props;
-    return isRentFlow ? ownerLeaseTerms : ownerSaleTerms;
+  private checkedFormValues = (): IExistingProposalsSale | IExistingProposalsLease | null => {
+    const { isRentFlow, existingLeaseTerms, existingSaleTerms } = this.props;
+    return isRentFlow ? existingLeaseTerms : existingSaleTerms;
   };
 
-  private initialValues = (): IOwnerProposalsLease | IOwnerProposalsSale | null => {
+  private initialValues = (): IExistingProposalsLease | IExistingProposalsSale | null => {
     const { isRentFlow, tenantPreferences } = this.props;
-    const updatedInitialLease: IOwnerProposalsLease = { ...initialRentFormValues, tenantPreferences };
+    const updatedInitialLease: IExistingProposalsLease = { ...initialRentFormValues, tenantPreferences };
     return isRentFlow ? updatedInitialLease : initialSaleFormValues;
   };
   //  HANDLERS END
@@ -498,11 +499,12 @@ class OfferForm extends React.Component<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IReduxProps => ({
-  isRentFlow: !AssetSelectors.getAssetListingType(state),
-  asset: AssetSelectors.getAsset(state),
-  ownerLeaseTerms: OfferSelectors.getOwnerProposalsRent(state),
-  ownerSaleTerms: OfferSelectors.getOwnerProposalsSale(state),
+  isRentFlow: Boolean(OfferSelectors.getListingDetail(state)?.isLeaseListing),
+  asset: OfferSelectors.getListingDetail(state),
+  existingLeaseTerms: OfferSelectors.getPastProposalsRent(state),
+  existingSaleTerms: OfferSelectors.getPastProposalsSale(state),
   tenantPreferences: OfferSelectors.getFormattedTenantPreferences(state, false),
+  isAssetOwner: Boolean(OfferSelectors.getCurrentOffer(state)?.isAssetOwner),
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(OfferForm));

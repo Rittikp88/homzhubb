@@ -64,6 +64,7 @@ import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
 import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
+import SubmitOfferForm from '@homzhub/mobile/src/screens/Asset/More/Offers/SubmitOfferForm';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
@@ -139,6 +140,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.OfferDetail]: undefined;
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
+  [ScreensKeys.SubmitOffer]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -234,6 +236,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.OfferDetail} component={OfferDetail} />
       <MoreStackNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
+      <MoreStackNavigator.Screen name={ScreensKeys.SubmitOffer} component={SubmitOfferForm} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -265,6 +268,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.SubmitOffer,
       ScreensKeys.AcceptOffer,
       ScreensKeys.RejectOffer,
+      ScreensKeys.OfferDetail,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };
