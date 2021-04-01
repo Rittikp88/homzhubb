@@ -17,12 +17,15 @@ exports[`Button should match snapshot for disabled 1`] = `
 >
   <Text
     style={
-      Object {
-        "color": "#FFFFFF",
-        "marginHorizontal": 36,
-        "marginVertical": 12,
-        "textAlign": "center",
-      }
+      Array [
+        Object {
+          "color": "#FFFFFF",
+          "marginHorizontal": 36,
+          "marginVertical": 12,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
     }
     textType="semiBold"
     type="small"
@@ -49,12 +52,15 @@ exports[`Button should match snapshot for primary 1`] = `
 >
   <Text
     style={
-      Object {
-        "color": "#FFFFFF",
-        "marginHorizontal": 36,
-        "marginVertical": 12,
-        "textAlign": "center",
-      }
+      Array [
+        Object {
+          "color": "#FFFFFF",
+          "marginHorizontal": 36,
+          "marginVertical": 12,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
     }
     textType="semiBold"
     type="small"
@@ -83,12 +89,15 @@ exports[`Button should match snapshot for secondary 1`] = `
 >
   <Text
     style={
-      Object {
-        "color": "#0084F8",
-        "marginHorizontal": 36,
-        "marginVertical": 12,
-        "textAlign": "center",
-      }
+      Array [
+        Object {
+          "color": "#0084F8",
+          "marginHorizontal": 36,
+          "marginVertical": 12,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
     }
     textType="semiBold"
     type="small"
@@ -115,12 +124,15 @@ exports[`Button should render with icon 1`] = `
 >
   <Label
     style={
-      Object {
-        "color": "#FFFFFF",
-        "marginHorizontal": 36,
-        "marginVertical": 12,
-        "textAlign": "center",
-      }
+      Array [
+        Object {
+          "color": "#FFFFFF",
+          "marginHorizontal": 36,
+          "marginVertical": 12,
+          "textAlign": "center",
+        },
+        undefined,
+      ]
     }
     textType="semiBold"
     type="small"

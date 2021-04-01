@@ -108,17 +108,21 @@ export class Offer {
   @JsonProperty('can_counter', Boolean, true)
   private _canCounter = false;
 
+  // TODO: (Shikha) - Replace with API key
+  @JsonProperty('counter_count', Number, true)
+  private _counterCount = 0;
+
   @JsonProperty('is_asset_owner', Boolean, true)
   private _isAssetOwner = false;
 
   @JsonProperty('user', User, true)
   private _user = new User();
 
-  @JsonProperty('reject_comment', String, true)
-  private _rejectComment = '';
+  @JsonProperty('status_change_comment', String, true)
+  private _statusChangeComment = '';
 
-  @JsonProperty('reject_reason', Unit, true)
-  private _rejectReason = null;
+  @JsonProperty('status_change_reason', Unit, true)
+  private _statusChangeReason = null;
 
   get id(): number {
     return this._id;
@@ -215,11 +219,15 @@ export class Offer {
     return this._isAssetOwner;
   }
 
-  get rejectComment(): string {
-    return this._rejectComment;
+  get statusChangeComment(): string {
+    return this._statusChangeComment;
   }
 
-  get rejectReason(): Unit | null {
-    return this._rejectReason;
+  get statusChangeReason(): Unit | null {
+    return this._statusChangeReason;
+  }
+
+  get counterCount(): number {
+    return this._counterCount;
   }
 }

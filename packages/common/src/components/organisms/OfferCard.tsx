@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { FlatList, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
@@ -45,17 +45,13 @@ class OfferCard extends Component<Props, IOwnState> {
 
   public render(): React.ReactElement {
     const { hasMore, isReasonSheetVisible } = this.state;
-    const {
-      t,
-      offer: { canCounter },
-      containerStyle,
-    } = this.props;
+    const { t, offer, containerStyle } = this.props;
 
     // TODO: (Shikha) Add more list view once counter flow is ready
     return (
       <View style={[styles.container, containerStyle]}>
-        {this.renderCardContent()}
-        {canCounter && (
+        {this.renderCardContent(offer, false)}
+        {offer.counterCount > 0 && (
           <Button
             iconSize={20}
             type="primary"
@@ -65,6 +61,13 @@ class OfferCard extends Component<Props, IOwnState> {
             titleStyle={styles.infoTitle}
             iconColor={theme.colors.primaryColor}
             onPress={this.onInfoToggle}
+          />
+        )}
+        {hasMore && (
+          <FlatList
+            data={[offer, offer]}
+            ItemSeparatorComponent={(): React.ReactElement => <Divider containerStyles={styles.divider} />}
+            renderItem={({ item }): React.ReactElement => this.renderCardContent(item, true)}
           />
         )}
         <BottomSheet
@@ -79,25 +82,30 @@ class OfferCard extends Component<Props, IOwnState> {
     );
   }
 
-  private renderCardContent = (): React.ReactElement => {
+  private renderCardContent = (offer: Offer, isMoreInfo?: boolean): React.ReactElement => {
     const { hasMore, isProfileSheetVisible } = this.state;
     const {
-      t,
-      isFromAccept = false,
-      offer: { minLockInPeriod, leasePeriod, price, role, createdAt, validDays, validCount, status, user },
-      offer,
-      compareData,
-      asset,
-    } = this.props;
+      minLockInPeriod,
+      leasePeriod,
+      price,
+      role,
+      createdAt,
+      validDays,
+      validCount,
+      status,
+      user,
+      actions,
+    } = offer;
+    const { t, isFromAccept = false, compareData, asset } = this.props;
 
     const isOfferValid = validCount > 1;
     const isOfferExpired = validCount < 0;
 
     const currency = asset && asset.country ? asset.country.currencies[0].currencySymbol : 'INR';
 
-    const offerValues = OfferUtils.getOfferValues(offer, compareData, currency);
+    const offerValues = OfferUtils.getOfferValues(offer, compareData, currency, isMoreInfo);
+    const isButtonView = (isOfferExpired && !actions.length) || !isOfferExpired;
 
-    // TODO: Use values from API
     return (
       <View style={styles.cardContainer}>
         <TouchableOpacity onPress={this.onProfileSheet}>
@@ -131,13 +139,13 @@ class OfferCard extends Component<Props, IOwnState> {
             )}
           </View>
         )}
-        {this.renderOfferHeader(currency)}
+        {!isMoreInfo && this.renderOfferHeader(currency)}
         <View style={styles.valuesView}>
           {offerValues.map((item, index) => {
             return (
               <TextWithIcon
                 key={index}
-                icon={item.icon}
+                icon={!isMoreInfo ? item.icon : ''}
                 iconColor={item.iconColor}
                 text={`${item.key}: `}
                 value={item.value}
@@ -167,7 +175,7 @@ class OfferCard extends Component<Props, IOwnState> {
           )}
         </View>
         {!hasMore && this.renderPreferences()}
-        {!hasMore && !isFromAccept && !isOfferExpired && this.renderActionView()}
+        {!hasMore && !isFromAccept && isButtonView && this.renderActionView()}
       </View>
     );
   };
@@ -293,7 +301,7 @@ class OfferCard extends Component<Props, IOwnState> {
   private renderReasonView = (): React.ReactElement => {
     const {
       t,
-      offer: { statusUpdatedAt, statusUpdatedBy, rejectComment, rejectReason },
+      offer: { statusUpdatedAt, statusUpdatedBy, statusChangeComment, statusChangeReason },
     } = this.props;
     // TODO: (Shikha) - Add role logic
     return (
@@ -306,23 +314,23 @@ class OfferCard extends Component<Props, IOwnState> {
         )}
         <Divider containerStyles={styles.verticalStyle} />
         <Avatar fullName={statusUpdatedBy?.name} designation={t('property:owner')} />
-        {rejectReason && (
+        {statusChangeReason && (
           <View style={styles.valuesView}>
             <Label type="large" textType="semiBold">
               {t('rejectReasonLabel')}
             </Label>
             <Label type="large" style={styles.textStyle}>
-              {rejectReason.title}
+              {statusChangeReason.title}
             </Label>
           </View>
         )}
-        {!!rejectComment && (
+        {!!statusChangeComment && (
           <View style={styles.verticalStyle}>
             <Label type="large" textType="semiBold">
               {t('additionalComment')}
             </Label>
             <Label type="large" style={styles.textStyle}>
-              {rejectComment}
+              {statusChangeComment}
             </Label>
           </View>
         )}
@@ -450,6 +458,7 @@ const styles = StyleSheet.create({
   },
   rejectionButton: {
     backgroundColor: theme.colors.transparent,
+    flex: 0,
   },
   rejectionTitle: {
     color: theme.colors.primaryColor,
@@ -459,5 +468,9 @@ const styles = StyleSheet.create({
   },
   verticalStyle: {
     marginVertical: 16,
+  },
+  divider: {
+    marginHorizontal: 16,
+    borderColor: theme.colors.darkTint10,
   },
 });

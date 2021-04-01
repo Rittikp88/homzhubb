@@ -33,8 +33,21 @@ interface IActionPayload {
 }
 
 class OfferUtils {
-  public getOfferValues = (offer: Offer, compareData: IOfferCompare, currency: string): IOfferValue[] => {
-    const { annualRentIncrementPercentage: percentage, securityDeposit, moveInDate, price, bookingAmount } = offer;
+  public getOfferValues = (
+    offer: Offer,
+    compareData: IOfferCompare,
+    currency: string,
+    isCountered?: boolean
+  ): IOfferValue[] => {
+    const {
+      annualRentIncrementPercentage: percentage,
+      securityDeposit,
+      moveInDate,
+      price,
+      bookingAmount,
+      counterCount,
+    } = offer;
+    const data = this.getOfferHeader(offer, compareData, currency);
 
     const annualRent = {
       key: I18nService.t('property:annualIncrementSuffix'),
@@ -45,6 +58,7 @@ class OfferUtils {
 
     if (price > 0) {
       return [
+        ...(isCountered && counterCount ? [data] : []),
         {
           key: I18nService.t('property:bookingAmount'),
           value: `${currency} ${bookingAmount}`,
@@ -55,6 +69,7 @@ class OfferUtils {
     }
 
     return [
+      ...(isCountered && counterCount ? [data] : []),
       ...(percentage ? [annualRent] : []),
       {
         key: I18nService.t('property:securityDeposit'),
