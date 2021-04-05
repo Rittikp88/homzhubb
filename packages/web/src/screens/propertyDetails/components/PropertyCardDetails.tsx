@@ -19,7 +19,7 @@ import GalleryView from '@homzhub/web/src/components/molecules/GalleryView';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { ShieldGroup } from '@homzhub/web/src/components/molecules/ShieldGroupHeader';
-import TabSections from '@homzhub/web/src/screens/PropertyDetails/components/tabSection';
+import TabSections from '@homzhub/web/src/screens/propertyDetails/components/tabSection';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFilter, IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IState } from '@homzhub/common/src/modules/interfaces';

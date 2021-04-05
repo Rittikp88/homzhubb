@@ -7,8 +7,9 @@ import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import ReviewRatings from '@homzhub/web/src/components/organisms/ReviewRatings';
-import Amenitites from '@homzhub/web/src/screens/PropertyDetails/components/Amenities';
-import Description from '@homzhub/web/src/screens/PropertyDetails/components/Description';
+import Amenitites from '@homzhub/web/src/screens/propertyDetails/components/Amenities';
+import Description from '@homzhub/web/src/screens/propertyDetails/components/Description';
+import Neighbourhood from '@homzhub/web/src/screens/propertyDetails/components/Neighbourhood';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IRoutes, Tabs, PropertyDetailRoutes } from '@homzhub/common/src/constants/Tabs';
@@ -33,6 +34,8 @@ const TabSections = (propsData: IProps): React.ReactElement => {
         return <Amenitites amenityGroup={amenityGroup} assetHighlights={highlights} />;
       case Tabs.REVIEWS_RATING:
         return <ReviewRatings propertyTermId={propertyTermId} />;
+      case Tabs.NEIGHBOURHOOD:
+        return <Neighbourhood />;
       default:
         return null;
     }

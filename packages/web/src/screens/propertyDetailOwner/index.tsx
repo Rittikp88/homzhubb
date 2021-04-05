@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { NavigationUtils } from 'utils/NavigationUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import {
   DetailType,
   IPropertyDetailPayload,

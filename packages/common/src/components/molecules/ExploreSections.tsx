@@ -1,14 +1,14 @@
 import React from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { PlaceTypes } from '@homzhub/common/src/services/GooglePlaces/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { MetricSystems } from '@homzhub/common/src/domain/models/UserPreferences';
-import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { PlaceTypes } from '@homzhub/common/src/services/GooglePlaces/constants';
+import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 interface IPlaceTypeData {
   key: PlaceTypes;

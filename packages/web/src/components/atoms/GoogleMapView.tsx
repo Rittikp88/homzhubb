@@ -37,6 +37,7 @@ const GoogleMapView: FC<IProps> = (props: IProps) => {
         zoom={zoom || 10}
         onLoad={onLoad}
         onUnmount={onUnmount}
+        options={{ disableDefaultUI: true }}
       >
         {/* Child components, such as markers, info windows, etc. */}
         {children}

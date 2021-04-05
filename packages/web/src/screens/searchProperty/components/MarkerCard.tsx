@@ -10,13 +10,12 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 
 interface IProps {
-  onClosePopover: () => void;
   propertyData: Asset;
 }
 
 const MarkerCard: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
-  const { onClosePopover, propertyData } = props;
+  const { propertyData } = props;
   const { address, carpetArea, projectName, country, leaseTerm, saleTerm, attachments, carpetAreaUnit } = propertyData;
   const trimmedProjectName = projectName.split(',')[0];
   const currency = country.currencies[0];
@@ -43,13 +42,6 @@ const MarkerCard: FC<IProps> = (props: IProps) => {
             {propertyStatus}
           </Typography>
         </View>
-        <Icon
-          name={icons.close}
-          size={20}
-          style={[styles.details, styles.icon]}
-          color={!isImage ? theme.colors.darkTint1 : theme.colors.white}
-          onPress={onClosePopover}
-        />
         <View style={styles.imageFooter}>
           <Typography variant="text" size="regular" style={[styles.details, styles.amountLabel]}>
             <PricePerUnit

@@ -5,9 +5,9 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
-import PropertyDetails from '@homzhub/web/src/screens/PropertyDetails';
+import PropertyDetails from '@homzhub/web/src/screens/propertyDetails';
 import SearchProperty from '@homzhub/web/src/screens/searchProperty';
-import SelectedProperty from '@homzhub/web/src/screens/propertyDetailOwner';
+import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
 
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
@@ -41,7 +41,7 @@ export const MainRouter = (): React.ReactElement => {
         <Route exact path={PROPERTY_DETAIL} component={PropertyDetails} />
         <Route exact path={SEARCH_PROPERTY} component={SearchProperty} />
         <Route exact path={PROPERTY_VIEW} component={PropertyView} />
-        <Route exact path={PROPERTY_SELECTED} component={SelectedProperty} />
+        <Route exact path={PROPERTY_SELECTED} component={PropertyDetailsOwner} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>
     </Suspense>
