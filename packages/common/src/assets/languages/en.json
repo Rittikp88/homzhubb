@@ -766,6 +766,8 @@
     "totalOffers": "Total Offers",
     "highestOffer": "Highest Offer",
     "lowestOffer": "Lowest Offer",
+    "activeOffers": "Active Offers",
+    "pendingOffers": "Pending Offers",
     "uploadedOn": "Uploaded on: {{uploadedOn}}, by {{uploadedBy}}",
     "noPropertiesAdded": "You haven't added any properties",
     "noFilterProperties": "There are no properties for the selected filter",

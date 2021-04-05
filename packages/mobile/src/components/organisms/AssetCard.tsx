@@ -274,6 +274,7 @@ export class AssetCard extends Component<Props, IState> {
       lastVisitedStep: { assetCreation },
       isVerificationDocumentUploaded,
       spaces,
+      listingOffers: { totalOffers, activeOffers, pendingOffers },
     } = assetData;
     const isListed = leaseListingId || saleListingId;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
@@ -331,7 +332,7 @@ export class AssetCard extends Component<Props, IState> {
             onNav={onOfferVisitPress}
             isDetailView={isDetailView}
             values={{
-              [OffersVisitsType.offers]: [0, 0, 0],
+              [OffersVisitsType.offers]: [totalOffers, activeOffers, pendingOffers],
               [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
             }}
           />

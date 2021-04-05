@@ -4,6 +4,7 @@ import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attac
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
 import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListingVisits';
+import { AssetOfferSummary } from '@homzhub/common/src/domain/models/AssetOfferSummary';
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
@@ -383,6 +384,9 @@ export class Asset {
   @JsonProperty('listing_visits', AssetListingVisits, true)
   private _listingVisits = new AssetListingVisits();
 
+  @JsonProperty('listing_offers', AssetOfferSummary, true)
+  private _listingOffers = new AssetOfferSummary();
+
   @JsonProperty('next_visit', NextVisit, true)
   private _nextVisit = null;
 
@@ -688,6 +692,10 @@ export class Asset {
 
   get listingVisits(): AssetListingVisits {
     return this._listingVisits;
+  }
+
+  get listingOffers(): AssetOfferSummary {
+    return this._listingOffers;
   }
 
   get listingInfo(): AssetStatusInfo {

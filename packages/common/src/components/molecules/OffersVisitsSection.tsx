@@ -19,7 +19,8 @@ const Data = [
     type: OffersVisitsType.offers,
     title: 'common:offers',
     icon: icons.offers,
-    sections: ['totalOffers', 'highestOffer', 'lowestOffer'],
+    sections: ['totalOffers', 'activeOffers', 'pendingOffers'],
+    colors: [theme.colors.darkTint3, theme.colors.green, theme.colors.error],
   },
   {
     type: OffersVisitsType.visits,
@@ -44,7 +45,8 @@ interface IProps {
 const OffersVisitsSection = (props: IProps): React.ReactElement => {
   const { values, propertyDetailTab } = props;
   const { t } = useTranslation();
-  const data = PlatformUtils.isWeb() ? Data : Data.slice(1);
+  // Todo (Praharsh) : Check with web team if Offers come before Visits.
+  const data = PlatformUtils.isWeb() ? Data : [...Data].reverse();
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
@@ -75,16 +77,19 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
                   {/* )} */}
                 </View>
                 <View style={styles.subSectionContainer}>
-                  {item.sections.map((section, index) => (
-                    <View key={section} style={styles.subSection}>
-                      <Label type="small" textType="regular" style={styles.subSectionText}>
-                        {t(`assetPortfolio:${section}`)}
-                      </Label>
-                      <Label type="large" textType="semiBold" style={styles.title}>
-                        {values[item.type][index]}
-                      </Label>
-                    </View>
-                  ))}
+                  {item.sections.map((section, index) => {
+                    const titleStyle = item.colors ? { ...styles.title, color: item.colors[index] } : styles.title;
+                    return (
+                      <View key={section} style={styles.subSection}>
+                        <Label type="small" textType="regular" style={styles.subSectionText}>
+                          {t(`assetPortfolio:${section}`)}
+                        </Label>
+                        <Label type="large" textType="semiBold" style={titleStyle}>
+                          {values[item.type][index]}
+                        </Label>
+                      </View>
+                    );
+                  })}
                 </View>
               </View>
             </View>
