@@ -144,6 +144,7 @@ export interface ILoginPayload {
   data: IEmailLoginPayload | IOtpLoginPayload;
   callback?: () => void;
   is_referral?: boolean;
+  is_from_signup?: boolean;
 }
 
 export interface ISocialLogin {

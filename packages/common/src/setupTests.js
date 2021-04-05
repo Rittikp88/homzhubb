@@ -19,6 +19,7 @@ jest.mock('react-native-tab-view', () => {});
 jest.mock('mixpanel-react-native', () => {});
 jest.mock('react-native-device-info', () => {});
 jest.mock('reactjs-popup', () => {});
+jest.mock('@invertase/react-native-apple-authentication', () => {});
 jest.mock('react-native-permissions', () => {
   return {
     request: jest.fn(),

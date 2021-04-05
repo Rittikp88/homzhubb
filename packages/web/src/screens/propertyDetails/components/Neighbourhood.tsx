@@ -29,8 +29,11 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
   const asset = useSelector(AssetSelectors.getAsset);
   const metricSystem = useSelector(UserSelector.getMetricSystem);
+  // TODO: (Lakshit) - Remove this comment once isApiActive is used
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
   const [isApiActive, setIsApiActive] = useState(false);
   const [selectedTab, setSelectedTab] = useState(NeighborhoodTabs.Nearby);
+
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
@@ -104,10 +107,7 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
   };
 
   if (!asset) return null;
-  const {
-    assetLocation: { longitude, latitude },
-    id,
-  } = asset;
+  const { id } = asset;
   return (
     <View style={[styles.flexOne, !isDesktop && styles.flexColumn]}>
       <View style={[styles.exploreSection, !isDesktop && styles.exploreSectionTablet]}>

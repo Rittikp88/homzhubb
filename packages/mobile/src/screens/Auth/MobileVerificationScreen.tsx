@@ -45,6 +45,7 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
           contentSubTitle: subTitle,
         }}
         backgroundColor={theme.colors.white}
+        contentContainerStyle={styles.container}
       >
         <Text type="small" style={styles.message}>
           {message}
@@ -174,5 +175,8 @@ const styles = StyleSheet.create({
   formButtonStyle: {
     flex: 0,
     marginVertical: 30,
+  },
+  container: {
+    paddingVertical: theme.layout.screenPadding,
   },
 });

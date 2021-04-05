@@ -214,6 +214,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       const loginPayload: ILoginPayload = {
         data: loginData,
         is_referral: !!userData.signup_referral_code,
+        is_from_signup: true,
         ...(onCallback && { callback: onCallback }),
       };
       login(loginPayload);

@@ -19,7 +19,9 @@ class AnalyticsService {
 
   public setUser = (user: User): void => {
     if (PlatformUtils.isMobile()) {
-      this.mixPanelInstance.identify(user.email);
+      if (user.email) {
+        this.mixPanelInstance.identify(user.email);
+      }
       const name = user.fullName || `${user.firstName} ${user.lastName}`;
       this.mixPanelInstance.people.set({ $email: user.email, $name: name });
     }
@@ -31,7 +33,7 @@ class AnalyticsService {
       const properties = {
         token: this.projectToken,
         $event_name: eventName,
-        email: user ? user.email : 'Anonymous',
+        email: user && user.email ? user.email : 'Anonymous',
         ...data,
       };
 

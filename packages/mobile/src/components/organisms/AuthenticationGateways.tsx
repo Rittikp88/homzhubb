@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { SocialAuthUtils } from '@homzhub/common/src/utils/SocialAuthUtils';
 import { AuthService } from '@homzhub/mobile/src/services/AuthService';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import Apple from '@homzhub/common/src/assets/images/apple.svg';
 import Google from '@homzhub/common/src/assets/images/google.svg';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
 import LinkedIn from '@homzhub/common/src/assets/images/linkedin.svg';
@@ -44,6 +47,16 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
 
   public componentDidMount(): void {
     SocialAuthUtils.fetchSocialMedia((response) => {
+      if (PlatformUtils.isIOS()) {
+        response.unshift(
+          ObjectMapper.deserialize(SocialAuthProvider, {
+            provider: SocialAuthKeys.Apple,
+            description: 'Apple',
+            visible: PlatformUtils.isIOS(),
+          })
+        );
+      }
+
       this.setState({ authProviders: response });
     });
   }
@@ -107,6 +120,12 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
       return;
     }
 
+    if (key === SocialAuthKeys.Apple) {
+      await AuthService.signInWithApple(this.onSocialAuthSuccess);
+      this.setLoading(false);
+      return;
+    }
+
     if (key === SocialAuthKeys.Facebook) {
       await AuthService.signInWithFacebook(this.onSocialAuthSuccess, isFromLogin && navigation);
       this.setLoading(false);
@@ -128,6 +147,8 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
         return <Google />;
       case SocialAuthKeys.LinkedIn:
         return <LinkedIn />;
+      case SocialAuthKeys.Apple:
+        return <Apple />;
       default:
         return null;
     }

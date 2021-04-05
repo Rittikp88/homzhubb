@@ -35,7 +35,7 @@ const PageHeader = ({
       <Text type="large" textType="semiBold" style={styles.contentTitle}>
         {contentTitle}
       </Text>
-      {contentSubTitle && (
+      {!!contentSubTitle && (
         <View style={styles.subTitleContainer}>
           <Label type="large" style={styles.contentSubTitle}>
             {contentSubTitle}

@@ -39,3 +39,11 @@ export enum NotificationTypes {
   ServiceTicket = 'SERVICE_TICKET',
   Offer = 'OFFER',
 }
+
+/**
+ * Apple Error code
+ * Added because enum is not exported from lib
+ */
+export enum AppleErrorCode {
+  USER_CANCELLED = '1001',
+}

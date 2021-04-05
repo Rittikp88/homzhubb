@@ -4,6 +4,7 @@ export enum SocialAuthKeys {
   Google = 'GOOGLE',
   Facebook = 'FACEBOOK',
   LinkedIn = 'LINKEDIN',
+  Apple = 'APPLE',
 }
 
 export interface ISocialUserData {

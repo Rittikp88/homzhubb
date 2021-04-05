@@ -19,7 +19,7 @@ describe('Property Details Component', () => {
     component = shallow(<PropertyDetailsLocation {...props} />);
   });
 
-  it('should render PropertyDetails', () => {
+  it('should render propertyDetails', () => {
     expect(toJson(component.dive())).toMatchSnapshot();
   });
 

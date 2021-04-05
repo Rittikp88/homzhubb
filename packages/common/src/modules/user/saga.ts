@@ -33,7 +33,7 @@ import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 export function* login(action: IFluxStandardAction<ILoginPayload>) {
   if (!action.payload) return;
   const {
-    payload: { data, callback, is_referral },
+    payload: { data, callback, is_referral, is_from_signup },
   } = action;
   const { EMAIL, OTP, REFERRAL } = AuthenticationType;
 
@@ -58,12 +58,13 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     }
 
     if (PlatformUtils.isMobile()) {
-      if (is_referral) {
+      yield AnalyticsService.setUser(userData);
+
+      if (is_referral || is_from_signup) {
         yield AnalyticsService.track(EventType.SignupSuccess, trackData);
       } else {
         yield AnalyticsService.track(EventType.LoginSuccess, trackData);
       }
-      yield AnalyticsService.setUser(userData);
     }
 
     if (callback) {

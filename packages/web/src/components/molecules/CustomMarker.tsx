@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { OverlayView } from '@react-google-maps/api';
-import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import Icon from '@homzhub/common/src/assets/icon';
 import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 
 interface IProps {

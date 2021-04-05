@@ -1,4 +1,5 @@
 import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
+import appleAuth from '@invertase/react-native-apple-authentication';
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from 'react-native-fbsdk';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
@@ -6,6 +7,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { ISocialUserData, SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
+import { AppleErrorCode } from '@homzhub/mobile/src/services/constants';
 
 class AuthService {
   // eslint-disable-next-line consistent-return
@@ -57,7 +59,6 @@ class AuthService {
     }
   };
 
-  // eslint-disable-next-line consistent-return
   public signInWithFacebook = async (
     successCallback: (result: ISocialUserData) => Promise<void>,
     navigation?: any
@@ -104,6 +105,40 @@ class AuthService {
       new GraphRequestManager().addRequest(infoRequest).start();
     } catch (error) {
       AlertHelper.error({ message: error.message });
+    }
+  };
+
+  public signInWithApple = async (successCallback: (result: ISocialUserData) => Promise<void>): Promise<void> => {
+    if (!appleAuth.isSupported) {
+      AlertHelper.error({ message: I18nService.t('auth:appleNotSupported') });
+      return;
+    }
+
+    try {
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      const { identityToken, email, fullName } = appleAuthRequestResponse;
+
+      if (identityToken) {
+        await successCallback({
+          provider: SocialAuthKeys.Apple,
+          idToken: identityToken,
+          user: {
+            email: email ?? '',
+            first_name: fullName?.givenName || '',
+            last_name: fullName?.familyName || '',
+          },
+        });
+      }
+    } catch (error) {
+      if (error.code === AppleErrorCode.USER_CANCELLED) {
+        AlertHelper.error({ message: I18nService.t('auth:userCancelledLoginProcess') });
+      } else {
+        AlertHelper.error({ message: error.message });
+      }
     }
   };
 
