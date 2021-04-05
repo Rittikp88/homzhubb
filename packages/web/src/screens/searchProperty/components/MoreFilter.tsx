@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import { History } from 'history';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { remove } from 'lodash';
@@ -8,6 +9,7 @@ import { remove } from 'lodash';
 import Markdown from 'react-native-easy-markdown';
 import Popup from 'reactjs-popup';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -24,6 +26,7 @@ import { MultipleButtonGroup } from '@homzhub/common/src/components/molecules/Mu
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 import { AdvancedFilters, IAdvancedFilters, IFilterData } from '@homzhub/common/src/constants/AssetAdvancedFilters';
 import { FurnishingTypes } from '@homzhub/common/src/constants/Terms';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -52,6 +55,21 @@ interface IAssetFiltersState {
 
 interface IFilerProps {
   closePopover: () => void;
+  history: History;
+}
+
+interface IMiscellaneousFilters {
+  show_verified: boolean;
+  agent_listed: boolean;
+  search_radius: IUnit;
+  date_added: IUnit;
+  property_age: IUnit;
+  rent_free_period: IUnit;
+  expected_move_in_date: string;
+  facing: string[];
+  furnishing: FurnishingTypes[];
+  propertyAmenity: number[];
+  search_radius_unit: string;
 }
 
 type Props = IStateProps & IDispatchProps & WithTranslation & IWithMediaQuery & IFilerProps;
@@ -66,6 +84,8 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
     { title: this.props.t('property:none'), value: FurnishingTypes.NONE },
   ];
 
+  public searchParams = '';
+
   /* eslint-enable */
   constructor(props: Props) {
     super(props);
@@ -78,9 +98,9 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
     };
   }
 
-  // TODO : Ashwin - To Remove this once search property screen is integrated with getFilter Api
   public componentDidMount = (): void => {
-    const { getFilterDetails, filters } = this.props;
+    const { getFilterDetails, filters, history } = this.props;
+    this.searchParams = history.location.search;
     getFilterDetails({ asset_group: filters.asset_group });
   };
 
@@ -587,9 +607,21 @@ export class MoreFilters extends React.PureComponent<Props, IAssetFiltersState> 
   };
 
   private handleSubmit = (): void => {
-    const { getProperties, setFilter, closePopover } = this.props;
+    const { getProperties, setFilter, closePopover, filters, history } = this.props;
     setFilter({ offset: 0 });
+    const searchParams = new URLSearchParams(history.location.search);
+    if (filters.miscellaneous) {
+      const searchFilters: IMiscellaneousFilters = filters.miscellaneous;
+      const objectEntries = Object.entries(searchFilters);
+      for (let i = 0; i < objectEntries.length; i++) {
+        searchParams.set(objectEntries[i][0], objectEntries[i][1].toString());
+      }
+    }
+    const updatedSearchParams = searchParams.toString();
+
+    history.push(`${RouteNames.protectedRoutes.SEARCH_PROPERTY}?${updatedSearchParams}`);
     getProperties();
+
     closePopover();
   };
 

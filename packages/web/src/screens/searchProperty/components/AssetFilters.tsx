@@ -74,13 +74,20 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
     const { asset_transaction_type, min_price, max_price } = filters;
 
     if (history.action === 'POP') {
-      const setFilters = initialSearchState.filter;
+      const setFilters = { ...initialSearchState.filter, ...initialSearchState.filter.miscellaneous };
+
+      delete setFilters.miscellaneous;
+
       const searchParams = new URLSearchParams(history.location.search.substring(1));
 
       let payload = {};
       Object.keys(setFilters).forEach((key) => {
-        if (Number(searchParams.get(key))) {
-          payload = { ...payload, [key]: Number(searchParams.get(key)) };
+        if (searchParams.get(key)) {
+          let value;
+          if (typeof key === 'number') value = Number(searchParams.get(key));
+          if (Array.isArray(key)) value = searchParams.get(key)?.split(',');
+          else value = searchParams.get(key);
+          payload = { ...payload, [key]: value };
           setFilter({
             ...payload,
             currency_code: 'INR',
@@ -139,6 +146,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
       countryList,
       isMobile,
       isTablet,
+      history,
     } = this.props;
 
     const {
@@ -263,7 +271,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
       {
         id: 5,
         label: t('assetMore:more'),
-        content: <MoreFilters closePopover={closePopover} />,
+        content: <MoreFilters closePopover={closePopover} history={history} />,
         popupProps: moreFilterDefaultDropDownProps(isMobile, isTablet),
       },
     ];
@@ -299,15 +307,15 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
     const { setFilter, getProperties, history } = this.props;
     const filterValues = { asset_transaction_type: value, min_price: -1, max_price: -1 };
 
-    let searchParams = history.location.search;
-    // TODO: (Charit) - Fix lint issue
-    // eslint-disable-next-line no-restricted-syntax
-    for (const [key, values] of Object.entries(filterValues)) {
-      if (searchParams) searchParams += `&${key}=${values}`;
-      else searchParams += `?${key}=${values}`;
-    }
+    const searchParams = new URLSearchParams(history.location.search);
 
-    history.push(`${RouteNames.protectedRoutes.SEARCH_PROPERTY}${searchParams}`);
+    const objectEntries = Object.entries(filterValues);
+    for (let i = 0; i < objectEntries.length; i++) {
+      searchParams.set(objectEntries[i][0], objectEntries[i][1].toString());
+    }
+    const updatedSearchParams = searchParams.toString();
+
+    history.push(`${RouteNames.protectedRoutes.SEARCH_PROPERTY}?${updatedSearchParams}`);
     setFilter(filterValues);
 
     getProperties();
@@ -316,10 +324,12 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
 
   private updateFilter = (type: string, value: number | number[]): void => {
     const { setFilter, getProperties, history } = this.props;
-    let searchParams = history.location.search;
-    if (searchParams) searchParams += `&${type}=${value}`;
-    else searchParams += `?${type}=${value}`;
-    history.push(`${RouteNames.protectedRoutes.SEARCH_PROPERTY}${searchParams}`);
+    const searchParams = new URLSearchParams(history.location.search);
+
+    searchParams.set(type, value.toString());
+    const updatedSearchParams = searchParams.toString();
+
+    history.push(`${RouteNames.protectedRoutes.SEARCH_PROPERTY}?${updatedSearchParams}`);
 
     setFilter({ [type]: value });
     getProperties();
