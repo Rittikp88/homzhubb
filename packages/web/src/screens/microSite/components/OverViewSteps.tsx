@@ -9,7 +9,6 @@ import Nagpur from '@homzhub/common/src/assets/images/nagpur.svg';
 import PostProperty from '@homzhub/common/src/assets/images/postProperty.svg';
 import Pune from '@homzhub/common/src/assets/images/pune.svg';
 import VerifyDocuments from '@homzhub/common/src/assets/images/verifyDocuments.svg';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -44,14 +43,14 @@ const OverViewSteps: FC = () => {
         ]}
         key={index}
       >
-        <View style={[styles.iconLabel, isMobile && styles.iconLabelMobile]} key={index}>
+        {/* <View style={[styles.iconLabel, isMobile && styles.iconLabelMobile]} key={index}>
           {item.image}
         </View>
         {index < 3 && (
           <View style={[styles.arrowIcon, isMobile && styles.arrowIconMobile]}>
             <Icon name={icons.arrowRight} color={theme.colors.blue} size={20} />
           </View>
-        )}
+        )} */}
       </View>
     );
   });
@@ -68,7 +67,7 @@ const OverViewSteps: FC = () => {
           </View>
         </View>
 
-        <View style={isMobile && styles.puneMobile}>
+        <View style={[styles.nagpur && isMobile && styles.puneMobile]}>
           <Nagpur />
           <View style={styles.image}>
             <Typography size="regular" variant="text" style={styles.text}>
@@ -84,12 +83,12 @@ const OverViewSteps: FC = () => {
               {t('homzhubTagLine')}
             </Typography>
           </View>
-
-          <View style={[styles.subHeading, styles.subHeadingMobile]}>
+          {/* TODO: To be updated after design changes */}
+          {/* <View style={[styles.subHeading, styles.subHeadingMobile]}>
             <Typography variant="text" size="small" style={styles.text}>
               {t('freeDownload')}
             </Typography>
-          </View>
+          </View> */}
         </View>
 
         <View style={[styles.overview, isMobile && styles.overviewMobile]}>{data}</View>
@@ -106,7 +105,7 @@ const OverViewSteps: FC = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: '17%',
-    top: 72,
+    paddingTop: 72,
     flexDirection: 'column-reverse',
     justifyContent: 'center',
     alignItems: 'center',
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom:'20%',
+    paddingBottom: '20%',
     top: 24,
   },
   citiesMobile: {
@@ -159,6 +158,7 @@ const styles = StyleSheet.create({
   },
   pune: {
     marginEnd: 70,
+    backgroundColor: theme.colors.transparent,
   },
   puneMobile: {
     paddingBottom: '10%',
@@ -199,6 +199,9 @@ const styles = StyleSheet.create({
   iconLabelMobile: {
     width: '70%',
     flexDirection: 'row',
+  },
+  nagpur: {
+    backgroundColor: theme.colors.transparent,
   },
 });
 export default OverViewSteps;
