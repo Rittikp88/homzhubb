@@ -41,6 +41,7 @@
     "reactjs-popup": "^2.0.4",
     "react-webcam": "^5.2.3",
     "react-circular-progressbar": "^2.0.3",
+    "react-calendar": "^3.3.1",
     "react-html-parser": "2.0.2"
   },
   "devDependencies": {
@@ -48,6 +49,7 @@
     "@types/exenv": "^1.2.0",
     "@types/googlemaps": "^3.43.1",
     "@types/react-burger-menu": "2.2.0",
+    "@types/react-calendar": "^3.1.4",
     "@types/react-datepicker": "^3.1.2",
     "@types/react-dom": "^16.9.8",
     "@types/react-facebook-login": "^4.1.3",

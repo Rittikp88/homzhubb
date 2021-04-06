@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */ // TODO - remove this once all cases are resolved
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Component } from 'react';
 import {
   StyleProp,
@@ -13,13 +15,15 @@ import { FormikProps } from 'formik';
 import moment from 'moment';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PopupProps, PopupActions } from 'reactjs-popup/dist/types';
-
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
-import { CalendarComponent } from '@homzhub/mobile/src/components/atoms/CalendarComponent';
+import '@homzhub/common/src/components/molecules/FormCalendar/webCalendar.scss';
 
 interface IFormCalendarProps extends WithTranslation {
   name: string;
@@ -42,7 +46,7 @@ interface IFormCalendarProps extends WithTranslation {
   maxDate?: string;
   minDate?: string;
   isCurrentDateEnable?: boolean;
-  bubbleSelectedDate?: (day: string) => void;
+  bubbleSelectedDate?: (day: string | number) => void;
 }
 
 interface IFormCalendarState {
@@ -54,6 +58,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   public state = {
     isCalendarVisible: false,
     width: 0,
+    date: new Date(),
   };
 
   private popupRef = React.createRef<PopupActions>();
@@ -81,7 +86,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       isYearView = false,
       isCurrentDateEnable = false,
     } = this.props;
-    const { width } = this.state;
+    const { width, date } = this.state;
     const availableDate = (): string => {
       if (selectedValue) {
         return selectedValue;
@@ -106,6 +111,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     const onLayout = (e: LayoutChangeEvent): void => {
       this.setState({ width: e.nativeEvent.layout.width });
     };
+
     const isPlaceholderStyle = selectedValue === '' || !availableDate();
     return (
       <View style={containerStyle}>
@@ -115,18 +121,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
         </TextField>
         {!PlatformUtils.isMobile() && (
           <Popover
-            content={
-              // eslint-disable-next-line react/jsx-wrap-multilines
-              <CalendarComponent
-                allowPastDates={allowPastDates}
-                maxDate={maxDate}
-                minDate={minDate}
-                isOnlyYearView={isYearView}
-                onSelect={this.onDateSelected}
-                isCurrentDateEnable={isCurrentDateEnable}
-                selectedDate={selectedValue ?? formProps?.values[name]}
-              />
-            }
+            content={this.renderCalendar()}
             popupProps={defaultDropDownProps(width)}
             forwardedRef={this.popupRef}
           >
@@ -156,7 +151,28 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     );
   }
 
-  private onDateSelected = (day: string): void => {
+  private renderCalendar = (): React.ReactElement => {
+    const { date } = this.state;
+    const { isYearView, minDate } = this.props;
+    return (
+      <Calendar
+        value={date}
+        calendarType="ISO 8601"
+        className="react-calender-web"
+        defaultView={isYearView ? 'decade' : 'month'}
+        minDate={new Date()}
+        onChange={(datum: Date | Date[]): void => this.onChangeDate(datum)}
+        onClickYear={isYearView ? this.onChangeDate : FunctionUtils.noop}
+      />
+    );
+  };
+
+  private onChangeDate = (datum: Date | Date[]): void => {
+    const newDate = this.formatDate(datum.toString());
+    this.onDateSelected(newDate);
+  };
+
+  private onDateSelected = (day: string | number): void => {
     const { name, formProps, bubbleSelectedDate } = this.props;
     this.setState({ isCalendarVisible: false });
     if (bubbleSelectedDate) {
@@ -177,6 +193,22 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
 
   private onCalendarClose = (): void => {
     this.setState({ isCalendarVisible: false });
+  };
+
+  private formatDate = (dates: string): string | number => {
+    const { isYearView } = this.props;
+    const d = new Date(dates);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = d.getFullYear();
+
+    if (month.length < 2) month = `0${month}`;
+    if (day.length < 2) day = `0${day}`;
+    if (isYearView) {
+      return year;
+    }
+
+    return [year, month, day].join('-');
   };
 }
 

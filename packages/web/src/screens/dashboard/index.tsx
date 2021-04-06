@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { NavigationUtils } from 'utils/NavigationUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';

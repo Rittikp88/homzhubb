@@ -1,12 +1,11 @@
 import React, { useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import PropertySearch from '@homzhub/common/src/assets/images/propertySearch.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
@@ -61,7 +60,7 @@ const ContinuePopup: React.FC<Props> = (props: Props) => {
           {subTitle}
         </Typography>
         {isSvg ? (
-          <PropertySearch />
+          <Image source={require('@homzhub/common/src/assets/images/propertySearch.svg')} style={styles.colorSVG} />
         ) : (
           <Icon
             name={iconName || icons.circularCheckFilled}
@@ -129,6 +128,11 @@ const styles = StyleSheet.create({
     minHeight: 20,
     right: 24,
     top: 24,
+  },
+  colorSVG: {
+    height: 140,
+    width: 132,
+    marginTop: 8,
   },
 });
 export default ContinuePopup;
