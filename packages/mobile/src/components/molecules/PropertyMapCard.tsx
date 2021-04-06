@@ -20,6 +20,7 @@ interface IProps {
   currency: Currency;
   priceUnit: string;
   onSelectedProperty: () => void;
+  isAssetOwner: boolean;
 }
 
 export class PropertyMapCard extends React.PureComponent<IProps> {
@@ -34,6 +35,7 @@ export class PropertyMapCard extends React.PureComponent<IProps> {
       onSelectedProperty,
       leaseListingId,
       saleListingId,
+      isAssetOwner,
     } = this.props;
     return (
       <TouchableOpacity onPress={onSelectedProperty}>
@@ -44,9 +46,9 @@ export class PropertyMapCard extends React.PureComponent<IProps> {
             <ImagePlaceholder width={120} height={120} />
           )}
           <View style={styles.detailsContainer}>
-            <View style={styles.row}>
+            <View style={isAssetOwner ? styles.rowWithMarginTop : styles.row}>
               <PricePerUnit price={price} unit={priceUnit} currency={currency} />
-              <Favorite leaseId={leaseListingId} saleId={saleListingId} />
+              {!isAssetOwner && <Favorite leaseId={leaseListingId} saleId={saleListingId} />}
             </View>
             <Label type="large" textType="semiBold" numberOfLines={1}>
               {name}
@@ -84,6 +86,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  rowWithMarginTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 5,
   },
   image: {
     height: 120,

@@ -205,7 +205,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     const {
       contacts: { phoneNumber, countryCode, profilePicture, firstName, lastName, email },
-      appPermissions,
+      isAssetOwner,
     } = assetDetails;
 
     return (
@@ -254,7 +254,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </View>
         </ParallaxScrollView>
         {this.renderFullscreenCarousel()}
-        {appPermissions?.addListingVisit && !isFullScreen && !isPreview && (
+        {!isAssetOwner && !isFullScreen && !isPreview && (
           <ContactPerson
             firstName={firstName}
             lastName={lastName}
@@ -304,10 +304,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (!assetDetails) {
       return null;
     }
-    const { visitDate, appPermissions } = assetDetails;
+    const { visitDate, appPermissions, isAssetOwner } = assetDetails;
     return (
       <View style={styles.timelineContainer}>
-        {appPermissions?.addListingVisit && (
+        {!isAssetOwner && (
           <TouchableOpacity
             style={[styles.offerButton, { backgroundColor: theme.colors.blueOpacity }]}
             onPress={(): void => this.onMakeonOffer()}
@@ -551,7 +551,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       route: { params },
     } = this.props;
     if (!assetDetails) return null;
-    const { leaseTerm, saleTerm } = assetDetails;
+    const { leaseTerm, saleTerm, isAssetOwner } = assetDetails;
     const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
     const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
     return (
@@ -560,14 +560,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           <Icon name={icons.leftArrow} size={26} color={color} onPress={this.onGoBack} />
         </View>
         <View style={styles.headerRightIcon}>
-          <Favorite
-            isDisable={params.isPreview}
-            iconColor={color}
-            iconSize={24}
-            leaseId={leaseTerm?.id}
-            saleId={saleTerm?.id}
-            fromScreen={ScreensKeys.PropertyAssetDescription}
-          />
+          {!isAssetOwner && (
+            <Favorite
+              isDisable={params.isPreview}
+              iconColor={color}
+              iconSize={24}
+              leaseId={leaseTerm?.id}
+              saleId={saleTerm?.id}
+              fromScreen={ScreensKeys.PropertyAssetDescription}
+              containerStyle={styles.favIcon}
+            />
+          )}
           <Icon name={icons.share} size={22} color={color} onPress={this.onOpenSharing} />
         </View>
       </View>
@@ -1038,7 +1041,7 @@ const styles = StyleSheet.create({
   headerRightIcon: {
     flexDirection: 'row',
     position: 'absolute',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     right: relativeWidth(4),
     width: 60,
   },
@@ -1133,5 +1136,8 @@ const styles = StyleSheet.create({
   },
   offerText: {
     paddingLeft: 8,
+  },
+  favIcon: {
+    marginEnd: relativeWidth(3),
   },
 });

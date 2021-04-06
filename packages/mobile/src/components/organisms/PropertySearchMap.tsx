@@ -126,6 +126,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
       assetGroup: { code },
       leaseTerm,
       saleTerm,
+      isAssetOwner,
     } = item;
     const price = this.getPrice(item);
     const amenities = PropertyUtils.getAmenities(spaces, furnishing, code, carpetArea, carpetAreaUnit?.title ?? '');
@@ -160,6 +161,7 @@ export class PropertySearchMap extends React.PureComponent<Props, IState> {
         priceUnit={transaction_type === 0 ? 'mo' : ''}
         amenitiesData={amenities}
         onSelectedProperty={navigateToAssetDetails}
+        isAssetOwner={isAssetOwner}
       />
     );
   };

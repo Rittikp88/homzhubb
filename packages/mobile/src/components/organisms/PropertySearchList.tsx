@@ -92,6 +92,7 @@ export class PropertySearchList extends React.PureComponent<Props> {
         onSelectedProperty={navigateToAssetDescription}
         testID="listCard"
         containerStyle={containerStyle}
+        isAssetOwner={item.isAssetOwner}
       />
     );
   };

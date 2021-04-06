@@ -25,6 +25,7 @@ interface IProps {
   textSizeType?: TextSizeType;
   onSelectedProperty: () => void;
   testID?: string;
+  isAssetOwner: boolean;
 }
 
 type libraryProps = WithTranslation;
@@ -80,6 +81,7 @@ export class PropertyListCard extends React.PureComponent<Props, IState> {
     const {
       isCarousel,
       property: { leaseTerm, saleTerm, sortedImages },
+      isAssetOwner,
     } = this.props;
 
     return (
@@ -102,7 +104,7 @@ export class PropertyListCard extends React.PureComponent<Props, IState> {
         )}
         <View style={styles.overlay}>
           <View style={styles.favoriteContainer}>
-            <Favorite leaseId={leaseTerm?.id} saleId={saleTerm?.id} iconColor={theme.colors.white} />
+            {!isAssetOwner && <Favorite leaseId={leaseTerm?.id} saleId={saleTerm?.id} iconColor={theme.colors.white} />}
           </View>
           {isCarousel && (
             <View style={styles.arrowContainer}>

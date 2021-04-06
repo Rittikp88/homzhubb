@@ -402,6 +402,9 @@ export class Asset {
   @JsonProperty('sale_negotiation', Offer, true)
   private _saleNegotiation = null;
 
+  @JsonProperty('is_asset_owner', Boolean, true)
+  private _isAssetOwner = false;
+
   get investmentStatus(): string {
     return this._investmentStatus;
   }
@@ -762,5 +765,9 @@ export class Asset {
 
   get saleNegotiation(): Offer | null {
     return this._saleNegotiation;
+  }
+
+  get isAssetOwner(): boolean {
+    return this._isAssetOwner;
   }
 }
