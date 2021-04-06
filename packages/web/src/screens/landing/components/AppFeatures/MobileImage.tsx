@@ -1,9 +1,12 @@
-import React, { FC, CSSProperties } from 'react';
+import React, { FC } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import MobilePanel from '@homzhub/common/src/assets/images/mobilePanel.svg';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
+const defaultImages = {
+  owner: require('@homzhub/common/src/assets/images/yourPropertyIsInYourHands.svg'),
+  tenant: require('@homzhub/common/src/assets/images/yourKeyToYourHome.svg'),
+};
 interface IMobileImageProps {
   relativeImage: string;
   isOwner: boolean;
@@ -14,17 +17,23 @@ const MobileImage: FC<IMobileImageProps> = (props: IMobileImageProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const styles = imageStyles(isMobile, isTablet);
 
-  const styleGifs: CSSProperties = {
-    width: isMobile ? 98.94 : 157,
-    height: isMobile ? 176.44 : 280.15,
-    position: 'absolute',
-    left: isMobile ? '40.1%' : '40%',
-    top: isMobile ? '26.2%' : '19.7%',
+  const imageStyle = {
+    width: isMobile ? 310 : 492.24,
+    height: isMobile ? 400 : 500,
   };
   return (
     <View style={[styles.viewGif, !isOwner && !isMobile && !isTablet && styles.tenantViewGif]}>
-      <MobilePanel width={isMobile ? 310 : 492.24} height={isMobile ? 400 : 500} />
-      {relativeImage !== '' && <img src={relativeImage} style={styleGifs} alt="" />}
+      {relativeImage === '' ? (
+        <img
+          src={isOwner ? defaultImages.owner : defaultImages.tenant}
+          width={isMobile ? 310 : 492.24}
+          height={isMobile ? 400 : 500}
+          alt=""
+          style={imageStyle}
+        />
+      ) : (
+        <img src={relativeImage} style={imageStyle} alt="" />
+      )}
     </View>
   );
 };

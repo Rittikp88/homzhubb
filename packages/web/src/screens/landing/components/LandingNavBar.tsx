@@ -1,11 +1,11 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { LinkingService, URLs } from '@homzhub/web/src/services/LinkingService';
+import { URLs } from '@homzhub/web/src/services/LinkingService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -18,8 +18,26 @@ import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-const LandingNavBar: FC = () => {
+interface IProps {
+  featuredPropertiesRef?: any;
+  plansSectionRef?: any;
+  storeLinksSectionRef?: any;
+}
+
+const LandingNavBar: FC<IProps> = (props: IProps) => {
+  const [scrollLength, setScrollLength] = useState(0);
+  useEffect(() => {
+    if (scrollLength > 0) {
+      window.scrollTo({
+        top: scrollLength,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }
+    setScrollLength(0);
+  }, [scrollLength]);
   const history = useHistory();
+  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef } = props;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
@@ -35,33 +53,41 @@ const LandingNavBar: FC = () => {
   const navigateToScreen = (path: string): void => {
     NavigationUtils.navigate(history, { path });
   };
-
+  const onButtonScrollPress = (): void => {
+    if (storeLinksSectionRef) {
+      storeLinksSectionRef.measure((x: number, y: number) => {
+        setScrollLength(Math.floor(y));
+      });
+    }
+  };
   return (
     <>
       <StickyHeader>
         <View style={styles.container}>
           <View style={styles.content}>
             <View style={styles.subContainer}>
-              <View style={styles.logo}>
-                <NavLogo />
-              </View>
-              {isLaptop && <RenderNavItems />}
+              <TouchableOpacity onPress={(): void => navigateToScreen(RouteNames.publicRoutes.APP_BASE)}>
+                <View style={styles.logo}>
+                  <NavLogo />
+                </View>
+              </TouchableOpacity>
+              {isLaptop && (
+                <RenderNavItems featuredPropertiesRef={featuredPropertiesRef} plansSectionRef={plansSectionRef} />
+              )}
             </View>
             {isLaptop ? (
               <View style={styles.subContainer}>
                 <Button
-                  disabled={isReleaseMode}
-                  type="text"
-                  fontType="regular"
-                  title={t('login')}
-                  onPress={(): void => navigateToScreen(RouteNames.publicRoutes.LOGIN)}
-                />
-                <Button
-                  disabled={isReleaseMode}
                   type="primary"
-                  title={t('signUp')}
-                  onPress={(): void => navigateToScreen(RouteNames.publicRoutes.SIGNUP)}
+                  textType="label"
+                  textSize="large"
+                  title={t('landing:downloadApp')}
+                  containerStyle={styles.downloadButton}
+                  titleStyle={styles.downloadButtonTitle}
+                  onPress={onButtonScrollPress}
                 />
+                <Button disabled={isReleaseMode} type="text" fontType="regular" title={t('login')} />
+                <Button disabled={isReleaseMode} type="primary" title={t('signUp')} />
               </View>
             ) : (
               <Button
@@ -78,34 +104,53 @@ const LandingNavBar: FC = () => {
       </StickyHeader>
       {!isLaptop && (
         <SideBar open={isMenuOpen} onClose={onMenuClose}>
-          <RenderNavItems />
+          <RenderNavItems
+            featuredPropertiesRef={featuredPropertiesRef}
+            plansSectionRef={plansSectionRef}
+            storeLinksSectionRef={storeLinksSectionRef}
+          />
         </SideBar>
       )}
     </>
   );
 };
-const RenderNavItems = (): React.ReactElement => {
-  const history = useHistory();
+const RenderNavItems: FC<IProps> = (props: IProps) => {
+  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef } = props;
   const [isSelected, setIsSelected] = useState(0);
+  const [scrollLength, setScrollLength] = useState(0);
+
+  // To scroll to the appropriate section when clicked.
+  useEffect(() => {
+    if (scrollLength > 0) {
+      window.scrollTo({
+        top: scrollLength,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }
+    setScrollLength(0);
+  }, [scrollLength]);
+
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navItemStyle(isLaptop, false);
   const isReleaseMode = ConfigHelper.getAppMode() !== AppModes.DEBUG;
   const navItems = [
     {
-      text: t('home'),
-      url: RouteNames.publicRoutes.APP_BASE,
-      disabled: false,
-    },
-    {
       text: t('featuredProperties'),
-      url: URLs.featuredPropertiesSearch,
+      url: URLs.featuredProperties,
       disabled: false,
     },
     {
-      text: t('pricing'),
-      url: RouteNames.publicRoutes.APP_BASE, // TODO  Add URL when resprective screen is available.
-      disabled: isReleaseMode,
+      text: t('membershipPlans'),
+      url: RouteNames.publicRoutes.PRICING,
+      disabled: false,
+    },
+  ];
+  const mobileItems = [
+    {
+      text: t('landing:downloadApp'),
+      disabled: false,
     },
   ];
   const login = [
@@ -120,14 +165,33 @@ const RenderNavItems = (): React.ReactElement => {
       disabled: isReleaseMode,
     },
   ];
-  const menuItems = isLaptop ? navItems : [...navItems, ...login];
+  const menuItems = isLaptop ? navItems : [...navItems, ...mobileItems, ...login];
+
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
     if (menuItems[index].text === t('featuredProperties')) {
-      LinkingService.redirect(URLs.featuredPropertiesSearch);
-    } else if (menuItems[index].text !== t('featuredProperties')) {
-      NavigationUtils.navigate(history, { path: menuItems[index].url });
+      if (featuredPropertiesRef) {
+        featuredPropertiesRef.measure((x: number, y: number) => {
+          setScrollLength(Math.floor(y));
+        });
+      }
     }
+    if (menuItems[index].text === t('membershipPlans')) {
+      if (plansSectionRef) {
+        plansSectionRef.measure((x: number, y: number) => {
+          setScrollLength(Math.floor(y));
+        });
+      }
+    }
+    if (menuItems[index].text === t('landing:downloadApp')) {
+      if (storeLinksSectionRef) {
+        storeLinksSectionRef.measure((x: number, y: number) => {
+          setScrollLength(Math.floor(y));
+        });
+      }
+    }
+    // TODO: uncomment when links have respective component
+    //  NavigationUtils.navigate(history, { path: navItems[index].url });
   };
   return (
     <>
@@ -185,6 +249,8 @@ interface INavBarStyle {
   content: ViewStyle;
   logo: ViewStyle;
   hamburgerMenu: ViewStyle;
+  downloadButton: ViewStyle;
+  downloadButtonTitle: ViewStyle;
 }
 const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
   StyleSheet.create<INavBarStyle>({
@@ -217,6 +283,12 @@ const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
       marginRight: 16,
       flexDirection: 'row',
       justifyContent: 'space-between',
+    },
+    downloadButton: {
+      backgroundColor: theme.colors.blueOpacity,
+    },
+    downloadButtonTitle: {
+      color: theme.colors.blue,
     },
   });
 interface INavItemStyle {

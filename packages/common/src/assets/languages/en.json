@@ -995,7 +995,17 @@
     "startYourInvestment": "Start your Investment",
     "startInvestmentSubText": "Change this to given text in en.json",
     "homzhubServicesHeader": "Homzhub services for you!",
-    "homzhubServicesDescription": "End-to-end property management services so you live a stress-free life"
+    "homzhubServicesDescription": "End-to-end property management services so you live a stress-free life",
+    "downloadApp": "Download App",
+    "subscribePopupHeader": "Subscribe to our newsletter",
+    "subscribePopupTitle": "Be the first to get exclusive offers and latest news on our product directly in your inbox.",
+    "membershipPlans": "Membership Plans",
+    "thankYouText": "Thank You!",
+    "thankYouTitle": "You have successfully subscribed to the newsletter",
+    "platformPlansHeader": "Subscribe to the platform to digitally manage property from anywhere in the world.",
+    "servicePlansHeader": "Subscribe to a service plan for on-the-ground services from our team or from our affiliates.",
+    "emailValidations": "Please enter a valid email.",
+    "viewAllTitle": "View All"
   },
   "serviceTickets": {
     "serviceTickets": "Service Tickets",

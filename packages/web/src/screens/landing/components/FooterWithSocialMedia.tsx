@@ -1,18 +1,26 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import StoreButton, { imageType } from '@homzhub/web/src/components/molecules/MobileStoreButton';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export const FooterWithSocialMedia: FC = () => {
+  const history = useHistory();
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const socialMediaLinks: imageType[] = ['instagram', 'twitter', 'youtube', 'linkedin', 'facebook'];
-
+  const navigateToPrivacyPolicyScreen = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.PRIVACY_POLICY });
+  };
+  const navigateToTermsAndConditionScreen = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.TERMS_CONDITION });
+  };
   return (
     <View style={[styles.footerContainer]}>
       <View style={[styles.contentMobile, !isMobile && styles.content]}>
@@ -24,21 +32,26 @@ export const FooterWithSocialMedia: FC = () => {
             {t('homzhubLink')}
           </Typography>
         </View>
-        <View style={styles.socialMediaIcons}>
-          <Typography size="small" style={styles.socialMediaText}>
-            {t('common:footerSocialMediaText')}
-          </Typography>
-          {socialMediaLinks.map((icon) => {
-            return (
-              <StoreButton
-                key={`social-media-icon-${icon}`}
-                store={icon}
-                containerStyle={styles.icons}
-                imageIconStyle={styles.imageIconStyle}
-                mobileImageIconStyle={styles.mobileImageIconStyle}
-              />
-            );
-          })}
+        <View style={[styles.linksRow, isMobile && styles.linksRowMobile]}>
+          <Button
+            type="text"
+            title={t('moreSettings:termsConditionsText')}
+            textType="label"
+            textSize="large"
+            fontType="regular"
+            titleStyle={[styles.text, isMobile && styles.textMobile]}
+            onPress={navigateToTermsAndConditionScreen}
+          />
+          <Button
+            type="text"
+            containerStyle={styles.privacyPolicy}
+            title={t('moreSettings:privacyPolicyText')}
+            textType="label"
+            textSize="large"
+            fontType="regular"
+            titleStyle={[styles.text, isMobile && styles.textMobile]}
+            onPress={navigateToPrivacyPolicyScreen}
+          />
         </View>
       </View>
     </View>
@@ -53,6 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 10,
     alignItems: 'center',
+    height: 70,
   },
   content: {
     flexDirection: 'row',
@@ -71,25 +85,23 @@ const styles = StyleSheet.create({
   copyrightText: {
     color: theme.colors.white,
   },
-  socialMediaText: {
+  privacyPolicy: {
+    marginLeft: 36,
+  },
+  text: {
+    textAlign: 'left',
     color: theme.colors.white,
+    marginVertical: 0,
+    marginHorizontal: 0,
   },
-  socialMediaIcons: {
+  textMobile: {
+    textAlign: 'center',
+  },
+  linksRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    justifyContent: undefined,
   },
-  icons: {
-    width: 50,
-    height: 50,
-  },
-  imageIconStyle: {
-    width: 25,
-    height: 25,
-    resizeMode: 'stretch',
-    maxWidth: '100%',
-    marginVertical: 'auto',
-  },
-  mobileImageIconStyle: {
-    width: '50%',
+  linksRowMobile: {
+    justifyContent: 'center',
   },
 });

@@ -20,16 +20,7 @@ interface IProps {
 const PropertiesCard = (props: IProps): React.ReactElement => {
   const { investmentData } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const {
-    address,
-    category,
-    coverImage,
-    priceRange,
-    projectName,
-    possessionDate,
-    typesAvailable,
-    slug,
-  } = investmentData;
+  const { category, coverImage, priceRange, projectName, possessionDate, typesAvailable, slug } = investmentData;
   const amenitiesGroup: IUnit[] = [
     { id: 1, order: 1, label: 'Type', value: typesAvailable },
     { id: 2, order: 2, label: 'Possession', value: possessionDate },
@@ -47,7 +38,7 @@ const PropertiesCard = (props: IProps): React.ReactElement => {
         <View>
           <ImageSquare
             style={styles.image}
-            size={50}
+            size={100}
             source={{
               uri: coverImage.url,
             }}
@@ -63,10 +54,10 @@ const PropertiesCard = (props: IProps): React.ReactElement => {
             isIcon={false}
             primaryAddress={projectName}
             primaryAddressStyle={styles.addressTextStyle}
-            subAddressStyle={styles.subAddressTextStyle}
-            subAddress={address}
             containerStyle={styles.propertyAddress}
+            subAddress=""
           />
+          <Divider />
           <View>
             <Typography variant="text" size="small" fontWeight="semiBold" style={styles.propertyValue}>
               {t('from')} {priceRange}
@@ -121,23 +112,20 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 'calc(100% - 24px)',
     maxWidth: 298,
-    minHeight: 160,
+    minHeight: 260,
     alignSelf: 'flex-start',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 4,
-    margin: 12,
+    marginHorizontal: 8,
   },
   propertyAddress: {
-    marginTop: 8,
-    marginBottom: 8,
-    minHeight: 60,
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
   mainBody: {
+    marginVertical: 8,
     flexDirection: 'column',
-    marginTop: 16,
     marginHorizontal: 20,
     minHeight: '200',
   },
@@ -146,8 +134,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   propertyValue: {
+    paddingVertical: 15,
     color: theme.colors.darkTint2,
-    paddingBottom: 15,
   },
   propertyType: {
     color: theme.colors.primaryColor,

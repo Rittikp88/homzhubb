@@ -1,60 +1,49 @@
+/* eslint-disable @typescript-eslint/prefer-regexp-exec */
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
-import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { useDown, useUp, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import StoreButton, { imageType } from '@homzhub/web/src/components/molecules/MobileStoreButton';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const OurServicesSection: FC = () => {
-  const history = useHistory();
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const navigateToPrivacyPolicyScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.PRIVACY_POLICY });
-  };
-  const navigateToTermsAndConditionScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.TERMS_CONDITION });
-  };
+  const isDesktop = useUp(deviceBreakpoint.TABLET);
+  const socialMediaLinks: imageType[] = ['instagram', 'twitter', 'youtube', 'linkedin', 'facebook'];
+
   return (
     <View style={styles.container}>
       <View style={[styles.content, isMobile && styles.contentMobile]}>
-        <View>
+        <View style={{ justifyContent: 'center' }}>
           <Typography
             variant="text"
             size="small"
             fontWeight="semiBold"
             style={[styles.text, isMobile && styles.textMobile]}
           >
-            {t('landing:ourServices')}
+            {t('common:footerSocialMediaText')}
           </Typography>
-          <View style={[styles.linksRow, isMobile && styles.linksRowMobile]}>
-            <Button
-              type="text"
-              title={t('moreSettings:termsConditionsText')}
-              textType="label"
-              textSize="large"
-              fontType="regular"
-              titleStyle={[styles.text, isMobile && styles.textMobile]}
-              onPress={navigateToTermsAndConditionScreen}
-            />
-            <Button
-              type="text"
-              containerStyle={styles.privacyPolicy}
-              title={t('moreSettings:privacyPolicyText')}
-              textType="label"
-              textSize="large"
-              fontType="regular"
-              titleStyle={[styles.text, isMobile && styles.textMobile]}
-              onPress={navigateToPrivacyPolicyScreen}
-            />
+          <View style={[styles.socialMediaIcons, isDesktop && styles.socialMediaIconsDesktop]}>
+            {socialMediaLinks.map((icon) => {
+              return (
+                <StoreButton
+                  key={`social-media-icon-${icon}`}
+                  store={icon}
+                  containerStyle={styles.icons}
+                  imageIconStyle={styles.imageIconStyle}
+                  mobileImageIconStyle={styles.mobileImageIconStyle}
+                />
+              );
+            })}
           </View>
         </View>
         <Newsletter />
@@ -66,7 +55,12 @@ const OurServicesSection: FC = () => {
 const Newsletter = (): React.ReactElement => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTablet = useDown(deviceBreakpoint.DESKTOP);
+  const isDesktop = useUp(deviceBreakpoint.TABLET);
+  const isIpadPro = useIsIpadPro();
+
   const [didSubscribe, setDidSubscribe] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(false);
   const [email, setEmail] = useState('');
   useEffect(() => {
     let subscribedTimer: NodeJS.Timeout;
@@ -75,22 +69,41 @@ const Newsletter = (): React.ReactElement => {
         setDidSubscribe(false);
       }, 3000);
     }
+    if (isEmailValid) {
+      subscribedTimer = setTimeout(() => {
+        setIsEmailValid(false);
+      }, 3000);
+    }
     return (): void => {
       clearTimeout(subscribedTimer);
     };
-  }, [didSubscribe]);
-  const subscribeToNewsLetter = async (): Promise<void> => {
-    await CommonRepository.subscribeToNewsLetter({ email })
-      .then(() => {
-        setDidSubscribe(true);
-        setEmail('');
-      })
-      .catch((error) => {
-        AlertHelper.error({ message: error.message });
-      });
+  }, [didSubscribe, isEmailValid]);
+
+  const subscribeToNewsLetter = (): void => {
+    if (email.match(FormUtils.emailRegex)) {
+      CommonRepository.subscribeToNewsLetter({ email })
+        .then(() => {
+          setDidSubscribe(true);
+          setEmail('');
+        })
+        .catch((error) => {
+          const errorMessage = ErrorUtils.getErrorMessage(error.details);
+          AlertHelper.error({ message: errorMessage });
+        });
+    } else {
+      setIsEmailValid(true);
+    }
   };
   return (
-    <View style={[styles.newsletterContainer, isMobile && styles.newsletterContainerMobile]}>
+    <View
+      style={[
+        styles.newsletterContainer,
+        isDesktop && styles.newsletterContainerDesktop,
+        isMobile && styles.newsletterContainerMobile,
+        isIpadPro && styles.newsletterContainerIpadPro,
+        isTablet && styles.newsletterContainerTablet,
+      ]}
+    >
       <Typography variant="label" size="large" fontWeight="regular" style={styles.text}>
         {t('landing:subscribeEmailDesc')}
       </Typography>
@@ -121,6 +134,9 @@ const Newsletter = (): React.ReactElement => {
           )}
         </Button>
       </View>
+      <Typography variant="label" size="large" fontWeight="regular" style={styles.text}>
+        {isEmailValid ? t('landing:emailValidations') : ' '}
+      </Typography>
     </View>
   );
 };
@@ -143,9 +159,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  privacyPolicy: {
-    marginLeft: 36,
   },
   text: {
     textAlign: 'left',
@@ -171,6 +184,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: theme.colors.darkGrayishBlue,
     flex: 1,
+    marginBottom: 6,
   },
   emailInputBoxMobile: {
     width: '100%',
@@ -200,23 +214,46 @@ const styles = StyleSheet.create({
     minWidth: 380,
     alignItems: 'flex-start',
   },
+  newsletterContainerDesktop: {
+    marginLeft: '53%',
+  },
+  newsletterContainerTablet: {
+    marginLeft: '14%',
+  },
+  newsletterContainerIpadPro: {
+    marginLeft: '36%',
+  },
   newsletterContainerMobile: {
     minWidth: undefined,
     marginTop: 36,
     alignItems: 'center',
-  },
-  linksRow: {
-    marginTop: 16,
-    flexDirection: 'row',
-    justifyContent: undefined,
-  },
-  linksRowMobile: {
-    justifyContent: 'center',
+    marginLeft: undefined,
   },
   icon: {
     justifyContent: 'center',
     marginRight: 12,
     marginLeft: 18,
+  },
+  socialMediaIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  socialMediaIconsDesktop: {
+    marginLeft: '-5%',
+  },
+  icons: {
+    width: 50,
+    height: 50,
+  },
+  imageIconStyle: {
+    width: 25,
+    height: 25,
+    resizeMode: 'stretch',
+    maxWidth: '100%',
+    marginVertical: 'auto',
+  },
+  mobileImageIconStyle: {
+    width: '50%',
   },
 });
 

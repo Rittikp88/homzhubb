@@ -9,13 +9,17 @@ import { GradientBackground } from '@homzhub/web/src/screens/landing/components/
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
+interface IProps {
+  scrollRef?: any;
+}
 // todo replace dummy data
-export const StoreLinkSection: FC = () => {
+export const StoreLinkSection: FC<IProps> = (props: IProps) => {
+  const { scrollRef } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const notDesktop = useDown(deviceBreakpoint.TABLET);
   return (
-    <View style={styles.container}>
+    <View style={styles.container} ref={scrollRef}>
       <GradientBackground>
         <View style={styles.content}>
           <Typography variant={notDesktop ? 'text' : 'title'} size="large" fontWeight="semiBold" style={styles.heading}>

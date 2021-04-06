@@ -6,6 +6,9 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import ProfileTag from '@homzhub/common/src/assets/images/profileTag.svg';
 import Graph from '@homzhub/common/src/assets/images/graph.svg';
 import Bell from '@homzhub/common/src/assets/images/bell.svg';
+import HomeCare from '@homzhub/common/src/assets/images/homeCare.svg';
+import Folder from '@homzhub/common/src/assets/images/folder.svg';
+import FindHome from '@homzhub/common/src/assets/images/findHome.svg';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -16,13 +19,13 @@ const LandingFeatures: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
 
   const data = [
-    { icon: <Graph />, text: t('landing:manageProperties') },
+    { icon: <HomeCare />, text: t('landing:manageProperties') },
     {
       icon: <ProfileTag />,
       text: t('landing:manageTenant'),
     },
     {
-      icon: <Bell />,
+      icon: <FindHome />,
       text: t('landing:findHome'),
     },
     {
@@ -30,11 +33,11 @@ const LandingFeatures: FC = () => {
       text: t('landing:investmentDestination'),
     },
     {
-      icon: <ProfileTag />,
+      icon: <Graph />,
       text: t('landing:maximizeReturns'),
     },
     {
-      icon: <Graph />,
+      icon: <Folder />,
       text: t('landing:maintainRentalHistory'),
     },
   ];

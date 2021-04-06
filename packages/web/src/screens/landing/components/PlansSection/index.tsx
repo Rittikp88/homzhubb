@@ -10,7 +10,11 @@ import ServicePlansSection from '@homzhub/web/src/screens/landing/components/Pla
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const PlansSection: FC = () => {
+interface IProps {
+  scrollRef?: any;
+}
+const PlansSection: FC<IProps> = (props: IProps) => {
+  const { scrollRef } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const [isServicePlans, setIsServicePlans] = useState(false);
   const togglePlatformPlans = (): void => {
@@ -22,7 +26,7 @@ const PlansSection: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   return (
-    <View>
+    <View ref={scrollRef}>
       <View style={styles.plansTextContainer}>
         <Typography
           variant={!isMobile ? 'text' : 'label'}
@@ -50,6 +54,9 @@ const PlansSection: FC = () => {
         buttonStyle={[styles.buttonStyle, isMobile && styles.buttonStyleMobile]}
         titleStyle={styles.titleStyle}
       />
+      <Typography variant="text" size="regular" fontWeight="regular" style={styles.plansHeaderTitle}>
+        {isServicePlans ? t('landing:servicePlansHeader') : t('landing:platformPlansHeader')}
+      </Typography>
       {isServicePlans ? <ServicePlansSection /> : <PlatformPlanSection />}
     </View>
   );
@@ -84,5 +91,11 @@ const styles = StyleSheet.create({
   titleStyle: {
     marginVertical: 12,
     marginHorizontal: 30,
+  },
+  plansHeaderTitle: {
+    textAlign: 'center',
+    marginBottom: 50,
+    paddingHorizontal: 24,
+    color: theme.colors.darkTint3,
   },
 });

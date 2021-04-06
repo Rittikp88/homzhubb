@@ -25,6 +25,7 @@ interface IProps {
   platformPlans: PlatformPlans;
 }
 
+// FixMe: (bishal -> mohak) sortData() usage needs to be changed.
 const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const {
     platformPlans: { name, label, description, servicePlanBundle, servicePlanPricing },
@@ -37,6 +38,16 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
     serviceBundles.sort((a: ServiceBundleItems, b: ServiceBundleItems) => (a.displayOrder > b.displayOrder ? 1 : -1));
   };
 
+  const findIndex = (): number => {
+    let indexForUSD = 0;
+    for (let index = 0; index < servicePlanPricing.length; index++) {
+      if (servicePlanPricing[index].currency.currencyCode === 'USD') {
+        indexForUSD = index;
+      }
+    }
+    return indexForUSD;
+  };
+
   const getFreeSubscriptionPeriod = (): string => {
     const duration = servicePlanPricing[0]?.freeTrialDuration ?? 0;
     return duration === 12 ? t('oneYear') : `${duration} ${t('months')}`;
@@ -44,7 +55,8 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const isMobile = useDown(deviceBreakpoint.TABLET);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const shouldDisplayPopularBanner = !!(servicePlanPricing && servicePlanPricing[0].banner);
-  const servicePlansPricingInUSD = servicePlanPricing[1];
+  const indexUSD = findIndex();
+  const servicePlansPricingInUSD = servicePlanPricing[indexUSD];
 
   const setPlanPricingText = (pricing: number): string => {
     if (pricing === -1) return t('custom');
@@ -78,7 +90,7 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
       </Typography>
       {servicePlanPricing && (
         <View style={styles.billingAmount}>
-          <Typography size="regular" variant="title" fontWeight="semiBold" style={styles.amount}>
+          <Typography size="small" variant="title" fontWeight="semiBold" style={styles.amount}>
             {isCustom ? null : servicePlansPricingInUSD.currency.currencySymbol}
             {setPlanPricingText(servicePlansPricingInUSD.actualPrice)}
           </Typography>
