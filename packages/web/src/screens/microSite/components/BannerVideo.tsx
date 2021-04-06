@@ -14,7 +14,7 @@ const BannerVideo: FC = () => {
   const videoStyle: CSSProperties = {
     height: '40%',
     position: 'absolute',
-    top: !isMobile ? (isTab ? 308 : 342) : 492,
+    top: !isMobile ? (isTab ? 392 : 435) : 576,
     width: !isMobile ? (isTab ? '90%' : '65%') : '92%',
     left: !isMobile ? (isTab ? '5%' : '18%') : '4%',
     borderRadius: 12,
@@ -41,9 +41,9 @@ const BannerVideo: FC = () => {
         source={
           !isMobile
             ? isTab
-              ? require('@homzhub/common/src/assets/images/bannerTab.svg')
-              : require('@homzhub/common/src/assets/images/bannerDesktop.svg')
-            : require('@homzhub/common/src/assets/images/bannerMobile.svg')
+              ? require('@homzhub/common/src/assets/images/bannerTab.jpg')
+              : require('@homzhub/common/src/assets/images/bannerDesktop.jpg')
+            : require('@homzhub/common/src/assets/images/bannerMobile.jpg')
         }
         style={bannerStyle}
       />

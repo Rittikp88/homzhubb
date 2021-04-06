@@ -1,5 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { View } from 'react-native';
+import MetaTags from '@homzhub/web/src/components/atoms/MetaTags';
+import LandingNavBar from '@homzhub/web/src/screens/landing/components/LandingNavBar';
 import BannerVideo from '@homzhub/web/src/screens/microSite/components/BannerVideo';
 import Properties from '@homzhub/web/src/screens/microSite/components/Properties';
 import HomzhubServices from '@homzhub/web/src/screens/microSite/components/HomzhubServices';
@@ -10,15 +12,23 @@ import OurServicesSection from '@homzhub/web/src/screens/landing/components/OurS
 import FooterWithSocialMedia from '@homzhub/web/src/screens/landing/components/FooterWithSocialMedia';
 
 const MicroSite: FC = () => {
+  const [storeLinksRef, setStoreLinksRef] = useState(null);
+
+  const storeLinkSectionRef = (element: any): void => {
+    setStoreLinksRef(element);
+  };
+
   return (
     <View>
+      <MetaTags title="Maharashtra Connect" />
+      <LandingNavBar storeLinksSectionRef={storeLinksRef} />
       <BannerVideo />
       <OverViewSteps />
       <HomzhubServices />
       <StartYourInvestment />
       <Properties />
       <Testimonials />
-      <OurServicesSection />
+      <OurServicesSection scrollRef={storeLinkSectionRef} />
       <FooterWithSocialMedia />
     </View>
   );

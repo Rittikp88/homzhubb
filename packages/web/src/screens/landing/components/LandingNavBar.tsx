@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { URLs } from '@homzhub/web/src/services/LinkingService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -37,6 +38,12 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
     setScrollLength(0);
   }, [scrollLength]);
   const history = useHistory();
+  const {
+    location: { pathname },
+  } = history;
+  const { publicRoutes } = RouteNames;
+  const { APP_BASE } = publicRoutes;
+  const isMenuVisible = compareUrlsWithPathname([APP_BASE], pathname);
   const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef } = props;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -52,6 +59,11 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   };
   const navigateToScreen = (path: string): void => {
     NavigationUtils.navigate(history, { path });
+    setTimeout(() => {
+      if (PlatformUtils.isWeb()) {
+        window.scrollTo(0, 0);
+      }
+    }, 100);
   };
   const onButtonScrollPress = (): void => {
     if (storeLinksSectionRef) {
@@ -71,7 +83,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                   <NavLogo />
                 </View>
               </TouchableOpacity>
-              {isLaptop && (
+              {isLaptop && isMenuVisible && (
                 <RenderNavItems featuredPropertiesRef={featuredPropertiesRef} plansSectionRef={plansSectionRef} />
               )}
             </View>
@@ -86,8 +98,19 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                   titleStyle={styles.downloadButtonTitle}
                   onPress={onButtonScrollPress}
                 />
-                <Button disabled={isReleaseMode} type="text" fontType="regular" title={t('login')} />
-                <Button disabled={isReleaseMode} type="primary" title={t('signUp')} />
+                <Button
+                  disabled={isReleaseMode}
+                  type="text"
+                  fontType="regular"
+                  title={t('login')}
+                  onPress={(): void => navigateToScreen(RouteNames.publicRoutes.LOGIN)}
+                />
+                <Button
+                  disabled={isReleaseMode}
+                  type="primary"
+                  title={t('signUp')}
+                  onPress={(): void => navigateToScreen(RouteNames.publicRoutes.SIGNUP)}
+                />
               </View>
             ) : (
               <Button
@@ -118,7 +141,7 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
   const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef } = props;
   const [isSelected, setIsSelected] = useState(0);
   const [scrollLength, setScrollLength] = useState(0);
-
+  // const history = useHistory(); TODO: Lakshit: Remove once Landing Page is Updated.
   // To scroll to the appropriate section when clicked.
   useEffect(() => {
     if (scrollLength > 0) {
@@ -138,18 +161,19 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
   const navItems = [
     {
       text: t('featuredProperties'),
-      url: URLs.featuredProperties,
+      url: RouteNames.publicRoutes.APP_BASE,
       disabled: false,
     },
     {
       text: t('membershipPlans'),
-      url: RouteNames.publicRoutes.PRICING,
+      url: RouteNames.publicRoutes.APP_BASE,
       disabled: false,
     },
   ];
   const mobileItems = [
     {
       text: t('landing:downloadApp'),
+      url: RouteNames.publicRoutes.APP_BASE,
       disabled: false,
     },
   ];
@@ -191,7 +215,9 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
       }
     }
     // TODO: uncomment when links have respective component
-    //  NavigationUtils.navigate(history, { path: navItems[index].url });
+    // if (menuItems[index].url !== RouteNames.publicRoutes.APP_BASE) {
+    //   NavigationUtils.navigate(history, { path: menuItems[index].url });
+    // }
   };
   return (
     <>
@@ -202,16 +228,18 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
           </Typography>
         </View>
       )}
-      {menuItems.map((item, index) => (
-        <NavItem
-          key={item.text}
-          text={item.text}
-          isDisabled={item.disabled}
-          isActive={isSelected === index}
-          onNavItemPress={onNavItemPress}
-          index={index}
-        />
-      ))}
+      {menuItems.map((item, index) => {
+        return (
+          <NavItem
+            key={item.text}
+            text={item.text}
+            isDisabled={item.disabled}
+            isActive={isSelected === index}
+            onNavItemPress={onNavItemPress}
+            index={index}
+          />
+        );
+      })}
     </>
   );
 };

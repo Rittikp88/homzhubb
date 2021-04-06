@@ -20,19 +20,15 @@ const OverViewSteps: FC = () => {
   const overViewStepsData = [
     {
       image: <DownloadApp />,
-      text: t('downloadApp'),
     },
     {
       image: <PostProperty />,
-      text: t('signUpAndPost'),
     },
     {
       image: <VerifyDocuments />,
-      text: t('verifyDocuments'),
     },
     {
       image: <ManageProperty />,
-      text: t('manageProperty'),
     },
   ];
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -50,11 +46,6 @@ const OverViewSteps: FC = () => {
       >
         <View style={[styles.iconLabel, isMobile && styles.iconLabelMobile]} key={index}>
           {item.image}
-          <View style={[styles.image, isMobile && styles.imageMobile]}>
-            <Typography size="regular" variant="text" style={[styles.text, isMobile && styles.textMobile]}>
-              {item.text}
-            </Typography>
-          </View>
         </View>
         {index < 3 && (
           <View style={[styles.arrowIcon, isMobile && styles.arrowIconMobile]}>
@@ -103,8 +94,8 @@ const OverViewSteps: FC = () => {
 
         <View style={[styles.overview, isMobile && styles.overviewMobile]}>{data}</View>
         <View>
-          <Typography variant="text" size="small" style={styles.text}>
-            {t('PuneNagpurOwners')}
+          <Typography size="regular" variant="text" style={styles.text}>
+            {t('overviewSteps')}
           </Typography>
         </View>
       </View>
@@ -114,14 +105,15 @@ const OverViewSteps: FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: '17%',
+    paddingHorizontal: '17%',
     top: 72,
     flexDirection: 'column-reverse',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: theme.colors.background,
   },
   containerMobile: {
-    marginHorizontal: '5%',
+    paddingHorizontal: '5%',
   },
   heading: {
     paddingBottom: '5%',
@@ -130,14 +122,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   subHeading: {
-    marginHorizontal: '12%',
+    paddingHorizontal: '12%',
     marginVertical: 24,
   },
   subHeadingMobile: {
-    marginHorizontal: '5%',
+    paddingHorizontal: '5%',
   },
   text: {
     textAlign: 'center',
+    paddingVertical: 20,
   },
   overview: {
     flexDirection: 'row',
@@ -158,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: '20%',
+    paddingBottom:'20%',
     top: 24,
   },
   citiesMobile: {
@@ -176,9 +169,7 @@ const styles = StyleSheet.create({
     paddingStart: '13%',
     top: 0,
   },
-  textMobile: {
-    textAlign: 'left',
-  },
+
   stepsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -195,7 +186,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: '20px',
-    left: 17,
   },
   arrowIconMobile: {
     marginVertical: 20,

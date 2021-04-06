@@ -11,7 +11,12 @@ import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import StoreButton from '@homzhub/web/src/components/molecules/MobileStoreButton';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const Testimonials: FC = () => {
+interface IProps {
+  scrollRef?: any;
+}
+
+const Testimonials: FC<IProps> = (props: IProps) => {
+  const { scrollRef } = props;
   const [backgroundImageHeight, setBackgroundImageHeight] = useState(0);
   const { t } = useTranslation();
   const youtubeSize = useViewPort().width;
@@ -72,10 +77,10 @@ const Testimonials: FC = () => {
   };
 
   return (
-    <View style={styles.testimonialsContainer} onLayout={onLayout}>
+    <View style={styles.testimonialsContainer} onLayout={onLayout} ref={scrollRef}>
       <View style={styles.backgroundImage}>
         <Image
-          source={require('@homzhub/common/src/assets/images/testimonialsBackground.svg')}
+          source={require('@homzhub/common/src/assets/images/testimonialsBackground.webp')}
           style={backgroundImageStyle}
         />
       </View>

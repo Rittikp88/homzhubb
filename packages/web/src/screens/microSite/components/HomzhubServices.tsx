@@ -7,7 +7,6 @@ import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ServicePlansSection from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansSection';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
@@ -21,16 +20,6 @@ const HomzhubServices: FC = () => {
   };
   return (
     <View style={styles.services}>
-      <View style={styles.heading}>
-        <Typography size="regular" variant="title" fontWeight="semiBold" style={styles.text}>
-          {t('landing:homzhubServicesHeader')}
-        </Typography>
-        <View style={styles.subHeading}>
-          <Typography size="small" variant="text" style={styles.text}>
-            {t('landing:homzhubServicesDescription')}
-          </Typography>
-        </View>
-      </View>
       <ServicePlansSection cardStyle={styles.servicePlansCardStyle} scrollStyle={styles.scrollStyle} />
       <Button
         type="primary"
@@ -56,8 +45,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
     justifyContent: 'center',
     alignItems: 'center',
-    top: 40,
     paddingBottom: 20,
+    paddingTop: 100,
   },
   heading: {
     justifyContent: 'center',

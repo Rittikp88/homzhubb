@@ -40,15 +40,15 @@ const StartYourInvestment: FC = () => {
           isMobile && styles.upperImageMobile,
         ]}
       >
-        <Image source={require('@homzhub/common/src/assets/images/family.svg')} style={upperImageStyles} />
+        <Image source={require('@homzhub/common/src/assets/images/family.png')} style={upperImageStyles} />
       </View>
 
       <View style={[styles.banner, styles.lowerImage]}>
         <Image
           source={
             !isMobile
-              ? require('@homzhub/common/src/assets/images/propertiesBanner.svg')
-              : require('@homzhub/common/src/assets/images/propertiesBannerMobile.svg')
+              ? require('@homzhub/common/src/assets/images/propertiesBanner.jpg')
+              : require('@homzhub/common/src/assets/images/propertiesBannerMobile.jpg')
           }
           style={bannerStyles}
         />
@@ -60,6 +60,9 @@ const StartYourInvestment: FC = () => {
         </Typography>
         <Typography variant="text" size="small" style={[styles.centerText, styles.subHeaderText]}>
           {t('landing:startInvestmentSubText')}
+        </Typography>
+        <Typography variant="text" size="small" style={[styles.centerText, styles.subHeaderText]}>
+          {t('landing:startInvestmentSubTextAuthor')}
         </Typography>
       </View>
     </View>

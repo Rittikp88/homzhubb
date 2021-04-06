@@ -993,7 +993,8 @@
     "youtubeDescription": "Learn how Homzhub helps non-resident home owners lease, manage, buy and sell their properties from wherever they are.",
     "freeForYou": "Homzhub App completely free for you",
     "startYourInvestment": "Start your Investment",
-    "startInvestmentSubText": "Change this to given text in en.json",
+    "startInvestmentSubText": "The best investment on earth is earth.",
+    "startInvestmentSubTextAuthor": "- Louis Glickman",
     "homzhubServicesHeader": "Homzhub services for you!",
     "homzhubServicesDescription": "End-to-end property management services so you live a stress-free life",
     "downloadApp": "Download App",
@@ -1087,11 +1088,8 @@
     "maxProof": "Max 10 proofs are allowed"
   },
   "microSite": {
-    "downloadApp": "DOWNLOAD HOMZHUB APP",
-    "signUpAndPost": "SIGN UP & POST YOUR PROPERTY",
-    "verifyDocuments": "VERIFY YOUR DOCUMENTS",
-    "manageProperty": "MANAGE PROPERTY HASSLE FREE",
-    "homzhubTagLine": "Homzhub - one app for all your real estate needs!",
+    "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",
+    "homzhubTagLine": "One app for all your real estate needs!",
     "freeDownload": "Hassle-free property management on our digital platform from anywhere, anytime. Download our app and start managing your properties for free.",
     "PuneNagpurOwners": "For owners with properties in Pune and Nagpur, we offer end-to-end property management services at a premium.",
     "pune": "PUNE",

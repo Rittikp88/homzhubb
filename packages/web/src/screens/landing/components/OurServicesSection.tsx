@@ -14,14 +14,19 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import StoreButton, { imageType } from '@homzhub/web/src/components/molecules/MobileStoreButton';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const OurServicesSection: FC = () => {
+interface IProps {
+  scrollRef?: any;
+}
+
+const OurServicesSection: FC<IProps> = (props: IProps) => {
+  const { scrollRef } = props;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isDesktop = useUp(deviceBreakpoint.TABLET);
   const socialMediaLinks: imageType[] = ['instagram', 'twitter', 'youtube', 'linkedin', 'facebook'];
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} ref={scrollRef}>
       <View style={[styles.content, isMobile && styles.contentMobile]}>
         <View style={{ justifyContent: 'center' }}>
           <Typography

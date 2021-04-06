@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
   carouselContainer: {
     width: '80%',
     margin: 'auto',
-    flexDirection: 'column-reverse',
     paddingVertical: 100,
   },
   carouselControlButtons: {
