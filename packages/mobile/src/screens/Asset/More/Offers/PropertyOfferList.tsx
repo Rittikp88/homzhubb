@@ -23,6 +23,7 @@ import ScrollableDropdownList, {
   IDropdownData,
   ISelectedValue,
 } from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
@@ -31,6 +32,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 import { MadeSort, offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 
 export enum OfferType {
   OFFER_RECEIVED = 'Offer Received',
@@ -43,6 +45,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   setCurrentOfferPayload: (payload: ICurrentOffer) => void;
+  setFilter: (payload: IFilter) => void;
 }
 
 interface IScreenState {
@@ -397,13 +400,15 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   };
 
   private navigateToDetail = (payload: ICurrentOffer | null, assetId: number): void => {
-    const { t, navigation, setCurrentOfferPayload } = this.props;
+    const { t, navigation, setCurrentOfferPayload, setFilter } = this.props;
     const { offerType } = this.state;
     const isValidListing = payload && payload.listingId > 0;
     if (!isValidListing) {
       AlertHelper.error({ message: t('property:listingNotValid') });
       return;
     }
+    // Todo (Shikha) : Handle filter change here
+    setFilter({ asset_transaction_type: payload?.type === ListingType.LEASE_LISTING ? 0 : 1 });
     if (offerType === OfferType.OFFER_MADE) {
       // @ts-ignore
       navigation.navigate(ScreensKeys.BottomTabs, {
@@ -435,9 +440,11 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentOfferPayload } = OfferActions;
+  const { setFilter } = SearchActions;
   return bindActionCreators(
     {
       setCurrentOfferPayload,
+      setFilter,
     },
     dispatch
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
@@ -8,6 +8,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -26,6 +27,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
   const offer = leaseNegotiation || saleNegotiation;
 
   const { navigate } = useNavigation();
+  const dispatch = useDispatch();
   const compareData = useSelector(OfferSelectors.getOfferCompareData);
 
   const handleActions = (action: OfferAction): void => {
@@ -35,6 +37,13 @@ const OfferMade = (props: IProps): React.ReactElement => {
         break;
       case OfferAction.REJECT:
         navigate(ScreensKeys.RejectOffer);
+        break;
+      case OfferAction.COUNTER:
+        if (offer) {
+          dispatch(OfferActions.getListingDetailSuccess(propertyOffer));
+          dispatch(OfferActions.setCurrentOffer(offer));
+          navigate(ScreensKeys.SubmitOffer);
+        }
         break;
       default:
         FunctionUtils.noop();

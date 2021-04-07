@@ -70,6 +70,11 @@ export const offerReducer = (
         ...state,
         ['compareData']: action.payload as IOfferCompare,
       };
+    case OfferActionTypes.CLEAR_CURRENT_OFFER:
+      return {
+        ...state,
+        ['currentOffer']: null,
+      };
     case OfferActionTypes.CLEAR_STATE:
       return initialOfferState;
     default:

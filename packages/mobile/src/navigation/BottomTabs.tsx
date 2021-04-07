@@ -71,6 +71,7 @@ import SubmitOfferForm from '@homzhub/mobile/src/screens/Asset/More/Offers/Submi
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
+import ProspectProfile from '@homzhub/mobile/src/screens/Asset/More/Offers/ProspectProfile';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
@@ -79,6 +80,7 @@ import {
   IGetMessageParam,
   IChatScreen,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -104,6 +106,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
   [ScreensKeys.ManageTenantScreen]: IManageTenantProps;
   [ScreensKeys.UpdateLeaseScreen]: IEditLeaseProps;
+  [ScreensKeys.SubmitOffer]: undefined;
   [ScreensKeys.CreateLease]: undefined;
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
@@ -145,6 +148,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
   [ScreensKeys.SubmitOffer]: undefined;
+  [ScreensKeys.ProspectProfile]: IProspectProfile;
   [ScreensKeys.CreateLease]: undefined;
 };
 
@@ -184,6 +188,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
       <PortfolioNavigator.Screen name={ScreensKeys.ManageTenantScreen} component={ManageTenantScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.UpdateLeaseScreen} component={UpdateLeaseTerm} />
+      <PortfolioNavigator.Screen name={ScreensKeys.SubmitOffer} component={SubmitOfferForm} />
       <PortfolioNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
       <PortfolioNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
       <PortfolioNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
@@ -243,6 +248,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubmitOffer} component={SubmitOfferForm} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ProspectProfile} component={ProspectProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
     </MoreStackNavigator.Navigator>
   );

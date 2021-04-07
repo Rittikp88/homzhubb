@@ -264,8 +264,14 @@ class OfferCard extends Component<Props, IOwnState> {
             );
           })}
         </View>
-        {/* Todo (Praharsh) : Replace canCounter with true here to check the flow */}
-        {canCounter && <Button type="primary" title={t('common:counter')} onPress={onPressCounter} />}
+        {canCounter && (
+          <Button
+            type="primary"
+            title={t('common:counter')}
+            onPress={onPressCounter}
+            containerStyle={styles.counterButton}
+          />
+        )}
         {status === Status.REJECTED && (
           <Button
             type="primary"
@@ -486,6 +492,9 @@ const styles = StyleSheet.create({
   divider: {
     marginHorizontal: 16,
     borderColor: theme.colors.darkTint10,
+  },
+  counterButton: {
+    flex: 0,
   },
   leaseButton: {
     flex: 0,

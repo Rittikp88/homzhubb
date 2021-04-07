@@ -7,6 +7,8 @@ import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManageme
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import {
+  ICounterOffer,
+  ICounterParam,
   ICreateLeasePayload,
   INegotiationParam,
   INegotiationPayload,
@@ -32,6 +34,7 @@ const ENDPOINTS = {
     `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
   negotiationOffers: (type: NegotiationOfferType): string => `listings-negotiations/${type}/`,
   offerFilters: (type: OfferFilterType): string => `filters/${type}/`,
+  counter: (param: ICounterParam): string => `${param.negotiationType}/${param.negotiationId}/counter-negotiations/`,
   createLease: (negotiationId: number): string => `lease-negotiations/${negotiationId}/lease-transactions/`,
 };
 
@@ -90,6 +93,11 @@ class OffersRepository {
   public getNegotiations = async (param: INegotiationParam): Promise<Offer[]> => {
     const response = await this.apiClient.get(ENDPOINTS.negotiations(param));
     return ObjectMapper.deserializeArray(Offer, response);
+  };
+
+  public counterOffer = async (payload: ICounterOffer): Promise<IPostOfferLease | IPostOfferSell> => {
+    const { param, data } = payload;
+    return await this.apiClient.post(ENDPOINTS.counter(param), data);
   };
 
   public createLease = async (payload: ICreateLeasePayload): Promise<void> => {

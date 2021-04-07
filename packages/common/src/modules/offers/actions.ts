@@ -20,6 +20,7 @@ export const OfferActionTypes = {
     CURRENT_OFFER: `${actionTypePrefix}CURRENT_OFFER`,
     COMPARE_OFFER_DATA: `${actionTypePrefix}COMPARE_OFFER_DATA`,
   },
+  CLEAR_CURRENT_OFFER: `${actionTypePrefix}CLEAR_CURRENT_OFFER`,
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
 };
 
@@ -65,9 +66,13 @@ const setCompareDetail = (payload: IOfferCompare): IFluxStandardAction<IOfferCom
   payload,
 });
 
-const setCurrentOffer = (payload: Offer | null): IFluxStandardAction<Offer | null> => ({
+const setCurrentOffer = (payload: Offer): IFluxStandardAction<Offer> => ({
   type: OfferActionTypes.SET.CURRENT_OFFER,
   payload,
+});
+
+const clearCurrentOffer = (): IFluxStandardAction => ({
+  type: OfferActionTypes.CLEAR_CURRENT_OFFER,
 });
 
 export type OfferActionPayloadTypes = ICurrentOffer | IAsset | INegotiationParam | IOffer[] | IOfferCompare | Offer;
@@ -83,4 +88,5 @@ export const OfferActions = {
   getNegotiationsFailure,
   setCompareDetail,
   setCurrentOfferPayload,
+  clearCurrentOffer,
 };

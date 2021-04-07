@@ -212,6 +212,11 @@ class ProspectProfile extends Component<Props, IScreenState> {
   };
 
   public onSubmit = async (values: IOfferForm): Promise<void> => {
+    const {
+      route: {
+        params: { editData },
+      },
+    } = this.props;
     const { navigation } = this.props;
     const { userType } = this.state;
     this.setState({ loading: true });
@@ -226,6 +231,10 @@ class ProspectProfile extends Component<Props, IScreenState> {
     try {
       await OffersRepository.updateProspects(payload);
       this.setState({ loading: false });
+      if (editData) {
+        navigation.goBack();
+        return;
+      }
       navigation.navigate(ScreensKeys.SubmitOffer);
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
@@ -264,7 +273,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
       },
     } = this.props;
     if (editData) {
-      navigation.navigate(ScreensKeys.SubmitOffer);
+      navigation.goBack();
     } else {
       navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
     }

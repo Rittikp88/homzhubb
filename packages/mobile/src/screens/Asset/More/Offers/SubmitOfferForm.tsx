@@ -30,8 +30,8 @@ const SubmitOfferForm = (): React.ReactElement => {
   // HOOKS START
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const isCounterFlow = useSelector(OfferSelectors.getCurrentOffer);
   const asset = useSelector(OfferSelectors.getListingDetail);
+  const currentOffer = useSelector(OfferSelectors.getCurrentOffer);
   const isRentFlow = asset?.isLeaseListing;
   const [loading, setLoading] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
@@ -56,15 +56,7 @@ const SubmitOfferForm = (): React.ReactElement => {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       }
     };
-
-    const nullifyCurrentOffer = (): void => {
-      dispatch(OfferActions.setCurrentOffer(null));
-    };
-
     getOfferCount().then();
-
-    // To set currentOffer to null to handle case where user can go to AssetDescription screen (Offer->Profile->Search)
-    return (): void => nullifyCurrentOffer();
   }, []);
   // HOOKS END
 
@@ -81,8 +73,18 @@ const SubmitOfferForm = (): React.ReactElement => {
     setIsSuccess(true);
   };
 
+  const handleBack = (): void => {
+    dispatch(OfferActions.clearCurrentOffer());
+    goBack();
+  };
+
   const onCloseBottomSheet = (): void => {
     setIsSuccess(false);
+    if (currentOffer) {
+      handleBack();
+      return;
+    }
+    dispatch(OfferActions.clearCurrentOffer());
     navigate(ScreensKeys.Search, {
       screen: ScreensKeys.PropertyAssetDescription,
       initial: false,
@@ -91,7 +93,8 @@ const SubmitOfferForm = (): React.ReactElement => {
       },
     });
   };
-  const showRightItems = isRentFlow && !isCounterFlow;
+
+  const showRightItems = isRentFlow && !asset?.isAssetOwner;
   // HANDLERS END
 
   return (
@@ -101,9 +104,8 @@ const SubmitOfferForm = (): React.ReactElement => {
       isLoading={loading}
       headerProps={{
         type: 'secondary',
-        // Todo (Praharsh) : Get confirmation about the header text and Edit Profile button, in Counter Offer flow.
         title: t('offers:submitOffer'),
-        onIconPress: goBack,
+        onIconPress: handleBack,
         testID: 'submitOfferForm',
         ...(showRightItems && {
           textRight: t('moreProfile:editProfile'),
@@ -112,7 +114,6 @@ const SubmitOfferForm = (): React.ReactElement => {
       }}
       contentContainerStyle={styles.screen}
     >
-      {/* Todo : handle ts error  */}
       {/* @ts-ignore */}
       {isFocused && <OfferForm onPressTerms={handleTermsCondition} onSuccess={onSuccess} offersLeft={count} />}
       {isSuccess && (
@@ -123,7 +124,9 @@ const SubmitOfferForm = (): React.ReactElement => {
                 {t('offers:offerSucessHeader')}
               </Text>
               <Text type="small" textType="regular" style={styles.subHeader}>
-                {t('offers:offerSucessSubHeader')}
+                {t('offers:offerSucessSubHeader', {
+                  role: asset?.isAssetOwner ? t('common:prospectLowerCase') : t('common:ownerLowerCase'),
+                })}
               </Text>
               <Icon name={icons.doubleCheck} size={60} color={theme.colors.completed} />
             </View>

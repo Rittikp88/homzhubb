@@ -11,31 +11,26 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { IFormattedDetails } from '@homzhub/common/src/modules/offers/interfaces';
 
-interface IDetailsProps {
-  onClickCheckBox: () => void;
-  checkBox: boolean;
-  isRentFlow: boolean;
-}
-
 interface IProps {
   onClickCheckBox: () => void;
   checkBox: boolean;
+  isRentFlow?: boolean;
 }
 
 const OfferDetails = React.memo(
-  (props: IDetailsProps): React.ReactElement => {
-    const { onClickCheckBox, checkBox, isRentFlow } = props;
+  (props: IProps): React.ReactElement => {
+    const { onClickCheckBox, checkBox, isRentFlow = true } = props;
     const { t } = useTranslation();
     const previousOfferDetailsRent = useSelector(OfferSelectors.getPastProposalsRent);
     const previousOfferDetailsSale = useSelector(OfferSelectors.getPastProposalsSale);
-    const isCounterOfferFlow = Boolean(useSelector(OfferSelectors.getCurrentOffer));
+    const isCounterFlow = Boolean(useSelector(OfferSelectors.getCurrentOffer));
     const listing = useSelector(OfferSelectors.getListingDetail);
 
     const styles = getStyles();
 
     const formattedDetails = OfferUtils.getFormattedOfferDetails(
-      isRentFlow,
-      isCounterOfferFlow,
+      Boolean(isRentFlow),
+      isCounterFlow,
       listing,
       previousOfferDetailsRent,
       previousOfferDetailsSale
@@ -67,7 +62,7 @@ const OfferDetails = React.memo(
           keyExtractor={keyExtractor}
           contentContainerStyle={styles.flatList}
         />
-        {formattedDetails.length > 0 && (
+        {formattedDetails.length > 0 && !isCounterFlow && (
           <RNCheckbox
             selected={checkBox}
             label={t('offers:agreeToOwnerOffers')}

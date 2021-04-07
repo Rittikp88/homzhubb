@@ -24,12 +24,20 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import OfferDetailsCard from '@homzhub/common/src/components/molecules/OfferDetailsCard';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Offer } from '@homzhub/common/src/domain/models/Offer';
 import { initialRentFormValues, initialSaleFormValues, OfferFormKeys } from '@homzhub/common/src/mocks/Offers';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ISubmitOffer, ListingType, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  ICounterOffer,
+  ISubmitOffer,
+  ISubmitOfferLease,
+  ISubmitOfferSell,
+  ListingType,
+  NegotiationType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IExistingProposalsLease, IExistingProposalsSale } from '@homzhub/common/src/modules/offers/interfaces';
 
-// ToDo (Praharsh) : Resolve ts-ignores.
+// ToDo (Praharsh) : Resolve ts-ignores and see if we could optimise and shorten the code.
 interface IProps {
   onPressTerms: () => void;
   onSuccess: () => void;
@@ -42,7 +50,7 @@ interface IReduxProps {
   existingLeaseTerms: IExistingProposalsLease | null;
   existingSaleTerms: IExistingProposalsSale | null;
   tenantPreferences: ICheckboxGroupData[];
-  isAssetOwner: boolean;
+  currentOffer: Offer | null;
 }
 
 type Props = WithTranslation & IProps & IReduxProps;
@@ -90,10 +98,10 @@ class OfferForm extends React.Component<Props, IScreenState> {
     const { state, props, renderInfoBox, onMessageChange } = this;
     const { setFieldValue, values } = formProps;
     const { message } = state;
-    const { t, onPressTerms, isRentFlow, asset, offersLeft, isAssetOwner } = props;
+    const { t, onPressTerms, isRentFlow, asset, offersLeft } = props;
 
     const Preferences = (): React.ReactElement | null => {
-      if (isRentFlow && asset?.leaseTerm?.tenantPreferences.length && !isAssetOwner) {
+      if (isRentFlow && asset?.leaseTerm?.tenantPreferences.length && !asset?.isAssetOwner) {
         const onToggleCheckBox = (id: number, isSelected: boolean): void => {
           const prefs: ICheckboxGroupData[] = values[OfferFormKeys.tenantPreferences];
           const updatedPrefs = prefs.map((item) => (item.id === id ? { ...item, isSelected } : item));
@@ -141,7 +149,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private renderFormHeader = (): React.ReactElement => {
-    const { t, offersLeft } = this.props;
+    const { t, offersLeft, asset } = this.props;
     const offersText =
       offersLeft === 1 ? `${t('offers:oneOfferLeft')}` : `${t('offers:offersCount', { count: offersLeft })}`;
     return (
@@ -149,19 +157,21 @@ class OfferForm extends React.Component<Props, IScreenState> {
         <Text textType="semiBold" type="small">
           {t('offers:enterFormDetails')}
         </Text>
-        <Badge
-          title={offersText}
-          badgeColor={theme.colors.gray11}
-          titleStyle={styles.badgeText}
-          badgeStyle={styles.badge}
-          textType="semiBold"
-        />
+        {!asset?.isAssetOwner && (
+          <Badge
+            title={offersText}
+            badgeColor={theme.colors.gray11}
+            titleStyle={styles.badgeText}
+            badgeStyle={styles.badge}
+            textType="semiBold"
+          />
+        )}
       </View>
     );
   };
 
   private renderForm = (): React.ReactElement => {
-    const { t, isRentFlow, offersLeft } = this.props;
+    const { t, isRentFlow, offersLeft, currentOffer, asset } = this.props;
     const { formData } = this.state;
     const { renderFormHeader, renderBottomFields } = this;
     return (
@@ -238,9 +248,9 @@ class OfferForm extends React.Component<Props, IScreenState> {
                             textSize="regular"
                             placeHolder={t('common:selectDate')}
                             placeHolderStyle={styles.calendarText}
-                            minDate={values.availableFromDate}
+                            minDate={asset?.leaseTerm?.availableFromDate}
                             isMandatory
-                            allowPastDates={false}
+                            allowPastDates
                           />
 
                           <View key="min" style={styles.formSliderContainer}>
@@ -314,7 +324,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                     <FormButton
                       type="primary"
                       formProps={formProps}
-                      disabled={offersLeft === 0 || disabled}
+                      disabled={(!currentOffer && offersLeft === 0) || disabled || showLeaseDurationError}
                       // @ts-ignore
                       onPress={handleSubmit}
                       title={t('common:submit')}
@@ -330,8 +340,15 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private renderInfoBox = (countLeft: number): React.ReactElement => {
-    const { t } = this.props;
+    const { t, asset } = this.props;
     const getData = (): IInfoBox => {
+      if (asset?.isAssetOwner) {
+        return {
+          icon: icons.circularFilledInfo,
+          text: t('offers:ownerInfoText'),
+          color: theme.colors.darkTint4,
+        };
+      }
       if (countLeft === 2) {
         return {
           icon: icons.circularFilledInfo,
@@ -368,65 +385,23 @@ class OfferForm extends React.Component<Props, IScreenState> {
   // HANDLERS START
   private onSubmitForm = async (values: FormikValues): Promise<void> => {
     try {
-      const { isRentFlow, onSuccess } = this.props;
-      const { message } = this.state;
-      const { asset } = this.props;
-      if (asset) {
-        let payload: ISubmitOffer = {};
-        if (!isRentFlow && asset?.saleTerm?.id) {
-          const { expectedPrice, expectedBookingAmount } = values;
-          const salePayload = {
-            proposed_price: parseFloat(expectedPrice),
-            proposed_booking_amount: parseFloat(expectedBookingAmount),
-            ...(message.length && { comment: message }),
-          };
-          payload = {
-            param: {
-              listingType: ListingType.SALE_LISTING,
-              listingId: asset?.saleTerm?.id,
-              negotiationType: NegotiationType.SALE_NEGOTIATIONS,
-            },
-            data: salePayload,
-          };
-        }
-        if (isRentFlow && asset?.leaseTerm?.id) {
-          const {
-            expectedPrice,
-            securityDeposit,
-            minimumLeasePeriod,
-            maximumLeasePeriod,
-            annualRentIncrementPercentage,
-            availableFromDate,
-            tenantPreferences,
-          } = values;
-          const rentPayload = {
-            proposed_rent: parseFloat(expectedPrice),
-            proposed_security_deposit: parseFloat(securityDeposit),
-            proposed_rent_increment_percentage: annualRentIncrementPercentage.length
-              ? parseFloat(annualRentIncrementPercentage)
-              : null,
-            proposed_move_in_date: availableFromDate,
-            proposed_lease_period: maximumLeasePeriod,
-            proposed_min_lock_in_period: minimumLeasePeriod,
-            tenant_preferences: tenantPreferences
-              .filter((item: ICheckboxGroupData) => item.isSelected)
-              .map((item: ICheckboxGroupData) => item.id),
-            ...(message.length && { comment: message }),
-          };
-          payload = {
-            param: {
-              listingType: ListingType.LEASE_LISTING,
-              listingId: asset?.leaseTerm?.id,
-              negotiationType: NegotiationType.LEASE_NEGOTIATIONS,
-            },
-            data: rentPayload,
-          };
-        }
-        this.setState({ loading: true });
-        await OffersRepository.postOffer(payload);
-        this.setState({ loading: false });
-        onSuccess();
+      const { onSuccess, currentOffer } = this.props;
+      this.setState({ loading: true });
+
+      // Counter Offer
+      if (currentOffer) {
+        const counterOfferPayload = this.counterOfferHandler(values);
+        await OffersRepository.counterOffer(counterOfferPayload);
       }
+
+      // Create Offer
+      if (!currentOffer) {
+        const createOfferPayload = this.createOfferHandler(values);
+        await OffersRepository.postOffer(createOfferPayload);
+      }
+
+      this.setState({ loading: false });
+      onSuccess();
     } catch (e) {
       this.setState({ loading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -439,9 +414,104 @@ class OfferForm extends React.Component<Props, IScreenState> {
     });
   };
 
+  private getData = (values: FormikValues): ISubmitOfferLease | ISubmitOfferSell | null => {
+    const { isRentFlow } = this.props;
+    const { message } = this.state;
+
+    if (!isRentFlow) {
+      const { expectedPrice, expectedBookingAmount } = values;
+      const saleData = {
+        proposed_price: parseFloat(expectedPrice),
+        proposed_booking_amount: parseFloat(expectedBookingAmount),
+        ...(message.length && { comment: message }),
+      };
+      return saleData;
+    }
+
+    if (isRentFlow) {
+      const {
+        expectedPrice,
+        securityDeposit,
+        minimumLeasePeriod,
+        maximumLeasePeriod,
+        annualRentIncrementPercentage,
+        availableFromDate,
+        tenantPreferences,
+      } = values;
+      const leaseData = {
+        proposed_rent: parseFloat(expectedPrice),
+        proposed_security_deposit: parseFloat(securityDeposit),
+        proposed_rent_increment_percentage: annualRentIncrementPercentage.length
+          ? parseFloat(annualRentIncrementPercentage)
+          : null,
+        proposed_move_in_date: availableFromDate,
+        proposed_lease_period: maximumLeasePeriod,
+        proposed_min_lock_in_period: minimumLeasePeriod,
+        tenant_preferences: tenantPreferences
+          .filter((item: ICheckboxGroupData) => item.isSelected)
+          .map((item: ICheckboxGroupData) => item.id),
+        ...(message.length && { comment: message }),
+      };
+      return leaseData;
+    }
+    return null;
+  };
+
   private checkedFormValues = (): IExistingProposalsSale | IExistingProposalsLease | null => {
     const { isRentFlow, existingLeaseTerms, existingSaleTerms } = this.props;
     return isRentFlow ? existingLeaseTerms : existingSaleTerms;
+  };
+
+  private counterOfferHandler = (values: FormikValues): ICounterOffer => {
+    const { isRentFlow, currentOffer } = this.props;
+    let payload;
+    if (!isRentFlow && currentOffer?.id) {
+      payload = {
+        param: {
+          negotiationId: currentOffer.id,
+          negotiationType: NegotiationType.SALE_NEGOTIATIONS,
+        },
+        data: this.getData(values) as ISubmitOfferSell,
+      };
+    }
+
+    if (isRentFlow && currentOffer?.id) {
+      payload = {
+        param: {
+          negotiationId: currentOffer.id,
+          negotiationType: NegotiationType.LEASE_NEGOTIATIONS,
+        },
+        data: this.getData(values) as ISubmitOfferLease,
+      };
+    }
+    return payload as ICounterOffer;
+  };
+
+  private createOfferHandler = (values: FormikValues): ISubmitOffer => {
+    const { isRentFlow, asset } = this.props;
+    let payload;
+    if (!isRentFlow && asset?.saleTerm?.id) {
+      payload = {
+        param: {
+          listingType: ListingType.SALE_LISTING,
+          listingId: asset?.saleTerm?.id,
+          negotiationType: NegotiationType.SALE_NEGOTIATIONS,
+        },
+        data: this.getData(values) as ISubmitOfferSell,
+      };
+    }
+
+    if (isRentFlow && asset?.leaseTerm?.id) {
+      payload = {
+        param: {
+          listingType: ListingType.LEASE_LISTING,
+          listingId: asset?.leaseTerm?.id,
+          negotiationType: NegotiationType.LEASE_NEGOTIATIONS,
+        },
+        data: this.getData(values) as ISubmitOfferLease,
+      };
+    }
+    return payload as ISubmitOffer;
   };
 
   private initialValues = (): IExistingProposalsLease | IExistingProposalsSale | null => {
@@ -504,7 +574,7 @@ const mapStateToProps = (state: IState): IReduxProps => ({
   existingLeaseTerms: OfferSelectors.getPastProposalsRent(state),
   existingSaleTerms: OfferSelectors.getPastProposalsSale(state),
   tenantPreferences: OfferSelectors.getFormattedTenantPreferences(state, false),
-  isAssetOwner: Boolean(OfferSelectors.getCurrentOffer(state)?.isAssetOwner),
+  currentOffer: OfferSelectors.getCurrentOffer(state),
 });
 
 export default connect(mapStateToProps, null)(withTranslation()(OfferForm));

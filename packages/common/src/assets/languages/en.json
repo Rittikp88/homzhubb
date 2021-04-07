@@ -249,7 +249,9 @@
     "answerFaster": "The best way to get answer faster.",
     "faqSearchPlaceholder": "Ask a question...",
     "questionSymbol": "Q.",
-    "Complete": "Complete"
+    "Complete": "Complete",
+    "ownerLowerCase": "owner",
+    "prospectLowerCase": "prospect"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1127,6 +1129,7 @@
     "textWithTwoOffersLeft": "When you submit this proposal, you will have 1 offer remaining.",
     "textWithOneOfferLeft": "When you submit this proposal, you'll have 0 offer remaining. You won’t be able to make any new offers.",
     "textWithZeroOffersLeft": "You have no offers remaining, cancel previous offer to make a new offer.",
+    "ownerInfoText": "When you submit this offer, the prospect can directly accept it without requiring your confirmation.",
     "termsFirstPart": "I understand and acknowledge that Homzhub's ",
     "termsLink": "data privacy policy ",
     "termsRestPart": "will overwrite the existing registration that I have made (or intending to make) with the relevant authorities. I hereby consent to be contacted by Homzhub Pte Ltd and its subsidiaries.",
@@ -1149,7 +1152,7 @@
     "keepInMind": "Things to keep in mind:",
     "aboutToRent": "You are about to rent out your property.",
     "offerSucessHeader": "You have made your offer!",
-    "offerSucessSubHeader": "We will notify you when the owner replies",
+    "offerSucessSubHeader": "We will notify you when the {{role}} replies",
     "offerRejected": "Offer Rejected",
     "offerAccepted": "Offer Accepted",
     "cancelOffer": "Cancel Offer",

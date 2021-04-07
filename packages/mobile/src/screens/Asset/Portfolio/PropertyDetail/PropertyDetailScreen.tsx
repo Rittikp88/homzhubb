@@ -738,6 +738,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case OfferAction.REJECT:
         navigation.navigate(ScreensKeys.RejectOffer);
         break;
+      case OfferAction.COUNTER:
+        navigation.navigate(ScreensKeys.SubmitOffer);
+        break;
       default:
         FunctionUtils.noop();
     }

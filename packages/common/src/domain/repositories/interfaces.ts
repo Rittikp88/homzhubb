@@ -933,6 +933,16 @@ export interface ISubmitOffer {
   data: ISubmitOfferLease | ISubmitOfferSell;
 }
 
+export interface ICounterParam {
+  negotiationId: number;
+  negotiationType: NegotiationType;
+}
+
+export interface ICounterOffer {
+  param: ICounterParam;
+  data: ISubmitOfferLease | ISubmitOfferSell;
+}
+
 export interface IOfferManagementParam {
   sale_listing_id?: number;
   lease_listing_id?: number;
