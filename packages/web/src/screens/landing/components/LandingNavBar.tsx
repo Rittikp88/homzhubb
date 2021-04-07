@@ -141,6 +141,14 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
   const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef } = props;
   const [isSelected, setIsSelected] = useState(0);
   const [scrollLength, setScrollLength] = useState(0);
+  const history = useHistory();
+  const {
+    location: { pathname },
+  } = history;
+  const { publicRoutes } = RouteNames;
+  const { APP_BASE } = publicRoutes;
+  const isMenuVisible = compareUrlsWithPathname([APP_BASE], pathname);
+
   // const history = useHistory(); TODO: Lakshit: Remove once Landing Page is Updated.
   // To scroll to the appropriate section when clicked.
   useEffect(() => {
@@ -189,7 +197,9 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
       disabled: isReleaseMode,
     },
   ];
-  const menuItems = isLaptop ? navItems : [...navItems, ...mobileItems, ...login];
+
+  let menuItems = isLaptop ? navItems : [...navItems, ...mobileItems, ...login];
+  if (!isMenuVisible) menuItems = [...mobileItems, ...login];
 
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
@@ -214,10 +224,14 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
         });
       }
     }
-    // TODO: uncomment when links have respective component
-    // if (menuItems[index].url !== RouteNames.publicRoutes.APP_BASE) {
-    //   NavigationUtils.navigate(history, { path: menuItems[index].url });
-    // }
+    if (menuItems[index].url !== RouteNames.publicRoutes.APP_BASE) {
+      NavigationUtils.navigate(history, { path: menuItems[index].url });
+      setTimeout(() => {
+        if (PlatformUtils.isWeb()) {
+          window.scrollTo(0, 0);
+        }
+      }, 100);
+    }
   };
   return (
     <>

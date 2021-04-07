@@ -115,8 +115,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
   },
   heading: {
-    paddingBottom: '5%',
-
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -134,7 +132,6 @@ const styles = StyleSheet.create({
   overview: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 72,
   },
   overviewMobile: {
     flexDirection: 'column',
@@ -150,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: '20%',
+    paddingBottom: '10%',
     top: 24,
   },
   citiesMobile: {

@@ -81,8 +81,8 @@ export const ServicePlansData = [
   },
   {
     id: 8,
-    name: 'Registering Agreement',
-    label: 'Registering Agreement',
+    name: 'Agreement Registration',
+    label: 'Agreement Registration',
     description: 'Sign the agreement at your doorstep',
     display_order: 9,
     attachment: {

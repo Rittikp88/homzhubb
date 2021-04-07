@@ -84,14 +84,6 @@ const Testimonials: FC<IProps> = (props: IProps) => {
           style={backgroundImageStyle}
         />
       </View>
-      <Typography
-        variant={isMobile ? 'label' : 'text'}
-        size={isMobile ? 'large' : 'small'}
-        fontWeight="semiBold"
-        style={[styles.centerText, styles.headerText, styles.testimonialsHeader]}
-      >
-        {t('landing:testimonials')}
-      </Typography>
       <View style={styles.videosCarouselContainer}>
         <Typography
           variant={isMobile ? 'text' : 'title'}
