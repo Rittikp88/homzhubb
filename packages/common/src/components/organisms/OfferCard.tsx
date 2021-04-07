@@ -25,6 +25,7 @@ interface IProps {
   asset?: Asset;
   isFromAccept?: boolean;
   onPressAction?: (action: OfferAction) => void;
+  onCreateLease?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -33,6 +34,9 @@ interface IOwnState {
   isReasonSheetVisible: boolean;
   isProfileSheetVisible: boolean;
 }
+
+// TODO: (Shikha) - remove after BE changes
+const isLeaseCreated = true;
 
 type Props = IProps & WithTranslation;
 
@@ -212,6 +216,7 @@ class OfferCard extends Component<Props, IOwnState> {
       t,
       offer: { status, actions, canCounter },
       onPressAction,
+      onCreateLease,
     } = this.props;
     const buttonData = OfferUtils.getButtonStatus(status);
     const onPressCounter = (): void | undefined => (onPressAction ? onPressAction(OfferAction.COUNTER) : undefined);
@@ -268,6 +273,15 @@ class OfferCard extends Component<Props, IOwnState> {
             containerStyle={styles.rejectionButton}
             titleStyle={styles.rejectionTitle}
             onPress={this.onViewReason}
+          />
+        )}
+        {!isLeaseCreated && status === Status.ACCEPTED && (
+          <Button
+            type="primary"
+            title={t('createLease')}
+            containerStyle={styles.leaseButton}
+            titleStyle={styles.buttonTitle}
+            onPress={onCreateLease}
           />
         )}
       </>
@@ -472,5 +486,11 @@ const styles = StyleSheet.create({
   divider: {
     marginHorizontal: 16,
     borderColor: theme.colors.darkTint10,
+  },
+  leaseButton: {
+    flex: 0,
+  },
+  buttonTitle: {
+    color: theme.colors.white,
   },
 });

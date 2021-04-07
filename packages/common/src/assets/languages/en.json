@@ -1174,6 +1174,7 @@
     "offerRejectedSuccess": "Offer Rejected Successfully",
     "rejectionReason": "Reason for Rejection",
     "seeRejectReason": "See Reject Reason",
-    "noOfferFound": "No offer Found"
+    "noOfferFound": "No offer Found",
+    "createLease": "Create lease"
   }
 }

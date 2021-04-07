@@ -91,9 +91,10 @@ class AcceptOffer extends Component<Props, IScreenState> {
 
   public renderBottomSheet = (): React.ReactNode => {
     const { isBottomSheetVisible } = this.state;
-    const { t, offer } = this.props;
+    const { t, offer, listing } = this.props;
 
     const info = offer && offer.isAssetOwner ? acceptOffer.owner : acceptOffer.tenant;
+    const isLease = listing && listing.leaseTerm;
 
     return (
       <BottomSheet
@@ -128,7 +129,7 @@ class AcceptOffer extends Component<Props, IScreenState> {
           </View>
           <Button
             type="primary"
-            title={t('offers:acceptOffer')}
+            title={isLease ? t('offers:acceptAndLease') : t('offers:acceptOffer')}
             containerStyle={[styles.button, styles.marginVertical]}
             onPress={this.handleAcceptOffer}
           />
@@ -164,7 +165,7 @@ class AcceptOffer extends Component<Props, IScreenState> {
     try {
       await OffersRepository.updateNegotiation(payload);
       this.onCloseBottomSheet();
-      navigation.goBack();
+      navigation.navigate(ScreensKeys.CreateLease);
       AlertHelper.success({ message: t('offers:offerAcceptedSuccess') });
     } catch (e) {
       this.onCloseBottomSheet();

@@ -180,7 +180,40 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               "paddingVertical": 16,
             }
           }
-        />
+        >
+          <ForwardRef
+            onPress={[Function]}
+            style={
+              Array [
+                Object {
+                  "borderRadius": 5,
+                  "flexDirection": "row",
+                  "padding": 16,
+                },
+                Object {
+                  "backgroundColor": "rgba(0, 132, 248, 0.1)",
+                },
+              ]
+            }
+          >
+            <Icon
+              allowFontScaling={false}
+              color="#0084F8"
+              name="offers"
+              size={20}
+            />
+            <Text
+              style={
+                Object {
+                  "paddingLeft": 8,
+                }
+              }
+              type="small"
+            >
+              assetMore:makeAnOfferText
+            </Text>
+          </ForwardRef>
+        </View>
         <Divider />
         <View
           style={
@@ -220,7 +253,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              05 Apr 2021
+              08 Apr 2021
             </Label>
           </View>
           <View
@@ -635,6 +668,12 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
       />
     </View>
   </ParallaxScrollView>
+  <Memo(ContactPerson)
+    designation="Owner"
+    email="anuvrat.somnath@nineleaps.com"
+    onContactTypeClicked={[Function]}
+    phoneNumber="undefinedundefined"
+  />
   <Memo(SocialMediaShareComp)
     headerTitle="shareProperty"
     onCloseSharing={[Function]}

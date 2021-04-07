@@ -365,6 +365,17 @@ class DateUtils {
   public isPastDate = (date: string): boolean => {
     return moment(date).isBefore(moment(), 'day');
   };
+
+  public getFutureDateByUnit = (
+    date: string,
+    dateCount: number,
+    unit: unitOfTime.DurationConstructor,
+    format?: string
+  ): string => {
+    return moment(date)
+      .add(dateCount, unit)
+      .format(format || 'YYYY-MM-DD');
+  };
 }
 
 const dateUtils = new DateUtils();

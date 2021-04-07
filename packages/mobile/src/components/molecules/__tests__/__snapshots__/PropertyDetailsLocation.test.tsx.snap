@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Property Details Component should render PropertyDetails 1`] = `
+exports[`Property Details Component should render propertyDetails 1`] = `
 <View
   style={
     Object {

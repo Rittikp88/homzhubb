@@ -128,6 +128,7 @@ export enum ScreensKeys {
   OfferDetail = 'OfferDetail',
   AcceptOffer = 'AcceptOffer',
   RejectOffer = 'RejectOffer',
+  CreateLease = 'CreateLease',
 }
 
 export enum OtpNavTypes {

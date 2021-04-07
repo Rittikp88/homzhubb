@@ -745,19 +745,22 @@ export interface IAcceptInvitePayload {
 }
 export interface IUpdateLeaseTerm {
   transactionId: number;
-  data: {
-    rent: number;
-    security_deposit: number;
-    lease_period: number;
-    annual_rent_increment_percentage: number;
-    maintenance_paid_by: PaidByTypes;
-    utility_paid_by: PaidByTypes;
-    lease_start_date: string;
-    tentative_end_date: string;
-    currency: string;
-    minimum_lease_period: number;
-    maintenance_amount: number | null;
-  };
+  data: ILeaseTermData;
+}
+
+export interface ILeaseTermData {
+  rent: number;
+  security_deposit: number;
+  lease_period: number;
+  annual_rent_increment_percentage: number;
+  maintenance_paid_by: PaidByTypes;
+  utility_paid_by: PaidByTypes;
+  lease_start_date: string;
+  tentative_end_date: string;
+  currency: string;
+  minimum_lease_period: number;
+  maintenance_amount: number | null;
+  lease_listing_id?: number;
 }
 
 export interface IChatScreen {
@@ -934,6 +937,12 @@ export interface IOfferManagementParam {
   sale_listing_id?: number;
   lease_listing_id?: number;
 }
+
+export interface ICreateLeasePayload {
+  negotiationId: number;
+  body: ILeaseTermData;
+}
+
 // OFFERS END
 
 export interface IFAQCategory {

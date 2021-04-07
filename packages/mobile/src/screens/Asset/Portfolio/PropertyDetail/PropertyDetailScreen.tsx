@@ -355,7 +355,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.OFFERS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 2)}>
-            <OfferView onPressAction={this.handleOfferActions} />
+            <OfferView onPressAction={this.handleOfferActions} onCreateLease={this.handleCreateLease} />
           </View>
         );
       case Tabs.REVIEWS:
@@ -741,6 +741,11 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       default:
         FunctionUtils.noop();
     }
+  };
+
+  private handleCreateLease = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.CreateLease);
   };
 
   private toggleScroll = (scrollEnabled: boolean): void => {

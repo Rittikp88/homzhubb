@@ -1,9 +1,11 @@
+// TODO: (Shikha) - Refactor code and add types
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
+import { StackActions } from '@react-navigation/native';
 import Focused from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.svg';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -57,6 +59,7 @@ import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo'
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import AcceptOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/AcceptOffer';
+import CreateLease from '@homzhub/mobile/src/screens/Asset/More/Offers/CreateLease';
 import OfferDetail from '@homzhub/mobile/src/screens/Asset/More/Offers/OfferDetail';
 import RejectOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/RejectOffer';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
@@ -101,6 +104,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.UpdatePropertyScreen]: IUpdatePropertyProps;
   [ScreensKeys.ManageTenantScreen]: IManageTenantProps;
   [ScreensKeys.UpdateLeaseScreen]: IEditLeaseProps;
+  [ScreensKeys.CreateLease]: undefined;
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
 };
@@ -141,6 +145,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
   [ScreensKeys.SubmitOffer]: undefined;
+  [ScreensKeys.CreateLease]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -179,6 +184,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
       <PortfolioNavigator.Screen name={ScreensKeys.ManageTenantScreen} component={ManageTenantScreen} />
       <PortfolioNavigator.Screen name={ScreensKeys.UpdateLeaseScreen} component={UpdateLeaseTerm} />
+      <PortfolioNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
       <PortfolioNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
       <PortfolioNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
     </PortfolioNavigator.Navigator>
@@ -237,6 +243,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubmitOffer} component={SubmitOfferForm} />
+      <MoreStackNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -299,13 +306,17 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.Portfolio}
         component={isLoggedIn ? PortfolioStack : DefaultLogin}
-        listeners={{
+        listeners={({ navigation }): any => ({
           blur: (): void => {
             dispatch(PortfolioActions.setInitialState());
             dispatch(CommonActions.clearMessages());
             dispatch(RecordAssetActions.clearAssetData());
           },
-        }}
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+          tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
+        })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetPortfolio:portfolio'),
@@ -321,6 +332,12 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.Financials}
         component={isLoggedIn ? FinancialsStack : DefaultLogin}
+        listeners={({ navigation }): any => ({
+          tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={{
           tabBarLabel: t('assetFinancial:financial'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
@@ -335,6 +352,12 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.Dashboard}
         component={isLoggedIn ? DashboardStack : DefaultLogin}
+        listeners={({ navigation }): any => ({
+          tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetDashboard:dashboard'),
@@ -346,6 +369,12 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.Search}
         component={SearchStack}
+        listeners={({ navigation }): any => ({
+          tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('common:search'),
@@ -361,14 +390,16 @@ export const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreensKeys.More}
         component={isLoggedIn ? MoreStack : DefaultLogin}
-        listeners={{
+        listeners={({ navigation }): any => ({
           blur: (): void => {
             dispatch(CommonActions.clearMessages());
           },
-          focus: (): void => {
+          focus: (e: any): void => {
             dispatch(OfferActions.clearState());
+            resetStackOnTabPress(e, navigation);
           },
-        }}
+          tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
+        })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetMore:more'),
@@ -383,4 +414,27 @@ export const BottomTabs = (): React.ReactElement => {
       />
     </BottomTabNavigator.Navigator>
   );
+};
+
+// @ts-ignore
+const resetStackOnTabPress = (e, navigation): void => {
+  const state = navigation.dangerouslyGetState();
+
+  if (state) {
+    // Grab all the tabs that are NOT the one we just pressed
+    const nonTargetTabs = state.routes.filter((r: any) => r.key !== e.target);
+
+    nonTargetTabs.forEach((tab: any) => {
+      // Find the tab we want to reset and grab the key of the nested stack
+      const stackKey = tab?.state?.key;
+
+      if (stackKey) {
+        // Pass the stack key that we want to reset and use popToTop to reset it
+        navigation.dispatch({
+          ...StackActions.popToTop(),
+          target: stackKey,
+        });
+      }
+    });
+  }
 };

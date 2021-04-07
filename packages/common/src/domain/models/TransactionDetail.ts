@@ -1,8 +1,33 @@
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { PaidByTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
+
+export interface ITransactionDetail {
+  id?: number;
+  lease_start_date: string;
+  lease_end_date?: string;
+  total_lease_period: string;
+  remaining_lease_period?: string;
+  currency: Currency;
+  rent: number;
+  security_deposit: number;
+  lease_period: number;
+  minimum_lease_period: number;
+  annual_rent_increment_percentage: number | null;
+  status?: string;
+  tentative_end_date?: string;
+  agreement_date?: string;
+  lease_listing?: number | null;
+  lease_unit?: number;
+  is_terminated?: boolean;
+  maintenance_paid_by: PaidByTypes;
+  utility_paid_by: PaidByTypes;
+  maintenance_amount: number;
+  maintenance_payment_schedule: ScheduleTypes;
+  maintenance_unit?: IUnit;
+}
 
 @JsonObject('TransactionDetail')
 export class TransactionDetail {
@@ -12,13 +37,13 @@ export class TransactionDetail {
   @JsonProperty('lease_start_date', String)
   private _leaseStartDate = '';
 
-  @JsonProperty('lease_end_date', String)
+  @JsonProperty('lease_end_date', String, true)
   private _leaseEndDate = '';
 
   @JsonProperty('total_lease_period', String)
   private _totalLeasePeriod = '';
 
-  @JsonProperty('remaining_lease_period', String)
+  @JsonProperty('remaining_lease_period', String, true)
   private _remainingLeasePeriod = '';
 
   @JsonProperty('currency', Currency)
@@ -30,7 +55,7 @@ export class TransactionDetail {
   @JsonProperty('security_deposit', Number)
   private _securityDeposit = 0;
 
-  @JsonProperty('lease_period', Number)
+  @JsonProperty('lease_period', Number, true)
   private _leasePeriod = 0;
 
   @JsonProperty('minimum_lease_period', Number)
@@ -39,22 +64,22 @@ export class TransactionDetail {
   @JsonProperty('annual_rent_increment_percentage', Number, true)
   private _annualRentIncrementPercentage = null;
 
-  @JsonProperty('status', String)
+  @JsonProperty('status', String, true)
   private _status = '';
 
-  @JsonProperty('tentative_end_date', String)
+  @JsonProperty('tentative_end_date', String, true)
   private _tentativeEndDate = '';
 
-  @JsonProperty('agreement_date', String)
+  @JsonProperty('agreement_date', String, true)
   private _agreementDate = '';
 
   @JsonProperty('lease_listing', Number, true)
   private _leaseListing = null;
 
-  @JsonProperty('lease_unit', Number)
+  @JsonProperty('lease_unit', Number, true)
   private _leaseUnit = 0;
 
-  @JsonProperty('is_terminated', Boolean)
+  @JsonProperty('is_terminated', Boolean, true)
   private _isTerminated = false;
 
   @JsonProperty('maintenance_paid_by', String)
@@ -66,10 +91,10 @@ export class TransactionDetail {
   @JsonProperty('maintenance_amount', Number, true)
   private _maintenanceAmount = null;
 
-  @JsonProperty('maintenance_payment_schedule', String)
+  @JsonProperty('maintenance_payment_schedule', String, true)
   private _maintenancePaymentSchedule = '';
 
-  @JsonProperty('maintenance_unit', Unit)
+  @JsonProperty('maintenance_unit', Unit, true)
   private _maintenanceUnit: Unit = new Unit();
 
   get id(): number {

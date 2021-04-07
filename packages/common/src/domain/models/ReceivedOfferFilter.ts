@@ -6,14 +6,17 @@ import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDe
 
 @JsonObject('ReceivedOfferFilter')
 export class ReceivedOfferFilter {
-  @JsonProperty('assets', [VisitAssetDetail])
+  @JsonProperty('assets', [VisitAssetDetail], true)
   private _assets = [];
 
-  @JsonProperty('listing', [Unit])
+  @JsonProperty('listing', [Unit], true)
   private _listing = [];
 
-  @JsonProperty('country', [Country])
+  @JsonProperty('country', [Country], true)
   private _country = [];
+
+  @JsonProperty('filter_by', [Unit], true)
+  private _filterBy = [];
 
   get assets(): VisitAssetDetail[] {
     return this._assets;
@@ -21,6 +24,10 @@ export class ReceivedOfferFilter {
 
   get listing(): Unit[] {
     return this._listing;
+  }
+
+  get filterBy(): Unit[] {
+    return this._filterBy;
   }
 
   get country(): Country[] {
@@ -50,6 +57,15 @@ export class ReceivedOfferFilter {
       (country: Country): PickerItemProps => {
         const { name, id } = country;
         return { label: name, value: id };
+      }
+    );
+  }
+
+  get filterDropdownData(): PickerItemProps[] {
+    return this.filterBy.map(
+      (filterData: Unit): PickerItemProps => {
+        const { name, label } = filterData;
+        return { label, value: name };
       }
     );
   }

@@ -49,6 +49,10 @@ const OfferDetail = (): React.ReactElement => {
     }
   };
 
+  const handleCreateLease = (): void => {
+    navigate(ScreensKeys.CreateLease);
+  };
+
   return (
     <UserScreen
       title={t('offers')}
@@ -59,7 +63,7 @@ const OfferDetail = (): React.ReactElement => {
       loading={!listingDetail}
     >
       {listingDetail && <PropertyOffers propertyOffer={listingDetail} isCardExpanded isDetailView />}
-      <OfferView onPressAction={handleActions} isDetailView />
+      <OfferView onPressAction={handleActions} isDetailView onCreateLease={handleCreateLease} />
     </UserScreen>
   );
 };

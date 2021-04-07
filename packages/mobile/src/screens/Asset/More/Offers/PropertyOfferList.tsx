@@ -26,7 +26,6 @@ import ScrollableDropdownList, {
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
 import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -166,15 +165,15 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
                 onIcon={this.onCloseOfferInfo}
               />
             )}
-            <ScrollableDropdownList
-              data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
-              isScrollable={isReceivedOffer}
-              dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
-              onDropdown={this.onSelectFromDropdown}
-              containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
-            />
             {propertyListingData && propertyListingData.length > 0 ? (
               <>
+                <ScrollableDropdownList
+                  data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
+                  isScrollable={isReceivedOffer}
+                  dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
+                  onDropdown={this.onSelectFromDropdown}
+                  containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
+                />
                 {propertyListingData.map((property: Asset, index: number) => {
                   return this.renderPropertyOffer(property, index);
                 })}
@@ -268,9 +267,9 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     StorageService.set(StorageKeys.IS_OFFER_INFO_READ, true);
   };
 
-  private getReceivedDropdownData = (receivedOffers: ReceivedOfferFilter | Unit[]): IDropdownData[] => {
+  private getReceivedDropdownData = (receivedOffers: ReceivedOfferFilter): IDropdownData[] => {
     const { t } = this.props;
-    const { assetsDropdownData, countryDropdownData, listingDropdownData } = receivedOffers as ReceivedOfferFilter;
+    const { assetsDropdownData, countryDropdownData, listingDropdownData } = receivedOffers;
 
     return [
       {
@@ -284,17 +283,10 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     ];
   };
 
-  private getMadeDropdownData = (filters: ReceivedOfferFilter | Unit[]): IDropdownData[] => {
+  private getMadeDropdownData = (filters: ReceivedOfferFilter): IDropdownData[] => {
     const { t } = this.props;
     const { currencies } = this.state;
-    const data = filters as Unit[];
-
-    const offerFilter = data.map((item) => {
-      return {
-        label: item.label,
-        value: item.name,
-      };
-    });
+    const { filterDropdownData } = filters;
 
     const list = [
       {
@@ -303,7 +295,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
         selectedValue: MadeSort.NEWEST,
         placeholder: t('offers:sort'),
       },
-      { dropdownData: offerFilter, key: 'filter_by', selectedValue: '', placeholder: t('offers:filterBy') },
+      { dropdownData: filterDropdownData, key: 'filter_by', selectedValue: '', placeholder: t('offers:filterBy') },
     ];
 
     if (currencies.length > 1) {
