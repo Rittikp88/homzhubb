@@ -21,7 +21,7 @@ interface IProps {
 type LocationParams = { pathname: string };
 
 const AppLayout: FC<IProps> = (props: IProps) => {
-  const { location } = props;
+  const { location, history } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
   const { DASHBOARD, FINANCIALS, PORTFOLIO } = protectedRoutes;
@@ -32,7 +32,7 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   return (
     <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked }}>
       <View style={styles.container}>
-        <Navbar />
+        <Navbar history={history} location={location} />
         <NavigationInfo />
         <View>
           <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
