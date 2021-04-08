@@ -26,7 +26,7 @@ import ScrollableDropdownList, {
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
-import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
+import { OfferFilter } from '@homzhub/common/src/domain/models/OfferFilter';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -270,7 +270,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     StorageService.set(StorageKeys.IS_OFFER_INFO_READ, true);
   };
 
-  private getReceivedDropdownData = (receivedOffers: ReceivedOfferFilter): IDropdownData[] => {
+  private getReceivedDropdownData = (receivedOffers: OfferFilter): IDropdownData[] => {
     const { t } = this.props;
     const { assetsDropdownData, countryDropdownData, listingDropdownData } = receivedOffers;
 
@@ -286,7 +286,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     ];
   };
 
-  private getMadeDropdownData = (filters: ReceivedOfferFilter): IDropdownData[] => {
+  private getMadeDropdownData = (filters: OfferFilter): IDropdownData[] => {
     const { t } = this.props;
     const { currencies } = this.state;
     const { filterDropdownData } = filters;

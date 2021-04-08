@@ -4,8 +4,8 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 
-@JsonObject('ReceivedOfferFilter')
-export class ReceivedOfferFilter {
+@JsonObject('OfferFilter')
+export class OfferFilter {
   @JsonProperty('assets', [VisitAssetDetail], true)
   private _assets = [];
 

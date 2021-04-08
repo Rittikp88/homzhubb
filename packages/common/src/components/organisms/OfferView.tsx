@@ -17,14 +17,16 @@ import ScrollableDropdownList, {
 } from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
 import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
+import { OfferFilter } from '@homzhub/common/src/domain/models/OfferFilter';
 import {
   ICounterParam,
   INegotiationParam,
   ListingType,
   NegotiationType,
+  OfferFilterType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { offerFilterBy, OfferSort, offerSortBy } from '@homzhub/common/src/constants/Offers';
+import { OfferSort, offerSortBy } from '@homzhub/common/src/constants/Offers';
 
 interface IFilters {
   filter_by: string;
@@ -54,22 +56,13 @@ const OfferView = (props: IProps): React.ReactElement => {
 
   const [offers, setOffers] = useState<Offer[]>([]);
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
+  const [offerFilter, setOfferFilter] = useState<OfferFilter>();
   const [filters, setFilters] = useState<IFilters>({ filter_by: '', sort_by: OfferSort.NEWEST });
 
   useFocusEffect(
     useCallback(() => {
-      if (offerPayload) {
-        const payload: INegotiationParam = {
-          listingType: offerPayload.type,
-          listingId: offerPayload.listingId,
-          negotiationType:
-            offerPayload.type === ListingType.LEASE_LISTING
-              ? NegotiationType.LEASE_NEGOTIATIONS
-              : NegotiationType.SALE_NEGOTIATIONS,
-        };
-        dispatch(OfferActions.getNegotiations(payload));
-      }
-
+      getData();
+      getFilters().then();
       return (): void => {
         setFilters({ filter_by: '', sort_by: OfferSort.NEWEST });
       };
@@ -77,8 +70,37 @@ const OfferView = (props: IProps): React.ReactElement => {
   );
 
   useEffect(() => {
-    setOffers(negotiations);
+    handleCallback();
   }, [negotiations]);
+
+  const getData = (): void => {
+    if (offerPayload) {
+      const payload: INegotiationParam = {
+        listingType: offerPayload.type,
+        listingId: offerPayload.listingId,
+        negotiationType:
+          offerPayload.type === ListingType.LEASE_LISTING
+            ? NegotiationType.LEASE_NEGOTIATIONS
+            : NegotiationType.SALE_NEGOTIATIONS,
+      };
+      dispatch(
+        OfferActions.getNegotiations({ param: payload, filter_by: filters.filter_by, callback: handleCallback })
+      );
+    }
+  };
+
+  const handleCallback = (): void => {
+    setOffers(OfferUtils.getSortedOffer(filters.sort_by, negotiations));
+  };
+
+  const getFilters = async (): Promise<void> => {
+    try {
+      const detailFilter = await OffersRepository.getOfferFilters(OfferFilterType.DETAIL);
+      setOfferFilter(detailFilter);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
 
   const onSelectFromDropdown = (selectedValues: (ISelectedValue | undefined)[]): void => {
     const filtersObj = initialObj;
@@ -107,8 +129,7 @@ const OfferView = (props: IProps): React.ReactElement => {
 
   const handleFilter = (): void => {
     if (filters) {
-      const filteredOffer = OfferUtils.getFilteredOffer(filters.filter_by, negotiations);
-      setOffers(OfferUtils.getSortedOffer(filters.sort_by, filteredOffer));
+      getData();
     }
   };
 
@@ -123,6 +144,7 @@ const OfferView = (props: IProps): React.ReactElement => {
   };
 
   const getDropdownData = (): IDropdownData[] => {
+    if (!offerFilter) return [];
     return [
       {
         dropdownData: offerSortBy,
@@ -131,17 +153,13 @@ const OfferView = (props: IProps): React.ReactElement => {
         placeholder: t('sort'),
       },
       {
-        dropdownData: offerFilterBy,
+        dropdownData: offerFilter.filterDropdownData,
         key: 'filter_by',
         selectedValue: filters?.filter_by ?? '',
         placeholder: t('filterBy'),
       },
     ];
   };
-
-  if (!negotiations.length) {
-    return <EmptyState title={t('noOfferFound')} />;
-  }
 
   return (
     <>

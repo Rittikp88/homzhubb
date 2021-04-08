@@ -4,12 +4,13 @@ import { ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfi
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer } from '@homzhub/common/src/domain/models/Offer';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
-import { ReceivedOfferFilter } from '@homzhub/common/src/domain/models/ReceivedOfferFilter';
+import { OfferFilter } from '@homzhub/common/src/domain/models/OfferFilter';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import {
   ICounterOffer,
   ICounterParam,
   ICreateLeasePayload,
+  INegotiation,
   INegotiationParam,
   INegotiationPayload,
   IOfferManagementParam,
@@ -85,13 +86,14 @@ class OffersRepository {
     return ObjectMapper.deserialize(OfferManagement, response);
   };
 
-  public getOfferFilters = async (type: OfferFilterType): Promise<ReceivedOfferFilter> => {
+  public getOfferFilters = async (type: OfferFilterType): Promise<OfferFilter> => {
     const response = await this.apiClient.get(ENDPOINTS.offerFilters(type));
-    return ObjectMapper.deserialize(ReceivedOfferFilter, response);
+    return ObjectMapper.deserialize(OfferFilter, response);
   };
 
-  public getNegotiations = async (param: INegotiationParam): Promise<Offer[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.negotiations(param));
+  public getNegotiations = async (payload: INegotiation): Promise<Offer[]> => {
+    const { param, filter_by } = payload;
+    const response = await this.apiClient.get(ENDPOINTS.negotiations(param), filter_by && { filter_by });
     return ObjectMapper.deserializeArray(Offer, response);
   };
 

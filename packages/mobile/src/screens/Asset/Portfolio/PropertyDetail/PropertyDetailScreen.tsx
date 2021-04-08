@@ -331,6 +331,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     } = this.props;
     const {
       propertyData: { id, assetStatusInfo },
+      propertyData,
     } = this.state;
 
     switch (route.key) {
@@ -406,7 +407,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.DETAILS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 9)}>
-            <DetailTab />
+            <DetailTab propertyData={propertyData} />
           </View>
         );
       default:

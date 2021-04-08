@@ -97,6 +97,7 @@ export enum NegotiationOfferType {
 export enum OfferFilterType {
   CREATED = 'offers-created',
   RECEIVED = 'offers-received',
+  DETAIL = 'offers-detail',
 }
 
 export enum NegotiationAction {
@@ -904,6 +905,12 @@ export interface INegotiationParam {
   listingId: number;
   negotiationType: NegotiationType;
   negotiationId?: number;
+}
+
+export interface INegotiation {
+  param: INegotiationParam;
+  filter_by?: string;
+  callback?: (status: boolean) => void;
 }
 
 export interface INegotiationBody {

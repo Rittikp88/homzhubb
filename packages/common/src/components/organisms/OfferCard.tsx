@@ -409,6 +409,7 @@ const styles = StyleSheet.create({
   },
   infoButton: {
     flexDirection: 'row',
+    flex: 0,
     backgroundColor: theme.colors.moreSeparator,
   },
   infoTitle: {

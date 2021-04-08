@@ -2,7 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { INegotiationParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { INegotiation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentOffer, IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 
 const actionTypePrefix = 'Offers/';
@@ -42,7 +42,7 @@ const getListingDetailFailure = (): IFluxStandardAction => ({
   type: OfferActionTypes.GET.LISTING_DETAIL_FAILURE,
 });
 
-const getNegotiations = (payload: INegotiationParam): IFluxStandardAction<INegotiationParam> => ({
+const getNegotiations = (payload: INegotiation): IFluxStandardAction<INegotiation> => ({
   type: OfferActionTypes.GET.NEGOTIATIONS,
   payload,
 });
@@ -75,7 +75,7 @@ const clearCurrentOffer = (): IFluxStandardAction => ({
   type: OfferActionTypes.CLEAR_CURRENT_OFFER,
 });
 
-export type OfferActionPayloadTypes = ICurrentOffer | IAsset | INegotiationParam | IOffer[] | IOfferCompare | Offer;
+export type OfferActionPayloadTypes = ICurrentOffer | IAsset | INegotiation | IOffer[] | IOfferCompare | Offer;
 
 export const OfferActions = {
   clearState,

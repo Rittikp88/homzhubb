@@ -4,9 +4,18 @@ import { useSelector } from 'react-redux';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
-const DetailTab = (): React.ReactElement => {
-  const detail = useSelector(AssetSelectors.getAsset);
+interface IProps {
+  propertyData: Asset;
+}
+
+const DetailTab = ({ propertyData }: IProps): React.ReactElement => {
+  let detail = useSelector(AssetSelectors.getAsset);
+
+  if (!detail) {
+    detail = propertyData;
+  }
 
   return (
     <View style={styles.container}>

@@ -7,7 +7,7 @@ import { OffersRepository } from '@homzhub/common/src/domain/repositories/Offers
 import { OfferActions, OfferActionTypes } from '@homzhub/common/src/modules/offers/actions';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { INegotiationParam, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { INegotiation, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 
 export function* getListingDetail(action: IFluxStandardAction<ICurrentOffer>) {
@@ -46,13 +46,18 @@ export function* getListingDetail(action: IFluxStandardAction<ICurrentOffer>) {
   }
 }
 
-export function* getNegotiations(action: IFluxStandardAction<INegotiationParam>) {
+export function* getNegotiations(action: IFluxStandardAction<INegotiation>) {
   if (!action.payload) return;
-
   try {
     const response = yield call(OffersRepository.getNegotiations, action.payload);
     yield put(OfferActions.getNegotiationsSuccess(response));
+    if (action.payload.callback) {
+      action.payload.callback(true);
+    }
   } catch (e) {
+    if (action.payload.callback) {
+      action.payload.callback(false);
+    }
     yield put(OfferActions.getNegotiationsFailure());
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
   }
