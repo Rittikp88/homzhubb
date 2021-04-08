@@ -137,6 +137,17 @@ class OfferUtils {
             color: theme.colors.red,
           },
         };
+      case OfferAction.CANCEL:
+        return {
+          title: I18nService.t('offers:cancelOffer'),
+          onAction: (): void => (onAction ? onAction(OfferAction.CANCEL) : FunctionUtils.noop()),
+          container: {
+            backgroundColor: theme.colors.transparent,
+          },
+          textStyle: {
+            color: theme.colors.red,
+          },
+        };
       default:
         return {
           title: I18nService.t('offers:cancelOffer'),
@@ -168,8 +179,12 @@ class OfferUtils {
           },
         };
       case Status.REJECTED:
+      case Status.CANCELLED:
         return {
-          title: I18nService.t('offers:offerRejected'),
+          title:
+            status === Status.CANCELLED
+              ? I18nService.t('offers:offerCancelled')
+              : I18nService.t('offers:offerRejected'),
           icon: icons.circularCrossFilled,
           iconColor: theme.colors.error,
           container: {

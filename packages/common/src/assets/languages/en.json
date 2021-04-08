@@ -426,6 +426,7 @@
     "resaleTerms": "Resale Terms",
     "owner": "Owner",
     "tenant": "Tenant",
+    "prospect": "Prospect",
     "fullyFurnished": "Fully",
     "semiFurnished": "Semi",
     "none": "None",
@@ -1155,6 +1156,7 @@
     "offerSucessSubHeader": "We will notify you when the {{role}} replies",
     "offerRejected": "Offer Rejected",
     "offerAccepted": "Offer Accepted",
+    "offerCancelled": "Offer Cancelled",
     "cancelOffer": "Cancel Offer",
     "sort": "Sort by",
     "filterBy": "Filter by",
@@ -1171,13 +1173,20 @@
     "noOfferReceived": "No Offer Received",
     "noOfferMade": "No Offer Made",
     "offerRejectOn": "This offer was rejected on:",
+    "offerCancelledOn": "This offer was cancelled on:",
     "rejectReasonLabel": "Reject Reason:",
+    "cancelReasonLabel": "Cancellation Reason:",
     "additionalComment": "Additional Comments:",
     "offerAcceptedSuccess": "Offer Accepted Successfully",
     "offerRejectedSuccess": "Offer Rejected Successfully",
     "rejectionReason": "Reason for Rejection",
+    "reasonForCancellation": "Reason for Cancellation",
     "seeRejectReason": "See Reject Reason",
     "noOfferFound": "No offer Found",
-    "createLease": "Create lease"
+    "createLease": "Create lease",
+    "withdrawOffer": "Withdraw offer",
+    "cancellationReason": "Cancellation reason",
+    "offerCancellationSucess": "Offer Cancelled Successfully",
+    "seeCancelReason": "See Cancellation Reason"
   }
 }

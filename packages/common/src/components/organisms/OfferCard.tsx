@@ -51,6 +51,7 @@ class OfferCard extends Component<Props, IOwnState> {
   public render(): React.ReactElement {
     const { hasMore, isReasonSheetVisible } = this.state;
     const { t, offer, containerStyle, isDetailView = false, pastOffer } = this.props;
+    const isOfferCancelled = offer.status === Status.CANCELLED;
 
     return (
       <View style={[styles.container, containerStyle]}>
@@ -77,7 +78,7 @@ class OfferCard extends Component<Props, IOwnState> {
         <BottomSheet
           sheetHeight={450}
           visible={isReasonSheetVisible}
-          headerTitle={t('rejectionReason')}
+          headerTitle={t(isOfferCancelled ? 'reasonForCancellation' : 'rejectionReason')}
           onCloseSheet={this.onCloseReason}
         >
           {this.renderReasonView()}
@@ -246,25 +247,20 @@ class OfferCard extends Component<Props, IOwnState> {
               initialTextStyle: styles.titleStyle,
               onAction: onPressAction,
             });
-            // TODO: (Shikha) - Remove icon condition once cancel offer flow is ready
             return (
-              <>
-                {!!icon && (
-                  <Button
-                    key={index}
-                    type="primary"
-                    title={title}
-                    icon={icon}
-                    iconSize={20}
-                    textType="label"
-                    textSize="large"
-                    iconColor={iconColor}
-                    containerStyle={container}
-                    titleStyle={textStyle}
-                    onPress={onAction}
-                  />
-                )}
-              </>
+              <Button
+                key={index}
+                type="primary"
+                title={title}
+                icon={icon}
+                iconSize={20}
+                textType="label"
+                textSize="large"
+                iconColor={iconColor}
+                containerStyle={container}
+                titleStyle={textStyle}
+                onPress={onAction}
+              />
             );
           })}
         </View>
@@ -276,10 +272,10 @@ class OfferCard extends Component<Props, IOwnState> {
             containerStyle={styles.counterButton}
           />
         )}
-        {status === Status.REJECTED && (
+        {(status === Status.CANCELLED || status === Status.REJECTED) && (
           <Button
             type="primary"
-            title={t('seeRejectReason')}
+            title={t(status === Status.CANCELLED ? 'seeCancelReason' : 'seeRejectReason')}
             containerStyle={styles.rejectionButton}
             titleStyle={styles.rejectionTitle}
             onPress={this.onViewReason}
@@ -325,23 +321,27 @@ class OfferCard extends Component<Props, IOwnState> {
   private renderReasonView = (): React.ReactElement => {
     const {
       t,
-      offer: { statusUpdatedAt, statusUpdatedBy, statusChangeComment, statusChangeReason },
+      offer: { statusUpdatedAt, statusUpdatedBy, statusChangeComment, statusChangeReason, status },
     } = this.props;
     // TODO: (Shikha) - Add role logic
+    const isCancelled = status === Status.CANCELLED;
     return (
       <View style={styles.cardContainer}>
-        <Label type="large">{t('offerRejectOn')}</Label>
+        <Label type="large">{t(isCancelled ? 'offerCancelledOn' : 'offerRejectOn')}</Label>
         {!!statusUpdatedAt && (
           <Label type="large" textType="semiBold" style={styles.textStyle}>
             {DateUtils.getDisplayDate(statusUpdatedAt, 'MMM DD, YYYY')}
           </Label>
         )}
         <Divider containerStyles={styles.verticalStyle} />
-        <Avatar fullName={statusUpdatedBy?.name} designation={t('property:owner')} />
+        <Avatar
+          fullName={statusUpdatedBy?.name}
+          designation={t(isCancelled ? 'property:prospect' : 'property:owner')}
+        />
         {statusChangeReason && (
           <View style={styles.valuesView}>
             <Label type="large" textType="semiBold">
-              {t('rejectReasonLabel')}
+              {t(isCancelled ? 'cancelReasonLabel' : 'rejectReasonLabel')}
             </Label>
             <Label type="large" style={styles.textStyle}>
               {statusChangeReason.title}

@@ -59,6 +59,7 @@ import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo'
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import AcceptOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/AcceptOffer';
+import CancelOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/CancelOffer';
 import CreateLease from '@homzhub/mobile/src/screens/Asset/More/Offers/CreateLease';
 import OfferDetail from '@homzhub/mobile/src/screens/Asset/More/Offers/OfferDetail';
 import RejectOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/RejectOffer';
@@ -110,6 +111,7 @@ export type PortfolioNavigatorParamList = {
   [ScreensKeys.CreateLease]: undefined;
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
+  [ScreensKeys.CancelOffer]: undefined;
 };
 
 export type FinancialsNavigatorParamList = {
@@ -148,6 +150,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
   [ScreensKeys.SubmitOffer]: undefined;
+  [ScreensKeys.CancelOffer]: undefined;
   [ScreensKeys.ProspectProfile]: IProspectProfile;
   [ScreensKeys.CreateLease]: undefined;
 };
@@ -192,6 +195,7 @@ export const PortfolioStack = (): React.ReactElement => {
       <PortfolioNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
       <PortfolioNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
       <PortfolioNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
+      <PortfolioNavigator.Screen name={ScreensKeys.CancelOffer} component={CancelOffer} />
     </PortfolioNavigator.Navigator>
   );
 };
@@ -248,6 +252,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.RejectOffer} component={RejectOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubmitOffer} component={SubmitOfferForm} />
+      <MoreStackNavigator.Screen name={ScreensKeys.CancelOffer} component={CancelOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.ProspectProfile} component={ProspectProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
     </MoreStackNavigator.Navigator>
@@ -282,6 +287,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.AcceptOffer,
       ScreensKeys.RejectOffer,
       ScreensKeys.OfferDetail,
+      ScreensKeys.CancelOffer,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };

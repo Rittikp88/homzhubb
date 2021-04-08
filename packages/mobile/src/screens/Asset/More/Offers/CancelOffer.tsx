@@ -31,8 +31,6 @@ import {
   NegotiationAction,
   NegotiationType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IFormData {
   reason: number;
@@ -42,30 +40,40 @@ const initialData = {
   reason: 0,
 };
 
-const { LEASE_NEGOTIATION_REJECTION, SALE_NEGOTIATION_REJECTION } = ClosureReasonType;
+const { LEASE_NEGOTIATION_CANCELLATION, SALE_NEGOTIATION_CANCELLATION } = ClosureReasonType;
 const { LEASE_NEGOTIATIONS, SALE_NEGOTIATIONS } = NegotiationType;
 const { LEASE_LISTING } = ListingType;
 
-const RejectOffer = (): React.ReactElement => {
+const CancelOffer = (): React.ReactElement => {
   const [formData] = useState(initialData);
-  const [comment, setComment] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>('');
   const [reasons, setReasons] = useState<IDropdownOption[]>([]);
 
   // HOOKS START
   const { goBack } = useNavigation();
-  const listingData = useSelector(OfferSelectors.getListingDetail);
+  const { t } = useTranslation();
   const offerData: Offer | null = useSelector(OfferSelectors.getCurrentOffer);
-  const offerPayload: ICurrentOffer | null = useSelector(OfferSelectors.getOfferPayload);
-  const { t } = useTranslation(LocaleConstants.namespacesKey.offers);
+  const listingData = useSelector(OfferSelectors.getListingDetail);
+  const rentPayload = {
+    type: ListingType.LEASE_LISTING,
+    listingId: listingData?.leaseTerm?.id,
+  };
+  const salePayload = {
+    type: ListingType.SALE_LISTING,
+    listingId: listingData?.saleTerm?.id,
+  };
+
+  const offerPayload = listingData?.leaseTerm ? rentPayload : salePayload;
 
   useEffect(() => {
-    if (listingData && offerPayload) {
+    if (listingData && offerPayload?.listingId) {
       const {
         assetGroup: { id },
         country,
       } = listingData as Asset;
       const payload: IClosureReasonPayload = {
-        type: offerPayload.type === LEASE_LISTING ? LEASE_NEGOTIATION_REJECTION : SALE_NEGOTIATION_REJECTION,
+        type: offerPayload.type === LEASE_LISTING ? LEASE_NEGOTIATION_CANCELLATION : SALE_NEGOTIATION_CANCELLATION,
         asset_group: id,
         asset_country: country.id,
       };
@@ -85,8 +93,19 @@ const RejectOffer = (): React.ReactElement => {
 
   // HOOKS END
 
-  const handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
-    if (offerData && offerPayload) {
+  if (!offerData || !listingData) return <EmptyState />;
+
+  const {
+    user: { name },
+    role,
+  } = offerData;
+
+  // HANDLERS START
+
+  const onMessageChange = (value: string): void => setComment(value);
+
+  const onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
+    if (offerData && offerPayload?.listingId) {
       formActions.setSubmitting(true);
       const { type, listingId } = offerPayload;
       const payload: INegotiationPayload = {
@@ -97,7 +116,7 @@ const RejectOffer = (): React.ReactElement => {
           negotiationId: offerData.id,
         },
         data: {
-          action: NegotiationAction.REJECT,
+          action: NegotiationAction.CANCEL,
           payload: {
             status_change_reason: values.reason,
             status_change_comment: comment,
@@ -106,25 +125,28 @@ const RejectOffer = (): React.ReactElement => {
       };
 
       try {
+        setIsLoading(true);
         await OffersRepository.updateNegotiation(payload);
+        setIsLoading(false);
         goBack();
-        AlertHelper.success({ message: t('offers:offerRejectedSuccess') });
+        AlertHelper.success({ message: t('offers:offerCancellationSucess') });
       } catch (e) {
+        setIsLoading(false);
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       }
     }
     formActions.setSubmitting(false);
   };
 
-  if (!offerData || !listingData) return <EmptyState />;
-
-  const {
-    user: { name },
-    role,
-  } = offerData;
+  // HANDLERS END
 
   return (
-    <UserScreen title={t('common:offers')} pageTitle={t('rejectOffer')} onBackPress={goBack}>
+    <UserScreen
+      loading={isLoading}
+      title={t('common:offers')}
+      pageTitle={t('offers:withdrawOffer')}
+      onBackPress={goBack}
+    >
       <View style={styles.container}>
         <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
         <PropertyAddressCountry
@@ -135,7 +157,7 @@ const RejectOffer = (): React.ReactElement => {
           containerStyle={styles.verticalStyle}
         />
         <Divider />
-        <Formik initialValues={{ ...formData }} onSubmit={handleSubmit}>
+        <Formik initialValues={{ ...formData }} onSubmit={onSubmit}>
           {(formProps: FormikProps<IFormData>): React.ReactNode => {
             const isDisabled = formProps.values.reason === 0;
             return (
@@ -143,17 +165,17 @@ const RejectOffer = (): React.ReactElement => {
                 <FormDropdown
                   name="reason"
                   label={t('common:reason')}
-                  placeholder={t('rejectReason')}
+                  placeholder={t('offers:cancellationReason')}
                   options={reasons}
                   listHeight={500}
                   formProps={formProps}
                 />
                 <TextArea
                   value={comment}
-                  label={t('assetDescription:description')}
+                  label={t('offers:additionalComment')}
                   placeholder={t('common:additionalComment')}
                   containerStyle={styles.verticalStyle}
-                  onMessageChange={(value): void => setComment(value)}
+                  onMessageChange={onMessageChange}
                   helpText={t('common:optional')}
                 />
                 <Label type="large" style={styles.helper}>
@@ -164,7 +186,7 @@ const RejectOffer = (): React.ReactElement => {
                   onPress={formProps.handleSubmit}
                   formProps={formProps}
                   type="primary"
-                  title={t('rejectThisOffer')}
+                  title={t('offers:withdrawOffer')}
                   iconSize={20}
                   icon={icons.circularCrossFilled}
                   iconColor={isDisabled ? theme.colors.white : theme.colors.error}
@@ -181,7 +203,7 @@ const RejectOffer = (): React.ReactElement => {
   );
 };
 
-export default RejectOffer;
+export default React.memo(CancelOffer);
 
 const styles = StyleSheet.create({
   container: {
@@ -200,15 +222,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginVertical: 10,
   },
-  buttonDisabled: {
-    backgroundColor: theme.colors.grey4,
-    flexDirection: 'row-reverse',
-    marginVertical: 10,
-  },
   buttonTitle: {
     color: theme.colors.error,
   },
   buttonTitleDisabled: {
     color: theme.colors.white,
+  },
+  buttonDisabled: {
+    backgroundColor: theme.colors.grey4,
+    flexDirection: 'row-reverse',
+    marginVertical: 10,
   },
 });

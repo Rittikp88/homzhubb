@@ -9,6 +9,7 @@ export enum Status {
   PENDING = 'NEW',
   ACCEPTED = 'ACCEPTED',
   REJECTED = 'REJECTED',
+  CANCELLED = 'CANCELLED',
 }
 
 export enum OfferAction {

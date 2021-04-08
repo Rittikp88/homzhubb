@@ -45,6 +45,13 @@ const OfferMade = (props: IProps): React.ReactElement => {
           navigate(ScreensKeys.SubmitOffer);
         }
         break;
+      case OfferAction.CANCEL:
+        if (offer) {
+          dispatch(OfferActions.getListingDetailSuccess(propertyOffer));
+          dispatch(OfferActions.setCurrentOffer(offer));
+          navigate(ScreensKeys.CancelOffer);
+        }
+        break;
       default:
         FunctionUtils.noop();
     }

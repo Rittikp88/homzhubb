@@ -44,6 +44,9 @@ const OfferDetail = (): React.ReactElement => {
       case OfferAction.COUNTER:
         navigate(ScreensKeys.SubmitOffer);
         break;
+      case OfferAction.CANCEL:
+        navigate(ScreensKeys.CancelOffer);
+        break;
       default:
         FunctionUtils.noop();
     }

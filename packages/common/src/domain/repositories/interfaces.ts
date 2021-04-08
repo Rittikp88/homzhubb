@@ -75,6 +75,8 @@ export enum ClosureReasonType {
   SALE_LISTING_CANCELLATION = 'SALE_LISTING_CANCELLATION',
   LEASE_NEGOTIATION_REJECTION = 'LEASE_NEGOTIATION_REJECTION',
   SALE_NEGOTIATION_REJECTION = 'SALE_NEGOTIATION_REJECTION',
+  LEASE_NEGOTIATION_CANCELLATION = 'LEASE_NEGOTIATION_CANCELLATION',
+  SALE_NEGOTIATION_CANCELLATION = 'SALE_NEGOTIATION_CANCELLATION',
 }
 
 export enum ListingType {
@@ -100,6 +102,7 @@ export enum OfferFilterType {
 export enum NegotiationAction {
   REJECT = 'REJECT',
   ACCEPT = 'ACCEPT',
+  CANCEL = 'CANCEL',
 }
 
 export enum MessageAction {
@@ -906,8 +909,8 @@ export interface INegotiationParam {
 export interface INegotiationBody {
   action: NegotiationAction;
   payload: {
-    reject_reason?: number;
-    reject_comment?: string;
+    status_change_reason?: number;
+    status_change_comment?: string;
   };
 }
 
