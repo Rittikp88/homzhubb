@@ -100,6 +100,11 @@ class OffersRepository {
     return await this.apiClient.post(ENDPOINTS.counter(param), data);
   };
 
+  public getCounterOffer = async (param: ICounterParam): Promise<Offer[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.counter(param));
+    return ObjectMapper.deserializeArray(Offer, response);
+  };
+
   public createLease = async (payload: ICreateLeasePayload): Promise<void> => {
     const { negotiationId, body } = payload;
     return await this.apiClient.post(ENDPOINTS.createLease(negotiationId), body);

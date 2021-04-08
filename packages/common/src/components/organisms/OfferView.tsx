@@ -3,7 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from '@react-navigation/native';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,7 +17,12 @@ import ScrollableDropdownList, {
 } from '@homzhub/common/src/components/molecules/ScrollableDropdownList';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
 import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
-import { INegotiationParam, ListingType, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  ICounterParam,
+  INegotiationParam,
+  ListingType,
+  NegotiationType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { offerFilterBy, OfferSort, offerSortBy } from '@homzhub/common/src/constants/Offers';
 
@@ -45,6 +53,7 @@ const OfferView = (props: IProps): React.ReactElement => {
   const compareData = useSelector(OfferSelectors.getOfferCompareData);
 
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [pastOffers, setPastOffers] = useState<Offer[]>([]);
   const [filters, setFilters] = useState<IFilters>({ filter_by: '', sort_by: OfferSort.NEWEST });
 
   useFocusEffect(
@@ -85,6 +94,15 @@ const OfferView = (props: IProps): React.ReactElement => {
 
     setFilters(filtersObj);
     handleFilter();
+  };
+
+  const handlePastOffer = async (payload: ICounterParam): Promise<void> => {
+    try {
+      const response = await OffersRepository.getCounterOffer(payload);
+      setPastOffers(response);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   const handleFilter = (): void => {
@@ -142,10 +160,13 @@ const OfferView = (props: IProps): React.ReactElement => {
             <OfferCard
               key={index}
               offer={offer}
+              pastOffer={pastOffers}
               onPressAction={(action): void => handleAction(action, offer)}
               compareData={compareData}
               asset={listingDetail}
+              isDetailView
               onCreateLease={(): void => handleLeaseCreation(offer)}
+              onMoreInfo={handlePastOffer}
             />
           );
         })

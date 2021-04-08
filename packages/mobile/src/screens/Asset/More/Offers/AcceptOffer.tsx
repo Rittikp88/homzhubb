@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -21,17 +23,23 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import {
+  DetailType,
   INegotiationPayload,
   ListingType,
   NegotiationAction,
   NegotiationType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { acceptOffer } from '@homzhub/common/src/constants/ProspectProfile';
 
 interface IStateToProps {
   offer: Offer | null;
   listing: Asset | null;
   compareData: IOfferCompare;
+}
+
+interface IDispatchProps {
+  setCurrentAsset: (payload: ISetAssetPayload) => void;
 }
 
 interface IScreenState {
@@ -43,7 +51,7 @@ interface IOwner {
 }
 
 type LibProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.AcceptOffer>;
-type Props = LibProps & IStateToProps;
+type Props = LibProps & IStateToProps & IDispatchProps;
 
 class AcceptOffer extends Component<Props, IScreenState> {
   public state = {
@@ -147,7 +155,7 @@ class AcceptOffer extends Component<Props, IScreenState> {
   };
 
   public handleAcceptOffer = async (): Promise<void> => {
-    const { t, listing, offer, navigation } = this.props;
+    const { t, listing, offer, navigation, setCurrentAsset } = this.props;
     if (!listing || !offer) return;
     const { saleTerm, leaseTerm } = listing;
     const payload: INegotiationPayload = {
@@ -165,7 +173,26 @@ class AcceptOffer extends Component<Props, IScreenState> {
     try {
       await OffersRepository.updateNegotiation(payload);
       this.onCloseBottomSheet();
-      navigation.navigate(ScreensKeys.CreateLease);
+
+      if (leaseTerm) {
+        if (offer.isAssetOwner) {
+          navigation.navigate(ScreensKeys.CreateLease);
+        } else {
+          navigation.goBack();
+        }
+      } else {
+        setCurrentAsset({
+          asset_id: listing.id,
+          listing_id: listing.saleTerm ? listing.saleTerm.id : 0,
+          assetType: DetailType.SALE_LISTING,
+        });
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.BottomTabs, {
+          screen: ScreensKeys.Portfolio,
+          params: { screen: ScreensKeys.PropertyDetailScreen, initial: false },
+        });
+      }
+
       AlertHelper.success({ message: t('offers:offerAcceptedSuccess') });
     } catch (e) {
       this.onCloseBottomSheet();
@@ -182,8 +209,16 @@ const mapStateToProps = (state: IState): IStateToProps => {
     compareData: getOfferCompareData(state),
   };
 };
-
-export default connect(mapStateToProps, null)(withTranslation()(AcceptOffer));
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentAsset } = PortfolioActions;
+  return bindActionCreators(
+    {
+      setCurrentAsset,
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AcceptOffer));
 
 const styles = StyleSheet.create({
   container: {

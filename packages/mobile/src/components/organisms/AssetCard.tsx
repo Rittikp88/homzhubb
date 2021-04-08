@@ -276,7 +276,7 @@ export class AssetCard extends Component<Props, IState> {
       spaces,
       listingOffers: { totalOffers, activeOffers, pendingOffers },
     } = assetData;
-    const isListed = leaseListingId || saleListingId;
+    const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;

@@ -168,15 +168,15 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
                 onIcon={this.onCloseOfferInfo}
               />
             )}
+            <ScrollableDropdownList
+              data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
+              isScrollable={isReceivedOffer}
+              dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
+              onDropdown={this.onSelectFromDropdown}
+              containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
+            />
             {propertyListingData && propertyListingData.length > 0 ? (
               <>
-                <ScrollableDropdownList
-                  data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
-                  isScrollable={isReceivedOffer}
-                  dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
-                  onDropdown={this.onSelectFromDropdown}
-                  containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
-                />
                 {propertyListingData.map((property: Asset, index: number) => {
                   return this.renderPropertyOffer(property, index);
                 })}

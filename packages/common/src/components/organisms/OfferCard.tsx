@@ -16,15 +16,19 @@ import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules
 import UserView from '@homzhub/common/src/components/organisms/UserView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { ICounterParam, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   offer: Offer;
   compareData: IOfferCompare;
+  pastOffer?: Offer[];
   asset?: Asset;
+  isDetailView?: boolean;
   isFromAccept?: boolean;
   onPressAction?: (action: OfferAction) => void;
+  onMoreInfo?: (payload: ICounterParam) => void;
   onCreateLease?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
@@ -34,9 +38,6 @@ interface IOwnState {
   isReasonSheetVisible: boolean;
   isProfileSheetVisible: boolean;
 }
-
-// TODO: (Shikha) - remove after BE changes
-const isLeaseCreated = true;
 
 type Props = IProps & WithTranslation;
 
@@ -49,13 +50,12 @@ class OfferCard extends Component<Props, IOwnState> {
 
   public render(): React.ReactElement {
     const { hasMore, isReasonSheetVisible } = this.state;
-    const { t, offer, containerStyle } = this.props;
+    const { t, offer, containerStyle, isDetailView = false, pastOffer } = this.props;
 
-    // TODO: (Shikha) Add more list view once counter flow is ready
     return (
       <View style={[styles.container, containerStyle]}>
         {this.renderCardContent(offer, false)}
-        {offer.counterCount > 0 && (
+        {isDetailView && offer.counterOffersCount > 0 && (
           <Button
             iconSize={20}
             type="primary"
@@ -67,9 +67,9 @@ class OfferCard extends Component<Props, IOwnState> {
             onPress={this.onInfoToggle}
           />
         )}
-        {hasMore && (
+        {hasMore && pastOffer && pastOffer.length > 0 && (
           <FlatList
-            data={[offer, offer]}
+            data={pastOffer}
             ItemSeparatorComponent={(): React.ReactElement => <Divider containerStyles={styles.divider} />}
             renderItem={({ item }): React.ReactElement => this.renderCardContent(item, true)}
           />
@@ -110,8 +110,11 @@ class OfferCard extends Component<Props, IOwnState> {
     const offerValues = OfferUtils.getOfferValues(offer, compareData, currency, isMoreInfo);
     const isButtonView = (isOfferExpired && !actions.length) || !isOfferExpired;
 
+    // For highlighting active offer
+    const isHighlighted = hasMore && !isMoreInfo;
+
     return (
-      <View style={styles.cardContainer}>
+      <View style={[styles.cardContainer, isHighlighted && styles.highlighted]}>
         <TouchableOpacity onPress={this.onProfileSheet}>
           <Avatar fullName={user.name} designation={StringUtils.toTitleCase(role)} />
         </TouchableOpacity>
@@ -136,6 +139,7 @@ class OfferCard extends Component<Props, IOwnState> {
                 value={validDays}
                 variant="label"
                 textSize="regular"
+                iconSize={16}
                 iconColor={isOfferValid ? theme.colors.darkTint5 : theme.colors.red}
                 textStyle={[styles.time, isOfferValid && styles.validTime]}
                 containerStyle={[styles.timeView, isOfferValid && styles.validOffer]}
@@ -178,8 +182,8 @@ class OfferCard extends Component<Props, IOwnState> {
             </View>
           )}
         </View>
-        {!hasMore && this.renderPreferences()}
-        {!hasMore && !isFromAccept && isButtonView && this.renderActionView()}
+        {!isMoreInfo && this.renderPreferences()}
+        {!isMoreInfo && !isFromAccept && isButtonView && this.renderActionView()}
       </View>
     );
   };
@@ -214,7 +218,7 @@ class OfferCard extends Component<Props, IOwnState> {
   private renderActionView = (): React.ReactElement => {
     const {
       t,
-      offer: { status, actions, canCounter },
+      offer: { status, actions, canCounter, canCreateLease },
       onPressAction,
       onCreateLease,
     } = this.props;
@@ -281,7 +285,7 @@ class OfferCard extends Component<Props, IOwnState> {
             onPress={this.onViewReason}
           />
         )}
-        {!isLeaseCreated && status === Status.ACCEPTED && (
+        {canCreateLease && status === Status.ACCEPTED && (
           <Button
             type="primary"
             title={t('createLease')}
@@ -360,7 +364,16 @@ class OfferCard extends Component<Props, IOwnState> {
 
   private onInfoToggle = (): void => {
     const { hasMore } = this.state;
-    this.setState({ hasMore: !hasMore });
+    const { onMoreInfo, offer, asset } = this.props;
+    this.setState({ hasMore: !hasMore }, () => {
+      const { hasMore: more } = this.state;
+      if (onMoreInfo && asset && more) {
+        onMoreInfo({
+          negotiationId: offer.id,
+          negotiationType: asset.leaseTerm ? NegotiationType.LEASE_NEGOTIATIONS : NegotiationType.SALE_NEGOTIATIONS,
+        });
+      }
+    });
   };
 
   private onViewReason = (): void => {
@@ -501,5 +514,8 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: theme.colors.white,
+  },
+  highlighted: {
+    backgroundColor: theme.colors.moreSeparator,
   },
 });

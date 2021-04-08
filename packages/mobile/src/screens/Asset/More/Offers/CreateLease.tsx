@@ -51,8 +51,8 @@ const CreateLease = (): React.ReactElement => {
         minimum_lease_period: minLockInPeriod,
         annual_rent_increment_percentage: annualRentIncrementPercentage,
         lease_start_date: moveInDate,
-        lease_end_date: DateUtils.getFutureDateByUnit(moveInDate, minLockInPeriod, 'months'),
-        tentative_end_date: DateUtils.getFutureDateByUnit(moveInDate, minLockInPeriod, 'months', DateFormats.ISO),
+        lease_end_date: DateUtils.getFutureDateByUnit(moveInDate, leasePeriod, 'months'),
+        tentative_end_date: DateUtils.getFutureDateByUnit(moveInDate, leasePeriod, 'months', DateFormats.ISO),
         maintenance_amount: maintenanceAmount ?? 0,
         maintenance_paid_by: maintenancePaidBy,
         maintenance_payment_schedule: maintenanceSchedule || ScheduleTypes.MONTHLY,
@@ -70,8 +70,8 @@ const CreateLease = (): React.ReactElement => {
         dispatch(
           PortfolioActions.setCurrentAsset({
             asset_id: listingData.id,
-            listing_id: listingData.leaseTerm ? listingData.leaseTerm.id : 0,
-            assetType: DetailType.LEASE_LISTING,
+            listing_id: listingData.leaseTerm ? listingData.leaseTerm.leaseUnit.id : 0,
+            assetType: DetailType.LEASE_UNIT,
           })
         );
         navigate(ScreensKeys.BottomTabs, {

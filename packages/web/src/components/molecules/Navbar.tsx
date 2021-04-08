@@ -23,6 +23,7 @@ import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/mol
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+
 interface INavItem {
   icon: string;
   text: string;

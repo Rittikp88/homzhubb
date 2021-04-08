@@ -45,7 +45,7 @@ class OfferUtils {
       moveInDate,
       price,
       bookingAmount,
-      counterCount,
+      counterOffersCount,
     } = offer;
     const data = this.getOfferHeader(offer, compareData, currency);
 
@@ -58,7 +58,7 @@ class OfferUtils {
 
     if (price > 0) {
       return [
-        ...(isCountered && counterCount ? [data] : []),
+        ...(isCountered && counterOffersCount ? [data] : []),
         {
           key: I18nService.t('property:bookingAmount'),
           value: `${currency} ${bookingAmount}`,
@@ -69,7 +69,7 @@ class OfferUtils {
     }
 
     return [
-      ...(isCountered && counterCount ? [data] : []),
+      ...(isCountered && counterOffersCount ? [data] : []),
       ...(percentage ? [annualRent] : []),
       {
         key: I18nService.t('property:securityDeposit'),

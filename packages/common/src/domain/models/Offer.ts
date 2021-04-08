@@ -108,9 +108,11 @@ export class Offer {
   @JsonProperty('can_counter', Boolean, true)
   private _canCounter = false;
 
-  // TODO: (Shikha) - Replace with API key
-  @JsonProperty('counter_count', Number, true)
-  private _counterCount = 0;
+  @JsonProperty('counter_offers_count', Number, true)
+  private _counterOffersCount = 0;
+
+  @JsonProperty('can_create_lease', Boolean, true)
+  private _canCreateLease = false;
 
   @JsonProperty('is_asset_owner', Boolean, true)
   private _isAssetOwner = false;
@@ -227,7 +229,11 @@ export class Offer {
     return this._statusChangeReason;
   }
 
-  get counterCount(): number {
-    return this._counterCount;
+  get counterOffersCount(): number {
+    return this._counterOffersCount;
+  }
+
+  get canCreateLease(): boolean {
+    return this._canCreateLease;
   }
 }
