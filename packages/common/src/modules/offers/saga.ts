@@ -51,13 +51,7 @@ export function* getNegotiations(action: IFluxStandardAction<INegotiation>) {
   try {
     const response = yield call(OffersRepository.getNegotiations, action.payload);
     yield put(OfferActions.getNegotiationsSuccess(response));
-    if (action.payload.callback) {
-      action.payload.callback(true);
-    }
   } catch (e) {
-    if (action.payload.callback) {
-      action.payload.callback(false);
-    }
     yield put(OfferActions.getNegotiationsFailure());
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
   }

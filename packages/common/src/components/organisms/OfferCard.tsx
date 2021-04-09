@@ -191,6 +191,7 @@ class OfferCard extends Component<Props, IOwnState> {
 
   private renderOfferHeader = (currency: string): React.ReactElement => {
     const { offer, compareData } = this.props;
+
     const offerHeader = OfferUtils.getOfferHeader(offer, compareData, currency);
     return (
       <View style={styles.headerView}>

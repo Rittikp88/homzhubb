@@ -135,10 +135,14 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     } = this.state;
 
     const isReceivedOffer = offerType === OfferType.OFFER_RECEIVED;
+    const isFilterVisible =
+      (isReceivedOffer && receivedDropdownData[0] && receivedDropdownData[0].dropdownData.length > 0) ||
+      !isReceivedOffer;
 
     if (screenLoading) {
       return <Loader visible />;
     }
+
     return (
       <>
         <UserScreen title={t('offers')} scrollEnabled backgroundColor={theme.colors.transparent} loading={isTabLoading}>
@@ -168,13 +172,15 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
                 onIcon={this.onCloseOfferInfo}
               />
             )}
-            <ScrollableDropdownList
-              data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
-              isScrollable={isReceivedOffer}
-              dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
-              onDropdown={this.onSelectFromDropdown}
-              containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
-            />
+            {isFilterVisible && (
+              <ScrollableDropdownList
+                data={isReceivedOffer ? receivedDropdownData : madeDropdownData}
+                isScrollable={isReceivedOffer}
+                dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
+                onDropdown={this.onSelectFromDropdown}
+                containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
+              />
+            )}
             {propertyListingData && propertyListingData.length > 0 ? (
               <>
                 {propertyListingData.map((property: Asset, index: number) => {

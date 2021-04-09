@@ -910,7 +910,6 @@ export interface INegotiationParam {
 export interface INegotiation {
   param: INegotiationParam;
   filter_by?: string;
-  callback?: (status: boolean) => void;
 }
 
 export interface INegotiationBody {

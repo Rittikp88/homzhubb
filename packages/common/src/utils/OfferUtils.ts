@@ -87,7 +87,7 @@ class OfferUtils {
   public getOfferHeader = (offer: Offer, compareData: IOfferCompare, currency: string): IOfferValue => {
     const { rent, price } = offer;
 
-    if (rent > 1) {
+    if (rent >= 0) {
       return {
         key: I18nService.t('property:rent'),
         value: `${currency} ${rent}`,

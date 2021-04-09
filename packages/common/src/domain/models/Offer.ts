@@ -208,13 +208,13 @@ export class Offer {
   }
 
   get validCount(): number {
-    return DateUtils.getCountInDays(this.expiresAt);
+    return DateUtils.getCountInUnit(this.expiresAt, 'hours');
   }
 
   get validDays(): string {
     const count = this.validCount;
     // TODO: Add translation
-    const text = count > 1 ? 'days' : 'day';
+    const text = count > 1 ? 'hours' : 'hour';
     return `${count} ${text}`;
   }
 

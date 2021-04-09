@@ -70,10 +70,10 @@ const OfferView = (props: IProps): React.ReactElement => {
   );
 
   useEffect(() => {
-    handleCallback();
+    setOffers(OfferUtils.getSortedOffer(filters.sort_by, negotiations));
   }, [negotiations]);
 
-  const getData = (): void => {
+  const getData = (filter_by?: string): void => {
     if (offerPayload) {
       const payload: INegotiationParam = {
         listingType: offerPayload.type,
@@ -83,14 +83,9 @@ const OfferView = (props: IProps): React.ReactElement => {
             ? NegotiationType.LEASE_NEGOTIATIONS
             : NegotiationType.SALE_NEGOTIATIONS,
       };
-      dispatch(
-        OfferActions.getNegotiations({ param: payload, filter_by: filters.filter_by, callback: handleCallback })
-      );
-    }
-  };
 
-  const handleCallback = (): void => {
-    setOffers(OfferUtils.getSortedOffer(filters.sort_by, negotiations));
+      dispatch(OfferActions.getNegotiations({ param: payload, filter_by }));
+    }
   };
 
   const getFilters = async (): Promise<void> => {
@@ -113,9 +108,8 @@ const OfferView = (props: IProps): React.ReactElement => {
       // @ts-ignore
       filtersObj[key] = value;
     });
-
+    getData(filtersObj.filter_by);
     setFilters(filtersObj);
-    handleFilter();
   };
 
   const handlePastOffer = async (payload: ICounterParam): Promise<void> => {
@@ -124,12 +118,6 @@ const OfferView = (props: IProps): React.ReactElement => {
       setPastOffers(response);
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-    }
-  };
-
-  const handleFilter = (): void => {
-    if (filters) {
-      getData();
     }
   };
 

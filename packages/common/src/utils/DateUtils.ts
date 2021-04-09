@@ -353,9 +353,9 @@ class DateUtils {
     return this.getDateDiff(currentDate, date, unit ?? 'days');
   };
 
-  public getCountInDays = (date: string): number => {
+  public getCountInUnit = (date: string, unit?: unitOfTime.Diff): number => {
     const currentDate = new Date().toISOString();
-    return this.getDateDiff(date, currentDate, 'days');
+    return this.getDateDiff(date, currentDate, unit || 'days');
   };
 
   public convertDateFormatted = (date: string, format = DateFormats.DDMMMYYYY_Hm): string => {
