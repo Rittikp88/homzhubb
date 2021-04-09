@@ -11,6 +11,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { FurnishingSelection } from '@homzhub/common/src/components/atoms/FurnishingSelection';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { AssetDescriptionForm } from '@homzhub/common/src/components/molecules/AssetDescriptionForm';
@@ -52,6 +53,7 @@ interface IOwnState {
   descriptionForm: IDescriptionForm;
   furnishingForm: IFurnishingForm;
   descriptionDropdownValues: AssetDescriptionDropdownValues | null;
+  loading: boolean;
 }
 
 type IProps = IOwnProps & IWithMediaQuery;
@@ -78,6 +80,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
         furnishingType: (assetDetails && assetDetails.furnishing) || undefined,
       },
       descriptionDropdownValues: null,
+      loading: false,
     };
   }
 
@@ -87,12 +90,13 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
 
   public render(): ReactElement {
     const { spaceTypes, t, isMobile, lastVisitedStep } = this.props;
-    const { descriptionForm, furnishingForm, descriptionDropdownValues } = this.state;
+    const { descriptionForm, furnishingForm, descriptionDropdownValues, loading } = this.state;
 
     // TODO: Update this logic once verification shield logic is on place
     const isVerificationDone = lastVisitedStep.listing ? lastVisitedStep.listing.is_verification_done : false;
     return (
       <>
+        <Loader visible={loading} />
         <Formik
           onSubmit={this.onSubmit}
           initialValues={{ ...descriptionForm, ...furnishingForm }}
@@ -125,6 +129,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
                   title={t('common:continue')}
                   containerStyle={[styles.buttonStyle, isMobile && styles.buttonMobileStyle]}
                   onPress={(): Promise<void> => this.onSubmit(formProps.values)}
+                  disabled={formProps.submitCount === 1 || loading}
                 />
               </>
             );
@@ -206,9 +211,12 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
     };
 
     try {
+      this.toggleLoader();
       await AssetRepository.updateAsset(assetId, payload);
       handleNextStep();
+      this.toggleLoader();
     } catch (e) {
+      this.toggleLoader();
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
     }
@@ -222,6 +230,10 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
     const { spacesForm } = this.state;
 
     spacesForm[id] = { space_type: id, count, description };
+  };
+
+  private toggleLoader = (): void => {
+    this.setState((prevState) => ({ loading: !prevState.loading }));
   };
 
   private formSchema = (): yup.ObjectSchema<IDescriptionForm & IFurnishingForm> => {

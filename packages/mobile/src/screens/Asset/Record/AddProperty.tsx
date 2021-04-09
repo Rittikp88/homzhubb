@@ -15,6 +15,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Header } from '@homzhub/mobile/src/components';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropertyView';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
@@ -25,9 +26,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IScreenState {
-  currentIndex: number;
-  isNextStep: boolean;
-  heights: number[];
+  loading: boolean;
 }
 
 interface IStateProps {
@@ -47,6 +46,10 @@ type Props = libraryProps & IStateProps & IDispatchProps;
 export class AddProperty extends PureComponent<Props, IScreenState> {
   private scrollRef = React.createRef<ScrollView>();
 
+  public state = {
+    loading: false,
+  };
+
   public componentWillUnmount = (): void => {
     const { navigation, getAssetById } = this.props;
     navigation.removeListener('focus', getAssetById);
@@ -57,9 +60,11 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
       t,
       route: { params },
     } = this.props;
+    const { loading } = this.state;
 
     return (
       <View style={styles.screen}>
+        <Loader visible={loading} />
         <Header icon={icons.leftArrow} title={t('property:addProperty')} onIconPress={this.goBack} />
         <KeyboardAvoidingView style={styles.screen} behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
           <ScrollView style={styles.content} showsVerticalScrollIndicator={false} ref={this.scrollRef}>
@@ -128,6 +133,7 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
       });
 
       try {
+        this.toggleLoader();
         const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
 
         const { data } = response;
@@ -148,7 +154,9 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
           localSelectedImages[0].is_cover_image = true;
         }
         setSelectedImages(selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages)));
+        this.toggleLoader();
       } catch (e) {
+        this.toggleLoader();
         AlertHelper.error({ message: e.message });
       }
     } catch (e) {
@@ -159,6 +167,10 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   private onEditPress = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.PostAssetDetails);
+  };
+
+  private toggleLoader = (): void => {
+    this.setState((prevState) => ({ loading: !prevState.loading }));
   };
 
   private goBack = (): void => {

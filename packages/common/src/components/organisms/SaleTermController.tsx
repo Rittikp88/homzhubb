@@ -11,6 +11,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
@@ -45,6 +46,7 @@ interface IOwnState {
   formData: IFormData;
   description: string;
   currentTermId: number;
+  loading: boolean;
 }
 
 type Props = IProps & IWithMediaQuery;
@@ -62,6 +64,7 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
     },
     description: '',
     currentTermId: -1,
+    loading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -95,119 +98,123 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
 
   public render = (): React.ReactNode => {
     const { t, currencyData, assetGroupType, isMobile, isTablet } = this.props;
-    const { description, formData } = this.state;
+    const { description, formData, loading } = this.state;
 
     return (
-      <Formik
-        enableReinitialize
-        onSubmit={this.onSubmit}
-        initialValues={{ ...formData }}
-        validate={FormUtils.validate(this.formSchema)}
-      >
-        {(formProps: FormikProps<IFormData>): React.ReactElement => {
-          return (
-            <>
-              <AssetListingSection title={t('resaleTerms')}>
-                <>
-                  {PlatformUtils.isWeb() && (
+      <>
+        <Loader visible={loading} />
+        <Formik
+          enableReinitialize
+          onSubmit={this.onSubmit}
+          initialValues={{ ...formData }}
+          validate={FormUtils.validate(this.formSchema)}
+        >
+          {(formProps: FormikProps<IFormData>): React.ReactElement => {
+            return (
+              <>
+                <AssetListingSection title={t('resaleTerms')}>
+                  <>
+                    {PlatformUtils.isWeb() && (
+                      <Text type="small" textType="semiBold" style={styles.headerTitle}>
+                        {t('headerTitle')}
+                      </Text>
+                    )}
+                    <View style={PlatformUtils.isWeb() && !isMobile && styles.detailsContainer}>
+                      <View
+                        style={[
+                          PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+                          PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
+                        ]}
+                      >
+                        <FormTextInput
+                          inputType="number"
+                          name="expectedPrice"
+                          label={t('expectedPrice')}
+                          placeholder={t('expectedPricePlaceholder')}
+                          maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
+                          formProps={formProps}
+                          inputPrefixText={currencyData.currencySymbol}
+                          inputGroupSuffixText={currencyData.currencyCode}
+                          isMandatory
+                          containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
+                        />
+                      </View>
+                      <View
+                        style={[
+                          PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+                          PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
+                        ]}
+                      >
+                        <FormTextInput
+                          inputType="number"
+                          name="bookingAmount"
+                          label={t('bookingAmount')}
+                          placeholder={t('bookingAmountPlaceholder')}
+                          maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
+                          formProps={formProps}
+                          inputPrefixText={currencyData.currencySymbol}
+                          inputGroupSuffixText={currencyData.currencyCode}
+                          isMandatory
+                          containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
+                        />
+                      </View>
+                      <View
+                        style={[
+                          PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
+                          PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
+                        ]}
+                      >
+                        <FormCalendar
+                          formProps={formProps}
+                          name="availableFrom"
+                          textType="label"
+                          textSize="regular"
+                          isMandatory
+                          containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
+                        />
+                      </View>
+                    </View>
                     <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                      {t('headerTitle')}
+                      {t('maintenance')}
                     </Text>
-                  )}
-                  <View style={PlatformUtils.isWeb() && !isMobile && styles.detailsContainer}>
-                    <View
-                      style={[
-                        PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
-                        PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
-                      ]}
-                    >
-                      <FormTextInput
-                        inputType="number"
-                        name="expectedPrice"
-                        label={t('expectedPrice')}
-                        placeholder={t('expectedPricePlaceholder')}
-                        maxLength={formProps.values.expectedPrice.includes('.') ? 13 : 12}
-                        formProps={formProps}
-                        inputPrefixText={currencyData.currencySymbol}
-                        inputGroupSuffixText={currencyData.currencyCode}
-                        isMandatory
-                        containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
-                      />
-                    </View>
-                    <View
-                      style={[
-                        PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
-                        PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
-                      ]}
-                    >
-                      <FormTextInput
-                        inputType="number"
-                        name="bookingAmount"
-                        label={t('bookingAmount')}
-                        placeholder={t('bookingAmountPlaceholder')}
-                        maxLength={formProps.values.bookingAmount.includes('.') ? 13 : 12}
-                        formProps={formProps}
-                        inputPrefixText={currencyData.currencySymbol}
-                        inputGroupSuffixText={currencyData.currencyCode}
-                        isMandatory
-                        containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
-                      />
-                    </View>
-                    <View
-                      style={[
-                        PlatformUtils.isWeb() && !isMobile && styles.inputContainer,
-                        PlatformUtils.isWeb() && isTablet && !isMobile && styles.inputContainerTab,
-                      ]}
-                    >
-                      <FormCalendar
-                        formProps={formProps}
-                        name="availableFrom"
-                        textType="label"
-                        textSize="regular"
-                        isMandatory
-                        containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
-                      />
-                    </View>
-                  </View>
-                  <Text type="small" textType="semiBold" style={styles.headerTitle}>
-                    {t('maintenance')}
-                  </Text>
-                  <MaintenanceDetails
-                    formProps={formProps}
-                    currencyData={currencyData}
-                    assetGroupType={assetGroupType}
-                    maintenanceUnitKey="maintenanceUnit"
-                    maintenanceAmountKey="maintenanceAmount"
-                    maintenanceScheduleKey="maintenanceSchedule"
+                    <MaintenanceDetails
+                      formProps={formProps}
+                      currencyData={currencyData}
+                      assetGroupType={assetGroupType}
+                      maintenanceUnitKey="maintenanceUnit"
+                      maintenanceAmountKey="maintenanceAmount"
+                      maintenanceScheduleKey="maintenanceSchedule"
+                    />
+                  </>
+                </AssetListingSection>
+                <AssetListingSection
+                  title={t('assetDescription:description')}
+                  containerStyles={styles.descriptionContainer}
+                >
+                  <TextArea
+                    value={description}
+                    wordCountLimit={MAX_DESCRIPTION_LENGTH}
+                    placeholder={t('property:sellFlowFormDescription')}
+                    onMessageChange={this.onDescriptionChange}
+                    inputContainerStyle={styles.description}
                   />
-                </>
-              </AssetListingSection>
-              <AssetListingSection
-                title={t('assetDescription:description')}
-                containerStyles={styles.descriptionContainer}
-              >
-                <TextArea
-                  value={description}
-                  wordCountLimit={MAX_DESCRIPTION_LENGTH}
-                  placeholder={t('property:sellFlowFormDescription')}
-                  onMessageChange={this.onDescriptionChange}
-                  inputContainerStyle={styles.description}
-                />
-              </AssetListingSection>
-              <View style={PlatformUtils.isWeb && !isMobile && styles.buttonContainer}>
-                <FormButton
-                  title={t('common:continue')}
-                  type="primary"
-                  formProps={formProps}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
-                />
-              </View>
-            </>
-          );
-        }}
-      </Formik>
+                </AssetListingSection>
+                <View style={PlatformUtils.isWeb && !isMobile && styles.buttonContainer}>
+                  <FormButton
+                    title={t('common:continue')}
+                    type="primary"
+                    formProps={formProps}
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    disabled={loading}
+                    containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
+                  />
+                </View>
+              </>
+            );
+          }}
+        </Formik>
+      </>
     );
   };
 
@@ -217,6 +224,7 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
 
   private onSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     formActions.setSubmitting(true);
+    this.setState({ loading: true });
     const { description, currentTermId } = this.state;
     const { onNextStep, currentAssetId, assetGroupType } = this.props;
 
@@ -246,7 +254,9 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
         await AssetRepository.updateSaleTerm(currentAssetId, currentTermId, params);
       }
       await onNextStep(TypeOfPlan.SELL);
+      this.setState({ loading: false });
     } catch (err) {
+      this.setState({ loading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
     formActions.setSubmitting(false);
@@ -292,7 +302,7 @@ export { saleTermController as SaleTermController };
 const styles = StyleSheet.create({
   continue: {
     flex: 0,
-    marginTop: 20,
+    marginVertical: 20,
   },
   continueWeb: {
     width: 251,

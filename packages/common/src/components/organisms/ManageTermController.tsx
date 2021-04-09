@@ -40,6 +40,7 @@ interface IOwnState {
   currentTermId: number;
   isPropertyOccupied: boolean;
   formData: IFormFields;
+  loading: boolean;
 }
 interface IProps extends WithTranslation {
   currencyData: Currency;
@@ -64,6 +65,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
         phoneCode: props.phoneCode,
         ...initialLeaseFormValues,
       },
+      loading: false,
     };
   }
 
@@ -127,7 +129,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
 
   private renderForm = (): React.ReactNode => {
     const { t, currencyData, assetGroupType, isMobile } = this.props;
-    const { isPropertyOccupied, formData } = this.state;
+    const { isPropertyOccupied, formData, loading } = this.state;
     return (
       <Formik
         enableReinitialize
@@ -155,6 +157,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
                     // @ts-ignore
                     onPress={formProps.handleSubmit}
                     containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
+                    disabled={loading}
                   />
                 </View>
               </>
@@ -271,6 +274,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
 
   private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {
     formActions.setSubmitting(true);
+    this.setState({ loading: true });
     const { onNextStep, currentAssetId, assetGroupType } = this.props;
     const { currentTermId } = this.state;
     const params: IManageTerm = {
@@ -289,7 +293,9 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
         await AssetRepository.updateManageTerm(currentAssetId, currentTermId, params);
       }
       await onNextStep(TypeOfPlan.MANAGE);
+      this.setState({ loading: false });
     } catch (err) {
+      this.setState({ loading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
     }
     formActions.setSubmitting(false);

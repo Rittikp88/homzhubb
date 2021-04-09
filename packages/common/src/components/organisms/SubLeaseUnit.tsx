@@ -183,7 +183,9 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
         params.lease_listing = singleLeaseUnitKey;
       }
 
+      formikHelpers?.setSubmitting(true);
       onSubmit(params, route?.key, proceed);
+      formikHelpers?.setSubmitting(false);
     },
     [assetGroupType, onSubmit, tenantPreferences, route, furnishingType, spaces, availableSpaces, singleLeaseUnitKey]
   );
@@ -278,6 +280,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
                   route && PlatformUtils.isWeb() && isMobile && styles.continueMobile,
                   !route && PlatformUtils.isWeb() && isMobile && styles.continueMobileEntire,
                 ]}
+                disabled={formProps.isSubmitting}
               />
             </View>
           </>

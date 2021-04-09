@@ -50,6 +50,7 @@ const RejectOffer = (): React.ReactElement => {
   const [formData] = useState(initialData);
   const [comment, setComment] = useState('');
   const [reasons, setReasons] = useState<IDropdownOption[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // HOOKS START
   const { goBack } = useNavigation();
@@ -69,6 +70,7 @@ const RejectOffer = (): React.ReactElement => {
         asset_group: id,
         asset_country: country.id,
       };
+      setIsLoading(true);
       AssetRepository.getClosureReason(payload)
         .then((res) => {
           const formattedData = res.map((item) => {
@@ -78,8 +80,12 @@ const RejectOffer = (): React.ReactElement => {
             };
           });
           setReasons(formattedData);
+          setIsLoading(false);
         })
-        .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
+        .catch((e) => {
+          setIsLoading(false);
+          AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        });
     }
   }, []);
 
@@ -124,7 +130,7 @@ const RejectOffer = (): React.ReactElement => {
   } = offerData;
 
   return (
-    <UserScreen title={t('common:offers')} pageTitle={t('rejectOffer')} onBackPress={goBack}>
+    <UserScreen title={t('common:offers')} pageTitle={t('rejectOffer')} onBackPress={goBack} loading={isLoading}>
       <View style={styles.container}>
         <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
         <PropertyAddressCountry

@@ -44,6 +44,7 @@ interface IDispatchProps {
 
 interface IScreenState {
   isBottomSheetVisible: boolean;
+  isLoading: boolean;
 }
 
 interface IOwner {
@@ -56,16 +57,19 @@ type Props = LibProps & IStateToProps & IDispatchProps;
 class AcceptOffer extends Component<Props, IScreenState> {
   public state = {
     isBottomSheetVisible: false,
+    isLoading: false,
   };
 
   public render(): React.ReactNode {
     const { t, navigation } = this.props;
+    const { isLoading } = this.state;
     return (
       <UserScreen
         isOuterScrollEnabled
         title={t('offers')}
         pageTitle={t('offers:acceptOffer')}
         onBackPress={navigation.goBack}
+        loading={isLoading}
       >
         {this.renderAcceptOffer()}
       </UserScreen>
@@ -154,6 +158,10 @@ class AcceptOffer extends Component<Props, IScreenState> {
     this.setState({ isBottomSheetVisible: false });
   };
 
+  public toggleLoading = (): void => {
+    this.setState((prevState) => ({ isLoading: !prevState.isLoading }));
+  };
+
   public handleAcceptOffer = async (): Promise<void> => {
     const { t, listing, offer, navigation, setCurrentAsset } = this.props;
     if (!listing || !offer) return;
@@ -171,8 +179,10 @@ class AcceptOffer extends Component<Props, IScreenState> {
       },
     };
     try {
+      this.toggleLoading();
       await OffersRepository.updateNegotiation(payload);
       this.onCloseBottomSheet();
+      this.toggleLoading();
 
       if (leaseTerm) {
         if (offer.isAssetOwner) {
@@ -196,6 +206,7 @@ class AcceptOffer extends Component<Props, IScreenState> {
       AlertHelper.success({ message: t('offers:offerAcceptedSuccess') });
     } catch (e) {
       this.onCloseBottomSheet();
+      this.toggleLoading();
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };

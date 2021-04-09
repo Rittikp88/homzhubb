@@ -3,6 +3,8 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
@@ -15,6 +17,7 @@ import Check from '@homzhub/common/src/assets/images/check.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
@@ -43,6 +46,7 @@ interface IAssetPlanState {
   banners: AssetAdvertisement;
   activeSlide: number;
   isSheetVisible: boolean;
+  loading: boolean;
 }
 
 class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
@@ -50,6 +54,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     banners: {} as AssetAdvertisement,
     activeSlide: 0,
     isSheetVisible: false,
+    loading: false,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -64,9 +69,10 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
 
   public render(): React.ReactElement {
     const { t } = this.props;
-    const { isSheetVisible } = this.state;
+    const { isSheetVisible, loading } = this.state;
     return (
       <>
+        <Loader visible={loading} />
         <Header icon={icons.leftArrow} title={t('propertyPlan')} onIconPress={this.goBack} />
         <ScrollView style={styles.flexOne}>
           <PlanSelection carouselView={this.renderCarousel()} onSkip={this.onSkip} onSelectPlan={this.onSelectPlan} />
@@ -180,9 +186,18 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     const requestPayload = {
       category: 'service',
     };
-    const response: AssetAdvertisement = await DashboardRepository.getAdvertisements(requestPayload);
-    this.setState({ banners: response });
+    try {
+      this.toggleLoader();
+      const response: AssetAdvertisement = await DashboardRepository.getAdvertisements(requestPayload);
+      this.setState({ banners: response });
+      this.toggleLoader();
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.message) });
+      this.toggleLoader();
+    }
   };
+
+  private toggleLoader = (): void => this.setState((prevState) => ({ loading: !prevState.loading }));
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
