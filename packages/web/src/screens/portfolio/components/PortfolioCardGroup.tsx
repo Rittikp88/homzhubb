@@ -19,6 +19,7 @@ import { PropertyAmenities } from '@homzhub/common/src/components/molecules/Prop
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
+import YoutubeCard from '@homzhub/web/src/screens/portfolio/components/YoutubeCard';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Asset, Data } from '@homzhub/common/src/domain/models/Asset';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
@@ -163,16 +164,12 @@ export class AssetCard extends Component<Props> {
   }
 
   private renderAttachmentView = (attachments: Attachment[]): React.ReactNode => {
-    const { isDetailView } = this.props;
     const item = attachments[0];
 
     if (!item) return <ImagePlaceholder containerStyle={styles.placeholderImage} />;
 
-    const {
-      mediaAttributes: { thumbnailBest, thumbnailHD, thumbnail },
-      link,
-      mediaType,
-    } = item;
+    const { link, mediaType } = item;
+
     return (
       <TouchableOpacity>
         {mediaType === 'IMAGE' && (
@@ -185,16 +182,7 @@ export class AssetCard extends Component<Props> {
             />
           </View>
         )}
-        {mediaType === 'VIDEO' && (
-          <>
-            <Image
-              source={{
-                uri: thumbnailBest ?? thumbnailHD ?? thumbnail,
-              }}
-              style={[styles.image, isDetailView && styles.detailViewImage]}
-            />
-          </>
-        )}
+        {mediaType === 'VIDEO' && <YoutubeCard videoLink={link} />}
       </TouchableOpacity>
     );
   };

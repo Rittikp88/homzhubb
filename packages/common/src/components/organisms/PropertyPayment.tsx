@@ -138,7 +138,7 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
           {t('property:services')}
         </Text>
         {isEmpty ? (
-          <Text type="small" textType="semiBold" style={styles.serviceTitle}>
+          <Text type="small" textType="semiBold" style={styles.serviceSubText}>
             {t('property:No Service Selected')}
           </Text>
         ) : (
@@ -303,6 +303,11 @@ const styles = StyleSheet.create({
   },
   serviceTitle: {
     color: theme.colors.darkTint4,
+    marginTop: 16,
+  },
+  serviceSubText: {
+    color: theme.colors.darkTint7,
+    marginTop: PlatformUtils.isWeb() ? 200 : 'auto',
   },
   secureText: {
     color: theme.colors.darkTint7,
@@ -340,8 +345,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     alignItems: 'center',
     textAlign: 'center',
-    height: '50%',
-    justifyContent: 'center',
-    flex: 1,
+    height: PlatformUtils.isWeb() ? 400 : '50%',
+    width: PlatformUtils.isWeb() ? '20%' : 'auto',
   },
 });
