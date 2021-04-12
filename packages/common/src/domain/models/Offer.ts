@@ -48,6 +48,7 @@ export interface IOffer {
   can_counter?: boolean;
   is_asset_owner?: boolean;
   user?: IUser;
+  status_updated_by_role?: string;
 }
 
 @JsonObject('Offer')
@@ -126,6 +127,9 @@ export class Offer {
 
   @JsonProperty('status_change_reason', Unit, true)
   private _statusChangeReason = null;
+
+  @JsonProperty('status_updated_by_role', String, true)
+  private _statusUpdatedByRole = null;
 
   get id(): number {
     return this._id;
@@ -236,5 +240,9 @@ export class Offer {
 
   get canCreateLease(): boolean {
     return this._canCreateLease;
+  }
+
+  get statusUpdatedByRole(): string | null {
+    return this._statusUpdatedByRole;
   }
 }

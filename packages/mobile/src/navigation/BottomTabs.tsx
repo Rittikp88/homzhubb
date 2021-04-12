@@ -80,6 +80,7 @@ import {
   IAcceptInvitePayload,
   IGetMessageParam,
   IChatScreen,
+  IPropertyOffersList,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 
@@ -145,7 +146,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.SubmitQuote]: undefined;
   [ScreensKeys.ApproveQuote]: undefined;
   [ScreensKeys.WorkCompleted]: undefined;
-  [ScreensKeys.PropertyOfferList]: undefined;
+  [ScreensKeys.PropertyOfferList]: IPropertyOffersList;
   [ScreensKeys.OfferDetail]: undefined;
   [ScreensKeys.AcceptOffer]: undefined;
   [ScreensKeys.RejectOffer]: undefined;
@@ -405,9 +406,9 @@ export const BottomTabs = (): React.ReactElement => {
         listeners={({ navigation }): any => ({
           blur: (): void => {
             dispatch(CommonActions.clearMessages());
+            dispatch(OfferActions.clearState());
           },
           focus: (e: any): void => {
-            dispatch(OfferActions.clearState());
             resetStackOnTabPress(e, navigation);
           },
           tabPress: (e: any): void => resetStackOnTabPress(e, navigation),

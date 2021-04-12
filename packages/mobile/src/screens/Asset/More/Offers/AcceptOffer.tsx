@@ -102,7 +102,7 @@ class AcceptOffer extends Component<Props, IScreenState> {
   };
 
   public renderBottomSheet = (): React.ReactNode => {
-    const { isBottomSheetVisible } = this.state;
+    const { isBottomSheetVisible, isLoading } = this.state;
     const { t, offer, listing } = this.props;
 
     const info = offer && offer.isAssetOwner ? acceptOffer.owner : acceptOffer.tenant;
@@ -144,6 +144,7 @@ class AcceptOffer extends Component<Props, IScreenState> {
             title={isLease ? t('offers:acceptAndLease') : t('offers:acceptOffer')}
             containerStyle={[styles.button, styles.marginVertical]}
             onPress={this.handleAcceptOffer}
+            disabled={isLoading}
           />
         </ScrollView>
       </BottomSheet>

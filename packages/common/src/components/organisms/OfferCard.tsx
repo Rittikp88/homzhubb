@@ -322,9 +322,8 @@ class OfferCard extends Component<Props, IOwnState> {
   private renderReasonView = (): React.ReactElement => {
     const {
       t,
-      offer: { statusUpdatedAt, statusUpdatedBy, statusChangeComment, statusChangeReason, status },
+      offer: { statusUpdatedAt, statusUpdatedBy, statusChangeComment, statusChangeReason, status, statusUpdatedByRole },
     } = this.props;
-    // TODO: (Shikha) - Add role logic
     const isCancelled = status === Status.CANCELLED;
     return (
       <View style={styles.cardContainer}>
@@ -335,10 +334,7 @@ class OfferCard extends Component<Props, IOwnState> {
           </Label>
         )}
         <Divider containerStyles={styles.verticalStyle} />
-        <Avatar
-          fullName={statusUpdatedBy?.name}
-          designation={t(isCancelled ? 'property:prospect' : 'property:owner')}
-        />
+        <Avatar fullName={statusUpdatedBy?.name} designation={StringUtils.toTitleCase(statusUpdatedByRole || '')} />
         {statusChangeReason && (
           <View style={styles.valuesView}>
             <Label type="large" textType="semiBold">

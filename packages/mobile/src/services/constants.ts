@@ -10,6 +10,7 @@ export enum DynamicLinkTypes {
   TenantInvitation = 'TENANT_INVITATION',
   ServiceTicket = 'SERVICE_TICKET',
   Offer = 'OFFER',
+  Asset = 'ASSET',
 }
 
 export enum RouteTypes {
@@ -30,6 +31,15 @@ export enum DynamicLinkParamKeys {
   SaleNegotiationId = 'sale_negotiation_id',
   LeaseListingId = 'lease_listing_id',
   LeaseNegotiationId = 'lease_negotiation_id',
+  Screen = 'screen',
+  AssetId = 'asset_id',
+  LeaseUnitId = 'lease_unit_id',
+}
+
+export enum NotificationScreens {
+  OffersReceived = 'OFFERS_RECEIVED',
+  OffersMade = 'OFFERS_MADE',
+  OfferDetail = 'OFFER_DETAIL',
 }
 
 // Enums related to dynamic linking - ends
@@ -38,6 +48,7 @@ export enum NotificationTypes {
   Chat = 'CHAT',
   ServiceTicket = 'SERVICE_TICKET',
   Offer = 'OFFER',
+  Asset = 'ASSET',
 }
 
 /**

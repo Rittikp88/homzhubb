@@ -962,6 +962,10 @@ export interface ICreateLeasePayload {
   body: ILeaseTermData;
 }
 
+export interface IPropertyOffersList {
+  isReceivedFlow?: boolean;
+}
+
 // OFFERS END
 
 export interface IFAQCategory {

@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { NotificationScreens } from '@homzhub/mobile/src/services/constants';
 
 export enum NotificationType {
   SYSTEM_NOTIFICATION = 'SYSTEM_NOTIFICATION',
@@ -8,6 +9,7 @@ export enum NotificationType {
   REVIEW_AND_RATING = 'REVIEW_AND_RATING',
   SERVICE_TICKET = 'SERVICE_TICKET',
   OFFER = 'OFFER',
+  ASSET = 'ASSET',
 }
 
 @JsonObject('DeeplinkMetaData')
@@ -27,6 +29,12 @@ export class DeeplinkMetaData {
   @JsonProperty('type', String, true)
   private _type = '';
 
+  @JsonProperty('screen', String, true)
+  private _screen = '';
+
+  @JsonProperty('lease_unit_id', Number, true)
+  private _leaseUnitId = -1;
+
   get assetId(): number {
     return this._assetId;
   }
@@ -45,5 +53,13 @@ export class DeeplinkMetaData {
 
   get type(): NotificationType {
     return this._type as NotificationType;
+  }
+
+  get screen(): string {
+    return this._screen as NotificationScreens;
+  }
+
+  get leaseUnitId(): number {
+    return this._leaseUnitId;
   }
 }

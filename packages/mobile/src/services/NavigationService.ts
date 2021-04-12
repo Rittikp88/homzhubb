@@ -8,8 +8,14 @@ import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { CommonActions as StoreCommonActions } from '@homzhub/common/src/modules/common/actions';
-import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
-import { ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import {
+  DynamicLinkParamKeys,
+  DynamicLinkTypes,
+  NotificationScreens,
+  RouteTypes,
+} from '@homzhub/mobile/src/services/constants';
+import { DetailType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 
 class NavigationService {
@@ -55,6 +61,7 @@ class NavigationService {
 
   public handlePrivateRoutes = (url: string): void => {
     const type = this.getValueOfParamFromUrl(DynamicLinkParamKeys.Type, url);
+    const screen = this.getValueOfParamFromUrl(DynamicLinkParamKeys.Screen, url);
     const store = StoreProviderService.getStore();
 
     switch (type) {
@@ -134,12 +141,42 @@ class NavigationService {
         break;
       case DynamicLinkTypes.Offer:
         store.dispatch(OfferActions.setCurrentOfferPayload(this.getOfferRedirectionPayload(url)));
-        this.navigateTo(ScreensKeys.BottomTabs, {
-          screen: ScreensKeys.More,
-          params: {
-            screen: ScreensKeys.OfferDetail,
-            initial: false,
-          },
+        switch (screen) {
+          case NotificationScreens.OffersReceived || NotificationScreens.OffersMade:
+            this.navigateTo(ScreensKeys.BottomTabs, {
+              screen: ScreensKeys.More,
+              params: {
+                screen: ScreensKeys.PropertyOfferList,
+                initial: false,
+                params: {
+                  isReceivedFlow: screen === NotificationScreens.OffersReceived,
+                },
+              },
+            });
+            break;
+          default:
+            this.navigateTo(ScreensKeys.BottomTabs, {
+              screen: ScreensKeys.More,
+              params: {
+                screen: ScreensKeys.OfferDetail,
+                initial: false,
+              },
+            });
+            break;
+        }
+        break;
+
+      case DynamicLinkTypes.Asset:
+        store.dispatch(
+          PortfolioActions.setCurrentAsset({
+            asset_id: Number(this.getValueOfParamFromUrl(DynamicLinkParamKeys.AssetId, url)),
+            listing_id: Number(this.getValueOfParamFromUrl(DynamicLinkParamKeys.LeaseUnitId, url)),
+            assetType: DetailType.LEASE_UNIT,
+          })
+        );
+        this.navigateTo(ScreensKeys.Portfolio, {
+          screen: ScreensKeys.PropertyDetailScreen,
+          initial: false,
         });
         break;
       default:

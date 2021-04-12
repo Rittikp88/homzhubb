@@ -79,7 +79,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      offerType: props.assetCount > 0 ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE,
+      offerType: this.getInitialOfferType(),
       isOfferInfoRead: false,
       propertyListingData: [],
       offerCountData: null,
@@ -403,6 +403,12 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       { name: t('offers:offerReceived'), count: offerReceived, colorCode: theme.colors.highPriority },
       { name: t('offers:offerMade'), count: offerMade, colorCode: theme.colors.greenTint8 },
     ];
+  };
+
+  private getInitialOfferType = (): OfferType => {
+    const { route, assetCount } = this.props;
+    if (route.params) return route.params.isReceivedFlow ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE;
+    return assetCount > 0 ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE;
   };
 
   private navigateToDetail = (payload: ICurrentOffer | null, assetId: number): void => {

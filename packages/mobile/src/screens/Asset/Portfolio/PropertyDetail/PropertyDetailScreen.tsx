@@ -114,6 +114,7 @@ interface IDetailState {
   isMenuVisible: boolean;
   isDeleteProperty: boolean;
   scrollEnabled: boolean;
+  isFromTenancies: boolean | null;
 }
 
 interface IRoutes {
@@ -128,18 +129,25 @@ type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   public focusListener: any;
 
-  public state = {
-    propertyData: {} as Asset,
-    isFullScreen: false,
-    activeSlide: 0,
-    attachments: [],
-    currentIndex: 0,
-    heights: Array(Routes.length).fill(height),
-    isLoading: false,
-    isMenuVisible: false,
-    scrollEnabled: true,
-    isDeleteProperty: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    const {
+      route: { params },
+    } = props;
+    this.state = {
+      propertyData: {} as Asset,
+      isFullScreen: false,
+      activeSlide: 0,
+      attachments: [],
+      currentIndex: 0,
+      heights: Array(Routes.length).fill(height),
+      isLoading: false,
+      isMenuVisible: false,
+      scrollEnabled: true,
+      isDeleteProperty: false,
+      isFromTenancies: params?.isFromTenancies ?? null,
+    };
+  }
 
   public componentDidMount = (): void => {
     const {
@@ -188,7 +196,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { propertyData, isLoading, isMenuVisible, scrollEnabled, isDeleteProperty } = this.state;
+    const { propertyData, isLoading, isMenuVisible, scrollEnabled, isDeleteProperty, isFromTenancies } = this.state;
     if (isLoading) {
       return <Loader visible />;
     }
@@ -229,7 +237,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
               <AssetCard
                 assetData={propertyData}
                 isDetailView
-                isFromTenancies={params?.isFromTenancies ?? false}
+                isFromTenancies={isFromTenancies}
                 enterFullScreen={this.onFullScreenToggle}
                 onCompleteDetails={this.onCompleteDetails}
                 onOfferVisitPress={FunctionUtils.noop}
@@ -261,12 +269,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private renderTabView = (): React.ReactElement | null => {
-    const {
-      route: { params },
-    } = this.props;
-    const { currentIndex, heights } = this.state;
+    const { currentIndex, heights, isFromTenancies } = this.state;
 
-    if (params && params.isFromTenancies) {
+    if (isFromTenancies) {
       return null;
     }
 
@@ -324,14 +329,11 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private renderTabScene = (route: IRoutes): React.ReactElement | null => {
-    const {
-      navigation,
-      route: { params },
-      t,
-    } = this.props;
+    const { navigation, t } = this.props;
     const {
       propertyData: { id, assetStatusInfo },
       propertyData,
+      isFromTenancies,
     } = this.state;
 
     switch (route.key) {
@@ -401,7 +403,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.TENANT_HISTORY:
         return (
           <View onLayout={(e): void => this.onLayout(e, 8)}>
-            <TenantHistoryScreen isFromTenancies={params?.isFromTenancies ?? false} />
+            <TenantHistoryScreen isFromTenancies={isFromTenancies ?? false} />
           </View>
         );
       case Tabs.DETAILS:
@@ -639,6 +641,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         {
           propertyData: response,
           isLoading: false,
+          isFromTenancies: !response.isAssetOwner,
         },
         () => {
           if (info && info.leaseTransaction && info.leaseTransaction.id > 0) {
@@ -669,8 +672,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
+    const { isFromTenancies } = this.state;
     let list;
-    if (params && params.isFromTenancies) {
+    if (isFromTenancies) {
       return [];
     }
 

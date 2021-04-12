@@ -8,15 +8,29 @@ import { StoreProviderService } from '@homzhub/common/src/services/StoreProvider
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
+import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { NotificationTypes } from '@homzhub/mobile/src/services/constants';
+import { NotificationScreens, NotificationTypes } from '@homzhub/mobile/src/services/constants';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IDeviceTokenPayload, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { DetailType, IDeviceTokenPayload, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const notificationScreenMap = {
   [NotificationTypes.Chat]: ScreensKeys.ChatScreen,
   [NotificationTypes.ServiceTicket]: ScreensKeys.ServiceTicketDetail,
   [NotificationTypes.Offer]: ScreensKeys.OfferDetail,
+  [NotificationTypes.Asset]: ScreensKeys.Portfolio,
+};
+
+const notificationSubScreenMap = {
+  [NotificationScreens.OffersReceived]: ScreensKeys.PropertyOfferList,
+  [NotificationScreens.OffersMade]: ScreensKeys.PropertyOfferList,
+  [NotificationScreens.OfferDetail]: ScreensKeys.OfferDetail,
+};
+
+const notificationParamsMap = {
+  [NotificationScreens.OffersReceived]: { isReceivedFlow: true },
+  [NotificationScreens.OffersMade]: { isReceivedFlow: false },
+  [NotificationScreens.OfferDetail]: {},
 };
 
 interface INotificationData {
@@ -166,12 +180,15 @@ class NotificationService {
 
     const { deeplink_metadata } = data as INotificationData;
     const JSONDeeplinkData: INotificationData = JSON.parse(deeplink_metadata);
-    const { type } = JSONDeeplinkData;
+    const { type, screen } = JSONDeeplinkData;
 
     let navigationTab = ScreensKeys.More;
-    const params = {};
-    const screeName = notificationScreenMap[type as NotificationTypes] || ScreensKeys.ChatScreen;
+    const screenName =
+      (screen
+        ? notificationSubScreenMap[screen as NotificationScreens] || ScreensKeys.ChatScreen
+        : notificationScreenMap[type as NotificationTypes]) || ScreensKeys.ChatScreen;
 
+    const params = notificationParamsMap[screen as NotificationScreens] || {};
     const store = StoreProviderService.getStore();
 
     switch (type) {
@@ -186,7 +203,7 @@ class NotificationService {
             })
           );
 
-          NavigationService.notificationNavigation(screeName, params, navigationTab);
+          NavigationService.notificationNavigation(screenName, params, navigationTab);
         }
         break;
       case NotificationTypes.ServiceTicket:
@@ -200,7 +217,7 @@ class NotificationService {
             })
           );
 
-          NavigationService.notificationNavigation(screeName, params, navigationTab);
+          NavigationService.notificationNavigation(screenName, params, navigationTab);
         }
         break;
       case NotificationTypes.Offer:
@@ -215,11 +232,27 @@ class NotificationService {
             })
           );
 
-          NavigationService.notificationNavigation(screeName, params, navigationTab);
+          NavigationService.notificationNavigation(screenName, params, navigationTab);
+        }
+        break;
+
+      case NotificationTypes.Asset:
+        {
+          const { asset_id, lease_unit_id } = JSONDeeplinkData;
+          navigationTab = ScreensKeys.Portfolio;
+
+          store.dispatch(
+            PortfolioActions.setCurrentAsset({
+              asset_id: Number(asset_id),
+              listing_id: Number(lease_unit_id),
+              assetType: DetailType.LEASE_UNIT,
+            })
+          );
+          NavigationService.notificationNavigation(screenName, params, navigationTab);
         }
         break;
       default:
-        NavigationService.notificationNavigation(screeName, params, navigationTab);
+        NavigationService.notificationNavigation(screenName, params, navigationTab);
     }
   };
 }
