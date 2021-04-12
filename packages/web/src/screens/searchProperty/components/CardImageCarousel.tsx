@@ -33,7 +33,7 @@ const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle,
     <View style={cardImageCarouselStyle}>
       <MultiCarousel passedProps={carouselProps}>
         {imagesArray.length === 0 ? (
-          <ImagePlaceholder />
+          <ImagePlaceholder height={260} />
         ) : (
           imagesArray.map((item) => (
             <View key={item.id}>

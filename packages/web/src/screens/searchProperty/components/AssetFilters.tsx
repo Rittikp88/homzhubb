@@ -374,7 +374,6 @@ export default connect(
 const styles = StyleSheet.create({
   filtersContainer: {
     flexDirection: 'row',
-    width: 'fit-content',
   },
   propertyTypeFilterButtons: {
     width: 340,
@@ -446,7 +445,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 31,
     alignItems: 'center',
-    marginHorizontal: 8,
+    marginRight: 16,
     backgroundColor: theme.colors.lightGrayishBlue,
     borderWidth: 0,
   },

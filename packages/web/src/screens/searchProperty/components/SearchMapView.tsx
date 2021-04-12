@@ -149,7 +149,7 @@ const SearchMapView: React.FC<Props> = (props: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '45vw',
+    width: '40vw',
   },
 });
 export const mapStateToProps = (state: IState): IStateProps => {

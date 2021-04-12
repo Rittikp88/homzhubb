@@ -67,6 +67,7 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
   };
 
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTab = useDown(deviceBreakpoint.TABLET);
   const { t } = useTranslation();
   const buttonTitle = t('propertySearch:resetFilters');
   const empyStateButtonProps = (): IButtonProps => ({
@@ -136,35 +137,43 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
           <AssetFilters history={history} />
         </View>
       </View>
-      <View style={styles.sortAndToggleButtons}>
-        <View style={styles.sortByContainer}>
+      <View style={[styles.sortAndToggleButtons, isMobile && styles.sortAndToggleButtonsMobile]}>
+        <View style={[styles.sortByContainer]}>
           <Text type="small" textType="regular" style={styles.textStyle}>
             {t('propertySearch:sortBy')}
           </Text>
           <SortByFilter filters={filters} filterData={filterData} onSelectSort={onSelectSort} />
-          <Label type="large" textType="regular" style={styles.label}>
-            {t('propertySearch:filterCount', {
-              intialCount: initialCount,
-              resultLength: properties.results.length,
-              count: properties.count,
-            })}
-          </Label>
         </View>
-        <View style={styles.toggleButtons}>
-          <Icon
-            name={icons.grid}
-            onPress={toggleGridView}
-            size={22}
-            color={isListView ? theme.colors.disabled : theme.colors.primaryColor}
-            style={styles.toggleIcons}
-          />
-          <Icon
-            name={icons.doubleBar}
-            onPress={toggleListView}
-            size={22}
-            color={!isListView ? theme.colors.disabled : theme.colors.primaryColor}
-            style={styles.toggleIcons}
-          />
+        <View
+          style={[styles.toggleContainer, isTab && styles.toggleContainerTab, isMobile && styles.toggleContainerMobile]}
+        >
+          <View>
+            <Label type="large" textType="regular" style={[styles.label, isMobile && styles.labelMobile]}>
+              {t('propertySearch:filterCount', {
+                intialCount: initialCount,
+                resultLength: properties.results.length,
+                count: properties.count,
+              })}
+            </Label>
+          </View>
+          {!isMobile && (
+            <View style={styles.toggleButtons}>
+              <Icon
+                name={icons.grid}
+                onPress={toggleGridView}
+                size={22}
+                color={isListView ? theme.colors.disabled : theme.colors.primaryColor}
+                style={styles.toggleIcons}
+              />
+              <Icon
+                name={icons.doubleBar}
+                onPress={toggleListView}
+                size={22}
+                color={!isListView ? theme.colors.disabled : theme.colors.primaryColor}
+                style={styles.toggleIcons}
+              />
+            </View>
+          )}
         </View>
       </View>
       {properties.results.length > 0 ? (
@@ -200,7 +209,10 @@ const styles = StyleSheet.create({
   sortAndToggleButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 20,
+    paddingVertical: 20,
+  },
+  sortAndToggleButtonsMobile: {
+    flexDirection: 'column',
   },
   toggleButtons: {
     flexDirection: 'row',
@@ -208,11 +220,23 @@ const styles = StyleSheet.create({
   toggleIcons: {
     marginHorizontal: 10,
   },
+  toggleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '79%',
+  },
+  toggleContainerTab: {
+    width: '66%',
+  },
+  toggleContainerMobile: {
+    width: '100%',
+  },
   sortByContainer: {
     flexDirection: 'row',
   },
   searchAndFilters: {
-    paddingLeft: 25,
+    paddingLeft: 24,
     backgroundColor: theme.colors.white,
     borderRadius: 4,
   },
@@ -235,6 +259,8 @@ const styles = StyleSheet.create({
   },
   filters: {
     marginVertical: 20,
+    paddingRight: 24,
+    paddingLeft: 0,
   },
   cardMobile: {
     width: '100%',
@@ -268,6 +294,9 @@ const styles = StyleSheet.create({
   label: {
     marginLeft: 24,
     marginTop: 2,
+  },
+  labelMobile: {
+    marginLeft: 0,
   },
 });
 const mapStateToProps = (state: IState): IStateProps => {

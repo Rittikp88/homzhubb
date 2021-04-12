@@ -26,6 +26,8 @@ interface IProps {
   addressStyle: ViewStyle[];
   propertyTypeAndBadgesStyle: ViewStyle;
   detailsStyle: ViewStyle[];
+  iconStyle: ViewStyle;
+  detailContainerStyle: ViewStyle;
 }
 const PropertyCard: FC<IProps> = (props: IProps) => {
   const {
@@ -39,6 +41,8 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
     addressStyle,
     propertyTypeAndBadgesStyle,
     detailsStyle,
+    iconStyle,
+    detailContainerStyle,
   } = props;
   const history = useHistory();
   const {
@@ -96,35 +100,37 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
         cardImageStyle={cardImageStyle}
         imagesArray={attachments}
       />
-      <TouchableOpacity onPress={navigateToSearchView}>
-        <View style={detailsStyle}>
-          <View style={propertyTypeAndBadgesStyle}>
-            <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
-              {`${propertyType}`}
-            </Typography>
-            <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
+      <View style={detailContainerStyle}>
+        <TouchableOpacity onPress={navigateToSearchView}>
+          <View style={detailsStyle}>
+            <View style={propertyTypeAndBadgesStyle}>
+              <Typography variant="label" size="large" fontWeight="regular" style={styles.propertyType}>
+                {`${propertyType}`}
+              </Typography>
+              <AmenitiesShieldIconGroup onBadgePress={FunctionUtils.noop} iconSize={21} badgesInfo={badgeInfo} />
+            </View>
+            <View style={addressStyle}>
+              <Typography variant="text" size="small" fontWeight="semiBold" numberOfLines={1}>
+                {primaryAddress}
+              </Typography>
+              <Typography variant="label" size="large" numberOfLines={3}>
+                {subAddress}
+              </Typography>
+            </View>
+            <View style={priceAndAmenitiesStyle}>
+              <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
+              {amenitiesData.length > 0 && (
+                <PropertyAmenities
+                  data={amenitiesData}
+                  direction="column"
+                  containerStyle={propertyAmenitiesStyle}
+                  contentContainerStyle={iconStyle}
+                />
+              )}
+            </View>
           </View>
-          <View style={addressStyle}>
-            <Typography variant="text" size="small" fontWeight="semiBold">
-              {primaryAddress}
-            </Typography>
-            <Typography variant="label" size="large">
-              {subAddress}
-            </Typography>
-          </View>
-          <View style={priceAndAmenitiesStyle}>
-            <PricePerUnit price={price} unit={priceUnit} currency={currencyData} />
-            {amenitiesData.length > 0 && (
-              <PropertyAmenities
-                data={amenitiesData}
-                direction="column"
-                containerStyle={propertyAmenitiesStyle}
-                contentContainerStyle={{}}
-              />
-            )}
-          </View>
-        </View>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

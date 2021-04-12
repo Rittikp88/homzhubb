@@ -8,7 +8,7 @@ import SearchMapView from '@homzhub/web/src/screens/searchProperty/components/Se
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-
+// TODO : shagun - fix mobile and tab view
 interface IProps {
   isListView: boolean;
   property: AssetSearch;
@@ -36,7 +36,11 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
             data={property.results.length}
             fetchMoreData={fetchData}
             height={isDesktop && isListView ? '1200px' : '150vh'}
-            style={!isListView ? { display: 'flex', flexWrap: 'wrap', width: '88vw' } : {}}
+            style={
+              !isListView
+                ? { display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'space-between' }
+                : { display: 'flex', flexWrap: 'wrap', width: '100%' }
+            }
             hasMore={hasMore}
             limit={limit}
             loader={loader}
@@ -61,16 +65,28 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
                   }
                   cardImageStyle={isListView ? styles.cardImageStyleList : styles.cardImageStyleGrid}
                   priceUnit={transaction_type === 0 ? 'mo' : ''}
-                  propertyTypeAndBadgesStyle={styles.propertyTypeAndBadges}
+                  propertyTypeAndBadgesStyle={
+                    !isListView ? styles.propertyTypeAndBadges : styles.propertyTypeAndBadgesList
+                  }
                   priceAndAmenitiesStyle={isListView ? styles.priceAndAmenitiesList : styles.priceAndAmenitiesGrid}
-                  propertyAmenitiesStyle={styles.propertyAmenities}
-                  addressStyle={[styles.address, !isListView ? styles.addressGridView : noStyles]}
+                  propertyAmenitiesStyle={!isListView ? styles.propertyAmenities : styles.propertyAmenitiesList}
+                  addressStyle={[styles.address, !isListView ? styles.addressGridView : styles.addressListView]}
                   detailsStyle={[
                     styles.details,
                     isListView && isDesktop ? styles.detailsListView : noStyles,
                     isListView && isTab ? styles.detailsListTabView : noStyles,
                     isListView && isMobile ? styles.detailsListMobileView : noStyles,
                   ]}
+                  iconStyle={isListView ? styles.iconStyle : noStyles}
+                  detailContainerStyle={
+                    isListView
+                      ? !isMobile
+                        ? isTab
+                          ? styles.detailContainerStyleTab
+                          : styles.detailContainerStyle
+                        : styles.detailContainerStyleMobile
+                      : noStyles
+                  }
                 />
               </View>
             ))}
@@ -87,9 +103,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     width: '100%',
+    justifyContent: 'space-between',
   },
   containerList: {
-    width: '55%',
+    width: '75%',
     flexDirection: 'column',
     height: '1200px',
   },
@@ -106,25 +123,25 @@ const styles = StyleSheet.create({
     maxWidth: '100%',
   },
   cardList: {
-    width: '45vw',
+    width: '100%',
     alignItems: 'stretch',
-    paddingHorizontal: 16,
+    paddingLeft: 16,
   },
   cardListMobile: {
     width: '85vw',
   },
   cardGrid: {
     display: 'flex',
-    width: '31%',
-    marginLeft: 18,
+    width: '32%',
     alignItems: 'stretch',
     alignSelf: 'flex-start',
+    justifyContent: 'space-between',
   },
   cardGridTab: {
-    width: '47%',
+    width: '48.5%',
   },
   cardGridMobile: {
-    width: '95%',
+    width: '100%',
   },
   cardImageCarouselStyleList: {
     height: 230,
@@ -136,26 +153,24 @@ const styles = StyleSheet.create({
   },
   cardImageCarouselStyleGrid: {
     height: 210,
-    width: 340,
+    width: '100%',
     marginHorizontal: 'auto',
   },
   cardImageStyleGrid: {
     height: 210,
-    width: 340,
+    width: 347,
   },
   listView: {
     flexDirection: 'row',
   },
   cardView: {
     flexDirection: 'column',
-    minHeight: 450,
   },
 
   propertyCard: {
     backgroundColor: theme.colors.white,
     borderRadius: 4,
     padding: 10,
-    marginHorizontal: 8,
     marginVertical: 8,
   },
   priceAndAmenitiesList: {
@@ -164,36 +179,69 @@ const styles = StyleSheet.create({
   priceAndAmenitiesGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   propertyAmenities: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
+  },
+  propertyAmenitiesList: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: 8,
+    width: '70%',
   },
   propertyTypeAndBadges: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 12,
   },
+  propertyTypeAndBadgesList: {
+    marginTop: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   address: {
     marginTop: 5,
-    marginBottom: 16,
   },
   addressGridView: {
-    minHeight: 125,
+    minHeight: 106,
+    marginBottom: 16,
+  },
+  addressListView: {
+    minHeight: 106,
   },
   details: {
-    marginLeft: 16,
+    left: 2,
   },
   detailsListTabView: {
-    width: '40vw',
+    paddingLeft: 24,
+    paddingRight: 12,
+    width: '50vw',
   },
   detailsListView: {
-    width: '20vw',
+    width: '100%',
+    left: 10,
+    right: 10,
+  },
+  detailContainerStyle: {
+    width: '55%',
+  },
+  detailContainerStyleMobile: {
+    width: '95%',
+  },
+  detailContainerStyleTab: {
+    width: '55%',
   },
   detailsListMobileView: {
-    width: '60vw',
+    width: '90vw',
   },
   listViewTablet: {
     width: '100%',
   },
+  iconStyle: {
+    marginHorizontal: 0,
+  },
+  // gridViewCardStyle: ,
+  listViewCardStyle: { display: 'flex', flexWrap: 'wrap', width: '100%' },
 });

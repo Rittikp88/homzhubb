@@ -93,7 +93,6 @@ export const PropertyDetailRoutes = [
   { key: Tabs.AMENITIES, title: Tabs.AMENITIES, icon: icons.swimmingPool },
   { key: Tabs.NEIGHBOURHOOD, title: Tabs.NEIGHBOURHOOD, icon: icons.neighborhood },
   { key: Tabs.REVIEWS_RATING, title: Tabs.REVIEWS_RATING, icon: icons.reviews },
-  { key: Tabs.VIDEO, title: Tabs.VIDEO, icon: icons.youtube },
 ];
 
 // Property Detail Screen Tabs END

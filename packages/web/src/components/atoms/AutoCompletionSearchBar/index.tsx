@@ -131,7 +131,6 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
   const onLayoutChange = (e: LayoutChangeEvent): void => {
     setPopoverWidth(e.nativeEvent.layout.width);
   };
-
   const popoverContent = (): React.ReactElement => {
     return (
       <PopupMenuOptions

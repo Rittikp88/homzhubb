@@ -119,6 +119,7 @@ const GalleryView: FC<IProps> = (props: IProps) => {
               <TouchableOpacity onPress={(): void => selectedImage(item, index)}>
                 <View
                   style={[
+                    (!isTablet ? (isIPadPro ? index < 2 : index < 3) : index < 1) && styles.imageSpacing,
                     styles.imageContainer,
                     isTablet && styles.imageContainerTab,
                     isIPadPro && styles.imageIPadPro,
@@ -221,8 +222,11 @@ const styles = StyleSheet.create({
   },
   bottomView: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     marginTop: 12,
+  },
+  imageSpacing: {
+    marginRight: 12,
   },
 });
 

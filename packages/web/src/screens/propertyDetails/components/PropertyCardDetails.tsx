@@ -141,7 +141,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
             <Divider />
             <View style={styles.footer}>
               <View style={(isMobile || isTablet || isIpadPro) && styles.enquireContainer}>
-                <Button type="primary" containerStyle={styles.enquire}>
+                <Button type="primary" containerStyle={styles.enquire} disabled>
                   <Icon name={icons.envelope} size={24} color={theme.colors.primaryColor} />
                   <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleEnquire}>
                     {t('propertySearch:enquire')}
@@ -149,7 +149,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
                 </Button>
               </View>
               <View style={(isMobile || isTablet || isIpadPro) && styles.scheduleContainer}>
-                <Button type="primary" containerStyle={[styles.enquire, styles.schedule]}>
+                <Button type="primary" containerStyle={[styles.enquire, styles.schedule]} disabled>
                   <Icon name={icons.timer} size={22} color={theme.colors.white} />
                   <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleSchedule}>
                     {t('propertySearch:scheduleVisit')}
