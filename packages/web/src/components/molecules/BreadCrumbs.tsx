@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Link } from 'react-router-dom';
 import withBreadcrumbs from 'react-router-breadcrumbs-hoc';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -13,30 +13,38 @@ import { routesConfig } from './NavigationInfo/constants';
 // eslint-disable-next-line react/prop-types,@typescript-eslint/explicit-function-return-type
 const Breadcrumbs = ({ breadcrumbs }) => {
   const linkStyle = { textDecoration: 'none' };
+
+  // @ts-ignore
+  // eslint-disable-next-line react/prop-types
+  const renderBreadcrum = ({ item: { breadcrumb, match }, index }) => (
+    <View key={match.url} style={styles.breadCrumbs}>
+      <Hoverable>
+        {(isHovered: boolean): React.ReactNode => (
+          <Link to={match.url || ''} style={linkStyle}>
+            <Typography variant="label" size="regular" style={[styles.link, isHovered && styles.activeLink]}>
+              {breadcrumb}
+            </Typography>
+          </Link>
+        )}
+      </Hoverable>
+      {
+        // eslint-disable-next-line react/prop-types
+        index < breadcrumbs.length - 1 && (
+          <Icon name={icons.rightArrow} color={theme.colors.white} style={styles.dividerIcon} />
+        )
+      }
+    </View>
+  );
+
   return (
     <View style={styles.breadCrumbsContainer}>
       {
-        // @ts-ignore
-        // eslint-disable-next-line react/prop-types
-        breadcrumbs.map(({ breadcrumb, match }, index) => (
-          <View key={match.url} style={styles.breadCrumbs}>
-            <Hoverable>
-              {(isHovered: boolean): React.ReactNode => (
-                <Link to={match.url || ''} style={linkStyle}>
-                  <Typography variant="label" size="regular" style={[styles.link, isHovered && styles.activeLink]}>
-                    {breadcrumb}
-                  </Typography>
-                </Link>
-              )}
-            </Hoverable>
-            {
-              // eslint-disable-next-line react/prop-types
-              index < breadcrumbs.length - 1 && (
-                <Icon name={icons.rightArrow} color={theme.colors.white} style={styles.dividerIcon} />
-              )
-            }
-          </View>
-        ))
+        <FlatList
+          data={breadcrumbs}
+          renderItem={renderBreadcrum}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        />
       }
     </View>
   );
@@ -57,6 +65,7 @@ const styles = StyleSheet.create({
   breadCrumbsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    maxWidth: '100%',
   },
   breadCrumbs: {
     flexDirection: 'row',
