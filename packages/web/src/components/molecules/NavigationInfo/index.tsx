@@ -42,10 +42,7 @@ interface ICurrencyOption extends IPopupOptions {
 }
 
 const quickActionOptions: IQuickActions[] = [
-  { icon: icons.stackFilled, label: 'Add Property', route: RouteNames.protectedRoutes.ADD_PROPERTY },
-  { icon: icons.stackFilled, label: 'Add Records', route: RouteNames.protectedRoutes.DASHBOARD },
-  { icon: icons.stackFilled, label: 'Create Support Ticket', route: RouteNames.protectedRoutes.DASHBOARD },
-  { icon: icons.stackFilled, label: 'Create Service Ticket', route: RouteNames.protectedRoutes.DASHBOARD },
+  { icon: icons.portfolioFilled, label: 'Add Property', route: RouteNames.protectedRoutes.ADD_PROPERTY },
 ];
 
 const getCountryList = (assets: Asset[]): Country[] => {
@@ -121,40 +118,44 @@ const DashBoardActionsGrp: FC = () => {
   const selectedCountryIndex = countryList.findIndex((data) => data.id === selectedCountry);
   const countryImage = (): React.ReactElement => countryList[selectedCountryIndex].flag;
   const countryName = selectedCountry !== 0 ? countryList[selectedCountryIndex].name : t('common:all');
-
+  const isVisible = false;
   return (
     <View style={[styles.buttonsGrp, isMobile && styles.buttonsGrpMobile]}>
-      <Popover
-        forwardedRef={popupRef}
-        content={<PopupMenuOptions options={countryOptions()} onMenuOptionPress={onCountryOptionSelect} />}
-        popupProps={defaultDropDownProps('100px')}
-      >
-        <Button type="secondaryOutline" containerStyle={[styles.button, isMobile && styles.countryBtnMobile]}>
-          {selectedCountry === 0 ? (
-            <Icon name={icons.earthFilled} size={22} color={theme.colors.white} style={styles.flagStyle} />
-          ) : (
-            countryImage()
-          )}
-          {!isMobile && (
+      {isVisible && (
+        <Popover
+          forwardedRef={popupRef}
+          content={<PopupMenuOptions options={countryOptions()} onMenuOptionPress={onCountryOptionSelect} />}
+          popupProps={defaultDropDownProps('100px')}
+        >
+          <Button type="secondaryOutline" containerStyle={[styles.button, isMobile && styles.countryBtnMobile]}>
+            {selectedCountry === 0 ? (
+              <Icon name={icons.earthFilled} size={22} color={theme.colors.white} style={styles.flagStyle} />
+            ) : (
+              countryImage()
+            )}
+            {!isMobile && (
+              <Typography variant="label" size="large" style={styles.buttonTitle}>
+                {countryName}
+              </Typography>
+            )}
+            <Icon name={icons.downArrow} color={theme.colors.white} />
+          </Button>
+        </Popover>
+      )}
+      {isVisible && (
+        <Popover
+          forwardedRef={popupRef}
+          content={<PopupMenuOptions options={currencyOptions()} onMenuOptionPress={onCurrencyOptionSelect} />}
+          popupProps={defaultDropDownProps('88px')}
+        >
+          <Button type="secondaryOutline" containerStyle={styles.button}>
             <Typography variant="label" size="large" style={styles.buttonTitle}>
-              {countryName}
+              {!isMobile ? selectedCurrency?.label : selectedCurrency?.currency.currencySymbol}
             </Typography>
-          )}
-          <Icon name={icons.downArrow} color={theme.colors.white} />
-        </Button>
-      </Popover>
-      <Popover
-        forwardedRef={popupRef}
-        content={<PopupMenuOptions options={currencyOptions()} onMenuOptionPress={onCurrencyOptionSelect} />}
-        popupProps={defaultDropDownProps('88px')}
-      >
-        <Button type="secondaryOutline" containerStyle={styles.button}>
-          <Typography variant="label" size="large" style={styles.buttonTitle}>
-            {!isMobile ? selectedCurrency?.label : selectedCurrency?.currency.currencySymbol}
-          </Typography>
-          <Icon name={icons.downArrow} color={theme.colors.white} />
-        </Button>
-      </Popover>
+            <Icon name={icons.downArrow} color={theme.colors.white} />
+          </Button>
+        </Popover>
+      )}
       <View style={[styles.addBtnContainer, isMobile && styles.addBtnContainerMobile]}>
         <Popover
           forwardedRef={popupRef}

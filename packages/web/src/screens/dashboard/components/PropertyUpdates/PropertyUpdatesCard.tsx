@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ImageStyle, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -34,9 +34,6 @@ const PropertyUpdatesCard: FC<IProp> = ({ data }: IProp) => {
               {t(data.title)}
             </Text>
           </View>
-        </View>
-        <View>
-          <Icon name={icons.rightArrow} size={25} style={styles.arrow} />
         </View>
       </View>
       <Divider />

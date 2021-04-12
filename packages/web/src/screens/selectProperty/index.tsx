@@ -23,7 +23,7 @@ const SelectProperty: FC = () => {
     amenities: IAmenitiesIcons[] = [],
     attachments: Attachment[] = [],
     assetCount = 0,
-    iso2Code: string = ''
+    iso2Code = ''
   ): void => {
     const locationState = {
       propertyId,

@@ -1,27 +1,57 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useHistory } from 'react-router-dom';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import ReactTooltip from 'react-tooltip';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { IMenuItemList, MenuItemList, sideMenuItems } from '@homzhub/common/src/constants/DashBoard';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
+import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IMenuItemList, MenuItemList, sideMenuItems } from '@homzhub/common/src/constants/DashBoard';
 
 interface IFormProps {
   onItemClick: (ItemId: number) => void;
 }
 
-const SideMenu: FC<IFormProps> = (props: IFormProps) => {
+interface IMenuItem {
+  id: number;
+  name: string;
+  icon: string;
+  url: string;
+}
+
+interface IDispatchProps {
+  logout: (payload: IAuthCallback) => void;
+}
+
+type Props = IFormProps & IDispatchProps;
+
+const SideMenu: FC<Props> = (props: Props) => {
+  const { logout } = props;
   const history = useHistory();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
   const [selectedItem, setSelectedItem] = useState(1);
-  const onItemPress = (item: number): void => {
-    setSelectedItem(item);
-    NavigationUtils.navigate(history, { path: MenuItemList[item - 1].url });
+  const onItemPress = (item: IMenuItem): void => {
+    const { id } = item;
+    setSelectedItem(id);
+    if (item.name === sideMenuItems.logout) {
+      logout({
+        callback: (status: boolean): void => {
+          if (status) {
+            NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
+          }
+        },
+      });
+    } else {
+      NavigationUtils.navigate(history, { path: MenuItemList[id - 1].url });
+    }
   };
   const isSelectedItem = (id: number): boolean => selectedItem === id;
   return (
@@ -37,7 +67,7 @@ const renderMenuItem = (
   item: IMenuItemList,
   t: TFunction,
   isActive: boolean,
-  onItemPress: (item: number) => void
+  onItemPress: (item: IMenuItem) => void
 ): React.ReactNode => {
   const { menuItem, hoveredItem, activeBar, iconStyle } = styles;
   const iconColor = (isActiveColor: boolean): string => {
@@ -56,7 +86,7 @@ const renderMenuItem = (
     clearTimeout(setTooltipTimeout);
   };
 
-  const onMenuItemPress = (): void => onItemPress(item.id);
+  const onMenuItemPress = (): void => onItemPress(item);
 
   return (
     <Hoverable onHoverOut={clearTooltipTimeout} key={item.id}>
@@ -112,5 +142,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 'auto',
   },
 });
-
-export default SideMenu;
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { logout } = UserActions;
+  return bindActionCreators(
+    {
+      logout,
+    },
+    dispatch
+  );
+};
+export default connect(null, mapDispatchToProps)(SideMenu);

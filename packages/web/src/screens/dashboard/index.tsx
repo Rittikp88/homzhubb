@@ -1,8 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -13,8 +12,6 @@ import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
-import InvestmentsCarousel from '@homzhub/web/src/screens/dashboard/components/InvestmentsCarousel';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 import PropertyUpdates from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
@@ -30,6 +27,7 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 const Dashboard: FC = () => {
   const history = useHistory();
   const notMobile = useUp(deviceBreakpoint.TABLET);
+  const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const selectedCountry: number = useSelector(UserSelector.getUserCountryCode);
@@ -77,7 +75,10 @@ const Dashboard: FC = () => {
     getPropertyMetrics((response) => setPropertyMetrics(response)).then();
     getVacantPropertyDetails((response) => setVacantProperty(response)).then();
   }, [dispatch, isLoggedIn]);
-
+  const bannerImage = {
+    height: 354,
+    width: 496,
+  };
   const PendingPropertyAndUserSubscriptionComponent = (): React.ReactElement => (
     <>
       <PendingPropertiesCard
@@ -86,7 +87,11 @@ const Dashboard: FC = () => {
         onSelectAction={handleActionSelection}
         onViewProperty={onViewProperty}
       />
-      <UserSubscriptionPlan onApiFailure={FunctionUtils.noop} />
+      {isDesktop && (
+        <View style={styles.bannerStyle}>
+          <Image source={require('@homzhub/common/src/assets/images/InfoBanner.svg')} style={bannerImage} />
+        </View>
+      )}
     </>
   );
   return (
@@ -102,7 +107,6 @@ const Dashboard: FC = () => {
         <PendingPropertyAndUserSubscriptionComponent />
       )}
       <VacantProperties data={vacantProperty} />
-      <InvestmentsCarousel />
       <MarketTrendsCarousel />
     </View>
   );
@@ -148,5 +152,10 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+  },
+  bannerStyle: {
+    width: '40vw',
+    height: '100%',
+    paddingTop: '2%',
   },
 });

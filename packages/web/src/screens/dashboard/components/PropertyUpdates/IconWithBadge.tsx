@@ -19,13 +19,13 @@ interface IProps {
 }
 
 const IconWithBadge = (props: IProps): React.ReactElement => {
-  const { containerStyle, label, count, icon, badgeColor } = props;
+  const { containerStyle, label, icon, badgeColor } = props;
   const isTablet = useDown(deviceBreakpoint.TABLET);
   return (
     <View style={containerStyle}>
       <View style={styles.iconNotification}>
         <Icon name={icon} size={20} style={styles.icon} />
-        <Badge title={`${count}`} badgeColor={badgeColor} badgeStyle={styles.badge} />
+        <Badge title="&mdash;" badgeColor={badgeColor} badgeStyle={styles.badge} />
       </View>
       {!isTablet && (
         <Label type="regular" textType="regular" minimumFontScale={0.5} style={styles.label}>

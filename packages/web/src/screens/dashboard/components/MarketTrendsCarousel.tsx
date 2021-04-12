@@ -23,7 +23,7 @@ const MarketTrendsCarousel: FC = () => {
   if (total <= 0) {
     return null;
   }
-
+  const isVisible = false;
   return (
     <View style={[styles.carouselContainer, isMobile && styles.carouselContainerMobile]}>
       <View style={styles.titleContainer}>
@@ -31,11 +31,13 @@ const MarketTrendsCarousel: FC = () => {
         <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.title}>
           Market Trends
         </Typography>
-        <TouchableWithoutFeedback>
-          <Typography variant="text" size="small" fontWeight="regular" style={styles.viewAll}>
-            View all
-          </Typography>
-        </TouchableWithoutFeedback>
+        {isVisible && (
+          <TouchableWithoutFeedback>
+            <Typography variant="text" size="small" fontWeight="regular" style={styles.viewAll}>
+              View all
+            </Typography>
+          </TouchableWithoutFeedback>
+        )}
       </View>
       <MultiCarousel>
         {marketTrends.results.map((trend) => (

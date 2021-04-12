@@ -17,9 +17,9 @@ const LatestUpdates: FC<IProps> = (props: IProps) => {
   const { propertyDetailTab, propertyVisitsData } = props;
 
   const { upcomingVisits, missedVisits, completedVisits } = propertyVisitsData;
-  const totalOffers = 3000;
-  const highestOffer = 2000;
-  const lowestOffer = 1200;
+  const totalOffers = 0;
+  const highestOffer = 0;
+  const lowestOffer = 0;
 
   return (
     <>

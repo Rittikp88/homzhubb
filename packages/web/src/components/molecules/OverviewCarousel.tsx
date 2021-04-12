@@ -96,7 +96,7 @@ const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement 
       {(isHovered: boolean): React.ReactNode => (
         <TouchableOpacity activeOpacity={100} onPress={onCardSelect} style={{ padding: 0, margin: 0 }}>
           <OverviewCard
-            imageUri="https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg"
+            icon={icons.portfolioFilled}
             count={data.count}
             title={data.label}
             isActive={isActive}
