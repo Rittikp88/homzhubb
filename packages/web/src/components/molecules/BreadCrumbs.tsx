@@ -6,6 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
+import { routesConfig } from './NavigationInfo/constants';
 
 // TODO : (bishal) add types here
 // @ts-ignore
@@ -63,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withBreadcrumbs()(Breadcrumbs);
+export default withBreadcrumbs(routesConfig)(Breadcrumbs);

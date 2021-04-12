@@ -62,12 +62,12 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
 
   public async componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IPaymentState>): Promise<void> {
     const { valueAddedServices, goBackToService } = this.props;
-
     if (isEqual(prevProps.valueAddedServices, valueAddedServices)) {
       return;
     }
 
     if (goBackToService && valueAddedServices.filter((service) => service.value).length === 0) {
+      this.getOrderSummary();
       goBackToService();
       return;
     }
@@ -285,9 +285,11 @@ export default withTranslation()(PropertyPayment);
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     backgroundColor: theme.colors.white,
     paddingVertical: 16,
     height: PlatformUtils.isWeb() ? 'max-content' : 'auto',
+    marginHorizontal: 16,
   },
   payButton: {
     marginHorizontal: 16,
@@ -335,11 +337,11 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint10,
   },
   emptyView: {
-    paddingHorizontal: 16,
     backgroundColor: theme.colors.white,
     alignItems: 'center',
     textAlign: 'center',
     height: '50%',
     justifyContent: 'center',
+    flex: 1,
   },
 });

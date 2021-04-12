@@ -262,6 +262,7 @@ const styles = StyleSheet.create({
   feeContent: {
     flexDirection: PlatformUtils.isMobile() ? 'column' : 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   mainLabel: {
     marginVertical: 4,

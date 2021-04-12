@@ -7,11 +7,14 @@ import { IBadgeInfo } from '@homzhub/mobile/src/navigation/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
+import { Image } from '@homzhub/common/src/components/atoms/Image';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { IAmenitiesData, PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -36,6 +39,8 @@ interface IProps {
   stepIndicatorSeparatorStyle?: StyleProp<ViewStyle>;
   primaryAddressTextStyles?: ITypographyProps;
   subAddressTextStyles?: ITypographyProps;
+  attachments?: Attachment[];
+  topNode?: React.ReactElement;
 }
 
 export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
@@ -59,6 +64,8 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     stepIndicatorSeparatorStyle,
     subAddressTextStyles,
     primaryAddressTextStyles,
+    attachments,
+    topNode,
   } = props;
 
   const { width } = useViewPort();
@@ -131,42 +138,69 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.topView}>
-        <Label type="large" textType="regular" style={styles.propertyTypeStyle}>
-          {propertyType}
-        </Label>
-        {icon && <Icon name={icon} size={23} color={blue} onPress={onEditPress} />}
-        {(selectedPan || badgeInfo) && (
-          <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />
-        )}
+      {topNode && topNode}
+      <View style={styles.propertyDetails}>
+        {!isMobile && attachments && renderPropertyImage(attachments)}
+        <View style={styles.propertyDetailsWrapper}>
+          <View style={styles.topView}>
+            <Label type="large" textType="regular" style={styles.propertyTypeStyle}>
+              {propertyType}
+            </Label>
+            {icon && <Icon name={icon} size={23} color={blue} onPress={onEditPress} />}
+            {(selectedPan || badgeInfo) && (
+              <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />
+            )}
+          </View>
+          <PropertyAddressCountry
+            primaryAddress={primaryAddress}
+            subAddress={subAddress}
+            countryFlag={countryFlag}
+            containerStyle={styles.addressView}
+            primaryAddressTextStyles={primaryAddressTextStyles}
+            subAddressTextStyles={subAddressTextStyles}
+          />
+          {amenities && (
+            <PropertyAmenities
+              labelStyles={subAddressTextStyles}
+              containerStyle={styles.amenities}
+              contentContainerStyle={styles.amenitiesContentStyle}
+              data={amenities}
+              direction="row"
+            />
+          )}
+        </View>
       </View>
-      <PropertyAddressCountry
-        primaryAddress={primaryAddress}
-        subAddress={subAddress}
-        countryFlag={countryFlag}
-        containerStyle={styles.addressView}
-        primaryAddressTextStyles={primaryAddressTextStyles}
-        subAddressTextStyles={subAddressTextStyles}
-      />
-      {amenities && (
-        <PropertyAmenities
-          labelStyles={subAddressTextStyles}
-          containerStyle={styles.amenities}
-          contentContainerStyle={styles.amenitiesContentStyle}
-          data={amenities}
-          direction="row"
+      {isTablet && (
+        <FlatList
+          keyExtractor={(step): string => step}
+          data={steps}
+          renderItem={renderIndicator}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          ItemSeparatorComponent={renderSeparator}
+          style={[styles.listStyle, stepContainerStyle]}
         />
       )}
-      <FlatList
-        keyExtractor={(step): string => step}
-        data={steps}
-        renderItem={renderIndicator}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        ItemSeparatorComponent={renderSeparator}
-        style={[styles.listStyle, stepContainerStyle]}
-      />
     </View>
+  );
+};
+
+const renderPropertyImage = (items: Attachment[]): React.ReactElement => {
+  const data: Attachment | undefined = items.find(($0) => $0.mediaType === 'IMAGE');
+  return (
+    <>
+      {data ? (
+        <Image
+          source={{
+            uri: data.link,
+          }}
+          style={styles.propertyImage}
+          resizeMode="contain"
+        />
+      ) : (
+        <ImagePlaceholder containerStyle={styles.imagePlaceHolder} />
+      )}
+    </>
   );
 };
 
@@ -175,6 +209,25 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
+  },
+  propertyDetailsWrapper: {
+    flex: 1,
+  },
+  propertyDetails: {
+    width: '100%',
+    flexDirection: 'row',
+  },
+  propertyImage: {
+    borderRadius: 4,
+    overflow: 'hidden',
+    marginRight: 16,
+    backgroundColor: theme.colors.darkTint1,
+  },
+  imagePlaceHolder: {
+    minHeight: 200,
+    backgroundColor: theme.colors.disabled,
+    marginRight: 16,
+    paddingHorizontal: 10,
   },
   addressView: {
     marginVertical: 6,

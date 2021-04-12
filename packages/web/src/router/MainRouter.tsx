@@ -7,12 +7,17 @@ import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
 import PropertyDetails from '@homzhub/web/src/screens/propertyDetails';
 import SearchProperty from '@homzhub/web/src/screens/searchProperty';
+import ValueAddedServices from '@homzhub/web/src/screens/valueAddedServices';
+import SelectProperty from '@homzhub/web/src/screens/selectProperty';
+import SelectServices from '@homzhub/web/src/screens/selectServices';
 import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
 
+// Lazy imports
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
 const PropertyView = lazy(() => import('@homzhub/common/src/components/organisms/AddPropertyView'));
+
 export const MainRouter = (): React.ReactElement => {
   const {
     DASHBOARD,
@@ -25,6 +30,9 @@ export const MainRouter = (): React.ReactElement => {
     SEARCH_PROPERTY,
     PROPERTY_VIEW,
     PROPERTY_SELECTED,
+    VALUE_ADDED_SERVICES,
+    SELECT_PROPERTY,
+    SELECT_SERVICES,
   } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
@@ -41,6 +49,9 @@ export const MainRouter = (): React.ReactElement => {
         <Route exact path={PROPERTY_DETAIL} component={PropertyDetails} />
         <Route exact path={SEARCH_PROPERTY} component={SearchProperty} />
         <Route exact path={PROPERTY_VIEW} component={PropertyView} />
+        <Route exact path={SELECT_PROPERTY} component={SelectProperty} />
+        <Route exact path={SELECT_SERVICES} component={SelectServices} />
+        <Route exact path={VALUE_ADDED_SERVICES} component={ValueAddedServices} />
         <Route exact path={PROPERTY_SELECTED} component={PropertyDetailsOwner} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>

@@ -1,6 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import Script from 'react-load-script';
 import { useHistory } from 'react-router-dom';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -17,9 +16,6 @@ import { AddPropertyContext } from '@homzhub/web/src/screens/addProperty/AddProp
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import AddPropertyLocation from '@homzhub/web/src/screens/addPropertyLocation';
 import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropertyView';
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
@@ -38,23 +34,6 @@ export enum AddPropertyStack {
   PropertyDetailsMapScreen,
   AddPropertyViewScreen,
 }
-
-export const AddPropertyActionsGrp: FC = () => {
-  const { t } = useTranslation();
-  const styles = AddPropertyActionStyles;
-  const { setGoBackClicked } = useContext(AppLayoutContext);
-  const onGoBackPress = (): void => {
-    setGoBackClicked(true);
-  };
-  return (
-    <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={onGoBackPress}>
-      <Icon name={icons.dartBack} color={theme.colors.white} style={styles.buttonIconRight} />
-      <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
-        {t('backText')}
-      </Typography>
-    </Button>
-  );
-};
 
 const AddProperty: FC = () => {
   const history = useHistory();
@@ -203,29 +182,7 @@ const AddProperty: FC = () => {
     </AddPropertyContext.Provider>
   );
 };
-const AddPropertyActionStyles = StyleSheet.create({
-  buttonIconRight: {
-    marginRight: 8,
-  },
-  button: {
-    borderColor: theme.colors.subHeader,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginLeft: 16,
-    width: 'max-content',
-    backgroundColor: theme.colors.subHeader,
-  },
-  addBtn: {
-    paddingHorizontal: 24,
-    marginLeft: 0,
-  },
-  buttonBlueTitle: {
-    color: theme.colors.white,
-    marginRight: 8,
-  },
-});
+
 const AddPropertyStyles = StyleSheet.create({
   container: {
     flex: 1,

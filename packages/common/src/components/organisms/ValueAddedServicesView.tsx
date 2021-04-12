@@ -8,7 +8,7 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import CardWithCheckbox from '@homzhub/mobile/src/components/molecules/CardWithCheckbox';
+import CardWithCheckbox from '@homzhub/mobile/src/components/molecules/CardWithCheckbox'; // TODO (Shikha): move to common
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
@@ -24,6 +24,7 @@ interface IOwnProps extends WithTranslation {
   lastVisitedStep?: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
   buttonStyle?: StyleProp<ViewStyle>;
+  searchStyle?: StyleProp<ViewStyle>;
   isDesktop?: boolean;
   isMobile?: boolean;
   isTablet?: boolean;
@@ -44,6 +45,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
       valueAddedServices,
       containerStyle,
       buttonStyle,
+      searchStyle,
       t,
       isDesktop,
       isMobile,
@@ -66,7 +68,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
             placeholder={t('assetDashboard:searchByKeyword')}
             value={searchString}
             updateValue={this.updateSearchString}
-            containerStyle={styles.searchStyle}
+            containerStyle={[styles.searchStyle, searchStyle]}
           />
           <ScrollView>
             {this.dynamicSearch().length > 0 ? (
@@ -167,7 +169,7 @@ export { valueAddedServicesView as ValueAddedServicesView };
 
 const styles = StyleSheet.create({
   container: {
-    flex: PlatformUtils.isWeb() ? 0.9 : 0,
+    flex: PlatformUtils.isWeb() ? 1 : 0,
     padding: theme.layout.screenPadding,
     backgroundColor: theme.colors.white,
     height: PlatformUtils.isWeb() ? 'auto' : 'auto',

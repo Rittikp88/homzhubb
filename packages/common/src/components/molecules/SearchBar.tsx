@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.secondaryColor,
   },
   textInput: {
+    marginLeft: 16,
     flex: 1,
     color: theme.colors.darkTint1,
   },

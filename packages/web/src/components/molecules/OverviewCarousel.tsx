@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ImageStyle, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
 import { cloneDeep } from 'lodash';
@@ -7,9 +7,9 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { ImageRound } from '@homzhub/common/src/components/atoms/Image';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable, MultiCarousel, NextPrevBtn } from '@homzhub/web/src/components';
+import OverviewCard from '@homzhub/web/src/components/molecules//OverviewCard';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -91,41 +91,18 @@ interface ICardProps {
 }
 
 const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement => {
-  const styles = cardStyle(data.colorCode);
   return (
     <Hoverable>
       {(isHovered: boolean): React.ReactNode => (
-        <TouchableOpacity
-          activeOpacity={100}
-          onPress={onCardSelect}
-          style={[styles.card, (isHovered || isActive) && styles.cardActive]}
-        >
-          <ImageRound
-            style={styles.roundIcon as ImageStyle}
-            size={54}
-            source={{
-              uri:
-                'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
-            }}
+        <TouchableOpacity activeOpacity={100} onPress={onCardSelect} style={{ padding: 0, margin: 0 }}>
+          <OverviewCard
+            imageUri="https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg"
+            count={data.count}
+            title={data.label}
+            isActive={isActive}
+            isHovered={isHovered}
+            activeColor={data.colorCode}
           />
-          <View>
-            <Typography
-              variant="text"
-              size="large"
-              fontWeight="semiBold"
-              style={[styles.text, (isHovered || isActive) && styles.activeText]}
-            >
-              {data.count}
-            </Typography>
-            <Typography
-              variant="text"
-              size="small"
-              fontWeight="regular"
-              style={[styles.text, (isHovered || isActive) && styles.activeText]}
-            >
-              {data.label}
-            </Typography>
-          </View>
         </TouchableOpacity>
       )}
     </Hoverable>
@@ -291,44 +268,5 @@ const CarouselResponsive = {
     slidesToSlide: 1,
   },
 };
-interface ICardStyle {
-  card: ViewStyle;
-  text: ViewStyle;
-  activeText: ViewStyle;
-  cardActive: ViewStyle;
-  roundIcon: ImageStyle;
-}
 
-const cardStyle = (activeColor: string): StyleSheet.NamedStyles<ICardStyle> =>
-  StyleSheet.create<ICardStyle>({
-    card: {
-      alignItems: 'center',
-      flexDirection: 'row',
-      margin: 8,
-      justifyContent: 'center',
-      minHeight: 72,
-      borderRadius: 4,
-      shadowOpacity: 0.08,
-      shadowOffset: {
-        width: 0,
-        height: 0,
-      },
-      shadowRadius: 8,
-      shadowColor: theme.colors.shadow,
-      backgroundColor: theme.colors.white,
-    },
-    text: {
-      color: theme.colors.darkTint3,
-    },
-    activeText: {
-      color: theme.colors.white,
-    },
-    cardActive: {
-      backgroundColor: activeColor,
-      color: theme.colors.white,
-    },
-    roundIcon: {
-      marginRight: 8,
-    },
-  });
 export default OverviewCarousel;

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +6,7 @@ import { uniqBy } from 'lodash';
 import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,13 +23,14 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { pageTitles } from '@homzhub/web/src/components/molecules/NavigationInfo/constants';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
-import { AddPropertyActionsGrp } from '@homzhub/web/src/screens/addProperty';
 
 const humanize = (str: string): string => {
   const splicedStr = str.split('/');
-  const lastIndex = splicedStr.length - 1;
-  return splicedStr[lastIndex].replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
+  const page = splicedStr[splicedStr.length - 1];
+  if (pageTitles[page]) return pageTitles[page];
+  return page.replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
 };
 
 interface IQuickActions extends IPopupOptions {
@@ -171,6 +173,23 @@ const DashBoardActionsGrp: FC = () => {
   );
 };
 
+const GoBackAction: FC = () => {
+  const { t } = useTranslation();
+  const styles = goBackActionStyles;
+  const { setGoBackClicked } = useContext(AppLayoutContext);
+  const onGoBackPress = (): void => {
+    setGoBackClicked(true);
+  };
+  return (
+    <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={onGoBackPress}>
+      <Icon name={icons.dartBack} color={theme.colors.white} style={styles.buttonIconRight} />
+      <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
+        {t('backText')}
+      </Typography>
+    </Button>
+  );
+};
+
 // todo: replace dummy data with actual data
 export const NavigationInfo: FC = () => {
   const location = useLocation();
@@ -179,8 +198,10 @@ export const NavigationInfo: FC = () => {
   const renderNavInfo = (): React.ReactElement => {
     const { protectedRoutes } = RouteNames;
     switch (location.pathname) {
+      case protectedRoutes.SELECT_SERVICES:
+        return <GoBackAction />;
       case protectedRoutes.ADD_PROPERTY:
-        return <AddPropertyActionsGrp />;
+        return <GoBackAction />;
       case protectedRoutes.DASHBOARD:
         return <DashBoardActionsGrp />;
       default:
@@ -204,6 +225,30 @@ export const NavigationInfo: FC = () => {
     </View>
   );
 };
+
+const goBackActionStyles = StyleSheet.create({
+  buttonIconRight: {
+    marginRight: 8,
+  },
+  button: {
+    borderColor: theme.colors.subHeader,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    marginLeft: 16,
+    width: 'max-content',
+    backgroundColor: theme.colors.subHeader,
+  },
+  addBtn: {
+    paddingHorizontal: 24,
+    marginLeft: 0,
+  },
+  buttonBlueTitle: {
+    color: theme.colors.white,
+    marginRight: 8,
+  },
+});
 
 const dashBoardActionStyles = StyleSheet.create({
   buttonsGrp: {
