@@ -6,8 +6,8 @@ import { useSelector } from 'react-redux';
 import { Marker } from '@react-google-maps/api';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
+import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
+import { useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -20,13 +20,14 @@ import { NeighborhoodTabs, PLACES_DATA } from '@homzhub/common/src/constants/Ass
 import { PlaceTypes } from '@homzhub/common/src/services/GooglePlaces/constants';
 import { PointOfInterest } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { school } from '@homzhub/web/src/screens/propertyDetails/components/mockData';
 
 type Props = {};
 
 const Neighbourhood: React.FC<Props> = (props: Props) => {
   const { t } = useTranslation();
   const [hasScriptLoaded, setHasScriptLoaded] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,no-unused-vars
+  const [map, setMap] = useState<google.maps.Map | null>(null);
   const asset = useSelector(AssetSelectors.getAsset);
   const metricSystem = useSelector(UserSelector.getMetricSystem);
   // TODO: (Lakshit) - Remove this comment once isApiActive is used
@@ -35,18 +36,13 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
   const [selectedTab, setSelectedTab] = useState(NeighborhoodTabs.Nearby);
 
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  const isTablet = useOnly(deviceBreakpoint.TABLET);
-  const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
+  const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const [selectedPlaceType, setSelectedPlaceType] = useState<PlaceTypes>(
     Object.values(PLACES_DATA[NeighborhoodTabs.Nearby])[0].key
   );
   // TODO: Selected Marker Will Work when places API will be functional
   const [selectedPlaceId, setSelectedPlaceId] = useState<string>('');
-  const [pointsOfInterest, setPointsOfInterest] = useState<PointOfInterest[]>(school);
-
-  const onPlaceTypeChange = (argSelectedPlaceType: PlaceTypes): void => {
-    setSelectedPlaceType(argSelectedPlaceType);
-  };
+  const [pointsOfInterest, setPointsOfInterest] = useState<PointOfInterest[]>([]);
 
   const onPoiPress = (poi: PointOfInterest): void => {
     const { placeId } = poi;
@@ -54,17 +50,42 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
   };
 
   useEffect(() => {
-    fetchPOIs().then();
-  }, [selectedTab, selectedPlaceType]);
+    getNearbySearch(selectedPlaceType);
+  }, [map, selectedTab]);
 
-  const fetchPOIs = async (): Promise<void> => {
+  const handleOnMapLoad = (mapInstance: google.maps.Map): void => {
+    setMap(mapInstance);
+  };
+
+  const getNearbySearch = (argSelectedPlaceType: PlaceTypes): void => {
+    if (map) {
+      const latlng = new google.maps.LatLng(LatLng);
+      const request = {
+        location: latlng,
+        radius: 5000,
+        type: argSelectedPlaceType,
+      };
+      const service = new google.maps.places.PlacesService(map);
+      service.nearbySearch(request, (results, status) => {
+        setSelectedPlaceType(argSelectedPlaceType);
+        nearbyCallback(results, status);
+      });
+    }
+  };
+
+  const nearbyCallback = (
+    results: google.maps.places.PlaceResult[],
+    status: google.maps.places.PlacesServiceStatus
+  ): void => {
     if (!asset) return;
-    setIsApiActive(true);
     const { assetLocation } = asset;
     try {
-      const response = await GooglePlacesService.getPOIs(assetLocation, selectedPlaceType, undefined, metricSystem);
-      setPointsOfInterest(response);
-      setIsApiActive(false);
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        setPointsOfInterest(ResponseHelper.transformPOIsWeb(results, assetLocation, metricSystem));
+        setIsApiActive(false);
+      } else {
+        setPointsOfInterest([]);
+      }
     } catch (e) {
       setIsApiActive(false);
       AlertHelper.error({ message: e.message });
@@ -77,7 +98,6 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
       setSelectedPlaceType(Object.values(PLACES_DATA[argSelectedTab])[0].key);
     }
     setSelectedTab(argSelectedTab);
-    fetchPOIs().then();
   };
 
   const renderMarkers = (): React.ReactNode => {
@@ -107,33 +127,39 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
   };
 
   if (!asset) return null;
-  const { id } = asset;
+  const {
+    id,
+    assetLocation: { latitude, longitude },
+  } = asset;
+  const LatLng = { lat: latitude, lng: longitude };
   return (
     <View style={[styles.flexOne, !isDesktop && styles.flexColumn]}>
       <View style={[styles.exploreSection, !isDesktop && styles.exploreSectionTablet]}>
         {isDesktop && (
           <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.titleText}>
-            {t('Explore Neighbourhood')}
+            {t('assetDescription:exploreNeighbourhood')}
           </Typography>
         )}
         <View style={[styles.box, !isDesktop && styles.boxTablet]}>
           {isDesktop && (
-            <View style={[styles.floatingTab, isTablet && styles.floatingTablet, isMobile && styles.floatingTabMobile]}>
-              <SelectionPicker
-                data={[
-                  { title: t('nearby'), value: NeighborhoodTabs.Nearby },
-                  { title: t('commute'), value: NeighborhoodTabs.Commute },
-                ]}
-                selectedItem={[selectedTab]}
-                onValueChange={onTabChange}
-              />
+            <View style={styles.floatingTabWrapper}>
+              <View style={styles.floatingTab}>
+                <SelectionPicker
+                  data={[
+                    { title: t('assetDescription:nearby'), value: NeighborhoodTabs.Nearby },
+                    { title: t('assetDescription:commute'), value: NeighborhoodTabs.Commute },
+                  ]}
+                  selectedItem={[selectedTab]}
+                  onValueChange={onTabChange}
+                />
+              </View>
             </View>
           )}
           <ExploreSections
             placeTypes={Object.values(PLACES_DATA[selectedTab])}
             // @ts-ignore
             selectedPlaceType={PLACES_DATA[selectedTab][selectedPlaceType]}
-            onPlaceTypePress={onPlaceTypeChange}
+            onPlaceTypePress={getNearbySearch}
             selectedPoiId={selectedPlaceId}
             pointsOfInterest={pointsOfInterest}
             onPoiPress={onPoiPress}
@@ -148,18 +174,20 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
           fontWeight="semiBold"
           style={[styles.titleText, !isDesktop && styles.titleTextTablet]}
         >
-          {t('Map View')}
+          {t('assetDescription:mapView')}
         </Typography>
         {!isDesktop && (
-          <View style={[styles.selectionPickerMapTablet, isMobile && styles.selectionPickerMapMobile]}>
-            <SelectionPicker
-              data={[
-                { title: t('nearby'), value: NeighborhoodTabs.Nearby },
-                { title: t('commute'), value: NeighborhoodTabs.Commute },
-              ]}
-              selectedItem={[selectedTab]}
-              onValueChange={onTabChange}
-            />
+          <View style={styles.floatingTabWrapper}>
+            <View style={[styles.selectionPickerMapTablet, isMobile && styles.selectionPickerMapMobile]}>
+              <SelectionPicker
+                data={[
+                  { title: t('assetDescription:nearby'), value: NeighborhoodTabs.Nearby },
+                  { title: t('assetDescription:commute'), value: NeighborhoodTabs.Commute },
+                ]}
+                selectedItem={[selectedTab]}
+                onValueChange={onTabChange}
+              />
+            </View>
           </View>
         )}
         <Script
@@ -167,9 +195,9 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
           onLoad={(): void => setHasScriptLoaded(true)}
         />
         {hasScriptLoaded && (
-          <GoogleMapView center={{ lat: 21.0160854, lng: 79.0089961 }} zoom={18}>
+          <GoogleMapView center={LatLng} zoom={isMobile ? 12 : 13} onMapLoadCallBack={handleOnMapLoad}>
             <Marker
-              position={{ lat: 21.0160854, lng: 79.0089961 }}
+              position={LatLng}
               key={id}
               icon={{
                 path:
@@ -199,13 +227,19 @@ const styles = StyleSheet.create({
   flexColumn: {
     flexDirection: 'column-reverse',
   },
+  floatingTabWrapper: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 999,
+  },
   floatingTab: {
     alignItems: 'center',
     left: 0,
     right: 0,
     marginHorizontal: 12,
     marginVertical: 18,
-    width: 500,
+    width: '98%',
   },
   floatingTabMobile: {
     width: 200,
@@ -224,7 +258,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   exploreSection: {
-    width: '50%',
+    width: '39%',
     marginRight: 24,
   },
   exploreSectionTablet: {
@@ -235,30 +269,29 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.disabled,
     padding: 12,
     marginTop: 6,
+    height: 500,
   },
   boxTablet: {
     marginBottom: 12,
     border: 'none',
+    height: 400,
   },
   mapView: {
-    width: '46%',
+    width: '60%',
   },
   mapViewTablet: {
     position: 'relative',
     width: '98%',
-    height: 500,
+    height: 400,
   },
   selectionPickerMapMobile: {
     marginTop: 77,
-    width: 260,
-    left: 16,
+    width: '96%',
   },
   selectionPickerMapTablet: {
     position: 'absolute',
     marginTop: 80,
     width: 350,
-    left: 140,
-    zIndex: 999,
   },
 });
 

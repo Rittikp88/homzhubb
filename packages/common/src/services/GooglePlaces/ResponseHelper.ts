@@ -38,6 +38,29 @@ class ResponseHelper {
     });
   };
 
+  public transformPOIsWeb = (
+    pointsOfInterest: any,
+    originPoint: Coordinate,
+    metricSystem: MetricSystems
+  ): PointOfInterest[] => {
+    return pointsOfInterest.slice(0, LIMIT).map((POI: any) => {
+      const {
+        place_id,
+        name,
+        geometry: { location },
+      } = POI;
+      const latitude = location.lat();
+      const longitude = location.lng();
+      return {
+        name,
+        placeId: place_id,
+        latitude,
+        longitude,
+        distanceFromOrigin: this.haversineDistance(originPoint, { latitude, longitude }, metricSystem),
+      } as PointOfInterest;
+    });
+  };
+
   private haversineDistance = (coordOrigin: Coordinate, coordDest: Coordinate, metricSystem: MetricSystems): number => {
     const { latitude: origLat, longitude: origLng } = coordOrigin;
     const { latitude: destLat, longitude: destLng } = coordDest;

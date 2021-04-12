@@ -12,6 +12,7 @@ import QuestionCards from '@homzhub/web/src/screens/faq/components/questionCard'
 import ContactUs from '@homzhub/web/src/screens/faq/components/contactUs';
 import { IFAQCategory, IFAQs } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import LandingNavBar from '@homzhub/web/src/screens/landing/components/LandingNavBar';
 
 const FAQ: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -74,6 +75,7 @@ const FAQ: FC = () => {
   };
   return (
     <View style={styles.container}>
+      <LandingNavBar />
       <FAQBanner />
       <View style={styles.upperBackground}>
         <SearchBarButton

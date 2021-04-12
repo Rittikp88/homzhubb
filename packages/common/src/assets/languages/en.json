@@ -720,7 +720,8 @@
     "positive": "Positive",
     "critical": "Critical",
     "shareProperty": "Share Property",
-    "reviews": "Reviews"
+    "reviews": "Reviews",
+    "mapView": "Map View"
   },
   "assetDashboard": {
     "notification": "Notifications",
