@@ -140,13 +140,24 @@ export class MobileVerificationScreen extends Component<Props, IVerificationStat
     if (isFromLogin) {
       if (provider === SocialAuthKeys.Google) {
         title = t('loginWithGoogle');
+      } else if (provider === SocialAuthKeys.Apple) {
+        title = t('loginWithApple');
       } else {
         title = t('loginWithFacebook');
       }
     }
 
-    if (!isFromLogin && provider === SocialAuthKeys.Google) {
-      title = t('signUpWithGoogle');
+    if (!isFromLogin) {
+      switch (provider) {
+        case SocialAuthKeys.Google:
+          title = t('signUpWithGoogle');
+          break;
+        case SocialAuthKeys.Apple:
+          title = t('signUpWithApple');
+          break;
+        default:
+          title = t('signUpWithFacebook');
+      }
     }
 
     return {

@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
+import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ICounterParam, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   propertyOffer: Asset;
@@ -28,6 +32,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
 
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
+  const [pastOffers, setPastOffers] = useState<Offer[]>([]);
 
   const compareData = (): IOfferCompare => {
     if (leaseTerm) {
@@ -44,7 +49,26 @@ const OfferMade = (props: IProps): React.ReactElement => {
     };
   };
 
+  const handlePastOffer = async (payload: ICounterParam): Promise<void> => {
+    try {
+      const response = await OffersRepository.getCounterOffer(payload);
+      setPastOffers(response);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
   const handleActions = (action: OfferAction): void => {
+    if (offer) {
+      const payload = {
+        type: propertyOffer.leaseTerm ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+        listingId: propertyOffer.leaseTerm ? propertyOffer.leaseTerm.id : propertyOffer.saleTerm?.id ?? 0,
+      };
+      dispatch(OfferActions.getListingDetailSuccess(propertyOffer));
+      dispatch(OfferActions.setCurrentOfferPayload(payload));
+      dispatch(OfferActions.setCurrentOffer(offer));
+    }
+
     switch (action) {
       case OfferAction.ACCEPT:
         navigate(ScreensKeys.AcceptOffer);
@@ -53,18 +77,10 @@ const OfferMade = (props: IProps): React.ReactElement => {
         navigate(ScreensKeys.RejectOffer);
         break;
       case OfferAction.COUNTER:
-        if (offer) {
-          dispatch(OfferActions.getListingDetailSuccess(propertyOffer));
-          dispatch(OfferActions.setCurrentOffer(offer));
-          navigate(ScreensKeys.SubmitOffer);
-        }
+        navigate(ScreensKeys.SubmitOffer);
         break;
       case OfferAction.CANCEL:
-        if (offer) {
-          dispatch(OfferActions.getListingDetailSuccess(propertyOffer));
-          dispatch(OfferActions.setCurrentOffer(offer));
-          navigate(ScreensKeys.CancelOffer);
-        }
+        navigate(ScreensKeys.CancelOffer);
         break;
       default:
         FunctionUtils.noop();
@@ -83,6 +99,9 @@ const OfferMade = (props: IProps): React.ReactElement => {
           compareData={compareData()}
           onPressAction={handleActions}
           asset={propertyOffer}
+          isDetailView
+          pastOffer={pastOffers}
+          onMoreInfo={handlePastOffer}
         />
       )}
       <Divider containerStyles={styles.divider} />

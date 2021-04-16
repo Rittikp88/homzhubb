@@ -212,7 +212,7 @@ export class Offer {
   }
 
   get validCount(): number {
-    return DateUtils.getCountInUnit(this.expiresAt, 'hours');
+    return DateUtils.getHours(this.expiresAt);
   }
 
   get validDays(): string {

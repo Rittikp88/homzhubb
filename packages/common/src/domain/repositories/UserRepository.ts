@@ -57,11 +57,12 @@ const ENDPOINTS = {
   sendOrVerifyEmail: 'users/verifications/',
   wishlist: 'wishlists/',
   KYCDocuments: 'kyc-documents/',
+  verifyAuthToken: 'users/verify-token/',
   emailExists: (emailId: string): string => `users/emails/${emailId}/`,
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
   interactions: (userId: number): string => `users/${userId}/interactions/`,
   verifyReferralCode: (code: string): string => `users/referrals/${code}/`,
-  verifyAuthToken: 'users/verify-token/',
+  verifyWorkEmail: (email: string): string => `users/work-info/emails/${email}/`,
 };
 
 class UserRepository {
@@ -202,6 +203,10 @@ class UserRepository {
 
   public verifyAuthToken = async (payload: IVerifyAuthToken): Promise<IVerifyAuthTokenResponse> => {
     return await this.apiClient.post(ENDPOINTS.verifyAuthToken, payload);
+  };
+
+  public workEmailExists = async (emailId: string): Promise<IUserExistsData> => {
+    return await this.apiClient.get(ENDPOINTS.verifyWorkEmail(emailId));
   };
 }
 

@@ -291,6 +291,7 @@ exports[`Search Bar should match snapshot 1`] = `
               Object {
                 "color": "#001B36",
                 "flex": 1,
+                "marginLeft": 16,
               }
             }
             testID="textInput"
@@ -311,6 +312,7 @@ exports[`Search Bar should match snapshot 1`] = `
                 Object {
                   "color": "#001B36",
                   "flex": 1,
+                  "marginLeft": 16,
                 }
               }
               testID="textInput"

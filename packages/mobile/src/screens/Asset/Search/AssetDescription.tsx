@@ -123,12 +123,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { navigation } = this.props;
     const startDate = this.getFormattedDate();
     this.setState({ startDate });
-    this.getProspect();
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetData();
     });
 
     await this.setSharingMessage();
+    await this.getProspect();
   };
 
   // TODO: Do we require a byId reducer here?
@@ -954,7 +954,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       try {
         await AssetRepository.propertyVisit(payload);
       } catch (e) {
-        const error = ErrorUtils.getErrorMessage(e);
+        const error = ErrorUtils.getErrorMessage(e.details);
         AlertHelper.error({ message: error });
       }
     }

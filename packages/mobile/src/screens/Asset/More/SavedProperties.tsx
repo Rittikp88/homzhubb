@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
+import { CommonActions, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
@@ -50,8 +50,13 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
   // Local Const
   const transactionType = filters.asset_transaction_type || 0;
 
+  useFocusEffect(
+    React.useCallback(() => {
+      dispatch(UserActions.getFavouriteProperties());
+    }, [])
+  );
+
   useEffect(() => {
-    dispatch(UserActions.getFavouriteProperties());
     setLoading(false);
   }, []);
 

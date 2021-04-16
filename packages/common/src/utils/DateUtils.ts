@@ -355,7 +355,14 @@ class DateUtils {
 
   public getCountInUnit = (date: string, unit?: unitOfTime.Diff): number => {
     const currentDate = new Date().toISOString();
-    return this.getDateDiff(date, currentDate, unit || 'days');
+    const date1 = new Date(date).toISOString();
+    return this.getDateDiff(date1, currentDate, unit || 'days');
+  };
+
+  public getHours = (date: string): number => {
+    const currentDate = new Date().getTime();
+    const date1 = new Date(date).getTime();
+    return Math.round((date1 - currentDate) / 36e5);
   };
 
   public convertDateFormatted = (date: string, format = DateFormats.DDMMMYYYY_Hm): string => {

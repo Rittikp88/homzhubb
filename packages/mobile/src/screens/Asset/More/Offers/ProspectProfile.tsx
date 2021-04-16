@@ -9,6 +9,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -213,6 +214,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
 
   public onSubmit = async (values: IOfferForm): Promise<void> => {
     const {
+      t,
       route: {
         params: { editData },
       },
@@ -220,10 +222,17 @@ class ProspectProfile extends Component<Props, IScreenState> {
     const { navigation } = this.props;
     const { userType } = this.state;
     this.setState({ loading: true });
+    const isValid = this.validateEmail(values.workEmail);
+    if (!isValid) {
+      this.setState({ loading: false });
+      AlertHelper.error({ message: t('auth:emailUsed') });
+      return;
+    }
+
     const payload: IUpdateProspectProfile = {
       job_type: values.jobType,
       company_name: values.companyName,
-      work_email: values.workEmail.length === 0 ? null : values.workEmail,
+      work_email: values.workEmail && values.workEmail.length === 0 ? null : values.workEmail,
       number_of_occupants: Number(values.occupants),
       tenant_type: userType,
     };
@@ -240,6 +249,22 @@ class ProspectProfile extends Component<Props, IScreenState> {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
       this.setState({ loading: false });
     }
+  };
+
+  private validateEmail = (email: string | null): boolean => {
+    const { userDetails } = this.props;
+
+    let isExists = true;
+    if (email) {
+      UserRepository.workEmailExists(email)
+        .then((res) => {
+          isExists = res.is_exists;
+        })
+        .catch((e) => {
+          AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        });
+    }
+    return userDetails && userDetails.email ? userDetails.email === email && isExists : !isExists;
   };
 
   private formSchema = (): yup.ObjectSchema => {
