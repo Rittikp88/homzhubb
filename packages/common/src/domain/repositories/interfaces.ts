@@ -982,3 +982,8 @@ export interface IFAQs {
   answerRichText: IFAQAnswerRichText;
   category: IFAQCategory;
 }
+
+export interface IAssetListingParam {
+  listingType: ListingType;
+  listingId: number;
+}

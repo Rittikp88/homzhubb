@@ -128,7 +128,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     });
 
     await this.setSharingMessage();
-    await this.getProspect();
   };
 
   // TODO: Do we require a byId reducer here?
@@ -602,10 +601,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private onReadReviews = (): void => {
-    const {
-      navigation,
-      assetDetails: { leaseTerm, saleTerm },
-    } = this.props;
+    const { navigation, assetDetails } = this.props;
+
+    if (!assetDetails) return;
+
+    const { leaseTerm, saleTerm } = assetDetails;
 
     navigation.navigate(ScreensKeys.AssetReviews, {
       ...(leaseTerm && { lease_listing: leaseTerm.id }),

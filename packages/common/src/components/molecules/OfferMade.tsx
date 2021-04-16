@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { ListingRepository } from '@homzhub/common/src/domain/repositories/ListingRepository';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -32,6 +34,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
 
   const { navigate } = useNavigation();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
 
   const compareData = (): IOfferCompare => {
@@ -87,9 +90,25 @@ const OfferMade = (props: IProps): React.ReactElement => {
     }
   };
 
+  // TODO: (Shikha) - confirm logic with BE
+  const handlePropertyView = async (): Promise<void> => {
+    try {
+      const payload = {
+        listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0,
+        listingType: leaseTerm ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+      };
+      const response = await ListingRepository.getListing(payload);
+      if (response) {
+        onViewOffer();
+      }
+    } catch (e) {
+      AlertHelper.error({ message: t('property:listingNotValid') });
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={onViewOffer}>
+      <TouchableOpacity onPress={handlePropertyView}>
         <PropertyCard asset={propertyOffer} isExpanded containerStyle={styles.cardContainer} />
       </TouchableOpacity>
       {offer && (
