@@ -1195,6 +1195,7 @@
     "withdrawOffer": "Withdraw offer",
     "cancellationReason": "Cancellation reason",
     "offerCancellationSucess": "Offer Cancelled Successfully",
-    "seeCancelReason": "See Cancellation Reason"
+    "seeCancelReason": "See Cancellation Reason",
+    "offerMadeInfo": "These are the offers made by you for property listings on homzhub."
   }
 }

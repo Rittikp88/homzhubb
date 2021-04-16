@@ -50,7 +50,8 @@ interface IDispatchProps {
 
 interface IScreenState {
   offerType: OfferType;
-  isOfferInfoRead: boolean;
+  isOfferReceivedInfoRead: boolean;
+  isOfferMadeInfoRead: boolean;
   propertyListingData: Asset[];
   offerCountData: OfferManagement | null;
   receivedDropdownData: IDropdownData[];
@@ -80,7 +81,8 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     super(props);
     this.state = {
       offerType: this.getInitialOfferType(),
-      isOfferInfoRead: false,
+      isOfferReceivedInfoRead: false,
+      isOfferMadeInfoRead: false,
       propertyListingData: [],
       offerCountData: null,
       isScreenLoading: false,
@@ -103,10 +105,13 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
         const offerCountData = await OffersRepository.getOfferData();
 
         await this.getFilters();
-        const isOfferInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_INFO_READ)) || false;
+        const isOfferReceivedInfoRead: boolean =
+          (await StorageService.get(StorageKeys.IS_OFFER_RECEIVED_INFO_READ)) || false;
+        const isOfferMadeInfoRead: boolean = (await StorageService.get(StorageKeys.IS_OFFER_MADE_INFO_READ)) || false;
         this.setState(
           {
-            isOfferInfoRead,
+            isOfferReceivedInfoRead,
+            isOfferMadeInfoRead,
             offerCountData,
             isScreenLoading: false,
           },
@@ -125,7 +130,8 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     const { t } = this.props;
     const {
       offerType,
-      isOfferInfoRead,
+      isOfferReceivedInfoRead,
+      isOfferMadeInfoRead,
       propertyListingData,
       offerCountData,
       isScreenLoading: screenLoading,
@@ -135,6 +141,8 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     } = this.state;
 
     const isReceivedOffer = offerType === OfferType.OFFER_RECEIVED;
+    const isInfoRead = offerType === OfferType.OFFER_RECEIVED ? isOfferReceivedInfoRead : isOfferMadeInfoRead;
+    const infoText = offerType === OfferType.OFFER_RECEIVED ? t('offers:offerInfo') : t('offers:offerMadeInfo');
     const isFilterVisible =
       (isReceivedOffer && receivedDropdownData[0] && receivedDropdownData[0].dropdownData.length > 0) ||
       !isReceivedOffer;
@@ -158,9 +166,9 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
               headerIcon={icons.offers}
               containerStyle={[styles.metricList, styles.borderRadius]}
             />
-            {!isOfferInfoRead && (
+            {!isInfoRead && (
               <TextWithIcon
-                text={t('offers:offerInfo')}
+                text={infoText}
                 containerStyle={[styles.offerInfo, styles.borderRadius]}
                 icon={icons.close}
                 iconSize={15}
@@ -272,8 +280,16 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   };
 
   private onCloseOfferInfo = (): void => {
-    this.setState({ isOfferInfoRead: true });
-    StorageService.set(StorageKeys.IS_OFFER_INFO_READ, true);
+    const { offerType } = this.state;
+    if (offerType === OfferType.OFFER_RECEIVED) {
+      this.setState({ isOfferReceivedInfoRead: true });
+      StorageService.set(StorageKeys.IS_OFFER_RECEIVED_INFO_READ, true);
+    }
+
+    if (offerType === OfferType.OFFER_MADE) {
+      this.setState({ isOfferMadeInfoRead: true });
+      StorageService.set(StorageKeys.IS_OFFER_MADE_INFO_READ, true);
+    }
   };
 
   private getReceivedDropdownData = (receivedOffers: OfferFilter): IDropdownData[] => {
@@ -419,7 +435,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       AlertHelper.error({ message: t('property:listingNotValid') });
       return;
     }
-    // Todo (Shikha) : Handle filter change here
+    // TODO: (Shikha) - Handle filter change here (Verify this logic after navigation refactor)
     setFilter({ asset_transaction_type: payload?.type === ListingType.LEASE_LISTING ? 0 : 1 });
     if (offerType === OfferType.OFFER_MADE) {
       // @ts-ignore

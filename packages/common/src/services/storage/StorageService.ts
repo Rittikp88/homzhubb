@@ -9,7 +9,8 @@ export enum StorageKeys {
   USER_SELECTED_LANGUAGE = '@user_selected_language',
   USER = '@user',
   DEVICE_TOKEN = '@device_token',
-  IS_OFFER_INFO_READ = '@is_offer_info_read',
+  IS_OFFER_RECEIVED_INFO_READ = '@is_offer_received_info_read',
+  IS_OFFER_MADE_INFO_READ = '@is_offer_made_info_read',
 }
 
 export interface IUserTokens {
