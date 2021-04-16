@@ -159,7 +159,7 @@ export const PendingPropertiesCard: FC<IProps> = ({
         <Typography variant="text" size="small" fontWeight="semiBold" style={[styles.title, styles.textColor1]}>
           {t('pendingProperties', { total })}
         </Typography>
-        <NextPrevBtn onBtnClick={updateCurrentAssetIndex} />
+        {data.length > 1 && <NextPrevBtn onBtnClick={updateCurrentAssetIndex} />}
       </View>
       <TouchableOpacity onPress={onPressProperty}>
         <View style={styles.mainBody}>

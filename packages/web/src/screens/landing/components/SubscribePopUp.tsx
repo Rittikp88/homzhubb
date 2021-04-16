@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import Subscribe from '@homzhub/common/src/assets/images/subscribe.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Subscribed from '@homzhub/web/src/screens/landing/components/Subscribed';
@@ -36,6 +35,11 @@ const SubscribePopUp = ({ handlePopupClose }: IPopup): React.ReactElement => {
     setDidSubscribe(true);
   };
 
+  const bannerImage = {
+    height: isMobile ? 150 : 224,
+    width: isMobile ? 244 : 346,
+  };
+
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
       <Button
@@ -51,7 +55,7 @@ const SubscribePopUp = ({ handlePopupClose }: IPopup): React.ReactElement => {
       ) : (
         <>
           <View style={styles.alignToCenter}>
-            <Subscribe width={isMobile ? '100%' : undefined} />
+            <Image source={require('@homzhub/common/src/assets/images/subscribe.svg')} style={bannerImage} />
           </View>
           <View style={styles.alignToCenter}>
             <Typography

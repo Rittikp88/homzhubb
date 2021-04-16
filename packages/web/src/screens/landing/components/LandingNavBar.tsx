@@ -25,6 +25,13 @@ interface IProps {
   storeLinksSectionRef?: any;
 }
 
+interface INavProps {
+  featuredPropertiesRef?: any;
+  plansSectionRef?: any;
+  storeLinksSectionRef?: any;
+  onMenuClose: () => void;
+}
+
 const LandingNavBar: FC<IProps> = (props: IProps) => {
   const [scrollLength, setScrollLength] = useState(0);
   useEffect(() => {
@@ -84,7 +91,11 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                 </View>
               </TouchableOpacity>
               {isLaptop && isMenuVisible && (
-                <RenderNavItems featuredPropertiesRef={featuredPropertiesRef} plansSectionRef={plansSectionRef} />
+                <RenderNavItems
+                  featuredPropertiesRef={featuredPropertiesRef}
+                  plansSectionRef={plansSectionRef}
+                  onMenuClose={onMenuClose}
+                />
               )}
             </View>
             {isLaptop ? (
@@ -131,14 +142,15 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
             featuredPropertiesRef={featuredPropertiesRef}
             plansSectionRef={plansSectionRef}
             storeLinksSectionRef={storeLinksSectionRef}
+            onMenuClose={onMenuClose}
           />
         </SideBar>
       )}
     </>
   );
 };
-const RenderNavItems: FC<IProps> = (props: IProps) => {
-  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef } = props;
+const RenderNavItems: FC<INavProps> = (props: INavProps) => {
+  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef, onMenuClose } = props;
   const [isSelected, setIsSelected] = useState(0);
   const [scrollLength, setScrollLength] = useState(0);
   const history = useHistory();
@@ -207,6 +219,7 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
       if (featuredPropertiesRef) {
         featuredPropertiesRef.measure((x: number, y: number) => {
           setScrollLength(Math.floor(y));
+          onMenuClose();
         });
       }
     }
@@ -214,6 +227,7 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
       if (plansSectionRef) {
         plansSectionRef.measure((x: number, y: number) => {
           setScrollLength(Math.floor(y));
+          onMenuClose();
         });
       }
     }
@@ -221,6 +235,7 @@ const RenderNavItems: FC<IProps> = (props: IProps) => {
       if (storeLinksSectionRef) {
         storeLinksSectionRef.measure((x: number, y: number) => {
           setScrollLength(Math.floor(y));
+          onMenuClose();
         });
       }
     }

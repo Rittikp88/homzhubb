@@ -37,9 +37,9 @@ import {
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 interface IUserInfo {
-  name: string;
+  name: string | undefined;
   icon?: string;
-  image?: string;
+  image: string | undefined;
   designation: string;
   designationStyle?: TextStyle;
 }
@@ -204,11 +204,13 @@ export class AssetCard extends Component<Props> {
     } = assetData;
 
     const userData: User = user;
+    const isOccupied = isInviteAccepted;
     const isListed = leaseListingId || saleListingId;
-    const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
+    const userInfo = this.getFormattedInfo(userData, isInviteAccepted, assetData);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const isTakeActions = label === Filters.VACANT;
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
+
     return (
       <>
         <Divider containerStyles={[styles.divider, isTablet && styles.dividerTablet]} />
@@ -220,8 +222,8 @@ export class AssetCard extends Component<Props> {
             <>
               <Avatar
                 onPressRightIcon={FunctionUtils.noop}
-                fullName={userData.name}
-                image={userData.profilePicture}
+                fullName={userInfo.name}
+                image={userInfo.image ? userInfo.image : userData.profilePicture}
                 designation={userInfo.designation}
                 customDesignation={userInfo.designationStyle}
               />
@@ -271,7 +273,7 @@ export class AssetCard extends Component<Props> {
               />
             </View>
           )}
-          {isListed && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
+          {isListed && isOccupied && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
             <View style={[styles.latestUpdates, isTablet && styles.latestUpdatesMobile]}>
               <LatestUpdates propertyVisitsData={assetData.listingVisits} />
             </View>
@@ -414,18 +416,19 @@ export class AssetCard extends Component<Props> {
     }
   };
 
-  private getFormattedInfo = (user: User, isInviteAccepted: boolean): IUserInfo => {
+  private getFormattedInfo = (user: User, isInviteAccepted: boolean, assetData: Asset): IUserInfo => {
     const { t, isFromTenancies = false } = this.props;
+    const { assetStatusInfo } = assetData;
     let icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
-    let name = isInviteAccepted ? user.name : user.email;
+    let name = isInviteAccepted ? user.name : undefined;
     let image = isInviteAccepted ? user.profilePicture : undefined;
     let designation = t('property:tenant');
     let designationStyle = isInviteAccepted ? undefined : styles.designation;
 
     if (isFromTenancies) {
       icon = undefined;
-      name = user.name;
-      image = user.profilePicture;
+      name = assetStatusInfo?.leaseOwnerInfo.fullName;
+      image = assetStatusInfo?.leaseOwnerInfo.profilePicture;
       designation = t('property:owner');
       designationStyle = undefined;
     }

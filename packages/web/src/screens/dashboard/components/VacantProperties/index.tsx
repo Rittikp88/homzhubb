@@ -1,9 +1,12 @@
 import React, { FC, useState } from 'react';
-import { ImageStyle, StyleSheet, View, ViewStyle } from 'react-native';
+import { ImageStyle, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { ImageSquare } from '@homzhub/common/src/components/atoms/Image';
@@ -22,12 +25,12 @@ interface IProps {
 
 const VacantProperties: FC<IProps> = ({ data }: IProps) => {
   const { t } = useTranslation();
+  const history = useHistory();
   const [currentAssetIndex, setCurrentAssetIndex] = useState(0);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const styles = vacantPropertyStyle(isMobile, isTablet);
   const total = data?.length ?? 0;
-
   if (total <= 0) {
     return null;
   }
@@ -43,6 +46,20 @@ const VacantProperties: FC<IProps> = ({ data }: IProps) => {
       setCurrentAssetIndex(nextIndex);
     }
   };
+
+  const navigateToDetailView = (): void => {
+    const { id, leaseTerm, saleTerm } = data[currentAssetIndex];
+    NavigationUtils.navigate(history, {
+      path: RouteNames.protectedRoutes.PROPERTY_SELECTED,
+      params: {
+        isFromTenancies: false,
+        asset_id: id,
+        assetType: 'detail',
+        listing_id: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0,
+      },
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -57,25 +74,27 @@ const VacantProperties: FC<IProps> = ({ data }: IProps) => {
         </View>
       </View>
       {!isMobile && <Divider />}
-      <View style={styles.mainContent}>
-        <View style={styles.propertyInfo}>
-          {coverImage ? (
-            <ImageSquare
-              style={styles.image}
-              source={{
-                uri: coverImage,
-              }}
-            />
-          ) : (
-            <ImagePlaceholder width="100%" containerStyle={styles.image} />
-          )}
-          <PropertyDetails assetData={data[currentAssetIndex] ?? ({} as Asset)} />
+      <TouchableOpacity onPress={navigateToDetailView}>
+        <View style={styles.mainContent}>
+          <View style={styles.propertyInfo}>
+            {coverImage ? (
+              <ImageSquare
+                style={styles.image}
+                source={{
+                  uri: coverImage,
+                }}
+              />
+            ) : (
+              <ImagePlaceholder width="100%" containerStyle={styles.image} />
+            )}
+            <PropertyDetails assetData={data[currentAssetIndex] ?? ({} as Asset)} />
+          </View>
+          {!isTablet && <Divider containerStyles={styles.divider} />}
+          <View style={styles.latestUpdates}>
+            <LatestUpdates propertyVisitsData={data[currentAssetIndex]?.listingVisits ?? ({} as AssetListingVisits)} />
+          </View>
         </View>
-        {!isTablet && <Divider containerStyles={styles.divider} />}
-        <View style={styles.latestUpdates}>
-          <LatestUpdates propertyVisitsData={data[currentAssetIndex]?.listingVisits ?? ({} as AssetListingVisits)} />
-        </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

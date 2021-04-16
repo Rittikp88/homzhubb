@@ -41,6 +41,7 @@ interface IProps {
   subAddressTextStyles?: ITypographyProps;
   attachments?: Attachment[];
   topNode?: React.ReactElement;
+  displayIndicator?: boolean;
 }
 
 export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
@@ -66,6 +67,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
     primaryAddressTextStyles,
     attachments,
     topNode,
+    displayIndicator,
   } = props;
 
   const { width } = useViewPort();
@@ -74,6 +76,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const numberOfSteps = steps.length;
   const { rental, sell, informational, blue, green, darkTint7 } = theme.colors;
+  const displayStepIndicator = displayIndicator ?? true;
 
   const badgeData = (): ILabelColor => {
     switch (selectedPan) {
@@ -170,7 +173,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
           )}
         </View>
       </View>
-      {isTablet && (
+      {displayStepIndicator && (
         <FlatList
           keyExtractor={(step): string => step}
           data={steps}

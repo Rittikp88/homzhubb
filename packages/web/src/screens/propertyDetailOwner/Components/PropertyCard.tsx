@@ -171,6 +171,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     } = assetDetails;
 
     const userData: User = user;
+    const isOccupied = isInviteAccepted;
     const isListed = leaseListingId || saleListingId;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
@@ -240,7 +241,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
               />
             </View>
           )}
-          {isListed && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
+          {isListed && isOccupied && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
             <View style={styles.latestUpdates}>
               <LatestUpdates propertyVisitsData={assetDetails.listingVisits} propertyDetailTab />
             </View>

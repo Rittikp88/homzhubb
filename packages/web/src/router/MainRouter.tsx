@@ -7,6 +7,7 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
+import ComingSoon from '@homzhub/web/src/screens/comingSoon';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
 import PropertyDetails from '@homzhub/web/src/screens/propertyDetails';
 import SearchProperty from '@homzhub/web/src/screens/searchProperty';
@@ -37,6 +38,8 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     VALUE_ADDED_SERVICES,
     SELECT_PROPERTY,
     SELECT_SERVICES,
+    SAVED_PROPERTIES,
+    PROPERTY_VISITS,
   } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
@@ -55,6 +58,8 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={PROPERTY_VIEW} component={PropertyView} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SELECT_PROPERTY} component={SelectProperty} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SELECT_SERVICES} component={SelectServices} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={SAVED_PROPERTIES} component={ComingSoon} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={PROPERTY_VISITS} component={ComingSoon} isAuthenticated={isAuthenticated} />
         <PrivateRoute
           exact
           path={VALUE_ADDED_SERVICES}

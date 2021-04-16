@@ -139,7 +139,7 @@
     "accept": "Accept",
     "reject": "Reject",
     "done": "Done",
-    "comingSoonText": "Coming soon...",
+    "comingSoonText": "Coming Soon...",
     "copyrightContent": "© All rights reserved.© 2020-21 Copyright: ",
     "homzhubLink": "Homzhub.com",
     "terms": "Terms",
@@ -341,6 +341,7 @@
     "authDescLogin": "Hi {{username}}, You are logging in for the first time on Homzhub. Enter your phone number to complete your profile. ",
     "authDescSignUp": "Hello {{username}}, Enter your phone number to complete your profile.",
     "appleNotSupported": "Apple Authentication is not supported on this device",
+    "enterEmailText": "Enter email address",
     "emailUsed": "This email is already used by someone. Please use unique email"
   },
   "property": {
@@ -1006,8 +1007,9 @@
     "homzhubServicesHeader": "Homzhub services for you!",
     "homzhubServicesDescription": "End-to-end property management services so you live a stress-free life",
     "downloadApp": "Download App",
-    "subscribePopupHeader": "Subscribe to our newsletter",
-    "subscribePopupTitle": "Be the first to get exclusive offers and latest news on our product directly in your inbox.",
+    "subscribePopupHeader": "Request for a Demo",
+    "subscribePopupTitle": "Learn how to use Homzhub for efficient and transparent property management.",
+    "subscribePopupButtonText": "Setup a Demo",
     "membershipPlans": "Membership Plans",
     "thankYouText": "Thank You!",
     "thankYouTitle": "You have successfully subscribed to the newsletter",

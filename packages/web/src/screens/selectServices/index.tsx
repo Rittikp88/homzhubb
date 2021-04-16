@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
-import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -89,6 +89,7 @@ const SelectServices = (): ReactElement => {
   const Steps = isDesktop ? [RouteKeys.SERVICE_PAYMENT] : [RouteKeys.Services, RouteKeys.Payment];
   const primaryAddressTextStyles = { size: 'small' };
   const subAddressTextStyles = { variant: 'label', size: 'large' };
+  const isTablet = useDown(deviceBreakpoint.TABLET);
 
   // Local State
   const popupRef = useRef<PopupActions>(null);
@@ -148,6 +149,7 @@ const SelectServices = (): ReactElement => {
               amenities={amenities}
               stepIndicatorSeparatorStyle={{ width: width / 2 }}
               attachments={attachments}
+              displayIndicator={isTablet}
               primaryAddressTextStyles={primaryAddressTextStyles as ITypographyProps}
               subAddressTextStyles={subAddressTextStyles as ITypographyProps}
               topNode={renderRightHandHeader()}

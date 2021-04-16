@@ -58,17 +58,18 @@ const SubscribeForm: FC<IProp> = ({ onUserSubscription }: IProp) => {
               name="emailAddress"
               label=""
               inputType="email"
-              placeholder={t('auth:enterEmail')}
+              placeholder={t('auth:enterEmailText')}
               formProps={formProps}
               style={formStyles.emailStyles}
               placeholderTextColor={theme.colors.darkTint7}
+              containerStyle={formStyles.emailStylesView}
             />
             <FormButton
               // @ts-ignore
               onPress={formProps.handleSubmit}
               formProps={formProps}
               type="primary"
-              title={t('landing:subscribe')}
+              title={t('landing:subscribePopupButtonText')}
               containerStyle={formStyles.button}
             />
           </View>
@@ -84,6 +85,7 @@ interface IFormItemSTyle {
   formContent: ViewStyle;
   titleStyle: ViewStyle;
   emailStyles: ViewStyle;
+  emailStylesView: ViewStyle;
 }
 
 const formStyle = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyles<IFormItemSTyle> =>
@@ -107,6 +109,11 @@ const formStyle = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyle
     },
     emailStyles: {
       margin: 0,
+    },
+    emailStylesView: {
+      backgroundColor: theme.colors.background,
+      textAlign: 'center',
+      justifyContent: 'center',
     },
   });
 
