@@ -95,7 +95,7 @@ export class Slider extends Component<ISliderProps, IOwnState> {
     const calcWidth = width - 60;
     const { oneMarkerLeftPosition: left, oneMarkerValue } = e;
     const sliderNumber = (): string => {
-      if (isDoubleDigited && oneMarkerValue.valueOf() >= 0 && oneMarkerValue.valueOf() < 10)
+      if (isDoubleDigited && oneMarkerValue.valueOf() > 0 && oneMarkerValue.valueOf() < 10)
         return `0${oneMarkerValue} `;
       return `${e.oneMarkerValue} `;
     };

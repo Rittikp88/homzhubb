@@ -172,7 +172,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
 
   private renderForm = (): React.ReactElement => {
     const { t, isRentFlow, offersLeft, currentOffer, asset } = this.props;
-    const { formData } = this.state;
+    const { formData, loading } = this.state;
     const { renderFormHeader, renderBottomFields } = this;
     return (
       <>
@@ -196,7 +196,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                 formData: dirty ? values : value,
               }));
             };
-            const maxLength = (field: string): number => (field.includes('.') ? 13 : 12);
+            const maxLength = (field: string): number => (field?.includes('.') ? 13 : 12);
             const rentDisabled = !values?.expectedPrice?.length || !values?.securityDeposit?.length;
             const saleDisabled = !values?.expectedPrice?.length || !values?.expectedBookingAmount?.length;
             const disabled = isRentFlow ? rentDisabled : saleDisabled;
@@ -223,6 +223,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                             label={t('offers:proposedRentalPrice')}
                             placeholder={t('offers:enterPrice')}
                             maxLength={maxLength(formProps.values.expectedPrice)}
+                            inputPrefixText={asset?.currencySymbol}
                           />
                           <FormTextInput
                             name={OfferFormKeys.securityDeposit}
@@ -232,6 +233,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                             label={t('offers:proposedSecurityDeposit')}
                             placeholder={t('offers:enterPrice')}
                             maxLength={maxLength(formProps.values.securityDeposit)}
+                            inputPrefixText={asset?.currencySymbol}
                           />
                           <FormTextInput
                             name={OfferFormKeys.annualRentIncrementPercentage}
@@ -239,6 +241,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                             inputType="decimal"
                             label={t('offers:proposedAnnualIncrement')}
                             placeholder={t('offers:enterPercentage')}
+                            inputGroupSuffixText="%"
                           />
                           <FormCalendar
                             name={OfferFormKeys.availableFromDate}
@@ -324,7 +327,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                     <FormButton
                       type="primary"
                       formProps={formProps}
-                      disabled={(!currentOffer && offersLeft === 0) || disabled || showLeaseDurationError}
+                      disabled={(!currentOffer && offersLeft === 0) || disabled || showLeaseDurationError || loading}
                       // @ts-ignore
                       onPress={handleSubmit}
                       title={t('common:submit')}
@@ -528,10 +531,20 @@ class OfferForm extends React.Component<Props, IScreenState> {
       [OfferFormKeys.expectedRent]: yup
         .string()
         .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
+        .test({
+          name: 'nonZeroTest',
+          message: t('common:onlyNonZero'),
+          test: FormUtils.validateNonZeroCase,
+        })
         .required(t('property:monthlyRentRequired')),
       [OfferFormKeys.securityDeposit]: yup
         .string()
         .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
+        .test({
+          name: 'nonZeroTest',
+          message: t('common:onlyNonZero'),
+          test: FormUtils.validateNonZeroCase,
+        })
         .required(t('property:securityDepositRequired')),
       [OfferFormKeys.annualRentIncrementPercentage]: yup.string().test({
         name: 'onlyNonNegativeNumericTest',

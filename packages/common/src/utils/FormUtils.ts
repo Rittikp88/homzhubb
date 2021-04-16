@@ -29,6 +29,13 @@ class FormUtils {
     };
   };
 
+  public validateNonZeroCase = (value: string): boolean => {
+    if (value.length) {
+      if (Number(value) > 0) return Boolean(this.decimalRegex.exec(value)?.length);
+    }
+    return false;
+  };
+
   public getErrorsFromValidationError = (validationError: any): any => {
     return validationError.inner.reduce((errors: any[], error: any) => {
       let errorMessage = '';

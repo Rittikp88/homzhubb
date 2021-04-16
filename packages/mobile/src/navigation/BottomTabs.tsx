@@ -27,6 +27,7 @@ import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notificat
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
 import {
+  IAssetDescriptionProps,
   IComingSoon,
   IEditLeaseProps,
   IForgotPasswordProps,
@@ -82,7 +83,6 @@ import {
   IChatScreen,
   IPropertyOffersList,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
@@ -152,7 +152,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.RejectOffer]: undefined;
   [ScreensKeys.SubmitOffer]: undefined;
   [ScreensKeys.CancelOffer]: undefined;
-  [ScreensKeys.ProspectProfile]: IProspectProfile;
+  [ScreensKeys.ProspectProfile]: IAssetDescriptionProps | undefined;
   [ScreensKeys.CreateLease]: undefined;
 };
 

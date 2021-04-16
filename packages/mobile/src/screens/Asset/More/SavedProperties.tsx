@@ -7,10 +7,12 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { LeadRepository } from '@homzhub/common/src/domain/repositories/LeadRepository';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
@@ -68,11 +70,31 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
     setIsFullScreen(!isFullScreen);
   };
 
-  const navigateToOffer = (): void => {
-    navigation.navigate(ScreensKeys.ComingSoonScreen, {
-      // @ts-ignore
-      title: t('makeAnOfferText'),
-      tabHeader: t('assetMore:more'),
+  const getProspectProfile = async (): Promise<number> => {
+    try {
+      setLoading(true);
+      const response = await OffersRepository.getProspectsInfo();
+      setLoading(false);
+      return response.id;
+    } catch (error) {
+      setLoading(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
+      return -1;
+    }
+  };
+
+  const navigateToOffer = (asset: Asset): void => {
+    dispatch(AssetActions.getAsset({ propertyTermId: asset.leaseTerm ? asset.leaseTerm.id : asset.saleTerm?.id ?? 0 }));
+    getProspectProfile().then((hasProspect: number): void => {
+      // API Error case
+      if (hasProspect === -1) return;
+      // No Prospect Case
+      if (hasProspect === 0) {
+        navigation.navigate(ScreensKeys.ProspectProfile);
+        return;
+      }
+      // Has Prospect case
+      if (hasProspect > 0) navigation.navigate(ScreensKeys.SubmitOffer);
     });
   };
 
@@ -148,6 +170,8 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
       }
     };
 
+    const onPressMakeAnOffer = (): void => navigateToOffer(asset);
+
     return (
       <View style={[nextVisit ? styles.nextVisitContainer : styles.buttonGroup, styles.screenPadding]}>
         <Button
@@ -158,7 +182,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
           containerStyle={styles.commonButtonStyle}
           title={t('makeAnOfferText')}
           type="secondary"
-          onPress={navigateToOffer}
+          onPress={onPressMakeAnOffer}
         />
         {!nextVisit ? (
           <Button

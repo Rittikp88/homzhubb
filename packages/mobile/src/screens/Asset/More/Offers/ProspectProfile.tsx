@@ -70,9 +70,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
   public async componentDidMount(): Promise<void> {
     try {
       const {
-        route: {
-          params: { editData },
-        },
+        route: { params },
         userDetails,
       } = this.props;
       this.setState({ loading: true });
@@ -94,7 +92,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
         occupants,
         tenantType,
       } = prospectsData;
-      if (editData) {
+      if (params?.editData) {
         this.setState({
           offerForm: {
             jobType: workInfo.jobType.id,
@@ -222,13 +220,12 @@ class ProspectProfile extends Component<Props, IScreenState> {
     const { navigation } = this.props;
     const { userType } = this.state;
     this.setState({ loading: true });
-    const isValid = this.validateEmail(values.workEmail);
+    const isValid = await this.validateEmail(values.workEmail);
     if (!isValid) {
       this.setState({ loading: false });
       AlertHelper.error({ message: t('auth:emailUsed') });
       return;
     }
-
     const payload: IUpdateProspectProfile = {
       job_type: values.jobType,
       company_name: values.companyName,
@@ -251,20 +248,19 @@ class ProspectProfile extends Component<Props, IScreenState> {
     }
   };
 
-  private validateEmail = (email: string | null): boolean => {
+  private validateEmail = async (email: string | null): Promise<boolean> => {
     const { userDetails } = this.props;
-
     let isExists = true;
-    if (email) {
-      UserRepository.workEmailExists(email)
-        .then((res) => {
-          isExists = res.is_exists;
-        })
-        .catch((e) => {
-          AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-        });
+    if (!email || userDetails?.workInfo?.workEmail === email) return true;
+    if (userDetails?.workInfo?.workEmail !== email) {
+      try {
+        const res = await UserRepository.workEmailExists(email);
+        isExists = res.is_exists;
+      } catch (e) {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
     }
-    return userDetails && userDetails.email ? userDetails.email === email && isExists : !isExists;
+    return !isExists;
   };
 
   private formSchema = (): yup.ObjectSchema => {
@@ -293,14 +289,12 @@ class ProspectProfile extends Component<Props, IScreenState> {
   private goBack = (): void => {
     const {
       navigation,
-      route: {
-        params: { propertyTermId, editData },
-      },
+      route: { params },
     } = this.props;
-    if (editData) {
-      navigation.goBack();
+    if (params?.propertyTermId) {
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId: params.propertyTermId });
     } else {
-      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
+      navigation.goBack();
     }
   };
 }

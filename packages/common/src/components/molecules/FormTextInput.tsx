@@ -166,7 +166,11 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
         break;
       case 'number':
         inputProps = { ...inputProps, ...{ keyboardType: 'number-pad' } };
-        if (inputPrefixText && inputPrefixText.length > 0 && showCurrencySymbol) {
+        if (
+          inputPrefixText &&
+          inputPrefixText.length > 0 &&
+          (showCurrencySymbol || String(inputProps.value).length > 0)
+        ) {
           inputGroupPrefix = (
             <View style={styles.currencyPrefix}>
               <Label type="regular" style={styles.currencyPrefixText}>

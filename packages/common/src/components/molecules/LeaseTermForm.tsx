@@ -387,10 +387,20 @@ const LeaseFormSchema = (t: TFunction): object => {
     [LeaseFormKeys.monthlyRent]: yup
       .string()
       .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
+      .test({
+        name: 'nonZeroTest',
+        message: t('common:onlyNonZero'),
+        test: FormUtils.validateNonZeroCase,
+      })
       .required(t('monthlyRentRequired')),
     [LeaseFormKeys.securityDeposit]: yup
       .string()
       .matches(FormUtils.decimalRegex, t('common:onlyNumeric'))
+      .test({
+        name: 'nonZeroTest',
+        message: t('common:onlyNonZero'),
+        test: FormUtils.validateNonZeroCase,
+      })
       .required(t('securityDepositRequired')),
     [LeaseFormKeys.annualIncrement]: yup.string().when('showMore', {
       is: true,
