@@ -140,49 +140,53 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
   const badge = badgeInfo ? { label: badgeInfo.title, color: badgeInfo.color } : badgeData();
 
   return (
-    <View style={[styles.container, containerStyle]}>
-      {topNode && topNode}
-      <View style={styles.propertyDetails}>
-        {!isMobile && attachments && renderPropertyImage(attachments)}
-        <View style={styles.propertyDetailsWrapper}>
-          <View style={styles.topView}>
-            <Label type="large" textType="regular" style={styles.propertyTypeStyle}>
-              {propertyType}
-            </Label>
-            {icon && <Icon name={icon} size={23} color={blue} onPress={onEditPress} />}
-            {(selectedPan || badgeInfo) && (
-              <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />
+    <View style={styles.container}>
+      <View style={[styles.propertyDetailsContainer, containerStyle]}>
+        {topNode && topNode}
+        <View style={styles.propertyDetails}>
+          {!isMobile && attachments && renderPropertyImage(attachments)}
+          <View style={styles.propertyDetailsWrapper}>
+            <View style={styles.topView}>
+              <Label type="large" textType="regular" style={styles.propertyTypeStyle}>
+                {propertyType}
+              </Label>
+              {icon && <Icon name={icon} size={23} color={blue} onPress={onEditPress} />}
+              {(selectedPan || badgeInfo) && (
+                <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />
+              )}
+            </View>
+            <PropertyAddressCountry
+              primaryAddress={primaryAddress}
+              subAddress={subAddress}
+              countryFlag={countryFlag}
+              containerStyle={styles.addressView}
+              primaryAddressTextStyles={primaryAddressTextStyles}
+              subAddressTextStyles={subAddressTextStyles}
+            />
+            {amenities && (
+              <PropertyAmenities
+                labelStyles={subAddressTextStyles}
+                containerStyle={styles.amenities}
+                contentContainerStyle={styles.amenitiesContentStyle}
+                data={amenities}
+                direction="row"
+              />
             )}
           </View>
-          <PropertyAddressCountry
-            primaryAddress={primaryAddress}
-            subAddress={subAddress}
-            countryFlag={countryFlag}
-            containerStyle={styles.addressView}
-            primaryAddressTextStyles={primaryAddressTextStyles}
-            subAddressTextStyles={subAddressTextStyles}
-          />
-          {amenities && (
-            <PropertyAmenities
-              labelStyles={subAddressTextStyles}
-              containerStyle={styles.amenities}
-              contentContainerStyle={styles.amenitiesContentStyle}
-              data={amenities}
-              direction="row"
-            />
-          )}
         </View>
       </View>
       {displayStepIndicator && (
-        <FlatList
-          keyExtractor={(step): string => step}
-          data={steps}
-          renderItem={renderIndicator}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={renderSeparator}
-          style={[styles.listStyle, stepContainerStyle]}
-        />
+        <View style={styles.stepWrapper}>
+          <FlatList
+            keyExtractor={(step): string => step}
+            data={steps}
+            renderItem={renderIndicator}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={renderSeparator}
+            style={[styles.listStyle, stepContainerStyle]}
+          />
+        </View>
       )}
     </View>
   );
@@ -209,9 +213,11 @@ const renderPropertyImage = (items: Attachment[]): React.ReactElement => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
+  },
+  propertyDetailsContainer: {
+    padding: 16,
   },
   propertyDetailsWrapper: {
     flex: 1,
@@ -251,8 +257,13 @@ const styles = StyleSheet.create({
   doneSeparator: {
     backgroundColor: theme.colors.green,
   },
+  stepWrapper: {
+    width: '100%',
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.background,
+  },
   listStyle: {
-    marginTop: 10,
+    paddingVertical: 20,
     alignSelf: 'center',
   },
   stepLabel: {

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { useTranslation } from 'react-i18next';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -68,30 +68,31 @@ const TabSections = (propsData: IProps): React.ReactElement => {
           return (
             <TabBar
               {...props}
-              scrollEnabled
               style={styles.backgroundWhite}
-              indicatorStyle={styles.backgroundBlue}
-              tabStyle={[styles.tabBarWidth, isMobile && styles.tabBarMobile]}
-              renderIcon={({ route }): React.ReactElement => {
+              indicatorStyle={styles.backgroundWhite}
+              renderTabBarItem={({ route, onPress }): React.ReactElement => {
                 const isSelected = currentRoute.key === route.key;
                 return (
-                  <Icon name={route.icon} color={isSelected ? theme.colors.blue : theme.colors.darkTint3} size={22} />
-                );
-              }}
-              renderLabel={({ route }): React.ReactElement => {
-                const isSelected = currentRoute.key === route.key;
-                return (
-                  <Text
-                    type="small"
-                    style={[
-                      styles.label,
-                      isSelected && {
-                        color: theme.colors.blue,
-                      },
-                    ]}
-                  >
-                    {route.title}
-                  </Text>
+                  <TouchableOpacity onPress={onPress}>
+                    <View style={[styles.tabBar, isSelected && styles.selectedTabBar]}>
+                      <Icon
+                        name={route.icon}
+                        color={isSelected ? theme.colors.blue : theme.colors.darkTint3}
+                        size={22}
+                      />
+                      <Text
+                        type="small"
+                        style={[
+                          styles.label,
+                          isSelected && {
+                            color: theme.colors.blue,
+                          },
+                        ]}
+                      >
+                        {route.title}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 );
               }}
             />
@@ -114,17 +115,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colors.darkTint3,
   },
-  tabBarWidth: {
+  tabBar: {
     width: 140,
+    height: 55,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  tabBarMobile: {
-    width: 100,
-  },
-  backgroundBlue: {
-    backgroundColor: theme.colors.blue,
+  selectedTabBar: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.blue,
   },
   backgroundWhite: {
     backgroundColor: theme.colors.white,
+    paddingTop: 10,
   },
   comingSoonContent: {
     alignItems: 'center',

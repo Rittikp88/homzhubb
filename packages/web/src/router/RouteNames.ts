@@ -20,6 +20,7 @@ export const RouteNames = {
     FINANCIALS: '/dashboard/financial',
     PORTFOLIO: '/dashboard/portfolio',
     ADD_PROPERTY: '/dashboard/addProperty',
+    PORTFOLIO_ADD_PROPERTY: '/dashboard/portfolio/addProperty',
     ADD_LISTING: '/dashboard/addListing',
     PROPERTY_DETAIL: '/dashboard/propertyDetail',
     SEARCH_PROPERTY: '/dashboard/searchProperty',

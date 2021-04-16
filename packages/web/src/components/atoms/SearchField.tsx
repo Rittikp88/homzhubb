@@ -24,7 +24,7 @@ export const SearchField: FC<IProps> = (props: IProps) => {
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
-    <View style={[styles.container, containerStyle]} onLayout={onLayoutChange}>
+    <View style={[styles.container, containerStyle, isMobile && styles.mobileContainer]} onLayout={onLayoutChange}>
       <TextInput
         ref={forwardRef}
         style={[styles.textInput, isMobile && styles.textInputMobile]}
@@ -35,7 +35,6 @@ export const SearchField: FC<IProps> = (props: IProps) => {
         onChangeText={onChangeText}
         testID="textInput"
       />
-
       <Button
         type="primary"
         icon={icons.search}
@@ -60,13 +59,16 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint10,
     backgroundColor: theme.colors.secondaryColor,
   },
-
+  mobileContainer: {
+    borderWidth: 0,
+    width: '100%',
+  },
   textInput: {
     flex: 1,
     marginRight: 8,
   },
   textInputMobile: {
-    width: '70%',
+    width: '90%',
   },
   iconButton: {
     backgroundColor: theme.colors.secondaryColor,

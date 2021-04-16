@@ -125,8 +125,8 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
   return (
     <View style={styles.mainContainer}>
       <View style={styles.searchAndFilters}>
-        <View style={styles.searchBarContainer}>
-          <View style={styles.googleSearchBar}>
+        <View style={[styles.searchBarContainer, isMobile && styles.searchBarMobileContainer]}>
+          <View style={[styles.googleSearchBar, isMobile && styles.googleSearchBarMobile]}>
             <GoogleSearchBar />
           </View>
           <Button type="primary" containerStyle={styles.searchButton}>
@@ -244,10 +244,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 20,
     width: '70%',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+  },
+  searchBarMobileContainer: {
+    width: '100%',
+    paddingRight: 24,
+  },
+  googleSearchBarMobile: {
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: theme.colors.gray13,
+    marginRight: 12,
   },
   googleSearchBar: {
-    width: '85%',
+    width: '80%',
+    marginRight: 16,
   },
   searchButton: {
     height: 33,

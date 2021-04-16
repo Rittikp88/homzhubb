@@ -6,6 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
+import { routesConfig } from '@homzhub/web/src/components/molecules/NavigationInfo/constants';
 
 // TODO : (bishal) add types here
 // @ts-ignore
@@ -15,7 +16,7 @@ const Breadcrumbs = ({ breadcrumbs }) => {
   return (
     <View style={styles.breadCrumbsContainer}>
       {breadcrumbs.map(({ breadcrumb, match }: any, index: number) => (
-        <View key={match.url} style={styles.breadCrumbs}>
+        <View key={match.url} style={index === 0 ? styles.frirstBreadCrumb : styles.breadCrumbs}>
           <Hoverable>
             {(isHovered: boolean): React.ReactNode => (
               <Link to={match.url || ''} style={linkStyle}>
@@ -53,10 +54,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  frirstBreadCrumb: {
+    display: 'none',
+  },
   breadCrumbs: {
     flexDirection: 'row',
     alignItems: 'center',
   },
 });
 
-export default withBreadcrumbs()(Breadcrumbs);
+export default withBreadcrumbs(routesConfig)(Breadcrumbs);

@@ -27,6 +27,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
   const {
     DASHBOARD,
     ADD_PROPERTY,
+    PORTFOLIO_ADD_PROPERTY,
     FINANCIALS,
     HELP_SUPPORT,
     ADD_LISTING,

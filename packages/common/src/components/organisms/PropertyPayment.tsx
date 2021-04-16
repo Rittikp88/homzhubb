@@ -285,11 +285,11 @@ export default withTranslation()(PropertyPayment);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: PlatformUtils.isWeb() ? 1 : 0,
     backgroundColor: theme.colors.white,
     paddingVertical: 16,
     height: PlatformUtils.isWeb() ? 'max-content' : 'auto',
-    marginHorizontal: 16,
+    marginHorizontal: PlatformUtils.isWeb() ? 16 : 0,
   },
   payButton: {
     marginHorizontal: 16,

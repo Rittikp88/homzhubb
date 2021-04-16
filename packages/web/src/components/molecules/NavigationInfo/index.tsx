@@ -191,6 +191,37 @@ const GoBackAction: FC = () => {
   );
 };
 
+const AddPropertyAction: FC = () => {
+  const { t } = useTranslation();
+  const styles = dashBoardActionStyles;
+  const history = useHistory();
+  const onAddProperty = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PORTFOLIO_ADD_PROPERTY });
+  };
+  return (
+    <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={onAddProperty}>
+      <Icon name={icons.portfolioFilled} size={22} color={theme.colors.primaryColor} style={styles.buttonIconRight} />
+      <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
+        {t('property:addProperty')}
+      </Typography>
+    </Button>
+  );
+};
+
+const GoBackActionButton: FC = () => {
+  const { t } = useTranslation();
+  const styles = goBackActionStyles;
+  const history = useHistory();
+  return (
+    <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={history.goBack}>
+      <Icon name={icons.dartBack} color={theme.colors.white} style={styles.buttonIconRight} />
+      <Typography variant="label" size="large" style={styles.buttonBlueTitle}>
+        {t('backText')}
+      </Typography>
+    </Button>
+  );
+};
+
 // todo: replace dummy data with actual data
 export const NavigationInfo: FC = () => {
   const location = useLocation();
@@ -205,6 +236,10 @@ export const NavigationInfo: FC = () => {
         return <GoBackAction />;
       case protectedRoutes.DASHBOARD:
         return <DashBoardActionsGrp />;
+      case protectedRoutes.PORTFOLIO:
+        return <AddPropertyAction />;
+      case protectedRoutes.PORTFOLIO_ADD_PROPERTY:
+        return <GoBackActionButton />;
       default:
         return <></>;
     }
