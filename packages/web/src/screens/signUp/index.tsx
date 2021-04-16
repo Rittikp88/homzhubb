@@ -1,10 +1,9 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { FC, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
-import { useHistory } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
-import { History } from 'history';
 import { useOnly, useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -25,17 +24,23 @@ import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfac
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-interface IOwnProps {
-  history: History;
+interface IOwnProps extends RouteComponentProps {
+  isAuthenticated: boolean;
 }
 
 type IProps = IOwnProps;
 
 const SignUp: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.auth);
-  const history = useHistory();
+  const { history, isAuthenticated } = props;
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      NavigationUtils.navigate(history, {
+        path: RouteNames.protectedRoutes.DASHBOARD,
+      });
+    }
+  }, []);
   useEffect(() => {
     dispatch(CommonActions.getCountries());
     dispatch(CommonActions.setDeviceCountry('IN'));

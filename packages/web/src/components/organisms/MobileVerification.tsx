@@ -2,8 +2,8 @@ import React, { FC, useState, useEffect } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { connect, useDispatch } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
-import { History } from 'history';
 import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -40,18 +40,25 @@ interface INavProps {
   isFromLogin?: boolean;
   isEmailLogin?: boolean;
 }
-interface IOwnProps {
-  history: History<INavProps>;
+interface IOwnProps extends RouteComponentProps {
+  isAuthenticated: boolean;
 }
 
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const MobileVerification: FC<IProps> = (props: IProps) => {
-  const { history } = props;
+  const { history, isAuthenticated } = props;
+  const defaultNavProps = {
+    title: '',
+    subTitle: '',
+    buttonTitle: '',
+    underlineDesc: '',
+  };
   const {
     location: { state },
   } = history;
-  const { title, subTitle, buttonTitle, underlineDesc, isFromLogin, socialUserData, isEmailLogin } = state;
+  const { title, subTitle, buttonTitle, underlineDesc, isFromLogin, socialUserData, isEmailLogin } =
+    (state as INavProps) || defaultNavProps;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
@@ -63,7 +70,20 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
   const [isEmail, setIsEmailLogin] = useState(false);
 
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    if (!state) {
+      NavigationUtils.navigate(history, {
+        path: RouteNames.publicRoutes.SIGNUP,
+      });
+    }
+  }, []);
+  useEffect(() => {
+    if (isAuthenticated) {
+      NavigationUtils.navigate(history, {
+        path: RouteNames.protectedRoutes.DASHBOARD,
+      });
+    }
+  }, []);
   useEffect(() => {
     dispatch(CommonActions.getCountries());
     dispatch(CommonActions.setDeviceCountry('IN'));

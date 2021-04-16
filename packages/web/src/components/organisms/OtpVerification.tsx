@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -53,22 +53,35 @@ interface IOtpProps {
   buttonTitle?: string;
   navigationPath?: string;
 }
-type IProps = IDispatchProps & IOtpProps;
 
-const OtpVerification: React.FC<IProps> = (props: IProps) => {
-  const history = useHistory<IOtpProps>();
+interface IProps extends RouteComponentProps {
+  isAuthenticated: boolean;
+}
+type Props = IDispatchProps & IProps;
+
+const OtpVerification: React.FC<Props> = (props: Props) => {
+  const defaultOtpProps = {
+    otpSentTo: '',
+    phoneCode: '',
+    type: OtpNavTypes.Login,
+  };
   const dispatch = useDispatch();
   const [errorState, toggleErrorState] = useState(true);
   const [userOtp, setOtp] = useState('');
-  const { location } = history;
   const styles = mobileVerificationStyle();
-
-  const {
-    state: { phoneCode, otpSentTo, type, userData, socialUserData, buttonTitle, navigationPath },
-  } = location;
-
+  const { isAuthenticated, history } = props;
+  const { location } = history;
+  const { state } = location;
+  const { phoneCode, otpSentTo, type, userData, socialUserData, buttonTitle, navigationPath } =
+    (state as IOtpProps) || defaultOtpProps;
   useEffect(() => {
-    fetchOtp().then();
+    if (isAuthenticated) {
+      NavigationUtils.navigate(history, {
+        path: RouteNames.protectedRoutes.DASHBOARD,
+      });
+    } else {
+      fetchOtp().then();
+    }
   }, []);
 
   const handleOtpVerification = (otp: string): void => {

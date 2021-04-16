@@ -2,8 +2,11 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useDispatch } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { useDown, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import AppFeatures from '@homzhub/web/src/screens/landing/components/AppFeatures';
 import FeaturedProperties from '@homzhub/web/src/screens/landing/components/FeaturedProperties';
@@ -21,7 +24,12 @@ import SubscribePopUp from '@homzhub/web/src/screens/landing/components/Subscrib
 import Testimonials from '@homzhub/web/src/screens/landing/components/Testimonials';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const Landing: FC = () => {
+interface IProps extends RouteComponentProps {
+  isAuthenticated: boolean;
+}
+
+const Landing: FC<IProps> = (props: IProps) => {
+  const { isAuthenticated, history } = props;
   const [featuredPropertiesRef, setFeaturedPropertiesRef] = useState(null);
   const [plansRef, setPlansRef] = useState(null);
   const [storeLinksRef, setStoreLinksRef] = useState(null);
@@ -37,6 +45,13 @@ const Landing: FC = () => {
     setStoreLinksRef(element);
   };
   const [isInitialized, setIsInitialized] = useState(false);
+  useEffect(() => {
+    if (isAuthenticated) {
+      NavigationUtils.navigate(history, {
+        path: RouteNames.protectedRoutes.DASHBOARD,
+      });
+    }
+  }, []);
   useEffect(() => {
     dispatch(CommonActions.getCountries());
     dispatch(CommonActions.setDeviceCountry('IN'));

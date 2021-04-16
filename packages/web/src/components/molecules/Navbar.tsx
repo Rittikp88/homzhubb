@@ -1,9 +1,8 @@
-import React, { FC, useState, useRef } from 'react';
+import React, { FC, useState } from 'react';
 import { ImageStyle, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { PopupActions } from 'reactjs-popup/dist/types';
 import { History } from 'history';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -19,7 +18,6 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import GoogleSearchBar from '@homzhub/web/src/components/molecules/GoogleSearchBar';
-import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -61,7 +59,7 @@ interface IProps {
 type NavbarProps = IDispatchProps & IProps;
 const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const { t } = useTranslation();
-  const { logout, location, history } = props;
+  const { location, history } = props;
   const isDesktop = useDown(deviceBreakpoint.DESKTOP);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -83,34 +81,13 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
     setIsSelected(index);
     NavigationUtils.navigate(history, { path: navItems[index].url });
   };
-  const [isUserOptions, setIsUserOptions] = useState(false);
-  const popupRef = useRef<PopupActions>(null);
-  const onCloseUserOptions = (): void => {
-    setIsUserOptions(false);
-  };
   const popOverContentStyle = {
     height: 40,
     marginTop: 24,
     width: '90%',
     marginLeft: 16,
   };
-  const userOptions: IPopupOptions[] = [
-    {
-      label: t('common:logout'),
-      value: 'LOGOUT',
-    },
-  ];
-  const handleUserOptionsPress = (selectedOption: IPopupOptions): void => {
-    if (selectedOption.value === 'LOGOUT') {
-      logout({
-        callback: (status: boolean): void => {
-          if (status) {
-            NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
-          }
-        },
-      });
-    }
-  };
+
   const popoverContent = (): React.ReactElement => {
     return (
       <View style={navBarStyles.searchBarContainer}>
@@ -153,7 +130,6 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
                     children: undefined,
                     contentStyle: popOverContentStyle,
                     className: 'my-Popup',
-                    onClose: onCloseUserOptions,
                   }}
                 >
                   <Button
@@ -181,23 +157,8 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
             ))}
             <View style={navBarStyles.items}>
               {/** TODO: Replace name once login API integrated * */}
-              <Popover
-                forwardedRef={popupRef}
-                content={<PopupMenuOptions options={userOptions} onMenuOptionPress={handleUserOptionsPress} />}
-                popupProps={{
-                  position: 'bottom center',
-                  on: [],
-                  open: isUserOptions,
-                  arrow: false,
-                  closeOnDocumentClick: true,
-                  children: undefined,
-                  onClose: onCloseUserOptions,
-                }}
-              >
-                <TouchableOpacity onPress={(): void => setIsUserOptions(true)}>
-                  <Avatar fullName={t('common:user')} isOnlyAvatar />
-                </TouchableOpacity>
-              </Popover>
+
+              <Avatar fullName={t('common:user')} isOnlyAvatar />
             </View>
           </View>
         </View>

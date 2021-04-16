@@ -1,9 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { History } from 'history';
+import { RouteComponentProps } from 'react-router';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -42,20 +42,27 @@ interface IDispatchProps {
   login: (payload: ILoginPayload) => void;
 }
 
-interface IOwnProps {
-  history: History;
+interface IOwnProps extends RouteComponentProps {
+  isAuthenticated: boolean;
 }
 
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const Login: FC<IProps> = (props: IProps) => {
-  const { history } = props;
+  const { history, isAuthenticated } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const styles = formStyles(isMobile, isDesktop);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const [isEmailLogin, setIsEmailLogin] = useState(false);
+  useEffect(() => {
+    if (isAuthenticated) {
+      NavigationUtils.navigate(history, {
+        path: RouteNames.protectedRoutes.DASHBOARD,
+      });
+    }
+  }, []);
   const navigateToHomeScreen = (): void => {
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };

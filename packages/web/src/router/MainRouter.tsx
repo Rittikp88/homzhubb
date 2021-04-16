@@ -1,7 +1,10 @@
 import React, { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
+import { connect, ConnectedProps } from 'react-redux';
+import PrivateRoute from '@homzhub/web/src/router/PrivateRoute';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
@@ -18,7 +21,8 @@ const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/ind
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
 const PropertyView = lazy(() => import('@homzhub/common/src/components/organisms/AddPropertyView'));
 
-export const MainRouter = (): React.ReactElement => {
+const MainRouter = (props: MainRouterProps): React.ReactElement => {
+  const { isAuthenticated } = props;
   const {
     DASHBOARD,
     ADD_PROPERTY,
@@ -40,21 +44,44 @@ export const MainRouter = (): React.ReactElement => {
   return (
     <Suspense fallback={<div>{t('webLoader:loadingText')}</div>}>
       <Switch>
-        <Route exact path={DASHBOARD} component={Dashboard} />
-        <Route exact path={FINANCIALS} component={Financials} />
-        <Route exact path={ADD_PROPERTY} component={PostProperty} />
-        <Route exact path={HELP_SUPPORT} component={HelpAndSupport} />
-        <Route exact path={ADD_LISTING} component={AddPropertyListing} />
-        <Route exact path={PORTFOLIO} component={Portfolio} />
-        <Route exact path={PROPERTY_DETAIL} component={PropertyDetails} />
-        <Route exact path={SEARCH_PROPERTY} component={SearchProperty} />
-        <Route exact path={PROPERTY_VIEW} component={PropertyView} />
-        <Route exact path={SELECT_PROPERTY} component={SelectProperty} />
-        <Route exact path={SELECT_SERVICES} component={SelectServices} />
-        <Route exact path={VALUE_ADDED_SERVICES} component={ValueAddedServices} />
-        <Route exact path={PROPERTY_SELECTED} component={PropertyDetailsOwner} />
+        <PrivateRoute exact path={DASHBOARD} component={Dashboard} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={FINANCIALS} component={Financials} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={ADD_PROPERTY} component={PostProperty} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={HELP_SUPPORT} component={HelpAndSupport} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={ADD_LISTING} component={AddPropertyListing} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={PORTFOLIO} component={Portfolio} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={PROPERTY_DETAIL} component={PropertyDetails} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={SEARCH_PROPERTY} component={SearchProperty} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={PROPERTY_VIEW} component={PropertyView} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={SELECT_PROPERTY} component={SelectProperty} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={SELECT_SERVICES} component={SelectServices} isAuthenticated={isAuthenticated} />
+        <PrivateRoute
+          exact
+          path={VALUE_ADDED_SERVICES}
+          component={ValueAddedServices}
+          isAuthenticated={isAuthenticated}
+        />
+        <PrivateRoute
+          exact
+          path={PROPERTY_SELECTED}
+          component={PropertyDetailsOwner}
+          isAuthenticated={isAuthenticated}
+        />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>
     </Suspense>
   );
 };
+
+const mapStateToProps = (state: any): any => {
+  const { isLoggedIn } = UserSelector;
+  return {
+    isAuthenticated: isLoggedIn(state),
+  };
+};
+
+const connector = connect(mapStateToProps, null);
+
+type MainRouterProps = ConnectedProps<typeof connector>;
+
+export default connector(MainRouter);

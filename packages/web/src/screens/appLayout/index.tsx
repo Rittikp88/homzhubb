@@ -4,7 +4,7 @@ import { History } from 'history';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
-import { MainRouter } from '@homzhub/web/src/router/MainRouter';
+import MainRouter from '@homzhub/web/src/router/MainRouter';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Navbar, NavigationInfo } from '@homzhub/web/src/components';
