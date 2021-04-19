@@ -84,6 +84,14 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
   };
 
   const navigateToOffer = (asset: Asset): void => {
+    const { leaseNegotiation, saleNegotiation } = asset;
+    const hasCreatedOffer = Boolean(leaseNegotiation) || Boolean(saleNegotiation);
+
+    if (hasCreatedOffer) {
+      navigateToOffersMadeScreen();
+      return;
+    }
+
     dispatch(AssetActions.getAsset({ propertyTermId: asset.leaseTerm ? asset.leaseTerm.id : asset.saleTerm?.id ?? 0 }));
     getProspectProfile().then((hasProspect: number): void => {
       // API Error case
@@ -104,6 +112,20 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
       screen: ScreensKeys.Search,
       params: {
         screen: ScreensKeys.PropertySearchScreen,
+      },
+    });
+  };
+
+  const navigateToOffersMadeScreen = (): void => {
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.BottomTabs, {
+      screen: ScreensKeys.More,
+      params: {
+        screen: ScreensKeys.PropertyOfferList,
+        initial: false,
+        params: {
+          isReceivedFlow: false,
+        },
       },
     });
   };
@@ -161,7 +183,8 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
   };
 
   const renderButtonGroup = (asset: Asset): ReactElement => {
-    const { nextVisit, leaseTerm, saleTerm, isActive } = asset;
+    const { nextVisit, leaseTerm, saleTerm, isActive, leaseNegotiation, saleNegotiation } = asset;
+    const hasCreatedOffer = Boolean(leaseNegotiation) || Boolean(saleNegotiation);
     const onScheduleVisitPress = (): void => {
       if (isActive) {
         navigateToPropertyVisit(leaseTerm?.id, saleTerm?.id);
@@ -178,9 +201,9 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
           textType="label"
           textSize="large"
           fontType="semiBold"
-          titleStyle={styles.buttonTextStyle}
-          containerStyle={styles.commonButtonStyle}
-          title={t('makeAnOfferText')}
+          titleStyle={{ ...styles.buttonTextStyle, ...(hasCreatedOffer && styles.seeOfferButton) }}
+          containerStyle={{ ...styles.commonButtonStyle, ...(hasCreatedOffer && styles.seeOfferButtonStyle) }}
+          title={t(hasCreatedOffer ? 'seeOfferText' : 'makeAnOfferText')}
           type="secondary"
           onPress={onPressMakeAnOffer}
         />
@@ -345,6 +368,9 @@ const styles = StyleSheet.create({
   commonButtonStyle: {
     flex: 0,
   },
+  seeOfferButtonStyle: {
+    borderColor: theme.colors.green,
+  },
   buttonTextStyle: {
     marginHorizontal: 20,
   },
@@ -359,5 +385,8 @@ const styles = StyleSheet.create({
   },
   emptyContainer: {
     paddingVertical: '50%',
+  },
+  seeOfferButton: {
+    color: theme.colors.green,
   },
 });

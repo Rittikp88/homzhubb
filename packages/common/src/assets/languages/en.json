@@ -864,6 +864,7 @@
     "logout": "Log Out",
     "refer": "Refer & Earn",
     "makeAnOfferText": "Make an offer",
+    "seeOfferText": "See Offer",
     "scheduleVisit": "Book a visit",
     "noImagesText": "No Images",
     "savedPropertiesEmptyText": "You haven't added any property yet.\nStart searching for properties to add now.",
@@ -1196,6 +1197,8 @@
     "cancellationReason": "Cancellation reason",
     "offerCancellationSucess": "Offer Cancelled Successfully",
     "seeCancelReason": "See Cancellation Reason",
-    "offerMadeInfo": "These are the offers made by you for property listings on homzhub."
+    "offerMadeInfo": "These are the offers made by you for property listings on homzhub.",
+    "prospectProfileCreateSuccess": "Prospect Profile created successfully",
+    "prospectProfileEditSuccess": "Prospect Profile edited successfully"
   }
 }

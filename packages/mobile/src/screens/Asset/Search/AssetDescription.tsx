@@ -67,6 +67,8 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
+// Todo : Refactor
+
 interface IStateProps {
   reviews: AssetReview | null;
   assetDetails: Asset | null;
@@ -126,7 +128,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetData();
     });
-
     await this.setSharingMessage();
   };
 
@@ -303,17 +304,18 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (!assetDetails) {
       return null;
     }
-    const { visitDate, appPermissions, isAssetOwner } = assetDetails;
+    const { visitDate, appPermissions, isAssetOwner, leaseNegotiation, saleNegotiation } = assetDetails;
+    const hasCreatedOffer = Boolean(leaseNegotiation) || Boolean(saleNegotiation);
     return (
       <View style={styles.timelineContainer}>
         {!isAssetOwner && (
           <TouchableOpacity
             style={[styles.offerButton, { backgroundColor: theme.colors.blueOpacity }]}
-            onPress={(): void => this.onMakeonOffer()}
+            onPress={this.onOfferButtonClicked}
           >
-            <Icon name={icons.offers} color={theme.colors.blue} size={20} />
-            <Text style={styles.offerText} type="small">
-              {t('assetMore:makeAnOfferText')}
+            <Icon name={icons.offers} color={hasCreatedOffer ? theme.colors.green : theme.colors.blue} size={20} />
+            <Text style={{ ...styles.offerText, ...(hasCreatedOffer && styles.seeOfferText) }} type="small">
+              {t(hasCreatedOffer ? 'assetMore:seeOfferText' : 'assetMore:makeAnOfferText')}
             </Text>
           </TouchableOpacity>
         )}
@@ -635,7 +637,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           setChangeStack(false);
           navigation.navigate(ScreensKeys.AuthStack, {
             screen: ScreensKeys.SignUp,
-            params: { onCallback: sendWhatsappMessage },
+            params: { onCallback: this.navigateToAssetDescription },
           });
         } else {
           await sendWhatsappMessage();
@@ -646,7 +648,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           setChangeStack(false);
           navigation.navigate(ScreensKeys.AuthStack, {
             screen: ScreensKeys.SignUp,
-            params: { onCallback: openDialer },
+            params: { onCallback: this.navigateToAssetDescription },
           });
         } else {
           await openDialer();
@@ -669,7 +671,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       setChangeStack(false);
       navigation.navigate(ScreensKeys.AuthStack, {
         screen: ScreensKeys.SignUp,
-        params: { onCallback: this.navigateToContactForm },
+        params: { onCallback: this.navigateToAssetDescription },
       });
     } else {
       this.navigateToContactForm();
@@ -717,17 +719,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  private onMakeonOffer = (): void => {
-    const { navigation, isLoggedIn, setChangeStack } = this.props;
+  private onOfferButtonClicked = (): void => {
+    const { navigation, isLoggedIn, setChangeStack, assetDetails } = this.props;
+    const hasCreatedOffer = Boolean(assetDetails?.leaseNegotiation) || Boolean(assetDetails?.saleNegotiation);
     if (!isLoggedIn) {
       setChangeStack(false);
-      navigation.navigate(ScreensKeys.AuthStack, {
+      return navigation.navigate(ScreensKeys.AuthStack, {
         screen: ScreensKeys.SignUp,
-        params: { onCallback: this.navigateHandler },
+        params: { onCallback: this.navigateToAssetDescription },
       });
-    } else {
-      this.navigateToOfferScreen();
     }
+    return hasCreatedOffer ? this.navigateToOffersMade() : this.navigateToSubmitOfferScreen();
   };
 
   private onBookVisit = (): void => {
@@ -736,7 +738,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       setChangeStack(false);
       navigation.navigate(ScreensKeys.AuthStack, {
         screen: ScreensKeys.SignUp,
-        params: { onCallback: this.navigateToVisitForm },
+        params: { onCallback: this.navigateToAssetDescription },
       });
     } else {
       this.navigateToVisitForm();
@@ -801,6 +803,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     });
   };
 
+  private navigateToAssetDescription = (): void => {
+    const {
+      route: {
+        params: { propertyTermId },
+      },
+      navigation: { navigate, pop },
+    } = this.props;
+    pop();
+    navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
+  };
+
   private getDynamicUrl = async (): Promise<string> => {
     const {
       route: {
@@ -845,7 +858,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       ...(saleTerm && { sale_listing_id: saleTerm.id }),
       ...(nextVisit && { isReschedule: true }),
     };
-
     navigation.navigate(ScreensKeys.BookVisit, param);
   };
 
@@ -860,16 +872,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigation.navigate(ScreensKeys.ContactForm, { contactDetail: assetDetails?.contacts ?? null, propertyTermId });
   };
 
-  private navigateHandler = (): void => {
-    const { navigation, assetDetails } = this.props;
-    if (!assetDetails?.appPermissions?.addListingVisit) {
-      navigation.navigate(ScreensKeys.PropertySearchScreen);
-    } else {
-      this.navigateToOfferScreen();
-    }
-  };
-
-  private navigateToOfferScreen = (): void => {
+  private navigateToSubmitOfferScreen = (): void => {
     const {
       navigation,
       assetDetails,
@@ -885,6 +888,18 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       } else {
         navigation.navigate(ScreensKeys.SubmitOffer);
       }
+    });
+  };
+
+  private navigateToOffersMade = (): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.More, {
+      screen: ScreensKeys.PropertyOfferList,
+      initial: false,
+      params: {
+        isReceivedFlow: false,
+      },
     });
   };
 
@@ -1136,6 +1151,9 @@ const styles = StyleSheet.create({
   },
   offerText: {
     paddingLeft: 8,
+  },
+  seeOfferText: {
+    color: theme.colors.green,
   },
   favIcon: {
     marginEnd: relativeWidth(3),

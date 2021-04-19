@@ -238,9 +238,11 @@ class ProspectProfile extends Component<Props, IScreenState> {
       await OffersRepository.updateProspects(payload);
       this.setState({ loading: false });
       if (editData) {
+        AlertHelper.success({ message: t('offers:prospectProfileEditSuccess'), duration: 5000 });
         navigation.goBack();
         return;
       }
+      AlertHelper.success({ message: t('offers:prospectProfileCreateSuccess'), duration: 5000 });
       navigation.navigate(ScreensKeys.SubmitOffer);
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });

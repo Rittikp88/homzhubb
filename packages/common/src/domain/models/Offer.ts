@@ -59,7 +59,7 @@ export class Offer {
   @JsonProperty('prospect', ProspectProfile, true)
   private _prospect = new ProspectProfile();
 
-  @JsonProperty('created_at', String)
+  @JsonProperty('created_at', String, true)
   private _createdAt = '';
 
   @JsonProperty('expires_at', String, true)
@@ -92,10 +92,10 @@ export class Offer {
   @JsonProperty('tenant_preferences', [TenantPreference], true)
   private _tenantPreferences = [];
 
-  @JsonProperty('actions', [String])
+  @JsonProperty('actions', [String], true)
   private _actions = [];
 
-  @JsonProperty('status', String)
+  @JsonProperty('status', String, true)
   private _status = '';
 
   @JsonProperty('role', String, true)

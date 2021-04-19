@@ -85,9 +85,10 @@ const Favorite = (props: IProps): React.ReactElement => {
     if (isFromLogin) {
       if (fromScreen && fromScreen === ScreensKeys.PropertyAssetDescription) {
         navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId: leaseId ?? saleId });
-      } else {
-        navigation.navigate(ScreensKeys.PropertySearchScreen);
+        return;
       }
+      navigation.navigate(ScreensKeys.PropertySearchScreen);
+      return;
     }
 
     const payload: ILeadPayload = {
