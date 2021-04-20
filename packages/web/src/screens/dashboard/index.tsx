@@ -69,6 +69,37 @@ const Dashboard: FC = () => {
       params: { propertyId: id },
     });
   };
+  const getPendingPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
+    try {
+      setIsPendingProperties(true);
+      const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
+      setIsPendingProperties(false);
+      callback(response);
+    } catch (e) {
+      setIsPendingProperties(false);
+    }
+  };
+
+  const getPropertyMetrics = async (callback: (response: AssetMetrics) => void): Promise<void> => {
+    try {
+      setIsPropertyMeterics(true);
+      const response: AssetMetrics = await DashboardRepository.getAssetMetrics();
+      setIsPropertyMeterics(false);
+      callback(response);
+    } catch (e) {
+      setIsPropertyMeterics(false);
+    }
+  };
+  const getVacantPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
+    try {
+      setIsVacantProperties(true);
+      const response: Asset[] = await PortfolioRepository.getUserAssetDetails(Filters.VACANT);
+      setIsVacantProperties(false);
+      callback(response);
+    } catch (e) {
+      setIsVacantProperties(false);
+    }
+  };
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(UserActions.getUserPreferences());
@@ -121,37 +152,6 @@ const Dashboard: FC = () => {
   if (isLoading) {
     return <Loader visible={isLoading} />;
   }
-  const getPendingPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
-    try {
-      setIsPendingProperties(true);
-      const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
-      setIsPendingProperties(false);
-      callback(response);
-    } catch (e) {
-      setIsPendingProperties(false);
-    }
-  };
-
-  const getPropertyMetrics = async (callback: (response: AssetMetrics) => void): Promise<void> => {
-    try {
-      setIsPropertyMeterics(true);
-      const response: AssetMetrics = await DashboardRepository.getAssetMetrics();
-      setIsPropertyMeterics(false);
-      callback(response);
-    } catch (e) {
-      setIsPropertyMeterics(false);
-    }
-  };
-  const getVacantPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
-    try {
-      setIsVacantProperties(true);
-      const response: Asset[] = await PortfolioRepository.getUserAssetDetails(Filters.VACANT);
-      setIsVacantProperties(false);
-      callback(response);
-    } catch (e) {
-      setIsVacantProperties(false);
-    }
-  };
   return (
     <View style={styles.container}>
       <PropertyOverview data={propertyMetrics?.assetMetrics?.miscellaneous ?? []} />

@@ -22,7 +22,7 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { ActionController } from '@homzhub/common/src/components/organisms/ActionController';
 import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
 import PropertyVerification from '@homzhub/web/src/components/organisms/PropertyVerification';
-import PropertyPayment from '@homzhub/common/src/components/organisms/PropertyPayment';
+import { PropertyPayment } from '@homzhub/common/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/common/src/components/organisms/ValueAddedServicesView';
 import ContinuePopup, { IContinuePopupProps } from '@homzhub/web/src/components/molecules/ContinuePopup';
 import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';

@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -36,11 +36,25 @@ type Props = IFormProps & IDispatchProps;
 const SideMenu: FC<Props> = (props: Props) => {
   const { logout } = props;
   const history = useHistory();
+  const {
+    location: { pathname },
+  } = history;
+  const [selectedItem, setSelectedItem] = useState({
+    id: 1,
+    url: RouteNames.protectedRoutes.DASHBOARD,
+  });
+  useEffect(() => {
+    for (let index = 0; index < MenuItemList.length; index++) {
+      if (MenuItemList[index].url === pathname) {
+        setSelectedItem({ id: MenuItemList[index].id, url: MenuItemList[index].url });
+      }
+    }
+  }, [pathname]);
+
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
-  const [selectedItem, setSelectedItem] = useState(1);
   const onItemPress = (item: IMenuItem): void => {
-    const { id } = item;
-    setSelectedItem(id);
+    const { id, url } = item;
+    setSelectedItem({ id, url });
     if (item.name === sideMenuItems.logout) {
       logout({
         callback: (status: boolean): void => {
@@ -53,7 +67,7 @@ const SideMenu: FC<Props> = (props: Props) => {
       NavigationUtils.navigate(history, { path: MenuItemList[id - 1].url });
     }
   };
-  const isSelectedItem = (id: number): boolean => selectedItem === id;
+  const isSelectedItem = (id: number): boolean => selectedItem.id === id && selectedItem.url === pathname;
   return (
     <View style={styles.menu}>
       {MenuItemList.map((item, index) => {
