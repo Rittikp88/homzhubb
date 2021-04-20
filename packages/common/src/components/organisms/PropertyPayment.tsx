@@ -284,9 +284,9 @@ class PropertyPayment extends Component<Props, IPaymentState> {
   };
 }
 
-const HOC = withMediaQuery<Props>(PropertyPayment);
-const propertyPayment = withTranslation()(HOC);
-export { propertyPayment as PropertyPayment };
+const HOC = withTranslation()(PropertyPayment);
+const propertyPayment= withMediaQuery<any>(HOC)
+export { propertyPayment as PropertyPayment};
 
 const styles = StyleSheet.create({
   container: {

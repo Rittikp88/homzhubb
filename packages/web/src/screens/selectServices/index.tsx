@@ -19,7 +19,7 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
 import ValueAddedServicesOverview from '@homzhub/web/src/components/molecules/ValueAddedServicesOverview';
-import { PropertyPayment } from '@homzhub/common/src/components/organisms/PropertyPayment';
+import  {PropertyPayment}  from '@homzhub/common/src/components/organisms/PropertyPayment';
 import { ValueAddedServicesView } from '@homzhub/common/src/components/organisms/ValueAddedServicesView';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IGetServicesByIds, ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
