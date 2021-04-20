@@ -14,6 +14,7 @@ interface IProps {
   cardImageCarouselStyle: ViewStyle;
   cardImageStyle: ImageStyle;
   imagesArray: Attachment[];
+  isListView?: boolean;
 }
 
 const defaultResponsive = {
@@ -27,15 +28,17 @@ const defaultResponsive = {
   },
 };
 
-const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle, imagesArray }: IProps) => {
-  // TODO Charit: Replace the images and label sources with props after integration.
+const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle, imagesArray, isListView }: IProps) => {
   return (
     <View style={cardImageCarouselStyle}>
-      <MultiCarousel passedProps={carouselProps}>
-        {imagesArray.length === 0 ? (
-          <ImagePlaceholder height={260} />
-        ) : (
-          imagesArray.map((item) => (
+      {imagesArray.length === 0 ? (
+        <View>
+          <ImagePlaceholder height={isListView ? 230 : 210} />
+          <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
+        </View>
+      ) : (
+        <MultiCarousel passedProps={carouselProps}>
+          {imagesArray.map((item) => (
             <View key={item.id}>
               <Image
                 style={[styles.image, cardImageStyle]}
@@ -44,9 +47,9 @@ const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle,
                 }}
               />
             </View>
-          ))
-        )}
-      </MultiCarousel>
+          ))}
+        </MultiCarousel>
+      )}
     </View>
   );
 };

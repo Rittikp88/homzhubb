@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkTint1,
   },
   imagePlaceHolder: {
-    minHeight: 200,
+    height: 160, 
     backgroundColor: theme.colors.disabled,
     marginRight: 16,
     paddingHorizontal: 10,

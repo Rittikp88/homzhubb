@@ -94,7 +94,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   };
 
   public render = (): React.ReactElement => {
-    const { properties, tenancies, portfolioLoaders } = this.props;
+    const { properties, tenancies, portfolioLoaders , isTablet} = this.props;
     const { filters, whilePortfolioFilters } = this.state;
     const { tenancies: tenanciesLoader, properties: propertiesLoader } = portfolioLoaders;
     const isLoading = whilePortfolioFilters || tenanciesLoader || propertiesLoader;
@@ -105,7 +105,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
       return <Loader visible={isLoading} />;
     }
     return (
-      <View style={styles.filterContainer}>
+      <View style={[styles.filterContainer, !isTablet && styles.filterContainerWeb]}>
         <PortfolioOverview onMetricsClicked={this.onMetricsClicked} />
         <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
         {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
@@ -338,5 +338,8 @@ const styles = StyleSheet.create({
   filterContainer: {
     flexDirection: 'column',
     width: '100%',
+  },
+  filterContainerWeb: {
+    width: '93%',
   },
 });

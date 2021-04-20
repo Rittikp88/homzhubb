@@ -36,20 +36,22 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
             data={property.results.length}
             fetchMoreData={fetchData}
             height={isDesktop && isListView ? '1200px' : '150vh'}
-            style={
-              !isListView
-                ? { display: 'flex', flexWrap: 'wrap', width: '100%', justifyContent: 'space-between' }
-                : { display: 'flex', flexWrap: 'wrap', width: '100%' }
-            }
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              width: '100%',
+              justifyContent: isTab ? 'space-between' : 'flex-start',
+            }}
             hasMore={hasMore}
             limit={limit}
             loader={loader}
           >
-            {property.results.map((item: Asset) => (
+            {property.results.map((item: Asset, index: number) => (
               <View
                 key={item.id}
                 style={[
                   isListView ? styles.cardList : styles.cardGrid,
+                  !isListView ? ((index + 1) % 3 === 0 ? noStyles : !isTab && styles.cardAlignment) : noStyles,
                   isMobile && isListView && styles.cardListMobile,
                   isTab && !isListView && styles.cardGridTab,
                   isMobile && !isListView && styles.cardGridMobile,
@@ -87,6 +89,7 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
                         : styles.detailContainerStyleMobile
                       : noStyles
                   }
+                  isListView={isListView}
                 />
               </View>
             ))}
@@ -131,11 +134,12 @@ const styles = StyleSheet.create({
     width: '85vw',
   },
   cardGrid: {
-    display: 'flex',
     width: '32%',
     alignItems: 'stretch',
     alignSelf: 'flex-start',
-    justifyContent: 'space-between',
+  },
+  cardAlignment: {
+    marginEnd: '2%',
   },
   cardGridTab: {
     width: '48.5%',
@@ -158,7 +162,7 @@ const styles = StyleSheet.create({
   },
   cardImageStyleGrid: {
     height: 210,
-    width: 347,
+    width: '100%',
   },
   listView: {
     flexDirection: 'row',
@@ -242,6 +246,4 @@ const styles = StyleSheet.create({
   iconStyle: {
     marginHorizontal: 0,
   },
-  // gridViewCardStyle: ,
-  listViewCardStyle: { display: 'flex', flexWrap: 'wrap', width: '100%' },
 });

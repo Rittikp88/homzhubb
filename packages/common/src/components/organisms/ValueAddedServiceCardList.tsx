@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -98,7 +99,11 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
       {assets && assets.length > 0 ? (
         <>
           {!isMobile && <ValueAddedServicesOverview propertiesCount={assets.length} />}
-          <Text style={styles.textStyle} type="small" textType="semiBold">
+          <Text
+            style={[styles.textStyle, PlatformUtils.isWeb() && !isMobile && styles.textStyleWeb]}
+            type="small"
+            textType="semiBold"
+          >
             {t('chooseAPropertyText')}
           </Text>
           <View style={!isMobile && styles.propertyViewContainer}>
@@ -202,6 +207,7 @@ interface IServicesStyle {
   amenities: ViewStyle;
   amenitiesContentStyle: ViewStyle;
   emptyContainer: ViewStyle;
+  textStyleWeb: ViewStyle;
 }
 
 const servicesStyle = (isMobile?: boolean, isTablet?: boolean): StyleSheet.NamedStyles<IServicesStyle> =>
@@ -244,6 +250,11 @@ const servicesStyle = (isMobile?: boolean, isTablet?: boolean): StyleSheet.Named
       backgroundColor: isMobile ? theme.colors.white : theme.colors.transparent,
       padding: 16,
       paddingTop: 8,
+    },
+    textStyleWeb: {
+      paddingTop: 20,
+      paddingLeft: 0,
+      paddingBottom: 16,
     },
     carouselStyle: {
       alignItems: 'center',

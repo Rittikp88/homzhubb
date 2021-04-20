@@ -458,7 +458,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 16,
     marginBottom: 2,
-    marginRight: 80,
     flexDirection: 'row',
   },
   subContainer: { flexDirection: 'row', flexWrap: 'wrap' },
@@ -620,7 +619,6 @@ const styles = StyleSheet.create({
   },
   containerTablet: {
     flexDirection: 'column',
-    marginRight: 12,
   },
   buttonStyleTablet: {
     flex: 1,

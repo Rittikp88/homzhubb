@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { isEqual } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { withMediaQuery, IWithMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
@@ -46,9 +47,9 @@ interface IPaymentState {
   isLoading: boolean;
 }
 
-type Props = IPaymentProps & WithTranslation;
+type Props = IPaymentProps & WithTranslation & IWithMediaQuery;
 
-export class PropertyPayment extends Component<Props, IPaymentState> {
+class PropertyPayment extends Component<Props, IPaymentState> {
   public state = {
     isCoinApplied: false,
     isPromoFailed: false,
@@ -77,14 +78,13 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
 
   public render(): React.ReactNode {
     const { isCoinApplied, orderSummary, isPromoFailed, isLoading } = this.state;
-    const { t } = this.props;
+    const { t, isTablet } = this.props;
 
     if (PlatformUtils.isWeb() && orderSummary.amountPayable < 1) {
       return this.renderServices(true);
     }
-
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, PlatformUtils.isWeb() && !isTablet && styles.containerWeb]}>
         {this.renderServices()}
         <HomzhubCoins
           disabled={orderSummary.coins?.currentBalance <= 0}
@@ -129,12 +129,15 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
     );
   }
 
-  // TODO: (WEB) - Fix empty view UI
   private renderServices = (isEmpty?: boolean): React.ReactNode => {
-    const { t, valueAddedServices } = this.props;
+    const { t, valueAddedServices, isTablet } = this.props;
     return (
       <View style={[styles.servicesContainer, isEmpty && styles.emptyView]}>
-        <Text type="small" textType="semiBold" style={styles.serviceTitle}>
+        <Text
+          type="small"
+          textType="semiBold"
+          style={[styles.serviceTitle, PlatformUtils.isWeb() && !isTablet && isEmpty && styles.serviceTitleWeb]}
+        >
           {t('property:services')}
         </Text>
         {isEmpty ? (
@@ -281,7 +284,9 @@ export class PropertyPayment extends Component<Props, IPaymentState> {
   };
 }
 
-export default withTranslation()(PropertyPayment);
+const HOC = withMediaQuery<Props>(PropertyPayment);
+const propertyPayment = withTranslation()(HOC);
+export { propertyPayment as PropertyPayment };
 
 const styles = StyleSheet.create({
   container: {
@@ -289,7 +294,10 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     paddingVertical: 16,
     height: PlatformUtils.isWeb() ? 'max-content' : 'auto',
-    marginHorizontal: PlatformUtils.isWeb() ? 16 : 0,
+  },
+  containerWeb: {
+    marginHorizontal: 0,
+    marginLeft: 16,
   },
   payButton: {
     marginHorizontal: 16,
@@ -305,9 +313,14 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
     marginTop: 16,
   },
+  serviceTitleWeb: {
+    marginLeft: 16,
+  },
   serviceSubText: {
+    alignItems: 'center',
+    textAlign: 'center',
     color: theme.colors.darkTint7,
-    marginTop: PlatformUtils.isWeb() ? 200 : 'auto',
+    marginTop: PlatformUtils.isWeb() ? 24 : 'auto',
   },
   secureText: {
     color: theme.colors.darkTint7,
@@ -343,9 +356,9 @@ const styles = StyleSheet.create({
   },
   emptyView: {
     backgroundColor: theme.colors.white,
-    alignItems: 'center',
-    textAlign: 'center',
-    height: PlatformUtils.isWeb() ? 400 : '50%',
-    width: PlatformUtils.isWeb() ? '20%' : 'auto',
+    height: PlatformUtils.isWeb() ? 236 : '50%',
+    width: PlatformUtils.isWeb() ? '25%' : 'auto',
+    marginHorizontal: 0,
+    marginLeft: 16,
   },
 });

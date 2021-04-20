@@ -28,6 +28,7 @@ interface IProps {
   detailsStyle: ViewStyle[];
   iconStyle: ViewStyle;
   detailContainerStyle: ViewStyle;
+  isListView: boolean;
 }
 const PropertyCard: FC<IProps> = (props: IProps) => {
   const {
@@ -43,6 +44,7 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
     detailsStyle,
     iconStyle,
     detailContainerStyle,
+    isListView,
   } = props;
   const history = useHistory();
   const {
@@ -99,6 +101,7 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
         cardImageCarouselStyle={cardImageCarouselStyle}
         cardImageStyle={cardImageStyle}
         imagesArray={attachments}
+        isListView={isListView}
       />
       <View style={detailContainerStyle}>
         <TouchableOpacity onPress={navigateToSearchView}>

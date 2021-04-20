@@ -188,7 +188,7 @@ const SelectServices = (): ReactElement => {
               closeOnDocumentClick: false,
               onClose: onSheetClose,
               children: undefined,
-              contentStyle: { width: showGoBackCaution ? 'max-Content' : '30%', borderRadius: 4 },
+              contentStyle: { width: showGoBackCaution ? 'max-Content' : '50%', borderRadius: 4 },
             }}
             content={<BackWarningPopover />}
           />
@@ -424,12 +424,13 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     marginHorizontal: 24,
+    marginVertical: 10,
   },
   popoverContent: {
     paddingVertical: 16,
   },
   popoverSpacing: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 24,
   },
   heading: {
     color: theme.colors.darkTint2,

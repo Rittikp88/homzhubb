@@ -8,6 +8,7 @@ import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import NavLogo from '@homzhub/common/src/assets/images/appLogoWithName.svg';
@@ -17,9 +18,11 @@ import { StickyHeader } from '@homzhub/web/src/components/hoc/StickyHeader';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
-import GoogleSearchBar from '@homzhub/web/src/components/molecules/GoogleSearchBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import GoogleSearchBar from '@homzhub/web/src/components/molecules/GoogleSearchBar';
+import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface INavItem {
@@ -31,6 +34,10 @@ interface INavItem {
 }
 interface IDispatchProps {
   logout: (payload: IAuthCallback) => void;
+}
+
+interface IStateProps {
+  userProfile: UserProfileModel;
 }
 const NavItem: FC<INavItem> = ({ icon, text, index, isActive, onNavItemPress }: INavItem) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
@@ -56,10 +63,10 @@ interface IProps {
   location: LocationParams;
   history: History;
 }
-type NavbarProps = IDispatchProps & IProps;
+type NavbarProps = IDispatchProps & IProps & IStateProps;
 const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const { t } = useTranslation();
-  const { location, history } = props;
+  const { location, history, userProfile } = props;
   const isDesktop = useDown(deviceBreakpoint.DESKTOP);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -156,9 +163,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
               />
             ))}
             <View style={navBarStyles.items}>
-              {/** TODO: Replace name once login API integrated * */}
-
-              <Avatar fullName={t('common:user')} isOnlyAvatar />
+              <Avatar isOnlyAvatar fullName={userProfile?.name ?? 'User'} image={userProfile?.profilePicture ?? ''} />
             </View>
           </View>
         </View>
@@ -249,6 +254,12 @@ const navItemStyle = (isMobile: boolean, isActive: boolean): StyleSheet.NamedSty
       margin: 12,
     },
   });
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserProfile } = UserSelector;
+  return {
+    userProfile: getUserProfile(state),
+  };
+};
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { logout } = UserActions;
   return bindActionCreators(
@@ -258,4 +269,4 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     dispatch
   );
 };
-export default connect(null, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
