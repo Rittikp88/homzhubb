@@ -70,7 +70,7 @@ export const MenuItemList: IMenuItemList[] = [
     id: 5,
     name: sideMenuItems.valueAddedServices,
     icon: icons.settingOutline,
-    url: RouteNames.protectedRoutes.VALUE_ADDED_SERVICES,
+    url: RouteNames.protectedRoutes.SELECT_PROPERTY,
   },
   {
     id: 6,

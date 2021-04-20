@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: PlatformUtils.isWeb() ? 'row' : 'column',
     flex: 1,
     justifyContent: 'space-between',
+    marginBottom: PlatformUtils.isWeb() ? 40 : undefined,
   },
   containerMobile: {
     flexDirection: 'column',

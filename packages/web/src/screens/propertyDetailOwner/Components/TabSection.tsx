@@ -3,13 +3,11 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { useTranslation } from 'react-i18next';
-import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import DetailsTab from '@homzhub/web/src/screens/propertyDetailOwner/Components/DetailsTab';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IRoutes, Tabs, PropertyDetailOwner } from '@homzhub/common/src/constants/Tabs';
 
@@ -24,7 +22,6 @@ const TabSections = (propsData: IProps): React.ReactElement => {
   const {
     assetDetails: { description, features, leaseTerm, saleTerm, amenityGroup, highlights },
   } = propsData;
-  const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const renderTabScene = (route: IRoutes): React.ReactElement | null => {
     switch (route.key) {
       case Tabs.DETAILS:
@@ -117,7 +114,7 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     width: 140,
-    height: 55,
+    height: 54,
     alignItems: 'center',
     justifyContent: 'center',
   },

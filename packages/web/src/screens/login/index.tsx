@@ -6,6 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -58,12 +59,22 @@ const Login: FC<IProps> = (props: IProps) => {
   const [isEmailLogin, setIsEmailLogin] = useState(false);
   useEffect(() => {
     if (isAuthenticated) {
+      setTimeout(() => {
+        if (PlatformUtils.isWeb()) {
+          window.scrollTo(0, 0);
+        }
+      }, 100);
       NavigationUtils.navigate(history, {
         path: RouteNames.protectedRoutes.DASHBOARD,
       });
     }
   }, []);
   const navigateToHomeScreen = (): void => {
+    setTimeout(() => {
+      if (PlatformUtils.isWeb()) {
+        window.scrollTo(0, 0);
+      }
+    }, 100);
     NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
 

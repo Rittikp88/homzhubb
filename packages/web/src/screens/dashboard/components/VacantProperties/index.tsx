@@ -74,25 +74,23 @@ const VacantProperties: FC<IProps> = ({ data }: IProps) => {
         </View>
       </View>
       {!isMobile && <Divider />}
-      <TouchableOpacity onPress={navigateToDetailView}>
-        <View style={styles.mainContent}>
-          <View style={styles.propertyInfo}>
-            {coverImage ? (
-              <ImageSquare
-                style={styles.image}
-                source={{
-                  uri: coverImage,
-                }}
-              />
-            ) : (
-              <ImagePlaceholder width="100%" containerStyle={styles.image} />
-            )}
-            <PropertyDetails assetData={data[currentAssetIndex] ?? ({} as Asset)} />
-          </View>
-          {!isTablet && <Divider containerStyles={styles.divider} />}
-          <View style={styles.latestUpdates}>
-            <LatestUpdates propertyVisitsData={data[currentAssetIndex]?.listingVisits ?? ({} as AssetListingVisits)} />
-          </View>
+      <TouchableOpacity style={styles.mainContent} onPress={navigateToDetailView}>
+        <View style={styles.propertyInfo}>
+          {coverImage ? (
+            <ImageSquare
+              style={styles.image}
+              source={{
+                uri: coverImage,
+              }}
+            />
+          ) : (
+            <ImagePlaceholder width="100%" containerStyle={styles.image} />
+          )}
+          <PropertyDetails assetData={data[currentAssetIndex] ?? ({} as Asset)} />
+        </View>
+        {!isTablet && <Divider containerStyles={styles.divider} />}
+        <View style={styles.latestUpdates}>
+          <LatestUpdates propertyVisitsData={data[currentAssetIndex]?.listingVisits ?? ({} as AssetListingVisits)} />
         </View>
       </TouchableOpacity>
     </View>

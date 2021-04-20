@@ -24,9 +24,17 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const { location, history } = props;
   const { pathname } = location;
   const { protectedRoutes } = RouteNames;
-  const { DASHBOARD, FINANCIALS, PORTFOLIO, VALUE_ADDED_SERVICES, SELECT_PROPERTY } = protectedRoutes;
+  const {
+    DASHBOARD,
+    FINANCIALS,
+    PORTFOLIO,
+    VALUE_ADDED_SERVICES,
+    SELECT_PROPERTY,
+    SAVED_PROPERTIES,
+    PROPERTY_VISITS,
+  } = protectedRoutes;
   const isSideMenuVisible = compareUrlsWithPathname(
-    [DASHBOARD, FINANCIALS, PORTFOLIO, VALUE_ADDED_SERVICES, SELECT_PROPERTY],
+    [DASHBOARD, FINANCIALS, PORTFOLIO, VALUE_ADDED_SERVICES, SELECT_PROPERTY, SAVED_PROPERTIES, PROPERTY_VISITS],
     pathname
   );
   const isMobile = useDown(deviceBreakpoint.MOBILE);

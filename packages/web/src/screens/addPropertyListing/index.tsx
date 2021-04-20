@@ -11,7 +11,7 @@ import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
 import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
 import AddListingView from '@homzhub/web/src/screens/addPropertyListing/AddListingView';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { ScreensKeys } from 'router/RouteNames';
+import { ScreensKeys } from '@homzhub/web/src/router/RouteNames';
 
 enum ComponentName {
   Listing_Plan_Selection = 'ListingPlanSelection',

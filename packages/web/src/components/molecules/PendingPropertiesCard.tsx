@@ -257,6 +257,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: 4,
     marginTop: 24,
+    paddingBottom: 16,
   },
   containerMobile: {
     marginRight: 0,
@@ -341,9 +342,9 @@ const styles = StyleSheet.create({
   buttonStyle: {
     height: 44,
     borderRadius: 2,
-    marginBottom: 12,
+    marginBottom: 18,
     marginHorizontal: 20,
-    marginTop: 'auto',
+    marginTop: 24,
     justifyContent: 'center',
   },
   buttonStyleMobile: {

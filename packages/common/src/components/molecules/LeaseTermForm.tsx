@@ -489,6 +489,7 @@ const styles = StyleSheet.create({
   },
   textAreaStyle: {
     height: 200,
+    padding: 16,
   },
   maintenanceStyle: {
     flexDirection: 'row',

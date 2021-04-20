@@ -17,12 +17,10 @@ const ComingSoon: FC = () => {
 const styles = StyleSheet.create({
   comingSoonContent: {
     alignItems: 'center',
-    minHeight: 400,
-    height: 'auto',
     paddingVertical: 190,
     backgroundColor: theme.colors.white,
     marginBottom: 24,
-    width: '100%',
+    width: '95%',
   },
 });
 

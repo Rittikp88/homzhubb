@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
   },
   servicePlansCardsContainer: {
     flexDirection: 'row',
+    marginRight: 24,
   },
   servicePlansContainerDesktop: {
     flexDirection: 'row',
