@@ -253,7 +253,8 @@
     "questionSymbol": "Q.",
     "Complete": "Complete",
     "ownerLowerCase": "owner",
-    "prospectLowerCase": "prospect"
+    "prospectLowerCase": "prospect",
+    "userCancelled": "User cancelled the process"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -888,7 +889,9 @@
     "noActiveThread": "You have no active message threads.",
     "accessOldMessage": "You can access the old messages \n from inside the Messages menu.",
     "hrAgo": "{{hour}} hr ago",
-    "andYou": "and You."
+    "andYou": "and You.",
+    "subscriptionPayment": "Subscription & Payment",
+    "activePlan": "Active Plan"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

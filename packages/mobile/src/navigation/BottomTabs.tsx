@@ -74,6 +74,7 @@ import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/Value
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import ProspectProfile from '@homzhub/mobile/src/screens/Asset/More/Offers/ProspectProfile';
+import SubscriptionPayment from '@homzhub/mobile/src/screens/Asset/More/SubscriptionPayment';
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
@@ -154,6 +155,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.CancelOffer]: undefined;
   [ScreensKeys.ProspectProfile]: IAssetDescriptionProps | undefined;
   [ScreensKeys.CreateLease]: undefined;
+  [ScreensKeys.SubscriptionPayment]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -256,6 +258,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.CancelOffer} component={CancelOffer} />
       <MoreStackNavigator.Screen name={ScreensKeys.ProspectProfile} component={ProspectProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
+      <MoreStackNavigator.Screen name={ScreensKeys.SubscriptionPayment} component={SubscriptionPayment} />
     </MoreStackNavigator.Navigator>
   );
 };

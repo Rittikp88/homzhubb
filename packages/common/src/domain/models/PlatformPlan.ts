@@ -31,6 +31,9 @@ export class PlatformPlans {
   @JsonProperty('upgrade_option', Number, true)
   private _upgradeOption = '';
 
+  @JsonProperty('apple_product_id', String, true)
+  private _appleProductId = null;
+
   @JsonProperty('service_plan_bundles', [ServiceBundleItems], true)
   private _servicePlanBundle: ServiceBundleItems[] = [];
 
@@ -79,5 +82,9 @@ export class PlatformPlans {
 
   get servicePlanPricing(): ServicePlanPricing[] {
     return this._servicePlanPricing;
+  }
+
+  get appleProductId(): string | null {
+    return this._appleProductId;
   }
 }

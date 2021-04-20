@@ -5,10 +5,12 @@ interface ISubscribedPlan {
   id: number;
   name: string;
   label: string;
+  apple_product_id?: string | null;
+  is_trial_plan?: string | null;
   service_plan_bundles: IServiceBundleItems;
 }
 
-interface IUserSubscription {
+export interface IUserSubscription {
   user_service_plan: ISubscribedPlan;
   recommended_plan: ISubscribedPlan;
 }
@@ -23,6 +25,12 @@ export class SubscribedPlan {
 
   @JsonProperty('label', String)
   private _label = '';
+
+  @JsonProperty('apple_product_id', String, true)
+  private _appleProductId = null;
+
+  @JsonProperty('is_trial_plan', Boolean, true)
+  private _isTrialPlan = null;
 
   @JsonProperty('service_plan_bundles', [ServiceBundleItems])
   private _serviceBundleItems: ServiceBundleItems[] = [];
@@ -41,6 +49,14 @@ export class SubscribedPlan {
 
   get serviceBundleItems(): ServiceBundleItems[] {
     return this._serviceBundleItems;
+  }
+
+  get appleProductId(): string | null {
+    return this._appleProductId;
+  }
+
+  get isTrialPlan(): string | null {
+    return this._isTrialPlan;
   }
 }
 

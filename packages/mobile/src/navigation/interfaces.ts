@@ -113,9 +113,12 @@ export enum ScreensKeys {
   KYC = 'KYC',
   ValueAddedServices = 'ValueAddedServices',
   ServicesForSelectedAsset = 'ServicesForSelectedAsset',
+  SubscriptionPayment = 'SubscriptionPayment',
+  // Messages
   Messages = 'Messages',
   ChatScreen = 'ChatScreen',
   GroupChatInfo = 'GroupChatInfo',
+  // Tickets
   ServiceTicketScreen = 'ServiceTicketScreen',
   ServiceTicketDetail = 'ServiceTicketDetail',
   SubmitQuote = 'SubmitQuote',

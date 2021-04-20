@@ -52,6 +52,7 @@ export class AssetHighlightCard extends Component<IProps, IState> {
         numColumns={3}
         renderItem={this.renderListItem}
         contentContainerStyle={styles.listContainer}
+        scrollEnabled={false}
       />
     );
   };

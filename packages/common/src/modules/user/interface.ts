@@ -1,7 +1,8 @@
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
-import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
+import { IUserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 
 export interface IUserState {
   tokens: IUserTokens | null;
@@ -13,6 +14,7 @@ export interface IUserState {
   isAddPropertyFlow: boolean;
   userCountryCode: number;
   favouriteProperties: IAsset[];
+  userSubscriptions: IUserSubscription | null;
   error: {
     user: string;
   };
@@ -20,6 +22,7 @@ export interface IUserState {
     user: boolean;
     userProfile: boolean;
     userPreferences: boolean;
+    userSubscriptions: boolean;
     whileAssets: boolean;
     whileFavouriteProperties: boolean;
   };

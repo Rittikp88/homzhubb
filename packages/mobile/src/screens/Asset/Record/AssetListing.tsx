@@ -24,7 +24,7 @@ import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { AddressWithStepIndicator } from '@homzhub/common/src/components/molecules/AddressWithStepIndicator';
 import { ActionController } from '@homzhub/common/src/components/organisms/ActionController';
-import PropertyPayment from '@homzhub/common/src/components/organisms/PropertyPayment';
+import { PropertyPayment } from '@homzhub/common/src/components/organisms/PropertyPayment';
 import PropertyVerification from '@homzhub/mobile/src/components/organisms/PropertyVerification';
 import { ValueAddedServicesView } from '@homzhub/common/src/components/organisms/ValueAddedServicesView';
 import { ISelectedValueServices, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';

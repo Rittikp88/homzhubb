@@ -60,6 +60,7 @@
     "react-native-fbsdk": "^2.0.0",
     "react-native-geolocation-service": "^5.0.0",
     "react-native-gesture-handler": "^1.7.0",
+    "react-native-iap": "^6.0.2",
     "react-native-image-crop-picker": "^0.32.0",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-keyboard-aware-scroll-view": "^0.9.3",

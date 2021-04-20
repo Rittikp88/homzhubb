@@ -24,6 +24,7 @@ import {
   IReferralResponse,
   IVerifyAuthToken,
   IVerifyAuthTokenResponse,
+  IUpdatePlanPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -58,6 +59,7 @@ const ENDPOINTS = {
   wishlist: 'wishlists/',
   KYCDocuments: 'kyc-documents/',
   verifyAuthToken: 'users/verify-token/',
+  userServicePlan: 'users/user-service-plans/',
   emailExists: (emailId: string): string => `users/emails/${emailId}/`,
   phoneExists: (phone: string): string => `users/phone-numbers/${phone}/`,
   interactions: (userId: number): string => `users/${userId}/interactions/`,
@@ -207,6 +209,10 @@ class UserRepository {
 
   public workEmailExists = async (emailId: string): Promise<IUserExistsData> => {
     return await this.apiClient.get(ENDPOINTS.verifyWorkEmail(emailId));
+  };
+
+  public updateUserServicePlan = async (payload: IUpdatePlanPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.userServicePlan, payload);
   };
 }
 

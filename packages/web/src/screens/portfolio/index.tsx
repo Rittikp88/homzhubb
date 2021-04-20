@@ -94,7 +94,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   };
 
   public render = (): React.ReactElement => {
-    const { properties, tenancies, portfolioLoaders , isTablet} = this.props;
+    const { properties, tenancies, portfolioLoaders, isTablet } = this.props;
     const { filters, whilePortfolioFilters } = this.state;
     const { tenancies: tenanciesLoader, properties: propertiesLoader } = portfolioLoaders;
     const isLoading = whilePortfolioFilters || tenanciesLoader || propertiesLoader;

@@ -203,6 +203,15 @@ export function* getFavouriteProperties() {
   }
 }
 
+export function* getUserSubscriptions() {
+  try {
+    const response = yield call(UserRepository.getUserSubscription);
+    yield put(UserActions.getUserSubscriptionsSuccess(response));
+  } catch (e) {
+    yield put(UserActions.getUserSubscriptionsFailure());
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
@@ -211,4 +220,5 @@ export function* watchUser() {
   yield takeEvery(UserActionTypes.UPDATE.USER_PREFERENCES, updateUserPreferences);
   yield takeEvery(UserActionTypes.GET.USER_ASSETS, getUserAssets);
   yield takeEvery(UserActionTypes.GET.FAVOURITE_PROPERTIES, getFavouriteProperties);
+  yield takeEvery(UserActionTypes.GET.USER_SUBSCRIPTIONS, getUserSubscriptions);
 }

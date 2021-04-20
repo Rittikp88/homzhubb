@@ -1,15 +1,17 @@
+import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IUserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
-import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 
 export const initialUserState: IUserState = {
   tokens: null,
   userProfile: null,
   userPreferences: null,
+  userSubscriptions: null,
   isOnBoardingCompleted: false,
   isChangeStack: true,
   isAddPropertyFlow: false,
@@ -23,6 +25,7 @@ export const initialUserState: IUserState = {
     user: false,
     userProfile: false,
     userPreferences: false,
+    userSubscriptions: false,
     whileAssets: false,
     whileFavouriteProperties: false,
   },
@@ -134,6 +137,25 @@ export const userReducer = (
       return {
         ...state,
         ['favouriteProperties']: [],
+      };
+    case UserActionTypes.GET.USER_SUBSCRIPTIONS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userSubscriptions']: true },
+      };
+    case UserActionTypes.GET.USER_SUBSCRIPTIONS_SUCCESS:
+      return {
+        ...state,
+        ['userSubscriptions']: action.payload as IUserSubscription,
+        ['loaders']: {
+          ...state.loaders,
+          ['userSubscriptions']: false,
+        },
+      };
+    case UserActionTypes.GET.USER_SUBSCRIPTIONS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userSubscriptions']: false },
       };
     default:
       return state;

@@ -115,6 +115,10 @@ export enum TicketAction {
   CLOSE_TICKET = 'CLOSE_TICKET',
 }
 
+export enum PurchaseTypes {
+  APPLE_PURCHASE = 'APPLE_PURCHASE',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -986,4 +990,14 @@ export interface IFAQs {
 export interface IAssetListingParam {
   listingType: ListingType;
   listingId: number;
+}
+
+export interface IPurchasePayload {
+  receipt_data: string;
+  currency: string;
+}
+
+export interface IUpdatePlanPayload {
+  action: PurchaseTypes;
+  payload: IPurchasePayload;
 }

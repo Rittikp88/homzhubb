@@ -2,9 +2,10 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { MetricSystems, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
@@ -186,6 +187,14 @@ const getReferralCode = (state: IState): string => {
   return profile.referralCode;
 };
 
+const getUserSubscription = (state: IState): UserSubscription | null => {
+  const {
+    user: { userSubscriptions },
+  } = state;
+  if (!userSubscriptions) return null;
+  return ObjectMapper.deserialize(UserSubscription, userSubscriptions);
+};
+
 const getUserLoaders = (state: IState): IUserState['loaders'] => {
   return state.user.loaders;
 };
@@ -209,5 +218,6 @@ export const UserSelector = {
   getFavouriteProperties,
   getReferralCode,
   getUserAssetsCount,
+  getUserSubscription,
   getUserLoaders,
 };

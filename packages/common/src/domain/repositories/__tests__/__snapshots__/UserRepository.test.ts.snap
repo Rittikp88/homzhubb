@@ -198,7 +198,9 @@ Object {
 exports[`UserRepository should get user subscription 1`] = `
 UserSubscription {
   "_recommendedPlan": SubscribedPlan {
+    "_appleProductId": null,
     "_id": 2,
+    "_isTrialPlan": null,
     "_label": "Pro",
     "_name": "Pro_IND",
     "_serviceBundleItems": Array [
@@ -361,7 +363,9 @@ UserSubscription {
     ],
   },
   "_userServicePlan": SubscribedPlan {
+    "_appleProductId": null,
     "_id": 1,
+    "_isTrialPlan": null,
     "_label": "Lite",
     "_name": "Lite_IND",
     "_serviceBundleItems": Array [

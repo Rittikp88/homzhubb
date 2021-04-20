@@ -3,6 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -148,7 +149,15 @@ export class More extends React.PureComponent<Props> {
         navigation.navigate(ScreensKeys.ServiceTicketScreen);
         break;
       case MoreScreenTypes.OFFERS:
+        // @ts-ignore
         navigation.navigate(ScreensKeys.PropertyOfferList);
+        break;
+      case MoreScreenTypes.PAYMENT_METHODS:
+        if (PlatformUtils.isIOS()) {
+          navigation.navigate(ScreensKeys.SubscriptionPayment);
+        } else {
+          navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
+        }
         break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });

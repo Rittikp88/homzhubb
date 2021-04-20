@@ -45,7 +45,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
       params: { propertyId, projectName, assetType, address, flag, serviceByIds, badgeInfo, amenities },
     },
   } = props;
-  const { t, i18n, ready: tReady } = useTranslation(LocaleConstants.namespacesKey.assetMore);
+  const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
 
   // Constants
   const Routes: IRoutes[] = [
@@ -168,9 +168,6 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
         return (
           <View onLayout={(e): void => onLayout(e, 1)}>
             <PropertyPayment
-              i18n={i18n}
-              tReady={tReady}
-              t={t}
               goBackToService={goBackToServices}
               propertyId={propertyId}
               valueAddedServices={valueAddedServices}

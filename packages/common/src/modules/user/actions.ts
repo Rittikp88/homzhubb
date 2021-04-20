@@ -1,12 +1,13 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { ILoginPayload, IUpdateUserPreferences } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
-import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
+import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { IUserSubscription, UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { IWishlist, Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { ILoginPayload, IUpdateUserPreferences } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const actionTypePrefix = 'User/';
 
@@ -32,6 +33,9 @@ export const UserActionTypes = {
     FAVOURITE_PROPERTIES: `${actionTypePrefix}FAVOURITE_PROPERTIES`,
     FAVOURITE_PROPERTIES_SUCCESS: `${actionTypePrefix}FAVOURITE_PROPERTIES_SUCCESS`,
     FAVOURITE_PROPERTIES_FAILURE: `${actionTypePrefix}FAVOURITE_PROPERTIES_FAILURE`,
+    USER_SUBSCRIPTIONS: `${actionTypePrefix}USER_SUBSCRIPTIONS`,
+    USER_SUBSCRIPTIONS_SUCCESS: `${actionTypePrefix}USER_SUBSCRIPTIONS_SUCCESS`,
+    USER_SUBSCRIPTIONS_FAILURE: `${actionTypePrefix}USER_SUBSCRIPTIONS_FAILURE`,
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
@@ -171,6 +175,23 @@ const clearFavouriteProperties = (): IFluxStandardAction => ({
   type: UserActionTypes.SET.CLEAR_FAVOURITE_PROPERTIES,
 });
 
+const getUserSubscriptions = (): IFluxStandardAction => {
+  return {
+    type: UserActionTypes.GET.USER_SUBSCRIPTIONS,
+  };
+};
+
+const getUserSubscriptionsSuccess = (payload: UserSubscription): IFluxStandardAction<IUserSubscription> => {
+  return {
+    type: UserActionTypes.GET.USER_SUBSCRIPTIONS_SUCCESS,
+    payload: ObjectMapper.serialize(payload),
+  };
+};
+
+const getUserSubscriptionsFailure = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.USER_SUBSCRIPTIONS_FAILURE,
+});
+
 export type UserPayloadTypes =
   | string
   | boolean
@@ -178,6 +199,7 @@ export type UserPayloadTypes =
   | IUserTokens
   | IUserProfile
   | IUserPreferences
+  | IUserSubscription
   | IAsset[]
   | IWishlist[];
 
@@ -206,4 +228,7 @@ export const UserActions = {
   getFavouritePropertiesSuccess,
   getFavouritePropertiesFailure,
   clearFavouriteProperties,
+  getUserSubscriptions,
+  getUserSubscriptionsSuccess,
+  getUserSubscriptionsFailure,
 };

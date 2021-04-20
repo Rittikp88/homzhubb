@@ -31,6 +31,7 @@ export const RootNavigator = (props: IProps): React.ReactElement | null => {
       dispatch(UserActions.getUserProfile());
       dispatch(UserActions.getFavouriteProperties());
       dispatch(UserActions.getAssets());
+      dispatch(UserActions.getUserSubscriptions());
       NotificationService.postDeviceToken();
     }
 
