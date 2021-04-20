@@ -185,16 +185,22 @@ export function* getUserAssets() {
   try {
     const response = yield call(AssetRepository.getPropertiesByStatus);
     yield put(UserActions.getAssetsSuccess(response));
-    // eslint-disable-next-line no-empty
-  } catch (e) {}
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(UserActions.getAssetsFailure());
+  }
 }
 
 export function* getFavouriteProperties() {
   try {
     const response = yield call(UserRepository.getWishlistProperties);
     yield put(UserActions.getFavouritePropertiesSuccess(response));
-    // eslint-disable-next-line no-empty
-  } catch (e) {}
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error });
+    yield put(UserActions.getFavouritePropertiesFailure());
+  }
 }
 
 export function* watchUser() {

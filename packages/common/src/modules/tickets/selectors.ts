@@ -1,7 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 const getProofAttachment = (state: IState): IImageSource[] => {
@@ -45,7 +45,9 @@ const getTicketDetailLoader = (state: IState): boolean => {
   } = state;
   return loaders.ticketDetail;
 };
-
+const getTicketLoaders = (state: IState): ITicketState['loaders'] => {
+  return state.ticket.loaders;
+};
 export const TicketSelectors = {
   getProofAttachment,
   getTickets,
@@ -53,4 +55,5 @@ export const TicketSelectors = {
   getTicketDetail,
   getTicketLoader,
   getTicketDetailLoader,
+  getTicketLoaders,
 };

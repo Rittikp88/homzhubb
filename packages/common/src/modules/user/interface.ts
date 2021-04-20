@@ -20,6 +20,8 @@ export interface IUserState {
     user: boolean;
     userProfile: boolean;
     userPreferences: boolean;
+    whileAssets: boolean;
+    whileFavouriteProperties: boolean;
   };
 }
 

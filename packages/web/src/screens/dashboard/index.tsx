@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -11,7 +11,10 @@ import { RouteNames, ScreensKeys } from '@homzhub/web/src/router/RouteNames';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 import PropertyUpdates from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
@@ -34,6 +37,9 @@ const Dashboard: FC = () => {
   const [pendingProperty, setPendingProperty] = useState({} as Asset[]);
   const [vacantProperty, setVacantProperty] = useState({} as Asset[]);
   const [propertyMetrics, setPropertyMetrics] = useState({} as AssetMetrics);
+  const [isPendingProperties, setIsPendingProperties] = useState(false);
+  const [isVacantProperties, setIsVacantProperties] = useState(false);
+  const [isPropertyMeterics, setIsPropertyMeterics] = useState(false);
 
   const onCompleteDetails = (assetId: number): void => {
     dispatch(RecordAssetActions.setAssetId(assetId));
@@ -75,6 +81,24 @@ const Dashboard: FC = () => {
     getPropertyMetrics((response) => setPropertyMetrics(response)).then();
     getVacantPropertyDetails((response) => setVacantProperty(response)).then();
   }, [dispatch, isLoggedIn]);
+  const commonLoaders = useSelector(CommonSelectors.getCommonLoaders);
+  const { whileGetCountries } = commonLoaders;
+  const userLoaders = useSelector(UserSelector.getUserLoaders);
+  const { userProfile, userPreferences, whileAssets, whileFavouriteProperties } = userLoaders;
+  const { setIsMenuLoading } = useContext(AppLayoutContext);
+
+  const isLoading =
+    isPendingProperties ||
+    isVacantProperties ||
+    isPropertyMeterics ||
+    whileGetCountries ||
+    userProfile ||
+    userPreferences ||
+    whileAssets ||
+    whileFavouriteProperties;
+
+  setIsMenuLoading(isLoading);
+
   const bannerImage = {
     height: 354,
     width: 496,
@@ -94,6 +118,40 @@ const Dashboard: FC = () => {
       )}
     </>
   );
+  if (isLoading) {
+    return <Loader visible={isLoading} />;
+  }
+  const getPendingPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
+    try {
+      setIsPendingProperties(true);
+      const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
+      setIsPendingProperties(false);
+      callback(response);
+    } catch (e) {
+      setIsPendingProperties(false);
+    }
+  };
+
+  const getPropertyMetrics = async (callback: (response: AssetMetrics) => void): Promise<void> => {
+    try {
+      setIsPropertyMeterics(true);
+      const response: AssetMetrics = await DashboardRepository.getAssetMetrics();
+      setIsPropertyMeterics(false);
+      callback(response);
+    } catch (e) {
+      setIsPropertyMeterics(false);
+    }
+  };
+  const getVacantPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
+    try {
+      setIsVacantProperties(true);
+      const response: Asset[] = await PortfolioRepository.getUserAssetDetails(Filters.VACANT);
+      setIsVacantProperties(false);
+      callback(response);
+    } catch (e) {
+      setIsVacantProperties(false);
+    }
+  };
   return (
     <View style={styles.container}>
       <PropertyOverview data={propertyMetrics?.assetMetrics?.miscellaneous ?? []} />
@@ -110,32 +168,6 @@ const Dashboard: FC = () => {
       <MarketTrendsCarousel />
     </View>
   );
-};
-
-const getPendingPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
-  try {
-    const response: Asset[] = await AssetRepository.getPropertiesByStatus(PropertyStatus.PENDING);
-    callback(response);
-  } catch (e) {
-    // todo handle error here
-  }
-};
-
-const getPropertyMetrics = async (callback: (response: AssetMetrics) => void): Promise<void> => {
-  try {
-    const response: AssetMetrics = await DashboardRepository.getAssetMetrics();
-    callback(response);
-  } catch (e) {
-    // todo handle error here
-  }
-};
-const getVacantPropertyDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
-  try {
-    const response: Asset[] = await PortfolioRepository.getUserAssetDetails(Filters.VACANT);
-    callback(response);
-  } catch (e) {
-    // todo handle error here
-  }
 };
 
 export default Dashboard;

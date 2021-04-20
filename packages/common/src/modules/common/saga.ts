@@ -14,6 +14,7 @@ function* getCountries() {
     yield put(CommonActions.getCountriesSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
+    yield put(CommonActions.getCountriesFaliure(error));
     AlertHelper.error({ message: error });
   }
 }

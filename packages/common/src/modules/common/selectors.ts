@@ -4,7 +4,7 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { IMessages } from '@homzhub/common/src/domain/models/Message';
-import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
+import { IChatPayload, ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getCountryList = (state: IState): Country[] => {
@@ -107,6 +107,9 @@ const getCurrentChatDetail = (state: IState): IChatPayload | null => {
 
   return currentChatDetail;
 };
+const getCommonLoaders = (state: IState): ICommonState['loaders'] => {
+  return state.common.loaders;
+};
 
 export const CommonSelectors = {
   getCountryList,
@@ -120,4 +123,5 @@ export const CommonSelectors = {
   getGroupMessagesLoading,
   getCurrentChatDetail,
   getMessagesLoading,
+  getCommonLoaders,
 };

@@ -16,11 +16,13 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
 import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/PortfolioFilter';
 import PortfolioOverview from '@homzhub/web/src/screens/portfolio/components/PortfolioOverview';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters, AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -29,6 +31,7 @@ import {
   IGetPropertiesPayload,
   IGetTenanciesPayload,
   ISetAssetPayload,
+  IPortfolioState,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
@@ -40,6 +43,7 @@ interface IStateProps {
   isTenanciesLoading: boolean;
   currentFilter: Filters;
   assetPayload: ISetAssetPayload;
+  portfolioLoaders: IPortfolioState['loaders'];
 }
 
 interface IPopupData {
@@ -64,9 +68,10 @@ interface IDispatchProps {
   setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
 }
-interface IPortfolioState {
+interface ILocalState {
   filters: PickerItemProps[];
   assetType: string;
+  whilePortfolioFilters: boolean;
 }
 
 interface IAssetCardProps {
@@ -74,10 +79,14 @@ interface IAssetCardProps {
 }
 type Props = WithTranslation & IStateProps & IDispatchProps & IWithMediaQuery & IAssetCardProps;
 
-export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
+export class Portfolio extends React.PureComponent<Props, ILocalState> {
+  /* eslint-disable react/sort-comp */
+  /* eslint-disable react/static-property-placement */
+  public static contextType = AppLayoutContext;
   public state = {
     filters: [],
     assetType: '',
+    whilePortfolioFilters: false,
   };
 
   public componentDidMount = (): void => {
@@ -85,9 +94,16 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   public render = (): React.ReactElement => {
-    const { properties, tenancies } = this.props;
-    const { filters } = this.state;
-
+    const { properties, tenancies, portfolioLoaders } = this.props;
+    const { filters, whilePortfolioFilters } = this.state;
+    const { tenancies: tenanciesLoader, properties: propertiesLoader } = portfolioLoaders;
+    const isLoading = whilePortfolioFilters || tenanciesLoader || propertiesLoader;
+    const { context } = this;
+    const { setIsMenuLoading } = context;
+    setIsMenuLoading(isLoading);
+    if (isLoading) {
+      return <Loader visible={isLoading} />;
+    }
     return (
       <View style={styles.filterContainer}>
         <PortfolioOverview onMetricsClicked={this.onMetricsClicked} />
@@ -245,6 +261,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private getAssetFilters = async (): Promise<void> => {
     try {
+      this.setState({
+        whilePortfolioFilters: true,
+      });
       const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
       const filterData = response.map(
         (item): IPopupData => {
@@ -254,9 +273,12 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
           };
         }
       );
-      this.setState({ filters: filterData });
+      this.setState({ filters: filterData, whilePortfolioFilters: false });
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
+      this.setState({
+        whilePortfolioFilters: false,
+      });
       AlertHelper.error({ message: error });
     }
   };
@@ -268,6 +290,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     currentFilter: PortfolioSelectors.getCurrentFilter(state),
     isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
     assetPayload: PortfolioSelectors.getCurrentAssetPayload(state),
+    portfolioLoaders: PortfolioSelectors.getPortfolioLoaders(state),
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {

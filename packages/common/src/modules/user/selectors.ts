@@ -7,6 +7,7 @@ import { MetricSystems, UserPreferences } from '@homzhub/common/src/domain/model
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { Wishlist } from '@homzhub/common/src/domain/models/Wishlist';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IUserState } from '@homzhub/common/src/modules/user/interface';
 
 const isLoggedIn = (state: IState): boolean => {
   return !!state.user.tokens;
@@ -185,6 +186,10 @@ const getReferralCode = (state: IState): string => {
   return profile.referralCode;
 };
 
+const getUserLoaders = (state: IState): IUserState['loaders'] => {
+  return state.user.loaders;
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -204,4 +209,5 @@ export const UserSelector = {
   getFavouriteProperties,
   getReferralCode,
   getUserAssetsCount,
+  getUserLoaders,
 };

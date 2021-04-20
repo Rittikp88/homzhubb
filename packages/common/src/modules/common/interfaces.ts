@@ -14,6 +14,7 @@ export interface ICommonState {
   loaders: {
     groupMessages: boolean;
     messages: boolean;
+    whileGetCountries: boolean;
   };
 }
 

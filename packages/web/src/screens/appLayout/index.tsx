@@ -40,14 +40,15 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const [goBackClicked, setGoBackClicked] = useState(false);
+  const [isMenuLoading, setIsMenuLoading] = useState(false);
   return (
-    <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked }}>
+    <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked, isMenuLoading, setIsMenuLoading }}>
       <View style={styles.container}>
         <Navbar history={history} location={location} />
         <NavigationInfo />
         <View>
           <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
-            {!isTablet && isSideMenuVisible && <SideMenu onItemClick={FunctionUtils.noop} />}
+            {!isTablet && isSideMenuVisible && !isMenuLoading && <SideMenu onItemClick={FunctionUtils.noop} />}
             <MainRouter />
           </View>
           <Footer />
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   mainContent: {
+    minHeight: '55vh', // TODOS: Remove after dynamicallly calc screen height.
     width: theme.layout.dashboardWidth,
     flexDirection: 'row',
     alignSelf: 'center',

@@ -21,6 +21,7 @@ export const initialCommonState: ICommonState = {
   loaders: {
     groupMessages: false,
     messages: false,
+    whileGetCountries: false,
   },
 };
 
@@ -33,11 +34,18 @@ export const commonReducer = (
       return {
         ...state,
         countries: [],
+        ['loaders']: { ...state.loaders, ['whileGetCountries']: true },
       };
     case CommonActionTypes.GET.COUNTRIES_SUCCESS:
       return {
         ...state,
         countries: action.payload as ICountry[],
+        ['loaders']: { ...state.loaders, ['whileGetCountries']: false },
+      };
+    case CommonActionTypes.GET.COUNTRIES_FALIURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['whileGetCountries']: false },
       };
     case CommonActionTypes.SET.DEVICE_COUNTRY:
       return {

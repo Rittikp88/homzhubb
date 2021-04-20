@@ -11,6 +11,7 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 import { OtpNavTypes } from '@homzhub/web/src/components/organisms/OtpVerification';
@@ -50,7 +51,7 @@ interface IOwnProps extends RouteComponentProps {
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const Login: FC<IProps> = (props: IProps) => {
-  const { history, isAuthenticated } = props;
+  const { history, isAuthenticated, isLoading } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
@@ -127,6 +128,9 @@ const Login: FC<IProps> = (props: IProps) => {
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
   };
+  if (isLoading) {
+    return <Loader visible={isLoading} />;
+  }
   return (
     <View style={styles.container}>
       <UserValidationScreensTemplate

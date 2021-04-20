@@ -3,14 +3,16 @@ import React, { FC, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useOnly, useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
@@ -45,7 +47,8 @@ const SignUp: FC<IProps> = (props: IProps) => {
     dispatch(CommonActions.getCountries());
     dispatch(CommonActions.setDeviceCountry('IN'));
   }, []);
-
+  const commonLoaders = useSelector(CommonSelectors.getCommonLoaders);
+  const { whileGetCountries } = commonLoaders;
   const onFormSubmit = async (formData: ISignUpPayload): Promise<void> => {
     try {
       const isEmailUsed = await UserRepository.emailExists(formData.email);
@@ -109,6 +112,9 @@ const SignUp: FC<IProps> = (props: IProps) => {
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isIPadPro = useIsIpadPro();
   const styles = signUpStyles(isMobile);
+  if (whileGetCountries) {
+    return <Loader visible={whileGetCountries} />;
+  }
   return (
     <View style={[styles.container, isTablet && styles.tabletContainer, isIPadPro && styles.iPadContainer]}>
       <UserValidationScreensTemplate

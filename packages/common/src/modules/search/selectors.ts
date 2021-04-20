@@ -7,6 +7,7 @@ import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 import { ITransactionType } from '@homzhub/common/src/domain/models/Transaction';
+import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 
 const getFilterDetail = (state: IState): FilterDetail | null => {
   const {
@@ -111,7 +112,9 @@ const getSearchAddress = (state: IState): string => {
 
   return search_address ?? '';
 };
-
+const getSearchLoaders = (state: IState): ISearchState['loaders'] => {
+  return state.search.loaders;
+};
 export const SearchSelector = {
   getProperties,
   getFilterDetail,
@@ -122,4 +125,5 @@ export const SearchSelector = {
   getSearchLocationLatLong,
   getSearchAddress,
   getLocationLatLong,
+  getSearchLoaders,
 };

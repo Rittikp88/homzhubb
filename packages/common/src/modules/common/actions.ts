@@ -12,6 +12,7 @@ export const CommonActionTypes = {
   GET: {
     COUNTRIES: `${actionTypePrefix}COUNTRIES`,
     COUNTRIES_SUCCESS: `${actionTypePrefix}COUNTRIES_SUCCESS`,
+    COUNTRIES_FALIURE: `${actionTypePrefix}COUNTRIES_FALIURE`,
     MESSAGES: `${actionTypePrefix}MESSAGES`,
     MESSAGES_SUCCESS: `${actionTypePrefix}MESSAGES_SUCCESS`,
     GROUP_MESSAGES: `${actionTypePrefix}GROUP_MESSAGES`,
@@ -36,7 +37,10 @@ const getCountriesSuccess = (payload: Country[]): IFluxStandardAction<ICountry[]
   type: CommonActionTypes.GET.COUNTRIES_SUCCESS,
   payload: ObjectMapper.serializeArray(payload),
 });
-
+const getCountriesFaliure = (error: string): IFluxStandardAction => ({
+  type: CommonActionTypes.GET.COUNTRIES_FALIURE,
+  error,
+});
 const setDeviceCountry = (countryCode: string): IFluxStandardAction<string> => ({
   type: CommonActionTypes.SET.DEVICE_COUNTRY,
   payload: countryCode,
@@ -102,6 +106,7 @@ export type CommonActionPayloadTypes =
 export const CommonActions = {
   getCountries,
   getCountriesSuccess,
+  getCountriesFaliure,
   setDeviceCountry,
   setRedirectionDetails,
   getMessages,

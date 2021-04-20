@@ -23,6 +23,8 @@ export const initialUserState: IUserState = {
     user: false,
     userProfile: false,
     userPreferences: false,
+    whileAssets: false,
+    whileFavouriteProperties: false,
   },
 };
 

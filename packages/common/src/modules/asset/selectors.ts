@@ -8,6 +8,7 @@ import { AssetVisit, IVisitByKey } from '@homzhub/common/src/domain/models/Asset
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 
 const getAssetReviews = (state: IState): AssetReview | null => {
   const {
@@ -177,6 +178,9 @@ const isActiveAssetsLoading = (state: IState): boolean => {
 
   return activeAssets;
 };
+const getAssetLoaders = (state: IState): IAssetState['loaders'] => {
+  return state.asset.loaders;
+};
 
 export const AssetSelectors = {
   getAssetReviews,
@@ -192,4 +196,5 @@ export const AssetSelectors = {
   getVisitLoadingState,
   getUserActiveAssets,
   isActiveAssetsLoading,
+  getAssetLoaders,
 };

@@ -7,7 +7,7 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IEditPropertyFlow } from '@homzhub/common/src/modules/recordAsset/interface';
+import { IEditPropertyFlow, IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 
 const getLoadingState = (state: IState): boolean => {
   const {
@@ -142,6 +142,9 @@ const getSelectedImages = (state: IState): AssetGallery[] => {
   } = state;
   return selectedImages;
 };
+const getRecordAssetLoaders = (state: IState): IRecordAssetState['loaders'] => {
+  return state.recordAsset.loaders;
+};
 
 export const RecordAssetSelectors = {
   getLoadingState,
@@ -160,4 +163,5 @@ export const RecordAssetSelectors = {
   getCity,
   getEditPropertyFlowDetails,
   getSelectedImages,
+  getRecordAssetLoaders,
 };

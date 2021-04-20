@@ -1,7 +1,7 @@
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
-import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IPortfolioState, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getTenancies = (state: IState): Asset[] | null => {
@@ -83,6 +83,9 @@ const getCurrentFilter = (state: IState): Filters => {
 
   return currentFilter;
 };
+const getPortfolioLoaders = (state: IState): IPortfolioState['loaders'] => {
+  return state.portfolio.loaders;
+};
 
 export const PortfolioSelectors = {
   getTenancies,
@@ -94,4 +97,5 @@ export const PortfolioSelectors = {
   getTenantHistory,
   getCurrentFilter,
   getCurrentAssetPayload,
+  getPortfolioLoaders,
 };
