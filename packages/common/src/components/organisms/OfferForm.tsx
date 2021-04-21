@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
@@ -9,6 +10,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -35,7 +37,11 @@ import {
   ListingType,
   NegotiationType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IExistingProposalsLease, IExistingProposalsSale } from '@homzhub/common/src/modules/offers/interfaces';
+import {
+  IExistingProposalsLease,
+  IExistingProposalsSale,
+  IOfferFormValues,
+} from '@homzhub/common/src/modules/offers/interfaces';
 
 // ToDo (Praharsh) : Resolve ts-ignores and see if we could optimise and shorten the code.
 interface IProps {
@@ -51,9 +57,14 @@ interface IReduxProps {
   existingSaleTerms: IExistingProposalsSale | null;
   tenantPreferences: ICheckboxGroupData[];
   currentOffer: Offer | null;
+  offerFormValues: IOfferFormValues;
 }
 
-type Props = WithTranslation & IProps & IReduxProps;
+interface IDispatchProps {
+  setOfferFormValues: (payload: IOfferFormValues) => void;
+}
+
+type Props = WithTranslation & IProps & IReduxProps & IDispatchProps;
 
 interface IScreenState {
   preferenceData: [];
@@ -75,7 +86,8 @@ class OfferForm extends React.Component<Props, IScreenState> {
     super(props);
     this.state = {
       checkBox: false,
-      message: '',
+      // Todo : Try including message in selector.
+      message: this.getInitialMessage(),
       showLeaseDurationError: false,
       // @ts-ignore
       formData: this.initialValues(),
@@ -98,7 +110,12 @@ class OfferForm extends React.Component<Props, IScreenState> {
     const { state, props, renderInfoBox, onMessageChange } = this;
     const { setFieldValue, values } = formProps;
     const { message } = state;
-    const { t, onPressTerms, isRentFlow, asset, offersLeft } = props;
+    const { t, onPressTerms, isRentFlow, asset, offersLeft, setOfferFormValues } = props;
+
+    const onPressPrivacy = (): void => {
+      setOfferFormValues({ ...values, message } as IOfferFormValues);
+      onPressTerms();
+    };
 
     const Preferences = (): React.ReactElement | null => {
       if (isRentFlow && asset?.leaseTerm?.tenantPreferences.length && !asset?.isAssetOwner) {
@@ -134,7 +151,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
         <View style={styles.termsAndConditionsContainer}>
           <Label textType="light" type="regular" style={styles.textBeforeTerms}>
             {t('offers:termsFirstPart')}
-            <Label textType="light" type="regular" style={styles.privacyText} onPress={onPressTerms}>
+            <Label textType="light" type="regular" style={styles.privacyText} onPress={onPressPrivacy}>
               {t('offers:termsLink')}
             </Label>
             <Label textType="light" type="regular" style={styles.textBeforeTerms}>
@@ -518,9 +535,15 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private initialValues = (): IExistingProposalsLease | IExistingProposalsSale | null => {
-    const { isRentFlow, tenantPreferences } = this.props;
+    const { isRentFlow, tenantPreferences, offerFormValues } = this.props;
     const updatedInitialLease: IExistingProposalsLease = { ...initialRentFormValues, tenantPreferences };
+    if (offerFormValues) return offerFormValues;
     return isRentFlow ? updatedInitialLease : initialSaleFormValues;
+  };
+
+  private getInitialMessage = (): string => {
+    const { offerFormValues } = this.props;
+    return offerFormValues?.message ?? '';
   };
   //  HANDLERS END
 
@@ -588,9 +611,20 @@ const mapStateToProps = (state: IState): IReduxProps => ({
   existingSaleTerms: OfferSelectors.getPastProposalsSale(state),
   tenantPreferences: OfferSelectors.getFormattedTenantPreferences(state, false),
   currentOffer: OfferSelectors.getCurrentOffer(state),
+  offerFormValues: OfferSelectors.getOfferFormValues(state),
 });
 
-export default connect(mapStateToProps, null)(withTranslation()(OfferForm));
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setOfferFormValues } = OfferActions;
+  return bindActionCreators(
+    {
+      setOfferFormValues,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(OfferForm));
 
 const styles = StyleSheet.create({
   screen: {

@@ -70,11 +70,13 @@ const SubmitOfferForm = (): React.ReactElement => {
       const trackData = AnalyticsHelper.getPropertyTrackData(asset);
       AnalyticsService.track(EventType.NewOffer, trackData);
     }
+    dispatch(OfferActions.clearOfferFormValues());
     setIsSuccess(true);
   };
 
   const handleBack = (): void => {
     dispatch(OfferActions.clearCurrentOffer());
+    dispatch(OfferActions.clearOfferFormValues());
     goBack();
   };
 

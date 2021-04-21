@@ -3,7 +3,7 @@ import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { INegotiation } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ICurrentOffer, IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
+import { ICurrentOffer, IOfferCompare, IOfferFormValues } from '@homzhub/common/src/modules/offers/interfaces';
 
 const actionTypePrefix = 'Offers/';
 export const OfferActionTypes = {
@@ -19,9 +19,11 @@ export const OfferActionTypes = {
     CURRENT_OFFER_PAYLOAD: `${actionTypePrefix}CURRENT_OFFER_PAYLOAD`,
     CURRENT_OFFER: `${actionTypePrefix}CURRENT_OFFER`,
     COMPARE_OFFER_DATA: `${actionTypePrefix}COMPARE_OFFER_DATA`,
+    OFFER_FORM_VALUES: `${actionTypePrefix}OFFER_FORM_VALUES`,
   },
   CLEAR_CURRENT_OFFER: `${actionTypePrefix}CLEAR_CURRENT_OFFER`,
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
+  CLEAR_OFFER_FORM_VALUES: `${actionTypePrefix}CLEAR_OFFER_FORM_VALUES`,
 };
 
 const clearState = (): IFluxStandardAction => ({
@@ -75,7 +77,23 @@ const clearCurrentOffer = (): IFluxStandardAction => ({
   type: OfferActionTypes.CLEAR_CURRENT_OFFER,
 });
 
-export type OfferActionPayloadTypes = ICurrentOffer | IAsset | INegotiation | IOffer[] | IOfferCompare | Offer;
+const setOfferFormValues = (payload: IOfferFormValues): IFluxStandardAction<IOfferFormValues> => ({
+  type: OfferActionTypes.SET.OFFER_FORM_VALUES,
+  payload,
+});
+
+const clearOfferFormValues = (): IFluxStandardAction => ({
+  type: OfferActionTypes.CLEAR_OFFER_FORM_VALUES,
+});
+
+export type OfferActionPayloadTypes =
+  | ICurrentOffer
+  | IAsset
+  | INegotiation
+  | IOffer[]
+  | IOfferCompare
+  | Offer
+  | IOfferFormValues;
 
 export const OfferActions = {
   clearState,
@@ -89,4 +107,6 @@ export const OfferActions = {
   setCompareDetail,
   setCurrentOfferPayload,
   clearCurrentOffer,
+  setOfferFormValues,
+  clearOfferFormValues,
 };

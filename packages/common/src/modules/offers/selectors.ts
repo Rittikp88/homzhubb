@@ -9,6 +9,7 @@ import {
   IExistingProposalsLease,
   IExistingProposalsSale,
   IOfferState,
+  IOfferFormValues,
 } from '@homzhub/common/src/modules/offers/interfaces';
 
 const getPastProposalsRent = (state: IState): IExistingProposalsLease | null => {
@@ -142,6 +143,10 @@ const getOfferLoaders = (state: IState): IOfferState['loaders'] => {
   return state.offer.loaders;
 };
 
+const getOfferFormValues = (state: IState): IOfferFormValues => {
+  return state.offer.offerForm;
+};
+
 export const OfferSelectors = {
   getPastProposalsRent,
   getPastProposalsSale,
@@ -152,4 +157,5 @@ export const OfferSelectors = {
   getFormattedTenantPreferences,
   getCurrentOffer,
   getOfferLoaders,
+  getOfferFormValues,
 };

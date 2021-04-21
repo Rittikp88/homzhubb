@@ -2,7 +2,12 @@ import { OfferActionPayloadTypes, OfferActionTypes } from '@homzhub/common/src/m
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { ICurrentOffer, IOfferCompare, IOfferState } from '@homzhub/common/src/modules/offers/interfaces';
+import {
+  ICurrentOffer,
+  IOfferCompare,
+  IOfferFormValues,
+  IOfferState,
+} from '@homzhub/common/src/modules/offers/interfaces';
 
 export const initialOfferState: IOfferState = {
   currentOfferPayload: null,
@@ -14,6 +19,7 @@ export const initialOfferState: IOfferState = {
     negotiations: false,
     listingDetail: false,
   },
+  offerForm: null,
 };
 
 export const offerReducer = (
@@ -74,6 +80,16 @@ export const offerReducer = (
       return {
         ...state,
         ['currentOffer']: null,
+      };
+    case OfferActionTypes.SET.OFFER_FORM_VALUES:
+      return {
+        ...state,
+        ['offerForm']: action.payload as IOfferFormValues,
+      };
+    case OfferActionTypes.CLEAR_OFFER_FORM_VALUES:
+      return {
+        ...state,
+        ['offerForm']: null,
       };
     case OfferActionTypes.CLEAR_STATE:
       return initialOfferState;

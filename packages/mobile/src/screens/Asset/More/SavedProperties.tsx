@@ -193,7 +193,13 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
       }
     };
 
-    const onPressMakeAnOffer = (): void => navigateToOffer(asset);
+    const onPressMakeAnOffer = (): void => {
+      if (isActive) {
+        navigateToOffer(asset);
+      } else {
+        AlertHelper.error({ message: t('property:inValidVisit') });
+      }
+    };
 
     return (
       <View style={[nextVisit ? styles.nextVisitContainer : styles.buttonGroup, styles.screenPadding]}>

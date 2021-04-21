@@ -19,6 +19,7 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -85,6 +86,7 @@ interface IDispatchProps {
   getAssetById: () => void;
   setVisitIds: (payload: number[]) => void;
   getAssetVisit: (payload: IAssetVisitPayload) => void;
+  clearOfferFormValues: () => void;
 }
 
 interface IOwnState {
@@ -926,10 +928,12 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       route: {
         params: { propertyTermId },
       },
+      clearOfferFormValues,
     } = this.props;
     const payload: IGetAssetPayload = {
       propertyTermId,
     };
+    clearOfferFormValues();
     getAsset(payload);
   };
 
@@ -989,6 +993,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getAsset, setVisitIds, getAssetVisit } = AssetActions;
   const { setChangeStack } = UserActions;
   const { setAssetId, setSelectedPlan, getAssetById } = RecordAssetActions;
+  const { clearOfferFormValues } = OfferActions;
   return bindActionCreators(
     {
       getAsset,
@@ -998,6 +1003,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       getAssetById,
       setVisitIds,
       getAssetVisit,
+      clearOfferFormValues,
     },
     dispatch
   );

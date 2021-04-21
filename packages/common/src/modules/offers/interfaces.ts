@@ -13,6 +13,7 @@ export interface IOfferState {
     negotiations: boolean;
     listingDetail: boolean;
   };
+  offerForm: IOfferFormValues | null;
 }
 
 export interface ICurrentOffer {
@@ -35,6 +36,10 @@ export interface IExistingProposalsLease {
 export interface IExistingProposalsSale {
   expectedPrice: string;
   expectedBookingAmount: string;
+}
+
+export interface IOfferFormValues extends IExistingProposalsLease, IExistingProposalsSale {
+  message?: string;
 }
 
 export interface IOfferCompare {
