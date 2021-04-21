@@ -213,9 +213,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
   public onSubmit = async (values: IOfferForm): Promise<void> => {
     const {
       t,
-      route: {
-        params: { editData },
-      },
+      route: { params },
     } = this.props;
     const { navigation } = this.props;
     const { userType } = this.state;
@@ -237,7 +235,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
     try {
       await OffersRepository.updateProspects(payload);
       this.setState({ loading: false });
-      if (editData) {
+      if (params && params.editData) {
         AlertHelper.success({ message: t('offers:prospectProfileEditSuccess'), duration: 5000 });
         navigation.goBack();
         return;

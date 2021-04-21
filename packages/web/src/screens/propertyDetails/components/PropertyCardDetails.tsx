@@ -13,8 +13,8 @@ import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlac
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import { AssetDetailsImageCarousel } from '@homzhub/common/src/components/molecules/AssetDetailsImageCarousel';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import CardCarousel from '@homzhub/web/src/components/molecules/CardCarousel';
 import GalleryView from '@homzhub/web/src/components/molecules/GalleryView';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
@@ -106,7 +106,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
             {!isMobile && assetDetails?.attachments.length > 0 && (
               <GalleryView attachments={assetDetails?.attachments ?? []} />
             )}
-            {isMobile && <CardCarousel data={assetDetails.attachments} />}
+            {isMobile && <AssetDetailsImageCarousel data={assetDetails.attachments} />}
           </View>
           <View style={styles.cardDetails}>
             <ShieldGroup propertyType={propertyType} isInfoRequired />
@@ -286,7 +286,7 @@ const propertyDetailStyle = (
       width: !isMobile ? (isTablet || isIpadPro ? '100%' : 216) : '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.colors.blueOpacity,
+      backgroundColor: theme.colors.darkTint10,
       flexDirection: 'row',
     },
     enquireContainer: {
@@ -298,8 +298,7 @@ const propertyDetailStyle = (
     },
     schedule: {
       width: !isMobile ? (isTablet || isIpadPro ? '100%' : 216) : '100%',
-
-      backgroundColor: theme.colors.primaryColor,
+      backgroundColor: theme.colors.darkTint10,
     },
 
     textStyleEnquire: {

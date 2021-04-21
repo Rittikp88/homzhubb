@@ -420,7 +420,7 @@ export class AssetCard extends Component<Props> {
     const { t, isFromTenancies = false } = this.props;
     const { assetStatusInfo } = assetData;
     let icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
-    let name = isInviteAccepted ? user.name : undefined;
+    let name = isInviteAccepted ? user.name : assetStatusInfo?.leaseTenantInfo?.user?.name ?? undefined;
     let image = isInviteAccepted ? user.profilePicture : undefined;
     let designation = t('property:tenant');
     let designationStyle = isInviteAccepted ? undefined : styles.designation;
@@ -432,7 +432,6 @@ export class AssetCard extends Component<Props> {
       designation = t('property:owner');
       designationStyle = undefined;
     }
-
     return {
       name,
       designation,

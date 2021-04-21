@@ -51,6 +51,7 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstP
     propertiesValueWrapper: {
       flexDirection: 'row',
       marginVertical: 'auto',
+      paddingTop: '4%',
     },
     portfolioContainer: {
       flex: 1,
@@ -58,6 +59,7 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstP
     },
     heading: {
       color: theme.colors.darkTint1,
+      // marginBottom: 8,
     },
     propertiesValueContainer: {
       marginLeft: 8,

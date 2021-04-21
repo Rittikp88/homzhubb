@@ -4,14 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { CarouselProps } from 'react-multi-carousel';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { RouteNames, ScreensKeys } from '@homzhub/web/src/router/RouteNames';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
 import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
 import AddListingView from '@homzhub/web/src/screens/addPropertyListing/AddListingView';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { ScreensKeys } from '@homzhub/web/src/router/RouteNames';
 
 enum ComponentName {
   Listing_Plan_Selection = 'ListingPlanSelection',
@@ -95,6 +96,10 @@ const AddPropertyListing = (): React.ReactElement => {
   //     });
   // }, []);
 
+  const navigateToDashboard = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+  };
+
   const renderScene = (): React.ReactElement | null => {
     switch (scene) {
       case ComponentName.Listing_Plan_Selection:
@@ -102,7 +107,7 @@ const AddPropertyListing = (): React.ReactElement => {
           <PlanSelection
             carouselView={renderCarousel()}
             onSelectPlan={handlePlanSelection}
-            onSkip={FunctionUtils.noop}
+            onSkip={navigateToDashboard}
             isDesktop={Desktop}
             isMobile={Mobile}
             isTablet={Tablet}

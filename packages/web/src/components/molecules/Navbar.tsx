@@ -72,6 +72,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [isSelected, setIsSelected] = useState(-1);
+  const isRelease = false;
   const navBarStyles = navBarStyle(isMobile, isTablet, isDesktop);
   const navItems = [
     {
@@ -154,16 +155,17 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
             </View>
           )}
           <View style={navBarStyles.itemsContainer}>
-            {navItems.map((item, index) => (
-              <NavItem
-                key={item.icon}
-                icon={item.icon}
-                text={item.text}
-                isActive={isSelected === index}
-                onNavItemPress={onNavItemPress}
-                index={index}
-              />
-            ))}
+            {isRelease &&
+              navItems.map((item, index) => (
+                <NavItem
+                  key={item.icon}
+                  icon={item.icon}
+                  text={item.text}
+                  isActive={isSelected === index}
+                  onNavItemPress={onNavItemPress}
+                  index={index}
+                />
+              ))}
             <View style={navBarStyles.items}>
               <Avatar isOnlyAvatar fullName={userProfile?.name ?? 'User'} image={userProfile?.profilePicture ?? ''} />
             </View>

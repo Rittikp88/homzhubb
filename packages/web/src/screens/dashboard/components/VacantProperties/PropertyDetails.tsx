@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 0,
   },
   warningText: {
     marginLeft: 8,

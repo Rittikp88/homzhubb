@@ -79,6 +79,8 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
             activeSlide={activeSlide}
             updateSlide={updateSlide}
             containerStyles={styles.carouselStyle}
+            fullScreen={false}
+            favouriteIcon={false}
           />
         ) : (
           <ImagePlaceholder containerStyle={styles.imagePlaceHolder} />

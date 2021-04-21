@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, StyleProp, ViewStyle, Image } from 'react-native';
+import { View, StyleSheet, StyleProp, ViewStyle, Image, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -46,35 +47,38 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
     const backgroundColor = selected ? moreSeparator : white;
     return (
       <View style={[styles.container, containerStyle]}>
-        <View style={[{ backgroundColor }, styles.padding]}>
-          <View style={[styles.rowStyle, styles.paddingStyle]}>
-            {PlatformUtils.isMobile() ? (
-              <SVGUri uri={image} width={40} height={40} />
-            ) : (
-              <Image source={{ uri: image }} style={styles.image} />
-            )}
-            <View style={styles.content}>
-              <View style={styles.headingStyle}>
-                <Label
-                  type="large"
-                  textType="semiBold"
-                  numberOfLines={3}
-                  style={[styles.textStyle, PlatformUtils.isWeb() && isMobile && styles.mobileContainer]}
-                >
-                  {heading}
-                </Label>
-                {PlatformUtils.isMobile() && <RNCheckbox selected={selected} onToggle={this.onToggle} />}
+        <TouchableOpacity onPress={PlatformUtils.isWeb() ? this.onToggle : FunctionUtils.noop} activeOpacity={1}>
+          <View style={[{ backgroundColor }, styles.padding]}>
+            <View style={[styles.rowStyle, styles.paddingStyle]}>
+              {PlatformUtils.isMobile() ? (
+                <SVGUri uri={image} width={40} height={40} />
+              ) : (
+                <Image source={{ uri: image }} style={styles.image} />
+              )}
+              <View style={styles.content}>
+                <View style={styles.headingStyle}>
+                  <Label
+                    type="large"
+                    textType="semiBold"
+                    numberOfLines={3}
+                    style={[styles.textStyle, PlatformUtils.isWeb() && isMobile && styles.mobileContainer]}
+                  >
+                    {heading}
+                  </Label>
+                  {PlatformUtils.isMobile() && <RNCheckbox selected={selected} onToggle={this.onToggle} />}
+                </View>
               </View>
+              {PlatformUtils.isWeb() && (
+                <View style={styles.checkBoxWeb}>
+                  <RNCheckbox selected={selected} onToggle={this.onToggle} />
+                </View>
+              )}
             </View>
-            {PlatformUtils.isWeb() && (
-              <View style={styles.checkBoxWeb}>
-                <RNCheckbox selected={selected} onToggle={this.onToggle} />
-              </View>
-            )}
+            {this.renderFeesView()}
+            {showMore && this.renderMoreContent()}
           </View>
-          {this.renderFeesView()}
-          {showMore && this.renderMoreContent()}
-        </View>
+        </TouchableOpacity>
+
         {bundleItems.length > 0 && (
           <Button
             type="secondary"

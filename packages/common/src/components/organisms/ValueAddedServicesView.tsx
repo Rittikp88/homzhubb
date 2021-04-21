@@ -3,12 +3,13 @@ import { View, StyleSheet, ViewStyle, StyleProp, ScrollView } from 'react-native
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { withMediaQuery, IWithMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import CardWithCheckbox from '@homzhub/mobile/src/components/molecules/CardWithCheckbox'; // TODO (Shikha): move to common
+import CardWithCheckbox from '@homzhub/common/src/components/molecules/CardWithCheckbox';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
@@ -34,7 +35,8 @@ interface IOwnState {
   searchString: string;
 }
 
-class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
+type IProps = IOwnProps & IWithMediaQuery;
+class ValueAddedServicesView extends React.PureComponent<IProps, IOwnState> {
   public state = {
     searchString: '',
   };
@@ -52,7 +54,6 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
       isTablet,
     } = this.props;
     const { searchString } = this.state;
-
     if (valueAddedServices && valueAddedServices.length <= 0) {
       return (
         <Text style={styles.noResults} type="regular">
@@ -60,7 +61,6 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
         </Text>
       );
     }
-
     return (
       <>
         <View style={[styles.container, containerStyle]}>
@@ -118,7 +118,7 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
             disabled={valueAddedServices.filter((service) => service.value).length === 0}
             type="primary"
             title={t('common:continue')}
-            containerStyle={[isTablet && styles.buttonTabStyle, styles.buttonStyle, buttonStyle]}
+            containerStyle={[styles.buttonStyle, buttonStyle, !isMobile && isTablet && styles.buttonTabStyle]}
             onPress={this.handleContinue}
           />
         )}
@@ -164,7 +164,8 @@ class ValueAddedServicesView extends React.PureComponent<IOwnProps, IOwnState> {
   };
 }
 
-const valueAddedServicesView = withTranslation()(ValueAddedServicesView);
+const HOC = withTranslation()(ValueAddedServicesView);
+const valueAddedServicesView = withMediaQuery<any>(HOC);
 export { valueAddedServicesView as ValueAddedServicesView };
 
 const styles = StyleSheet.create({
@@ -189,10 +190,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   buttonTabStyle: {
-    position: 'absolute',
-    right: '-36px',
-    padding: 8,
-    width: '340px',
-    bottom: '0px',
+    left: '60%',
+    width: 256,
   },
 });

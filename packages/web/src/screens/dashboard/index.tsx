@@ -154,7 +154,10 @@ const Dashboard: FC = () => {
   }
   return (
     <View style={styles.container}>
-      <PropertyOverview data={propertyMetrics?.assetMetrics?.miscellaneous ?? []} />
+      <PropertyOverview
+        data={propertyMetrics?.assetMetrics?.miscellaneous ?? []}
+        propertyCount={propertyMetrics?.assetMetrics?.assets?.count}
+      />
       <PropertyUpdates updatesData={propertyMetrics?.updates ?? {}} />
       <PropertyVisualsEstimates selectedCountry={selectedCountry} />
       {notMobile ? (
