@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -115,7 +115,7 @@ const renderMenuItem = (
           <View style={[activeBar, isActive && { opacity: 100 }]} />
           <Icon name={item.icon} color={iconColor(isHovered || isActive)} size={24} style={iconStyle} />
           <ReactTooltip id={item.name} afterShow={hideTooltip} place="right" effect="solid" resizeHide={isHovered}>
-            {t(`${item.name}`)}
+            <Text style={styles.hoverText}>{t(`${item.name}`)}</Text>
           </ReactTooltip>
         </TouchableOpacity>
       )}
@@ -154,6 +154,9 @@ const styles = StyleSheet.create({
   iconStyle: {
     alignSelf: 'center',
     marginHorizontal: 'auto',
+  },
+  hoverText: {
+    color: theme.colors.white,
   },
 });
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {

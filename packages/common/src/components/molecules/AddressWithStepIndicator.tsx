@@ -230,6 +230,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     overflow: 'hidden',
     marginRight: 16,
+    height: 150,
+    width: 300,
+    resizeMode: 'cover',
     backgroundColor: theme.colors.darkTint1,
   },
   imagePlaceHolder: {

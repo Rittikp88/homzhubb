@@ -294,6 +294,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     paddingVertical: 16,
     height: PlatformUtils.isWeb() ? 'max-content' : 'auto',
+    marginHorizontal: 0,
   },
   containerWeb: {
     marginHorizontal: 0,
