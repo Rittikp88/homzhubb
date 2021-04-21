@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { History } from 'history';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useUp, useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import MainRouter from '@homzhub/web/src/router/MainRouter';
@@ -9,6 +9,8 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Navbar, NavigationInfo } from '@homzhub/web/src/components';
 import Footer from '@homzhub/web/src/screens/appLayout/Footer';
+import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
+import MobileSideMenu from '@homzhub/web/src/screens/dashboard/components/MobileSideMenu';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
@@ -41,14 +43,24 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const [goBackClicked, setGoBackClicked] = useState(false);
   const [isMenuLoading, setIsMenuLoading] = useState(false);
+  const isLaptop = useUp(deviceBreakpoint.LAPTOP);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const onMenuClose = (): void => {
+    setIsMenuOpen(false);
+  };
   return (
     <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked, isMenuLoading, setIsMenuLoading }}>
       <View style={styles.container}>
-        <Navbar history={history} location={location} />
+        <Navbar history={history} location={location} setIsMenuOpen={setIsMenuOpen} />
         <NavigationInfo />
         <View>
           <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
             {!isTablet && isSideMenuVisible && !isMenuLoading && <SideMenu onItemClick={FunctionUtils.noop} />}
+            {!isLaptop && (
+              <SideBar open={isMenuOpen} onClose={onMenuClose}>
+                <MobileSideMenu onMenuClose={onMenuClose} />
+              </SideBar>
+            )}
             <MainRouter />
           </View>
           <Footer />
