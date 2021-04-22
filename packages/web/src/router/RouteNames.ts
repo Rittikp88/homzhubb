@@ -9,6 +9,7 @@ export const RouteNames = {
     OTP_VERIFICATION: '/otp',
     MOBILE_VERIFICATION: '/mobileVerification',
     TERMS_CONDITION: '/terms&Condition',
+    TERMS_SERVICES_PAYMENTS: '/terms-Services&Payments',
     PRIVACY_POLICY: '/privacyPolicy',
     UPLOAD: '/upload',
     MAHARASHTRA_CONNECT: '/maharashtra_connect',

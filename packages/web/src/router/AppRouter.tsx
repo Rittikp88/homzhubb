@@ -13,6 +13,7 @@ import Landing from '@homzhub/web/src/screens/landing';
 import MicroSite from '@homzhub/web/src/screens/microSite';
 import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerification';
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
+import TermsServicesPayment from '@homzhub/web/src/components/staticPages/TermsServicesPayment';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
 import FAQ from '@homzhub/web/src/screens/faq';
@@ -27,6 +28,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
   const {
     APP_BASE,
     TERMS_CONDITION,
+    TERMS_SERVICES_PAYMENTS,
     PRIVACY_POLICY,
     LOGIN,
     SIGNUP,
@@ -68,6 +70,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
         <Route exact path={MAHARASHTRA_CONNECT} component={MicroSite} />
         <Route exact path={TERMS_CONDITION} component={TermsAndCondition} />
         <Route exact path={PRIVACY_POLICY} component={PrivacyPolicy} />
+        <Route exact path={TERMS_SERVICES_PAYMENTS} component={TermsServicesPayment} />
         <Route exact path={MAHARASHTRA_CONNECT} component={MicroSite} />
         <Route exact path={FAQS} component={FAQ} />
         <PrivateRoute path={DASHBOARD} component={AppLayout} isAuthenticated={isAuthenticated} />

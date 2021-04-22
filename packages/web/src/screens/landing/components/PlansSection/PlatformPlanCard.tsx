@@ -57,6 +57,7 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
   const shouldDisplayPopularBanner = !!(servicePlanPricing && servicePlanPricing[0].banner);
   const indexUSD = findIndex();
   const servicePlansPricingInUSD = servicePlanPricing[indexUSD];
+  const releaseHotfix = false;
 
   const setPlanPricingText = (pricing: number): string => {
     if (pricing === -1) return t('custom');
@@ -88,7 +89,7 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
       <Typography size="small" variant="text" style={styles.headerLabel}>
         {description}
       </Typography>
-      {servicePlanPricing && (
+      {releaseHotfix && servicePlanPricing && (
         <View style={styles.billingAmount}>
           <Typography size="small" variant="title" fontWeight="semiBold" style={styles.amount}>
             {isCustom ? null : servicePlansPricingInUSD.currency.currencySymbol}
@@ -113,17 +114,19 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
         type="primary"
         containerStyle={styles.getStartedButton}
       />
-      <View style={styles.planList}>
-        {serviceBundles &&
-          serviceBundles.map(
-            (datum: any, index: number): React.ReactNode => {
-              if (index < 5) {
-                return <OrderedList label={datum.label} key={index} />;
+      {releaseHotfix && (
+        <View style={styles.planList}>
+          {serviceBundles &&
+            serviceBundles.map(
+              (datum: any, index: number): React.ReactNode => {
+                if (index < 5) {
+                  return <OrderedList label={datum.label} key={index} />;
+                }
+                return <></>;
               }
-              return <></>;
-            }
-          )}
-      </View>
+            )}
+        </View>
+      )}
       <Typography size="regular" variant="label" style={styles.disclaimerText}>
         {t(disclaimerSectionText[name])}
       </Typography>
@@ -167,6 +170,7 @@ const styles = StyleSheet.create({
   headerLabel: {
     textAlign: 'center',
     minHeight: 60,
+    marginBottom: 24,
   },
   billingAmount: {
     flexDirection: 'row',
@@ -219,7 +223,6 @@ const styles = StyleSheet.create({
   disclaimerText: {
     textAlign: 'center',
     color: theme.colors.darkTint4,
-    marginTop: 40,
     position: 'absolute',
     bottom: 20,
   },
@@ -234,8 +237,15 @@ const styles = StyleSheet.create({
     marginTop: 16,
     width: '100%',
   },
-  getStartedButton: { width: 240, marginTop: 12 },
-  planList: { marginTop: 12, marginBottom: 70 },
+  getStartedButton: {
+    width: 240,
+    marginTop: 12,
+    marginBottom: 48,
+  },
+  planList: {
+    marginTop: 12,
+    marginBottom: 70,
+  },
 });
 
 export default PlatformPlanCard;

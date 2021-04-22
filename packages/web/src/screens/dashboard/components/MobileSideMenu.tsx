@@ -51,7 +51,7 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
     },
     {
       text: t('assetMore:valueAddedServices'),
-      url: RouteNames.protectedRoutes.VALUE_ADDED_SERVICES,
+      url: RouteNames.protectedRoutes.SELECT_PROPERTY,
     },
     {
       text: t('common:logout'),

@@ -6,7 +6,6 @@ import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
-import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -24,14 +23,12 @@ interface IProps {
   plansSectionRef?: any;
   storeLinksSectionRef?: any;
 }
-
 interface INavProps {
   featuredPropertiesRef?: any;
   plansSectionRef?: any;
   storeLinksSectionRef?: any;
   onMenuClose: () => void;
 }
-
 const LandingNavBar: FC<IProps> = (props: IProps) => {
   const [scrollLength, setScrollLength] = useState(0);
   useEffect(() => {
@@ -57,7 +54,6 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navBarStyle(isMobile);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isReleaseMode = ConfigHelper.getAppMode() !== AppModes.DEBUG;
   const onMenuClose = (): void => {
     setIsMenuOpen(false);
   };
@@ -110,14 +106,12 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                   onPress={onButtonScrollPress}
                 />
                 <Button
-                  disabled={isReleaseMode}
                   type="text"
                   fontType="regular"
                   title={t('login')}
                   onPress={(): void => navigateToScreen(RouteNames.publicRoutes.LOGIN)}
                 />
                 <Button
-                  disabled={isReleaseMode}
                   type="primary"
                   title={t('signUp')}
                   onPress={(): void => navigateToScreen(RouteNames.publicRoutes.SIGNUP)}
@@ -160,7 +154,6 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
   const { publicRoutes } = RouteNames;
   const { APP_BASE } = publicRoutes;
   const isMenuVisible = compareUrlsWithPathname([APP_BASE], pathname);
-
   // const history = useHistory(); TODO: Lakshit: Remove once Landing Page is Updated.
   // To scroll to the appropriate section when clicked.
   useEffect(() => {
@@ -173,11 +166,9 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
     }
     setScrollLength(0);
   }, [scrollLength]);
-
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navItemStyle(isLaptop, false);
-  const isReleaseMode = ConfigHelper.getAppMode() !== AppModes.DEBUG;
   const navItems = [
     {
       text: t('featuredProperties'),
@@ -201,18 +192,16 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
     {
       text: t('common:login'),
       url: RouteNames.publicRoutes.LOGIN,
-      disabled: isReleaseMode,
+      disabled: false,
     },
     {
       text: t('common:signUp'),
       url: RouteNames.publicRoutes.SIGNUP,
-      disabled: isReleaseMode,
+      disabled: false,
     },
   ];
-
   let menuItems = isLaptop ? navItems : [...navItems, ...mobileItems, ...login];
   if (!isMenuVisible) menuItems = [...mobileItems, ...login];
-
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
     if (menuItems[index].text === t('featuredProperties')) {

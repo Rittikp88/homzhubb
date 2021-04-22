@@ -9,7 +9,7 @@ import { GeolocationService } from '@homzhub/common/src/services/Geolocation/Geo
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
-import AutoCompletionSearchBar from 'components/atoms/AutoCompletionSearchBar';
+import AutoCompletionSearchBar from '@homzhub/web/src/components/atoms/AutoCompletionSearchBar';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { ILatLng } from '@homzhub/common/src/modules/search/interface';
