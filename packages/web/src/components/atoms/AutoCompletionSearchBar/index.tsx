@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { includes } from 'lodash';
 import { getDataFromPlaceID } from '@homzhub/web/src/utils/MapsUtils';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
@@ -82,7 +83,13 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
             lng: result.geometry.location.lng(),
           } as ILatLng);
         }
-        if (navigateAddProperty && history.location.pathname === RouteNames.protectedRoutes.ADD_PROPERTY) {
+        if (
+          navigateAddProperty &&
+          includes(
+            [RouteNames.protectedRoutes.ADD_PROPERTY, RouteNames.protectedRoutes.PORTFOLIO_ADD_PROPERTY],
+            history.location.pathname
+          )
+        ) {
           navigateAddProperty(AddPropertyStack.PropertyDetailsMapScreen);
         }
       });

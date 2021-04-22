@@ -27,6 +27,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
   const {
     DASHBOARD,
     ADD_PROPERTY,
+    PORTFOLIO_ADD_PROPERTY,
     FINANCIALS,
     HELP_SUPPORT,
     ADD_LISTING,
@@ -53,6 +54,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={HELP_SUPPORT} component={HelpAndSupport} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={ADD_LISTING} component={AddPropertyListing} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PORTFOLIO} component={Portfolio} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={PORTFOLIO_ADD_PROPERTY} component={PostProperty} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_DETAIL} component={PropertyDetails} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SEARCH_PROPERTY} component={SearchProperty} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_VIEW} component={PropertyView} isAuthenticated={isAuthenticated} />

@@ -7,6 +7,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
+import '@homzhub/common/src/components/molecules/AssetHighlightCard/AssetHighlightCard.scss';
 
 interface IOwnProps {
   title: string;
@@ -83,7 +84,9 @@ class AssetHighlightCard extends Component<IProps, IState> {
     };
     return (
       <TouchableOpacity style={[isMobile ? styles.amenityItemWebMobile : styles.amenityItem]} onPress={amenityPress}>
-        <Image source={{ uri: item.attachment.link }} style={styles.amenitiesIcon} />
+        <div className={isSelected ? 'asset-icon-selected' : 'asset-icon'}>
+          <Image source={{ uri: item.attachment.link }} style={styles.amenitiesIcon} />
+        </div>
         <Label type="regular" textType="regular" style={[styles.label, isSelected && { color: theme.colors.blue }]}>
           {item.name}
         </Label>
