@@ -1,7 +1,12 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-// @ts-ignore
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import {
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  StatusBar as RNStatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -11,10 +16,12 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import Animated, { AnimationService } from '@homzhub/mobile/src/services/AnimationService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
@@ -37,7 +44,6 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
@@ -68,8 +74,6 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
-// Todo : Refactor
-
 interface IStateProps {
   reviews: AssetReview | null;
   assetDetails: Asset | null;
@@ -97,31 +101,43 @@ interface IOwnState {
   startDate: string;
   isSharing: boolean;
   sharingMessage: string;
+  showContactDetailsInFooter: boolean;
 }
 
 const { width, height } = theme.viewport;
 const realWidth = height > width ? width : height;
 const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
-const PARALLAX_HEADER_HEIGHT = 250;
-const STICKY_HEADER_HEIGHT = 100;
-
 // TODO: Do we require a byId reducer here?
 const initialState = {
   isFullScreen: false,
   activeSlide: 0,
-  isScroll: true,
+  isScroll: false,
   isFavourite: false,
   startDate: '',
   isSharing: false,
   sharingMessage: I18nService.t('common:homzhub'),
+  showContactDetailsInFooter: true,
 };
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
 type Props = IStateProps & IDispatchProps & libraryProps;
+
+const { setAnimatedValue, updateAnimatedValue, interpolateAnimation, colorAnimation } = AnimationService;
+const increasingTransparency = [0, 1];
+const decreasingTransparency = [1, 0];
 export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public focusListener: any;
   public state = initialState;
+
+  // ANIMATION VALUES START
+  public scrollY = setAnimatedValue(0);
+  public headerOpacityAnimated = interpolateAnimation(this.scrollY, [20, 50], increasingTransparency);
+  public carouselOpacityAnimated = interpolateAnimation(this.scrollY, [10, 250], decreasingTransparency);
+  public bgColorOpacityAnimated = interpolateAnimation(this.scrollY, [0, 100], increasingTransparency);
+  public backgroundColorAnimated = colorAnimation(255, 255, 255, this.bgColorOpacityAnimated);
+  public elevationAnimated = interpolateAnimation(this.scrollY, [130, 150], [0, 10]);
+  // ANIMATION VALUES END
 
   public componentDidMount = async (): Promise<void> => {
     const { navigation } = this.props;
@@ -192,6 +208,45 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  private renderHeader = (): React.ReactElement | null => {
+    const { isScroll } = this.state;
+    const {
+      assetDetails,
+      route: { params },
+    } = this.props;
+    if (!assetDetails) return null;
+    const { leaseTerm, saleTerm, isAssetOwner } = assetDetails;
+    const iconColor = isScroll ? theme.colors.darkTint1 : theme.colors.white;
+    const animatedViewStyle = { backgroundColor: this.backgroundColorAnimated, elevation: this.elevationAnimated };
+    return (
+      <Animated.View style={[styles.headerView, animatedViewStyle]}>
+        <View style={styles.headerContent}>
+          <Icon name={icons.leftArrow} size={26} color={iconColor} onPress={this.onGoBack} />
+          <Animated.View style={{ ...styles.headerTextView, opacity: this.headerOpacityAnimated }}>
+            <Text type="regular" textType="semiBold" style={styles.headerText} numberOfLines={1}>
+              {assetDetails?.projectName ?? ''}
+            </Text>
+          </Animated.View>
+        </View>
+
+        <View style={styles.headerRightIconsView}>
+          {!isAssetOwner && (
+            <Favorite
+              isDisable={params.isPreview}
+              iconColor={iconColor}
+              iconSize={24}
+              leaseId={leaseTerm?.id}
+              saleId={saleTerm?.id}
+              fromScreen={ScreensKeys.PropertyAssetDescription}
+              containerStyle={styles.favouriteIcon}
+            />
+          )}
+          <Icon name={icons.share} size={22} color={iconColor} onPress={this.onOpenSharing} />
+        </View>
+      </Animated.View>
+    );
+  };
+
   private renderComponent = (): React.ReactElement | null => {
     const {
       t,
@@ -201,36 +256,25 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         params: { isPreview },
       },
     } = this.props;
-    const { isFullScreen, isScroll } = this.state;
+    const { isFullScreen } = this.state;
 
     if (!assetDetails) return null;
 
-    const {
-      contacts: { phoneNumber, countryCode, profilePicture, firstName, lastName, email },
-      isAssetOwner,
-    } = assetDetails;
-
     return (
       <>
-        <StatusBar
-          statusBarBackground={!isScroll ? theme.colors.white : theme.colors.darkTint1}
-          barStyle={isScroll ? 'light-content' : 'dark-content'}
-        />
-        <ParallaxScrollView
-          backgroundColor={theme.colors.transparent}
-          stickyHeaderHeight={STICKY_HEADER_HEIGHT}
-          parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
-          backgroundSpeed={10}
-          onChangeHeaderVisibility={(isChanged: boolean): void => this.setState({ isScroll: isChanged })}
-          renderForeground={this.renderCarousel}
-          renderStickyHeader={this.renderStickyHeader}
-          renderFixedHeader={this.renderFixedHeader}
-          testID="parallaxView"
-        >
+        <StatusBar statusBarBackground={theme.colors.white} barStyle="dark-content" />
+        {!isFullScreen && this.renderHeader()}
+
+        <Animated.ScrollView scrollEventThrottle={16} onScroll={this.handleScrollAnimations}>
+          <Animated.View style={{ ...styles.carouselHeight, opacity: this.carouselOpacityAnimated }}>
+            {this.renderCarousel()}
+          </Animated.View>
           <View style={styles.screen}>
             {this.renderHeaderSection()}
             <PropertyDetail detail={assetDetails} />
             {this.renderMapSection()}
+            {this.renderContactDetails()}
+            <Divider />
             <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
               <>
                 {reviews && reviews.reviewCount > 0 ? (
@@ -254,19 +298,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             </CollapsibleSection>
             {!isPreview && this.renderSimilarProperties()}
           </View>
-        </ParallaxScrollView>
+        </Animated.ScrollView>
+
         {this.renderFullscreenCarousel()}
-        {!isAssetOwner && !isFullScreen && !isPreview && (
-          <ContactPerson
-            firstName={firstName}
-            lastName={lastName}
-            email={email}
-            phoneNumber={`${countryCode}${phoneNumber}`}
-            designation="Owner"
-            image={profilePicture}
-            onContactTypeClicked={this.onContactTypeClicked}
-          />
-        )}
+        {this.renderFooterSection()}
         {!isFullScreen && isPreview && (
           <View style={styles.buttonContainer}>
             <Button
@@ -432,6 +467,49 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
+  private renderFooterSection = (): React.ReactElement => {
+    const { showContactDetailsInFooter } = this.state;
+    return (
+      <>
+        {showContactDetailsInFooter ? (
+          this.renderContactDetails()
+        ) : (
+          <View style={styles.footer}>{this.renderButtonGroup()}</View>
+        )}
+      </>
+    );
+  };
+
+  private renderContactDetails = (): React.ReactElement | null => {
+    const {
+      assetDetails,
+      route: {
+        params: { isPreview },
+      },
+    } = this.props;
+    const { isFullScreen } = this.state;
+    if (!assetDetails) return null;
+    const {
+      contacts: { phoneNumber, countryCode, profilePicture, firstName, lastName, email },
+      isAssetOwner,
+    } = assetDetails;
+    return (
+      <>
+        {!isAssetOwner && !isFullScreen && !isPreview && (
+          <ContactPerson
+            firstName={firstName}
+            lastName={lastName}
+            email={email}
+            phoneNumber={`${countryCode}${phoneNumber}`}
+            designation="Owner"
+            image={profilePicture}
+            onContactTypeClicked={this.onContactTypeClicked}
+          />
+        )}
+      </>
+    );
+  };
+
   private renderPropertyTimelines = (data: { label: string; value: string }[]): React.ReactElement => {
     return (
       <>
@@ -527,6 +605,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         data={assetDetails?.attachments ?? []}
         updateSlide={this.updateSlide}
         onShare={this.onOpenSharing}
+        containerStyle={styles.fullScreenCarousel}
       />
     );
   };
@@ -547,52 +626,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderFixedHeader = (): React.ReactElement | null => {
-    const { isScroll } = this.state;
-    const {
-      assetDetails,
-      route: { params },
-    } = this.props;
-    if (!assetDetails) return null;
-    const { leaseTerm, saleTerm, isAssetOwner } = assetDetails;
-    const color = isScroll ? theme.colors.white : theme.colors.darkTint1;
-    const sectionStyle = StyleSheet.flatten([styles.fixedSection, isScroll && styles.initialSection]);
-    return (
-      <View key="fixed-header" style={sectionStyle}>
-        <View style={styles.headerLeftIcon}>
-          <Icon name={icons.leftArrow} size={26} color={color} onPress={this.onGoBack} />
-        </View>
-        <View style={styles.headerRightIcon}>
-          {!isAssetOwner && (
-            <Favorite
-              isDisable={params.isPreview}
-              iconColor={color}
-              iconSize={24}
-              leaseId={leaseTerm?.id}
-              saleId={saleTerm?.id}
-              fromScreen={ScreensKeys.PropertyAssetDescription}
-              containerStyle={styles.favIcon}
-            />
-          )}
-          <Icon name={icons.share} size={22} color={color} onPress={this.onOpenSharing} />
-        </View>
-      </View>
-    );
-  };
-
-  private renderStickyHeader = (): React.ReactElement => {
-    const { assetDetails } = this.props;
-    return (
-      <WithShadowView outerViewStyle={styles.shadowView}>
-        <View key="sticky-header" style={styles.stickySection}>
-          <Text type="regular" textType="semiBold" style={styles.headerTitle} numberOfLines={1}>
-            {assetDetails?.projectName ?? ''}
-          </Text>
-        </View>
-      </WithShadowView>
-    );
-  };
-
   private onCloseSharing = (): void => {
     this.setState({
       isSharing: false,
@@ -608,7 +641,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { navigation, assetDetails } = this.props;
 
     if (!assetDetails) return;
-
     const { leaseTerm, saleTerm } = assetDetails;
 
     navigation.navigate(ScreensKeys.AssetReviews, {
@@ -618,73 +650,34 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private onContactTypeClicked = async (type: ContactActions, phoneNumber: string, message: string): Promise<void> => {
-    const { isLoggedIn, setChangeStack, navigation, assetDetails } = this.props;
-    const sendWhatsappMessage = async (): Promise<void> => {
+    const { isLoggedIn, assetDetails } = this.props;
+    if (!isLoggedIn) return this.navigateToSignUpScreen();
+    const handleShare = async (source: ContactActions): Promise<void> => {
+      if (type === ContactActions.MAIL) return this.onContactMailClicked();
       AnalyticsService.track(EventType.ContactOwner, {
-        source: ContactActions.WHATSAPP,
+        source,
         property_address: assetDetails?.address ?? '',
       });
-      return await LinkingService.whatsappMessage(phoneNumber, message);
+      return source === ContactActions.WHATSAPP
+        ? await LinkingService.whatsappMessage(phoneNumber, message)
+        : await LinkingService.openDialer(phoneNumber);
     };
-    const openDialer = async (): Promise<void> => {
-      AnalyticsService.track(EventType.ContactOwner, {
-        source: ContactActions.CALL,
-        property_address: assetDetails?.address ?? '',
-      });
-      return await LinkingService.openDialer(phoneNumber);
-    };
-    switch (type) {
-      case ContactActions.WHATSAPP:
-        if (!isLoggedIn) {
-          setChangeStack(false);
-          navigation.navigate(ScreensKeys.AuthStack, {
-            screen: ScreensKeys.SignUp,
-            params: { onCallback: this.navigateToAssetDescription },
-          });
-        } else {
-          await sendWhatsappMessage();
-        }
-        break;
-      case ContactActions.CALL:
-        if (!isLoggedIn) {
-          setChangeStack(false);
-          navigation.navigate(ScreensKeys.AuthStack, {
-            screen: ScreensKeys.SignUp,
-            params: { onCallback: this.navigateToAssetDescription },
-          });
-        } else {
-          await openDialer();
-        }
-        break;
-      default:
-        this.onContactMailClicked();
-    }
+    return await handleShare(type);
   };
 
   private onContactMailClicked = (): void => {
-    const { navigation, assetDetails, isLoggedIn, setChangeStack } = this.props;
-
+    const { assetDetails, isLoggedIn } = this.props;
     if (!assetDetails) return;
     AnalyticsService.track(EventType.ContactOwner, {
       source: ContactActions.MAIL,
       property_address: assetDetails.address,
     });
-    if (!isLoggedIn) {
-      setChangeStack(false);
-      navigation.navigate(ScreensKeys.AuthStack, {
-        screen: ScreensKeys.SignUp,
-        params: { onCallback: this.navigateToAssetDescription },
-      });
-    } else {
-      this.navigateToContactForm();
-    }
+    (!isLoggedIn ? this.navigateToSignUpScreen : this.navigateToContactForm)();
   };
 
   private onExploreNeighborhood = (): void => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate(ScreensKeys.AssetNeighbourhood);
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.AssetNeighbourhood);
   };
 
   private onGoBack = (): void => {
@@ -722,29 +715,15 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private onOfferButtonClicked = (): void => {
-    const { navigation, isLoggedIn, setChangeStack, assetDetails } = this.props;
+    const { isLoggedIn, assetDetails } = this.props;
     const hasCreatedOffer = Boolean(assetDetails?.leaseNegotiation) || Boolean(assetDetails?.saleNegotiation);
-    if (!isLoggedIn) {
-      setChangeStack(false);
-      return navigation.navigate(ScreensKeys.AuthStack, {
-        screen: ScreensKeys.SignUp,
-        params: { onCallback: this.navigateToAssetDescription },
-      });
-    }
+    if (!isLoggedIn) return this.navigateToSignUpScreen();
     return hasCreatedOffer ? this.navigateToOffersMade() : this.navigateToSubmitOfferScreen();
   };
 
   private onBookVisit = (): void => {
-    const { navigation, isLoggedIn, setChangeStack } = this.props;
-    if (!isLoggedIn) {
-      setChangeStack(false);
-      navigation.navigate(ScreensKeys.AuthStack, {
-        screen: ScreensKeys.SignUp,
-        params: { onCallback: this.navigateToAssetDescription },
-      });
-    } else {
-      this.navigateToVisitForm();
-    }
+    const { isLoggedIn } = this.props;
+    return !isLoggedIn ? this.navigateToSignUpScreen() : this.navigateToVisitForm();
   };
 
   private onEdit = (): void => {
@@ -816,6 +795,15 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId });
   };
 
+  private navigateToSignUpScreen = (): void => {
+    const { setChangeStack, navigation } = this.props;
+    setChangeStack(false);
+    navigation.navigate(ScreensKeys.AuthStack, {
+      screen: ScreensKeys.SignUp,
+      params: { onCallback: this.navigateToAssetDescription },
+    });
+  };
+
   private getDynamicUrl = async (): Promise<string> => {
     const {
       route: {
@@ -834,6 +822,16 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const url = await this.getDynamicUrl();
     const sharingMessage = I18nService.t('common:shareMessage', { url });
     this.setState({ sharingMessage });
+  };
+
+  private handleScrollAnimations = (e: NativeSyntheticEvent<NativeScrollEvent>): void => {
+    const {
+      nativeEvent: { contentOffset, layoutMeasurement, contentSize },
+    } = e;
+    const isThresholdReached =
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - contentSize.height / 3;
+    this.setState({ isScroll: contentOffset.y >= 25, showContactDetailsInFooter: !isThresholdReached });
+    updateAnimatedValue(this.scrollY, contentOffset.y);
   };
 
   private navigateToVisitForm = (): void => {
@@ -916,6 +914,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       const data = AnalyticsHelper.getPropertyTrackData(assetDetails);
       AnalyticsService.track(EventType.ClickSimilarProperty, data);
     }
+    navigation.pop();
     navigation.navigate(ScreensKeys.PropertyAssetDescription, {
       propertyTermId,
       propertyId,
@@ -933,8 +932,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const payload: IGetAssetPayload = {
       propertyTermId,
     };
+    this.setState({ isScroll: false, showContactDetailsInFooter: true });
     clearOfferFormValues();
     getAsset(payload);
+    updateAnimatedValue(this.scrollY, 0);
   };
 
   private getProspect = async (): Promise<number | void> => {
@@ -979,6 +980,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 }
+
 const mapStateToProps = (state: IState): IStateProps => {
   return {
     reviews: AssetSelectors.getAssetReviews(state),
@@ -1055,36 +1057,36 @@ const styles = StyleSheet.create({
   primaryText: {
     color: theme.colors.primaryColor,
   },
-  headerLeftIcon: {
+  headerView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     position: 'absolute',
+    top: PlatformUtils.isIOS() ? 30 : RNStatusBar.currentHeight,
+    zIndex: 100,
+    paddingVertical: 5,
+  },
+  headerContent: {
+    flex: 1,
     left: relativeWidth(2),
-  },
-  headerRightIcon: {
     flexDirection: 'row',
-    position: 'absolute',
-    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  headerTextView: {
+    left: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    color: theme.colors.shadow,
+  },
+  headerRightIconsView: {
+    flex: 1,
+    flexDirection: 'row',
     right: relativeWidth(4),
-    width: 60,
+    justifyContent: 'flex-end',
   },
-  fixedSection: {
-    position: 'absolute',
-    width: theme.viewport.width,
-    top: 4,
-    flexDirection: 'row',
-  },
-  initialSection: {
-    top: 4,
-  },
-  stickySection: {
-    paddingBottom: 10,
-  },
-  shadowView: {
-    marginTop: 0,
-  },
-  headerTitle: {
-    marginLeft: 40,
-    width: theme.viewport.width / 2,
-    color: theme.colors.darkTint1,
+  favouriteIcon: {
+    marginHorizontal: relativeWidth(3),
   },
   utilityItem: {
     marginRight: 20,
@@ -1161,7 +1163,16 @@ const styles = StyleSheet.create({
   seeOfferText: {
     color: theme.colors.green,
   },
-  favIcon: {
-    marginEnd: relativeWidth(3),
+  carouselHeight: {
+    height: 275,
+  },
+  fullScreenCarousel: {
+    marginTop: 30,
+  },
+  footer: {
+    paddingHorizontal: 16,
+    backgroundColor: theme.colors.white,
+    shadowOpacity: 0.5,
+    elevation: 7,
   },
 });

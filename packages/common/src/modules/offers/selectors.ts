@@ -9,7 +9,7 @@ import {
   IExistingProposalsLease,
   IExistingProposalsSale,
   IOfferState,
-  IOfferFormValues,
+  OfferFormValues,
 } from '@homzhub/common/src/modules/offers/interfaces';
 
 const getPastProposalsRent = (state: IState): IExistingProposalsLease | null => {
@@ -35,6 +35,7 @@ const getPastProposalsRent = (state: IState): IExistingProposalsLease | null => 
       maintenancePaidBy: `${offerListing?.leaseTerm?.maintenancePaidBy}`,
       utilityPaidBy: `${offerListing?.leaseTerm?.maintenancePaidBy}`,
       tenantPreferences: tenantPreferences.map((item) => ({ id: item.id, label: item.name, isSelected: true })),
+      message: '',
     };
   }
   if (offerListing?.leaseTerm) {
@@ -59,6 +60,7 @@ const getPastProposalsRent = (state: IState): IExistingProposalsLease | null => 
       maintenancePaidBy,
       utilityPaidBy,
       tenantPreferences: tenantPreferences.map((item) => ({ id: item.id, label: item.name, isSelected: true })),
+      message: '',
     };
   }
   return null;
@@ -73,6 +75,7 @@ const getPastProposalsSale = (state: IState): IExistingProposalsSale | null => {
     return {
       expectedPrice: `${price}`,
       expectedBookingAmount: `${bookingAmount}`,
+      message: '',
     };
   }
 
@@ -81,6 +84,7 @@ const getPastProposalsSale = (state: IState): IExistingProposalsSale | null => {
     return {
       expectedPrice: `${expectedPrice}`,
       expectedBookingAmount: `${expectedBookingAmount}`,
+      message: '',
     };
   }
 
@@ -143,7 +147,7 @@ const getOfferLoaders = (state: IState): IOfferState['loaders'] => {
   return state.offer.loaders;
 };
 
-const getOfferFormValues = (state: IState): IOfferFormValues => {
+const getOfferFormValues = (state: IState): OfferFormValues | null => {
   return state.offer.offerForm;
 };
 

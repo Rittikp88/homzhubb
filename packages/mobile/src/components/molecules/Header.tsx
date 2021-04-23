@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import Animated from 'react-native-reanimated';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import Animated, { AnimatedNode } from '@homzhub/mobile/src/services/AnimationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { StatusBar, IStatusBarProps } from '@homzhub/mobile/src/components/atoms/StatusBar';
@@ -13,7 +13,7 @@ export interface IHeaderProps {
   barVisible?: boolean;
   children?: React.ReactNode;
   statusBarProps?: IStatusBarProps;
-  opacity?: number;
+  opacity?: AnimatedNode<number>;
   onIconPress?: () => void;
   onIconRightPress?: () => void;
   testID?: string;

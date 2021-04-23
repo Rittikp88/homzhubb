@@ -3,7 +3,7 @@ import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { INegotiation } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ICurrentOffer, IOfferCompare, IOfferFormValues } from '@homzhub/common/src/modules/offers/interfaces';
+import { ICurrentOffer, IOfferCompare, OfferFormValues } from '@homzhub/common/src/modules/offers/interfaces';
 
 const actionTypePrefix = 'Offers/';
 export const OfferActionTypes = {
@@ -77,7 +77,7 @@ const clearCurrentOffer = (): IFluxStandardAction => ({
   type: OfferActionTypes.CLEAR_CURRENT_OFFER,
 });
 
-const setOfferFormValues = (payload: IOfferFormValues): IFluxStandardAction<IOfferFormValues> => ({
+const setOfferFormValues = (payload: OfferFormValues): IFluxStandardAction<OfferFormValues> => ({
   type: OfferActionTypes.SET.OFFER_FORM_VALUES,
   payload,
 });
@@ -93,7 +93,7 @@ export type OfferActionPayloadTypes =
   | IOffer[]
   | IOfferCompare
   | Offer
-  | IOfferFormValues;
+  | OfferFormValues;
 
 export const OfferActions = {
   clearState,

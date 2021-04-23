@@ -19,6 +19,20 @@ export enum OfferAction {
   COUNTER = 'COUNTER',
 }
 
+export enum OfferFormKeys {
+  expectedRent = 'expectedPrice',
+  securityDeposit = 'securityDeposit',
+  minimumLeasePeriod = 'minimumLeasePeriod',
+  maximumLeasePeriod = 'maximumLeasePeriod',
+  annualRentIncrementPercentage = 'annualRentIncrementPercentage',
+  availableFromDate = 'availableFromDate',
+  tenantPreferences = 'tenantPreferences',
+  message = 'message',
+  // Sale Flow
+  expectedSellPrice = 'expectedPrice',
+  expectedBookingAmount = 'expectedBookingAmount',
+}
+
 export interface IOfferValue {
   key: string;
   value: string;

@@ -1,13 +1,16 @@
 import React from 'react';
 import { SafeAreaView, View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
-import Animated, { Extrapolate } from 'react-native-reanimated';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
+import Animated, { AnimationService } from '@homzhub/mobile/src/services/AnimationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PageHeader, IPageHeaderProps, TITLE_HEIGHT } from '@homzhub/mobile/src/components/atoms/PageHeader';
 import { Header, IHeaderProps } from '@homzhub/mobile/src/components/molecules/Header';
 
-const AnimatedKeyboardAwareScrollView = Animated.createAnimatedComponent(KeyboardAwareScrollView);
+const { createAnimatedComponent, setAnimatedValue, interpolateAnimation } = AnimationService;
+const AnimatedKeyboardAwareScrollView = createAnimatedComponent(KeyboardAwareScrollView);
+
 interface IProps {
   children: React.ReactNode;
   scrollEnabled?: boolean;
@@ -34,16 +37,11 @@ export const Screen = (props: IProps): React.ReactElement => {
   } = props;
 
   // Values for Header Animations
-  let opacity = 1;
+  let opacity;
   let onScroll;
   if (!headerProps?.title && pageHeaderProps?.contentTitle) {
-    const scrollY = new Animated.Value(0);
-    // @ts-ignore
-    opacity = new Animated.interpolate(scrollY, {
-      inputRange: [10, TITLE_HEIGHT],
-      outputRange: [0, 1],
-      extrapolate: Extrapolate.CLAMP,
-    });
+    const scrollY = setAnimatedValue(0);
+    opacity = interpolateAnimation(scrollY, [10, TITLE_HEIGHT], [0, 1]);
     onScroll = Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }]);
   }
 

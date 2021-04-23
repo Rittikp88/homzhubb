@@ -13,7 +13,7 @@ export interface IOfferState {
     negotiations: boolean;
     listingDetail: boolean;
   };
-  offerForm: IOfferFormValues | null;
+  offerForm: OfferFormValues | null;
 }
 
 export interface ICurrentOffer {
@@ -31,16 +31,16 @@ export interface IExistingProposalsLease {
   maintenancePaidBy: string;
   utilityPaidBy: string;
   tenantPreferences: ICheckboxGroupData[];
+  message: string;
 }
 
 export interface IExistingProposalsSale {
   expectedPrice: string;
   expectedBookingAmount: string;
+  message: string;
 }
 
-export interface IOfferFormValues extends IExistingProposalsLease, IExistingProposalsSale {
-  message?: string;
-}
+export type OfferFormValues = IExistingProposalsLease | IExistingProposalsSale;
 
 export interface IOfferCompare {
   rent?: number;

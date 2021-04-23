@@ -78,6 +78,7 @@ import SubscriptionPayment from '@homzhub/mobile/src/screens/Asset/More/Subscrip
 import ManageTenantScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/ManageTenantScreen';
 import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 import UpdateLeaseTerm from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdateLeaseTerm';
+import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import {
   IAcceptInvitePayload,
   IGetMessageParam,
@@ -156,6 +157,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ProspectProfile]: IAssetDescriptionProps | undefined;
   [ScreensKeys.CreateLease]: undefined;
   [ScreensKeys.SubscriptionPayment]: undefined;
+  [ScreensKeys.WebViewScreen]: undefined;
 };
 
 const BottomTabNavigator = createBottomTabNavigator<BottomTabNavigatorParamList>();
@@ -259,6 +261,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ProspectProfile} component={ProspectProfile} />
       <MoreStackNavigator.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubscriptionPayment} component={SubscriptionPayment} />
+      <MoreStackNavigator.Screen name={ScreensKeys.WebViewScreen} component={WebViewScreen} />
     </MoreStackNavigator.Navigator>
   );
 };
@@ -292,6 +295,7 @@ export const BottomTabs = (): React.ReactElement => {
       ScreensKeys.RejectOffer,
       ScreensKeys.OfferDetail,
       ScreensKeys.CancelOffer,
+      ScreensKeys.WebViewScreen,
     ];
     return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
   };

@@ -5,7 +5,7 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   ICurrentOffer,
   IOfferCompare,
-  IOfferFormValues,
+  OfferFormValues,
   IOfferState,
 } from '@homzhub/common/src/modules/offers/interfaces';
 
@@ -84,7 +84,7 @@ export const offerReducer = (
     case OfferActionTypes.SET.OFFER_FORM_VALUES:
       return {
         ...state,
-        ['offerForm']: action.payload as IOfferFormValues,
+        ['offerForm']: action.payload as OfferFormValues,
       };
     case OfferActionTypes.CLEAR_OFFER_FORM_VALUES:
       return {

@@ -5,8 +5,10 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { connect } from 'react-redux';
+import { isEqual } from 'lodash';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
@@ -26,8 +28,8 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import OfferDetailsCard from '@homzhub/common/src/components/molecules/OfferDetailsCard';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { Offer } from '@homzhub/common/src/domain/models/Offer';
-import { initialRentFormValues, initialSaleFormValues, OfferFormKeys } from '@homzhub/common/src/mocks/Offers';
+import { Offer, OfferFormKeys } from '@homzhub/common/src/domain/models/Offer';
+import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   ICounterOffer,
@@ -40,10 +42,9 @@ import {
 import {
   IExistingProposalsLease,
   IExistingProposalsSale,
-  IOfferFormValues,
+  OfferFormValues,
 } from '@homzhub/common/src/modules/offers/interfaces';
 
-// ToDo (Praharsh) : Resolve ts-ignores and see if we could optimise and shorten the code.
 interface IProps {
   onPressTerms: () => void;
   onSuccess: () => void;
@@ -57,20 +58,18 @@ interface IReduxProps {
   existingSaleTerms: IExistingProposalsSale | null;
   tenantPreferences: ICheckboxGroupData[];
   currentOffer: Offer | null;
-  offerFormValues: IOfferFormValues;
+  offerFormValues: OfferFormValues | null;
 }
 
 interface IDispatchProps {
-  setOfferFormValues: (payload: IOfferFormValues) => void;
+  setOfferFormValues: (payload: OfferFormValues) => void;
 }
 
 type Props = WithTranslation & IProps & IReduxProps & IDispatchProps;
 
 interface IScreenState {
-  preferenceData: [];
   checkBox: boolean;
   formData: FormikValues;
-  message: string;
   showLeaseDurationError: boolean;
   loading: boolean;
 }
@@ -81,16 +80,32 @@ interface IInfoBox {
   color: string;
 }
 
+const initialRentFormValues = {
+  expectedPrice: '',
+  securityDeposit: '',
+  minimumLeasePeriod: 0,
+  maximumLeasePeriod: 0,
+  annualRentIncrementPercentage: '',
+  availableFromDate: DateUtils.getCurrentDate(),
+  maintenancePaidBy: PaidByTypes.OWNER,
+  utilityPaidBy: PaidByTypes.TENANT,
+  tenantPreferences: [],
+  message: '',
+};
+
+const initialSaleFormValues = {
+  expectedPrice: '',
+  expectedBookingAmount: '',
+  message: '',
+};
+
 class OfferForm extends React.Component<Props, IScreenState> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      checkBox: false,
-      // Todo : Try including message in selector.
-      message: this.getInitialMessage(),
+      checkBox: this.getCheckBoxInitialState(),
       showLeaseDurationError: false,
-      // @ts-ignore
-      formData: this.initialValues(),
+      formData: this.getInitialFormValues(),
       loading: false,
     };
   }
@@ -107,15 +122,16 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private renderBottomFields = (formProps: FormikProps<FormikValues>): React.ReactElement => {
-    const { state, props, renderInfoBox, onMessageChange } = this;
+    const { props, renderInfoBox } = this;
     const { setFieldValue, values } = formProps;
-    const { message } = state;
     const { t, onPressTerms, isRentFlow, asset, offersLeft, setOfferFormValues } = props;
 
     const onPressPrivacy = (): void => {
-      setOfferFormValues({ ...values, message } as IOfferFormValues);
+      setOfferFormValues(values as OfferFormValues);
       onPressTerms();
     };
+
+    const onMessageChange = (value: string): void => setFieldValue(OfferFormKeys.message, value);
 
     const Preferences = (): React.ReactElement | null => {
       if (isRentFlow && asset?.leaseTerm?.tenantPreferences.length && !asset?.isAssetOwner) {
@@ -145,7 +161,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
           placeholder={t('offers:enterYourMessage')}
           isCountRequired={false}
           onMessageChange={onMessageChange}
-          value={message}
+          value={values.message}
         />
 
         <View style={styles.termsAndConditionsContainer}>
@@ -187,10 +203,11 @@ class OfferForm extends React.Component<Props, IScreenState> {
     );
   };
 
-  private renderForm = (): React.ReactElement => {
+  private renderForm = (): React.ReactElement | null => {
     const { t, isRentFlow, offersLeft, currentOffer, asset } = this.props;
     const { formData, loading } = this.state;
     const { renderFormHeader, renderBottomFields } = this;
+    if (!formData) return null;
     return (
       <>
         <Formik
@@ -202,16 +219,18 @@ class OfferForm extends React.Component<Props, IScreenState> {
         >
           {(formProps: FormikProps<FormikValues>): React.ReactElement => {
             const { setFieldValue, values, errors, dirty, handleSubmit } = formProps;
+            const onPress = (): void => handleSubmit();
             const { checkBox, showLeaseDurationError } = this.state;
             const onMinDurationChange = (value: number): void => setFieldValue(OfferFormKeys.minimumLeasePeriod, value);
             const onMaxDurationChange = (value: number): void => setFieldValue(OfferFormKeys.maximumLeasePeriod, value);
             const handleCheckBox = (): void => {
-              const value = values === this.checkedFormValues() ? this.initialValues() : this.checkedFormValues();
-              // @ts-ignore
-              this.setState((prevState) => ({
-                checkBox: dirty ? false : !prevState.checkBox,
-                formData: dirty ? values : value,
-              }));
+              const filledFormValues = this.filledFormValues();
+              if (filledFormValues) {
+                this.setState((prevState) => ({
+                  checkBox: !prevState.checkBox,
+                  formData: !prevState.checkBox ? filledFormValues : this.initialEmptyValues(),
+                }));
+              }
             };
             const maxLength = (field: string): number => (field?.includes('.') ? 13 : 12);
             const rentDisabled = !values?.expectedPrice?.length || !values?.securityDeposit?.length;
@@ -221,7 +240,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
               <>
                 {dirty &&
                   this.setState({
-                    checkBox: false,
+                    checkBox: isEqual(values, this.filledFormValues()),
                     formData: values,
                     showLeaseDurationError: values.minimumLeasePeriod > values.maximumLeasePeriod,
                   })}
@@ -345,8 +364,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                       type="primary"
                       formProps={formProps}
                       disabled={(!currentOffer && offersLeft === 0) || disabled || showLeaseDurationError || loading}
-                      // @ts-ignore
-                      onPress={handleSubmit}
+                      onPress={onPress}
                       title={t('common:submit')}
                     />
                   </View>
@@ -428,15 +446,9 @@ class OfferForm extends React.Component<Props, IScreenState> {
     }
   };
 
-  private onMessageChange = (text: string): void => {
-    this.setState({
-      message: text,
-    });
-  };
-
   private getData = (values: FormikValues): ISubmitOfferLease | ISubmitOfferSell | null => {
     const { isRentFlow } = this.props;
-    const { message } = this.state;
+    const { message } = values;
 
     if (!isRentFlow) {
       const { expectedPrice, expectedBookingAmount } = values;
@@ -477,7 +489,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
     return null;
   };
 
-  private checkedFormValues = (): IExistingProposalsSale | IExistingProposalsLease | null => {
+  private filledFormValues = (): IExistingProposalsSale | IExistingProposalsLease | null => {
     const { isRentFlow, existingLeaseTerms, existingSaleTerms } = this.props;
     return isRentFlow ? existingLeaseTerms : existingSaleTerms;
   };
@@ -534,16 +546,22 @@ class OfferForm extends React.Component<Props, IScreenState> {
     return payload as ISubmitOffer;
   };
 
-  private initialValues = (): IExistingProposalsLease | IExistingProposalsSale | null => {
-    const { isRentFlow, tenantPreferences, offerFormValues } = this.props;
-    const updatedInitialLease: IExistingProposalsLease = { ...initialRentFormValues, tenantPreferences };
+  private getInitialFormValues = (): OfferFormValues => {
+    const { offerFormValues } = this.props;
     if (offerFormValues) return offerFormValues;
+    return this.initialEmptyValues();
+  };
+
+  private initialEmptyValues = (): OfferFormValues => {
+    const { isRentFlow, tenantPreferences } = this.props;
+    const updatedInitialLease: IExistingProposalsLease = { ...initialRentFormValues, tenantPreferences };
     return isRentFlow ? updatedInitialLease : initialSaleFormValues;
   };
 
-  private getInitialMessage = (): string => {
+  private getCheckBoxInitialState = (): boolean => {
     const { offerFormValues } = this.props;
-    return offerFormValues?.message ?? '';
+    const filledFormValues = this.filledFormValues();
+    return Boolean(offerFormValues && isEqual(offerFormValues, filledFormValues));
   };
   //  HANDLERS END
 
