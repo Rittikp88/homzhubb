@@ -6,7 +6,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -51,7 +51,7 @@ interface IOwner {
   text: string;
 }
 
-type LibProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.AcceptOffer>;
+type LibProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.AcceptOffer>;
 type Props = LibProps & IStateToProps & IDispatchProps;
 
 class AcceptOffer extends Component<Props, IScreenState> {
@@ -197,11 +197,8 @@ class AcceptOffer extends Component<Props, IScreenState> {
           listing_id: listing.saleTerm ? listing.saleTerm.id : 0,
           assetType: DetailType.SALE_LISTING,
         });
-        // @ts-ignore
-        navigation.navigate(ScreensKeys.BottomTabs, {
-          screen: ScreensKeys.Portfolio,
-          params: { screen: ScreensKeys.PropertyDetailScreen, initial: false },
-        });
+
+        navigation.navigate(ScreensKeys.PropertyDetailScreen);
       }
 
       AlertHelper.success({ message: t('offers:offerAcceptedSuccess') });

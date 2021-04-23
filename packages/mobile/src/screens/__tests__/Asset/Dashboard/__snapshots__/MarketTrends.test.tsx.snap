@@ -2,7 +2,7 @@
 
 exports[`Market Trends Screen should render snapshot 1`] = `
 <Memo(UserScreen)
-  onBackPress={[Function]}
+  onBackPress={[MockFunction]}
   pageTitle="assetMore:marketTrends"
   scrollEnabled={false}
   title="assetMore:more"

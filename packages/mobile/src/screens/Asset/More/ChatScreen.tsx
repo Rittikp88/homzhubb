@@ -12,7 +12,7 @@ import { MessageRepository } from '@homzhub/common/src/domain/repositories/Messa
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
@@ -132,6 +132,7 @@ class ChatScreen extends Component<Props, IScreenState> {
   private onSelectMenuItem = (value: string): void => {
     const { navigation, currentChat } = this.props;
     if (value === MenuItems.VIEW_INFO && currentChat) {
+      // @ts-ignore
       navigation.navigate(ScreensKeys.GroupChatInfo, { groupId: currentChat.groupId });
       this.handleMenu();
     }

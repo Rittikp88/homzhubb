@@ -264,7 +264,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       <>
         <StatusBar statusBarBackground={theme.colors.white} barStyle="dark-content" />
         {!isFullScreen && this.renderHeader()}
-
         <Animated.ScrollView scrollEventThrottle={16} onScroll={this.handleScrollAnimations}>
           <Animated.View style={{ ...styles.carouselHeight, opacity: this.carouselOpacityAnimated }}>
             {this.renderCarousel()}
@@ -273,7 +272,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             {this.renderHeaderSection()}
             <PropertyDetail detail={assetDetails} />
             {this.renderMapSection()}
-            {this.renderContactDetails()}
+            {this.renderContactDetails(false)}
             <Divider />
             <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
               <>
@@ -472,7 +471,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     return (
       <>
         {showContactDetailsInFooter ? (
-          this.renderContactDetails()
+          this.renderContactDetails(true)
         ) : (
           <View style={styles.footer}>{this.renderButtonGroup()}</View>
         )}
@@ -480,8 +479,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderContactDetails = (): React.ReactElement | null => {
+  private renderContactDetails = (isFooter: boolean): React.ReactElement | null => {
     const {
+      t,
       assetDetails,
       route: {
         params: { isPreview },
@@ -495,6 +495,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
     return (
       <>
+        {!isFooter && (
+          <Text type="small" textType="regular" style={styles.contactTitle}>
+            {t('property:contactOwner')}
+          </Text>
+        )}
         {!isAssetOwner && !isFullScreen && !isPreview && (
           <ContactPerson
             firstName={firstName}
@@ -504,6 +509,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             designation="Owner"
             image={profilePicture}
             onContactTypeClicked={this.onContactTypeClicked}
+            isShadowRequired={isFooter}
           />
         )}
       </>
@@ -1062,7 +1068,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    top: PlatformUtils.isIOS() ? 30 : RNStatusBar.currentHeight,
+    top: PlatformUtils.isIOS() ? 40 : RNStatusBar.currentHeight,
     zIndex: 100,
     paddingVertical: 5,
   },
@@ -1172,7 +1178,11 @@ const styles = StyleSheet.create({
   footer: {
     paddingHorizontal: 16,
     backgroundColor: theme.colors.white,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.3,
     elevation: 7,
+  },
+  contactTitle: {
+    color: theme.colors.darkTint4,
+    marginTop: 10,
   },
 });

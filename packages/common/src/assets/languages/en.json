@@ -604,7 +604,8 @@
     "assetIdWarning": "Please use correct asset id",
     "sellingPrice": "Selling Price",
     "moveInDate": "Move in date",
-    "listingNotValid": "Listing is no longer available"
+    "listingNotValid": "Listing is no longer available",
+    "contactOwner": "Contact Owner"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

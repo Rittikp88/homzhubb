@@ -22,7 +22,7 @@ import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/DashboardStack';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 
@@ -128,28 +128,18 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private onViewAll = (): void => {
     const { navigation } = this.props;
-    // @ts-ignore
-    navigation.navigate(ScreensKeys.More, {
-      screen: ScreensKeys.MarketTrends,
-      initial: false,
-      params: { isFromDashboard: true },
-    });
+    navigation.navigate(ScreensKeys.MarketTrends, { isFromDashboard: true });
   };
 
   private onTrendPress = (url: string, trendId: number): void => {
     const { navigation } = this.props;
-    // @ts-ignore
     navigation.navigate(ScreensKeys.WebViewScreen, { url, trendId });
   };
 
   private onViewProperty = (data: ISetAssetPayload): void => {
     const { setCurrentAsset, navigation } = this.props;
     setCurrentAsset(data);
-    // @ts-ignore
-    navigation.navigate(ScreensKeys.BottomTabs, {
-      screen: ScreensKeys.Portfolio,
-      params: { screen: ScreensKeys.PropertyDetailScreen, initial: false },
-    });
+    navigation.navigate(ScreensKeys.PropertyDetailScreen);
   };
 
   private handleDues = (): void => {
@@ -169,16 +159,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private handleServiceTickets = (): void => {
     const { navigation } = this.props;
-
-    // @ts-ignore
-    navigation.navigate(ScreensKeys.BottomTabs, {
-      screen: ScreensKeys.More,
-      params: {
-        screen: ScreensKeys.ServiceTicketScreen,
-        initial: false,
-        params: { isFromDashboard: true },
-      },
-    });
+    navigation.navigate(ScreensKeys.ServiceTicketScreen, { isFromDashboard: true });
   };
 
   private handleNotification = (): void => {

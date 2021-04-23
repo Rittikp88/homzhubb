@@ -18,7 +18,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/FinancialStack';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -117,7 +117,6 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       return;
     }
 
-    // @ts-ignore
     navigate(ScreensKeys.AddRecordScreen);
   };
 

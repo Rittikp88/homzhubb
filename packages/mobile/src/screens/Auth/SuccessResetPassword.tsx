@@ -7,9 +7,9 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 
-export type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.SuccessResetPassword>;
+export type Props = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.SuccessResetPassword>;
 
 export class SuccessResetPassword extends Component<Props, {}> {
   public render(): React.ReactNode {

@@ -6,7 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';

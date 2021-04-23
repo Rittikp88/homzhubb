@@ -4,7 +4,7 @@ import { CommonActions } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -69,7 +69,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
   const valueAddedServices = useSelector(RecordAssetSelectors.getValueAddedServices);
 
   useEffect(() => {
-    dispatch(RecordAssetActions.getValueAddedServices({ ...serviceByIds }));
+    dispatch(RecordAssetActions.getValueAddedServices(serviceByIds));
     setLoading(false);
   }, []);
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -16,7 +15,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { NavigationScreenProps, OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import {
   IUpdateProfile,
@@ -24,7 +23,7 @@ import {
   UpdateProfileTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
-type navigationProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.UpdateUserProfileScreen>;
+type navigationProps = NavigationScreenProps<CommonParamList, ScreensKeys.UpdateUserProfileScreen>;
 
 type libraryProps = WithTranslation & navigationProps;
 
@@ -113,7 +112,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
             onFormSubmitSuccess={this.onFormSubmissionSuccess}
             formData={{
               name: workInfo ? workInfo.companyName : '',
-              email: workInfo ? workInfo.workEmail : '',
+              email: workInfo && workInfo.workEmail ? workInfo.workEmail : '',
             }}
             updateFormLoadingState={this.changeLoadingStatus}
           />
@@ -266,16 +265,7 @@ class UpdateUserProfile extends React.PureComponent<IOwnProps, IOwnState> {
 
   private goBack = (): void => {
     const { navigation } = this.props;
-
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [
-          { name: ScreensKeys.MoreScreen },
-          { name: ScreensKeys.UserProfileScreen, params: { verification_id: '' } },
-        ],
-      })
-    );
+    navigation.goBack();
   };
 }
 

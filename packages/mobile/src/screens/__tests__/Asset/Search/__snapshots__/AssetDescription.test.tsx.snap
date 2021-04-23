@@ -19,29 +19,146 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
     visible={false}
   />
   <Memo(HomzhubStatusBar)
-    barStyle="light-content"
-    statusBarBackground="#001B36"
+    barStyle="dark-content"
+    statusBarBackground="#FFFFFF"
   />
-  <ParallaxScrollView
-    backgroundColor="transparent"
-    backgroundScrollSpeed={5}
-    backgroundSpeed={10}
-    contentBackgroundColor="#fff"
-    contentContainerStyle={null}
-    fadeOutForeground={true}
-    onChangeHeaderVisibility={[Function]}
-    outputScaleValue={5}
-    parallaxHeaderHeight={250}
-    renderBackground={[Function]}
-    renderContentBackground={[Function]}
-    renderFixedHeader={[Function]}
-    renderForeground={[Function]}
-    renderParallaxHeader={[Function]}
-    renderScrollComponent={[Function]}
-    renderStickyHeader={[Function]}
-    stickyHeaderHeight={100}
-    testID="parallaxView"
+  <View
+    style={
+      Array [
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "paddingVertical": 5,
+          "position": "absolute",
+          "top": 40,
+          "zIndex": 100,
+        },
+        Object {
+          "backgroundColor": AnimatedValue {
+            " __value": 16777215,
+          },
+          "elevation": AnimatedValue {
+            " __value": 0,
+          },
+        },
+      ]
+    }
   >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "left": 15,
+        }
+      }
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#FFFFFF"
+        name="left-arrow"
+        onPress={[Function]}
+        size={26}
+      />
+      <View
+        style={
+          Object {
+            "left": 10,
+            "opacity": AnimatedValue {
+              " __value": 0,
+            },
+          }
+        }
+      >
+        <Text
+          numberOfLines={1}
+          style={
+            Object {
+              "color": "#000",
+              "fontSize": 18,
+            }
+          }
+          textType="semiBold"
+          type="regular"
+        />
+      </View>
+    </View>
+    <View
+      style={
+        Object {
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "flex-end",
+          "right": 30,
+        }
+      }
+    >
+      <Favorite
+        containerStyle={
+          Object {
+            "marginHorizontal": 22.5,
+          }
+        }
+        fromScreen="PropertyAssetDescription"
+        iconColor="#FFFFFF"
+        iconSize={24}
+        leaseId={1}
+        saleId={1}
+      />
+      <Icon
+        allowFontScaling={false}
+        color="#FFFFFF"
+        name="share"
+        onPress={[Function]}
+        size={22}
+      />
+    </View>
+  </View>
+  <ForwardRef(AnimatedComponentWrapper)
+    onScroll={[Function]}
+    scrollEventThrottle={16}
+  >
+    <View
+      style={
+        Object {
+          "height": 275,
+          "opacity": AnimatedValue {
+            " __value": 0,
+          },
+        }
+      }
+    >
+      <AssetDetailsImageCarousel
+        activeSlide={0}
+        containerStyles={
+          Object {
+            "borderRadius": 0,
+          }
+        }
+        data={
+          Array [
+            Object {
+              "file_name": "prof.jpg",
+              "is_cover_image": true,
+              "link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/8e8c48fc-c089-11ea-8247-34e12d38d70eprof.jpg",
+              "media_attributes": Object {},
+              "media_type": "IMAGE",
+            },
+            Object {
+              "file_name": "DjangoBackendLLD (1).jpg",
+              "is_cover_image": false,
+              "link": "https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg",
+              "media_attributes": Object {},
+              "media_type": "IMAGE",
+            },
+          ]
+        }
+        enterFullScreen={[Function]}
+        updateSlide={[Function]}
+      />
+    </View>
     <View
       style={
         Object {
@@ -253,7 +370,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              20 Apr 2021
+              23 Apr 2021
             </Label>
           </View>
           <View
@@ -652,6 +769,26 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           }
         />
       </View>
+      <Text
+        style={
+          Object {
+            "color": "#4C5F72",
+            "marginTop": 10,
+          }
+        }
+        textType="regular"
+        type="small"
+      >
+        property:contactOwner
+      </Text>
+      <Memo(ContactPerson)
+        designation="Owner"
+        email="anuvrat.somnath@nineleaps.com"
+        isShadowRequired={false}
+        onContactTypeClicked={[Function]}
+        phoneNumber="undefinedundefined"
+      />
+      <Divider />
       <Memo(CollapsibleSection)
         isDividerRequired={true}
         title="reviewsRatings"
@@ -667,10 +804,11 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
         transaction_type={0}
       />
     </View>
-  </ParallaxScrollView>
+  </ForwardRef(AnimatedComponentWrapper)>
   <Memo(ContactPerson)
     designation="Owner"
     email="anuvrat.somnath@nineleaps.com"
+    isShadowRequired={true}
     onContactTypeClicked={[Function]}
     phoneNumber="undefinedundefined"
   />

@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { icons } from '@homzhub/common/src/assets/icon';

@@ -1,10 +1,11 @@
+// @ts-nocheck
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -112,16 +113,15 @@ export class More extends React.PureComponent<Props> {
 
   public handleNavigation = (type: MoreScreenTypes, title: string): void => {
     const { navigation, t } = this.props;
+
     switch (type) {
       case MoreScreenTypes.NOTIFICATIONS:
         navigation.navigate(ScreensKeys.AssetNotifications);
         break;
       case MoreScreenTypes.MARKET_TRENDS:
-        // @ts-ignore
         navigation.navigate(ScreensKeys.MarketTrends);
         break;
       case MoreScreenTypes.PROPERTY_VISITS:
-        // @ts-ignore
         navigation.navigate(ScreensKeys.PropertyVisits);
         break;
       case MoreScreenTypes.SETTINGS:
@@ -149,7 +149,6 @@ export class More extends React.PureComponent<Props> {
         navigation.navigate(ScreensKeys.ServiceTicketScreen);
         break;
       case MoreScreenTypes.OFFERS:
-        // @ts-ignore
         navigation.navigate(ScreensKeys.PropertyOfferList);
         break;
       case MoreScreenTypes.PAYMENT_METHODS:

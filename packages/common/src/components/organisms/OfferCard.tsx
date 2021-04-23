@@ -117,7 +117,7 @@ class OfferCard extends Component<Props, IOwnState> {
     return (
       <View style={[styles.cardContainer, isHighlighted && styles.highlighted]}>
         <TouchableOpacity onPress={this.onProfileSheet}>
-          <Avatar fullName={user.name} designation={StringUtils.toTitleCase(role)} />
+          <Avatar fullName={user.name} designation={StringUtils.toTitleCase(role)} image={user.profilePicture} />
         </TouchableOpacity>
         <UserView isVisible={isProfileSheetVisible} user={user} onClose={this.onCloseProfileSheet} />
         {isFromAccept && asset ? (

@@ -9,7 +9,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -64,7 +64,7 @@ interface IVisitState {
   saleListingId: number | null;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.BookVisit>;
+type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.BookVisit>;
 type Props = libraryProps & IStateProps;
 
 export class BookVisit extends Component<Props, IVisitState> {

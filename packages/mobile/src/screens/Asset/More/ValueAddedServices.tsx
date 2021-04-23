@@ -1,6 +1,7 @@
+// @ts-noCheck
 import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { IBadgeInfo, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ValueAddedServiceCardList } from '@homzhub/common/src/components/organisms/ValueAddedServiceCardList';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
@@ -18,7 +19,6 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
   const [loading, setLoading] = useState(true);
 
   const navigateToAddPropertyScreen = (): void => {
-    // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AssetLocationSearch,
     });

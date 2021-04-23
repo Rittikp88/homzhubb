@@ -32,7 +32,8 @@ import {
   IVisitActionParam,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { IBookVisitProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRoutes, Tabs, VisitRoutes } from '@homzhub/common/src/constants/Tabs';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
@@ -54,7 +55,7 @@ interface IStateProps {
 }
 
 type NavigationType =
-  | StackNavigationProp<MoreStackNavigatorParamList, ScreensKeys.PropertyVisits>
+  | StackNavigationProp<CommonParamList, ScreensKeys.PropertyVisits>
   | StackNavigationProp<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
 
 interface IProps {

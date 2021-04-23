@@ -14,7 +14,7 @@ import { DocumentCard } from '@homzhub/mobile/src/components/molecules/DocumentC
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 

@@ -27,7 +27,6 @@ export class DefaultLogin extends React.PureComponent<IProps> {
 
   public navigateToSignup = (): void => {
     const { navigation } = this.props;
-    // @ts-ignore
     navigation.navigate(ScreensKeys.AuthStack, {
       screen: ScreensKeys.SignUp,
       params: { onCallback: this.navigateToDashboard },

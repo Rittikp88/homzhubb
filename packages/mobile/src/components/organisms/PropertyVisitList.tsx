@@ -15,7 +15,8 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { MoreStackNavigatorParamList, PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -50,7 +51,7 @@ const confirmation = ['Yes', 'No'];
 // END CONSTANTS
 
 type NavigationType =
-  | StackNavigationProp<MoreStackNavigatorParamList, ScreensKeys.PropertyVisits>
+  | StackNavigationProp<CommonParamList, ScreensKeys.PropertyVisits>
   | StackNavigationProp<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
 
 interface IProps {

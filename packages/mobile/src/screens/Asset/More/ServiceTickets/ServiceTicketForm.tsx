@@ -12,7 +12,7 @@ import { AnalyticsService } from '@homzhub/common/src/services/Analytics/Analyti
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -70,7 +70,7 @@ interface IDispatchToProps {
   setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
-type NavigationProps = NavigationScreenProps<AppStackParamList, ScreensKeys.AddServiceTicket>;
+type NavigationProps = NavigationScreenProps<CommonParamList, ScreensKeys.AddServiceTicket>;
 
 type Props = WithTranslation & IStateToProps & NavigationProps & IDispatchToProps;
 
@@ -107,12 +107,12 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 
     getActiveAssets();
     const ticketCategories = await TicketRepository.getTicketCategories();
-    const dropDowncategories = ticketCategories.map((category: TicketCategory) => {
+    const dropDownCategories = ticketCategories.map((category: TicketCategory) => {
       const { name, id } = category;
       return { value: id, label: name };
     });
 
-    this.setState({ categories: dropDowncategories, categoryWithSubCategory: ticketCategories });
+    this.setState({ categories: dropDownCategories, categoryWithSubCategory: ticketCategories });
 
     const subCategories = this.getSubCategories();
     if (subCategories) {

@@ -87,12 +87,8 @@ const SubmitOfferForm = (): React.ReactElement => {
       return;
     }
     dispatch(OfferActions.clearCurrentOffer());
-    navigate(ScreensKeys.Search, {
-      screen: ScreensKeys.PropertyAssetDescription,
-      initial: false,
-      params: {
-        propertyTermId: asset?.leaseTerm?.id ?? asset?.saleTerm?.id,
-      },
+    navigate(ScreensKeys.PropertyAssetDescription, {
+      propertyTermId: asset?.leaseTerm?.id ?? asset?.saleTerm?.id,
     });
   };
 

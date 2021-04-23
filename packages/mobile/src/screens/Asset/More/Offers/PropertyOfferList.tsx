@@ -6,7 +6,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -423,37 +423,32 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
 
   private getInitialOfferType = (): OfferType => {
     const { route, assetCount } = this.props;
+    // @ts-ignore
     if (route.params) return route.params.isReceivedFlow ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE;
     return assetCount > 0 ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE;
   };
 
   private navigateToDetail = (payload: ICurrentOffer | null, assetId: number): void => {
-    const { t, navigation, setCurrentOfferPayload, setFilter } = this.props;
+    const { t, navigation, setCurrentOfferPayload } = this.props;
     const { offerType } = this.state;
     const isValidListing = payload && payload.listingId > 0;
     if (!isValidListing) {
       AlertHelper.error({ message: t('property:listingNotValid') });
       return;
     }
-    // TODO: (Shikha) - Handle filter change here (Verify this logic after navigation refactor)
-    setFilter({ asset_transaction_type: payload?.type === ListingType.LEASE_LISTING ? 0 : 1 });
+
     if (offerType === OfferType.OFFER_MADE) {
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.BottomTabs, {
-        screen: ScreensKeys.Search,
-        params: {
-          screen: ScreensKeys.PropertyAssetDescription,
-          initial: false,
-          params: {
-            propertyTermId: payload?.listingId,
-            propertyId: assetId,
-          },
-        },
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+        // @ts-ignore
+        propertyTermId: payload?.listingId,
+        // @ts-ignore
+        propertyId: assetId,
       });
     } else {
       if (payload) {
         setCurrentOfferPayload(payload);
       }
+      // @ts-ignore
       navigation.navigate(ScreensKeys.OfferDetail);
     }
   };

@@ -6,7 +6,7 @@ import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -155,6 +155,7 @@ class UpdatePassword extends Component<Props, IScreenState> {
 
   private navigateToForgotPassword = (): void => {
     const { navigation } = this.props;
+    // @ts-ignore
     navigation.navigate(ScreensKeys.ForgotPassword, { isFromMore: true });
   };
 }

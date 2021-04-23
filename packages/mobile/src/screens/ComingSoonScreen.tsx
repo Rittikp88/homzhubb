@@ -1,15 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { DashboardNavigatorParamList, MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
-type paramsList = DashboardNavigatorParamList | MoreStackNavigatorParamList;
-type libraryProps = NavigationScreenProps<paramsList, ScreensKeys.ComingSoonScreen>;
+type libraryProps = NavigationScreenProps<CommonParamList, ScreensKeys.ComingSoonScreen>;
 
 type Props = WithTranslation & libraryProps;
 

@@ -12,6 +12,11 @@ describe('Market Trends Screen', () => {
       navigation: {
         goBack: jest.fn(),
       },
+      route: {
+        params: {
+          isFromDashboard: false,
+        },
+      },
     };
     component = shallow(<MarketTrends {...props} t={(key: string): string => key} />);
   });

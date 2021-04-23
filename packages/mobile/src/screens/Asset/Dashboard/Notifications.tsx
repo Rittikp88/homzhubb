@@ -5,7 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
@@ -38,7 +38,7 @@ interface IDispatchProps {
   setCurrentOfferPayload: (payload: ICurrentOffer) => void;
 }
 
-type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.AssetNotifications>;
+type libraryProps = NavigationScreenProps<CommonParamList, ScreensKeys.AssetNotifications>;
 type Props = WithTranslation & libraryProps & IDispatchProps;
 
 interface IAssetNotificationsState {

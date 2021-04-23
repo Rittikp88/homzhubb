@@ -1,3 +1,4 @@
+// @ts-noCheck
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
@@ -11,7 +12,7 @@ import { OffersRepository } from '@homzhub/common/src/domain/repositories/Offers
 import { LeadRepository } from '@homzhub/common/src/domain/repositories/LeadRepository';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -102,12 +103,13 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
         return;
       }
       // Has Prospect case
-      if (hasProspect > 0) navigation.navigate(ScreensKeys.SubmitOffer);
+      if (hasProspect > 0) {
+        navigation.navigate(ScreensKeys.SubmitOffer);
+      }
     });
   };
 
   const navigateToSearchScreen = (): void => {
-    // @ts-ignore
     navigation.navigate(ScreensKeys.BottomTabs, {
       screen: ScreensKeys.Search,
       params: {
@@ -117,7 +119,6 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
   };
 
   const navigateToOffersMadeScreen = (): void => {
-    // @ts-ignore
     navigation.navigate(ScreensKeys.BottomTabs, {
       screen: ScreensKeys.More,
       params: {
@@ -156,8 +157,8 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
 
   const removeFromWishList = async (propertyTermId: number | undefined): Promise<void> => {
     const { asset_transaction_type } = filters;
+    if (!propertyTermId) return;
     const payload: ILeadPayload = {
-      // @ts-ignore
       propertyTermId,
       data: {
         lead_type: 'WISHLIST',

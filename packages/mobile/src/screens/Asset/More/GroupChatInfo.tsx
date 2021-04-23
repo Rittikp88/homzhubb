@@ -4,7 +4,7 @@ import { ActivityIndicator, FlatList, Image, StyleSheet, View, ViewStyle, Toucha
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { MessageRepository } from '@homzhub/common/src/domain/repositories/MessageRepository';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -41,7 +41,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
   const [zoomedImage, setZoomedImage] = useState<number>(0);
   const [hasClickedImage, setHasClickedImage] = useState<boolean>(false);
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState<boolean>(false);
-  const [openUser, setOpenUser] = useState<User>({});
+  const [openUser, setOpenUser] = useState<User>(new User());
 
   const [usersData, setUsersData] = useState<GroupMessage>(new GroupMessage());
   const [media, setMedia] = useState<Attachment[]>([]);

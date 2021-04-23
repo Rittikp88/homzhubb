@@ -3,7 +3,7 @@ import { PickerItemProps, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -32,7 +32,7 @@ interface IScreenState {
   visitPayload: IAssetVisitPayload;
 }
 
-type libraryProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyVisits>;
+type libraryProps = NavigationScreenProps<CommonParamList, ScreensKeys.PropertyVisits>;
 type Props = WithTranslation & libraryProps & IDispatchProps;
 
 export class PropertyVisits extends React.Component<Props, IScreenState> {

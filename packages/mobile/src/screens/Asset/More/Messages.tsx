@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -197,6 +197,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
       groupName: name,
       groupId: id,
     });
+    // @ts-ignore
     navigation.navigate(ScreensKeys.ChatScreen, { groupId: id });
   };
 }

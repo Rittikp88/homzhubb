@@ -242,6 +242,7 @@ export interface IComingSoon {
 
 export interface IVerifyEmail {
   verification_id: string;
+  screenTitle?: string;
 }
 
 export interface IPropertyDetailProps {

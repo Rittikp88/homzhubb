@@ -24,7 +24,7 @@ import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFilter, Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {

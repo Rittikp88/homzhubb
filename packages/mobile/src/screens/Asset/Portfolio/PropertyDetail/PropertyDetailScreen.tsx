@@ -8,7 +8,7 @@ import { TabBar, TabView } from 'react-native-tab-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -237,7 +237,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
               <AssetCard
                 assetData={propertyData}
                 isDetailView
-                isFromTenancies={isFromTenancies}
+                isFromTenancies={isFromTenancies ?? undefined}
                 enterFullScreen={this.onFullScreenToggle}
                 onCompleteDetails={this.onCompleteDetails}
                 onOfferVisitPress={FunctionUtils.noop}
@@ -443,7 +443,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       navigation,
       assetPayload: { asset_id },
     } = this.props;
-    // @ts-ignore
+
     navigation.navigate(ScreensKeys.AddServiceTicket, { propertyId: asset_id });
   };
 
@@ -458,7 +458,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       propertyData: { id },
     } = this.state;
     const { navigation } = this.props;
-    // @ts-ignore
+
     navigation.navigate(ScreensKeys.AddRecordScreen, { assetId: id });
   };
 

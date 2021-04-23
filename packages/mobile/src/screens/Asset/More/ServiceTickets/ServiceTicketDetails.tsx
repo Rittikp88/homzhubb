@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
@@ -54,7 +54,7 @@ interface IScreenState {
   hasClickedWorkDone: boolean;
 }
 
-type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ServiceTicketDetail>;
+type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.ServiceTicketDetail>;
 type Props = NavProps & WithTranslation & IDispatchProps & IStateProps;
 
 class ServiceTicketDetails extends React.Component<Props, IScreenState> {

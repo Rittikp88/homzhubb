@@ -18,10 +18,20 @@ interface IProps {
   image?: string;
   onContactTypeClicked: (type: ContactActions, phoneNumber: string, message: string) => void;
   from?: string;
+  isShadowRequired?: boolean;
 }
 
 const ContactPerson = (props: IProps): React.ReactElement => {
-  const { firstName, lastName, designation, phoneNumber, onContactTypeClicked, image, from } = props;
+  const {
+    firstName,
+    lastName,
+    designation,
+    phoneNumber,
+    onContactTypeClicked,
+    image,
+    from,
+    isShadowRequired = true,
+  } = props;
   const fullName = `${firstName} ${lastName}`;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -37,7 +47,7 @@ const ContactPerson = (props: IProps): React.ReactElement => {
   const data = from === 'Search' ? OPTIONS_SEARCH : OPTIONS;
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isShadowRequired && styles.shadowView]}>
       <Avatar fullName={fullName} designation={designation} image={image} />
       <View style={styles.iconContainer}>
         {data.map((item, index: number) => {
@@ -84,6 +94,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: PlatformUtils.isWeb() ? 0 : 16,
+  },
+  shadowView: {
     shadowColor: theme.colors.darkTint7,
     shadowOffset: {
       width: 0,

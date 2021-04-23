@@ -8,7 +8,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { EmailVerificationActions, IEmailVerification } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -26,7 +26,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.UserProfileScreen>;
+type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.UserProfileScreen>;
 
 interface IDispatchProps {
   getUserProfile: () => void;
@@ -93,7 +93,12 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
   };
 
   public renderComponent = (): React.ReactNode => {
-    const { t, userProfile, navigation } = this.props;
+    const {
+      t,
+      userProfile,
+      navigation,
+      route: { params },
+    } = this.props;
     const { isBottomSheetOpen, isEmailVerified } = this.state;
 
     if (!userProfile) {
@@ -108,10 +113,10 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       workInfoArray,
       profilePicture,
     } = userProfile;
-
+    const title = params.screenTitle ? params.screenTitle : t('assetMore:more');
     return (
       <>
-        <UserScreen title={t('assetMore:more')} pageTitle={t('assetMore:profile')} onBackPress={navigation.goBack}>
+        <UserScreen title={title} pageTitle={t('assetMore:profile')} onBackPress={navigation.goBack}>
           <View style={styles.container}>
             <View style={styles.profileImage}>
               <Avatar

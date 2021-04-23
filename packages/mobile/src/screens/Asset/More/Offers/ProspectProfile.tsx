@@ -10,7 +10,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -50,7 +50,7 @@ interface IProp {
   editData: boolean;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.ProspectProfile>;
+type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.ProspectProfile>;
 type Props = libraryProps & IProp & IStateToProps;
 class ProspectProfile extends Component<Props, IScreenState> {
   public state = {

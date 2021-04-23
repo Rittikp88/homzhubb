@@ -14,7 +14,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
+import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';

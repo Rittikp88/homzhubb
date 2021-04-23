@@ -1,25 +1,24 @@
 import React from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/BottomTabs';
 
-interface IOwnState {
-  scrollEnabled: boolean;
-}
-type libraryProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.MarketTrends>;
+type libraryProps = NavigationScreenProps<CommonParamList, ScreensKeys.MarketTrends>;
 type Props = WithTranslation & libraryProps;
 
 export class MarketTrends extends React.PureComponent<Props> {
   public render = (): React.ReactElement => {
-    const { t } = this.props;
+    const { t, navigation, route } = this.props;
+    const title = route.params.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:more');
+
     return (
       <UserScreen
-        title={t('assetMore:more')}
+        title={title}
         pageTitle={t('assetMore:marketTrends')}
-        onBackPress={this.handleIconPress}
+        onBackPress={navigation.goBack}
         scrollEnabled={false}
       >
         <AssetMarketTrends onTrendPress={this.openWebView} />
@@ -27,22 +26,8 @@ export class MarketTrends extends React.PureComponent<Props> {
     );
   };
 
-  private handleIconPress = (): void => {
-    const { navigation, route } = this.props;
-
-    if (route.params?.isFromDashboard ?? false) {
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.DashboardLandingScreen);
-      navigation.popToTop();
-      return;
-    }
-
-    navigation.goBack();
-  };
-
   private openWebView = (url: string, trendId: number): void => {
     const { navigation } = this.props;
-    // @ts-ignore
     navigation.navigate(ScreensKeys.WebViewScreen, { url, trendId });
   };
 }
