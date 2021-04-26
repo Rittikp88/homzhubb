@@ -113,7 +113,7 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       workInfoArray,
       profilePicture,
     } = userProfile;
-    const title = params.screenTitle ? params.screenTitle : t('assetMore:more');
+    const title = params && params.screenTitle ? params.screenTitle : t('assetMore:more');
     return (
       <>
         <UserScreen title={title} pageTitle={t('assetMore:profile')} onBackPress={navigation.goBack}>

@@ -207,7 +207,7 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
         navigateToWebview = (): void => this.navigateToWebview(options.url);
 
         renderElement = (
-          <Icon size={20} name={icons.rightArrow} color={theme.colors.lowPriority} onPress={navigateToWebview} />
+          <Icon size={20} name={icons.rightArrow} color={theme.colors.primaryColor} onPress={navigateToWebview} />
         );
         break;
       case OptionTypes.Dropdown:

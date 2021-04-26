@@ -112,7 +112,7 @@ export const SettingsScreenData: ISettingsData[] = [
         name: 'termsConditionsText',
         label: 'termsConditionsText',
         type: OptionTypes.Webview,
-        url: 'https://www.homzhub.com/privacyPolicy',
+        url: 'https://www.homzhub.com/terms&Condition',
       },
       {
         name: 'privacyPolicyText',

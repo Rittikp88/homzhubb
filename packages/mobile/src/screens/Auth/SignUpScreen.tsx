@@ -119,7 +119,7 @@ export class SignUpScreen extends Component<Props, IOwnState> {
 
   private handleTermsCondition = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
+    navigation.navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/terms&Condition' });
   };
 
   private toggleLoading = (isLoading: boolean): void => {

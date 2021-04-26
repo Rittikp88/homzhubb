@@ -11,6 +11,7 @@ export enum SupportedLanguages {
   Chinese = 'zh-CN',
   Korean = 'ko',
   Japanese = 'ja',
+  Thai = 'th',
 }
 const whitelist = Object.values(SupportedLanguages);
 
@@ -30,6 +31,7 @@ const resources = {
   [SupportedLanguages.Korean]: require('@homzhub/common/src/assets/languages/ko.json'),
   [SupportedLanguages.Japanese]: require('@homzhub/common/src/assets/languages/ja.json'),
   [SupportedLanguages.Chinese]: require('@homzhub/common/src/assets/languages/zh.json'),
+  [SupportedLanguages.Thai]: require('@homzhub/common/src/assets/languages/th.json'),
 };
 
 // Add namespaces here

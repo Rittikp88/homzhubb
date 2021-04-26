@@ -62,7 +62,7 @@ const SubmitOfferForm = (): React.ReactElement => {
 
   // HANDLERS START
   const handleTermsCondition = (): void => {
-    navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
+    navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/terms&Condition' });
   };
 
   const onSuccess = (): void => {

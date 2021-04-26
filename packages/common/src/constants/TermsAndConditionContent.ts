@@ -12,8 +12,6 @@ On availing/ buying/ using Services from Homzhub, additional terms may be applic
 
 Homzhub may change or update the Terms from time to time at our sole and absolute discretion with or without prior notice to the users, provided they do not materially affect your access to the Platform or the Services. Such changes will be effective immediately and incorporated into these Terms. We recommend you to review these Terms regularly for any changes and your continued use of the Platform and Services will be deemed as acceptance of the modified Terms.
 
-1.
-
 #### Homzhub Scope
 
 1. The Homzhub website and applications are online platforms that enable registered users to engage in various real estate transactions and avail services provided by Homzhub. These services include but are not limited to real estate related advisory, facilitation of transactions, property management and tenant management, platform for stakeholder collaboration and providing market research/analytics/insight using data sciences.
@@ -21,8 +19,6 @@ Homzhub may change or update the Terms from time to time at our sole and absolut
 1. When you sign up on the Platform, a user account (Account) is created with your credentials on the Platform.
 
 _Please note that while the Platform is available for users to use from any part of the world, the offline / value added services that Homzhub provides are location specific. Homzhub has the right to decline a service request made by a user asking for any of our offline services at a particular location._
-
-1.
 
 #### User&#39;s obligations
 
@@ -44,8 +40,6 @@ _Please note that while the Platform is available for users to use from any part
 16. Except to the extent permitted by law, modify, adapt, sublicense, translate, sell, reverse engineer, decipher, decompile or otherwise disassemble any portion of the Platform or cause any other person to do so
 17. Use or attempt to use any engines, software, tools, or other mechanisms (including browsers, spiders, robots, avatars or intelligent agents) to navigate or search the Platform other than the commonly recognised search engine and agents, and other than generally available third party web browsers.
 
-18.
-
 #### Property Owner&#39;s terms of use
 
 1. When a user on the platform is assigned to a property as a property owner, then the following terms shall become applicable to the said user
@@ -57,16 +51,12 @@ _Please note that while the Platform is available for users to use from any part
 7. If the property owner has opted for Homzhub to manage the property, then the property owner is required to sign the Management Agreement before the Management Period can begin. All the terms stated in the Management Agreement would then apply in such case.
 8. Homzhub may reject any request made by the property owner if we feel the request is unreasonable or illegal or might harm Homzhub&#39;s reputation.
 
-9.
-
 #### Property Seekers (Tenants and Buyers) terms of use
 
 1. When a user on the platform is assigned to a property as a tenant/buyer, then the following terms shall become applicable to the said user
 2. The Tenant/Buyer would need to comply to complete all the legal formalities associated with registering the leave and license agreement if asked by Homzhub.
 3. Homzhub is not legally liable if the property owner is delaying the return of the Security Deposit due to some valid or invalid reason.
 4. Homzhub may reject any request made by the Tenant/Buyer if we feel the request is unreasonable or illegal or might harm Homzhub&#39;s reputation.
-
-5.
 
 #### Services and Payments
 
@@ -81,8 +71,6 @@ _Please note that while the Platform is available for users to use from any part
 9. We reserve the right to change Homzhub service offering prices. Your continued use of the Service after the price change becomes effective constitutes your agreement to pay the changed amount. You will be responsible for all taxes associated with the Service.
 10. All charges are non-refundable unless provided otherwise in the terms you agree to when you register for the Service
 
-11.
-
 #### Listing Property
 
 1. To list a property on Homzhub Platform an account needs to be created by filling the sign up form or through social signup options available
@@ -93,8 +81,6 @@ _Please note that while the Platform is available for users to use from any part
 5. We reserve the right to update, remove or promote any listing on Homzhub platforms or any other online platform.
 6. Upon request or purchase of certain services, Homzhub can promote a particular property listing on social media sites, other property listing sites or any other online platform.
 7. Homzhub cannot guarantee any increase in reach of the property listing when promoted on any of the mediums mentioned above.
-
-8.
 
 #### Property Management
 
@@ -111,13 +97,10 @@ _Please note that while the Platform is available for users to use from any part
 11. If, after completion of the Work, there is any defect in the Work, Homzhub will give the Contractor a notice to attend the defect within a reasonable period of time at his absolute discretion to attend to the issue.
 12. The terms of payment for any Work repairs will be as communicated to the user by Homzhub.
 13. Any Work that is instructed by either the property owner or the Tenant will not start unless the payment for the work, as conveyed by the Contractor, is processed.
-14.
 
 #### Feedback
 
 1. You agree that any recommendation, idea, proposal, suggestion, feedback or other input (&#39;Feedback&#39;) you submit to Homzhub related to its products, services, websites, apps or technology may be used by Homzhub without any notice, obligation, restriction, reimbursement or compensation to you and you waive (or agree not to enforce) any and all rights that may now or in the future exist (including moral and equivalent rights) in any Feedback.
-
-2.
 
 #### Limitation of liability
 
@@ -137,8 +120,6 @@ _Please note that while the Platform is available for users to use from any part
 14. Some jurisdictions do not allow the exclusion of certain warranties or the limitation or exclusion of liability for incidental or consequential damages. Accordingly, some of the limitations set forth above may not apply to you.
 15. If you are dissatisfied with any portion of the service or with these terms of service, your sole and exclusive remedy is to discontinue use of the service.
 
-16.
-
 #### Indemnity
 
 1. Users of the Platform or our Services, agree to defend and fully indemnify and hold Homzhub and its affiliated companies (and our officers, directors, employees, consultants, contractors and agents) harmless from and against all claims, actions, suits, demands, damages, liabilities, costs or expenses (including without limitation legal costs and expenses on a full indemnity basis), including without limitation in tort, contract or negligence, arising out of or connected to:
@@ -146,8 +127,6 @@ _Please note that while the Platform is available for users to use from any part
 1. your reliance on any information provided through the Platform;
 1. any breach by you of these Terms; or
 1. Any wilful, unlawful or negligent act or omission by you or any third party who obtained access to the Platform or Services through you.
-
-1.
 
 #### Intellectual property and content
 
@@ -163,10 +142,6 @@ _Please note that while the Platform is available for users to use from any part
 1. financial, legal, real estate or business advice; and
 1. a quote or guarantee from, or binding on, us.
 1. Provision of the Services may include photographs and videos being generated by us or other users which may include the faces, voices and other personal information of the users and any other person and the user consents to such media being used for the purpose of providing and marketing the Services.
-
-####
-
-1.
 
 #### Additional Terms and website links
 
