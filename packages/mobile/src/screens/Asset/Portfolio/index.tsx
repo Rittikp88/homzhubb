@@ -8,16 +8,17 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
-import { AssetMetricsList, BottomSheetListView } from '@homzhub/mobile/src/components';
+import { AssetMetricsList } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
@@ -58,7 +59,6 @@ interface IDispatchProps {
 }
 
 interface IPortfolioState {
-  isBottomSheetVisible: boolean;
   metrics: AssetMetrics;
   filters: PickerItemProps[];
   isLoading: boolean;
@@ -75,7 +75,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   public focusListener: any;
 
   public state = {
-    isBottomSheetVisible: false,
     metrics: {} as AssetMetrics,
     filters: [],
     isLoading: false,
@@ -110,8 +109,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   }
 
   public render = (): React.ReactElement => {
-    const { t, tenancies, properties, currentFilter, isTenanciesLoading } = this.props;
-    const { isBottomSheetVisible, metrics, filters, isSpinnerLoading, assetType, isLoading } = this.state;
+    const { t, tenancies, properties, isTenanciesLoading } = this.props;
+    const { metrics, isSpinnerLoading, assetType, isLoading } = this.state;
     return (
       <UserScreen isGradient loading={isLoading || isTenanciesLoading || isSpinnerLoading} title={t('portfolio')}>
         <AssetMetricsList
@@ -125,15 +124,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         />
         {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
         {this.renderPortfolio(properties)}
-        <BottomSheetListView
-          data={filters}
-          selectedValue={currentFilter}
-          listTitle={t('propertySearch:filters')}
-          listHeight={500}
-          isBottomSheetVisible={isBottomSheetVisible}
-          onCloseDropDown={this.closeBottomSheet}
-          onSelectItem={this.onSelectFilter}
-        />
       </UserScreen>
     );
   };
@@ -161,7 +151,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
     const { t, currentFilter } = this.props;
-    const { assetType } = this.state;
+    const { assetType, filters } = this.state;
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
 
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
@@ -174,12 +164,22 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
           <Text type="small" textType="semiBold" style={styles.title}>
             {t('propertyPortfolio')}
           </Text>
-          <Icon
-            name={icons.verticalDots}
-            color={theme.colors.darkTint4}
-            size={18}
-            onPress={this.handleBottomSheet}
-            testID="menu"
+          <Dropdown
+            data={filters}
+            placeholder={currentFilter}
+            value={currentFilter}
+            onDonePress={this.onSelectFilter}
+            textStyle={styles.placeholder}
+            listHeight={500}
+            listTitle={t('propertySearch:filters')}
+            backgroundColor={theme.colors.white}
+            iconColor={theme.colors.blue}
+            iconStyle={styles.dropdownIcon}
+            icon={icons.downArrow}
+            containerStyle={styles.dropdownContainer}
+            fontSize="large"
+            fontWeight="semiBold"
+            isOutline
           />
         </View>
         {isEmpty ? (
@@ -220,7 +220,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     this.setState({ expandedAssetId: 0 }, (): void => {
       this.getPortfolioProperty(true);
     });
-    this.closeBottomSheet();
   };
 
   private onViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
@@ -289,10 +288,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     }
   };
 
-  private closeBottomSheet = (): void => {
-    this.setState({ isBottomSheetVisible: false });
-  };
-
   private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
@@ -338,11 +333,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
       this.setState({ isLoading: true });
     }
     getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
-  };
-
-  private handleBottomSheet = (): void => {
-    const { isBottomSheetVisible } = this.state;
-    this.setState({ isBottomSheetVisible: !isBottomSheetVisible });
   };
 
   private handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
@@ -434,5 +424,19 @@ const styles = StyleSheet.create({
   },
   emptyView: {
     minHeight: 200,
+  },
+  placeholder: {
+    color: theme.colors.blue,
+  },
+  dropdownIcon: {
+    marginStart: 12,
+  },
+  dropdownContainer: {
+    backgroundColor: theme.colors.white,
+    borderWidth: 0,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginBottom: 12,
+    width: 125,
   },
 });
