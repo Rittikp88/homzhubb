@@ -41,11 +41,14 @@ const CalendarHeader = (props: IProps): React.ReactElement => {
     isYearView = false,
     yearTitle,
     month,
+    year,
   } = props;
 
   // DISABLE VALIDATION
   const isNextDisable =
-    maxDate && (moment(maxDate).month() === moment().month() || (!!month && moment(maxDate).month() === month));
+    maxDate &&
+    (moment(maxDate).month() === moment().month() ||
+      (!!month && moment(maxDate).month() === month && !!year && moment(maxDate).year() === Number(year)));
   const isPreviousDisable =
     (minDate ? moment(minDate).year() === moment().year() : !isAllowPastDate) && isCurrentMonth && !isYearView;
   // DISABLE VALIDATION

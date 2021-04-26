@@ -54,7 +54,7 @@ const ProfileLeaseTerm = (props: IProps): React.ReactElement => {
 
   const handleSubmit = (values: IFormData): void => {
     if (!leaseData) return;
-    const { tentativeEndDate, currency } = leaseData;
+    const { currency } = leaseData;
 
     // FORMATTED PAYLOAD
     const payload = {
@@ -65,7 +65,12 @@ const ProfileLeaseTerm = (props: IProps): React.ReactElement => {
       maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
       utility_paid_by: values[LeaseFormKeys.utilityBy],
       lease_start_date: DateUtils.getDisplayDate(values[LeaseFormKeys.availableFrom], DateFormats.ISO),
-      tentative_end_date: tentativeEndDate,
+      tentative_end_date: DateUtils.getFutureDateByUnit(
+        values[LeaseFormKeys.availableFrom],
+        values[LeaseFormKeys.maximumLeasePeriod],
+        'months',
+        DateFormats.ISO
+      ),
       currency: currency.currencyCode,
       minimum_lease_period: Number(values[LeaseFormKeys.minimumLeasePeriod]),
       maintenance_amount: Number(values[LeaseFormKeys.maintenanceAmount]) || null,
@@ -103,6 +108,7 @@ const ProfileLeaseTerm = (props: IProps): React.ReactElement => {
               <LeaseTermForm
                 isTitleRequired={false}
                 isFromEdit
+                isFromManage
                 formProps={formProps}
                 currencyData={currency}
                 assetGroupType={assetGroup}

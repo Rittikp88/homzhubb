@@ -979,6 +979,76 @@ exports[`Financials Screen should render snapshot 1`] = `
     containerStyles={
       Object {
         "borderColor": "#F2F9FF",
+        "borderWidth": 1,
+        "marginLeft": 65,
+      }
+    }
+  />
+  <ForwardRef
+    onPress={[Function]}
+  >
+    <View
+      key="item-11"
+      style={
+        Object {
+          "alignItems": "center",
+          "flex": 1,
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "padding": 20,
+        }
+      }
+    >
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Icon
+          allowFontScaling={false}
+          color="#78B7FA"
+          name="faq"
+          size={22}
+          style={
+            Object {
+              "paddingHorizontal": 5,
+            }
+          }
+        />
+        <Text
+          allowFontScaling={true}
+          minimumFontScale={0.1}
+          numberOfLines={2}
+          style={
+            Array [
+              Object {
+                "marginStart": 10,
+              },
+              Object {
+                "color": "#000",
+              },
+            ]
+          }
+          textType="regular"
+          type="small"
+        >
+          assetMore:faqs
+        </Text>
+      </View>
+      <Icon
+        allowFontScaling={false}
+        color="#78B7FA"
+        name="right-arrow"
+        size={18}
+      />
+    </View>
+  </ForwardRef>
+  <Divider
+    containerStyles={
+      Object {
+        "borderColor": "#F2F9FF",
         "borderWidth": 1.5,
       }
     }

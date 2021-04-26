@@ -183,6 +183,7 @@
 		B1B7405BCB6F401F82FC3A6C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-homzhub.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF7AB555DA614F1CAC96AA3E /* Raleway-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Medium.ttf"; path = "../../common/src/assets/fonts/Raleway-Medium.ttf"; sourceTree = "<group>"; };
+		CBD87A2E218F4B10B6A3B2B7 /* icomoon.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = icomoon.ttf; path = ../../common/src/assets/fonts/icomoon.ttf; sourceTree = "<group>"; };
 		D0392B48D44B8836B86C3244 /* Pods-homzhub-homzhubTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-homzhub-homzhubTests.debug.xcconfig"; path = "Target Support Files/Pods-homzhub-homzhubTests/Pods-homzhub-homzhubTests.debug.xcconfig"; sourceTree = "<group>"; };
 		D78931FB86B249F09123229B /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-ExtraBold.ttf"; path = "../../common/src/assets/fonts/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
 		DCC995200E654F8DAC79080D /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
@@ -1093,7 +1094,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -1161,7 +1162,7 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1186,7 +1187,7 @@
 				CODE_SIGN_ENTITLEMENTS = homzhub/homzhub.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Homzhub Pte Ltd (9TKZH83J22)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1255,7 +1256,7 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/swift",
 				);
-				MARKETING_VERSION = 0.5;
+				MARKETING_VERSION = 0.6;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
