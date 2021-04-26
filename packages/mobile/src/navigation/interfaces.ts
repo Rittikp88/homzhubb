@@ -223,6 +223,12 @@ export interface IBookVisitProps {
   userId?: number;
 }
 
+// Add Financial Records
+export interface IAddRecordProps {
+  assetId?: number;
+  isFromDashboard?: boolean;
+}
+
 // Webview
 export interface IWebviewProps {
   url: string;

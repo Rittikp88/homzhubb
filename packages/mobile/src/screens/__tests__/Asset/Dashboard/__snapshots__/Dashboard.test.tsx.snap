@@ -9,6 +9,7 @@ exports[`Dashboard Screen should render snapshot 1`] = `
   <Memo(AssetMetricsList)
     data={Array []}
     onMetricsClicked={[Function]}
+    onPlusIconClicked={[Function]}
     title="0"
   />
   <AssetSummary
@@ -31,5 +32,56 @@ exports[`Dashboard Screen should render snapshot 1`] = `
     onViewAll={[Function]}
   />
   <AssetAdvertisementBanner />
+  <BottomSheet
+    headerTitle="common:addCamelCase"
+    onCloseSheet={[Function]}
+    sheetHeight={375}
+    visible={false}
+  >
+    <FlatList
+      contentContainerStyle={
+        Object {
+          "marginBottom": 30,
+          "marginHorizontal": 24,
+        }
+      }
+      data={
+        Array [
+          Object {
+            "icon": "portfolio-filled",
+            "label": "assetFinancial:property",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": "bar-chart-filled",
+            "label": "assetDashboard:incomeOrExpense",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": "service-ticket",
+            "label": "assetDashboard:serviceTicket",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": "support-ticket",
+            "label": "assetDashboard:supportTicket",
+            "onPress": [Function],
+          },
+        ]
+      }
+      disableVirtualization={false}
+      horizontal={false}
+      initialNumToRender={10}
+      keyExtractor={[Function]}
+      maxToRenderPerBatch={10}
+      numColumns={2}
+      onEndReachedThreshold={2}
+      removeClippedSubviews={false}
+      renderItem={[Function]}
+      scrollEventThrottle={50}
+      updateCellsBatchingPeriod={50}
+      windowSize={21}
+    />
+  </BottomSheet>
 </Memo(UserScreen)>
 `;

@@ -757,7 +757,11 @@
     "newNotification": "{{count}} new notifications",
     "searchByKeyword": "Search by keyword",
     "takeActions": "Take Actions",
-    "completeVerification": "Complete Property Verification"
+    "completeVerification": "Complete Property Verification",
+    "incomeOrExpense": "Income / Expense",
+    "serviceTicket": "Service Ticket",
+    "supportTicket": "Support Ticket",
+    "addPropertyForTicket": "Please add a property before raising a service ticket"
   },
   "assetPortfolio": {
     "portfolio": "Portfolio",

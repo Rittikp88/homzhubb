@@ -180,6 +180,9 @@ export const icons = {
   circularFilledInfo: 'circular-filled-info',
   service: 'services',
   arrowRight: 'arrow-right',
+  serviceTicket: 'service-ticket',
+  supportTicket: 'support-ticket',
+  faq: 'faq',
 
   // COMMUTE
   train: 'train',

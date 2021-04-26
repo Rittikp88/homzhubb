@@ -4,7 +4,6 @@ import { IChatScreen, IGetMessageParam } from '@homzhub/common/src/domain/reposi
 import { CommonParamList, getCommonScreen } from '@homzhub/mobile/src/navigation/Common';
 import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
-import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
@@ -20,7 +19,6 @@ import { IServicesForSelectAssetParams, ScreensKeys } from '@homzhub/mobile/src/
 export type MoreStackNavigatorParamList = {
   [ScreensKeys.MoreScreen]: undefined;
   [ScreensKeys.SettingsScreen]: undefined;
-  [ScreensKeys.SupportScreen]: undefined;
   [ScreensKeys.ReferEarn]: undefined;
   [ScreensKeys.SavedPropertiesScreen]: undefined;
   [ScreensKeys.KYC]: undefined;
@@ -47,7 +45,6 @@ export const MoreStack = (): React.ReactElement => {
     >
       <MoreStackNavigator.Screen name={ScreensKeys.MoreScreen} component={More} />
       <MoreStackNavigator.Screen name={ScreensKeys.SettingsScreen} component={Settings} />
-      <MoreStackNavigator.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <MoreStackNavigator.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
       <MoreStackNavigator.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />

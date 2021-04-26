@@ -204,6 +204,8 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.AcceptOffer,
     ScreensKeys.RejectOffer,
     ScreensKeys.OfferDetail,
+    ScreensKeys.WebViewScreen,
+    ScreensKeys.SupportScreen,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
 };

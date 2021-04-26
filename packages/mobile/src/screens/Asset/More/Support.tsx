@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -54,7 +54,7 @@ interface IScreenState {
   caseLogs: CaseLog[];
 }
 
-type Props = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SupportScreen>;
+type Props = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.SupportScreen>;
 
 export class Support extends Component<Props, IScreenState> {
   private resetForm: ((nextValues?: FormikValues) => void) | undefined;
@@ -81,11 +81,12 @@ export class Support extends Component<Props, IScreenState> {
   };
 
   public render(): React.ReactNode {
-    const { t } = this.props;
+    const { t, route } = this.props;
     const { isFormSubmitted, isLoading, currentTab } = this.state;
+    const title = route?.params?.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:more');
     return (
       <>
-        <UserScreen title={t('assetMore:more')}>
+        <UserScreen title={title}>
           <HeaderCard
             title={t('assetMore:support')}
             titleFontWeight="semiBold"
@@ -148,7 +149,7 @@ export class Support extends Component<Props, IScreenState> {
 
   private renderForm = (): React.ReactElement => {
     const { t } = this.props;
-    const { formData, categories, attachments } = this.state;
+    const { formData, categories, attachments, isLoading } = this.state;
     return (
       <Formik
         onSubmit={this.handleFormSubmit}
@@ -201,7 +202,7 @@ export class Support extends Component<Props, IScreenState> {
                 // @ts-ignore
                 onPress={formProps.handleSubmit}
                 formProps={formProps}
-                disabled={!formProps.values.subject || !formProps.values.category}
+                disabled={!formProps.values.subject || !formProps.values.category || isLoading}
                 type="primary"
                 title={t('submit')}
               />

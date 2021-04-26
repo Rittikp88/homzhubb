@@ -786,6 +786,7 @@ export interface IDeviceTokenPayload {
 
 export interface IServiceTicketForm {
   propertyId?: number;
+  isFromDashboard?: boolean;
 }
 
 export interface IPostTicketPayload {

@@ -1,16 +1,23 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { AssetAdvertisementBanner, AssetMetricsList, AssetSummary } from '@homzhub/mobile/src/components';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
@@ -23,6 +30,7 @@ import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/DashboardStack';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 
@@ -34,13 +42,25 @@ interface IDispatchProps {
   setCurrentAsset: (payload: ISetAssetPayload) => void;
 }
 
+interface IReduxStateProps {
+  assets: Asset[];
+}
+
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
-type Props = WithTranslation & libraryProps & IDispatchProps;
+type Props = WithTranslation & libraryProps & IDispatchProps & IReduxStateProps;
 
 interface IDashboardState {
   metrics: AssetMetrics;
   pendingProperties: Asset[];
   isLoading: boolean;
+  showBottomSheet: boolean;
+  selectedRouteIndex: number;
+}
+
+interface IFormattedBottomSheetData {
+  icon: string;
+  label: string;
+  onPress: () => void;
 }
 
 const ShowInMvpRelease = false;
@@ -52,12 +72,15 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     metrics: {} as AssetMetrics,
     pendingProperties: [],
     isLoading: false,
+    showBottomSheet: false,
+    selectedRouteIndex: -1,
   };
 
   public componentDidMount = (): void => {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
       this.getScreenData().then();
+      this.setState({ selectedRouteIndex: -1 });
     });
   };
 
@@ -84,12 +107,14 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
         <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
         <AssetAdvertisementBanner />
         {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
+        {this.renderBottomSheet()}
       </UserScreen>
     );
   };
 
   public renderAssetMetricsAndUpdates = (): React.ReactElement => {
     const { metrics } = this.state;
+    const styles = getStyles();
     return (
       <>
         <AssetMetricsList
@@ -97,6 +122,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           data={metrics?.assetMetrics?.miscellaneous ?? []}
           subscription={metrics?.userServicePlan?.label}
           onMetricsClicked={this.handleMetricsNavigation}
+          onPlusIconClicked={this.openBottomSheet}
         />
         <AssetSummary
           notification={metrics?.updates?.notifications?.count ?? 0}
@@ -108,6 +134,57 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           onPressNotification={this.handleNotification}
         />
       </>
+    );
+  };
+
+  public renderBottomSheet = (): React.ReactElement => {
+    const { t } = this.props;
+    const { showBottomSheet, selectedRouteIndex } = this.state;
+    const data = this.formatBottomSheetData();
+    const { flatList } = getStyles();
+
+    const keyExtractor = (item: IFormattedBottomSheetData, index: number): string => `${item}:${index}`;
+
+    const renderItem = ({ item, index }: { item: IFormattedBottomSheetData; index: number }): React.ReactElement => {
+      const { icon, label, onPress } = item;
+      const isSelected = index === selectedRouteIndex;
+      const styles = getStyles(isSelected);
+      const onPressItem = (): void => {
+        this.setState({ selectedRouteIndex: index });
+        onPress();
+        this.closeBottomSheet();
+      };
+      return (
+        <>
+          <TouchableOpacity
+            style={[styles.bottomSheetItemContainer, index % 2 === 0 && styles.evenItem]}
+            onPress={onPressItem}
+          >
+            <Icon name={icon} size={25} color={isSelected ? theme.colors.blue : theme.colors.darkTint3} />
+            <Text type="small" textType="regular" style={styles.itemLabel}>
+              {label}
+            </Text>
+          </TouchableOpacity>
+        </>
+      );
+    };
+
+    return (
+      <BottomSheet
+        headerTitle={t('common:addCamelCase')}
+        visible={showBottomSheet}
+        onCloseSheet={this.closeBottomSheet}
+        sheetHeight={375}
+      >
+        <FlatList
+          data={data}
+          numColumns={2}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          contentContainerStyle={flatList}
+          extraData={selectedRouteIndex}
+        />
+      </BottomSheet>
     );
   };
 
@@ -186,6 +263,65 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       params: { previousScreen: ScreensKeys.Dashboard },
     });
   };
+
+  private openBottomSheet = (): void => this.setState({ showBottomSheet: true });
+
+  private closeBottomSheet = (): void => this.setState({ showBottomSheet: false });
+
+  private formatBottomSheetData = (): IFormattedBottomSheetData[] => {
+    const { t, navigation, assets } = this.props;
+
+    const handleAddProperty = (): void => {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
+      AnalyticsService.track(EventType.AddPropertyInitiation);
+    };
+
+    const handleAddFinancialRecord = (): void => {
+      if (assets.length <= 0) {
+        AlertHelper.error({ message: t('assetFinancial:addProperty') });
+        return;
+      }
+      navigation.navigate(ScreensKeys.AddRecordScreen, { isFromDashboard: true });
+    };
+
+    const handleAddServiceTicket = (): void => {
+      if (assets.length <= 0) {
+        AlertHelper.error({ message: t('assetDashboard:addPropertyForTicket') });
+        return;
+      }
+      navigation.navigate(ScreensKeys.AddServiceTicket, { isFromDashboard: true });
+    };
+
+    const handleAddSupportTicket = (): void => {
+      navigation.navigate(ScreensKeys.SupportScreen, { isFromDashboard: true });
+    };
+
+    const formattedDetails = [
+      {
+        icon: icons.portfolioFilled,
+        label: t('assetFinancial:property'),
+        onPress: handleAddProperty,
+      },
+      {
+        icon: icons.barChartFilled,
+        label: t('assetDashboard:incomeOrExpense'),
+        onPress: handleAddFinancialRecord,
+      },
+      {
+        icon: icons.serviceTicket,
+        label: t('assetDashboard:serviceTicket'),
+        onPress: handleAddServiceTicket,
+      },
+      {
+        icon: icons.supportTicket,
+        label: t('assetDashboard:supportTicket'),
+        onPress: handleAddSupportTicket,
+      },
+    ];
+    return formattedDetails;
+  };
+
   // HANDLERS end
 
   // APIs
@@ -227,13 +363,56 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
+const mapStateToProps = (state: IState): IReduxStateProps => {
+  const { getUserAssets } = UserSelector;
+  return {
+    assets: getUserAssets(state),
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Dashboard));
 
-const styles = StyleSheet.create({
-  assetCards: {
-    marginVertical: 12,
-  },
-});
+interface IStyles {
+  assetCards: ViewStyle;
+  bottomSheetItemContainer: ViewStyle;
+  evenItem: ViewStyle;
+  itemLabel: TextStyle;
+  flatList: ViewStyle;
+}
+
+const getStyles = (isSelected = false): IStyles => {
+  const styles = StyleSheet.create({
+    assetCards: {
+      marginVertical: 12,
+    },
+    bottomSheetItemContainer: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 30,
+      paddingVertical: 30,
+      marginBottom: 20,
+      borderWidth: 1,
+      borderColor: isSelected ? theme.colors.blue : theme.colors.disabled,
+      borderRadius: 4,
+      maxHeight: 100,
+    },
+    evenItem: {
+      marginEnd: 17,
+    },
+    itemLabel: {
+      marginTop: 10,
+      textAlign: 'center',
+      ...(isSelected && { color: theme.colors.blue }),
+    },
+    // eslint-disable-next-line react-native/no-unused-styles
+    flatList: {
+      marginBottom: 30,
+      marginHorizontal: 24,
+    },
+  });
+  return styles;
+};

@@ -150,11 +150,12 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 
     const propertyId = route && route.params && route.params.propertyId;
     const isPropertiesPresent = properties && properties.length > 0;
+    const title = route?.params?.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:tickets');
 
     return (
       <>
         <UserScreen
-          title={t('assetMore:tickets')}
+          title={title}
           pageTitle={t('serviceTickets:newTicket')}
           onBackPress={goBack}
           rightNode={this.renderClearButton()}

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AnimatedProfileHeader, HeaderCard } from '@homzhub/mobile/src/components';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
@@ -12,7 +13,6 @@ import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordFor
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { AppStackParamList } from '@homzhub/mobile/src/navigation/AppNavigator';
 
 interface IScreenState {
   clearForm: number;
@@ -24,7 +24,7 @@ interface IStateToProps {
   assets: Asset[];
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<AppStackParamList, ScreensKeys.AddRecordScreen>;
+type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.AddRecordScreen>;
 type IProps = libraryProps & IStateToProps;
 
 export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
@@ -34,12 +34,13 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
   };
 
   public render(): ReactElement {
-    const { t } = this.props;
+    const { t, route } = this.props;
     const { isLoading, clearForm } = this.state;
+    const title = route?.params?.isFromDashboard ? t('assetDashboard:dashboard') : t('financial');
 
     return (
       <>
-        <AnimatedProfileHeader title={t('financial')}>
+        <AnimatedProfileHeader title={title}>
           <HeaderCard
             title={t('addRecords')}
             subTitle={t('common:clear')}

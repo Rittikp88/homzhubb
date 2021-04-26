@@ -17,6 +17,7 @@ import ApproveQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/
 import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
+import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
@@ -30,6 +31,7 @@ import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import { IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
+  IAddRecordProps,
   IAssetDescriptionProps,
   IBookVisitProps,
   IComingSoon,
@@ -53,7 +55,7 @@ export type CommonParamList = {
   [ScreensKeys.MarketTrends]: { isFromDashboard: boolean };
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
   [ScreensKeys.AddServiceTicket]: IServiceTicketForm;
-  [ScreensKeys.AddRecordScreen]: undefined | { assetId?: number };
+  [ScreensKeys.AddRecordScreen]: IAddRecordProps;
   [ScreensKeys.WebViewScreen]: IWebviewProps;
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.ServiceTicketDetail]: undefined;
@@ -75,6 +77,7 @@ export type CommonParamList = {
   [ScreensKeys.SuccessResetPassword]: undefined | IForgotPasswordProps;
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
+  [ScreensKeys.SupportScreen]: { isFromDashboard?: boolean };
 };
 
 /**
@@ -113,6 +116,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.ResetPassword} component={ResetPassword} />
       <Stack.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
       <Stack.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
+      <Stack.Screen name={ScreensKeys.SupportScreen} component={Support} />
     </>
   );
 };

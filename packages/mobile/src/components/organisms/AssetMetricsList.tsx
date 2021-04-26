@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -130,13 +130,9 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
           </View>
         </View>
         {onPlusIconClicked && (
-          <Icon
-            name={icons.plus}
-            size={32}
-            color={theme.colors.primaryColor}
-            onPress={bubblePlusIcon}
-            testID="icnPlus"
-          />
+          <TouchableOpacity onPress={bubblePlusIcon} style={styles.plusIconContainer}>
+            <Icon name={icons.plus} size={32} color={theme.colors.primaryColor} testID="icnPlus" />
+          </TouchableOpacity>
         )}
       </View>
       <SnapCarousel
@@ -226,5 +222,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
     top: 10,
+  },
+  plusIconContainer: {
+    justifyContent: 'center',
+    padding: 5,
   },
 });
