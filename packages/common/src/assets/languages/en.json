@@ -605,6 +605,8 @@
     "sellingPrice": "Selling Price",
     "moveInDate": "Move in date",
     "listingNotValid": "Listing is no longer available",
+    "customiseDashboard": "Customise Dashboard",
+    "dragAndDropText": "Drag the section to rearrange the sections according to your choice.",
     "contactOwner": "Contact Owner"
   },
   "propertySearch": {
@@ -897,7 +899,7 @@
     "andYou": "and You.",
     "subscriptionPayment": "Subscription & Payment",
     "activePlan": "Active Plan",
-    "faqs" : "FAQs",
+    "faqs" : "FAQs"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

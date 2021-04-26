@@ -183,6 +183,7 @@ export const icons = {
   serviceTicket: 'service-ticket',
   supportTicket: 'support-ticket',
   faq: 'faq',
+  dragIndicator: 'drag-indicator',
 
   // COMMUTE
   train: 'train',

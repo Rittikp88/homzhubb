@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
 import { cloneDeep } from 'lodash';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
+import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { Hoverable, MultiCarousel, NextPrevBtn } from '@homzhub/web/src/components';
-import OverviewCard from '@homzhub/web/src/components/molecules//OverviewCard';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
-import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import DragAndDrop from '@homzhub/web/src/components/molecules/DragAndDrop';
+import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
+import { NextPrevBtn } from '@homzhub/web/src/components/molecules/NextPrevBtn';
+import OverviewCard from '@homzhub/web/src/components/molecules//OverviewCard';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export interface IOverviewCarousalData {
@@ -22,6 +25,15 @@ export interface IOverviewCarousalData {
 interface IProps {
   data: IOverviewCarousalData[];
   onMetricsClicked?: (name: string) => void;
+}
+
+export interface IDragOption {
+  icon?: string;
+  iconRight?: string;
+  checked?: boolean;
+  label: string;
+  colorCode: string;
+  count: number;
 }
 const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked }: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<IOverviewCarousalData[]>([]);
@@ -116,8 +128,10 @@ const CarouselControlsGrp = ({
 }: ICarouselControlsGrp & ButtonGroupProps): React.ReactElement => {
   const { t } = useTranslation();
   const detailsOptions = getPropertyDetailsOptions(options);
-  const [settingsOptions, setSettingsOptions] = useState<IPopupOptions[]>(detailsOptions);
+  const [settingsOptions, setSettingsOptions] = useState<IDragOption[]>(detailsOptions);
   const styles = propertyDetailsControlStyle;
+  const popupRef = useRef<PopupActions>(null);
+
   const updateCarouselIndex = (updateIndexBy: number): void => {
     if (updateIndexBy === 1 && next) {
       next();
@@ -125,62 +139,20 @@ const CarouselControlsGrp = ({
       previous();
     }
   };
-  const isMaximumNoOfOptionsSelected = (): boolean => {
-    let count = 0;
-    const MaximumNoOfAllowedSelection = 3;
-    settingsOptions.forEach((item) => {
-      if (item.icon === icons.checkboxOn) {
-        count += 1;
-      }
-    });
-    return count >= MaximumNoOfAllowedSelection;
-  };
-  const onOptionClick = (selectedOption: IPopupOptions): void => {
-    const newOptions: IPopupOptions[] = [];
-    settingsOptions.forEach((item) => {
-      if (item.label === selectedOption.label) {
-        if (isMaximumNoOfOptionsSelected()) {
-          if (item.checked) {
-            newOptions.push({
-              label: selectedOption.label,
-              icon: icons.checkboxOff,
-              checked: false,
-            });
-          } else {
-            newOptions.push(item);
-          }
-        } else {
-          newOptions.push({
-            label: selectedOption.label,
-            icon: !item.checked ? icons.checkboxOn : icons.checkboxOff,
-            checked: !item.checked,
-          });
-        }
-      } else {
-        newOptions.push(item);
-      }
-    });
+
+  const updateOptionsList = (newOptions: IOverviewCarousalData[]): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+    }
+
     setSettingsOptions(newOptions);
+    updatedOptions(newOptions);
   };
-  const updateOptionsList = (): void => {
-    // updating popup options list
-    const newOptions: IPopupOptions[] = settingsOptions;
-    newOptions.sort((currentIndex) => {
-      if (currentIndex.checked) {
-        return -1;
-      }
-      return 0;
-    });
-    setSettingsOptions(newOptions);
-    // updating the property details options data
-    const newUpdatedOptions: IOverviewCarousalData[] = options;
-    newUpdatedOptions.sort((currentIndex, nextIndex) => {
-      return (
-        newOptions.findIndex((value) => value.label === currentIndex.label) -
-        newOptions.findIndex((value) => value.label === nextIndex.label)
-      );
-    });
-    updatedOptions(newUpdatedOptions);
+
+  const onSheetClose = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+    }
   };
   return (
     <View style={styles.container}>
@@ -188,14 +160,15 @@ const CarouselControlsGrp = ({
         {t('assetPortfolio:propertyDetails')}
       </Typography>
       <Popover
-        content={<PopupMenuOptions options={settingsOptions} onMenuOptionPress={onOptionClick} />}
+        content={<DragAndDrop options={settingsOptions} onSavePress={updateOptionsList} modalClose={onSheetClose} />}
+        forwardedRef={popupRef}
         popupProps={{
           on: 'click',
-          closeOnDocumentClick: true,
+          closeOnDocumentClick: false,
           arrow: false,
-          contentStyle: { marginTop: '4px', alignItems: 'stretch' },
           children: undefined,
-          onClose: updateOptionsList,
+          onClose: onSheetClose,
+          modal: true,
         }}
       >
         <Button
@@ -215,10 +188,16 @@ interface ICarouselControlsGrp {
   updatedOptions: (options: IOverviewCarousalData[]) => void;
 }
 
-const getPropertyDetailsOptions = (data: IOverviewCarousalData[]): IPopupOptions[] => {
-  const settingsOptions: IPopupOptions[] = [];
+const getPropertyDetailsOptions = (data: IOverviewCarousalData[]): IDragOption[] => {
+  const settingsOptions: IDragOption[] = [];
   data.forEach((option): void => {
-    settingsOptions.push({ label: option.label, icon: icons.checkboxOff, checked: false });
+    settingsOptions.push({
+      label: option.label,
+      icon: icons.checkboxOff,
+      checked: false,
+      colorCode: option.colorCode,
+      count: option.count,
+    });
   });
   return settingsOptions;
 };
