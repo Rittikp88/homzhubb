@@ -31,6 +31,7 @@ export enum MoreScreenTypes {
   SUPPORT = 'support',
   LOGOUT = 'logout',
   OFFERS = 'Offers',
+  FAQS = 'Faqs',
 }
 
 const ICON_COLOR = theme.colors.lowPriority;
@@ -156,6 +157,14 @@ export const MORE_SCREENS: IMoreScreens = {
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.SUPPORT,
+    },
+    {
+      id: 11,
+      title: `${translationKey}:faqs`,
+      icon: icons.faq,
+      iconColor: ICON_COLOR,
+      textColor: TEXT_COLOR,
+      type: MoreScreenTypes.FAQS,
     },
   ],
 };

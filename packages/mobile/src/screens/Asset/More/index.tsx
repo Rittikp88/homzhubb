@@ -4,7 +4,9 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -22,6 +24,8 @@ interface IDispatchProps {
 
 type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.MoreScreen>;
 type Props = libraryProps & IDispatchProps;
+
+const FAQ_WEB_URL = 'https://www.homzhub.com/faqs';
 
 export class More extends React.PureComponent<Props> {
   public render = (): React.ReactNode => {
@@ -56,7 +60,7 @@ export class More extends React.PureComponent<Props> {
   public renderItem = (item: IMoreScreenItem): React.ReactElement => {
     const { t } = this.props;
     const onPress = (): void => {
-      this.handleNavigation(item.type, t(item.title));
+      this.handleNavigation(item.type, t(item.title)).then();
     };
     return <TouchableOpacity onPress={onPress}>{this.renderItemWithIcon(item, false)}</TouchableOpacity>;
   };
@@ -111,7 +115,7 @@ export class More extends React.PureComponent<Props> {
     navigate(ScreensKeys.UserProfileScreen);
   };
 
-  public handleNavigation = (type: MoreScreenTypes, title: string): void => {
+  public handleNavigation = async (type: MoreScreenTypes, title: string): Promise<void> => {
     const { navigation, t } = this.props;
 
     switch (type) {
@@ -157,6 +161,13 @@ export class More extends React.PureComponent<Props> {
         } else {
           navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });
         }
+        break;
+      case MoreScreenTypes.FAQS:
+        if (!(await LinkingService.canOpenURL(FAQ_WEB_URL))) {
+          AlertHelper.error({ message: t('genericErrorMessage') });
+          break;
+        }
+        await LinkingService.canOpenURL(FAQ_WEB_URL);
         break;
       default:
         navigation.navigate(ScreensKeys.ComingSoonScreen, { title, tabHeader: t('assetMore:more') });

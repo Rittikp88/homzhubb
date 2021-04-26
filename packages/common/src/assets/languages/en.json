@@ -896,7 +896,8 @@
     "hrAgo": "{{hour}} hr ago",
     "andYou": "and You.",
     "subscriptionPayment": "Subscription & Payment",
-    "activePlan": "Active Plan"
+    "activePlan": "Active Plan",
+    "faqs" : "FAQs",
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
