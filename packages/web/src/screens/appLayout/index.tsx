@@ -45,20 +45,31 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const [isMenuLoading, setIsMenuLoading] = useState(false);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(1);
+
   const onMenuClose = (): void => {
     setIsMenuOpen(false);
   };
+
+  const updateSelectedItem = (item: number): void => {
+    setSelectedItem(item);
+  };
+
   return (
     <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked, isMenuLoading, setIsMenuLoading }}>
       <View style={styles.container}>
-        <Navbar history={history} location={location} setIsMenuOpen={setIsMenuOpen} />
+        <Navbar history={history} location={location} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <NavigationInfo />
         <View>
           <View style={[styles.mainContent, isMobile && styles.mainContentMobile]}>
             {!isTablet && isSideMenuVisible && !isMenuLoading && <SideMenu onItemClick={FunctionUtils.noop} />}
             {!isLaptop && (
-              <SideBar open={isMenuOpen} onClose={onMenuClose}>
-                <MobileSideMenu onMenuClose={onMenuClose} />
+              <SideBar open={isMenuOpen} onClose={onMenuClose} page="dashboard">
+                <MobileSideMenu
+                  onMenuClose={onMenuClose}
+                  selectedItem={selectedItem}
+                  updateSelectedItem={updateSelectedItem}
+                />
               </SideBar>
             )}
             <MainRouter />

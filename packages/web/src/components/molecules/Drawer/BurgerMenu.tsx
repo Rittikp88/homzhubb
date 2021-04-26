@@ -7,29 +7,33 @@ interface IProps {
   onClose: () => void;
   children: JSX.Element;
   menuProps?: IMenuProps;
+  page?: string;
 }
 interface IMenuProps {
   width?: number;
   menuClassName?: string;
   customBurgerIcon?: React.ReactElement;
   burgerButtonClassName?: string;
+  right?: boolean;
 }
 export default class SideBar extends React.PureComponent<IProps> {
   public render(): React.ReactElement {
-    const { children, open, menuProps = {} } = this.props;
+    const { children, open, menuProps = {}, page = '' } = this.props;
+
     return (
-      <Menu
-        pageWrapId="page-wrap"
-        outerContainerId="outer-container"
-        customBurgerIcon={false}
-        onStateChange={this.handleStateChange}
-        width={280}
-        isOpen={open}
-        right
-        {...menuProps}
-      >
-        {children}
-      </Menu>
+      <div className={`${page}-bm`}>
+        <Menu
+          pageWrapId="page-wrap"
+          outerContainerId="outer-container"
+          customBurgerIcon={false}
+          onStateChange={this.handleStateChange}
+          width={280}
+          isOpen={open}
+          {...menuProps}
+        >
+          {children}
+        </Menu>
+      </div>
     );
   }
 

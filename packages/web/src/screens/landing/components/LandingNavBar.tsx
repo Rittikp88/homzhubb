@@ -131,7 +131,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
         </View>
       </StickyHeader>
       {!isLaptop && (
-        <SideBar open={isMenuOpen} onClose={onMenuClose}>
+        <SideBar open={isMenuOpen} onClose={onMenuClose} menuProps={{ right: true }} page="landing">
           <RenderNavItems
             featuredPropertiesRef={featuredPropertiesRef}
             plansSectionRef={plansSectionRef}

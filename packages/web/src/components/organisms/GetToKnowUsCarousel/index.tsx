@@ -61,6 +61,7 @@ export const GetToKnowUsCarousel: FC = () => {
     menuClassName: 'signupMenu', // FIXME @ashwin-kartik
     burgerButtonClassName: 'menuButton', // FIXME @ashwin-kartik
     width: isMobile ? 320 : 460,
+    right: true,
   };
 
   const renderCarousel = (): React.ReactElement => {

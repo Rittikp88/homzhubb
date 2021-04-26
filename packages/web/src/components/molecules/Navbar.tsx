@@ -63,11 +63,12 @@ interface IProps {
   location: LocationParams;
   history: History;
   setIsMenuOpen: (value: boolean) => void;
+  isMenuOpen: boolean;
 }
 type NavbarProps = IDispatchProps & IProps & IStateProps;
 const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const { t } = useTranslation();
-  const { location, history, userProfile, setIsMenuOpen } = props;
+  const { location, history, userProfile, setIsMenuOpen, isMenuOpen } = props;
   const isDesktop = useDown(deviceBreakpoint.DESKTOP);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -120,7 +121,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
               iconSize={22}
               iconColor={theme.colors.darkTint6}
               containerStyle={navBarStyles.menuIc}
-              onPress={(): void => setIsMenuOpen(true)}
+              onPress={(): void => setIsMenuOpen(!isMenuOpen)}
             />
           )}
           <TouchableOpacity onPress={navigateToScreen}>

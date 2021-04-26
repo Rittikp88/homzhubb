@@ -11,6 +11,20 @@
   overflow-wrap: unset;
   z-index: 3000;
 }
+.landing-bm {
+  .bm-menu-wrap {
+    top: 84px;
+    right: 0px;
+  }
+}
+
+.dashboard-bm {
+  .bm-menu-wrap {
+    top: 50px;
+    left: 0px;
+  }
+}
+
 #outer-container {
   height: 100vh;
 }
@@ -52,10 +66,7 @@
 
 /* Position and sizing of clickable cross button */
 .bm-cross-button {
-  top: 20px !important;
-  right: 20px !important;
-  height: 100px;
-  width: 30%;
+  display: none;
 }
 .react-burger-cross-btn {
   top: 15px;

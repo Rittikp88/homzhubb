@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -9,6 +9,7 @@ import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -18,6 +19,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface INavProps {
   onMenuClose: () => void;
+  selectedItem: number;
+  updateSelectedItem: (item: number) => void;
 }
 interface IDispatchProps {
   logout: (payload: IAuthCallback) => void;
@@ -26,42 +29,52 @@ interface IDispatchProps {
 type Props = INavProps & IDispatchProps;
 
 const MobileSideMenu: FC<Props> = (props: Props) => {
-  const { onMenuClose, logout } = props;
-  const [isSelected, setIsSelected] = useState(0);
+  const { onMenuClose, logout, selectedItem, updateSelectedItem } = props;
   const history = useHistory();
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
-  const isLaptop = useUp(deviceBreakpoint.LAPTOP);
-  const styles = navItemStyle(isLaptop, false);
   const mobileItems = [
     {
+      id: 1,
       text: t('assetDashboard:dashboard'),
+      icon: icons.dashboard,
       url: RouteNames.protectedRoutes.DASHBOARD,
     },
     {
+      id: 2,
       text: t('assetPortfolio:portfolio'),
+      icon: icons.portfolio,
       url: RouteNames.protectedRoutes.PORTFOLIO,
     },
     {
+      id: 3,
       text: t('assetMore:savedProperties'),
+      icon: icons.heartOutline,
       url: RouteNames.protectedRoutes.SAVED_PROPERTIES,
     },
     {
+      id: 4,
       text: t('assetMore:propertyVisits'),
+      icon: icons.visit,
       url: RouteNames.protectedRoutes.PROPERTY_VISITS,
     },
     {
+      id: 5,
       text: t('assetMore:valueAddedServices'),
-      url: RouteNames.protectedRoutes.SELECT_PROPERTY,
+      icon: icons.settingOutline,
+      url: RouteNames.protectedRoutes.VALUE_ADDED_SERVICES,
     },
     {
+      id: 6,
       text: t('common:logout'),
+      icon: icons.logOut,
       url: RouteNames.publicRoutes.APP_BASE,
     },
   ];
   const menuItems = [...mobileItems];
   const onNavItemPress = (index: number): void => {
-    setIsSelected(index);
-    if (menuItems[index].text === t('common:logout') && menuItems[index].url === RouteNames.publicRoutes.APP_BASE) {
+    const menuItem = menuItems[index];
+    updateSelectedItem(menuItem.id);
+    if (menuItem.text === t('common:logout') && menuItem.url === RouteNames.publicRoutes.APP_BASE) {
       onMenuClose();
       logout({
         callback: (status: boolean): void => {
@@ -82,20 +95,13 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
   };
   return (
     <>
-      {!isLaptop && (
-        <View style={styles.container}>
-          <Typography variant="text" size="small" fontWeight="regular" style={styles.header}>
-            {t('menu')}
-          </Typography>
-        </View>
-      )}
       {menuItems.map((item, index) => {
         return (
           <NavItem
             key={item.text}
-            text={item.text}
+            item={item}
             isDisabled={false}
-            isActive={isSelected === index}
+            isActive={selectedItem === item.id}
             onNavItemPress={onNavItemPress}
             index={index}
           />
@@ -104,14 +110,22 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
     </>
   );
 };
-interface INavItem {
+
+interface IMenuItem {
+  id: number;
   text: string;
+  icon: string;
+  url: string;
+}
+interface INavItem {
+  item: IMenuItem;
   index: number;
   isActive: boolean;
   isDisabled: boolean;
   onNavItemPress: (index: number) => void;
 }
-const NavItem: FC<INavItem> = ({ text, index, isDisabled, isActive, onNavItemPress }: INavItem) => {
+
+const NavItem: FC<INavItem> = ({ item, index, isDisabled, isActive, onNavItemPress }: INavItem) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navItemStyle(isLaptop, isActive);
   const itemPressed = (): void => {
@@ -119,34 +133,52 @@ const NavItem: FC<INavItem> = ({ text, index, isDisabled, isActive, onNavItemPre
   };
   return (
     <TouchableOpacity disabled={isDisabled} onPress={itemPressed} style={styles.container}>
-      <Typography
-        variant="text"
-        size="small"
-        fontWeight="regular"
-        minimumFontScale={0.5}
-        style={[styles.text, !isLaptop && styles.mobileText, isDisabled && styles.textDisabled]}
-      >
-        {text}
-      </Typography>
+      <View style={styles.itemContainer}>
+        <View style={styles.itemWrapper}>
+          <Icon name={item.icon} size={24} style={styles.iconStyle} />
+          <Typography
+            variant="text"
+            size="small"
+            fontWeight="regular"
+            minimumFontScale={0.5}
+            style={[styles.text, !isLaptop && styles.mobileText, isDisabled && styles.textDisabled]}
+          >
+            {item.text}
+          </Typography>
+        </View>
+        <Icon name={icons.rightArrow} size={24} style={styles.iconStyle} />
+      </View>
       <Divider containerStyles={[styles.activeNavItemBar, !isLaptop && styles.mobileActiveItem]} />
     </TouchableOpacity>
   );
 };
 interface INavItemStyle {
   container: ViewStyle;
+  itemContainer: ViewStyle;
   activeNavItemBar: ViewStyle;
   mobileActiveItem: ViewStyle;
   text: TextStyle;
   mobileText: TextStyle;
   header: ViewStyle;
   textDisabled: TextStyle;
+  itemWrapper: ViewStyle;
+  iconStyle: ViewStyle;
 }
 const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedStyles<INavItemStyle> =>
   StyleSheet.create<INavItemStyle>({
     container: {
       marginTop: isLaptop ? 8 : 0,
-      marginLeft: !isLaptop ? 0 : 30,
-      alignItems: isLaptop ? 'center' : 'flex-start',
+      paddingLeft: !isLaptop ? 24 : 30,
+      backgroundColor: isActive ? theme.colors.blueOpacity : theme.colors.white,
+      borderLeftWidth: isActive ? 3 : 0,
+      borderLeftColor: theme.colors.blue,
+      borderRadius: 5,
+    },
+    itemContainer: {
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      flexDirection: 'row',
+      paddingRight: 24,
     },
     text: {
       color: isActive ? theme.colors.primaryColor : theme.colors.darkTint4,
@@ -161,8 +193,10 @@ const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedSty
       opacity: isActive ? 1 : 0,
     },
     mobileActiveItem: {
-      borderColor: theme.colors.darkTint12,
+      borderColor: theme.colors.background,
+      marginTop: 0,
       opacity: 1,
+      marginLeft: 40,
     },
     header: {
       backgroundColor: theme.colors.gray6,
@@ -178,7 +212,14 @@ const navItemStyle = (isLaptop: boolean, isActive: boolean): StyleSheet.NamedSty
       lineHeight: 64,
       height: 64,
       paddingLeft: 16,
-      color: theme.colors.darkTint4,
+      color: isActive ? theme.colors.blue : theme.colors.darkTint4,
+    },
+    itemWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    iconStyle: {
+      color: theme.colors.blue,
     },
   });
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
