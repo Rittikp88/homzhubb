@@ -185,6 +185,7 @@ const getTabBarVisibility = (route: any): boolean => {
   const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
   const notAllowedRoutes = [
     ScreensKeys.PropertyAssetDescription,
+    ScreensKeys.PropertyDetailScreen,
     ScreensKeys.AssetReviews,
     ScreensKeys.ContactForm,
     ScreensKeys.AuthStack,

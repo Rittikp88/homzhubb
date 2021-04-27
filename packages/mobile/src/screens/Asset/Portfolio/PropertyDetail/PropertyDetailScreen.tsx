@@ -25,6 +25,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FullScreenAssetDetailsCarousel, HeaderCard } from '@homzhub/mobile/src/components';
+import CompareSelection from '@homzhub/mobile/src/components/molecules/CompareSelection';
 import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
@@ -115,6 +116,7 @@ interface IDetailState {
   isDeleteProperty: boolean;
   scrollEnabled: boolean;
   isFromTenancies: boolean | null;
+  selectedOffer: number[];
 }
 
 interface IRoutes {
@@ -146,6 +148,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       scrollEnabled: true,
       isDeleteProperty: false,
       isFromTenancies: params?.isFromTenancies ?? null,
+      selectedOffer: [],
     };
   }
 
@@ -196,7 +199,15 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { propertyData, isLoading, isMenuVisible, scrollEnabled, isDeleteProperty, isFromTenancies } = this.state;
+    const {
+      propertyData,
+      isLoading,
+      isMenuVisible,
+      scrollEnabled,
+      isDeleteProperty,
+      isFromTenancies,
+      selectedOffer,
+    } = this.state;
     if (isLoading) {
       return <Loader visible />;
     }
@@ -263,6 +274,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
               onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
             />
           </BottomSheet>
+          {selectedOffer.length > 0 && (
+            <CompareSelection selected={selectedOffer.length} onClear={this.handleSelectionClear} />
+          )}
         </View>
       </TouchableWithoutFeedback>
     );
@@ -334,6 +348,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       propertyData: { id, assetStatusInfo },
       propertyData,
       isFromTenancies,
+      selectedOffer,
     } = this.state;
 
     switch (route.key) {
@@ -358,7 +373,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.OFFERS:
         return (
           <View onLayout={(e): void => this.onLayout(e, 2)}>
-            <OfferView onPressAction={this.handleOfferActions} onCreateLease={this.handleCreateLease} />
+            <OfferView
+              onPressAction={this.handleOfferActions}
+              onCreateLease={this.handleCreateLease}
+              onSelectOffer={this.handleOfferSelection}
+              selectedOffers={selectedOffer}
+            />
           </View>
         );
       case Tabs.REVIEWS:
@@ -749,6 +769,35 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       default:
         FunctionUtils.noop();
     }
+  };
+
+  private handleOfferSelection = (id: number): void => {
+    const { selectedOffer } = this.state;
+    const { t } = this.props;
+
+    // TODO: (Shikha) - Remove after Refactoring
+    const updatedOfferArray = [...selectedOffer];
+
+    if (selectedOffer.includes(id)) {
+      const selectedIndex = updatedOfferArray.map((item) => item).indexOf(id);
+      updatedOfferArray.splice(selectedIndex, 1);
+    } else {
+      if (updatedOfferArray.length === 3) {
+        AlertHelper.error({ message: t('offers:maxOffer') });
+        return;
+      }
+      updatedOfferArray.push(id);
+    }
+
+    this.setState({
+      selectedOffer: updatedOfferArray,
+    });
+  };
+
+  private handleSelectionClear = (): void => {
+    this.setState({
+      selectedOffer: [],
+    });
   };
 
   private handleCreateLease = (): void => {

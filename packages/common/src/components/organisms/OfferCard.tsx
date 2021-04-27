@@ -4,7 +4,7 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -30,6 +30,8 @@ interface IProps {
   onPressAction?: (action: OfferAction) => void;
   onMoreInfo?: (payload: ICounterParam) => void;
   onCreateLease?: () => void;
+  onSelectOffer?: (count: number) => void;
+  selectedOffers?: number[];
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -190,29 +192,41 @@ class OfferCard extends Component<Props, IOwnState> {
   };
 
   private renderOfferHeader = (currency: string): React.ReactElement => {
-    const { offer, compareData } = this.props;
+    const { offer, compareData, isDetailView, selectedOffers } = this.props;
+    const selectedValues: number[] = selectedOffers ?? [];
+    const isSelected = selectedValues.includes(offer.id);
 
     const offerHeader = OfferUtils.getOfferHeader(offer, compareData, currency);
     return (
       <View style={styles.headerView}>
-        <TextWithIcon
-          icon={icons.circularFilledInfo}
-          text={offerHeader.key}
-          variant="label"
-          textSize="large"
-          iconColor={theme.colors.darkTint4}
-          textStyle={styles.headerKey}
-        />
-        <TextWithIcon
-          icon={offerHeader.icon}
-          text={offerHeader.value}
-          variant="text"
-          textSize="large"
-          fontWeight="semiBold"
-          iconColor={offerHeader.iconColor}
-          textStyle={styles.offerValue}
-          containerStyle={styles.headerValue}
-        />
+        <View>
+          <TextWithIcon
+            icon={icons.circularFilledInfo}
+            text={offerHeader.key}
+            variant="label"
+            textSize="large"
+            iconColor={theme.colors.darkTint4}
+            textStyle={styles.headerKey}
+          />
+          <TextWithIcon
+            icon={offerHeader.icon}
+            text={offerHeader.value}
+            variant="text"
+            textSize="large"
+            fontWeight="semiBold"
+            iconColor={offerHeader.iconColor}
+            textStyle={styles.offerValue}
+            containerStyle={styles.headerValue}
+          />
+        </View>
+        {isDetailView && (
+          <Icon
+            name={isSelected ? icons.checkboxOn : icons.circularCompare}
+            color={theme.colors.primaryColor}
+            size={24}
+            onPress={(): void => this.handleOfferCompare(offer.id)}
+          />
+        )}
       </View>
     );
   };
@@ -388,6 +402,13 @@ class OfferCard extends Component<Props, IOwnState> {
   private onCloseProfileSheet = (): void => {
     this.setState({ isProfileSheetVisible: false });
   };
+
+  private handleOfferCompare = (id: number): void => {
+    const { onSelectOffer } = this.props;
+    if (onSelectOffer) {
+      onSelectOffer(id);
+    }
+  };
 }
 
 export default withTranslation(LocaleConstants.namespacesKey.offers)(OfferCard);
@@ -449,6 +470,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderTopColor: theme.colors.background,
     borderBottomColor: theme.colors.background,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   offerValue: {
     color: theme.colors.darkTint1,

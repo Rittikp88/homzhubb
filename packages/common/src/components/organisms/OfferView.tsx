@@ -36,6 +36,8 @@ interface IFilters {
 interface IProps {
   onPressAction: (action: OfferAction) => void;
   onCreateLease: () => void;
+  onSelectOffer?: (id: number) => void;
+  selectedOffers?: number[];
   isDetailView?: boolean;
 }
 
@@ -45,7 +47,7 @@ const initialObj = {
 };
 
 const OfferView = (props: IProps): React.ReactElement => {
-  const { onPressAction, isDetailView = false, onCreateLease } = props;
+  const { onPressAction, isDetailView = false, onCreateLease, onSelectOffer, selectedOffers } = props;
 
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.offers);
@@ -173,6 +175,8 @@ const OfferView = (props: IProps): React.ReactElement => {
               isDetailView
               onCreateLease={(): void => handleLeaseCreation(offer)}
               onMoreInfo={handlePastOffer}
+              onSelectOffer={onSelectOffer}
+              selectedOffers={selectedOffers}
             />
           );
         })

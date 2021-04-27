@@ -254,7 +254,9 @@
     "Complete": "Complete",
     "ownerLowerCase": "owner",
     "prospectLowerCase": "prospect",
-    "userCancelled": "User cancelled the process"
+    "userCancelled": "User cancelled the process",
+    "clearAll": "Clear All",
+    "compare": "Compare"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1210,6 +1212,8 @@
     "seeCancelReason": "See Cancellation Reason",
     "offerMadeInfo": "These are the offers made by you for property listings on homzhub.",
     "prospectProfileCreateSuccess": "Prospect Profile created successfully",
-    "prospectProfileEditSuccess": "Prospect Profile edited successfully"
+    "prospectProfileEditSuccess": "Prospect Profile edited successfully",
+    "offerSelected": "{{selected}} / {{total}} offers selected",
+    "maxOffer": "Max 3 offers are allowed"
   }
 }

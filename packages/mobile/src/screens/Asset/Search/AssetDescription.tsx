@@ -272,7 +272,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
             {this.renderHeaderSection()}
             <PropertyDetail detail={assetDetails} />
             {this.renderMapSection()}
-            {this.renderContactDetails(false)}
+            {!isPreview && this.renderContactDetails(false)}
             <Divider />
             <CollapsibleSection title={t('reviewsRatings')} isDividerRequired>
               <>
@@ -300,7 +300,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         </Animated.ScrollView>
 
         {this.renderFullscreenCarousel()}
-        {this.renderFooterSection()}
+        {!isPreview && this.renderFooterSection()}
         {!isFullScreen && isPreview && (
           <View style={styles.buttonContainer}>
             <Button
@@ -466,8 +466,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     );
   };
 
-  private renderFooterSection = (): React.ReactElement => {
+  private renderFooterSection = (): React.ReactElement | null => {
     const { showContactDetailsInFooter } = this.state;
+    const { assetDetails } = this.props;
+    if (!assetDetails) return null;
+    if (assetDetails.isAssetOwner) return null;
     return (
       <>
         {showContactDetailsInFooter ? (
@@ -495,7 +498,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = assetDetails;
     return (
       <>
-        {!isFooter && (
+        {!isFooter && !isAssetOwner && (
           <Text type="small" textType="regular" style={styles.contactTitle}>
             {t('property:contactOwner')}
           </Text>
