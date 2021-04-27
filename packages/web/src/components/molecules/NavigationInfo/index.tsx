@@ -6,6 +6,7 @@ import { uniqBy } from 'lodash';
 import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -24,6 +25,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { pageTitles } from '@homzhub/web/src/components/molecules/NavigationInfo/constants';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 
 const humanize = (str: string): string => {
@@ -103,6 +105,9 @@ const DashBoardActionsGrp: FC = () => {
   };
   const onMenuItemClick = (option: IQuickActions): void => {
     closePopup();
+    if (option.label === 'Add Property') {
+      AnalyticsService.track(EventType.AddPropertyInitiation);
+    }
     NavigationUtils.navigate(history, { path: option.route });
   };
   const onCurrencyOptionSelect = (option: ICurrencyOption): void => {
@@ -196,6 +201,7 @@ const AddPropertyAction: FC = () => {
   const styles = dashBoardActionStyles;
   const history = useHistory();
   const onAddProperty = (): void => {
+    AnalyticsService.track(EventType.AddPropertyInitiation);
     NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PORTFOLIO_ADD_PROPERTY });
   };
   return (

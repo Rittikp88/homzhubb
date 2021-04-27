@@ -1,6 +1,10 @@
 import React from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import LeaseTermController from '@homzhub/common/src/components/organisms/LeaseTermController';
@@ -11,6 +15,7 @@ import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IProps {
   assetDetails: Asset;
@@ -96,6 +101,7 @@ class ActionController extends React.PureComponent<Props, {}> {
   private onNextStep = async (type: TypeOfPlan, params?: IUpdateAssetParams): Promise<void> => {
     const {
       onNextStep,
+      assetDetails,
       assetDetails: { lastVisitedStepSerialized, id },
     } = this.props;
 
@@ -108,8 +114,16 @@ class ActionController extends React.PureComponent<Props, {}> {
       },
     };
     const reqBody = params ? { last_visited_step, ...params } : { last_visited_step };
-    await AssetRepository.updateAsset(id, reqBody);
-    onNextStep();
+    const trackData = AnalyticsHelper.getPropertyTrackData(assetDetails);
+    try {
+      await AssetRepository.updateAsset(id, reqBody);
+      AnalyticsService.track(EventType.AddListingSuccess, trackData);
+      onNextStep();
+    } catch (error) {
+      const e = ErrorUtils.getErrorMessage(error.details);
+      AlertHelper.error({ message: e });
+      AnalyticsService.track(EventType.AddListingFailure, { ...trackData, error: error.message });
+    }
   };
 }
 

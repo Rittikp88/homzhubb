@@ -1,10 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, ViewStyle, ImageStyle, TouchableOpacity } from 'react-native';
 import { useHistory } from 'react-router';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -17,6 +19,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IProps {
   investmentData: Asset;
@@ -98,6 +101,15 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     { color: theme.colors.completed },
   ];
   const navigateToSearchView = (): void => {
+    const {
+      location: { pathname },
+    } = history;
+    if (pathname === '/dashboard/propertyDetail') {
+      if (investmentData) {
+        const data = AnalyticsHelper.getPropertyTrackData(investmentData);
+        AnalyticsService.track(EventType.ClickSimilarProperty, data);
+      }
+    }
     NavigationUtils.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
       params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },

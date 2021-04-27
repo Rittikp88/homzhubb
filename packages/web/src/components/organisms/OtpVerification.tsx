@@ -5,7 +5,9 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -29,6 +31,7 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 export enum OtpNavTypes {
   Login = 'Login',
@@ -134,6 +137,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
         is_referral: !!userData.signup_referral_code,
         callback: navigateToHomeScreen,
       };
+
       dispatch(UserActions.login(loginPayload));
     } catch (e) {
       AlertHelper.error({ message: e.message });
@@ -144,6 +148,11 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
     if (!socialUserData || !otpSentTo || !phoneCode) {
       return;
     }
+    const trackData = {
+      source: socialUserData.provider,
+      email: socialUserData.user.email,
+      phone_number: otpSentTo,
+    };
     try {
       const data: User = await UserRepository.socialSignUp({
         provider: socialUserData.provider,
@@ -153,11 +162,14 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
         phone_number: otpSentTo,
       });
       const tokens = { refresh_token: data.refreshToken, access_token: data.accessToken };
+      AnalyticsService.track(EventType.SignupSuccess, trackData);
+      AnalyticsService.setUser(ObjectMapper.deserialize(User, socialUserData.user));
       dispatch(UserActions.loginSuccess(tokens));
       navigateToHomeScreen();
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     } catch (e) {
       AlertHelper.error({ message: e.message });
+      AnalyticsService.track(EventType.SignupFailure, { ...trackData, error: e.message });
     }
   };
 

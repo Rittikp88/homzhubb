@@ -17,6 +17,7 @@ const {
   REACT_APP_YOUTUBE_API_KEY = '',
   REACT_APP_GOOGLE_CLIENT_ID = '',
   REACT_APP_FACEBOOK_CLIENT_ID = '',
+  REACT_APP_MIXPANEL_KEY = '',
   REACT_APP_MODE = AppModes.DEBUG,
 } = process.env;
 
@@ -60,6 +61,7 @@ class ConfigHelper {
     this.youtubeApiKey = REACT_NATIVE_APP_MODE;
     this.googleWebClientId = REACT_APP_GOOGLE_CLIENT_ID;
     this.facebookClientId = REACT_APP_FACEBOOK_CLIENT_ID;
+    this.mixpanelKey = REACT_APP_MIXPANEL_KEY;
     this.appMode = REACT_APP_MODE as AppModes;
 
     if (PlatformUtils.isMobile()) {

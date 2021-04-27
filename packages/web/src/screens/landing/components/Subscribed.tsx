@@ -21,7 +21,7 @@ const Subscribed = (): React.ReactElement => {
           {t('thankYouText')}
         </Typography>
         <Typography variant="text" size="small" fontWeight="regular" style={styles.titleText}>
-          {t('thankYouTitle')}
+          {t('subscriptionThankYou')}
         </Typography>
       </View>
     </View>

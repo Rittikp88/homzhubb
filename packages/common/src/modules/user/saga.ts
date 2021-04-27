@@ -57,14 +57,12 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
       }
     }
 
-    if (PlatformUtils.isMobile()) {
-      yield AnalyticsService.setUser(userData);
+    yield AnalyticsService.setUser(userData);
 
-      if (is_referral || is_from_signup) {
-        yield AnalyticsService.track(EventType.SignupSuccess, trackData);
-      } else {
-        yield AnalyticsService.track(EventType.LoginSuccess, trackData);
-      }
+    if (is_referral || is_from_signup) {
+      yield AnalyticsService.track(EventType.SignupSuccess, trackData);
+    } else {
+      yield AnalyticsService.track(EventType.LoginSuccess, trackData);
     }
 
     if (callback) {
@@ -76,13 +74,13 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
       ...trackData,
       error,
     };
-    if (PlatformUtils.isMobile()) {
-      if (is_referral) {
-        yield AnalyticsService.track(EventType.SignupFailure, trackData);
-      } else {
-        yield AnalyticsService.track(EventType.LoginFailure, trackData);
-      }
+
+    if (is_referral || is_from_signup) {
+      yield AnalyticsService.track(EventType.SignupFailure, trackData);
+    } else {
+      yield AnalyticsService.track(EventType.LoginFailure, trackData);
     }
+
     AlertHelper.error({ message: error });
     yield put(UserActions.loginFailure(error));
   }

@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import FlashMessage, { MessageComponentProps } from 'react-native-flash-message';
 import { BrowserRouter } from 'react-router-dom';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
@@ -10,7 +11,6 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { configureStore } from '@homzhub/common/src/modules/store';
 import { Toast } from '@homzhub/common/src/components/molecules/Toast';
 import ErrorBoundary from '@homzhub/web/src/components/hoc/ErrorBoundary';
-
 import '@homzhub/web/src/globalStyles.scss';
 
 interface IState {
@@ -31,6 +31,7 @@ export class App extends React.PureComponent<{}, IState> {
       store.dispatch(UserActions.loginSuccess(userData));
     }
     await I18nService.init();
+    await AnalyticsService.initMixpanel();
     this.setState({ isLocalizationInitialised: true });
   };
 

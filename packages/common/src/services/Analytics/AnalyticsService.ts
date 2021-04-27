@@ -14,31 +14,32 @@ class AnalyticsService {
   private mixPanelInstance: any;
 
   public initMixpanel = async (): Promise<void> => {
-    this.mixPanelInstance = await Mixpanel.init(this.projectToken);
+    if (PlatformUtils.isWeb()) {
+      this.mixPanelInstance = require('mixpanel-browser');
+      this.mixPanelInstance.init(this.projectToken);
+    } else {
+      this.mixPanelInstance = await Mixpanel.init(this.projectToken);
+    }
   };
 
   public setUser = (user: User): void => {
-    if (PlatformUtils.isMobile()) {
-      if (user.email) {
-        this.mixPanelInstance.identify(user.email);
-      }
-      const name = user.fullName || `${user.firstName} ${user.lastName}`;
-      this.mixPanelInstance.people.set({ $email: user.email, $name: name });
+    if (user.email) {
+      this.mixPanelInstance.identify(user.email);
     }
+    const name = user.fullName || `${user.firstName} ${user.lastName}`;
+    this.mixPanelInstance.people.set({ $email: user.email, $name: name });
   };
 
   public track = (eventName: EventType, data?: EventDataType): void => {
-    if (PlatformUtils.isMobile()) {
-      const user = StoreProviderService.getUserData();
-      const properties = {
-        token: this.projectToken,
-        $event_name: eventName,
-        email: user && user.email ? user.email : 'Anonymous',
-        ...data,
-      };
+    const user = StoreProviderService.getUserData();
+    const properties = {
+      token: this.projectToken,
+      $event_name: eventName,
+      email: user && user.email ? user.email : 'Anonymous',
+      ...data,
+    };
 
-      this.mixPanelInstance.track(eventName, properties);
-    }
+    this.mixPanelInstance.track(eventName, properties);
   };
 }
 

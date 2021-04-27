@@ -10,6 +10,7 @@ import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/Media
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -22,6 +23,7 @@ import { PostAssetForm } from '@homzhub/common/src/components/molecules/PostAsse
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
   assetGroups: AssetGroup[];
@@ -214,10 +216,15 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       } else {
         const response = await AssetRepository.createAsset(params);
         setAssetId(response.id);
+        AnalyticsService.track(EventType.AddPropertySuccess, { property_address: address });
       }
       onSubmitPress();
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      if (assetId < 1) {
+        AnalyticsService.track(EventType.AddPropertyFailure, { property_address: address, error });
+      }
+      AlertHelper.error({ message: error });
     }
     formActions.setSubmitting(false);
   };

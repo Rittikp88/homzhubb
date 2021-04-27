@@ -45,6 +45,7 @@
     "react-webcam": "^5.2.3",
     "reactjs-popup": "^2.0.4",
     "react-calendar": "^3.3.1",
+    "mixpanel-browser": "^2.41.0",
     "array-move": "3.0.1",
     "react-sortable-hoc": "2.0.0"
   },
@@ -64,7 +65,8 @@
     "babel-plugin-inline-react-svg": "^1.1.1",
     "babel-plugin-react-native-web": "^0.12.3",
     "customize-cra": "^1.0.0",
-    "react-app-rewired": "^2.1.6"
+    "react-app-rewired": "^2.1.6",
+    "@types/mixpanel-browser": "^2.35.6"
   },
   "eslintConfig": {
     "extends": "react-app"

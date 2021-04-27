@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 import { View, StyleSheet, ImageStyle, ViewStyle, TouchableOpacity } from 'react-native';
 import { useHistory } from 'react-router';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -14,6 +16,7 @@ import CardImageCarousel from '@homzhub/web/src/screens/searchProperty/component
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IProps {
   containerStyle: ViewStyle[];
@@ -70,6 +73,8 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
     { color: theme.colors.completed },
   ];
   const navigateToSearchView = (): void => {
+    const trackData = AnalyticsHelper.getPropertyTrackData(investmentData);
+    AnalyticsService.track(EventType.SearchPropertyOpen, trackData);
     NavigationUtils.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
       params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },
