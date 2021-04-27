@@ -40,7 +40,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
   const { DASHBOARD } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
   return (
-    <Suspense fallback={<div>{t('webLoader:loadingText')}</div>}>
+    <Suspense fallback={<div style={{ height: '100vh' }}>{t('webLoader:loadingText')}</div>}>
       <Switch>
         <Route
           exact

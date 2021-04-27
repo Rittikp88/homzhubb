@@ -111,7 +111,6 @@ const styles = StyleSheet.create({
   containerList: {
     width: '75%',
     flexDirection: 'column',
-    height: '1200px',
   },
   containerListMobile: {
     width: '100%',

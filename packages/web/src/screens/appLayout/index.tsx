@@ -88,11 +88,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   mainContent: {
-    minHeight: '53vh', // TODOS: (Lakshit Singhal) Remove after dynamicallly calc screen height.
+    minHeight: 'calc(100vh - 150px)',
     width: theme.layout.dashboardWidth,
     flexDirection: 'row',
     alignSelf: 'center',
-    marginBottom: 32,
+    paddingBottom: '2%',
   },
   mainContentMobile: {
     width: theme.layout.dashboardMobileWidth,
