@@ -119,6 +119,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
           onPressAction={handleActions}
           asset={propertyOffer}
           isDetailView
+          isOfferDashboard
           pastOffer={pastOffers}
           onMoreInfo={handlePastOffer}
         />

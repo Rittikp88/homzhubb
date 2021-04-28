@@ -30,6 +30,7 @@ import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/D
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { AssetReviews } from '@homzhub/mobile/src/components/organisms/AssetReviews';
+import OfferCompareTable from '@homzhub/mobile/src/components/organisms/OfferCompareTable';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import ServiceTicketList from '@homzhub/common/src/components/organisms/ServiceTicketList';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
@@ -117,6 +118,7 @@ interface IDetailState {
   scrollEnabled: boolean;
   isFromTenancies: boolean | null;
   selectedOffer: number[];
+  isCompare: boolean;
 }
 
 interface IRoutes {
@@ -149,6 +151,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       isDeleteProperty: false,
       isFromTenancies: params?.isFromTenancies ?? null,
       selectedOffer: [],
+      isCompare: false,
     };
   }
 
@@ -207,6 +210,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       isDeleteProperty,
       isFromTenancies,
       selectedOffer,
+      isCompare,
     } = this.state;
     if (isLoading) {
       return <Loader visible />;
@@ -275,8 +279,20 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
             />
           </BottomSheet>
           {selectedOffer.length > 0 && (
-            <CompareSelection selected={selectedOffer.length} onClear={this.handleSelectionClear} />
+            <CompareSelection
+              selected={selectedOffer.length}
+              onClear={this.handleSelectionClear}
+              onCompare={this.handleCompare}
+            />
           )}
+          <BottomSheet
+            visible={isCompare}
+            sheetHeight={500}
+            headerTitle={t('offers:compareOffer')}
+            onCloseSheet={(): void => this.handleCompare(false)}
+          >
+            <OfferCompareTable selectedOfferIds={selectedOffer} />
+          </BottomSheet>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -798,6 +814,15 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     this.setState({
       selectedOffer: [],
     });
+  };
+
+  private handleCompare = (isVisible?: boolean): void => {
+    this.setState({
+      isCompare: isVisible ?? true,
+    });
+    if (!isVisible) {
+      this.handleSelectionClear();
+    }
   };
 
   private handleCreateLease = (): void => {

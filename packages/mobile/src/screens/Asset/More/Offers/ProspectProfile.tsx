@@ -224,10 +224,11 @@ class ProspectProfile extends Component<Props, IScreenState> {
       AlertHelper.error({ message: t('auth:emailUsed') });
       return;
     }
+
     const payload: IUpdateProspectProfile = {
       job_type: values.jobType,
       company_name: values.companyName,
-      work_email: values.workEmail && values.workEmail.length === 0 ? null : values.workEmail,
+      work_email: !values.workEmail ? null : values.workEmail,
       number_of_occupants: Number(values.occupants),
       tenant_type: userType,
     };

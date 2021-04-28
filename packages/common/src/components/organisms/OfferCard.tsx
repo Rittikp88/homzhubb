@@ -26,6 +26,7 @@ interface IProps {
   pastOffer?: Offer[];
   asset?: Asset;
   isDetailView?: boolean;
+  isOfferDashboard?: boolean;
   isFromAccept?: boolean;
   onPressAction?: (action: OfferAction) => void;
   onMoreInfo?: (payload: ICounterParam) => void;
@@ -105,7 +106,7 @@ class OfferCard extends Component<Props, IOwnState> {
     } = offer;
     const { t, isFromAccept = false, compareData, asset } = this.props;
 
-    const isOfferValid = validCount > 1;
+    const isOfferValid = validCount > 6;
     const isOfferExpired = validCount < 0;
 
     const currency = asset && asset.country ? asset.country.currencies[0].currencySymbol : 'INR';
@@ -192,7 +193,7 @@ class OfferCard extends Component<Props, IOwnState> {
   };
 
   private renderOfferHeader = (currency: string): React.ReactElement => {
-    const { offer, compareData, isDetailView, selectedOffers } = this.props;
+    const { offer, compareData, isDetailView, selectedOffers, isOfferDashboard = false } = this.props;
     const selectedValues: number[] = selectedOffers ?? [];
     const isSelected = selectedValues.includes(offer.id);
 
@@ -219,7 +220,7 @@ class OfferCard extends Component<Props, IOwnState> {
             containerStyle={styles.headerValue}
           />
         </View>
-        {isDetailView && (
+        {isDetailView && !isOfferDashboard && (
           <Icon
             name={isSelected ? icons.checkboxOn : icons.circularCompare}
             color={theme.colors.primaryColor}

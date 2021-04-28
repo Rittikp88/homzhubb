@@ -1215,6 +1215,8 @@
     "prospectProfileCreateSuccess": "Prospect Profile created successfully",
     "prospectProfileEditSuccess": "Prospect Profile edited successfully",
     "offerSelected": "{{selected}} / {{total}} offers selected",
-    "maxOffer": "Max 3 offers are allowed"
+    "maxOffer": "Max 3 offers are allowed",
+    "compareOffer": "Compare Offers",
+    "yourExpectation": "Your expectation for {{property}}"
   }
 }

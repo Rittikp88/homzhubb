@@ -30,6 +30,7 @@ interface IProps {
   initialsContainerStyle?: StyleProp<ViewStyle>;
   customText?: string;
   customTextStyle?: StyleProp<TextStyle>;
+  nameStyle?: StyleProp<TextStyle>;
 }
 
 const Avatar = (props: IProps): React.ReactElement => {
@@ -54,6 +55,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     rightIconColor = theme.colors.blue,
     customText,
     customTextStyle = {},
+    nameStyle = {},
   } = props;
 
   const renderText = (): React.ReactElement => {
@@ -107,7 +109,14 @@ const Avatar = (props: IProps): React.ReactElement => {
         </>
         {!isOnlyAvatar && (
           <View style={styles.nameContainer}>
-            <Label textType="regular" type="large" numberOfLines={1} minimumFontScale={0.8} adjustsFontSizeToFit>
+            <Label
+              textType="regular"
+              type="large"
+              numberOfLines={1}
+              minimumFontScale={0.8}
+              adjustsFontSizeToFit
+              style={nameStyle}
+            >
               {fullName}
             </Label>
             <View style={styles.leftView}>

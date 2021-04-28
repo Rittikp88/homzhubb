@@ -9,8 +9,10 @@ import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import CompareSelection from '@homzhub/mobile/src/components/molecules/CompareSelection';
 import PropertyOffers from '@homzhub/common/src/components/molecules/PropertyOffers';
+import OfferCompareTable from '@homzhub/mobile/src/components/organisms/OfferCompareTable';
 import OfferView from '@homzhub/common/src/components/organisms/OfferView';
 import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -19,6 +21,7 @@ const OfferDetail = (): React.ReactElement => {
   const { navigate, goBack } = useNavigation();
   const { t } = useTranslation();
   const [selectedOffer, setSelectedOffer] = useState<number[]>([]);
+  const [isCompare, setCompareVisibility] = useState(false);
   const offerPayload = useSelector(OfferSelectors.getOfferPayload);
   const listingDetail = useSelector(OfferSelectors.getListingDetail);
   const dispatch = useDispatch();
@@ -81,6 +84,13 @@ const OfferDetail = (): React.ReactElement => {
     setSelectedOffer([]);
   };
 
+  const handleCompare = (isVisible?: boolean): void => {
+    setCompareVisibility(isVisible ?? true);
+    if (!isVisible) {
+      handleSelectionClear();
+    }
+  };
+
   return (
     <>
       <UserScreen
@@ -100,7 +110,17 @@ const OfferDetail = (): React.ReactElement => {
           selectedOffers={selectedOffer}
         />
       </UserScreen>
-      {selectedOffer.length > 0 && <CompareSelection selected={selectedOffer.length} onClear={handleSelectionClear} />}
+      {selectedOffer.length > 0 && (
+        <CompareSelection selected={selectedOffer.length} onClear={handleSelectionClear} onCompare={handleCompare} />
+      )}
+      <BottomSheet
+        visible={isCompare}
+        sheetHeight={500}
+        headerTitle={t('offers:compareOffer')}
+        onCloseSheet={(): void => handleCompare(false)}
+      >
+        <OfferCompareTable selectedOfferIds={selectedOffer} />
+      </BottomSheet>
     </>
   );
 };

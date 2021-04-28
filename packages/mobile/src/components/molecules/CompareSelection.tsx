@@ -9,10 +9,11 @@ interface IProps {
   selected: number;
   totalCount?: number;
   onClear: () => void;
+  onCompare: () => void;
 }
 
 const CompareSelection = (props: IProps): React.ReactElement => {
-  const { selected, totalCount = 3, onClear } = props;
+  const { selected, totalCount = 3, onClear, onCompare } = props;
   const { t } = useTranslation();
   const isDisabled = selected <= 1;
   return (
@@ -35,6 +36,7 @@ const CompareSelection = (props: IProps): React.ReactElement => {
           containerStyle={[styles.compareButton, isDisabled && { backgroundColor: theme.colors.disabled }]}
           titleStyle={styles.compareTitle}
           disabled={isDisabled}
+          onPress={onCompare}
         />
       </View>
     </View>
