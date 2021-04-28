@@ -1,12 +1,13 @@
 import React, { useState, useEffect, FC } from 'react';
 import { StyleSheet, ScrollView, ViewStyle } from 'react-native';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import ServicePlansCard from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansCard';
 import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { ServicePlansData } from '@homzhub/common/src/mocks/ServicePlansMockData';
 
 interface IProps {
   cardStyle?: ViewStyle;
@@ -15,9 +16,15 @@ interface IProps {
 const ServicePlansSection: FC<IProps> = (props: IProps) => {
   const { cardStyle, scrollStyle } = props;
   const [servicePlansList, setServicePlansList] = useState([] as ServicePlans[]);
-
   useEffect(() => {
-    setServicePlansList(ObjectMapper.deserializeArray(ServicePlans, ServicePlansData));
+    ServiceRepository.getServicePlans()
+      .then((response) => {
+        setServicePlansList(response.sort((a, b) => Number(a.displayOrder) - Number(b.displayOrder)));
+      })
+      .catch((e) => {
+        const error = ErrorUtils.getErrorMessage(e.details);
+        AlertHelper.error({ message: error });
+      });
   }, []);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
 
