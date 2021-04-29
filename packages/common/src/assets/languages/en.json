@@ -1220,6 +1220,7 @@
     "offerSelected": "{{selected}} / {{total}} offers selected",
     "maxOffer": "Max 3 offers are allowed",
     "compareOffer": "Compare Offers",
-    "yourExpectation": "Your expectation for {{property}}"
+    "yourExpectation": "Your expectation for {{property}}",
+    "compareProspect": "Compare Prospects"
   }
 }

@@ -218,6 +218,7 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
 
     if (title === t('moreSettings:preferencesText')) {
       const preferences = value as TenantPreference[];
+
       if (!preferences.length) return null;
       return (
         <View>

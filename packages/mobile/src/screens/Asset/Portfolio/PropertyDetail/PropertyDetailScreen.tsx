@@ -30,7 +30,7 @@ import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/D
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { AssetReviews } from '@homzhub/mobile/src/components/organisms/AssetReviews';
-import OfferCompareTable from '@homzhub/mobile/src/components/organisms/OfferCompareTable';
+import CompareOfferView from '@homzhub/mobile/src/components/organisms/CompareOfferView';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import ServiceTicketList from '@homzhub/common/src/components/organisms/ServiceTicketList';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
@@ -291,7 +291,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
             headerTitle={t('offers:compareOffer')}
             onCloseSheet={(): void => this.handleCompare(false)}
           >
-            <OfferCompareTable selectedOfferIds={selectedOffer} />
+            <CompareOfferView selectedIds={selectedOffer} isLeaseFlow={!!assetStatusInfo?.leaseListingId} />
           </BottomSheet>
         </View>
       </TouchableWithoutFeedback>

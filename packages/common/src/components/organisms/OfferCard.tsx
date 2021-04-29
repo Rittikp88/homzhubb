@@ -198,6 +198,7 @@ class OfferCard extends Component<Props, IOwnState> {
     const { offer, compareData, isDetailView, selectedOffers, onPressMessages, isOfferDashboard = false } = this.props;
     const selectedValues: number[] = selectedOffers ?? [];
     const isSelected = selectedValues.includes(offer.id);
+    const isOfferExpired = offer.validCount < 0;
 
     const offerHeader = OfferUtils.getOfferHeader(offer, compareData, currency);
     return (
@@ -231,7 +232,7 @@ class OfferCard extends Component<Props, IOwnState> {
                   containerStyle={!isOfferDashboard ? styles.messageIcon : undefined}
                 />
 
-                {!isOfferDashboard && (
+                {!isOfferDashboard && !isOfferExpired && (
                   <Icon
                     name={isSelected ? icons.checkboxOn : icons.circularCompare}
                     color={theme.colors.primaryColor}

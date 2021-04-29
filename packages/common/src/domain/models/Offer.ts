@@ -241,7 +241,7 @@ export class Offer {
     const count = this.validCount;
     // TODO: Add translation
     const text = count > 1 ? 'hours' : 'hour';
-    return `${count} ${text}`;
+    return count >= 0 ? `${count} ${text}` : 'Expired';
   }
 
   get isAssetOwner(): boolean {

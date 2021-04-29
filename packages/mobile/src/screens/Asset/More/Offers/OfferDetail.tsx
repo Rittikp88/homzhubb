@@ -12,7 +12,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import CompareSelection from '@homzhub/mobile/src/components/molecules/CompareSelection';
 import PropertyOffers from '@homzhub/common/src/components/molecules/PropertyOffers';
-import OfferCompareTable from '@homzhub/mobile/src/components/organisms/OfferCompareTable';
+import CompareOfferView from '@homzhub/mobile/src/components/organisms/CompareOfferView';
 import OfferView from '@homzhub/common/src/components/organisms/OfferView';
 import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -124,7 +124,7 @@ const OfferDetail = (): React.ReactElement => {
         headerTitle={t('offers:compareOffer')}
         onCloseSheet={(): void => handleCompare(false)}
       >
-        <OfferCompareTable selectedOfferIds={selectedOffer} />
+        <CompareOfferView selectedIds={selectedOffer} isLeaseFlow={!!(listingDetail && listingDetail.leaseTerm)} />
       </BottomSheet>
     </>
   );
