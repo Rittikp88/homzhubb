@@ -73,7 +73,6 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [isSelected, setIsSelected] = useState(-1);
-  const isRelease = false;
   const navBarStyles = navBarStyle(isMobile, isTablet, isDesktop);
   const navItems = [
     {
@@ -81,11 +80,11 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
       text: t('assetMore:support'),
       url: RouteNames.protectedRoutes.HELP_SUPPORT,
     },
-    {
-      icon: icons.refer,
-      text: t('assetMore:refer'),
-      url: RouteNames.protectedRoutes.REFER_EARN,
-    },
+    // { enable later
+    //   icon: icons.refer,
+    //   text: t('assetMore:refer'),
+    //   url: RouteNames.protectedRoutes.REFER_EARN,
+    // },
   ];
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
@@ -156,17 +155,16 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
             </View>
           )}
           <View style={navBarStyles.itemsContainer}>
-            {isRelease &&
-              navItems.map((item, index) => (
-                <NavItem
-                  key={item.icon}
-                  icon={item.icon}
-                  text={item.text}
-                  isActive={isSelected === index}
-                  onNavItemPress={onNavItemPress}
-                  index={index}
-                />
-              ))}
+            {navItems.map((item, index) => (
+              <NavItem
+                key={item.icon}
+                icon={item.icon}
+                text={item.text}
+                isActive={isSelected === index}
+                onNavItemPress={onNavItemPress}
+                index={index}
+              />
+            ))}
             <View style={navBarStyles.items}>
               <Avatar isOnlyAvatar fullName={userProfile?.name ?? 'User'} image={userProfile?.profilePicture ?? ''} />
             </View>

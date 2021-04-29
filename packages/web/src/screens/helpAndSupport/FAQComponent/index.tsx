@@ -160,7 +160,7 @@ const FAQComponentStyle = (isMobile: boolean, isTablet: boolean): StyleSheet.Nam
       flexDirection: 'row',
       margin: 8,
       marginLeft: 20,
-      marginTop: 28,
+      marginTop: 16,
     },
     searchBar: {
       height: 32,
@@ -180,7 +180,8 @@ const FAQComponentStyle = (isMobile: boolean, isTablet: boolean): StyleSheet.Nam
     },
     cards: {
       width: '100%',
-      marginBottom: 36,
+      marginTop: 8,
+      marginBottom: 8,
     },
     cardsTablet: {
       marginLeft: 18,

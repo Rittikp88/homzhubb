@@ -13,15 +13,23 @@ import { routesConfig } from '@homzhub/web/src/components/molecules/NavigationIn
 // eslint-disable-next-line react/prop-types,@typescript-eslint/explicit-function-return-type
 const Breadcrumbs = ({ breadcrumbs }) => {
   const linkStyle = { textDecoration: 'none' };
+  const breakWords = (data: any): string => {
+    const {
+      props: { children },
+    } = data;
+    const res = children.split('&').join(' & ');
+    return res;
+  };
+
   return (
     <View style={styles.breadCrumbsContainer}>
       {breadcrumbs.map(({ breadcrumb, match }: any, index: number) => (
-        <View key={match.url} style={index === 0 ? styles.frirstBreadCrumb : styles.breadCrumbs}>
+        <View key={match.url} style={index === 0 ? styles.firstBreadCrumb : styles.breadCrumbs}>
           <Hoverable>
             {(isHovered: boolean): React.ReactNode => (
               <Link to={match.url || ''} style={linkStyle}>
                 <Typography variant="label" size="regular" style={[styles.link, isHovered && styles.activeLink]}>
-                  {breadcrumb}
+                  {breakWords(breadcrumb)}
                 </Typography>
               </Link>
             )}
@@ -42,6 +50,7 @@ const styles = StyleSheet.create({
   link: {
     color: theme.colors.white,
     textDecorationLine: 'none',
+    textTransform: 'capitalize',
   },
   activeLink: {
     textDecorationLine: 'underline',
@@ -54,7 +63,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  frirstBreadCrumb: {
+  firstBreadCrumb: {
     display: 'none',
   },
   breadCrumbs: {

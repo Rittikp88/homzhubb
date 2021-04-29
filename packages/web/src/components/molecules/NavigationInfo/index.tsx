@@ -233,6 +233,11 @@ export const NavigationInfo: FC = () => {
   const location = useLocation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
+
+  const breakWords = (data: string): string => {
+    const res = data.split('&').join(' & ');
+    return res;
+  };
   const renderNavInfo = (): React.ReactElement => {
     const { protectedRoutes } = RouteNames;
     switch (location.pathname) {
@@ -255,8 +260,8 @@ export const NavigationInfo: FC = () => {
       <div className="navigation-bg" />
       <View style={[styles.container, isMobile && styles.containerMobile]}>
         <View>
-          <Typography variant="text" size="regular" style={styles.link}>
-            {currentScreen}
+          <Typography variant="text" size="regular" fontWeight="bold" style={styles.link}>
+            {breakWords(currentScreen)}
           </Typography>
           <View style={styles.breadCrumbs}>
             <BreadCrumbs />
@@ -363,6 +368,7 @@ const styles = StyleSheet.create({
   },
   link: {
     color: theme.colors.white,
+    textTransform: 'capitalize',
   },
   breadCrumbs: {
     paddingVertical: 4,
