@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import * as RNProgress from 'react-native-progress';
+import ProgressBar from 'react-native-progress/Bar';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -23,7 +23,6 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
   };
   const fileName = (name: string, extension: string): string =>
     name.length > 15 ? `${name.slice(0, 15)}...${extension}` : name;
-
   if (attachments.length) {
     return (
       <>
@@ -66,7 +65,7 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
                     />
                   </View>
 
-                  <RNProgress.Bar
+                  <ProgressBar
                     color="green"
                     progress={1}
                     borderRadius={4}
@@ -117,6 +116,7 @@ const styles = StyleSheet.create({
   },
   fileName: {
     color: theme.colors.darkTint3,
+    height: 20,
   },
   closeIcon: {
     right: 0,

@@ -256,7 +256,9 @@
     "prospectLowerCase": "prospect",
     "userCancelled": "User cancelled the process",
     "clearAll": "Clear All",
-    "compare": "Compare"
+    "compare": "Compare",
+    "haveAnyQuestions": "Have Any Questions?",
+    "supportFormSubHeader":"Your Client Success Partner"
   },
   "auth": {
     "verifyNumber": "Verify your number",
