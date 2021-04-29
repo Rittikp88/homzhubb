@@ -8,10 +8,10 @@ import { IOrderSummaryPayload } from '@homzhub/common/src/domain/repositories/in
 import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 
 const ENDPOINTS = {
-  amenities: 'amenity-categories/',
-  tenantPreferences: 'tenant-preferences/',
-  orderSummary: 'users/order-summary/',
-  valueAddedServices: 'value-added-services/',
+  amenities: 'v1/amenity-categories/',
+  tenantPreferences: 'v1/tenant-preferences/',
+  orderSummary: 'v1/users/order-summary/',
+  valueAddedServices: 'v1/value-added-services/',
 };
 
 class RecordAssetRepository {

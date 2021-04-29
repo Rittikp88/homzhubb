@@ -12,10 +12,10 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  groupMessage: (): string => 'message-groups/',
-  messages: (groupId: number): string => `message-groups/${groupId}/messages/`,
-  groupChatInfo: (groupId: number): string => `message-groups/${groupId}/`,
-  getChatAttachments: (groupId: number): string => `message-groups/${groupId}/attachments/`,
+  groupMessage: (): string => 'v1/message-groups/',
+  messages: (groupId: number): string => `v1/message-groups/${groupId}/messages/`,
+  groupChatInfo: (groupId: number): string => `v1/message-groups/${groupId}/`,
+  getChatAttachments: (groupId: number): string => `v1/message-groups/${groupId}/attachments/`,
 };
 
 class MessageRepository {

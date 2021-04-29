@@ -9,14 +9,14 @@ import { DetailType, IPropertyDetailPayload } from '@homzhub/common/src/domain/r
 import { IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 const ENDPOINTS = {
-  getAssetMetrics: (): string => 'portfolio/management-tab/',
-  getAssetFilter: (): string => 'portfolio/asset-filters/',
-  getTenancies: (): string => 'portfolio/tenancies/',
-  getAssetDetails: (): string => 'portfolio/asset-details/',
-  getTenantHistory: (id: number): string => `assets/${id}/lease-tenants/`,
-  getPropertyDetailById: (id: number): string => `assets/${id}/detail/`,
+  getAssetMetrics: (): string => 'v1/portfolio/management-tab/',
+  getAssetFilter: (): string => 'v1/portfolio/asset-filters/',
+  getTenancies: (): string => 'v1/portfolio/tenancies/',
+  getAssetDetails: (): string => 'v1/portfolio/asset-details/',
+  getTenantHistory: (id: number): string => `v1/assets/${id}/lease-tenants/`,
+  getPropertyDetailById: (id: number): string => `v1/assets/${id}/detail/`,
   getPropertyDetailByListing: (id: number, listingType: string, listingId: number): string =>
-    `assets/${id}/${listingType}/${listingId}/`,
+    `v1/assets/${id}/${listingType}/${listingId}/`,
 };
 
 class PortfolioRepository {

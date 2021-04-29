@@ -7,7 +7,7 @@ import { IAssetListingParam } from '@homzhub/common/src/domain/repositories/inte
 // TODO : (Shikha) - Add all listing endpoints here
 
 const ENDPOINTS = {
-  listing: (param: IAssetListingParam): string => `${param.listingType}/${param.listingId}`,
+  listing: (param: IAssetListingParam): string => `v1/${param.listingType}/${param.listingId}`,
 };
 
 class ListingRepository {

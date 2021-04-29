@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import ReactHtmlParser from 'react-html-parser';
 import { useTranslation } from 'react-i18next';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -9,7 +9,18 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { IFAQs } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const Header = (isOpen: boolean, item: IFAQs): React.ReactElement => {
+interface IProps {
+  item: IFAQs;
+  contentStyleMobile: StyleProp<ViewStyle>;
+  contentStyleTablet: StyleProp<ViewStyle>;
+  contentStyle: StyleProp<ViewStyle>;
+}
+
+interface IHeaderProps extends IProps {
+  isOpen: boolean;
+}
+const Header = (props: IHeaderProps): React.ReactElement => {
+  const { item, contentStyle, contentStyleMobile, contentStyleTablet, isOpen } = props;
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
@@ -20,7 +31,7 @@ const Header = (isOpen: boolean, item: IFAQs): React.ReactElement => {
         <Text
           type="small"
           textType="regular"
-          style={[styles.titleContent, isTablet && styles.titleContentTablet, isMobile && styles.titleContentMobile]}
+          style={[contentStyle, isTablet && contentStyleTablet, isMobile && contentStyleMobile]}
         >
           {t('common:questionSymbol')} {question}
         </Text>
@@ -42,11 +53,7 @@ const accordianContent = (html: any): React.ReactElement => {
   );
 };
 
-interface IQuestionProps {
-  item: IFAQs;
-}
-
-const QuestionCards: React.FC<IQuestionProps> = (props: IQuestionProps) => {
+const QuestionCards: React.FC<IProps> = (props: IProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [setHeight, setHeightState] = useState('0px');
   const content = useRef(null);
@@ -59,7 +66,9 @@ const QuestionCards: React.FC<IQuestionProps> = (props: IQuestionProps) => {
   return (
     <View style={styles.cardContainer} key={question}>
       <View style={styles.accordianContainer}>
-        <TouchableOpacity onPress={toggleAccordion}>{Header(isOpen, item)}</TouchableOpacity>
+        <TouchableOpacity onPress={toggleAccordion}>
+          <Header isOpen={isOpen} {...props} />
+        </TouchableOpacity>
         <View ref={content} style={[styles.accordianContent, { maxHeight: `${setHeight}` }]}>
           {answerRichText && accordianContent(ReactHtmlParser(answerRichText.html))}
         </View>

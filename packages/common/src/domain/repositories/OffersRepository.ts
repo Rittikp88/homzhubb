@@ -28,20 +28,20 @@ import {
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 const ENDPOINTS = {
-  prospects: 'prospects/',
-  offerManagement: 'offers/management-tab/',
-  tenantTypes: 'list-of-values/prospect-tenant-types/',
-  jobTypes: 'list-of-values/user-employer-job-types/',
+  prospects: 'v1/prospects/',
+  offerManagement: 'v1/offers/management-tab/',
+  tenantTypes: 'v1/list-of-values/prospect-tenant-types/',
+  jobTypes: 'v1/list-of-values/user-employer-job-types/',
   negotiations: (param: INegotiationParam): string =>
-    `${param.listingType}/${param.listingId}/${param.negotiationType}/`,
+    `v1/${param.listingType}/${param.listingId}/${param.negotiationType}/`,
   listingNegotiations: (param: INegotiationParam): string =>
-    `${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
-  negotiationOffers: (type: NegotiationOfferType): string => `listings-negotiations/${type}/`,
-  offerFilters: (type: OfferFilterType): string => `filters/${type}/`,
-  counter: (param: ICounterParam): string => `${param.negotiationType}/${param.negotiationId}/counter-negotiations/`,
-  createLease: (negotiationId: number): string => `lease-negotiations/${negotiationId}/lease-transactions/`,
+    `v1/${param.listingType}/${param.listingId}/${param.negotiationType}/${param.negotiationId}/`,
+  negotiationOffers: (type: NegotiationOfferType): string => `v1/listings-negotiations/${type}/`,
+  offerFilters: (type: OfferFilterType): string => `v1/filters/${type}/`,
+  counter: (param: ICounterParam): string => `v1/${param.negotiationType}/${param.negotiationId}/counter-negotiations/`,
+  createLease: (negotiationId: number): string => `v1/lease-negotiations/${negotiationId}/lease-transactions/`,
   offerCommentThread: (param: ICurrentOffer, key?: string): string =>
-    `/${param.type}/${param.listingId}/negotiation-comment-thread-groups/${param.threadId}/${key ?? ''}`,
+    `v1/${param.type}/${param.listingId}/negotiation-comment-thread-groups/${param.threadId}/${key ?? ''}`,
 };
 
 class OffersRepository {

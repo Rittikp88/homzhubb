@@ -91,7 +91,12 @@ const FAQ: FC = () => {
                 style={[styles.cards, isTablet && styles.cardsTablet, isMobile && styles.cardsMobile]}
                 key={item.question}
               >
-                <QuestionCards item={item} />
+                <QuestionCards
+                  item={item}
+                  contentStyle={styles.titleContent}
+                  contentStyleTablet={styles.titleContentTablet}
+                  contentStyleMobile={styles.titleContentMobile}
+                />
               </View>
             ))}
         </View>
@@ -190,5 +195,16 @@ const styles = StyleSheet.create({
   },
   contactUsSection: {
     height: 'max-content',
+  },
+  titleContent: {
+    width: 500,
+    color: theme.colors.darkTint2,
+    padding: 12,
+  },
+  titleContentTablet: {
+    width: 620,
+  },
+  titleContentMobile: {
+    width: 300,
   },
 });

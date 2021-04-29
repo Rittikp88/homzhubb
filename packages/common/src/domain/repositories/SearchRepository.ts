@@ -6,10 +6,10 @@ import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter, ISearchHistoryPayload } from '@homzhub/common/src/domain/models/Search';
 
 const ENDPOINTS = {
-  getFilterData: (): string => 'asset-filters/',
-  getPropertiesForLeaseListings: (): string => 'lease-listings/search/',
-  getPropertiesForSaleListings: (): string => 'sale-listings/search/',
-  addSearchHistory: (): string => 'asset-filters/record-history/',
+  getFilterData: (): string => 'v1/asset-filters/',
+  getPropertiesForLeaseListings: (): string => 'v1/lease-listings/search/',
+  getPropertiesForSaleListings: (): string => 'v1/sale-listings/search/',
+  addSearchHistory: (): string => 'v1/asset-filters/record-history/',
 };
 
 class SearchRepository {

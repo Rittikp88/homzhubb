@@ -192,8 +192,8 @@ const HaveAnyQuestionsForm: React.FC = () => {
 
               <UploadBox
                 icon={icons.document}
-                header={t("uploadDocument")}
-                subHeader={t("uploadDocHelperText")}
+                header={t('uploadDocument')}
+                subHeader={t('uploadDocHelperText')}
                 containerStyle={styles.uploadBox}
                 webOnDropAccepted={handleOnUpload}
                 webOnDropRejected={onDropRejection}

@@ -6,9 +6,9 @@ import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
 import { PlatformPlans } from '@homzhub/common/src/domain/models/PlatformPlan';
 
 const ENDPOINTS = {
-  getAssetPlan: (): string => 'service-category-actions/',
-  getServiceValueBundles: (): string => 'value-bundles/',
-  getServicePlatformPlans: (): string => 'service-plans/',
+  getAssetPlan: (): string => 'v1/service-category-actions/',
+  getServiceValueBundles: (): string => 'v1/value-bundles/',
+  getServicePlatformPlans: (): string => 'v1/service-plans/',
 };
 
 class ServiceRepository {

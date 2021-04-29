@@ -17,16 +17,16 @@ import {
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 const ENDPOINTS = {
-  ticket: 'tickets/',
-  ticketCategories: 'ticket-categories/',
-  quoteRequest: (param: IQuoteParam): string => `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/`,
+  ticket: 'v1/tickets/',
+  ticketCategories: 'v1/ticket-categories/',
+  quoteRequest: (param: IQuoteParam): string => `v1/tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/`,
   quoteRequestCategory: (param: IQuoteParam): string =>
-    `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-request-categories/`,
+    `v1/tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-request-categories/`,
   quoteSubmit: (param: IQuoteParam): string =>
-    `tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-submit-group/`,
-  reviewSubmit: (ticketId: number): string => `tickets/${ticketId}/reviews/`,
-  quoteApprove: (param: IQuoteParam): string => `tickets/${param.ticketId}/quote-approved-group/`,
-  ticketById: (ticketId: number): string => `tickets/${ticketId}/`,
+    `v1/tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-submit-group/`,
+  reviewSubmit: (ticketId: number): string => `v1/tickets/${ticketId}/reviews/`,
+  quoteApprove: (param: IQuoteParam): string => `v1/tickets/${param.ticketId}/quote-approved-group/`,
+  ticketById: (ticketId: number): string => `v1/tickets/${ticketId}/`,
 };
 
 class TicketRepository {

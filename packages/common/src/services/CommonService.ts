@@ -9,7 +9,7 @@ class CommonService {
 
     const token = StoreProviderService.getUserToken();
 
-    const response = await axios.get(`${baseUrl}markdown/${urlEndpoint}/`, {
+    const response = await axios.get(`${baseUrl}v1/markdown/${urlEndpoint}/`, {
       headers: {
         Accept: 'application/json',
         Authorization: `Bearer ${token}`,

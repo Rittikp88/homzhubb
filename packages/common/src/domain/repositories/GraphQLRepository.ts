@@ -51,7 +51,10 @@ const getQuery = (queryKey: string, param?: string): string => {
     case 'faqAllCategories':
       return `query MyQuery {
       categories {
-        icon {
+        activeIcon {
+          url
+        }  
+        inActiveIcon {
           url
         }
         id

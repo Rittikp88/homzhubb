@@ -12,9 +12,9 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  getGeneralLedgers: 'general-ledgers/overall-performances/',
-  getLedgerCategories: 'general-ledger-categories/',
-  genLedgers: 'general-ledgers/',
+  getGeneralLedgers: 'v1/general-ledgers/overall-performances/',
+  getLedgerCategories: 'v1/general-ledger-categories/',
+  genLedgers: 'v1/general-ledgers/',
 };
 
 class LedgerRepository {

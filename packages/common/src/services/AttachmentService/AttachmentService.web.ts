@@ -8,7 +8,7 @@ class AttachmentService {
   public uploadImage = async (formData: any, type: AttachmentType): Promise<any> => {
     const token = StoreProviderService.getUserToken();
 
-    return await fetch(`${baseUrl}attachments/upload/?category=${type}`, {
+    return await fetch(`${baseUrl}v1/attachments/upload/?category=${type}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,

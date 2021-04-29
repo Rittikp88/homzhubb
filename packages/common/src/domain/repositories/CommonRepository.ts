@@ -20,19 +20,19 @@ import {
 import { SocialAuthProviders } from '@homzhub/common/src/constants/SocialAuthProviders';
 
 const ENDPOINTS = {
-  getCountryCodes: 'countries/',
-  getCurrencyCodes: 'currency-codes/',
-  carpetAreaUnits: 'carpet-area-units/',
-  maintenanceUnits: 'list-of-values/maintenance-units/',
-  onBoarding: 'onboardings/',
-  supportCategories: 'list-of-values/client-support-categories/',
-  supportContact: 'client-support/contacts/',
-  clientSupport: 'client-support/',
-  getMarketTrends: 'market-trends/',
-  getPillars: 'pillars/',
-  subscribeToNewsLetter: 'newslettters/subscriptions/',
-  updateMarketTrends: (id: number): string => `market-trends/${id}/`,
-  postDeviceToken: (): string => 'devices/',
+  getCountryCodes: 'v1/countries/',
+  getCurrencyCodes: 'v1/currency-codes/',
+  carpetAreaUnits: 'v1/carpet-area-units/',
+  maintenanceUnits: 'v1/list-of-values/maintenance-units/',
+  onBoarding: 'v1/onboardings/',
+  supportCategories: 'v1/list-of-values/client-support-categories/',
+  supportContact: 'v1/client-support/contacts/',
+  clientSupport: 'v1/client-support/',
+  getMarketTrends: 'v1/market-trends/',
+  getPillars: 'v1/pillars/',
+  subscribeToNewsLetter: 'v1/newslettters/subscriptions/',
+  updateMarketTrends: (id: number): string => `v1/market-trends/${id}/`,
+  postDeviceToken: (): string => 'v1/devices/',
 };
 
 class CommonRepository {

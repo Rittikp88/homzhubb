@@ -5,8 +5,8 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { IOrderSummaryPayload, IPaymentParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
-  valueAddedServices: 'value-added-services/payment/',
-  valueAddedServicesPayment: 'value-added-services/payment-response/',
+  valueAddedServices: 'v1/value-added-services/payment/',
+  valueAddedServicesPayment: 'v1/value-added-services/payment-response/',
 };
 
 class PaymentRepository {
