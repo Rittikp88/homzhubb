@@ -129,15 +129,13 @@ class AcceptOffer extends Component<Props, IScreenState> {
             <Label type="large" textType="semiBold" style={styles.marginVertical}>
               {t('offers:keepInMind')}
             </Label>
-            {info.map((item: IOwner, index: number) => {
-              return (
-                <View key={index} style={styles.textView}>
-                  <Label key={index} type="large" textType="regular" style={styles.text}>
-                    {item.text}
-                  </Label>
-                </View>
-              );
-            })}
+            <View style={styles.textView}>
+              {info.map((item: IOwner, index: number) => (
+                <Label key={index} type="large" textType="regular" style={styles.text} textBreakStrategy="simple">
+                  {item.text}
+                </Label>
+              ))}
+            </View>
           </View>
           <Button
             type="primary"
@@ -248,6 +246,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
+    textAlign: 'center',
   },
   bottomSheetContainer: {
     justifyContent: 'center',
@@ -257,7 +256,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   textView: {
-    marginLeft: 20,
+    paddingHorizontal: 24,
   },
   button: {
     marginHorizontal: 16,

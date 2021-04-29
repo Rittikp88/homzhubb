@@ -1,12 +1,10 @@
-import { Any } from 'json2typescript';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { User } from '@homzhub/common/src/domain/models/User';
 
 @JsonObject('GroupMessage')
 export class GroupMessage {
-  // Todo (Praharsh) : Remove Any when BE removes id in offer flow.
-  @JsonProperty('id', Any)
+  @JsonProperty('id', Number, true)
   private _id = 0;
 
   @JsonProperty('name', String)

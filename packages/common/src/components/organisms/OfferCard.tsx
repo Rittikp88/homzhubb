@@ -229,7 +229,7 @@ class OfferCard extends Component<Props, IOwnState> {
                   iconName={icons.message}
                   count={offer.commentsCount}
                   onPress={onPressMessages}
-                  containerStyle={!isOfferDashboard ? styles.messageIcon : undefined}
+                  containerStyle={!isOfferDashboard && !isOfferExpired ? styles.messageIcon : undefined}
                 />
 
                 {!isOfferDashboard && !isOfferExpired && (
