@@ -1,15 +1,14 @@
 import { groupBy, cloneDeep } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { Message, Messages, IMessageKeyValue, IMessages } from '@homzhub/common/src/domain/models/Message';
+import { Message, IMessageKeyValue, IMessages } from '@homzhub/common/src/domain/models/Message';
 import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 class ReducerUtils {
-  public formatMessages = (data: Messages, prevObj: IMessages | null, isNew?: boolean): IMessageKeyValue => {
-    const { results } = data;
+  public formatMessages = (data: Message[], prevObj: IMessages | null, isNew?: boolean): IMessageKeyValue => {
     let resultObj = prevObj?.messageResult ?? {};
     let prevDate: string[] = [];
 
-    const groupedData = groupBy(results, (item: Message) => {
+    const groupedData = groupBy(data, (item: Message) => {
       return DateUtils.getUtcDisplayDate(item.createdAt, 'DD, MMM YYYY');
     });
     if (prevObj) {

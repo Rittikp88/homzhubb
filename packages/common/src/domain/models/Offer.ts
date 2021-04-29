@@ -63,6 +63,8 @@ export interface IOffer {
   is_asset_owner?: boolean;
   user?: IUser;
   status_updated_by_role?: string;
+  thread_id?: string;
+  comments_count?: number;
 }
 
 @JsonObject('Offer')
@@ -144,6 +146,12 @@ export class Offer {
 
   @JsonProperty('status_updated_by_role', String, true)
   private _statusUpdatedByRole = null;
+
+  @JsonProperty('thread_id', String, true)
+  private _threadId = '';
+
+  @JsonProperty('comments_count', Number, true)
+  private _commentsCount = -1;
 
   get id(): number {
     return this._id;
@@ -258,5 +266,13 @@ export class Offer {
 
   get statusUpdatedByRole(): string | null {
     return this._statusUpdatedByRole;
+  }
+
+  get threadId(): string {
+    return this._threadId;
+  }
+
+  get commentsCount(): number {
+    return this._commentsCount;
   }
 }

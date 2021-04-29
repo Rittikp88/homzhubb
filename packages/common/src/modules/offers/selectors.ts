@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer } from '@homzhub/common/src/domain/models/Offer';
+import { IMessageKeyValue } from '@homzhub/common/src/domain/models/Message';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   ICurrentOffer,
@@ -151,6 +152,10 @@ const getOfferFormValues = (state: IState): OfferFormValues | null => {
   return state.offer.offerForm;
 };
 
+const getNegotiationComments = (state: IState): IMessageKeyValue | null => {
+  return state.offer.negotiationComments;
+};
+
 export const OfferSelectors = {
   getPastProposalsRent,
   getPastProposalsSale,
@@ -162,4 +167,5 @@ export const OfferSelectors = {
   getCurrentOffer,
   getOfferLoaders,
   getOfferFormValues,
+  getNegotiationComments,
 };

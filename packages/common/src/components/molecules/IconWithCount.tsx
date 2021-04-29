@@ -18,8 +18,8 @@ interface IIconWithCount {
   onPress?: () => void;
 }
 
-const CIRCLE_SIZE_DEFAULT = 60;
-const ICON_SIZE_DEFAULT = 30;
+const CIRCLE_SIZE_DEFAULT = 55;
+const ICON_SIZE_DEFAULT = 24;
 
 const IconWithCount = (props: IIconWithCount): React.ReactElement => {
   const {
@@ -31,7 +31,7 @@ const IconWithCount = (props: IIconWithCount): React.ReactElement => {
     circleSize = CIRCLE_SIZE_DEFAULT,
     circleBackgroundColor = theme.colors.notificationRed,
     containerStyle,
-    bottomOffset = 1.2 * iconSize,
+    bottomOffset = iconSize / 3,
     onPress = FunctionUtils.noop,
   } = props;
 
@@ -39,11 +39,13 @@ const IconWithCount = (props: IIconWithCount): React.ReactElement => {
   return (
     <TouchableOpacity style={[styles.container, containerStyle && containerStyle]} onPress={onPress}>
       <Icon name={iconName} size={iconSize} color={iconColor} />
-      <View style={styles.circleView}>
-        <Label textType="semiBold" type="regular" style={styles.count}>
-          {count}
-        </Label>
-      </View>
+      {count > 0 && (
+        <View style={styles.circleView}>
+          <Label textType="bold" type="small" style={styles.count}>
+            {count}
+          </Label>
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -74,10 +76,15 @@ const getStyles = (
       borderRadius: circleSize,
       justifyContent: 'center',
       alignItems: 'center',
-      padding: circleSize / 10,
       position: 'absolute',
-      left: iconSize / 1.5,
-      bottom: bottomOffset,
+      transform: [
+        {
+          translateX: iconSize / 1.5,
+        },
+        {
+          translateY: -bottomOffset,
+        },
+      ],
       backgroundColor: circleBackgroundColor,
     },
     count: {

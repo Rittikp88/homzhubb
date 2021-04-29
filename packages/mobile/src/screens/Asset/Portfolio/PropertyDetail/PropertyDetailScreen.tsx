@@ -394,6 +394,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
               onCreateLease={this.handleCreateLease}
               onSelectOffer={this.handleOfferSelection}
               selectedOffers={selectedOffer}
+              onPressMessages={this.onPressMessages}
             />
           </View>
         );
@@ -549,6 +550,13 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       this.setState({ isDeleteProperty: false, isLoading: false });
     }
+  };
+
+  private onPressMessages = (): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.ChatScreen, { isFromOffers: true });
   };
 
   private onSelectMenuItem = (value: string): void => {

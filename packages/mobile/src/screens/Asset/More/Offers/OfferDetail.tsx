@@ -40,6 +40,10 @@ const OfferDetail = (): React.ReactElement => {
     goBack();
   };
 
+  const onPressMessages = (): void => {
+    navigate(ScreensKeys.ChatScreen, { isFromOffers: true });
+  };
+
   const handleActions = (action: OfferAction): void => {
     switch (action) {
       case OfferAction.ACCEPT:
@@ -108,6 +112,7 @@ const OfferDetail = (): React.ReactElement => {
           onCreateLease={handleCreateLease}
           onSelectOffer={handleOfferSelection}
           selectedOffers={selectedOffer}
+          onPressMessages={onPressMessages}
         />
       </UserScreen>
       {selectedOffer.length > 0 && (

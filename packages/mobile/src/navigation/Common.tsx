@@ -14,6 +14,7 @@ import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDesc
 import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
 import ApproveQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ApproveQuote';
+import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
@@ -29,7 +30,7 @@ import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
-import { IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IChatScreen, IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
   IAddRecordProps,
   IAssetDescriptionProps,
@@ -78,6 +79,7 @@ export type CommonParamList = {
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
   [ScreensKeys.SupportScreen]: { isFromDashboard?: boolean };
+  [ScreensKeys.ChatScreen]: IChatScreen;
 };
 
 /**
@@ -117,6 +119,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.SuccessResetPassword} component={SuccessResetPassword} />
       <Stack.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
       <Stack.Screen name={ScreensKeys.SupportScreen} component={Support} />
+      <Stack.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
     </>
   );
 };

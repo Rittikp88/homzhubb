@@ -188,6 +188,7 @@ class ProspectProfile extends Component<Props, IScreenState> {
                       data={tenantType as Unit[]}
                       onToggle={this.handleUserType}
                       selectedValue={userType}
+                      containerStyle={styles.radioButton}
                     />
                   </KeyboardAwareScrollView>
 
@@ -314,7 +315,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 3,
-    marginVertical: 5,
+    marginTop: 5,
   },
   radioGroup: {
     marginVertical: 16,
@@ -341,5 +342,8 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     elevation: 7,
+  },
+  radioButton: {
+    marginBottom: 12,
   },
 });

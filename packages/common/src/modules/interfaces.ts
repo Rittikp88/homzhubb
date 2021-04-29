@@ -1,3 +1,4 @@
+import { CallEffect, PutEffect, SelectEffect } from '@redux-saga/core/effects';
 import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { IOfferState } from '@homzhub/common/src/modules/offers/interfaces';
@@ -27,3 +28,7 @@ export interface IState {
   offer: IOfferState;
   user: IUserState;
 }
+
+export type GeneratorEffects = SelectEffect | PutEffect | CallEffect;
+
+export type VoidGenerator = Generator<GeneratorEffects, void>;

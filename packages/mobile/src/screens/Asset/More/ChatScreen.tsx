@@ -12,9 +12,12 @@ import { MessageRepository } from '@homzhub/common/src/domain/repositories/Messa
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import ChatInputBox from '@homzhub/common/src/components/molecules/ChatInputBox';
@@ -28,6 +31,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { IAttachmentResponse } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { ICurrentOffer, IGetNegotiationComments } from '@homzhub/common/src/modules/offers/interfaces';
 
 enum MenuItems {
   VIEW_INFO = 'VIEW_INFO',
@@ -38,19 +42,24 @@ interface IDispatchProps {
   setAttachment: (payload: string) => void;
   clearAttachment: () => void;
   clearChatDetail: () => void;
+  getNegotiationComments: (payload: IGetNegotiationComments) => void;
 }
 
 interface IStateProps {
   currentChat: IChatPayload | null;
+  currentOfferPayload: ICurrentOffer | null;
 }
 
 interface IScreenState {
   isScrollToBottom: boolean;
   isMenuVisible: boolean;
   attachment: ImagePickerResponse;
+  users: string;
+  assetName: string;
+  isLoading: boolean;
 }
 
-type libraryProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ChatScreen>;
+type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.ChatScreen>;
 type Props = libraryProps & IDispatchProps & IStateProps;
 
 class ChatScreen extends Component<Props, IScreenState> {
@@ -58,30 +67,47 @@ class ChatScreen extends Component<Props, IScreenState> {
     isScrollToBottom: true,
     isMenuVisible: false,
     attachment: {} as ImagePickerResponse,
+    users: '',
+    isLoading: false,
+    assetName: '',
   };
 
   public async componentDidMount(): Promise<void> {
+    const {
+      route: { params },
+    } = this.props;
     if (!(await NotificationService.checkIsPermissionGranted())) {
       await NotificationService.requestPermisson();
+    }
+    if (params && params.isFromOffers) {
+      this.getUsersInOfferChat().then();
     }
   }
 
   public render(): React.ReactNode {
-    const { t, currentChat } = this.props;
-    const { isScrollToBottom, isMenuVisible } = this.state;
+    const { t, currentChat, route } = this.props;
+    const { isScrollToBottom, isMenuVisible, isLoading, assetName, users } = this.state;
     const menuItems = this.getMenuItems();
+    const isFromOffers = Boolean(route?.params?.isFromOffers);
 
     return (
       <>
         <UserScreen
           title={t('assetMore:more')}
-          pageTitle={currentChat?.groupName ?? ''}
+          subTitle={isFromOffers ? users : undefined}
+          pageTitle={isFromOffers ? assetName : currentChat?.groupName ?? ''}
           onBackPress={this.onGoBack}
           scrollEnabled={false}
-          rightNode={this.renderRightNode()}
+          rightNode={!isFromOffers ? this.renderRightNode() : undefined}
           onNavigateCallback={this.handleNavigationCallback}
+          loading={isLoading}
         >
-          <MessagePreview isScrollToBottom={isScrollToBottom} shouldScrollToBottom={this.updateScroll} />
+          <MessagePreview
+            isFromOffers={isFromOffers}
+            isScrollToBottom={isScrollToBottom}
+            shouldScrollToBottom={this.updateScroll}
+            shouldReverseOrder={!isFromOffers}
+          />
         </UserScreen>
         <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
         {this.renderInputView()}
@@ -90,6 +116,8 @@ class ChatScreen extends Component<Props, IScreenState> {
   }
 
   private renderInputView = (): React.ReactElement => {
+    const { route } = this.props;
+    const isFromOffers = Boolean(route?.params?.isFromOffers);
     return (
       <KeyboardAvoidingView behavior={PlatformUtils.isIOS() ? 'padding' : undefined}>
         <ChatInputBox
@@ -99,6 +127,7 @@ class ChatScreen extends Component<Props, IScreenState> {
           onSubmit={this.onSendMessage}
           onUploadImage={this.onUploadAttachment}
           onPressCamera={this.onClickImage}
+          hasAttachments={!isFromOffers}
         />
       </KeyboardAvoidingView>
     );
@@ -178,8 +207,12 @@ class ChatScreen extends Component<Props, IScreenState> {
   };
 
   private onSendMessage = (text: string, isAttachment?: boolean): void => {
-    const { currentChat } = this.props;
+    const { currentChat, route } = this.props;
     const { attachment } = this.state;
+    if (route?.params?.isFromOffers) {
+      this.postComment(text);
+      return;
+    }
     if (!currentChat) return;
 
     let payload: IMessagePayload = {
@@ -216,6 +249,39 @@ class ChatScreen extends Component<Props, IScreenState> {
 
     if (!isAttachment && !!payload.message) {
       this.handleSend(payload);
+    }
+  };
+
+  private postComment = async (comment: string): Promise<void> => {
+    const { currentOfferPayload, getNegotiationComments } = this.props;
+    if (currentOfferPayload) {
+      try {
+        const payload: ICurrentOffer = { ...currentOfferPayload, threadId: currentOfferPayload.threadId ?? '' };
+        await OffersRepository.postNegotiationComments(payload, comment);
+        getNegotiationComments({ isNew: true });
+      } catch (e) {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
+    }
+  };
+
+  private getUsersInOfferChat = async (): Promise<void> => {
+    const { currentOfferPayload } = this.props;
+    if (currentOfferPayload) {
+      const payload: ICurrentOffer = { ...currentOfferPayload, threadId: currentOfferPayload.threadId ?? '' };
+      try {
+        this.setState({ isLoading: true });
+        const response = await OffersRepository.getUsersInOfferThread(payload);
+        const userNames = response.users.map((user) => user.fullName).join(', ');
+        this.setState({
+          users: userNames,
+          assetName: response.name.split(',')[0],
+          isLoading: false,
+        });
+      } catch (e) {
+        this.setState({ isLoading: false });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
     }
   };
 
@@ -275,14 +341,20 @@ class ChatScreen extends Component<Props, IScreenState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getCurrentChatDetail } = CommonSelectors;
+  const { getOfferPayload } = OfferSelectors;
   return {
     currentChat: getCurrentChatDetail(state),
+    currentOfferPayload: getOfferPayload(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getMessages, setAttachment, clearAttachment, clearChatDetail } = CommonActions;
-  return bindActionCreators({ getMessages, setAttachment, clearAttachment, clearChatDetail }, dispatch);
+  const { getNegotiationComments } = OfferActions;
+  return bindActionCreators(
+    { getMessages, setAttachment, clearAttachment, clearChatDetail, getNegotiationComments },
+    dispatch
+  );
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ChatScreen));

@@ -14,10 +14,19 @@ interface IProps {
   onFocusOut: () => void;
   onSubmit: (text: string, isAttachment?: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  hasAttachments?: boolean;
 }
 
 const ChatInputBox = (props: IProps): React.ReactElement => {
-  const { onSubmit, onUploadImage, containerStyle, onInputFocus, onPressCamera, onFocusOut } = props;
+  const {
+    onSubmit,
+    onUploadImage,
+    containerStyle,
+    onInputFocus,
+    onPressCamera,
+    onFocusOut,
+    hasAttachments = true,
+  } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const attachmentUrl: string = useSelector(CommonSelectors.getMessageAttachment);
@@ -51,14 +60,16 @@ const ChatInputBox = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[styles.container, containerStyle]}>
-      <TouchableOpacity onPress={onPressIcon}>
-        <Icon
-          name={isImage ? icons.circularCrossFilled : icons.circularPlus}
-          color={theme.colors.blue}
-          size={28}
-          style={styles.icon}
-        />
-      </TouchableOpacity>
+      {hasAttachments && (
+        <TouchableOpacity onPress={onPressIcon}>
+          <Icon
+            name={isImage ? icons.circularCrossFilled : icons.circularPlus}
+            color={theme.colors.blue}
+            size={28}
+            style={styles.icon}
+          />
+        </TouchableOpacity>
+      )}
       {isImage && !attachmentUrl && (
         <View style={styles.iconView}>
           <Icon

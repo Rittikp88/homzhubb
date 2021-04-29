@@ -37,6 +37,7 @@ interface IProps {
   onPressAction: (action: OfferAction) => void;
   onCreateLease: () => void;
   onSelectOffer?: (id: number) => void;
+  onPressMessages: () => void;
   selectedOffers?: number[];
   isDetailView?: boolean;
 }
@@ -47,7 +48,7 @@ const initialObj = {
 };
 
 const OfferView = (props: IProps): React.ReactElement => {
-  const { onPressAction, isDetailView = false, onCreateLease, onSelectOffer, selectedOffers } = props;
+  const { onPressAction, isDetailView = false, onCreateLease, onSelectOffer, selectedOffers, onPressMessages } = props;
 
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.offers);
@@ -164,6 +165,17 @@ const OfferView = (props: IProps): React.ReactElement => {
       />
       {offers.length > 0 && listingDetail ? (
         offers.map((offer, index) => {
+          const { saleTerm, leaseTerm } = listingDetail;
+          const onPressMessageIcon = (): void => {
+            dispatch(
+              OfferActions.setCurrentOfferPayload({
+                type: leaseTerm ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+                listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0,
+                threadId: offer.threadId,
+              })
+            );
+            onPressMessages();
+          };
           return (
             <OfferCard
               key={index}
@@ -175,6 +187,7 @@ const OfferView = (props: IProps): React.ReactElement => {
               isDetailView
               onCreateLease={(): void => handleLeaseCreation(offer)}
               onMoreInfo={handlePastOffer}
+              onPressMessages={onPressMessageIcon}
               onSelectOffer={onSelectOffer}
               selectedOffers={selectedOffers}
             />

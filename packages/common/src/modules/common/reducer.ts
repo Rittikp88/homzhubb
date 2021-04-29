@@ -69,7 +69,7 @@ export const commonReducer = (
       // eslint-disable-next-line no-case-declarations
       const { response, isNew } = action.payload as IMessageSuccess;
       // eslint-disable-next-line no-case-declarations
-      const messageResult = ReducerUtils.formatMessages(response, state.messages, isNew);
+      const messageResult = ReducerUtils.formatMessages(response.results, state.messages, isNew);
       return {
         ...state,
         messages: {

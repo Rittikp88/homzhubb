@@ -1,12 +1,15 @@
+import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { OfferActionPayloadTypes, OfferActionTypes } from '@homzhub/common/src/modules/offers/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
+import { Message } from '@homzhub/common/src/domain/models/Message';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   ICurrentOffer,
   IOfferCompare,
   OfferFormValues,
   IOfferState,
+  IGetNegotiationComments,
 } from '@homzhub/common/src/modules/offers/interfaces';
 
 export const initialOfferState: IOfferState = {
@@ -18,8 +21,10 @@ export const initialOfferState: IOfferState = {
   loaders: {
     negotiations: false,
     listingDetail: false,
+    negotiationComments: false,
   },
   offerForm: null,
+  negotiationComments: null,
 };
 
 export const offerReducer = (
@@ -60,6 +65,27 @@ export const offerReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['negotiations']: false },
+      };
+    case OfferActionTypes.GET.NEGOTIATION_COMMENTS:
+      // eslint-disable-next-line no-case-declarations
+      const payload = action.payload as IGetNegotiationComments;
+      return {
+        ...state,
+        ['negotiationComments']: !payload?.isNew ? null : state.negotiationComments,
+        ['loaders']: { ...state.loaders, ['negotiationComments']: !payload?.isNew },
+      };
+    case OfferActionTypes.GET.NEGOTIATION_COMMENTS_SUCCESS:
+      // eslint-disable-next-line no-case-declarations
+      const messageResult = ReducerUtils.formatMessages(action.payload as Message[], null);
+      return {
+        ...state,
+        ['negotiationComments']: messageResult,
+        ['loaders']: { ...state.loaders, ['negotiationComments']: false },
+      };
+    case OfferActionTypes.GET.NEGOTIATION_COMMENTS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['negotiationComments']: false },
       };
     case OfferActionTypes.SET.CURRENT_OFFER_PAYLOAD:
       return {

@@ -772,7 +772,8 @@ export interface ILeaseTermData {
 }
 
 export interface IChatScreen {
-  groupId: number;
+  groupId?: number | string;
+  isFromOffers?: boolean;
 }
 
 export interface IDeviceTokenPayload {

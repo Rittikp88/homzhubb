@@ -12,6 +12,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import TextWithIcon from '@homzhub/common/src/components/atoms/TextWithIcon';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import IconWithCount from '@homzhub/common/src/components/molecules/IconWithCount';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import UserView from '@homzhub/common/src/components/organisms/UserView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -34,6 +35,7 @@ interface IProps {
   onSelectOffer?: (count: number) => void;
   selectedOffers?: number[];
   containerStyle?: StyleProp<ViewStyle>;
+  onPressMessages: () => void;
 }
 
 interface IOwnState {
@@ -193,14 +195,14 @@ class OfferCard extends Component<Props, IOwnState> {
   };
 
   private renderOfferHeader = (currency: string): React.ReactElement => {
-    const { offer, compareData, isDetailView, selectedOffers, isOfferDashboard = false } = this.props;
+    const { offer, compareData, isDetailView, selectedOffers, onPressMessages, isOfferDashboard = false } = this.props;
     const selectedValues: number[] = selectedOffers ?? [];
     const isSelected = selectedValues.includes(offer.id);
 
     const offerHeader = OfferUtils.getOfferHeader(offer, compareData, currency);
     return (
       <View style={styles.headerView}>
-        <View>
+        <View style={styles.flexOne}>
           <TextWithIcon
             icon={icons.circularFilledInfo}
             text={offerHeader.key}
@@ -209,25 +211,38 @@ class OfferCard extends Component<Props, IOwnState> {
             iconColor={theme.colors.darkTint4}
             textStyle={styles.headerKey}
           />
-          <TextWithIcon
-            icon={offerHeader.icon}
-            text={offerHeader.value}
-            variant="text"
-            textSize="large"
-            fontWeight="semiBold"
-            iconColor={offerHeader.iconColor}
-            textStyle={styles.offerValue}
-            containerStyle={styles.headerValue}
-          />
+          <View style={styles.headerIconsContainer}>
+            <TextWithIcon
+              icon={offerHeader.icon}
+              text={offerHeader.value}
+              variant="text"
+              textSize="large"
+              fontWeight="semiBold"
+              iconColor={offerHeader.iconColor}
+              textStyle={styles.offerValue}
+              containerStyle={styles.headerValue}
+            />
+            {isDetailView && (
+              <View style={styles.iconContainer}>
+                <IconWithCount
+                  iconName={icons.message}
+                  count={offer.commentsCount}
+                  onPress={onPressMessages}
+                  containerStyle={!isOfferDashboard ? styles.messageIcon : undefined}
+                />
+
+                {!isOfferDashboard && (
+                  <Icon
+                    name={isSelected ? icons.checkboxOn : icons.circularCompare}
+                    color={theme.colors.primaryColor}
+                    size={24}
+                    onPress={(): void => this.handleOfferCompare(offer.id)}
+                  />
+                )}
+              </View>
+            )}
+          </View>
         </View>
-        {isDetailView && !isOfferDashboard && (
-          <Icon
-            name={isSelected ? icons.checkboxOn : icons.circularCompare}
-            color={theme.colors.primaryColor}
-            size={24}
-            onPress={(): void => this.handleOfferCompare(offer.id)}
-          />
-        )}
       </View>
     );
   };
@@ -540,5 +555,24 @@ const styles = StyleSheet.create({
   },
   highlighted: {
     backgroundColor: theme.colors.moreSeparator,
+  },
+  headerContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  flexOne: {
+    flex: 1,
+  },
+  headerIconsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  messageIcon: {
+    marginEnd: 12,
+  },
+  iconContainer: {
+    flexDirection: 'row',
   },
 });

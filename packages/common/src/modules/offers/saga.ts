@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import { call, put, takeLatest } from '@redux-saga/core/effects';
+import { call, put, select, takeLatest } from '@redux-saga/core/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions, OfferActionTypes } from '@homzhub/common/src/modules/offers/actions';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { Message } from '@homzhub/common/src/domain/models/Message';
+import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import { INegotiation, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 
@@ -57,7 +59,19 @@ export function* getNegotiations(action: IFluxStandardAction<INegotiation>) {
   }
 }
 
+export function* getNegotiationComments(): VoidGenerator {
+  try {
+    const currentOfferPayload = yield select(OfferSelectors.getOfferPayload);
+    const response = yield call(OffersRepository.getNegotiationComments, currentOfferPayload as ICurrentOffer);
+    yield put(OfferActions.getNegotiationCommentsSucess(response as Message[]));
+  } catch (e) {
+    yield put(OfferActions.getNegotiationCommentsFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+  }
+}
+
 export function* watchOffer() {
   yield takeLatest(OfferActionTypes.GET.LISTING_DETAIL, getListingDetail);
   yield takeLatest(OfferActionTypes.GET.NEGOTIATIONS, getNegotiations);
+  yield takeLatest(OfferActionTypes.GET.NEGOTIATION_COMMENTS, getNegotiationComments);
 }

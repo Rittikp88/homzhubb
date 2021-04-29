@@ -234,7 +234,13 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
         );
       case OfferType.OFFER_MADE:
       default:
-        return <OfferMade propertyOffer={item} onViewOffer={(): void => this.navigateToDetail(payload, id)} />;
+        return (
+          <OfferMade
+            propertyOffer={item}
+            onViewOffer={(): void => this.navigateToDetail(payload, id)}
+            onPressMessages={this.onPressMessages}
+          />
+        );
     }
   };
 
@@ -290,6 +296,11 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       this.setState({ isOfferMadeInfoRead: true });
       StorageService.set(StorageKeys.IS_OFFER_MADE_INFO_READ, true);
     }
+  };
+
+  private onPressMessages = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.ChatScreen, { isFromOffers: true });
   };
 
   private getReceivedDropdownData = (receivedOffers: OfferFilter): IDropdownData[] => {

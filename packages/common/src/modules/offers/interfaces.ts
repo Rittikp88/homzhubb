@@ -1,5 +1,6 @@
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
+import { IMessageKeyValue } from '@homzhub/common/src/domain/models/Message';
 import { ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 
@@ -12,13 +13,16 @@ export interface IOfferState {
   loaders: {
     negotiations: boolean;
     listingDetail: boolean;
+    negotiationComments: boolean;
   };
   offerForm: OfferFormValues | null;
+  negotiationComments: IMessageKeyValue | null;
 }
 
 export interface ICurrentOffer {
   type: ListingType;
   listingId: number;
+  threadId?: string;
 }
 
 export interface IExistingProposalsLease {
@@ -53,4 +57,8 @@ export interface IOfferCompare {
 export interface IFormattedDetails {
   type: string;
   value: string | number | null;
+}
+
+export interface IGetNegotiationComments {
+  isNew?: boolean;
 }

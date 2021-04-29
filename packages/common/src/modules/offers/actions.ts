@@ -1,9 +1,15 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { Message } from '@homzhub/common/src/domain/models/Message';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { INegotiation } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ICurrentOffer, IOfferCompare, OfferFormValues } from '@homzhub/common/src/modules/offers/interfaces';
+import {
+  ICurrentOffer,
+  IGetNegotiationComments,
+  IOfferCompare,
+  OfferFormValues,
+} from '@homzhub/common/src/modules/offers/interfaces';
 
 const actionTypePrefix = 'Offers/';
 export const OfferActionTypes = {
@@ -14,6 +20,9 @@ export const OfferActionTypes = {
     NEGOTIATIONS: `${actionTypePrefix}NEGOTIATIONS`,
     NEGOTIATIONS_SUCCESS: `${actionTypePrefix}NEGOTIATIONS_SUCCESS`,
     NEGOTIATIONS_FAILURE: `${actionTypePrefix}NEGOTIATIONS_FAILURE`,
+    NEGOTIATION_COMMENTS: `${actionTypePrefix}NEGOTIATION_COMMENTS`,
+    NEGOTIATION_COMMENTS_SUCCESS: `${actionTypePrefix}NEGOTIATION_COMMENTS_SUCCESS`,
+    NEGOTIATION_COMMENTS_FAILURE: `${actionTypePrefix}NEGOTIATIONS_COMMENTS_FAILURE`,
   },
   SET: {
     CURRENT_OFFER_PAYLOAD: `${actionTypePrefix}CURRENT_OFFER_PAYLOAD`,
@@ -86,6 +95,20 @@ const clearOfferFormValues = (): IFluxStandardAction => ({
   type: OfferActionTypes.CLEAR_OFFER_FORM_VALUES,
 });
 
+const getNegotiationComments = (payload: IGetNegotiationComments): IFluxStandardAction<IGetNegotiationComments> => ({
+  type: OfferActionTypes.GET.NEGOTIATION_COMMENTS,
+  payload,
+});
+
+const getNegotiationCommentsSucess = (payload: Message[]): IFluxStandardAction<Message[]> => ({
+  type: OfferActionTypes.GET.NEGOTIATION_COMMENTS_SUCCESS,
+  payload,
+});
+
+const getNegotiationCommentsFailure = (): IFluxStandardAction => ({
+  type: OfferActionTypes.GET.NEGOTIATION_COMMENTS_FAILURE,
+});
+
 export type OfferActionPayloadTypes =
   | ICurrentOffer
   | IAsset
@@ -93,7 +116,8 @@ export type OfferActionPayloadTypes =
   | IOffer[]
   | IOfferCompare
   | Offer
-  | OfferFormValues;
+  | OfferFormValues
+  | IGetNegotiationComments;
 
 export const OfferActions = {
   clearState,
@@ -109,4 +133,7 @@ export const OfferActions = {
   clearCurrentOffer,
   setOfferFormValues,
   clearOfferFormValues,
+  getNegotiationComments,
+  getNegotiationCommentsSucess,
+  getNegotiationCommentsFailure,
 };

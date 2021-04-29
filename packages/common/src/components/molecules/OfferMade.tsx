@@ -22,6 +22,7 @@ import { ICounterParam, ListingType } from '@homzhub/common/src/domain/repositor
 interface IProps {
   propertyOffer: Asset;
   onViewOffer: () => void;
+  onPressMessages: () => void;
 }
 
 const OfferMade = (props: IProps): React.ReactElement => {
@@ -29,6 +30,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
     propertyOffer,
     propertyOffer: { leaseNegotiation, saleNegotiation, leaseTerm, saleTerm },
     onViewOffer,
+    onPressMessages,
   } = props;
   const offer = leaseNegotiation || saleNegotiation;
 
@@ -106,6 +108,18 @@ const OfferMade = (props: IProps): React.ReactElement => {
     }
   };
 
+  const onPressMessageIcon = (): void => {
+    if (offer) {
+      dispatch(
+        OfferActions.setCurrentOfferPayload({
+          type: leaseTerm ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+          listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0,
+          threadId: offer.threadId,
+        })
+      );
+      onPressMessages();
+    }
+  };
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={handlePropertyView}>
@@ -122,6 +136,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
           isOfferDashboard
           pastOffer={pastOffers}
           onMoreInfo={handlePastOffer}
+          onPressMessages={onPressMessageIcon}
         />
       )}
       <Divider containerStyles={styles.divider} />

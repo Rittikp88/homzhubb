@@ -10,7 +10,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -30,6 +30,7 @@ interface IUserScreenProps {
   onNavigateCallback?: () => void;
   contentContainerStyle?: ViewStyle;
   headerStyle?: ViewStyle;
+  subTitle?: string;
 }
 
 // Constants for Gradient background
@@ -57,6 +58,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     onNavigateCallback,
     contentContainerStyle,
     headerStyle,
+    subTitle,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -120,9 +122,25 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
               onPress={onBackPress}
             />
           )}
-          <Text type="small" textType="semiBold" style={[styles.pageTitle, !hasLeftIcon && styles.countText]}>
-            {pageTitle}
-          </Text>
+          <View style={styles.titleContainer}>
+            <Text
+              type="small"
+              textType="semiBold"
+              style={[subTitle ? styles.pageTitleWithoutFlex : styles.pageTitle, !hasLeftIcon && styles.countText]}
+            >
+              {pageTitle}
+            </Text>
+            {Boolean(subTitle?.length) && (
+              <Label
+                type="regular"
+                textType="regular"
+                style={[styles.pageTitleWithoutFlex, !hasLeftIcon && styles.countText, styles.subTitle]}
+                maxLength={50}
+              >
+                {subTitle}
+              </Label>
+            )}
+          </View>
         </View>
         {rightNode && <View style={styles.rightNodeStyle}>{rightNode}</View>}
       </View>
@@ -185,6 +203,9 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint1,
     flex: 1,
   },
+  pageTitleWithoutFlex: {
+    color: theme.colors.darkTint1,
+  },
   backIconStyle: {
     marginEnd: 16,
   },
@@ -201,5 +222,11 @@ const styles = StyleSheet.create({
   },
   countText: {
     marginLeft: 5,
+  },
+  titleContainer: {
+    flex: 1,
+  },
+  subTitle: {
+    color: theme.colors.darkTint5,
   },
 });

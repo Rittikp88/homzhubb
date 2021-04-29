@@ -6,7 +6,9 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -14,6 +16,7 @@ import MessageCard from '@homzhub/common/src/components/molecules/MessageCard';
 import { IMessageKeyValue, IMessages, Message } from '@homzhub/common/src/domain/models/Message';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IGetNegotiationComments } from '@homzhub/common/src/modules/offers/interfaces';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -21,10 +24,12 @@ interface IStateProps {
   messages: IMessages | null;
   currentChat: IChatPayload | null;
   isLoading: boolean;
+  negotiationComments: IMessageKeyValue | null;
 }
 
 interface IDispatchProps {
   getMessages: (param: IGetMessageParam) => void;
+  getNegotiationComments: (payload: IGetNegotiationComments) => void;
 }
 
 interface IScreenState {
@@ -35,6 +40,8 @@ interface IProps {
   shouldEnableOuterScroll?: (enable: boolean) => void;
   shouldScrollToBottom?: () => void;
   isScrollToBottom?: boolean;
+  isFromOffers: boolean;
+  shouldReverseOrder?: boolean;
 }
 
 type Props = WithTranslation & IStateProps & IDispatchProps & IProps;
@@ -47,9 +54,13 @@ class MessagePreview extends Component<Props, IScreenState> {
   };
 
   public componentDidMount = (): void => {
-    const { getMessages, currentChat } = this.props;
+    const { getMessages, currentChat, isFromOffers, getNegotiationComments } = this.props;
     if (currentChat) {
       getMessages({ groupId: currentChat.groupId });
+      return;
+    }
+    if (isFromOffers) {
+      getNegotiationComments({ isNew: false });
     }
   };
 
@@ -61,10 +72,22 @@ class MessagePreview extends Component<Props, IScreenState> {
   };
 
   public render(): React.ReactNode {
-    const { messages, shouldEnableOuterScroll, isLoading } = this.props;
-    if (isLoading && !messages) return <Loader visible />;
-    if (!messages || (messages && isEmpty(messages.messageResult))) return this.renderEmptyView();
-    const { messageResult } = messages;
+    const {
+      messages,
+      shouldEnableOuterScroll,
+      isLoading,
+      isFromOffers,
+      negotiationComments,
+      shouldReverseOrder = true,
+    } = this.props;
+    const isEmptyState = isEmpty(isFromOffers ? negotiationComments : messages?.messageResult);
+    if (isLoading && isEmptyState) return <Loader visible />;
+    if (isEmptyState) return this.renderEmptyView();
+    const messagesToShow = isFromOffers ? negotiationComments : messages?.messageResult;
+    let messageKeys: string[] = [];
+    if (messagesToShow) {
+      messageKeys = shouldReverseOrder ? Object.keys(messagesToShow).reverse() : Object.keys(messagesToShow);
+    }
 
     return (
       <ScrollView
@@ -76,25 +99,25 @@ class MessagePreview extends Component<Props, IScreenState> {
         onScrollEndDrag={this.controlScroll}
         style={styles.container}
       >
-        {Object.keys(messageResult)
-          .reverse()
-          .map((key) => {
-            const formattedByTime = this.getFormattedMessage(messageResult[key], 'h:mm:ss');
+        {messagesToShow &&
+          messageKeys.map((key) => {
+            const formattedByTime = this.getFormattedMessage(messagesToShow[key], 'h:mm:ss');
+            const formattedTimeKeys = shouldReverseOrder
+              ? Object.keys(formattedByTime).reverse()
+              : Object.keys(formattedByTime);
             return (
               <>
                 {this.renderSeparator(key)}
-                {Object.keys(formattedByTime)
-                  .reverse()
-                  .map((time) => {
-                    const user = this.getMessageByUser(formattedByTime[time]);
-                    return (
-                      <>
-                        {user.map((item, index) => {
-                          return <MessageCard key={index} details={item} />;
-                        })}
-                      </>
-                    );
-                  })}
+                {formattedTimeKeys.map((time) => {
+                  const user = this.getMessageByUser(formattedByTime[time]);
+                  return (
+                    <>
+                      {user.map((item, index) => {
+                        return <MessageCard key={index} details={item} />;
+                      })}
+                    </>
+                  );
+                })}
               </>
             );
           })}
@@ -113,13 +136,13 @@ class MessagePreview extends Component<Props, IScreenState> {
   };
 
   private renderEmptyView = (): ReactElement => {
-    const { t } = this.props;
+    const { t, isFromOffers } = this.props;
     return (
       <View style={styles.flexOne}>
         {this.renderSeparator(t('common:today'))}
         <View style={styles.emptyViewContent}>
           <Label type="large" style={styles.emptyText}>
-            {t('noMessageYet')}
+            {t(isFromOffers ? 'noCommentsYet' : 'noMessageYet')}
           </Label>
         </View>
       </View>
@@ -176,16 +199,19 @@ class MessagePreview extends Component<Props, IScreenState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getMessages, getCurrentChatDetail, getMessagesLoading } = CommonSelectors;
+  const { getNegotiationComments } = OfferSelectors;
   return {
     messages: getMessages(state),
     currentChat: getCurrentChatDetail(state),
     isLoading: getMessagesLoading(state),
+    negotiationComments: getNegotiationComments(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getMessages } = CommonActions;
-  return bindActionCreators({ getMessages }, dispatch);
+  const { getNegotiationComments } = OfferActions;
+  return bindActionCreators({ getMessages, getNegotiationComments }, dispatch);
 };
 
 export default connect(

@@ -27,7 +27,7 @@ export class Message {
   @JsonProperty('user', User)
   private _user = new User();
 
-  @JsonProperty('attachments', [Attachment])
+  @JsonProperty('attachments', [Attachment], true)
   private _attachments = [];
 
   get id(): number {

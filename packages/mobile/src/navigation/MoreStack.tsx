@@ -1,10 +1,9 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
-import { IChatScreen, IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { CommonParamList, getCommonScreen } from '@homzhub/mobile/src/navigation/Common';
 import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
-import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
@@ -25,7 +24,6 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.ValueAddedServices]: undefined;
   [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
   [ScreensKeys.Messages]: undefined;
-  [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam;
   [ScreensKeys.AddServiceTicket]: undefined;
   [ScreensKeys.PropertyOfferList]: undefined;
@@ -51,7 +49,6 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
       <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
       <MoreStackNavigator.Screen name={ScreensKeys.Messages} component={Messages} />
-      <MoreStackNavigator.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
       <MoreStackNavigator.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
       <MoreStackNavigator.Screen name={ScreensKeys.OfferDetail} component={OfferDetail} />
