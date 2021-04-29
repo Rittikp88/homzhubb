@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, TouchableOpacity, ViewStyle, TextStyle } from 'react-native';
+import { FlatList, TouchableOpacity, ViewStyle, TextStyle, StyleProp } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -114,7 +114,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   public renderAssetMetricsAndUpdates = (): React.ReactElement => {
     const { metrics } = this.state;
-    const styles = getStyles();
+
     return (
       <>
         <AssetMetricsList
@@ -128,7 +128,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           notification={metrics?.updates?.notifications?.count ?? 0}
           serviceTickets={metrics?.updates?.tickets?.count ?? 0}
           dues={metrics?.updates?.dues?.count ?? 0}
-          containerStyle={styles.assetCards}
+          containerStyle={styles.assetCards()}
           onPressDue={this.handleDues}
           onPressServiceTickets={this.handleServiceTickets}
           onPressNotification={this.handleNotification}
@@ -141,14 +141,13 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     const { t } = this.props;
     const { showBottomSheet, selectedRouteIndex } = this.state;
     const data = this.formatBottomSheetData();
-    const { flatList } = getStyles();
 
     const keyExtractor = (item: IFormattedBottomSheetData, index: number): string => `${item}:${index}`;
 
     const renderItem = ({ item, index }: { item: IFormattedBottomSheetData; index: number }): React.ReactElement => {
       const { icon, label, onPress } = item;
       const isSelected = index === selectedRouteIndex;
-      const styles = getStyles(isSelected);
+
       const onPressItem = (): void => {
         this.setState({ selectedRouteIndex: index });
         onPress();
@@ -157,11 +156,11 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       return (
         <>
           <TouchableOpacity
-            style={[styles.bottomSheetItemContainer, index % 2 === 0 && styles.evenItem]}
+            style={[styles.bottomSheetItemContainer(isSelected), index % 2 === 0 && styles.evenItem()]}
             onPress={onPressItem}
           >
             <Icon name={icon} size={25} color={isSelected ? theme.colors.blue : theme.colors.darkTint3} />
-            <Text type="small" textType="regular" style={styles.itemLabel}>
+            <Text type="small" textType="regular" style={styles.itemLabel(isSelected)}>
               {label}
             </Text>
           </TouchableOpacity>
@@ -181,7 +180,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           numColumns={2}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          contentContainerStyle={flatList}
+          contentContainerStyle={styles.flatList()}
           extraData={selectedRouteIndex}
         />
       </BottomSheet>
@@ -230,8 +229,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
      );
      */
     const { navigation, t } = this.props;
-
-    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('dues'), tabHeader: t('dashboard') });
+    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('dues') ?? '', tabHeader: t('dashboard') });
   };
 
   private handleServiceTickets = (): void => {
@@ -375,44 +373,31 @@ export default connect(
   mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.assetDashboard)(Dashboard));
 
-interface IStyles {
-  assetCards: ViewStyle;
-  bottomSheetItemContainer: ViewStyle;
-  evenItem: ViewStyle;
-  itemLabel: TextStyle;
-  flatList: ViewStyle;
-}
-
-const getStyles = (isSelected = false): IStyles => {
-  const styles = StyleSheet.create({
-    assetCards: {
-      marginVertical: 12,
-    },
-    bottomSheetItemContainer: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingHorizontal: 30,
-      paddingVertical: 30,
-      marginBottom: 20,
-      borderWidth: 1,
-      borderColor: isSelected ? theme.colors.blue : theme.colors.disabled,
-      borderRadius: 4,
-      maxHeight: 100,
-    },
-    evenItem: {
-      marginEnd: 17,
-    },
-    itemLabel: {
-      marginTop: 10,
-      textAlign: 'center',
-      ...(isSelected && { color: theme.colors.blue }),
-    },
-    // eslint-disable-next-line react-native/no-unused-styles
-    flatList: {
-      marginBottom: 30,
-      marginHorizontal: 24,
-    },
-  });
-  return styles;
+const styles = {
+  assetCards: (): StyleProp<ViewStyle> => ({
+    marginVertical: 12,
+  }),
+  evenItem: (): StyleProp<ViewStyle> => ({
+    marginEnd: 17,
+  }),
+  bottomSheetItemContainer: (isSelected: boolean): StyleProp<ViewStyle> => ({
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 26,
+    paddingVertical: 20,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: isSelected ? theme.colors.blue : theme.colors.disabled,
+    borderRadius: 4,
+  }),
+  itemLabel: (isSelected: boolean): StyleProp<TextStyle> => ({
+    marginTop: 10,
+    textAlign: 'center',
+    ...(isSelected && { color: theme.colors.blue }),
+  }),
+  flatList: (): StyleProp<ViewStyle> => ({
+    marginBottom: 30,
+    marginHorizontal: 24,
+  }),
 };

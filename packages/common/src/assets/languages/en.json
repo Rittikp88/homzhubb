@@ -258,7 +258,7 @@
     "clearAll": "Clear All",
     "compare": "Compare",
     "haveAnyQuestions": "Have Any Questions?",
-    "supportFormSubHeader":"Your Client Success Partner"
+    "supportFormSubHeader": "Your Client Success Partner"
   },
   "auth": {
     "verifyNumber": "Verify your number",
