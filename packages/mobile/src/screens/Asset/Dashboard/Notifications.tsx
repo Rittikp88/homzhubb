@@ -120,7 +120,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     const { navigation, setFilter, setCurrentTicket, setCurrentOfferPayload, setCurrentAsset } = this.props;
     const {
       id,
-      deeplinkMetadata: { objectId, type, assetId, leaseListingId, saleListingId, screen, leaseUnitId },
+      deeplinkMetadata: { objectId, type, assetId, leaseListingId, saleListingId, screen, leaseUnitId, messageGroupId },
       isRead,
     } = data;
 
@@ -146,18 +146,12 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       });
     } else if (type === NotificationType.SERVICE_TICKET) {
       setCurrentTicket({ ticketId: objectId });
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.BottomTabs, {
-        screen: ScreensKeys.More,
-        params: {
-          screen: ScreensKeys.ServiceTicketDetail,
-          initial: false,
-        },
-      });
+      navigation.navigate(ScreensKeys.ServiceTicketDetail);
     } else if (type === NotificationType.OFFER) {
       setCurrentOfferPayload({
         type: leaseListingId === -1 ? ListingType.SALE_LISTING : ListingType.LEASE_LISTING,
         listingId: leaseListingId === -1 ? saleListingId : leaseListingId,
+        ...(Boolean(messageGroupId.length) && { threadId: messageGroupId }),
       });
 
       if (screen === NotificationScreens.OffersReceived) {
@@ -182,6 +176,11 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
             params: { isReceivedFlow: false },
           },
         });
+        return;
+      }
+
+      if (screen === NotificationScreens.OfferChats) {
+        navigation.navigate(ScreensKeys.ChatScreen, { isFromOffers: true });
         return;
       }
       // @ts-ignore

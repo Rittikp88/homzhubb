@@ -154,6 +154,18 @@ class NavigationService {
               },
             });
             break;
+          case NotificationScreens.OfferChats:
+            this.navigateTo(ScreensKeys.BottomTabs, {
+              screen: ScreensKeys.More,
+              params: {
+                screen: ScreensKeys.ChatScreen,
+                initial: false,
+                params: {
+                  isFromOffers: true,
+                },
+              },
+            });
+            break;
           default:
             this.navigateTo(ScreensKeys.BottomTabs, {
               screen: ScreensKeys.More,
@@ -261,15 +273,18 @@ class NavigationService {
   };
 
   private getOfferRedirectionPayload = (url: string): ICurrentOffer => {
+    const messageGroupId = this.getValueOfParamFromUrl(DynamicLinkParamKeys.MessageGroupId, url);
     if (url.includes(DynamicLinkParamKeys.LeaseListingId)) {
       return {
         type: ListingType.LEASE_LISTING,
         listingId: Number(this.getValueOfParamFromUrl(DynamicLinkParamKeys.LeaseListingId, url)),
+        ...(messageGroupId.length > 0 && { threadId: messageGroupId }),
       };
     }
     return {
       type: ListingType.SALE_LISTING,
       listingId: Number(this.getValueOfParamFromUrl(DynamicLinkParamKeys.SaleListingId, url)),
+      ...(messageGroupId.length > 0 && { threadId: messageGroupId }),
     };
   };
 

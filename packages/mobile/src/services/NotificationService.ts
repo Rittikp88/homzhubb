@@ -25,12 +25,15 @@ const notificationSubScreenMap = {
   [NotificationScreens.OffersReceived]: ScreensKeys.PropertyOfferList,
   [NotificationScreens.OffersMade]: ScreensKeys.PropertyOfferList,
   [NotificationScreens.OfferDetail]: ScreensKeys.OfferDetail,
+  // Todo (Praharsh) : Check this navigation once BE fixes it.
+  [NotificationScreens.OfferChats]: ScreensKeys.ChatScreen,
 };
 
 const notificationParamsMap = {
   [NotificationScreens.OffersReceived]: { isReceivedFlow: true },
   [NotificationScreens.OffersMade]: { isReceivedFlow: false },
   [NotificationScreens.OfferDetail]: {},
+  [NotificationScreens.OfferChats]: { isFromOffers: true },
 };
 
 interface INotificationData {
@@ -222,13 +225,14 @@ class NotificationService {
         break;
       case NotificationTypes.Offer:
         {
-          const { lease_listing_id, sale_listing_id } = JSONDeeplinkData;
+          const { lease_listing_id, sale_listing_id, message_group_id } = JSONDeeplinkData;
           navigationTab = ScreensKeys.More;
 
           store.dispatch(
             OfferActions.setCurrentOfferPayload({
               type: lease_listing_id ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
               listingId: Number(lease_listing_id) ?? Number(sale_listing_id) ?? 0,
+              ...(Boolean(message_group_id.length) && { threadId: message_group_id }),
             })
           );
 

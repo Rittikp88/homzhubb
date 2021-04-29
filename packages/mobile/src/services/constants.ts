@@ -34,12 +34,15 @@ export enum DynamicLinkParamKeys {
   Screen = 'screen',
   AssetId = 'asset_id',
   LeaseUnitId = 'lease_unit_id',
+  MessageGroupId = 'message_group_id',
+  MessageGroupName = 'message_group_name',
 }
 
 export enum NotificationScreens {
   OffersReceived = 'OFFERS_RECEIVED',
   OffersMade = 'OFFERS_MADE',
   OfferDetail = 'OFFER_DETAIL',
+  OfferChats = 'chat',
 }
 
 // Enums related to dynamic linking - ends

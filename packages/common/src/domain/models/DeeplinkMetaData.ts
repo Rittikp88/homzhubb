@@ -35,6 +35,12 @@ export class DeeplinkMetaData {
   @JsonProperty('lease_unit_id', Number, true)
   private _leaseUnitId = -1;
 
+  @JsonProperty('message_group_id', String, true)
+  private _messageGroupId = '';
+
+  @JsonProperty('message_group_name', String, true)
+  private _messageGroupName = '';
+
   get assetId(): number {
     return this._assetId;
   }
@@ -61,5 +67,13 @@ export class DeeplinkMetaData {
 
   get leaseUnitId(): number {
     return this._leaseUnitId;
+  }
+
+  get messageGroupId(): string {
+    return this._messageGroupId;
+  }
+
+  get messageGroupName(): string {
+    return this._messageGroupName;
   }
 }
