@@ -25,7 +25,6 @@ const notificationSubScreenMap = {
   [NotificationScreens.OffersReceived]: ScreensKeys.PropertyOfferList,
   [NotificationScreens.OffersMade]: ScreensKeys.PropertyOfferList,
   [NotificationScreens.OfferDetail]: ScreensKeys.OfferDetail,
-  // Todo (Praharsh) : Check this navigation once BE fixes it.
   [NotificationScreens.OfferChats]: ScreensKeys.ChatScreen,
 };
 
@@ -33,11 +32,16 @@ const notificationParamsMap = {
   [NotificationScreens.OffersReceived]: { isReceivedFlow: true },
   [NotificationScreens.OffersMade]: { isReceivedFlow: false },
   [NotificationScreens.OfferDetail]: {},
-  [NotificationScreens.OfferChats]: { isFromOffers: true },
+  [NotificationScreens.OfferChats]: { isFromOffers: true, groupId: undefined, isFromNotifications: true },
 };
 
 interface INotificationData {
   [key: string]: string;
+}
+
+interface IGetCurrentNavigation {
+  name: ScreensKeys;
+  params: any;
 }
 
 class NotificationService {
@@ -68,19 +72,16 @@ class NotificationService {
           data,
         } = remoteMessage;
         const JSONDeeplinkData: INotificationData = JSON.parse(deeplink_metadata);
-        const { type } = JSONDeeplinkData;
+        const { type, screen } = JSONDeeplinkData;
 
         const store = StoreProviderService.getStore();
 
+        const { message_group_id, message_group_name } = JSONDeeplinkData;
+        const { name, params } = this.getCurrentNavigation();
         switch (type) {
           case NotificationTypes.Chat:
             {
-              const { message_group_id, message_group_name } = JSONDeeplinkData;
-              const { navigation } = NavigationService;
-              const currentRoute = navigation.getCurrentRoute();
-              const { name, params } = currentRoute;
               const groupId = params && params.groupId ? params.groupId : null;
-
               const isOnChatScreen = name === ScreensKeys.ChatScreen && groupId === message_group_id;
 
               if (isOnChatScreen) {
@@ -109,6 +110,16 @@ class NotificationService {
             }
             break;
           default:
+            if (type === NotificationTypes.Offer && screen === NotificationScreens.OfferChats) {
+              const currentThreadId = store.getState().offer.currentOfferPayload?.threadId;
+              const { currentChatDetail } = store.getState().common;
+              const isOnSameChatScreen =
+                name === ScreensKeys.ChatScreen && message_group_id === currentThreadId && !currentChatDetail;
+              if (isOnSameChatScreen) {
+                store.dispatch(OfferActions.getNegotiationComments({ isNew: true }));
+                break;
+              }
+            }
             AlertHelper.success({
               message,
               onPress: () => this.redirectOnNotification(data),
@@ -176,6 +187,13 @@ class NotificationService {
     return false;
   };
 
+  private getCurrentNavigation = (): IGetCurrentNavigation => {
+    const { navigation } = NavigationService;
+    const currentRoute = navigation.getCurrentRoute();
+    const { name, params } = currentRoute;
+    return { name, params };
+  };
+
   private redirectOnNotification = (data: { [key: string]: string } | undefined): void => {
     if (!data || !data.deeplink_metadata) {
       return;
@@ -193,6 +211,8 @@ class NotificationService {
 
     const params = notificationParamsMap[screen as NotificationScreens] || {};
     const store = StoreProviderService.getStore();
+
+    const { name: currentScreen } = this.getCurrentNavigation();
 
     switch (type) {
       case NotificationTypes.Chat:
@@ -225,6 +245,7 @@ class NotificationService {
         break;
       case NotificationTypes.Offer:
         {
+          const isOnChatScreen = currentScreen === ScreensKeys.ChatScreen;
           const { lease_listing_id, sale_listing_id, message_group_id } = JSONDeeplinkData;
           navigationTab = ScreensKeys.More;
 
@@ -235,6 +256,10 @@ class NotificationService {
               ...(Boolean(message_group_id.length) && { threadId: message_group_id }),
             })
           );
+
+          if (isOnChatScreen) {
+            store.dispatch(OfferActions.getNegotiationComments({ isNew: true }));
+          }
 
           NavigationService.notificationNavigation(screenName, params, navigationTab);
         }

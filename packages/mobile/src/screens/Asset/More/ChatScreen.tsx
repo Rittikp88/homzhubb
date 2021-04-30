@@ -79,8 +79,20 @@ class ChatScreen extends Component<Props, IScreenState> {
     if (!(await NotificationService.checkIsPermissionGranted())) {
       await NotificationService.requestPermisson();
     }
+
     if (params && params.isFromOffers) {
       this.getUsersInOfferChat().then();
+    }
+  }
+
+  public componentDidUpdate(prevProps: Readonly<Props>): void {
+    const {
+      route: { params: currentParams },
+      navigation,
+    } = this.props;
+    if (currentParams?.isFromNotifications && currentParams?.isFromOffers) {
+      this.getUsersInOfferChat().then();
+      navigation.setParams({ ...currentParams, isFromNotifications: false });
     }
   }
 

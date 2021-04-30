@@ -162,6 +162,7 @@ class NavigationService {
                 initial: false,
                 params: {
                   isFromOffers: true,
+                  isFromNotifications: true,
                 },
               },
             });
