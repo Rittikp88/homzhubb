@@ -6,7 +6,6 @@ import { IAssetLocationMapProps, ScreensKeys, IPostAssetDetailsProps } from '@ho
 import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
 import AssetLocationSearch from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
 import AddProperty from '@homzhub/mobile/src/screens/Asset/Record/AddProperty';
-import AssetPlanSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetPlanSelection';
 import AssetListing from '@homzhub/mobile/src/screens/Asset/Record/AssetListing';
 
 export type PropertyPostStackParamList = {
@@ -14,7 +13,6 @@ export type PropertyPostStackParamList = {
   [ScreensKeys.AssetLocationMap]: IAssetLocationMapProps;
   [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps | { status: string } | undefined;
   [ScreensKeys.AddProperty]: undefined | { previousScreen: string };
-  [ScreensKeys.AssetPlanSelection]: undefined;
   [ScreensKeys.AssetListing]: undefined | { previousScreen: string; isEditFlow?: boolean };
 } & CommonParamList;
 
@@ -32,7 +30,6 @@ export const PropertyPostStack = (): React.ReactElement => {
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetLocationSearch} component={AssetLocationSearch} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetLocationMap} component={AssetLocationMap} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.PostAssetDetails} component={PostAssetDetails} />
-      <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetPlanSelection} component={AssetPlanSelection} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AssetListing} component={AssetListing} />
       <PropertyPostStackNavigator.Screen name={ScreensKeys.AddProperty} component={AddProperty} />
       {commonScreen}

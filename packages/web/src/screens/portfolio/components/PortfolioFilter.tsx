@@ -6,13 +6,14 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import PopupMenuOptions from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
 
 // TODO: Integration of rest of the filter buttons and optimization: Shagun
 
 interface IPortfolioFilterProps {
-  filterData: AssetFilter[];
+  filterData: AssetFilter;
   getStatus: (status: string) => void;
 }
 
@@ -32,8 +33,8 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
     children: undefined,
   };
 
-  const selectedFilter = (selectedValue: AssetFilter): void => {
-    getStatus(selectedValue.title);
+  const selectedFilter = (selectedValue: IDropdownOption): void => {
+    getStatus(selectedValue.value);
     setSelectedOption(selectedValue.label);
     closePopup();
   };
@@ -71,7 +72,7 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
       <View>
         <Popover
           forwardedRef={popupRef}
-          content={<PopupMenuOptions options={filterData} onMenuOptionPress={selectedFilter} />}
+          content={<PopupMenuOptions options={filterData.statusDropdown} onMenuOptionPress={selectedFilter} />}
           popupProps={popupProps}
         >
           <TouchableOpacity activeOpacity={1}>

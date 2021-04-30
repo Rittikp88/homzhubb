@@ -4,19 +4,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 import { Links } from '@homzhub/common/src/domain/models/PaginationLinks';
-
-@JsonObject('Asset')
-class Asset {
-  @JsonProperty('id', Number)
-  private _id = 0;
-
-  @JsonProperty('project_name', String)
-  private _projectName = '';
-
-  get projectName(): string {
-    return this._projectName;
-  }
-}
+import { Property } from '@homzhub/common/src/domain/models/Property';
 
 @JsonObject('FinancialRecords')
 export class FinancialRecords {
@@ -47,8 +35,8 @@ export class FinancialRecords {
   @JsonProperty('receiver_name', String)
   private _receiverName = '';
 
-  @JsonProperty('asset', Asset)
-  private _asset: Asset | null = null;
+  @JsonProperty('asset', Property)
+  private _asset: Property | null = null;
 
   @JsonProperty('currency', Currency)
   private _currency: Currency = new Currency();
@@ -104,7 +92,7 @@ export class FinancialRecords {
     return this._attachments;
   }
 
-  get asset(): Asset | null {
+  get asset(): Property | null {
     return this._asset;
   }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { PickerItemProps, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -34,7 +34,6 @@ import {
   IPortfolioState,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
-
 import { IClosureReasonPayload, IListingParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IStateProps {
@@ -44,16 +43,6 @@ interface IStateProps {
   currentFilter: Filters;
   assetPayload: ISetAssetPayload;
   portfolioLoaders: IPortfolioState['loaders'];
-}
-
-interface IPopupData {
-  label: string;
-  title: string;
-}
-
-interface IPopupData {
-  label: string;
-  title: string;
 }
 
 export enum UpdatePropertyFormTypes {
@@ -69,7 +58,7 @@ interface IDispatchProps {
   setAssetId: (payload: number) => void;
 }
 interface ILocalState {
-  filters: PickerItemProps[];
+  filters: AssetFilter;
   assetType: string;
   whilePortfolioFilters: boolean;
 }
@@ -84,7 +73,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   /* eslint-disable react/static-property-placement */
   public static contextType = AppLayoutContext;
   public state = {
-    filters: [],
+    filters: new AssetFilter(),
     assetType: '',
     whilePortfolioFilters: false,
   };
@@ -264,16 +253,8 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
       this.setState({
         whilePortfolioFilters: true,
       });
-      const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
-      const filterData = response.map(
-        (item): IPopupData => {
-          return {
-            label: item.title,
-            title: item.label,
-          };
-        }
-      );
-      this.setState({ filters: filterData, whilePortfolioFilters: false });
+      const response: AssetFilter = await PortfolioRepository.getAssetFilters();
+      this.setState({ filters: response, whilePortfolioFilters: false });
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
       this.setState({

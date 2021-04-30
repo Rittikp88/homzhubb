@@ -303,16 +303,8 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private getAssetFilters = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
-      const response: AssetFilter[] = await PortfolioRepository.getAssetFilters();
-      const filterData: PickerItemProps[] = response.map(
-        (item): PickerItemProps => {
-          return {
-            label: item.title,
-            value: item.label,
-          };
-        }
-      );
-      this.setState({ filters: filterData, isLoading: false });
+      const response: AssetFilter = await PortfolioRepository.getAssetFilters();
+      this.setState({ filters: response.statusDropdown, isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e.details);

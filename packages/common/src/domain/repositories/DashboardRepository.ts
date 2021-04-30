@@ -7,7 +7,7 @@ import { AssetAdvertisement } from '@homzhub/common/src/domain/models/AssetAdver
 import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 const ENDPOINTS = {
-  getAssetMetrics: (): string => 'v1/dashboard/management-tab/',
+  getAssetMetrics: (): string => 'v2/dashboard/management-tab/',
   getAdvertisements: (): string => 'v1/advertisements/',
   getGeneralLedgers: (): string => 'v1/general-ledgers/overall-performances/',
   getAssetNotifications: (): string => 'v1/notifications/',

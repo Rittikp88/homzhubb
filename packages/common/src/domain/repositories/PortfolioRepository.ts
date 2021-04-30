@@ -10,13 +10,13 @@ import { IGetHistoryPayload } from '@homzhub/common/src/modules/portfolio/interf
 
 const ENDPOINTS = {
   getAssetMetrics: (): string => 'v1/portfolio/management-tab/',
-  getAssetFilter: (): string => 'v1/portfolio/asset-filters/',
+  getAssetFilter: (): string => 'v3/portfolio/asset-filters/',
   getTenancies: (): string => 'v1/portfolio/tenancies/',
-  getAssetDetails: (): string => 'v1/portfolio/asset-details/',
+  getAssetDetails: (): string => 'v2/portfolio/asset-details/',
   getTenantHistory: (id: number): string => `v1/assets/${id}/lease-tenants/`,
-  getPropertyDetailById: (id: number): string => `v1/assets/${id}/detail/`,
+  getPropertyDetailById: (id: number): string => `v2/assets/${id}/detail/`,
   getPropertyDetailByListing: (id: number, listingType: string, listingId: number): string =>
-    `v1/assets/${id}/${listingType}/${listingId}/`,
+    `v2/assets/${id}/${listingType}/${listingId}/`,
 };
 
 class PortfolioRepository {
@@ -31,9 +31,9 @@ class PortfolioRepository {
     return ObjectMapper.deserialize(AssetMetrics, response);
   };
 
-  public getAssetFilters = async (): Promise<AssetFilter[]> => {
+  public getAssetFilters = async (): Promise<AssetFilter> => {
     const response = await this.apiClient.get(ENDPOINTS.getAssetFilter());
-    return ObjectMapper.deserializeArray(AssetFilter, response);
+    return ObjectMapper.deserialize(AssetFilter, response);
   };
 
   public getUserTenancies = async (): Promise<Asset[]> => {

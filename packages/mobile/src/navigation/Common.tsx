@@ -21,6 +21,7 @@ import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/S
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
+import AssetPlanSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetPlanSelection';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
@@ -80,6 +81,7 @@ export type CommonParamList = {
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
   [ScreensKeys.SupportScreen]: { isFromDashboard?: boolean };
   [ScreensKeys.ChatScreen]: IChatScreen;
+  [ScreensKeys.AssetPlanSelection]: undefined;
 };
 
 /**
@@ -120,6 +122,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.ForgotPassword} component={ForgotPassword} />
       <Stack.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <Stack.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
+      <Stack.Screen name={ScreensKeys.AssetPlanSelection} component={AssetPlanSelection} />
     </>
   );
 };

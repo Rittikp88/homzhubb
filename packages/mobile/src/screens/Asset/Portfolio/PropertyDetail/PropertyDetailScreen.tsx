@@ -227,7 +227,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       this.handleAction(propertyData, payload, param);
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
-    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.RENEWAL && menuItems.length > 0;
+    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.EXPIRING && menuItems.length > 0;
 
     return (
       <TouchableWithoutFeedback onPress={this.onCloseMenu}>
