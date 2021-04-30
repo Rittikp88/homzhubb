@@ -293,3 +293,8 @@ export interface IServicesForSelectAssetParams {
   address: string;
   flag: React.ReactElement;
 }
+
+export interface IPlanSelectionParam {
+  isFromPortfolio?: boolean;
+  isSubleased?: boolean;
+}

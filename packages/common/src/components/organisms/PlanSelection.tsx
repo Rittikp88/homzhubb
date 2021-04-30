@@ -11,7 +11,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { AssetPlan, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { AssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -32,6 +32,7 @@ interface IProps {
   isDesktop?: boolean;
   isMobile?: boolean;
   isTablet?: boolean;
+  isSubLeased?: boolean;
 }
 
 type OwnProps = WithTranslation;
@@ -71,29 +72,43 @@ class PlanSelection extends React.PureComponent<Props> {
   };
 
   public renderItem = (item: AssetPlan, index: number): React.ReactElement => {
-    const { assetPlan, isTablet, isMobile } = this.props;
+    const { assetPlan, isTablet, isMobile, isSubLeased = false } = this.props;
 
     const onPress = (): void => this.onPressPlan(item);
     const isLastIndex = assetPlan.length === index + 1;
+    const isOptionDisable = isSubLeased && item.name !== TypeOfPlan.RENT;
 
     return (
       <View key={`${item.id}-${index}`}>
-        <TouchableOpacity onPress={onPress} style={styles.assetPlanItem} key={index}>
+        <TouchableOpacity onPress={onPress} disabled={isOptionDisable} style={styles.assetPlanItem} key={index}>
           <View style={styles.flexRow}>
-            <Icon name={item.icon} size={25} color={theme.colors.primaryColor} />
+            <Icon
+              name={item.icon}
+              size={25}
+              color={isOptionDisable ? theme.colors.disabled : theme.colors.primaryColor}
+            />
             <View style={styles.descriptionContainer}>
-              <Text type="small" textType="semiBold" style={styles.planName}>
+              <Text type="small" textType="semiBold" style={[styles.planName, isOptionDisable && styles.disabled]}>
                 {ListingService.getHeader(item.name)}
               </Text>
               <Label
                 type="large"
                 textType="regular"
-                style={[styles.description, isTablet && styles.descriptionTab, isMobile && styles.descriptionMobile]}
+                style={[
+                  styles.description,
+                  isTablet && styles.descriptionTab,
+                  isMobile && styles.descriptionMobile,
+                  isOptionDisable && styles.disabled,
+                ]}
               >
                 {item.description}
               </Label>
             </View>
-            <Icon name={icons.rightArrow} size={22} color={theme.colors.primaryColor} />
+            <Icon
+              name={icons.rightArrow}
+              size={22}
+              color={isOptionDisable ? theme.colors.disabled : theme.colors.primaryColor}
+            />
           </View>
         </TouchableOpacity>
         {!isLastIndex && <Divider />}
@@ -187,5 +202,8 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     width: PlatformUtils.isMobile() ? theme.viewport.width / 1.2 : '100%',
+  },
+  disabled: {
+    color: theme.colors.disabled,
   },
 });

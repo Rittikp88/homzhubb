@@ -1,31 +1,30 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
 import Check from '@homzhub/common/src/assets/images/check.svg';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { Header, PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
+import { PaginationComponent, SnapCarousel } from '@homzhub/mobile/src/components';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import PlanSelection from '@homzhub/common/src/components/organisms/PlanSelection';
+import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import { AssetAdvertisement, AssetAdvertisementResults } from '@homzhub/common/src/domain/models/AssetAdvertisement';
 import { AssetPlan, ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IDispatchProps {
   getAssetPlanList: () => void;
@@ -39,7 +38,7 @@ interface IStateProps {
   assetId: number;
 }
 
-type OwnProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetPlanSelection>;
+type OwnProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.AssetPlanSelection>;
 type Props = OwnProps & IDispatchProps & IStateProps;
 
 interface IAssetPlanState {
@@ -62,21 +61,28 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
       route: { params },
     } = this.props;
     await this.getAssetAdvertisements();
+
     if (!params) {
       this.setState({ isSheetVisible: true });
     }
   };
 
   public render(): React.ReactElement {
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     const { isSheetVisible, loading } = this.state;
     return (
       <>
-        <Loader visible={loading} />
-        <Header icon={icons.leftArrow} title={t('propertyPlan')} onIconPress={this.goBack} />
-        <ScrollView style={styles.flexOne}>
-          <PlanSelection carouselView={this.renderCarousel()} onSkip={this.onSkip} onSelectPlan={this.onSelectPlan} />
-        </ScrollView>
+        <Screen headerProps={{ title: t('propertyPlan'), onIconPress: this.goBack }} isLoading={loading}>
+          <PlanSelection
+            carouselView={this.renderCarousel()}
+            onSkip={this.onSkip}
+            onSelectPlan={this.onSelectPlan}
+            isSubLeased={params?.isSubleased}
+          />
+        </Screen>
         <BottomSheet visible={isSheetVisible} sheetHeight={400} onCloseSheet={this.onCloseSheet}>
           {this.renderContinueView()}
         </BottomSheet>
@@ -158,7 +164,10 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
 
   private onSelectPlan = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.AssetListing);
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.PropertyPostStack, {
+      screen: ScreensKeys.AssetListing,
+    });
   };
 
   private onCloseSheet = (): void => {
@@ -228,9 +237,6 @@ export default connect(
 )(withTranslation(LocaleConstants.namespacesKey.property)(AssetPlanSelection));
 
 const styles = StyleSheet.create({
-  flexOne: {
-    flex: 1,
-  },
   carouselContainer: {
     height: 350,
     backgroundColor: theme.colors.white,

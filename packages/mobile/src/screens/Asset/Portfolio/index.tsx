@@ -329,17 +329,13 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
     const { navigation, setAssetId } = this.props;
-    const { id } = asset;
+    const { id, isSubleased } = asset;
     setAssetId(id);
     const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
     const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
     const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
     if (param && param.hasTakeAction) {
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.PropertyPostStack, {
-        screen: ScreensKeys.AssetPlanSelection,
-        params: { isFromPortfolio: true },
-      });
+      navigation.navigate(ScreensKeys.AssetPlanSelection, { isFromPortfolio: true, isSubleased });
     } else {
       navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });
     }

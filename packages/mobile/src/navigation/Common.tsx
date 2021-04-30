@@ -40,6 +40,7 @@ import {
   IForgotPasswordProps,
   IMarkdownProps,
   IOtpNavProps,
+  IPlanSelectionParam,
   IPropertyDetailProps,
   IResetPasswordProps,
   IUpdateProfileProps,
@@ -81,7 +82,7 @@ export type CommonParamList = {
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
   [ScreensKeys.SupportScreen]: { isFromDashboard?: boolean };
   [ScreensKeys.ChatScreen]: IChatScreen;
-  [ScreensKeys.AssetPlanSelection]: undefined;
+  [ScreensKeys.AssetPlanSelection]: undefined | IPlanSelectionParam;
 };
 
 /**
