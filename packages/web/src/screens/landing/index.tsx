@@ -8,6 +8,7 @@ import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
 import AppFeatures from '@homzhub/web/src/screens/landing/components/AppFeatures';
 import FeaturedProperties from '@homzhub/web/src/screens/landing/components/FeaturedProperties';
 import FooterWithSocialMedia from '@homzhub/web/src/screens/landing/components/FooterWithSocialMedia';
@@ -17,7 +18,6 @@ import LandingNavBar from '@homzhub/web/src/screens/landing/components/LandingNa
 import { LandingYoutubeSection } from '@homzhub/web/src/screens/landing/components/LandingYoutubeSection';
 import OurServicesSection from '@homzhub/web/src/screens/landing/components/OurServicesSection';
 import PlansSection from '@homzhub/web/src/screens/landing/components/PlansSection';
-import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PromiseSection from '@homzhub/web/src/screens/landing/components/PromiseSection';
 import { StoreLinkSection } from '@homzhub/web/src/screens/landing/components/StoreLinksSection';
 import SubscribePopUp from '@homzhub/web/src/screens/landing/components/SubscribePopUp';

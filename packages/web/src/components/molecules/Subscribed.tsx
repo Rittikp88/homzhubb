@@ -8,9 +8,14 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const Subscribed = (): React.ReactElement => {
+interface IProps {
+  subText: string;
+}
+
+const Subscribed = (props: IProps): React.ReactElement<IProps> => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const { subText } = props;
   return (
     <View style={[styles.container, isMobile && styles.containerMobile]}>
       <View style={styles.alignToCenter}>
@@ -21,7 +26,7 @@ const Subscribed = (): React.ReactElement => {
           {t('thankYouText')}
         </Typography>
         <Typography variant="text" size="small" fontWeight="regular" style={styles.titleText}>
-          {t('subscriptionThankYou')}
+          {subText}
         </Typography>
       </View>
     </View>

@@ -14,6 +14,14 @@ class NavigationUtils<T extends History> {
   public goBack(navigationProps: T): void {
     navigationProps.goBack();
   }
+
+  public openNewTab<S = LocationState>(options: INavigationOptions<S>): void {
+    const { path } = options;
+    const newWindow = window.open(path, '_blank');
+    if (newWindow) {
+      newWindow.focus();
+    }
+  }
 }
 
 const navigationUtils = new NavigationUtils();

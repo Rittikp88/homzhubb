@@ -288,7 +288,9 @@
     "passwordValidation": "Your password should be atleast 8 characters long and should contain an uppercase, a lowercase, a special character and a number",
     "emailValidation": "Please enter valid email-id",
     "onlyAlphabets": "Only alphabets are allowed",
+    "minimumDigits": "Minimum {{number}} digits required",
     "minimumCharacters": "Minimum 8 characters allowed",
+    "phoneWithCode": "Country Code + Phone No.",
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already registered?",
     "alreadyAccount": "Already have an account ?",
@@ -1122,7 +1124,13 @@
     "freeDownload": "Hassle-free property management on our digital platform from anywhere, anytime. Download our app and start managing your properties for free.",
     "PuneNagpurOwners": "For owners with properties in Pune and Nagpur, we offer end-to-end property management services at a premium.",
     "pune": "PUNE",
-    "nagpur": "NAGPUR"
+    "nagpur": "NAGPUR",
+    "limitedPopupHeader": "Signup for Free Property Inspection",
+    "limitedPopupTitle": "Only available in <1>{{city1}}</1> and <1>{{city2}}</1>. Get a thorough property inspection done and photos taken by professionals.",
+    "limitedPopupButton": "Sign Up Now",
+    "limitedOfferThankYou": "Homzhub team will get in touch with you to schedule your property inspection.",
+    "limitedPopupSubText": "*Terms and Conditions apply. View a sample inspection report ",
+    "limitedPopupSubTextLink":"here."
   },
   "offers": {
     "jobType": "Job Type",

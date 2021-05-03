@@ -16,6 +16,7 @@ import {
   ISubscribeToNewsletterPayload,
   ISupportPayload,
   IDeviceTokenPayload,
+  ILimitedOfferPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { SocialAuthProviders } from '@homzhub/common/src/constants/SocialAuthProviders';
 
@@ -86,7 +87,9 @@ class CommonRepository {
     return ObjectMapper.deserializeArray(CaseLog, response);
   };
 
-  public subscribeToNewsLetter = async (payload: ISubscribeToNewsletterPayload): Promise<void> => {
+  public subscribeToNewsLetter = async (
+    payload: ISubscribeToNewsletterPayload | ILimitedOfferPayload
+  ): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.subscribeToNewsLetter, payload);
   };
 

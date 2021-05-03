@@ -587,6 +587,13 @@ export interface ISubscribeToNewsletterPayload {
   email: string;
 }
 
+export interface ILimitedOfferPayload {
+  name: string;
+  email: string;
+  phone_number: string;
+  origin: string;
+}
+
 export interface IUpdateUserPreferences {
   [name: string]: SelectedPreferenceType;
 }
