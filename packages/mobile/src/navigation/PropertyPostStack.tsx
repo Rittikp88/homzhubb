@@ -2,7 +2,12 @@ import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { CommonParamList, getCommonScreen } from '@homzhub/mobile/src/navigation/Common';
 import PostAssetDetails from '@homzhub/mobile/src/screens/Asset/Record/PostAssetDetails';
-import { IAssetLocationMapProps, ScreensKeys, IPostAssetDetailsProps } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  IAssetLocationMapProps,
+  ScreensKeys,
+  IPostAssetDetailsProps,
+  IListingNavParam,
+} from '@homzhub/mobile/src/navigation/interfaces';
 import AssetLocationMap from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationMap';
 import AssetLocationSearch from '@homzhub/mobile/src/screens/Asset/Record/AssetLocationSearch';
 import AddProperty from '@homzhub/mobile/src/screens/Asset/Record/AddProperty';
@@ -13,7 +18,7 @@ export type PropertyPostStackParamList = {
   [ScreensKeys.AssetLocationMap]: IAssetLocationMapProps;
   [ScreensKeys.PostAssetDetails]: IPostAssetDetailsProps | { status: string } | undefined;
   [ScreensKeys.AddProperty]: undefined | { previousScreen: string };
-  [ScreensKeys.AssetListing]: undefined | { previousScreen: string; isEditFlow?: boolean };
+  [ScreensKeys.AssetListing]: undefined | IListingNavParam;
 } & CommonParamList;
 
 const PropertyPostStackNavigator = createStackNavigator<PropertyPostStackParamList>();

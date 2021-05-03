@@ -28,7 +28,7 @@ export interface ILeaseTermParams {
   rent_free_period: number | null;
   tenant_preferences?: number[];
   furnishing?: FurnishingTypes;
-  lease_unit?: ILeaseUnit;
+  lease_unit?: ILeaseUnit | number;
   is_edited?: boolean;
 }
 

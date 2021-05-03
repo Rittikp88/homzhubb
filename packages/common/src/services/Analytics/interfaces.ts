@@ -84,6 +84,11 @@ export interface ICloseTicketEvent {
   ticketId: number;
 }
 
+export interface IExtraTrackData {
+  listing_type?: ListingType;
+  price?: number;
+}
+
 export type EventDataType =
   | IAuthenticationEvent
   | IAddPropertyEvent

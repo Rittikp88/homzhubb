@@ -297,4 +297,13 @@ export interface IServicesForSelectAssetParams {
 export interface IPlanSelectionParam {
   isFromPortfolio?: boolean;
   isSubleased?: boolean;
+  leaseUnit?: number;
+  startDate?: string;
+}
+
+export interface IListingNavParam {
+  previousScreen: string;
+  isEditFlow?: boolean;
+  leaseUnit?: number;
+  startDate?: string;
 }

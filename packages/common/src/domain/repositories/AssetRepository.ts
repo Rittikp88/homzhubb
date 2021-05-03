@@ -26,6 +26,7 @@ import {
   IUpdateTenantParam,
   IUserDetails,
   IUpdateLeaseTerm,
+  IUnitListingPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -111,12 +112,14 @@ const ENDPOINTS = {
     `v1/listing-reviews/${reviewId}/reports/${reportId}`,
   editReviewComment: (reviewId: number, commentId: number): string =>
     `v1/listing-reviews/${reviewId}/comments/${commentId}/`,
-  listingReviewsSummary: 'listing-reviews/summary/',
+  listingReviewsSummary: 'v1/listing-reviews/summary/',
   updateTenant: (param: IUpdateTenantParam): string =>
     `v1/assets/${param.assetId}/lease-transactions/${param.leaseTransactionId}/lease-tenants/${param.leaseTenantId}/`,
   acceptInvite: (): string => 'v1/lease-tenants/accept-invite',
   leaseTransaction: (id: number): string => `v1/lease-transactions/${id}/`,
   activeAssets: 'v1/active-assets/',
+  createUnitListing: (propertyId: number, unitId: number): string =>
+    `v1/assets/${propertyId}/lease-units/${unitId}/lease-listings/`,
 };
 
 class AssetRepository {
@@ -442,6 +445,11 @@ class AssetRepository {
   public getActiveAssets = async (): Promise<Asset[]> => {
     const response = await this.apiClient.get(ENDPOINTS.activeAssets);
     return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  public createUnitListing = async (payload: IUnitListingPayload): Promise<{ id: number }> => {
+    const { propertyId, unitId, leaseTerms } = payload;
+    return await this.apiClient.post(ENDPOINTS.createUnitListing(propertyId, unitId), leaseTerms);
   };
 }
 

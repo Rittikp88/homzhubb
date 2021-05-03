@@ -1,6 +1,11 @@
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
-import { IPropertyEvent, ISearchEvent, ListingType } from '@homzhub/common/src/services/Analytics/interfaces';
+import {
+  IExtraTrackData,
+  IPropertyEvent,
+  ISearchEvent,
+  ListingType,
+} from '@homzhub/common/src/services/Analytics/interfaces';
 import { SpaceAvailableTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 
 class AnalyticsHelper {
@@ -33,9 +38,9 @@ class AnalyticsHelper {
     };
   };
 
-  public getPropertyTrackData = (details: Asset): IPropertyEvent => {
+  public getPropertyTrackData = (details: Asset, extraData?: IExtraTrackData): IPropertyEvent => {
     const { projectName, address, assetGroup, leaseTerm, saleTerm, carpetArea, spaces } = details;
-    const price = leaseTerm?.expectedPrice ?? Number(saleTerm?.expectedPrice);
+    const price = leaseTerm?.expectedPrice ?? saleTerm ? Number(saleTerm?.expectedPrice) : extraData?.price ?? 0;
 
     let space = {
       ...(carpetArea && { area: carpetArea }),
@@ -59,7 +64,7 @@ class AnalyticsHelper {
       project_name: projectName,
       property_address: address,
       asset_group_type: assetGroup.name,
-      listing_type: leaseTerm ? ListingType.RENT : ListingType.SELL,
+      listing_type: leaseTerm ? ListingType.RENT : saleTerm ? ListingType.SELL : extraData?.listing_type,
       price,
       ...space,
     };

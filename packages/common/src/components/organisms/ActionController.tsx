@@ -16,6 +16,7 @@ import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { IExtraTrackData } from '@homzhub/common/src/services/Analytics/interfaces';
 
 interface IProps {
   assetDetails: Asset;
@@ -25,6 +26,8 @@ interface IProps {
   scrollToTop: () => void;
   onLeaseTypeChange: (leaseType: LeaseTypes) => void;
   webGroupPrefix?: (params: IWebProps) => React.ReactElement;
+  leaseUnit?: number;
+  startDate?: string;
 }
 
 interface IDispatchProps {
@@ -59,6 +62,8 @@ class ActionController extends React.PureComponent<Props, {}> {
       scrollToTop,
       onLeaseTypeChange,
       webGroupPrefix,
+      leaseUnit,
+      startDate,
     } = this.props;
 
     return (
@@ -69,6 +74,7 @@ class ActionController extends React.PureComponent<Props, {}> {
             assetGroupType={assetGroupCode}
             currencyData={currencies[0]}
             onNextStep={this.onNextStep}
+            startDate={startDate}
           />
         )}
         {typeOfPlan === TypeOfPlan.RENT && (
@@ -82,6 +88,8 @@ class ActionController extends React.PureComponent<Props, {}> {
             onNextStep={this.onNextStep}
             scrollToTop={scrollToTop}
             onLeaseTypeChange={onLeaseTypeChange}
+            leaseUnit={leaseUnit}
+            startDate={startDate}
           />
         )}
         {typeOfPlan === TypeOfPlan.MANAGE && (
@@ -92,13 +100,19 @@ class ActionController extends React.PureComponent<Props, {}> {
             phoneCode={phoneCodes[0].phoneCode}
             onNextStep={this.onNextStep}
             webGroupPrefix={webGroupPrefix}
+            leaseUnit={leaseUnit}
+            startDate={startDate}
           />
         )}
       </>
     );
   };
 
-  private onNextStep = async (type: TypeOfPlan, params?: IUpdateAssetParams): Promise<void> => {
+  private onNextStep = async (
+    type: TypeOfPlan,
+    params?: IUpdateAssetParams,
+    trackParam?: IExtraTrackData
+  ): Promise<void> => {
     const {
       onNextStep,
       assetDetails,
@@ -114,7 +128,8 @@ class ActionController extends React.PureComponent<Props, {}> {
       },
     };
     const reqBody = params ? { last_visited_step, ...params } : { last_visited_step };
-    const trackData = AnalyticsHelper.getPropertyTrackData(assetDetails);
+    const trackData = AnalyticsHelper.getPropertyTrackData(assetDetails, trackParam);
+
     try {
       await AssetRepository.updateAsset(id, reqBody);
       AnalyticsService.track(EventType.AddListingSuccess, trackData);

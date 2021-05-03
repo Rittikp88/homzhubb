@@ -61,6 +61,8 @@ interface IProps {
   initialValues: ILeaseFormData;
   singleLeaseUnitKey?: number;
   route?: { key: string; title: string; id?: number };
+  leaseUnit?: number;
+  startDate?: string;
 }
 
 const SubLeaseUnit = (props: IProps): React.ReactElement => {
@@ -75,6 +77,8 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
     onSubmit,
     route,
     initialValues,
+    leaseUnit,
+    startDate,
   } = props;
 
   // HOOKS
@@ -169,12 +173,14 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
           .map((pref: ICheckboxGroupData) => pref.id),
         furnishing: furnishingType,
         is_edited: true,
-        lease_unit: {
-          name: route?.title ?? LEASE_UNIT,
-          spaces: spaces
-            .map((space) => (route ? space.spaceList : space.spaceListEntire))
-            .filter((data) => data.count > 0),
-        },
+        ...(!leaseUnit && {
+          lease_unit: {
+            name: route?.title ?? LEASE_UNIT,
+            spaces: spaces
+              .map((space) => (route ? space.spaceList : space.spaceListEntire))
+              .filter((data) => data.count > 0),
+          },
+        }),
       };
 
       if (route && route.id) {
@@ -182,7 +188,6 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
       } else if (singleLeaseUnitKey && singleLeaseUnitKey !== -1) {
         params.lease_listing = singleLeaseUnitKey;
       }
-
       formikHelpers?.setSubmitting(true);
       onSubmit(params, route?.key, proceed);
       formikHelpers?.setSubmitting(false);
@@ -239,6 +244,8 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
               currencyData={currencyData}
               isSplitAsUnits={!!route}
               assetGroupType={assetGroupType}
+              leaseStartDate={startDate}
+              isLeaseUnitAvailable={!!leaseUnit}
             >
               {preferences.length > 0 && (
                 <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>

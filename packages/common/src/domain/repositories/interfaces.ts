@@ -1,5 +1,6 @@
 import { OSTypes } from '@homzhub/common/src/utils/PlatformUtils';
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
+import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
 import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
@@ -1003,4 +1004,10 @@ export interface IPurchasePayload {
 export interface IUpdatePlanPayload {
   action: PurchaseTypes;
   payload: IPurchasePayload;
+}
+
+export interface IUnitListingPayload {
+  propertyId: number;
+  unitId: number;
+  leaseTerms: ILeaseTermParams;
 }

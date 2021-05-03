@@ -299,6 +299,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
       assetDetails,
       setValueAddedServices,
       valueAddedServices,
+      route: { params },
     } = this.props;
     const isManage = selectedPlan === TypeOfPlan.MANAGE;
 
@@ -353,6 +354,8 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
               onNextStep={this.handleNextStep}
               scrollToTop={this.scrollToTop}
               onLeaseTypeChange={this.onTabChange}
+              leaseUnit={params?.leaseUnit}
+              startDate={params?.startDate}
             />
           </View>
         );

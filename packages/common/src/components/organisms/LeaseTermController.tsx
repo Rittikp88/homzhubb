@@ -1,6 +1,6 @@
 import React from 'react';
 import { LayoutChangeEvent, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { TabView, NavigationState, SceneRendererProps } from 'react-native-tab-view';
+import { NavigationState, SceneRendererProps, TabView } from 'react-native-tab-view';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
@@ -15,8 +15,8 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import {
   ILeaseFormData,
-  SubLeaseUnit,
   initialLeaseFormData,
+  SubLeaseUnit,
 } from '@homzhub/common/src/components/organisms/SubLeaseUnit';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
@@ -28,6 +28,7 @@ import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IExtraTrackData, ListingType } from '@homzhub/common/src/services/Analytics/interfaces';
 
 interface IRoute {
   key: string;
@@ -45,7 +46,9 @@ interface IProps extends WithTranslation {
   furnishing: FurnishingTypes;
   scrollToTop: () => void;
   onLeaseTypeChange: (leaseType: LeaseTypes) => void;
-  onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams) => Promise<void>;
+  onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams, trackParam?: IExtraTrackData) => Promise<void>;
+  leaseUnit?: number;
+  startDate?: string;
 }
 
 interface IOwnState {
@@ -91,7 +94,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { leaseType, currencyData, assetGroupType, furnishing } = this.props;
+    const { leaseType, currencyData, assetGroupType, furnishing, leaseUnit, startDate } = this.props;
     const { preferences, availableSpaces, singleLeaseUnitKey, singleLeaseInitValues, loading } = this.state;
     return (
       <>
@@ -107,6 +110,8 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
             preferences={preferences}
             availableSpaces={availableSpaces}
             onSubmit={this.onSubmit}
+            leaseUnit={leaseUnit}
+            startDate={startDate}
           />
         )}
         <Loader visible={loading} />
@@ -138,7 +143,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   private renderScene = ({ route }: { route: IRoute }): React.ReactElement => {
-    const { currencyData, assetGroupType, furnishing } = this.props;
+    const { currencyData, assetGroupType, furnishing, leaseUnit, startDate } = this.props;
     const { preferences, availableSpaces } = this.state;
 
     return (
@@ -152,6 +157,8 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
           preferences={preferences}
           availableSpaces={availableSpaces}
           onSubmit={this.onSubmit}
+          leaseUnit={leaseUnit}
+          startDate={startDate}
         />
       </View>
     );
@@ -277,17 +284,24 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
   };
 
   private onSubmit = async (values: ILeaseTermParams, key?: string, proceed = true): Promise<void> => {
-    const { onNextStep, leaseType, currentAssetId, scrollToTop, t } = this.props;
+    const { onNextStep, leaseType, currentAssetId, scrollToTop, t, leaseUnit } = this.props;
     const { routes } = this.state;
 
     try {
       this.setState({ loading: true });
-      const response = await AssetRepository.createLeaseTerms(currentAssetId, [values]);
+      const response = leaseUnit
+        ? await AssetRepository.createUnitListing({ propertyId: currentAssetId, unitId: leaseUnit, leaseTerms: values })
+        : await AssetRepository.createLeaseTerms(currentAssetId, [values]);
 
       if (leaseType === LeaseTypes.Shared) {
         const routesToUpdate = routes.map((route) => {
+          if (route.key === key && !leaseUnit) {
+            const responseData = response as { ids: number[] };
+            return { ...route, id: responseData.ids[0] };
+          }
           if (route.key === key) {
-            return { ...route, id: response.ids[0] };
+            const responseData = response as { id: number };
+            return { ...route, id: responseData.id };
           }
           return route;
         });
@@ -297,13 +311,28 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
 
         await this.getAvailableSpaces();
         if (proceed) {
-          await onNextStep(TypeOfPlan.RENT, { is_subleased: true });
+          await onNextStep(
+            TypeOfPlan.RENT,
+            { is_subleased: true },
+            { listing_type: ListingType.RENT, price: values.expected_monthly_rent }
+          );
         } else {
           await AssetRepository.updateAsset(currentAssetId, { is_subleased: true });
         }
       } else {
-        this.setState({ singleLeaseUnitKey: response.ids[0] });
-        await onNextStep(TypeOfPlan.RENT, { is_subleased: false });
+        if (!leaseUnit) {
+          const responseData = response as { ids: number[] };
+          this.setState({ singleLeaseUnitKey: responseData.ids[0] });
+        } else {
+          const responseData = response as { id: number };
+          this.setState({ singleLeaseUnitKey: responseData.id });
+        }
+
+        await onNextStep(
+          TypeOfPlan.RENT,
+          { is_subleased: false },
+          { listing_type: ListingType.RENT, price: values.expected_monthly_rent }
+        );
       }
       this.setState({ loading: false });
     } catch (err) {

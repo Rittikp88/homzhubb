@@ -6,6 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { isEmpty } from 'lodash';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
@@ -747,12 +748,18 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
     const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
     const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
-    const { id, isSubleased } = asset;
+    const { id, isSubleased, assetStatusInfo } = asset;
+    const startDate = DateUtils.getUtcFormatted(assetStatusInfo?.leaseTransaction.leaseEndDate ?? '', 'DD/MM/YYYY');
 
     setAssetId(id);
 
     if (param && param.hasTakeAction) {
-      navigation.navigate(ScreensKeys.AssetPlanSelection, { isFromPortfolio: true, isSubleased });
+      navigation.navigate(ScreensKeys.AssetPlanSelection, {
+        isFromPortfolio: true,
+        isSubleased,
+        leaseUnit: assetStatusInfo?.leaseUnitId ?? undefined,
+        startDate: DateUtils.getFutureDateByUnit(startDate, 1, 'days'),
+      });
     } else {
       navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });
     }

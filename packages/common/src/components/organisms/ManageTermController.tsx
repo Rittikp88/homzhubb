@@ -28,6 +28,7 @@ import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IExtraTrackData } from '@homzhub/common/src/services/Analytics/interfaces';
 
 interface IFormFields extends IFormData {
   firstName: string;
@@ -47,8 +48,10 @@ interface IProps extends WithTranslation {
   phoneCode: string;
   assetGroupType: AssetGroupTypes;
   currentAssetId: number;
-  onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams) => Promise<void>;
+  onNextStep: (type: TypeOfPlan, params?: IUpdateAssetParams, trackParam?: IExtraTrackData) => Promise<void>;
   webGroupPrefix?: (params: IWebProps) => React.ReactElement;
+  leaseUnit?: number;
+  startDate?: string;
 }
 type Props = IProps & IWithMediaQuery;
 class ManageTermController extends React.PureComponent<Props, IOwnState> {
@@ -128,7 +131,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderForm = (): React.ReactNode => {
-    const { t, currencyData, assetGroupType, isMobile } = this.props;
+    const { t, currencyData, assetGroupType, isMobile, startDate, leaseUnit } = this.props;
     const { isPropertyOccupied, formData, loading } = this.state;
     return (
       <Formik
@@ -146,6 +149,8 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
                   formProps={formProps}
                   currencyData={currencyData}
                   assetGroupType={assetGroupType}
+                  leaseStartDate={startDate}
+                  isLeaseUnitAvailable={!!leaseUnit}
                 >
                   {this.renderTenantForm(formProps)}
                 </LeaseTermForm>
@@ -275,7 +280,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
   private onSubmit = async (values: IFormFields, formActions: FormikHelpers<IFormFields>): Promise<void> => {
     formActions.setSubmitting(true);
     this.setState({ loading: true });
-    const { onNextStep, currentAssetId, assetGroupType } = this.props;
+    const { onNextStep, currentAssetId, assetGroupType, leaseUnit } = this.props;
     const { currentTermId } = this.state;
     const params: IManageTerm = {
       first_name: values.firstName,
@@ -284,6 +289,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
       phone_code: values.phoneCode,
       phone_number: values.phone,
       ...AssetService.extractLeaseParams(values, assetGroupType),
+      ...(leaseUnit && { lease_unit: leaseUnit }),
     };
     try {
       if (currentTermId <= -1) {

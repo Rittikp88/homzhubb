@@ -163,10 +163,18 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   };
 
   private onSelectPlan = (): void => {
-    const { navigation } = this.props;
+    const {
+      navigation,
+      route: { params },
+    } = this.props;
+
     // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AssetListing,
+      params: {
+        leaseUnit: params?.leaseUnit,
+        startDate: params?.startDate,
+      },
     });
   };
 

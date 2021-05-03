@@ -4,6 +4,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
@@ -329,13 +330,20 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
     const { navigation, setAssetId } = this.props;
-    const { id, isSubleased } = asset;
+    const { id, isSubleased, assetStatusInfo } = asset;
     setAssetId(id);
     const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
     const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
     const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
+    const startDate = DateUtils.getUtcFormatted(assetStatusInfo?.leaseTransaction.leaseEndDate ?? '', 'DD/MM/YYYY');
+
     if (param && param.hasTakeAction) {
-      navigation.navigate(ScreensKeys.AssetPlanSelection, { isFromPortfolio: true, isSubleased });
+      navigation.navigate(ScreensKeys.AssetPlanSelection, {
+        isFromPortfolio: true,
+        isSubleased,
+        leaseUnit: assetStatusInfo?.leaseUnitId ?? undefined,
+        startDate: DateUtils.getFutureDateByUnit(startDate, 1, 'days'),
+      });
     } else {
       navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });
     }

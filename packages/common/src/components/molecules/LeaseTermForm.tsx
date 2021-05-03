@@ -70,6 +70,7 @@ interface IProps {
   isSplitAsUnits?: boolean;
   isTitleRequired?: boolean;
   isFromEdit?: boolean;
+  isLeaseUnitAvailable?: boolean;
   children?: React.ReactNode;
 }
 
@@ -108,6 +109,7 @@ const LeaseTermForm = ({
   isFromManage = false,
   isFromEdit = false,
   isTitleRequired = true,
+  isLeaseUnitAvailable = false,
 }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   const { setFieldValue, setFieldTouched, values } = formProps;
@@ -125,6 +127,9 @@ const LeaseTermForm = ({
   let minDate;
   let maxDate: string | undefined = leaseEndDate || DateUtils.getDisplayDate(futureDate, DateFormats.YYYYMMDD);
   if (isFromEdit && leaseStartDate) {
+    minDate = leaseStartDate;
+  }
+  if (isLeaseUnitAvailable && leaseStartDate) {
     minDate = leaseStartDate;
   }
   if (isFromManage) {

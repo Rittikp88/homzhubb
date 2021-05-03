@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
 import * as yup from 'yup';
@@ -25,12 +25,14 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ICreateSaleTermParams } from '@homzhub/common/src/domain/models/SaleTerm';
+import { IExtraTrackData, ListingType } from '@homzhub/common/src/services/Analytics/interfaces';
 
 interface IProps extends WithTranslation {
   currentAssetId: number;
-  onNextStep: (type: TypeOfPlan) => Promise<void>;
+  onNextStep: (type: TypeOfPlan, trackParam?: IExtraTrackData) => Promise<void>;
   assetGroupType: string;
   currencyData: Currency;
+  startDate?: string;
 }
 
 interface IFormData {
@@ -97,7 +99,7 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
   };
 
   public render = (): React.ReactNode => {
-    const { t, currencyData, assetGroupType, isMobile, isTablet } = this.props;
+    const { t, currencyData, assetGroupType, isMobile, isTablet, startDate } = this.props;
     const { description, formData, loading } = this.state;
 
     return (
@@ -170,6 +172,7 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
                           textType="label"
                           textSize="regular"
                           isMandatory
+                          minDate={startDate}
                           containerStyle={PlatformUtils.isWeb() && !isMobile && styles.input}
                         />
                       </View>
@@ -253,7 +256,7 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
       } else {
         await AssetRepository.updateSaleTerm(currentAssetId, currentTermId, params);
       }
-      await onNextStep(TypeOfPlan.SELL);
+      await onNextStep(TypeOfPlan.SELL, { listing_type: ListingType.SELL, price: parseInt(values.expectedPrice, 10) });
       this.setState({ loading: false });
     } catch (err) {
       this.setState({ loading: false });
