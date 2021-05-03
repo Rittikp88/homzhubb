@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { OfferHelper } from '@homzhub/mobile/src/utils/OfferHelper';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,7 +14,6 @@ import CompareSelection from '@homzhub/mobile/src/components/molecules/CompareSe
 import PropertyOffers from '@homzhub/common/src/components/molecules/PropertyOffers';
 import CompareOfferView from '@homzhub/mobile/src/components/organisms/CompareOfferView';
 import OfferView from '@homzhub/common/src/components/organisms/OfferView';
-import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const OfferDetail = (): React.ReactElement => {
@@ -42,25 +41,6 @@ const OfferDetail = (): React.ReactElement => {
 
   const onPressMessages = (): void => {
     navigate(ScreensKeys.ChatScreen, { isFromOffers: true });
-  };
-
-  const handleActions = (action: OfferAction): void => {
-    switch (action) {
-      case OfferAction.ACCEPT:
-        navigate(ScreensKeys.AcceptOffer);
-        break;
-      case OfferAction.REJECT:
-        navigate(ScreensKeys.RejectOffer);
-        break;
-      case OfferAction.COUNTER:
-        navigate(ScreensKeys.SubmitOffer);
-        break;
-      case OfferAction.CANCEL:
-        navigate(ScreensKeys.CancelOffer);
-        break;
-      default:
-        FunctionUtils.noop();
-    }
   };
 
   const handleCreateLease = (): void => {
@@ -107,7 +87,7 @@ const OfferDetail = (): React.ReactElement => {
       >
         {listingDetail && <PropertyOffers propertyOffer={listingDetail} isCardExpanded isDetailView />}
         <OfferView
-          onPressAction={handleActions}
+          onPressAction={OfferHelper.handleOfferActions}
           isDetailView
           onCreateLease={handleCreateLease}
           onSelectOffer={handleOfferSelection}
@@ -124,7 +104,11 @@ const OfferDetail = (): React.ReactElement => {
         headerTitle={t('offers:compareOffer')}
         onCloseSheet={(): void => handleCompare(false)}
       >
-        <CompareOfferView selectedIds={selectedOffer} isLeaseFlow={!!(listingDetail && listingDetail.leaseTerm)} />
+        <CompareOfferView
+          handleCompare={handleCompare}
+          selectedIds={selectedOffer}
+          isLeaseFlow={!!(listingDetail && listingDetail.leaseTerm)}
+        />
       </BottomSheet>
     </>
   );

@@ -9,6 +9,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src//utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { OfferHelper } from '@homzhub/mobile/src/utils/OfferHelper';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
@@ -391,7 +392,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         return (
           <View onLayout={(e): void => this.onLayout(e, 2)}>
             <OfferView
-              onPressAction={this.handleOfferActions}
+              onPressAction={OfferHelper.handleOfferActions}
               onCreateLease={this.handleCreateLease}
               onSelectOffer={this.handleOfferSelection}
               selectedOffers={selectedOffer}

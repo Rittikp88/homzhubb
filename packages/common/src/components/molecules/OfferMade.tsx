@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { OfferHelper } from '@homzhub/mobile/src/utils/OfferHelper';
 import { ListingRepository } from '@homzhub/common/src/domain/repositories/ListingRepository';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -16,7 +15,6 @@ import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ICounterParam, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
@@ -34,7 +32,6 @@ const OfferMade = (props: IProps): React.ReactElement => {
   } = props;
   const offer = leaseNegotiation || saleNegotiation;
 
-  const { navigate } = useNavigation();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
@@ -73,23 +70,7 @@ const OfferMade = (props: IProps): React.ReactElement => {
       dispatch(OfferActions.setCurrentOfferPayload(payload));
       dispatch(OfferActions.setCurrentOffer(offer));
     }
-
-    switch (action) {
-      case OfferAction.ACCEPT:
-        navigate(ScreensKeys.AcceptOffer);
-        break;
-      case OfferAction.REJECT:
-        navigate(ScreensKeys.RejectOffer);
-        break;
-      case OfferAction.COUNTER:
-        navigate(ScreensKeys.SubmitOffer);
-        break;
-      case OfferAction.CANCEL:
-        navigate(ScreensKeys.CancelOffer);
-        break;
-      default:
-        FunctionUtils.noop();
-    }
+    OfferHelper.handleOfferActions(action);
   };
 
   // TODO: (Shikha) - confirm logic with BE

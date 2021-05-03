@@ -41,9 +41,10 @@ interface IDataPoints {
 
 interface IProps {
   selectedOfferIds: number[];
+  onPressOffer: (id: number) => void;
 }
 
-const OfferProspectTable = ({ selectedOfferIds }: IProps): React.ReactElement => {
+const OfferProspectTable = ({ selectedOfferIds, onPressOffer }: IProps): React.ReactElement => {
   const negotiations = useSelector(OfferSelectors.getNegotiations);
   const listingDetail = useSelector(OfferSelectors.getListingDetail);
   const [compareData, setCompareData] = useState<ICompareData[]>([]);
@@ -151,8 +152,9 @@ const OfferProspectTable = ({ selectedOfferIds }: IProps): React.ReactElement =>
           </View>
           {compareData.map((item: ICompareData, compareIndex) => {
             const offerData = item.dataPoints;
+            const onPressRow = (): void => onPressOffer(item.uniqueKey);
             return (
-              <TouchableOpacity style={[styles.row, styles.rowContent]} key={compareIndex}>
+              <TouchableOpacity style={[styles.row, styles.rowContent]} key={compareIndex} onPress={onPressRow}>
                 {Object.keys(offerData).map((key, index) => {
                   // @ts-ignore
                   const value = offerData[key];

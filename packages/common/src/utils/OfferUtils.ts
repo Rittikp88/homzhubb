@@ -352,7 +352,6 @@ class OfferUtils {
             value: `${StringUtils.toTitleCase(utilityPaidBy)}`,
           },
         ];
-        // Todo (Praharsh) : Check with BE why it is null, in offers-created response
         if (annualRentIncrementPercentage) {
           formattedRent.splice(4, 0, {
             type: t('property:annualIncrementSuffix'),
