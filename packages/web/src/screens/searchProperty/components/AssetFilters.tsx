@@ -194,9 +194,24 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
         width: '90%',
         height: 536,
         marginRight: mobile ? 10 : undefined,
-        marginLeft: tablet ? 40 : 64,
+        marginLeft: !mobile ? (tablet ? 40 : 64) : 15,
       },
       closeOnDocumentClick: false,
+      children: undefined,
+      className: 'moreFilter',
+    });
+
+    const mobileDefaultDropDownProps = (height: number): PopupProps => ({
+      arrow: false,
+      contentStyle: {
+        minWidth: 10,
+        marginTop: 12,
+        width: '91%',
+        height,
+        marginRight: 10,
+        marginLeft: 15,
+      },
+      closeOnDocumentClick: true,
       children: undefined,
       className: 'moreFilter',
     });
@@ -214,17 +229,19 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
               data={assetTransaction}
               selectedItem={[selectedLookingType]}
               onValueChange={this.onChangeFlow}
-              containerStyles={[styles.propertyTypeFilterButtons]}
+              containerStyles={[styles.propertyTypeFilterButtons, isMobile && styles.propertyFilterButtonMobile]}
             />
           </View>
         ),
-        popupProps: defaultDropDownProps(125, isMobile, 400, 'bottom left'),
+        popupProps: isMobile
+          ? mobileDefaultDropDownProps(125)
+          : defaultDropDownProps(125, isMobile, 400, 'bottom left'),
       },
       {
         id: 2,
         label: t('propertyType'),
         content: (
-          <View style={styles.propertyTypes}>
+          <View style={[styles.propertyTypes, isMobile && styles.propertyTypesMobile]}>
             <AssetTypeFilter
               filterData={filterData}
               asset_group={asset_group ?? 0}
@@ -233,13 +250,13 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
             />
           </View>
         ),
-        popupProps: defaultDropDownProps(304, isMobile, 420),
+        popupProps: isMobile ? mobileDefaultDropDownProps(330) : defaultDropDownProps(304, isMobile, 420),
       },
       {
         id: 3,
         label: t('rooms'),
         content: (
-          <View style={styles.roomsAndBaths}>
+          <View style={[styles.roomsAndBaths, isMobile && styles.roomsAndBathsMobile]}>
             <RoomsFilter
               bedCount={room_count ?? []}
               bathroomCount={[bath_count ?? 0]}
@@ -248,7 +265,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
             />
           </View>
         ),
-        popupProps: defaultDropDownProps(225, isMobile),
+        popupProps: isMobile ? mobileDefaultDropDownProps(225) : defaultDropDownProps(225, isMobile),
       },
       {
         id: 4,
@@ -263,10 +280,11 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
             range={priceRange}
             minChangedValue={minPriceRange}
             maxChangedValue={maxPriceRange}
-            containerStyle={styles.priceRange}
+            containerStyle={[styles.priceRange, isMobile && styles.priceRangeMobile]}
+            sliderLength={isMobile?250:undefined}
           />
         ),
-        popupProps: defaultDropDownProps(180, isMobile),
+        popupProps: isMobile ? mobileDefaultDropDownProps(180) : defaultDropDownProps(180, isMobile),
       },
       {
         id: 5,
@@ -380,6 +398,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 10,
   },
+  propertyFilterButtonMobile: {
+    width: '84%',
+  },
   screen: {
     flex: 1,
     backgroundColor: theme.colors.white,
@@ -433,6 +454,10 @@ const styles = StyleSheet.create({
     marginTop: 25,
     paddingHorizontal: 10,
   },
+  priceRangeMobile: {
+    paddingHorizontal: 10,
+    width: 300,
+  },
   backIconStyle: {
     paddingVertical: 16,
     marginBottom: 10,
@@ -440,6 +465,10 @@ const styles = StyleSheet.create({
   roomsAndBaths: {
     width: 390,
     padding: 20,
+  },
+  roomsAndBathsMobile: {
+    width: '96%',
+    padding: 10,
   },
   filterButtons: {
     flexDirection: 'row',
@@ -462,6 +491,13 @@ const styles = StyleSheet.create({
     padding: 5,
     marginLeft: 12,
   },
+  propertyTypesMobile: {
+    width: '90%',
+    padding: 0,
+    marginRight: '5%',
+    marginLeft: '5%',
+  },
+
   selectionPickerContainer: {
     marginTop: 24,
   },
