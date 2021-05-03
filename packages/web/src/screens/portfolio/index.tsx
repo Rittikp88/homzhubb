@@ -1,40 +1,48 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { History } from 'history';
-import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
-import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import ConfirmationContent from '@homzhub/web/src/components/atoms/ConfirmationContent';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import CancelTerminateListing from '@homzhub/web/src/components/molecules/CancelTerminateListing';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
 import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/PortfolioFilter';
 import PortfolioOverview from '@homzhub/web/src/screens/portfolio/components/PortfolioOverview';
-import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters, AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IState } from '@homzhub/common/src/modules/interfaces';
+import {
+  ClosureReasonType,
+  IClosureReasonPayload,
+  IListingParam,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import {
   IGetPropertiesPayload,
   IGetTenanciesPayload,
   ISetAssetPayload,
   IPortfolioState,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
-import { IClosureReasonPayload, IListingParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -61,13 +69,16 @@ interface ILocalState {
   filters: AssetFilter;
   assetType: string;
   whilePortfolioFilters: boolean;
+  assetDetails: Asset | null;
+  formType: string;
+  param: IListingParam | null;
+  payload: IClosureReasonPayload | null;
+  submittedSuccessfully: boolean;
 }
-
 interface IAssetCardProps {
   history: History;
 }
 type Props = WithTranslation & IStateProps & IDispatchProps & IWithMediaQuery & IAssetCardProps;
-
 export class Portfolio extends React.PureComponent<Props, ILocalState> {
   /* eslint-disable react/sort-comp */
   /* eslint-disable react/static-property-placement */
@@ -76,15 +87,29 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     filters: new AssetFilter(),
     assetType: '',
     whilePortfolioFilters: false,
+    assetDetails: null,
+    formType: '',
+    param: null,
+    payload: null,
+    submittedSuccessfully: false,
   };
 
   public componentDidMount = (): void => {
     this.getScreenData().then();
   };
 
+  public popupRef = createRef<PopupActions>();
   public render = (): React.ReactElement => {
-    const { properties, tenancies, portfolioLoaders, isTablet } = this.props;
-    const { filters, whilePortfolioFilters } = this.state;
+    const { properties, tenancies, portfolioLoaders, isTablet, isMobile } = this.props;
+    const {
+      filters,
+      whilePortfolioFilters,
+      assetDetails,
+      formType,
+      param,
+      payload,
+      submittedSuccessfully,
+    } = this.state;
     const { tenancies: tenanciesLoader, properties: propertiesLoader } = portfolioLoaders;
     const isLoading = whilePortfolioFilters || tenanciesLoader || propertiesLoader;
     const { context } = this;
@@ -93,12 +118,54 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     if (isLoading) {
       return <Loader visible={isLoading} />;
     }
+    const onClosePopover = (): void => {
+      if (this.popupRef && this.popupRef.current) {
+        this.popupRef.current.close();
+      }
+    };
+
+    const submitSuccess = (): void => {
+      this.setState({ submittedSuccessfully: true });
+    };
+
+    const updateData = (): void => {
+      this.getScreenData().then();
+    };
     return (
       <View style={[styles.filterContainer, !isTablet && styles.filterContainerWeb]}>
         <PortfolioOverview onMetricsClicked={this.onMetricsClicked} />
         <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
         {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
         {this.renderPortfolio(properties)}
+        <Popover
+          content={
+            !submittedSuccessfully ? (
+              <CancelTerminateListing
+                assetDetails={assetDetails}
+                formType={formType}
+                param={param}
+                payload={payload}
+                closeModal={onClosePopover}
+                submit={submitSuccess}
+              />
+            ) : (
+              <ConfirmationContent closeModal={onClosePopover} updateData={updateData} />
+            )
+          }
+          forwardedRef={this.popupRef}
+          popupProps={{
+            onClose: onClosePopover,
+            modal: true,
+            arrow: false,
+            contentStyle: {
+              width: !isMobile ? (!submittedSuccessfully ? 385 : 480) : '95%',
+              overflowY: 'scroll',
+              height: !isMobile ? (!submittedSuccessfully ? 569 : undefined) : undefined,
+            },
+            closeOnDocumentClick: false,
+            children: undefined,
+          }}
+        />
       </View>
     );
   };
@@ -107,11 +174,9 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const { t } = this.props;
     const { assetType } = this.state;
     const filteredData = tenancies.filter((item) => item.assetGroup.name === assetType);
-
     if (assetType && filteredData.length < 1) {
       return null;
     }
-
     return (
       <View>
         <Text type="small" textType="semiBold" style={styles.title}>
@@ -130,7 +195,6 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
     const isEmpty = !data || data.length <= 0;
-
     return (
       <View style={styles.container}>
         <View style={styles.headingView}>
@@ -150,28 +214,29 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { isTablet, history } = this.props;
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
+      this.setState({ assetDetails: item, payload });
       this.handleActions(item, payload, param);
     };
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
       const { setCurrentAsset } = this.props;
-
       setCurrentAsset(data);
-
       this.navigateToDetailView({ ...data, dataType: type }, key);
     };
     return (
-      <AssetCard
-        assetData={item}
-        key={index}
-        isFromTenancies={type === DataType.TENANCIES}
-        onViewProperty={handleViewProperty}
-        onPressArrow={FunctionUtils.noop}
-        onCompleteDetails={this.onCompleteDetails}
-        onOfferVisitPress={FunctionUtils.noop}
-        onHandleAction={onPressAction}
-        containerStyle={isTablet && styles.assetCardContainer}
-        history={history}
-      />
+      <View>
+        <AssetCard
+          assetData={item}
+          key={index}
+          isFromTenancies={type === DataType.TENANCIES}
+          onViewProperty={handleViewProperty}
+          onPressArrow={FunctionUtils.noop}
+          onCompleteDetails={this.onCompleteDetails}
+          onOfferVisitPress={FunctionUtils.noop}
+          onHandleAction={onPressAction}
+          containerStyle={isTablet && styles.assetCardContainer}
+          history={history}
+        />
+      </View>
     );
   };
 
@@ -184,7 +249,6 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   };
 
   private onPropertiesCallback = (): void => {};
-
   private onCompleteDetails = (assetId: number): void => {
     const { setAssetId, setEditPropertyFlow, history } = this.props;
     setAssetId(assetId);
@@ -201,14 +265,21 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const { setAssetId, history } = this.props;
     const { id } = asset;
     setAssetId(id);
+    const { CancelListing, TerminateListing } = UpdatePropertyFormTypes;
+    const { LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
+    const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
+    this.setState({ formType, param: param || {} });
     const onNavigateToPlanSelection = (): void => {
       NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING });
     };
     if (param && param.hasTakeAction) {
       onNavigateToPlanSelection();
-    } else {
-      // TODO : Handle logic for cancel and terminate once the screens are ready
+    } else if (formType === CancelListing) {
+      if (this.popupRef && this.popupRef.current) {
+        this.popupRef.current.open();
+      }
     }
+    // TODO: handle terminate
   };
 
   private navigateToDetailView = (data: ISetAssetPayload, key?: Tabs): void => {

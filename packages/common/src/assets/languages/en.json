@@ -613,7 +613,8 @@
     "listingNotValid": "Listing is no longer available",
     "customiseDashboard": "Customise Dashboard",
     "dragAndDropText": "Drag the section to rearrange the sections according to your choice.",
-    "contactOwner": "Contact Owner"
+    "contactOwner": "Contact Owner",
+    "confirmCancellation": "Are you sure want to cancel the listing?"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
