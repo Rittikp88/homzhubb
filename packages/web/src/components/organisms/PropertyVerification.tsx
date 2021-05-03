@@ -9,7 +9,6 @@ import { AttachmentService } from '@homzhub/common/src/services/AttachmentServic
 import { IDocsProps, ListingService } from '@homzhub/common/src/services/Property/ListingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import VerificationTypes from '@homzhub/common/src/components/organisms/VerificationTypes';
 import CaptureSelfiePopover from '@homzhub/web/src/screens/addPropertyListing/CaptureSelfiePopover';
@@ -75,19 +74,20 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       <>
         {navigator.mediaDevices.getUserMedia && (
           <View style={styles.container}>
-            <CaptureSelfiePopover onCaptureSelfie={this.onCaptureSelfie} takeSelfie={takeSelfie} />
-            <VerificationTypes
-              typeOfPlan={typeOfPlan}
-              existingDocuments={existingDocuments}
-              localDocuments={localDocuments}
-              deleteDocument={this.onDeleteDocument}
-              handleTypes={this.handleVerificationTypes}
-              handleUpload={this.handleVerificationDocumentUploads}
-            />
+            <View style={!isTablet && !isIpadPro && styles.contentMain}>
+              <CaptureSelfiePopover onCaptureSelfie={this.onCaptureSelfie} takeSelfie={takeSelfie} />
+              <VerificationTypes
+                typeOfPlan={typeOfPlan}
+                existingDocuments={existingDocuments}
+                localDocuments={localDocuments}
+                deleteDocument={this.onDeleteDocument}
+                handleTypes={this.handleVerificationTypes}
+                handleUpload={this.handleVerificationDocumentUploads}
+              />
+            </View>
             {!isTablet && !isIpadPro && (
-              <>
-                <Divider containerStyles={styles.divider} />
-                <View style={styles.contentView}>
+              <View style={styles.contentView}>
+                <View style={styles.contentWrapper}>
                   <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
                     {t('propertyVerificationSubTitle')}
                   </Label>
@@ -95,7 +95,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
                     {t('helperNavigationText')}
                   </Label>
                 </View>
-              </>
+              </View>
             )}
           </View>
         )}
@@ -338,6 +338,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: theme.colors.white,
+    paddingBottom: 24,
+  },
+  contentMain: {
+    width: '50%',
   },
   buttonStyle: {
     flex: 0,
@@ -346,21 +350,32 @@ const styles = StyleSheet.create({
   helperText: {
     color: theme.colors.primaryColor,
   },
-  verificationSubtitle: {
-    marginTop: 12,
-    marginBottom: 8,
-  },
   divider: {
-    marginBottom: 10,
-    marginTop: 50,
+    height: '100%',
   },
   contentView: {
     backgroundColor: theme.colors.white,
     paddingRight: 16,
-    marginTop: 50,
+    height: '100%',
+    paddingTop: 50,
+    width: '50%',
+  },
+  contentWrapper: {
+    height: '100%',
+    borderLeftWidth: 1,
+    borderLeftColor: theme.colors.background,
+    paddingLeft: 30,
+  },
+  verificationSubtitle: {
+    marginBottom: 8,
   },
   tabContainer: {
     width: 280,
     marginLeft: 'auto',
+  },
+  dividerWrapper: {
+    paddingTop: 50,
+    paddingBottom: 24,
+    height: '100%',
   },
 });

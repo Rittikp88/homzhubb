@@ -93,7 +93,6 @@ const SelectServices = (): ReactElement => {
   // Local State
   const popupRef = useRef<PopupActions>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [showGoBackCaution, setShowGoBackCaution] = useState(false);
   const [isStepDone, setStepPositionArr] = useState<boolean[]>([false, false]);
   const [tabViewHeights, setIsStepDone] = useState<number[]>([height, height]);
 
@@ -119,7 +118,7 @@ const SelectServices = (): ReactElement => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.VALUE_ADDED_SERVICES });
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.SELECT_PROPERTY });
   };
   const render = (): ReactElement => {
     return (
@@ -188,7 +187,7 @@ const SelectServices = (): ReactElement => {
               closeOnDocumentClick: false,
               onClose: onSheetClose,
               children: undefined,
-              contentStyle: { width: showGoBackCaution ? 'max-Content' : '50%', borderRadius: 4 },
+              contentStyle: { width: '50%', borderRadius: 4 },
             }}
             content={<BackWarningPopover />}
           />
@@ -201,26 +200,26 @@ const SelectServices = (): ReactElement => {
     <View style={styles.popoverContent}>
       <View style={[styles.popoverHeader, styles.popoverSpacing]}>
         <Text type="small" textType="semiBold" style={styles.heading}>
-          {t(showGoBackCaution ? 'common:confirm' : 'common:changePropertyText')}
+          {t('common:changePropertyText')}
         </Text>
         <Button type="text" icon={icons.close} iconSize={24} onPress={onSheetClose} />
       </View>
       <View style={[styles.popoverSpacing, styles.popoverBody]}>
         <Text type="small" style={styles.message}>
-          {showGoBackCaution ? t('assetMore:goBackCaution') : t('assetMore:changePropertyCaution')}
+          {t('assetMore:changePropertyCaution')}
         </Text>
       </View>
       <View style={[styles.buttonContainer, styles.popoverSpacing]}>
         <Button
           type="secondary"
-          title={showGoBackCaution ? t('common:yes') : t('common:continue')}
+          title={t('common:continue')}
           titleStyle={styles.buttonTitle}
           onPress={navigateToValueAddedServices}
           containerStyle={styles.editButton}
         />
         <Button
           type="primary"
-          title={showGoBackCaution ? t('common:no') : t('common:cancel')}
+          title={t('common:cancel')}
           onPress={onSheetClose}
           titleStyle={styles.buttonTitle}
           containerStyle={styles.doneButton}
@@ -336,11 +335,6 @@ const SelectServices = (): ReactElement => {
   };
 
   const onBackPress = (isBackPressed: boolean): void => {
-    if (valueAddedServices.filter((service) => service.value).length === 0) {
-      navigateToValueAddedServices();
-      return;
-    }
-    setShowGoBackCaution(isBackPressed);
     if (popupRef && popupRef.current) {
       popupRef.current.open();
     }
