@@ -24,7 +24,7 @@ interface IProps {
   onChangeSlide: (type: string, value: number | number[]) => void;
   containerStyle?: StyleProp<ViewStyle>;
   onDropdownValueChange?: (value: string | number) => void;
-  sliderLength?:number;
+  sliderLength?: number;
 }
 
 const ShowInMvpRelease = false;
@@ -41,7 +41,7 @@ export const Range = (props: IProps): React.ReactElement => {
     isPriceRange,
     selectedUnit,
     onDropdownValueChange,
-    sliderLength
+    sliderLength,
   } = props;
   const { t } = useTranslation();
   const [minRange, setMinRange] = useState(0);

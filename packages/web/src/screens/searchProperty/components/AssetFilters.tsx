@@ -281,7 +281,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
             minChangedValue={minPriceRange}
             maxChangedValue={maxPriceRange}
             containerStyle={[styles.priceRange, isMobile && styles.priceRangeMobile]}
-            sliderLength={isMobile?250:undefined}
+            sliderLength={isMobile ? 250 : undefined}
           />
         ),
         popupProps: isMobile ? mobileDefaultDropDownProps(180) : defaultDropDownProps(180, isMobile),

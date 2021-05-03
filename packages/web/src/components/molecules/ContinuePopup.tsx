@@ -49,7 +49,7 @@ const ContinuePopup: React.FC<Props> = (props: Props) => {
           icon={icons.close}
           iconSize={20}
           iconColor={theme.colors.darkTint3}
-          onPress={handlePopupClose}
+          onPress={handleContinue}
           containerStyle={styles.cross}
           type="text"
         />
