@@ -8,7 +8,7 @@ import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
@@ -27,6 +27,7 @@ import {
   ILoginPayload,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -37,7 +38,7 @@ interface IFormData {
 }
 
 interface IStateProps {
-  isLoading: boolean;
+  commonLoaders: ICommonState['loaders'];
 }
 
 interface IDispatchProps {
@@ -51,7 +52,8 @@ interface IOwnProps extends RouteComponentProps {
 type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const Login: FC<IProps> = (props: IProps) => {
-  const { history, isAuthenticated, isLoading } = props;
+  const { history, isAuthenticated, commonLoaders } = props;
+  const { whileGetCountries } = commonLoaders;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
@@ -128,8 +130,8 @@ const Login: FC<IProps> = (props: IProps) => {
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
   };
-  if (isLoading) {
-    return <Loader visible={isLoading} />;
+  if (whileGetCountries) {
+    return <Loader visible={whileGetCountries} />;
   }
   return (
     <View style={styles.container}>
@@ -243,7 +245,7 @@ const formStyles = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyl
 
 export const mapStateToProps = (state: IState): IStateProps => {
   return {
-    isLoading: UserSelector.getLoadingState(state),
+    commonLoaders: CommonSelectors.getCommonLoaders(state),
   };
 };
 
