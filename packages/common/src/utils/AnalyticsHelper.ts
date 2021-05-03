@@ -40,7 +40,8 @@ class AnalyticsHelper {
 
   public getPropertyTrackData = (details: Asset, extraData?: IExtraTrackData): IPropertyEvent => {
     const { projectName, address, assetGroup, leaseTerm, saleTerm, carpetArea, spaces } = details;
-    const price = leaseTerm?.expectedPrice ?? saleTerm ? Number(saleTerm?.expectedPrice) : extraData?.price ?? 0;
+    const salePrice = saleTerm ? Number(saleTerm?.expectedPrice) : extraData?.price ?? 0;
+    const price = leaseTerm ? leaseTerm.expectedPrice : salePrice;
 
     let space = {
       ...(carpetArea && { area: carpetArea }),

@@ -254,7 +254,11 @@
     "Complete": "Complete",
     "ownerLowerCase": "owner",
     "prospectLowerCase": "prospect",
-    "userCancelled": "User cancelled the process"
+    "userCancelled": "User cancelled the process",
+    "clearAll": "Clear All",
+    "compare": "Compare",
+    "haveAnyQuestions": "Have Any Questions?",
+    "supportFormSubHeader": "Your Client Success Partner"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -605,6 +609,8 @@
     "sellingPrice": "Selling Price",
     "moveInDate": "Move in date",
     "listingNotValid": "Listing is no longer available",
+    "customiseDashboard": "Customise Dashboard",
+    "dragAndDropText": "Drag the section to rearrange the sections according to your choice.",
     "contactOwner": "Contact Owner"
   },
   "propertySearch": {
@@ -890,13 +896,15 @@
     "searchByNameOrProperty": "Search by name or property",
     "noChatsFound": "No Chats Found",
     "noMessageYet": "No messages here yet...",
+    "noCommentsYet": "No comments here yet...",
     "viewInfo": "View Info",
     "noActiveThread": "You have no active message threads.",
     "accessOldMessage": "You can access the old messages \n from inside the Messages menu.",
     "hrAgo": "{{hour}} hr ago",
     "andYou": "and You.",
     "subscriptionPayment": "Subscription & Payment",
-    "activePlan": "Active Plan"
+    "activePlan": "Active Plan",
+    "faqs": "FAQs"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
@@ -1023,6 +1031,7 @@
     "membershipPlans": "Membership Plans",
     "thankYouText": "Thank You!",
     "thankYouTitle": "You have successfully subscribed to the newsletter",
+    "subscriptionThankYou": "We will get back to you soon.",
     "platformPlansHeader": "Subscribe to the platform to digitally manage property from anywhere in the world.",
     "servicePlansHeader": "Subscribe to a service plan for on-the-ground services from our team or from our affiliates.",
     "emailValidations": "Please enter a valid email.",
@@ -1207,6 +1216,11 @@
     "seeCancelReason": "See Cancellation Reason",
     "offerMadeInfo": "These are the offers made by you for property listings on homzhub.",
     "prospectProfileCreateSuccess": "Prospect Profile created successfully",
-    "prospectProfileEditSuccess": "Prospect Profile edited successfully"
+    "prospectProfileEditSuccess": "Prospect Profile edited successfully",
+    "offerSelected": "{{selected}} / {{total}} offers selected",
+    "maxOffer": "Max 3 offers are allowed",
+    "compareOffer": "Compare Offers",
+    "yourExpectation": "Your expectation for {{property}}",
+    "compareProspect": "Compare Prospects"
   }
 }
