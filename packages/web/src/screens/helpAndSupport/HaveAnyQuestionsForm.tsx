@@ -55,7 +55,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
 
   const formSchema = (): yup.ObjectSchema<IFormData> => {
     return yup.object().shape({
-      subject: yup.string().required('moreProfile:fieldRequiredError'),
+      subject: yup.string().required(t('moreProfile:fieldRequiredError')),
       category: yup.number().required(t('moreProfile:fieldRequiredError')),
       description: yup.string(),
     });

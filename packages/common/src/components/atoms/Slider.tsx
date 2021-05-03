@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, LayoutChangeEvent } from 'react-native';
 import MultiSlider, { MarkerProps, LabelProps } from '@ptomasroos/react-native-multi-slider';
-
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 
@@ -101,6 +101,9 @@ export class Slider extends Component<ISliderProps, IOwnState> {
     };
 
     const translateX = (): number => {
+      if (PlatformUtils.isWeb()) {
+        return 28;
+      }
       if (left <= 40) {
         return 0;
       }
