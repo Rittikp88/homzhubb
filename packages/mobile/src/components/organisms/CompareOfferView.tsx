@@ -77,6 +77,30 @@ const CompareOfferView = (props: IProps): React.ReactElement => {
     }
   };
 
+  const renderBottomSheet = (): React.ReactElement => {
+    const sheetHeight = isLeaseFlow ? 600 : 525;
+    return (
+      <>
+        {listingDetail && (
+          <BottomSheet visible={isBottomSheetVisible} sheetHeight={sheetHeight} onCloseSheet={closeOfferDetailSheet}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <OfferCard
+                key={selectedNegotiationId}
+                offer={selectedNegotiation}
+                isDetailView
+                isOfferDashboard
+                asset={listingDetail}
+                compareData={compareData}
+                onPressAction={handleAction}
+                onPressMessages={onPressMessageIcon}
+              />
+            </ScrollView>
+          </BottomSheet>
+        )}
+      </>
+    );
+  };
+
   const renderTabView = (): React.ReactElement => {
     const renderScene = SceneMap({
       offer: renderOffer,
@@ -119,22 +143,7 @@ const CompareOfferView = (props: IProps): React.ReactElement => {
                 }}
               />
 
-              {listingDetail && (
-                <BottomSheet visible={isBottomSheetVisible} sheetHeight={600} onCloseSheet={closeOfferDetailSheet}>
-                  <ScrollView showsVerticalScrollIndicator={false}>
-                    <OfferCard
-                      key={selectedNegotiationId}
-                      offer={selectedNegotiation}
-                      isDetailView
-                      isOfferDashboard
-                      asset={listingDetail}
-                      compareData={compareData}
-                      onPressAction={handleAction}
-                      onPressMessages={onPressMessageIcon}
-                    />
-                  </ScrollView>
-                </BottomSheet>
-              )}
+              {renderBottomSheet()}
             </>
           );
         }}
@@ -149,11 +158,14 @@ const CompareOfferView = (props: IProps): React.ReactElement => {
     <OfferProspectTable selectedOfferIds={selectedIds} onPressOffer={onPressRow} />
   );
 
-  return (
+  const renderContentForSaleFlow = (): React.ReactElement => (
     <>
-      {isLeaseFlow ? renderTabView() : <OfferCompareTable selectedOfferIds={selectedIds} onPressOffer={onPressRow} />}
+      <OfferCompareTable selectedOfferIds={selectedIds} onPressOffer={onPressRow} />
+      {renderBottomSheet()}
     </>
   );
+
+  return isLeaseFlow ? renderTabView() : renderContentForSaleFlow();
 };
 
 export default CompareOfferView;

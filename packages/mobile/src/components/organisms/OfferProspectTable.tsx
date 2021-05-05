@@ -73,19 +73,26 @@ const OfferProspectTable = ({ selectedOfferIds, onPressOffer }: IProps): React.R
 
     return offer.map((item) => {
       const { id, user, tenantPreferences, prospect } = item;
+      const ownerPreferences = listingData.leaseTerm?.tenantPreferences.map((pref) => pref.name);
+      const tenantPrefers = tenantPreferences.filter((ele) => ele.isSelected).map((element) => element.name);
+      const org = prospect.user.workInfo.companyName.length > 0 ? prospect.user.workInfo.companyName : '-';
 
       return {
         uniqueKey: id,
         profilePic: user.profilePicture,
         dataPoints: {
           name: user.name,
-          family: tenantPreferences.find((preference) => preference.name === HeaderKeys.FAMILY)?.isSelected,
-          bachelor: tenantPreferences.find((preference) => preference.name === HeaderKeys.BACHELORS)?.isSelected,
-          vegetarian: tenantPreferences.find((preference) => preference.name === HeaderKeys.VEGETARIANS)?.isSelected,
-          pets: tenantPreferences.find((preference) => preference.name === HeaderKeys.NO_PETS)?.isSelected,
+          ...(ownerPreferences?.includes(HeaderKeys.FAMILY) && { family: tenantPrefers.includes(HeaderKeys.FAMILY) }),
+          ...(ownerPreferences?.includes(HeaderKeys.BACHELORS) && {
+            bachelor: tenantPrefers.includes(HeaderKeys.BACHELORS),
+          }),
+          ...(ownerPreferences?.includes(HeaderKeys.VEGETARIANS) && {
+            vegetarian: tenantPrefers.includes(HeaderKeys.VEGETARIANS),
+          }),
+          ...(ownerPreferences?.includes(HeaderKeys.NO_PETS) && { pets: tenantPrefers.includes(HeaderKeys.NO_PETS) }),
           occupants: prospect.occupants,
           jobType: prospect.user.workInfo.jobType.label,
-          organization: prospect.user.workInfo.companyName,
+          organization: org,
         },
       };
     });
@@ -220,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   topContent: {
-    minWidth: theme.viewport.width / 3.5,
+    width: theme.viewport.width / 3.5,
     alignItems: 'center',
   },
   topText: {
@@ -242,7 +249,7 @@ const styles = StyleSheet.create({
 
 const customStyles = {
   contentBox: (isFirstKey?: boolean): StyleProp<ViewStyle> => ({
-    minWidth: isFirstKey ? theme.viewport.width / 2.5 : theme.viewport.width / 3.5,
+    width: isFirstKey ? theme.viewport.width / 2.5 : theme.viewport.width / 3.5,
     flexDirection: 'row',
     justifyContent: isFirstKey ? 'flex-start' : 'center',
   }),

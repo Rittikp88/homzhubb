@@ -264,6 +264,7 @@ const LeaseTermForm = ({
             ]}
           >
             <FormCalendar
+              calendarTitle={dateLabel}
               formProps={formProps}
               label={dateLabel}
               allowPastDates={isFromManage}
