@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
-import { useDown, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import MetaTags from '@homzhub/web/src/components/atoms/MetaTags';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import LandingNavBar from '@homzhub/web/src/screens/landing/components/LandingNavBar';
@@ -19,6 +19,7 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 const MicroSite: FC = () => {
   const [storeLinksRef, setStoreLinksRef] = useState(null);
   const [isInitialized, setIsInitialized] = useState(false);
+
   const storeLinkSectionRef = (element: any): void => {
     setStoreLinksRef(element);
   };
@@ -48,8 +49,6 @@ interface IExitPopupProps {
 const ExitTriggeredPopup = (props: IExitPopupProps): React.ReactElement<IExitPopupProps> => {
   const { isInitialized } = props;
   const popupRef = useRef<PopupActions>(null);
-  const totalWidth = useViewPort().width;
-  const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   let plzSubscribedTimer: NodeJS.Timeout;
   const handlePopup = (e: MouseEvent): void => {
@@ -79,10 +78,8 @@ const ExitTriggeredPopup = (props: IExitPopupProps): React.ReactElement<IExitPop
       clearTimeout(plzSubscribedTimer);
     };
   }, [isInitialized]);
-  const scaleX = isTablet ? (isMobile ? 0.9 : 0.7) : 0.5;
   const containerStyle = {
-    width: totalWidth * scaleX,
-    maxWidth: 'fit-content',
+    width: !isMobile ? 450 : '95%',
   };
   return (
     <Popover

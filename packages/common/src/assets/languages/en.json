@@ -258,7 +258,10 @@
     "clearAll": "Clear All",
     "compare": "Compare",
     "haveAnyQuestions": "Have Any Questions?",
-    "supportFormSubHeader": "Your Client Success Partner"
+    "supportFormSubHeader": "Your Client Success Partner",
+    "name": "Name",
+    "emailId": "Email ID",
+    "mobileNo": "Mobile No"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -350,7 +353,8 @@
     "authDescSignUp": "Hello {{username}}, Enter your phone number to complete your profile.",
     "appleNotSupported": "Apple Authentication is not supported on this device",
     "enterEmailText": "Enter email address",
-    "emailUsed": "This email is already used by someone. Please use unique email"
+    "emailUsed": "This email is already used by someone. Please use unique email",
+    "enterMobileNo": "Enter your mobile number"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -1130,8 +1134,10 @@
     "limitedPopupTitle": "Only available in <1>{{city1}}</1> and <1>{{city2}}</1>. Get a thorough property inspection done and photos taken by professionals.",
     "limitedPopupButton": "Sign Up Now",
     "limitedOfferThankYou": "Homzhub team will get in touch with you to schedule your property inspection.",
-    "limitedPopupSubText": "*Terms and Conditions apply. View a sample inspection report ",
-    "limitedPopupSubTextLink": "here."
+    "limitedPopupSubText": "*Terms and Conditions apply.",
+    "viewInspectionReport": " View a sample inspection report ",
+    "limitedPopupSubTextLink": "here.",
+    "freePropertyHealthCheck": "Free Property Health Check"
   },
   "offers": {
     "jobType": "Job Type",

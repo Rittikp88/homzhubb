@@ -9,7 +9,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import CancelTerminateListingForm from '@homzhub/web/src/components/molecules/CancelTerminateListingForm';
+import CancelTerminateListingForm,{ ICancelListingFormData } from '@homzhub/web/src/components/molecules/CancelTerminateListingForm';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { UpdatePropertyFormTypes } from '@homzhub/web/src/screens/portfolio';
@@ -20,8 +20,6 @@ import {
   IClosureReasonPayload,
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ICancelListingFormData } from '@homzhub/common/src/modules/portfolio/interfaces';
-
 
 interface IProps {
   assetDetails: Asset | null;
@@ -76,6 +74,7 @@ const CancelTerminateListing: FC<IProps> = (props: IProps) => {
         ...(description && { cancel_description: description }),
       },
     };
+
     AssetRepository.cancelAssetListing(payloads)
       .then(() => {
         submit();

@@ -56,10 +56,4 @@ export interface ISetAssetPayload {
   sale_listing_id?: number | null;
 }
 
-export interface ICancelListingFormData {
-  reasonId: number;
-  terminationDate: string;
-  description: string;
-  isTerminate: boolean;
-}
 

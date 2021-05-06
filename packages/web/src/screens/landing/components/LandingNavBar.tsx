@@ -1,8 +1,9 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useRef, useState, useEffect } from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { useHistory } from 'react-router-dom';
-import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
@@ -14,7 +15,10 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { StickyHeader } from '@homzhub/web/src/components';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Image } from '@homzhub/common/src/components/atoms/Image';
+import Popover from '@homzhub/web/src/components/atoms/Popover';
 import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
+import LimitedOfferPopUp from '@homzhub/web/src/screens/microSite/components/LimitedOfferPopUp';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -28,9 +32,12 @@ interface INavProps {
   plansSectionRef?: any;
   storeLinksSectionRef?: any;
   onMenuClose: () => void;
+  openModal?: () => void;
 }
 const LandingNavBar: FC<IProps> = (props: IProps) => {
   const [scrollLength, setScrollLength] = useState(0);
+  const popupRef = useRef<PopupActions>(null);
+
   useEffect(() => {
     if (scrollLength > 0) {
       window.scrollTo({
@@ -54,6 +61,12 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navBarStyle(isMobile);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const banner = {
+    width: 205,
+    height: 50,
+    right: 18,
+  };
+
   const onMenuClose = (): void => {
     setIsMenuOpen(false);
   };
@@ -75,6 +88,19 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
       });
     }
   };
+  const containerStyle = {
+    width: !isMobile ? 450 : '95%',
+  };
+  const handlePopupClose = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+    }
+  };
+  const openModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
   return (
     <>
       <StickyHeader>
@@ -94,8 +120,19 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                 />
               )}
             </View>
+
             {isLaptop ? (
               <View style={styles.subContainer}>
+                {!isMenuVisible && (
+                  <TouchableOpacity onPress={openModal}>
+                    <View>
+                      <Image
+                        source={require('@homzhub/common/src/assets/images/healthCheckButton.svg')}
+                        style={banner}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
                 <Button
                   type="primary"
                   textType="label"
@@ -118,16 +155,38 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                 />
               </View>
             ) : (
-              <Button
-                type="text"
-                icon={icons.hamburgerMenu}
-                iconSize={30}
-                iconColor={theme.colors.darkTint2}
-                onPress={onMenuOpen}
-                containerStyle={styles.hamburgerMenu}
-              />
+              <View style={styles.tabViewHeader}>
+                {!isMobile && !isMenuVisible && (
+                  <TouchableOpacity onPress={openModal}>
+                    <View>
+                      <Image
+                        source={require('@homzhub/common/src/assets/images/healthCheckButton.svg')}
+                        style={banner}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                )}
+                <Button
+                  type="text"
+                  icon={icons.hamburgerMenu}
+                  iconSize={30}
+                  iconColor={theme.colors.darkTint2}
+                  onPress={onMenuOpen}
+                />
+              </View>
             )}
           </View>
+          <Popover
+            forwardedRef={popupRef}
+            content={<LimitedOfferPopUp handlePopupClose={handlePopupClose} />}
+            popupProps={{
+              closeOnDocumentClick: true,
+              children: undefined,
+              modal: true,
+              onClose: handlePopupClose,
+              contentStyle: containerStyle,
+            }}
+          />
         </View>
       </StickyHeader>
       {!isLaptop && (
@@ -137,6 +196,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
             plansSectionRef={plansSectionRef}
             storeLinksSectionRef={storeLinksSectionRef}
             onMenuClose={onMenuClose}
+            openModal={openModal}
           />
         </SideBar>
       )}
@@ -144,7 +204,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   );
 };
 const RenderNavItems: FC<INavProps> = (props: INavProps) => {
-  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef, onMenuClose } = props;
+  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef, onMenuClose, openModal } = props;
   const [isSelected, setIsSelected] = useState(0);
   const [scrollLength, setScrollLength] = useState(0);
   const history = useHistory();
@@ -168,6 +228,7 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
   }, [scrollLength]);
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
   const styles = navItemStyle(isLaptop, false);
   const navItems = [
     {
@@ -200,8 +261,17 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
       disabled: false,
     },
   ];
+  const healthCheckItem = [
+    {
+      text: t('microSite:freePropertyHealthCheck'),
+      url: RouteNames.publicRoutes.APP_BASE,
+      disabled: false,
+    },
+  ];
   let menuItems = isLaptop ? navItems : [...navItems, ...mobileItems, ...login];
-  if (!isMenuVisible) menuItems = [...mobileItems, ...login];
+  if (!isMenuVisible) {
+    menuItems = !isTablet ? [...healthCheckItem, ...mobileItems, ...login] : [...mobileItems, ...login];
+  }
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
     if (menuItems[index].text === t('featuredProperties')) {
@@ -218,6 +288,13 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
           setScrollLength(Math.floor(y));
           onMenuClose();
         });
+      }
+    }
+    if (menuItems[index].text === t('microSite:freePropertyHealthCheck')) {
+      if (openModal) {
+        onMenuClose();
+
+        openModal();
       }
     }
     if (menuItems[index].text === t('landing:downloadApp')) {
@@ -255,6 +332,7 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
             isActive={isSelected === index}
             onNavItemPress={onNavItemPress}
             index={index}
+            isMenuVisible={isMenuVisible}
           />
         );
       })}
@@ -267,8 +345,9 @@ interface INavItem {
   isActive: boolean;
   isDisabled: boolean;
   onNavItemPress: (index: number) => void;
+  isMenuVisible: boolean;
 }
-const NavItem: FC<INavItem> = ({ text, index, isDisabled, isActive, onNavItemPress }: INavItem) => {
+const NavItem: FC<INavItem> = ({ text, index, isDisabled, isActive, onNavItemPress, isMenuVisible }: INavItem) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const styles = navItemStyle(isLaptop, isActive);
   const itemPressed = (): void => {
@@ -294,9 +373,9 @@ interface INavBarStyle {
   subContainer: ViewStyle;
   content: ViewStyle;
   logo: ViewStyle;
-  hamburgerMenu: ViewStyle;
   downloadButton: ViewStyle;
   downloadButtonTitle: ViewStyle;
+  tabViewHeader: ViewStyle;
 }
 const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
   StyleSheet.create<INavBarStyle>({
@@ -315,9 +394,7 @@ const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
     subContainer: {
       flexDirection: 'row',
     },
-    hamburgerMenu: {
-      marginRight: 16,
-    },
+
     content: {
       width: isMobile ? theme.layout.dashboardMobileWidth : theme.layout.dashboardWidth,
       flexDirection: 'row',
@@ -335,6 +412,11 @@ const navBarStyle = (isMobile: boolean): StyleSheet.NamedStyles<INavBarStyle> =>
     },
     downloadButtonTitle: {
       color: theme.colors.blue,
+    },
+    tabViewHeader: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
     },
   });
 interface INavItemStyle {

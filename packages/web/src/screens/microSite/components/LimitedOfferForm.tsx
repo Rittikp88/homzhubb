@@ -68,7 +68,7 @@ const LimitedOfferForm: FC<IProp> = ({ onUserSubscription }: IProp) => {
           <View style={formStyles.formContent}>
             <FormTextInput
               name="fullName"
-              label=""
+              label={t('common:name')}
               inputType="name"
               placeholder={t('auth:enterName')}
               formProps={formProps}
@@ -78,7 +78,7 @@ const LimitedOfferForm: FC<IProp> = ({ onUserSubscription }: IProp) => {
             />
             <FormTextInput
               name="emailAddress"
-              label=""
+              label={t('common:emailId')}
               inputType="email"
               placeholder={t('auth:enterEmailText')}
               formProps={formProps}
@@ -88,7 +88,7 @@ const LimitedOfferForm: FC<IProp> = ({ onUserSubscription }: IProp) => {
             />
             <FormTextInput
               name="phoneNumber"
-              label=""
+              label={t('common:mobileNo')}
               inputType="phone"
               maxLength={10}
               placeholder={t('auth:phoneWithCode')}
@@ -102,7 +102,7 @@ const LimitedOfferForm: FC<IProp> = ({ onUserSubscription }: IProp) => {
               onPress={formProps.handleSubmit}
               formProps={formProps}
               type="primary"
-              title={t('microSite:limitedPopupButton')}
+              title={t('common:signUp')}
               containerStyle={formProps.isValid ? formStyles.button : formStyles.disabledButton}
             />
           </View>
@@ -128,18 +128,16 @@ const formStyle = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyle
       width: '100%',
     },
     formContent: {
-      margin: isMobile ? 0 : 10,
-      width: isMobile ? '90%' : '60%',
+      width: '90%',
       alignSelf: 'center',
-      marginTop: 36,
     },
     button: {
       backgroundColor: theme.colors.blue,
-      marginVertical: 20,
+      marginVertical: 16,
     },
     disabledButton: {
       backgroundColor: theme.colors.disabled,
-      marginVertical: 20,
+      marginVertical: 16,
     },
     titleStyle: {
       color: theme.colors.white,
@@ -149,10 +147,8 @@ const formStyle = (isMobile: boolean, isDesktop: boolean): StyleSheet.NamedStyle
       margin: 0,
     },
     emailStylesView: {
-      backgroundColor: theme.colors.background,
       textAlign: 'center',
       justifyContent: 'center',
-      marginBottom: '3%',
     },
   });
 

@@ -9,14 +9,19 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { IDropdownOption, FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { ICancelListingFormData } from '@homzhub/common/src/modules/portfolio/interfaces';
+
 interface IProps {
   isTerminate?: boolean;
   reasonData?: IDropdownOption[];
   closeModal: () => void;
   onSubmit: (payload: ICancelListingFormData) => void;
 }
-
+export interface ICancelListingFormData {
+  reasonId: number;
+  terminationDate: string;
+  description: string;
+  isTerminate: boolean;
+}
 
 const CancelTerminateListingForm: FC<IProps> = (props: IProps) => {
   const formData = {

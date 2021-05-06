@@ -41,20 +41,20 @@ const SubscribePopUp = ({ handlePopupClose }: IPopup): React.ReactElement => {
   };
 
   return (
-    <View style={[styles.container, isMobile && styles.containerMobile]}>
-      <Button
-        icon={icons.close}
-        iconSize={20}
-        iconColor={theme.colors.darkTint3}
-        onPress={handlePopupClose}
-        containerStyle={styles.cross}
-        type="text"
-      />
+    <>
       {didSubscribe ? (
-        <Subscribed subText={t('subscriptionThankYou')} />
+        <Subscribed subText={t('subscriptionThankYou')} handlePopupClose={handlePopupClose} />
       ) : (
-        <>
+        <View style={[styles.container, isMobile && styles.containerMobile]}>
           <View style={styles.alignToCenter}>
+            <Button
+              icon={icons.close}
+              iconSize={20}
+              iconColor={theme.colors.darkTint3}
+              onPress={handlePopupClose}
+              containerStyle={styles.cross}
+              type="text"
+            />
             <Image source={require('@homzhub/common/src/assets/images/subscribe.svg')} style={bannerImage} />
           </View>
           <View style={styles.alignToCenter}>
@@ -76,9 +76,9 @@ const SubscribePopUp = ({ handlePopupClose }: IPopup): React.ReactElement => {
             </Typography>
             <SubscribeForm onUserSubscription={handleUserSubscription} />
           </View>
-        </>
+        </View>
       )}
-    </View>
+    </>
   );
 };
 
@@ -111,8 +111,8 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     minWidth: 20,
     minHeight: 20,
-    right: 24,
-    top: 24,
+    right: -24,
+    top: -24,
   },
 });
 

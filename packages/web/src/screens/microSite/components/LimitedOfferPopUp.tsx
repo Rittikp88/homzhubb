@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
-import { useTranslation, Trans } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -37,50 +37,36 @@ const LimitedOfferPopUp = ({ handlePopupClose }: IPopup): React.ReactElement => 
   };
 
   const bannerImage = {
-    height: isMobile ? 150 : 224,
-    width: isMobile ? 244 : 346,
+    height: isMobile ? 136 : 180,
+    width: '100%',
   };
   const navigateToNewScreen = (): void => {
     NavigationUtils.openNewTab({ path: 'https://rebrand.ly/homzhub-inspection-report' });
   };
+
   return (
     <>
-      <Button
-        icon={icons.close}
-        iconSize={20}
-        iconColor={theme.colors.darkTint3}
-        onPress={handlePopupClose}
-        containerStyle={styles.cross}
-        type="text"
-      />
       {didSubscribe ? (
-        <Subscribed subText={t('limitedOfferThankYou')} />
+        <Subscribed subText={t('limitedOfferThankYou')} handlePopupClose={handlePopupClose} />
       ) : (
         <View style={[styles.container, isMobile && styles.containerMobile]}>
+          <Button
+            icon={icons.close}
+            iconSize={20}
+            iconColor={!didSubscribe ? theme.colors.white : theme.colors.darkTint3}
+            onPress={handlePopupClose}
+            containerStyle={styles.cross}
+            type="text"
+          />
           <View style={styles.alignToCenter}>
-            <Image source={require('@homzhub/common/src/assets/images/limitedOffer.svg')} style={bannerImage} />
+            <Image source={require('@homzhub/common/src/assets/images/microSitePopupBanner.svg')} style={bannerImage} />
           </View>
           <View style={styles.alignToCenter}>
-            <Typography
-              variant={isMobile ? 'text' : 'title'}
-              size="small"
-              fontWeight="semiBold"
-              style={styles.headerText}
-            >
-              {t('limitedPopupHeader')}
-            </Typography>
-            <Typography
-              variant={isMobile ? 'label' : 'text'}
-              size={isMobile ? 'regular' : 'small'}
-              fontWeight="regular"
-              style={styles.titleText}
-            >
-              <Trans t={t} i18nKey="limitedPopupTitle">
-                Cities <strong>{{ city1: 'Pune' }}</strong> <strong>{{ city2: 'Nagpur' }}</strong>
-              </Trans>
-            </Typography>
             <LimitedOfferForm onUserSubscription={handleUserSubscription} />
             <View style={styles.noteTextContainer}>
+              <Typography variant="label" size="large" fontWeight="regular" style={styles.noteTextBody}>
+                {t('limitedPopupSubText')}
+              </Typography>
               <Typography
                 variant="label"
                 size="large"
@@ -88,7 +74,7 @@ const LimitedOfferPopUp = ({ handlePopupClose }: IPopup): React.ReactElement => 
                 style={styles.noteTextBody}
                 onPress={navigateToNewScreen}
               >
-                {t('limitedPopupSubText')}
+                {t('viewInspectionReport')}
                 <Typography
                   variant="label"
                   size="large"
@@ -99,6 +85,16 @@ const LimitedOfferPopUp = ({ handlePopupClose }: IPopup): React.ReactElement => 
                   {t('limitedPopupSubTextLink')}
                 </Typography>
               </Typography>
+
+              {/* <Typography ---------//TODO-------health check
+                  variant="label"
+                  size="large"
+                  fontWeight="regular"
+                  style={[styles.noteLinkText,styles.headerText]}
+                  onPress={navigateToHealthCheck}
+                >
+                  {t('What is property health check?')}
+                </Typography> */}
             </View>
           </View>
         </View>
@@ -111,16 +107,15 @@ const styles = StyleSheet.create({
   container: {
     maxHeight: '90vh',
     backgroundColor: theme.colors.white,
-    padding: 54,
-    width: 'fitContent',
-    overflowY: 'scroll',
-    marginBottom: '5%',
+    width: 450,
+    paddingBottom: '5%',
   },
   alignToCenter: {
     alignItems: 'center',
   },
   containerMobile: {
-    padding: 24,
+    width: '100%',
+    maxHeight:'96vh'
   },
   image: {
     paddingHorizontal: 18,
@@ -139,20 +134,22 @@ const styles = StyleSheet.create({
     zIndex: 1000,
     minWidth: 20,
     minHeight: 20,
-    right: 24,
-    top: 24,
+    right: 16,
+    top: 16,
   },
   noteTextContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    width: '90%',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   noteTextBody: {
     color: theme.colors.darkTint2,
   },
   noteLinkText: {
-    color: theme.colors.darkTint2,
+    color: theme.colors.primaryColor,
     textDecorationLine: 'underline',
-    textDecorationColor: theme.colors.darkTint2,
+    textDecorationColor: theme.colors.primaryColor,
   },
 });
 

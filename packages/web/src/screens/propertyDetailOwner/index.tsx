@@ -164,7 +164,11 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
             onClose: onClosePopover,
             modal: true,
             arrow: false,
-            contentStyle: { width: !submittedSuccessfully ? 385 : 480 },
+            contentStyle: {
+              width: !submittedSuccessfully ? 385 : 480,
+              height: !submittedSuccessfully ? 569 : undefined,
+              overflowY: 'scroll',
+            },
             closeOnDocumentClick: false,
             children: undefined,
           }}
