@@ -59,6 +59,7 @@ exports[`CollapsibleSection should match snapshot 1`] = `
     easing="easeOutCubic"
     enablePointerEvents={false}
     onAnimationEnd={[Function]}
+    renderChildrenCollapsed={true}
   >
     <View />
   </Collapsible>
@@ -124,6 +125,7 @@ exports[`CollapsibleSection should match snapshot with press 1`] = `
     easing="easeOutCubic"
     enablePointerEvents={false}
     onAnimationEnd={[Function]}
+    renderChildrenCollapsed={true}
   >
     <View />
   </Collapsible>

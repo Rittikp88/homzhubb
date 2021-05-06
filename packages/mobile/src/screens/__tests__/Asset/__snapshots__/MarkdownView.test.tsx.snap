@@ -15,7 +15,7 @@ exports[`Markdown View should render snapshot 1`] = `
     title=""
     type="primary"
   />
-  <ScrollViewMock
+  <ScrollView
     style={
       Object {
         "backgroundColor": "#FFFFFF",
@@ -47,7 +47,7 @@ exports[`Markdown View should render snapshot 1`] = `
         useDefaultStyles={true}
       />
     </View>
-  </ScrollViewMock>
+  </ScrollView>
 </View>
 `;
 
@@ -66,7 +66,7 @@ exports[`Markdown View should render snapshot when is from verification 1`] = `
     title=""
     type="primary"
   />
-  <ScrollViewMock
+  <ScrollView
     style={
       Object {
         "backgroundColor": "#FFFFFF",
@@ -98,6 +98,6 @@ exports[`Markdown View should render snapshot when is from verification 1`] = `
         useDefaultStyles={true}
       />
     </View>
-  </ScrollViewMock>
+  </ScrollView>
 </View>
 `;

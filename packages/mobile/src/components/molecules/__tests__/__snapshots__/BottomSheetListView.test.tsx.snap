@@ -826,7 +826,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                     viewabilityConfigCallbackPairs={Array []}
                                     windowSize={21}
                                   >
-                                    <ScrollViewMock
+                                    <ScrollView
                                       ItemSeparatorComponent={[Function]}
                                       data={
                                         Array [
@@ -5050,7 +5050,7 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                           </View>
                                         </RCTScrollView>
                                       </RCTScrollView>
-                                    </ScrollViewMock>
+                                    </ScrollView>
                                   </VirtualizedList>
                                 </FlatList>
                               </View>

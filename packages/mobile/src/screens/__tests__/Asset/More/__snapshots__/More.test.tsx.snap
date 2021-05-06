@@ -686,7 +686,7 @@ exports[`Financials Screen should render snapshot 1`] = `
           textType="regular"
           type="small"
         >
-          assetMore:valueAddedServices
+          assetMore:paidAdditionalServices
         </Text>
       </View>
       <Icon

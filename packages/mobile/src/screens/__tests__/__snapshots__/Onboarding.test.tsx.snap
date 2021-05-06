@@ -35,7 +35,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         textType="bold"
         type="small"
       >
-        skip
+        login
       </Text>
       <View
         style={
@@ -63,6 +63,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
           style={
             Object {
               "color": "#4FA800",
+              "marginHorizontal": 5,
               "textAlign": "center",
             }
           }
@@ -133,7 +134,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         textType="semiBold"
         type="regular"
       >
-        iAmLooking
+        iWantTo
       </Text>
       <Button
         containerStyle={
@@ -171,7 +172,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         iconSize={20}
         onPress={[Function]}
         testID="btnSearchProperty"
-        title="property:searchProperties"
+        title="property:searchProperty"
         titleStyle={
           Object {
             "marginHorizontal": 12,
@@ -360,7 +361,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         textType="bold"
         type="small"
       >
-        skip
+        login
       </Text>
       <View
         style={
@@ -388,6 +389,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
           style={
             Object {
               "color": "#4FA800",
+              "marginHorizontal": 5,
               "textAlign": "center",
             }
           }
@@ -458,7 +460,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         textType="semiBold"
         type="regular"
       >
-        iAmLooking
+        iWantTo
       </Text>
       <Button
         containerStyle={
@@ -496,7 +498,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         iconSize={20}
         onPress={[Function]}
         testID="btnSearchProperty"
-        title="property:searchProperties"
+        title="property:searchProperty"
         titleStyle={
           Object {
             "marginHorizontal": 12,

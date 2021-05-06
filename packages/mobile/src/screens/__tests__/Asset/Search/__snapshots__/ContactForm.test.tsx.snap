@@ -17,7 +17,7 @@ exports[`Contact Form Screen should render snapshot 1`] = `
     title="contact"
     type="secondary"
   />
-  <KeyboardAwareScrollViewMock
+  <KeyboardAwareScrollView
     enableAutomaticScroll={true}
     enableOnAndroid={false}
     enableResetScrollToCoords={true}
@@ -223,6 +223,6 @@ exports[`Contact Form Screen should render snapshot 1`] = `
       }
       type="primary"
     />
-  </KeyboardAwareScrollViewMock>
+  </KeyboardAwareScrollView>
 </HandleBack>
 `;

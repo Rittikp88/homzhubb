@@ -57,7 +57,7 @@ exports[`Asset filter should render snapshot 1`] = `
         reset
       </Text>
     </View>
-    <ScrollViewMock
+    <ScrollView
       style={
         Object {
           "flex": 1,
@@ -389,7 +389,7 @@ exports[`Asset filter should render snapshot 1`] = `
           type="primary"
         />
       </View>
-    </ScrollViewMock>
+    </ScrollView>
   </ForwardRef(SafeAreaView)>
 </Fragment>
 `;

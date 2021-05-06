@@ -366,7 +366,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
         onHandleAction(payload, {
           id,
           endDate: leaseEndDate,
-          hasTakeAction: action?.label === ActionType.ACTION,
+          hasTakeAction: action?.label === ActionType.NEXT,
         });
       }
     }
