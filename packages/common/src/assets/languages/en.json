@@ -290,11 +290,11 @@
     "numberRequired": "Please enter your mobile number",
     "passwordRequired": "Please enter your password",
     "otpVerification": "We will send you an OTP via SMS for verification",
-    "passwordValidation": "Your password should be atleast 8 characters long and should contain an uppercase, a lowercase, a special character and a number",
+    "passwordValidation": "Your password should be atleast 6 characters long and should contain a special character and an alphabet",
     "emailValidation": "Please enter valid email-id",
     "onlyAlphabets": "Only alphabets are allowed",
     "minimumDigits": "Minimum {{number}} digits required",
-    "minimumCharacters": "Minimum 8 characters allowed",
+    "minimumCharacters": "Minimum 6 characters allowed",
     "phoneWithCode": "Country Code + Phone No.",
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already registered?",
@@ -627,7 +627,8 @@
     "customiseDashboard": "Customise Dashboard",
     "dragAndDropText": "Drag the section to rearrange the sections according to your choice.",
     "contactOwner": "Contact Owner",
-    "confirmCancellation": "Are you sure want to cancel the listing?"
+    "confirmCancellation": "Are you sure want to cancel the listing?",
+    "onFloorValidation" : "This can't be more than total floor count"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

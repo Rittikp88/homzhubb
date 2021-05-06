@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -76,13 +76,13 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
         {isMobile && this.renderSpaces(true)}
 
         {shouldRenderSwitch && (
-          <View style={[styles.rowStyle, styles.marginBottom]}>
+          <TouchableOpacity style={[styles.rowStyle, styles.marginBottom]} onPress={this.toggleMoreSwitch}>
             <Icon name={icons.threeDots} size={24} />
             <Text type="small" style={styles.moreText}>
               {t('assetMore:more')}
             </Text>
             <RNSwitch selected={showMore} onToggle={this.toggleMoreSwitch} />
-          </View>
+          </TouchableOpacity>
         )}
         <View style={styles.subContainer}>
           {!isMobile ? this.renderSpaces(false) : !showMore ? null : this.renderSpaces(false)}

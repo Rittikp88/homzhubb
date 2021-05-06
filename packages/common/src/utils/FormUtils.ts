@@ -13,7 +13,7 @@ class FormUtils {
 
   public percentageRegex = /^(100(\.00?)?|[1-9]?\d(\.\d\d?)?)$/;
 
-  public passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*?])[0-9a-zA-Z!@#$%^&*?]*$/;
+  public passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*?])[0-9a-zA-Z!@#$%^&*?]*$/;
 
   public emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 

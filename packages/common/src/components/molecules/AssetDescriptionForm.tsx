@@ -7,7 +7,6 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import { FormCounter } from '@homzhub/common/src/components/molecules/FormCounter';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -87,20 +86,24 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
         </View>
       </View>
       <View style={[styles.counter, isTablet && styles.counterTab, isMobile && styles.counterMobile]}>
-        <FormCounter
-          containerStyles={styles.formCounter}
+        <FormTextInput
+          style={styles.inputFieldStyle}
           name="totalFloors"
-          maxCount={1000}
           label={t('totalFloor')}
+          maxLength={3}
+          numberOfLines={1}
+          inputType="number"
           formProps={formProps}
         />
         {!isMobile && <Divider containerStyles={styles.divider} />}
-        <FormCounter
-          containerStyles={styles.formCounter}
+        <FormTextInput
+          style={styles.inputFieldStyle}
           name="onFloorNumber"
           label={t('onFloorText')}
+          maxLength={3}
+          numberOfLines={1}
+          inputType="number"
           formProps={formProps}
-          maxCount={formProps.values.totalFloors}
         />
       </View>
     </View>

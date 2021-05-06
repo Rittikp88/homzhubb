@@ -117,7 +117,7 @@ export class ResetPassword extends Component<Props, IResetPasswordState> {
       password: yup
         .string()
         .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
-        .min(8, t('auth:minimumCharacters'))
+        .min(6, t('auth:minimumCharacters'))
         .required(t('auth:passwordRequired')),
     });
   };

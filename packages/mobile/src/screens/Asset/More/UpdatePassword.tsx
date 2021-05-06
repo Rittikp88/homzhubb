@@ -143,12 +143,12 @@ class UpdatePassword extends Component<Props, IScreenState> {
       currentPassword: yup
         .string()
         .matches(FormUtils.passwordRegex, t('passwordValidation'))
-        .min(8, t('minimumCharacters'))
+        .min(6, t('minimumCharacters'))
         .required(t('passwordRequired')),
       newPassword: yup
         .string()
         .matches(FormUtils.passwordRegex, t('passwordValidation'))
-        .min(8, t('minimumCharacters'))
+        .min(6, t('minimumCharacters'))
         .required(t('passwordRequired')),
     });
   };

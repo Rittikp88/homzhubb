@@ -37,7 +37,6 @@ const SLIDER_WIDTH = theme.viewport.width - theme.layout.screenPadding * 2;
 const AssetMetricsList = (props: IProps): React.ReactElement => {
   const {
     title = 0,
-    subscription,
     data,
     selectedAssetType,
     onPlusIconClicked,
@@ -119,14 +118,6 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
                 {subTitleText || t('common:properties')}
               </Label>
             )}
-            {subscription && (
-              <>
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.circleIcon} />
-                <Label type="regular" textType="regular" style={styles.textStyle}>
-                  {`${t('common:homzhub')} ${subscription}`}
-                </Label>
-              </>
-            )}
           </View>
         </View>
         {onPlusIconClicked && (
@@ -186,10 +177,6 @@ const styles = StyleSheet.create({
   propertyText: {
     color: theme.colors.darkTint4,
   },
-  circleIcon: {
-    paddingTop: 10,
-    paddingHorizontal: 6,
-  },
   logo: {
     marginEnd: 12,
   },
@@ -206,10 +193,6 @@ const styles = StyleSheet.create({
   },
   financialView: {
     alignItems: 'center',
-  },
-  textStyle: {
-    marginTop: 2,
-    width: theme.viewport.width < 350 ? theme.viewport.width / 2 - 48 : undefined,
   },
   headerIcon: {
     backgroundColor: theme.colors.blue,

@@ -23,6 +23,7 @@ interface IPromoProps {
   type: 'link' | 'regular';
   containerStyles?: StyleProp<ViewStyle>;
   inputStyles?: StyleProp<TextStyle>;
+  shouldShowText?: boolean;
 }
 type Props = IPromoProps & WithTranslation;
 
@@ -32,10 +33,14 @@ interface IPromoState {
 }
 
 class PromoCode extends PureComponent<Props, IPromoState> {
-  public state = {
-    promoCode: '',
-    showTextInput: false,
-  };
+  constructor(props: Props) {
+    super(props);
+    const { shouldShowText } = this.props;
+    this.state = {
+      promoCode: '',
+      showTextInput: shouldShowText ?? false,
+    };
+  }
 
   public render(): React.ReactNode {
     const { t, containerStyles, type, code } = this.props;

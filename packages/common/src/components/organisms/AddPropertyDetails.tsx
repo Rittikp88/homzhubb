@@ -30,8 +30,8 @@ interface IDescriptionForm {
   facing?: string;
   flooringType?: number;
   yearOfConstruction?: number;
-  totalFloors?: number;
-  onFloorNumber?: number;
+  totalFloors?: string;
+  onFloorNumber?: string;
 }
 
 interface IFurnishingForm {
@@ -72,8 +72,8 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
         facing: (assetDetails && assetDetails.facing) || undefined,
         flooringType: (assetDetails && assetDetails.floorType) || undefined,
         yearOfConstruction: (assetDetails && assetDetails.construction_Year) || undefined,
-        totalFloors: (assetDetails && assetDetails.totalFloors) || 0,
-        onFloorNumber: (assetDetails && assetDetails.floorNumber) || 0,
+        totalFloors: (assetDetails && String(assetDetails.totalFloors)) || '0',
+        onFloorNumber: (assetDetails && String(assetDetails.floorNumber)) || '0',
       },
       furnishingForm: {
         furnishingDetails: (assetDetails && assetDetails.furnishingDescription) || undefined,
@@ -129,7 +129,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
                   title={t('common:continue')}
                   containerStyle={[styles.buttonStyle, isMobile && styles.buttonMobileStyle]}
                   onPress={(): Promise<void> => this.onSubmit(formProps.values)}
-                  disabled={formProps.submitCount === 1 || loading}
+                  disabled={formProps.submitCount === 1 || loading || !formProps.isValid}
                 />
               </>
             );
@@ -195,8 +195,8 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
       facing,
       floor_type: flooringType,
       furnishing_description: furnishingDetails,
-      floor_number: onFloorNumber,
-      total_floors: totalFloors,
+      floor_number: Number(onFloorNumber) || 0,
+      total_floors: Number(totalFloors) || 0,
       construction_year: yearOfConstruction,
       furnishing: furnishingType,
       spaces: sanitizedSpaces,
@@ -237,6 +237,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
   };
 
   private formSchema = (): yup.ObjectSchema<IDescriptionForm & IFurnishingForm> => {
+    const { t } = this.props;
     return yup.object().shape({
       carpetArea: yup.string().optional(),
       areaUnit: yup.number().optional(),
@@ -244,8 +245,19 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
       facing: yup.string().optional(),
       flooringType: yup.number().optional(),
       yearOfConstruction: yup.number().optional(),
-      totalFloors: yup.number().optional(),
-      onFloorNumber: yup.number().optional(),
+      totalFloors: yup.string().optional(),
+      onFloorNumber: yup
+        .string()
+        .optional()
+        .test({
+          name: 'lesserOnFloorTest',
+          exclusive: true,
+          message: t('property:onFloorValidation'),
+          test(onFloorEntered: string) {
+            const { totalFloors } = this.parent;
+            return parseInt(totalFloors, 10) >= parseInt(onFloorEntered, 10);
+          },
+        }),
       furnishingType: yup.string().optional(),
       furnishingDetails: yup.string().optional(),
     });

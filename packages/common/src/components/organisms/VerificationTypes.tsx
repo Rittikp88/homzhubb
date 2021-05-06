@@ -55,7 +55,7 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
           return (
             <View style={styles.proofChild} key={index}>
               <Text type="small" textType="semiBold" style={styles.title}>
-                {data.title}
+                {index + 1}. {data.title}
               </Text>
               {verificationType.name === VerificationDocumentCategory.SELFIE_ID_PROOF ? (
                 <>

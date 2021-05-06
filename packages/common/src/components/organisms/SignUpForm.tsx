@@ -135,6 +135,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
                 code={referralCode}
                 containerStyles={styles.referralContainer}
                 inputStyles={styles.referralInputStyle}
+                shouldShowText
               />
               <TermsCondition onPressLink={onPressLink} />
               <FormButton
@@ -164,7 +165,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
       password: yup
         .string()
         .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
-        .min(8, t('auth:minimumCharacters'))
+        .min(6, t('auth:minimumCharacters'))
         .required(t('auth:passwordRequired')),
       referralCode: yup.string().optional().uppercase(t('auth:upperCaseError')).strict(true).max(10),
     });
