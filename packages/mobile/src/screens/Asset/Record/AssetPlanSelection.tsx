@@ -75,7 +75,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
     const { isSheetVisible, loading } = this.state;
     return (
       <>
-        <Screen headerProps={{ title: t('propertyPlan'), onIconPress: this.goBack }} isLoading={loading}>
+        <Screen headerProps={{ title: t('nextSteps'), onIconPress: this.goBack }} isLoading={loading}>
           <PlanSelection
             carouselView={this.renderCarousel()}
             onSkip={this.onSkip}
@@ -102,7 +102,9 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
           <Text type="large" style={styles.sheetTitle}>
             {t('common:congratulations')}
           </Text>
-          <Text type="small">{t('property:yourDetailsAdded')}</Text>
+          <Text type="small" style={styles.subText}>
+            {t('property:yourPropertyIsReadyText')}
+          </Text>
           <View style={styles.image}>
             <Check />
           </View>
@@ -278,5 +280,9 @@ const styles = StyleSheet.create({
     flex: 0,
     marginHorizontal: 16,
     height: 50,
+  },
+  subText: {
+    textAlign: 'center',
+    marginHorizontal: 16,
   },
 });

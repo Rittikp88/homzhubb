@@ -31,7 +31,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
     return (
       <UserScreen
         title={t('more')}
-        pageTitle={t('valueAddedServices')}
+        pageTitle={t('paidAdditionalServices')}
         onBackPress={navigation.goBack}
         loading={loading}
       >

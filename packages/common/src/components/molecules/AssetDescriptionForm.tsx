@@ -91,7 +91,7 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
           containerStyles={styles.formCounter}
           name="totalFloors"
           maxCount={1000}
-          label={t('numberOfFloorsText')}
+          label={t('totalFloor')}
           formProps={formProps}
         />
         {!isMobile && <Divider containerStyles={styles.divider} />}

@@ -417,7 +417,7 @@ export class AssetCard extends Component<Props, IState> {
         onHandleAction(payload, {
           id,
           endDate: leaseEndDate,
-          hasTakeAction: action?.label === ActionType.ACTION,
+          hasTakeAction: action?.label === ActionType.NEXT,
         });
       }
     }

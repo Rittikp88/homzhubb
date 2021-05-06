@@ -208,9 +208,12 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       selectedAssetPlan: { selectedPlan },
+      valueAddedServices,
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
+    const headerTitle = title === Tabs.SERVICES ? t('assetMore:optionalPaidAdditionalServices') : title;
+    const hasServices = valueAddedServices.length > 0;
 
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
 
@@ -229,11 +232,11 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
         )}
         <View style={styles.tabRows}>
           <Text type="small" textType="semiBold">
-            {title}
+            {headerTitle}
           </Text>
           {[Tabs.VERIFICATIONS, Tabs.SERVICES].includes(key) && (
             <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
-              {t('common:skip')}
+              {t('common:doItLater')}
             </Text>
           )}
           {key === Tabs.ACTIONS && (
@@ -243,7 +246,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
         {key === Tabs.VERIFICATIONS && (
           <>
             <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
-              {t('propertyVerificationSubTitle')}
+              {t('confirmPropertyDetailsText')}
             </Label>
             <Label
               type="large"
@@ -252,6 +255,13 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
               onPress={this.navigateToVerificationHelper}
             >
               {t('helperNavigationText')}
+            </Label>
+          </>
+        )}
+        {key === Tabs.SERVICES && hasServices && (
+          <>
+            <Label type="regular" textType="regular" style={styles.verificationSubtitle}>
+              {t('chooseServiceText')}
             </Label>
           </>
         )}

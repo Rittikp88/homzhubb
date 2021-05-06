@@ -72,7 +72,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
         <SelectionPicker
           data={[
             { title: t('expenses'), value: TabKeys.expenses },
-            { title: t('cashFlow'), value: TabKeys.cashFlow },
+            { title: t('incomeText'), value: TabKeys.cashFlow },
           ]}
           selectedItem={[currentTab]}
           onValueChange={this.onTabChange}

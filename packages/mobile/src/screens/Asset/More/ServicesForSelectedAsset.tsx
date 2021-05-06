@@ -9,7 +9,7 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import { PropertyPayment } from '@homzhub/common/src/components/organisms/PropertyPayment';
@@ -49,7 +49,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
 
   // Constants
   const Routes: IRoutes[] = [
-    { key: RouteKeys.Services, title: t('valueAddedServices') },
+    { key: RouteKeys.Services, title: t('paidAdditionalServices') },
     { key: RouteKeys.Payment, title: t('property:payment') },
   ];
   const Steps = [RouteKeys.Services, RouteKeys.Payment];
@@ -188,6 +188,11 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
         <Text type="small" textType="semiBold" style={styles.title}>
           {tabTitle}
         </Text>
+        {valueAddedServices.length > 0 && (
+          <Label type="regular" textType="regular" style={styles.subHeader}>
+            {t('property:chooseServiceText')}
+          </Label>
+        )}
       </View>
     );
   };
@@ -270,13 +275,10 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
 
 const styles = StyleSheet.create({
   tabHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     backgroundColor: theme.colors.background,
   },
   title: {
-    paddingVertical: 16,
+    paddingTop: 16,
   },
   changeText: {
     color: theme.colors.primaryColor,
@@ -312,5 +314,9 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     marginHorizontal: theme.layout.screenPadding,
+  },
+  subHeader: {
+    marginTop: 5,
+    marginBottom: 10,
   },
 });

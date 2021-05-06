@@ -80,7 +80,7 @@ export const BottomTabs = (): React.ReactElement => {
         })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: t('assetPortfolio:portfolio'),
+          tabBarLabel: t('common:properties'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return focused ? (
               <Icon name={icons.portfolioFilled} color={color} size={22} />

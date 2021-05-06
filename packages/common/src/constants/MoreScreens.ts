@@ -116,7 +116,7 @@ export const MORE_SCREENS: IMoreScreens = {
     },
     {
       id: 9,
-      title: `${translationKey}:valueAddedServices`,
+      title: `${translationKey}:paidAdditionalServices`,
       icon: icons.settingOutline,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,

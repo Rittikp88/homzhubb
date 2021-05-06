@@ -171,7 +171,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         {isListingRequired && (
           <Button
             type="primary"
-            title={t('takeActions')}
+            title={t('common:next')}
             iconSize={24}
             iconColor={theme.colors.blue}
             icon={isActionsVisible ? icons.upArrow : icons.downArrow}

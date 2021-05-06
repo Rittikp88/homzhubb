@@ -65,7 +65,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     return (
       <UserScreen loading={isLoading} isGradient isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
         <AssetMetricsList
-          title={t('assetFinancial:recordsText')}
+          title={t('assetFinancial:summary')}
           numOfElements={2}
           isSubTextRequired={false}
           data={this.getHeaderData()}

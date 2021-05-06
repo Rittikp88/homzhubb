@@ -5,7 +5,7 @@ import { User } from '@homzhub/common/src/domain/models/User';
 
 export enum ActionType {
   CANCEL = 'CANCEL LISTING',
-  ACTION = 'TAKE ACTIONS',
+  NEXT = 'NEXT',
   TERMINATE = 'TERMINATE',
 }
 

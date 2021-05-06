@@ -64,7 +64,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
         <SafeAreaView style={styles.container}>
           <View style={styles.flexOne}>
             <Text type="small" textType="bold" style={styles.skip} onPress={this.handleSkip}>
-              {t('skip')}
+              {t('login')}
             </Text>
             <View style={styles.textContainer}>
               <Text type="large" textType="bold" style={styles.title}>
@@ -89,7 +89,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
               inactiveDotStyle={styles.inactiveDot}
             />
             <Text type="regular" textType="semiBold" style={styles.heading}>
-              {t('iAmLooking')}
+              {t('iWantTo')}
             </Text>
             <Button
               type="primary"
@@ -104,7 +104,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
             />
             <Button
               type="secondary"
-              title={t('property:searchProperties')}
+              title={t('property:searchProperty')}
               icon={icons.search}
               iconSize={20}
               iconColor={theme.colors.blue}
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
   description: {
     textAlign: 'center',
     color: theme.colors.lightGreen,
+    marginHorizontal: 5,
   },
   button: {
     flex: 0,

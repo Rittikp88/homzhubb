@@ -48,7 +48,7 @@ const LeaseProgress = (props: IProgressBarProps): React.ReactElement => {
       <Icon name={isPropertyVacant ? icons.house : icons.calendar} color={theme.colors.darkTint5} size={22} />
       <View style={styles.contentContainer}>
         <Label type="large" style={[styles.label, labelStyle]}>
-          {isPropertyVacant ? t('listingScore') : t('leasePeriod')}
+          {isPropertyVacant ? t('propertyProfileCompletion') : t('leasePeriod')}
         </Label>
         <Progress.Bar
           progress={progress}

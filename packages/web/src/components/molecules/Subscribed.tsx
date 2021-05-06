@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   containerMobile: {
     paddingHorizontal: 8,
     paddingBottom: 36,
-    maxWidth:'94vw'
+    maxWidth: '94vw',
   },
   alignToCenter: {
     alignItems: 'center',

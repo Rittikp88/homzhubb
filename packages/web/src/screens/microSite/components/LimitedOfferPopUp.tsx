@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   containerMobile: {
     width: '100%',
-    maxHeight:'96vh'
+    maxHeight: '96vh',
   },
   image: {
     paddingHorizontal: 18,

@@ -55,5 +55,3 @@ export interface ISetAssetPayload {
   lease_listing_id?: number | null;
   sale_listing_id?: number | null;
 }
-
-
