@@ -30,6 +30,7 @@ import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
+import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import { IChatScreen, IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
@@ -83,6 +84,7 @@ export type CommonParamList = {
   [ScreensKeys.SupportScreen]: { isFromDashboard?: boolean };
   [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.AssetPlanSelection]: undefined | IPlanSelectionParam;
+  [ScreensKeys.LandingScreen]: undefined;
 };
 
 /**
@@ -124,6 +126,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.SupportScreen} component={Support} />
       <Stack.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
       <Stack.Screen name={ScreensKeys.AssetPlanSelection} component={AssetPlanSelection} />
+      <Stack.Screen name={ScreensKeys.LandingScreen} component={LandingScreen} />
     </>
   );
 };

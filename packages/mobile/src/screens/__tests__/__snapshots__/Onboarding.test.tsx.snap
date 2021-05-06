@@ -50,8 +50,9 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
             Object {
               "color": "#0084F8",
               "fontSize": 30,
-              "paddingHorizontal": 20,
+              "paddingHorizontal": 10,
               "paddingTop": 10,
+              "textAlign": "center",
             }
           }
           textType="bold"
@@ -63,7 +64,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
           style={
             Object {
               "color": "#4FA800",
-              "marginHorizontal": 5,
+              "marginHorizontal": 10,
               "textAlign": "center",
             }
           }
@@ -376,8 +377,9 @@ exports[`Onboarding Screen should render with data in state 1`] = `
             Object {
               "color": "#0084F8",
               "fontSize": 30,
-              "paddingHorizontal": 20,
+              "paddingHorizontal": 10,
               "paddingTop": 10,
+              "textAlign": "center",
             }
           }
           textType="bold"
@@ -389,7 +391,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
           style={
             Object {
               "color": "#4FA800",
-              "marginHorizontal": 5,
+              "marginHorizontal": 10,
               "textAlign": "center",
             }
           }

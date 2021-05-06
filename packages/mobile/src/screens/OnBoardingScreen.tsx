@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   description: {
     textAlign: 'center',
     color: theme.colors.lightGreen,
-    marginHorizontal: 5,
+    marginHorizontal: 10,
   },
   button: {
     flex: 0,
@@ -303,9 +303,10 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.blue,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingTop: 10,
     fontSize: 30,
+    textAlign: 'center',
   },
   heading: {
     color: theme.colors.darkTint3,

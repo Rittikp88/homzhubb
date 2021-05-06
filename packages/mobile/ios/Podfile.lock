@@ -403,8 +403,8 @@ PODS:
   - react-native-razorpay (2.2.4):
     - razorpay-pod
     - React
-  - react-native-restart (0.0.15):
-    - React
+  - react-native-restart (0.0.22):
+    - React-Core
   - react-native-safe-area-context (1.0.2):
     - React
   - react-native-slider (3.0.3):
@@ -883,7 +883,7 @@ SPEC CHECKSUMS:
   react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40
   react-native-progress-view: 0df09cfedf8f2ff745820b6c0a242cfb816ee567
   react-native-razorpay: 56c4f4a15b7d502496fdbb7a72a7c86c441a986f
-  react-native-restart: fff228304625f55de2ebd4de43938110f4c888ed
+  react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
   react-native-video: eee541262ada11bc7ffe8ec5508e6a877937c462
@@ -926,6 +926,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 671ff68eefc469f21c65299840061928ab0441b9
+PODFILE CHECKSUM: 458b8aef0494f1ee75181827d2f0bc3ceca4e2c9
 
 COCOAPODS: 1.10.1

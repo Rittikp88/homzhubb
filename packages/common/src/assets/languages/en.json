@@ -262,7 +262,8 @@
     "supportFormSubHeader": "Your Client Success Partner",
     "name": "Name",
     "emailId": "Email ID",
-    "mobileNo": "Mobile No"
+    "mobileNo": "Mobile No",
+    "retry": "Retry"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -361,6 +362,7 @@
     "searchInWeb": "Search for projects, location, builders",
     "welcomeUser": "Welcome {{username}},",
     "description": "Let's add your first property on Homzhub",
+    "addYourProperty": "Let's add your property on Homzhub",
     "searchProject": "Search for project or street name",
     "addProperty": "Add property",
     "logoutHelperText": "If it's not you?",

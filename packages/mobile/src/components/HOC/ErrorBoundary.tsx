@@ -1,9 +1,11 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { withTranslation, WithTranslation } from 'react-i18next';
 import { ScrollView, View, StyleSheet } from 'react-native';
+import RNRestart from 'react-native-restart';
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
@@ -13,14 +15,13 @@ interface IProps {
 interface IErrorState {
   hasError: boolean;
 }
+
 interface IState {
   error: Error;
   errorInfo: ErrorInfo;
 }
 
-type Props = IProps & WithTranslation;
-
-class ErrorBoundary extends Component<Props, IState> {
+class ErrorBoundary extends Component<IProps, IState> {
   public state: IState & IErrorState = {
     hasError: false,
     error: {
@@ -50,14 +51,20 @@ class ErrorBoundary extends Component<Props, IState> {
 
   public render(): ReactNode {
     const { hasError, errorInfo, error } = this.state;
-    const { children, t } = this.props;
+    const { children } = this.props;
     const isDebug = ConfigHelper.getAppMode() === AppModes.DEBUG;
 
     if (hasError) {
       return (
         <View style={styles.container}>
           <Icon name={icons.filledWarning} size={80} color={theme.colors.warning} />
-          <Text>{t('common:genericErrorMessage')}</Text>
+          <Text>{I18nService.t('common:genericErrorMessage')}</Text>
+          <Button
+            type="primary"
+            title={I18nService.t('common:retry')}
+            onPress={this.onRetry}
+            containerStyle={styles.button}
+          />
           {isDebug && (
             <ScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.message}>
@@ -72,9 +79,13 @@ class ErrorBoundary extends Component<Props, IState> {
 
     return children;
   }
+
+  private onRetry = (): void => {
+    RNRestart.Restart();
+  };
 }
 
-export default withTranslation()(ErrorBoundary);
+export default ErrorBoundary;
 
 const styles = StyleSheet.create({
   container: {
@@ -86,5 +97,9 @@ const styles = StyleSheet.create({
   },
   message: {
     marginVertical: 10,
+  },
+  button: {
+    marginVertical: 10,
+    flex: 0,
   },
 });

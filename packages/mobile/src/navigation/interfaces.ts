@@ -99,7 +99,7 @@ export enum ScreensKeys {
   // Common Screens
   ComingSoonScreen = 'ComingSoonScreen',
   WebViewScreen = 'WebViewScreen',
-  AddServiceTicket = 'AddServiceTicket',
+  LandingScreen = 'LandingScreen',
 
   // More Stack
   MoreScreen = 'MoreScreen',
@@ -114,16 +114,20 @@ export enum ScreensKeys {
   ValueAddedServices = 'ValueAddedServices',
   ServicesForSelectedAsset = 'ServicesForSelectedAsset',
   SubscriptionPayment = 'SubscriptionPayment',
+
   // Messages
   Messages = 'Messages',
   ChatScreen = 'ChatScreen',
   GroupChatInfo = 'GroupChatInfo',
+
   // Tickets
+  AddServiceTicket = 'AddServiceTicket',
   ServiceTicketScreen = 'ServiceTicketScreen',
   ServiceTicketDetail = 'ServiceTicketDetail',
   SubmitQuote = 'SubmitQuote',
   ApproveQuote = 'ApproveQuote',
   WorkCompleted = 'WorkCompleted',
+
   // Offers
   ProspectProfile = 'ProspectProfile',
   SubmitOffer = 'SubmitOffer',
