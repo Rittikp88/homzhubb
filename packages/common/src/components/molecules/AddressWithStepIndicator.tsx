@@ -87,7 +87,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
         };
       case TypeOfPlan.MANAGE:
         return {
-          label: t('manage'),
+          label: t('inviteTenant'),
           color: informational,
         };
       case TypeOfPlan.RENT:

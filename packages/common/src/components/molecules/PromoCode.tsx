@@ -5,7 +5,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
 interface IFormDetails {
@@ -24,6 +24,8 @@ interface IPromoProps {
   containerStyles?: StyleProp<ViewStyle>;
   inputStyles?: StyleProp<TextStyle>;
   shouldShowText?: boolean;
+  label?: string;
+  textType?: TextSizeType;
 }
 type Props = IPromoProps & WithTranslation;
 
@@ -43,7 +45,7 @@ class PromoCode extends PureComponent<Props, IPromoState> {
   }
 
   public render(): React.ReactNode {
-    const { t, containerStyles, type, code } = this.props;
+    const { t, containerStyles, type, code, label, textType } = this.props;
     const { showTextInput } = this.state;
     const showTextField = type === 'regular' || showTextInput || code;
 
@@ -57,9 +59,9 @@ class PromoCode extends PureComponent<Props, IPromoState> {
           <Label
             onPress={this.toggleTextInput}
             style={showTextField ? undefined : { color: theme.colors.primaryColor }}
-            type="large"
+            type={textType ?? 'large'}
           >
-            {t('auth:haveReferralCodeText')}
+            {label ?? t('auth:haveReferralCodeText')}
           </Label>
         )}
         {type === 'regular' ? this.renderPromoCode() : this.renderReferralCode()}

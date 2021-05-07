@@ -171,7 +171,7 @@
     "unsupportedFormat": "Unsupported format",
     "pleaseTryAgain": "Please try again.",
     "invalidLinkError": "You can't open this link.",
-    "iWantTo": "I want to",
+    "wantTo": "I want to",
     "somethingWentWrongText": "Something went wrong obtaining access token",
     "reasonExample": "Eg. Reason Title",
     "reason": "Reason",
@@ -263,7 +263,8 @@
     "name": "Name",
     "emailId": "Email ID",
     "mobileNo": "Mobile No",
-    "retry": "Retry"
+    "retry": "Retry",
+    "referralCode": "Referral Code"
   },
   "auth": {
     "verifyNumber": "Verify your number",

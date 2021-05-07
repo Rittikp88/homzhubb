@@ -32,6 +32,9 @@ export class AssetPlan {
   @JsonProperty('name', String)
   private _name = '';
 
+  @JsonProperty('label', String, true)
+  private _label = '';
+
   @JsonProperty('description', String)
   private _description = '';
 
@@ -44,6 +47,10 @@ export class AssetPlan {
 
   get name(): TypeOfPlan {
     return this._name as TypeOfPlan;
+  }
+
+  get label(): string {
+    return this._label;
   }
 
   get description(): string {

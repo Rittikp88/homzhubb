@@ -136,6 +136,8 @@ class SignUpForm extends PureComponent<Props, IFormData> {
                 containerStyles={styles.referralContainer}
                 inputStyles={styles.referralInputStyle}
                 shouldShowText
+                label={t('common:referralCode')}
+                textType="regular"
               />
               <TermsCondition onPressLink={onPressLink} />
               <FormButton
@@ -207,5 +209,6 @@ const styles = StyleSheet.create({
   referralContainer: {
     marginBottom: 0,
     marginHorizontal: 0,
+    marginVertical: 16,
   },
 });

@@ -46,7 +46,7 @@ class ListingService {
       case TypeOfPlan.SELL:
         return I18nService.t('property:sell');
       default:
-        return I18nService.t('property:manage');
+        return I18nService.t('property:inviteTenant');
     }
   };
 

@@ -161,7 +161,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
     return (
       <>
-        <View style={styles.headingView}>
+        <View style={[styles.headingView, isEmpty && styles.headerMargin]}>
           <Text type="small" textType="semiBold" style={styles.title}>
             {t('propertyPortfolio')}
           </Text>
@@ -417,6 +417,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  headerMargin: {
+    marginTop: 12,
   },
   emptyView: {
     minHeight: 200,

@@ -236,7 +236,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
           </Text>
           {[Tabs.VERIFICATIONS, Tabs.SERVICES].includes(key) && (
             <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
-              {t('common:doItLater')}
+              {t(key === Tabs.VERIFICATIONS ? 'common:doItLater' : 'common:skip')}
             </Text>
           )}
           {key === Tabs.ACTIONS && (
@@ -418,7 +418,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
           }}
           style={{ margin: theme.layout.screenPadding }}
         >
-          {`${selectedPlan} Helper Text`}
+          {`${ListingService.getHeader(selectedPlan).toUpperCase()} Helper Text`}
         </Markdown>
       </BottomSheet>
     );

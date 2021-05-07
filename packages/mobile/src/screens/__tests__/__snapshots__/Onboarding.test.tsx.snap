@@ -135,7 +135,7 @@ exports[`Onboarding Screen should render got it button for active slide 1`] = `
         textType="semiBold"
         type="regular"
       >
-        iWantTo
+        wantTo
       </Text>
       <Button
         containerStyle={
@@ -462,7 +462,7 @@ exports[`Onboarding Screen should render with data in state 1`] = `
         textType="semiBold"
         type="regular"
       >
-        iWantTo
+        wantTo
       </Text>
       <Button
         containerStyle={

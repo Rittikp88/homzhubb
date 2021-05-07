@@ -192,7 +192,7 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
       case TypeOfPlan.SELL:
         return t('sell');
       default:
-        return t('manage');
+        return t('inviteTenant');
     }
   };
 

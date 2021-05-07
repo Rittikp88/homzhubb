@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -55,7 +56,9 @@ export class SignUpScreen extends Component<Props, IOwnState> {
             referralCode={params && params?.referralCode}
             testID="signupForm"
           />
-          <AuthenticationGateways toggleLoading={this.toggleLoading} isFromLogin={false} navigation={navigation} />
+          {!PlatformUtils.isIOS() && (
+            <AuthenticationGateways toggleLoading={this.toggleLoading} isFromLogin={false} navigation={navigation} />
+          )}
         </>
       </Screen>
     );
