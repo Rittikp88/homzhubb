@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -181,12 +181,16 @@ class Settings extends React.PureComponent<IOwnProps, IOwnState> {
 
     return (
       <>
-        <View style={[styles.rowStyle, styles.subTitleView]}>
+        <TouchableOpacity
+          style={[styles.rowStyle, styles.subTitleView]}
+          disabled={options.type !== OptionTypes.Webview}
+          onPress={(): void => this.navigateToWebview(options.url)}
+        >
           <Label style={styles.subTitle} type="large">
             {t(options.label)}
           </Label>
           {this.renderOptionTypes(title, options)}
-        </View>
+        </TouchableOpacity>
         {showDivider && (
           <View style={styles.paddingLeft}>
             <Divider />

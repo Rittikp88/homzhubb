@@ -628,7 +628,7 @@
     "dragAndDropText": "Drag the section to rearrange the sections according to your choice.",
     "contactOwner": "Contact Owner",
     "confirmCancellation": "Are you sure want to cancel the listing?",
-    "onFloorValidation" : "This can't be more than total floor count"
+    "onFloorValidation": "This can't be more than total floor count"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -926,7 +926,8 @@
     "andYou": "and You.",
     "subscriptionPayment": "Subscription & Payment",
     "activePlan": "Active Plan",
-    "faqs": "FAQs"
+    "faqs": "FAQs",
+    "noSubscriptions": "No subscription data found"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

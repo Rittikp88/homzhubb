@@ -17,6 +17,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
@@ -90,26 +91,30 @@ class SubscriptionPayment extends Component<Props, IScreenState> {
         loading={loading}
         onBackPress={navigation.goBack}
       >
-        {subscriptions.map((item: Subscription, index) => {
-          const isSubscribed = (currentSubscription && currentSubscription === item.productId) || false;
-          return (
-            <View style={styles.container} key={index}>
-              <Text type="small">{item.title}</Text>
-              <Label type="regular" style={styles.description}>
-                {item.description}
-              </Label>
-              <Text type="small">{item.localizedPrice}</Text>
-              <Button
-                type="primary"
-                title={isSubscribed ? t('assetMore:activePlan') : t('propertySearch:buy')}
-                containerStyle={[styles.buttonContainer, isSubscribed && styles.subscribed]}
-                titleStyle={[styles.buttonTitle, isSubscribed && styles.subscribedTitle]}
-                disabled={isSubscribed}
-                onPress={(): Promise<void> => this.requestSubscription(item.productId)}
-              />
-            </View>
-          );
-        })}
+        {subscriptions.length > 0 ? (
+          subscriptions.map((item: Subscription, index) => {
+            const isSubscribed = (currentSubscription && currentSubscription === item.productId) || false;
+            return (
+              <View style={styles.container} key={index}>
+                <Text type="small">{item.title}</Text>
+                <Label type="regular" style={styles.description}>
+                  {item.description}
+                </Label>
+                <Text type="small">{item.localizedPrice}</Text>
+                <Button
+                  type="primary"
+                  title={isSubscribed ? t('assetMore:activePlan') : t('propertySearch:buy')}
+                  containerStyle={[styles.buttonContainer, isSubscribed && styles.subscribed]}
+                  titleStyle={[styles.buttonTitle, isSubscribed && styles.subscribedTitle]}
+                  disabled={isSubscribed}
+                  onPress={(): Promise<void> => this.requestSubscription(item.productId)}
+                />
+              </View>
+            );
+          })
+        ) : (
+          <EmptyState title={t('assetMore:noSubscriptions')} />
+        )}
       </UserScreen>
     );
   }
@@ -121,7 +126,6 @@ class SubscriptionPayment extends Component<Props, IScreenState> {
       if (plans.length) {
         const products = plans.filter((item) => item.appleProductId);
         const productIds = products.map((item) => item.appleProductId as string);
-
         const subscriptions = await RNIap.getSubscriptions(productIds);
         this.setState({ subscriptions, loading: false });
       }
