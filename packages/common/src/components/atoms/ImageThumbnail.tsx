@@ -58,7 +58,7 @@ class ImageThumbnail extends React.PureComponent<IProps> {
         <>
           {!!imageUrl && (
             <ImageBackground
-              resizeMode={PlatformUtils.isWeb() && galleryView ? 'contain' : 'stretch'}
+              resizeMode={PlatformUtils.isWeb() && galleryView ? 'contain' : 'cover'}
               source={{ uri: imageUrl }}
               imageStyle={[styles.imageStyle, imageContainerStyle]}
               style={[styles.imageWrapper, imageWrapperStyle]}
