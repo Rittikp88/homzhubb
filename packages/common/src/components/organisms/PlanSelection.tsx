@@ -60,7 +60,7 @@ class PlanSelection extends React.PureComponent<Props> {
       <>
         <View style={styles.header}>
           <Text type="regular" textType="semiBold">
-            {t('propertyPlanTitle')}
+            {t('common:wantTo')}
           </Text>
           <Text type="small" textType="semiBold" onPress={onSkip} style={styles.skip}>
             {t('common:skip')}

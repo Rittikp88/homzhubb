@@ -212,10 +212,31 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
-    const headerTitle = title === Tabs.SERVICES ? t('assetMore:optionalPaidAdditionalServices') : title;
+    const servicesHeader = [t('assetMore:premiumPaidServices'), t('assetMore:optional')];
     const hasServices = valueAddedServices.length > 0;
 
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });
+
+    const renderHeader = (): React.ReactElement => {
+      if (key !== Tabs.SERVICES) {
+        return (
+          <Text type="small" textType="semiBold">
+            {title}
+          </Text>
+        );
+      }
+      return (
+        <View style={styles.headerRow}>
+          {servicesHeader.map((item, index) => {
+            return (
+              <Text type="small" key={index} textType={index === 0 ? 'semiBold' : 'light'}>
+                {item}{' '}
+              </Text>
+            );
+          })}
+        </View>
+      );
+    };
 
     return (
       <View style={styles.tabHeader}>
@@ -231,9 +252,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
           />
         )}
         <View style={styles.tabRows}>
-          <Text type="small" textType="semiBold">
-            {headerTitle}
-          </Text>
+          {renderHeader()}
           {[Tabs.VERIFICATIONS, Tabs.SERVICES].includes(key) && (
             <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>
               {t(key === Tabs.VERIFICATIONS ? 'common:doItLater' : 'common:skip')}
@@ -680,5 +699,8 @@ const styles = StyleSheet.create({
   screenContent: {
     paddingHorizontal: theme.layout.screenPadding,
     paddingTop: theme.layout.screenPadding,
+  },
+  headerRow: {
+    flexDirection: 'row',
   },
 });

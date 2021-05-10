@@ -49,7 +49,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
 
   // Constants
   const Routes: IRoutes[] = [
-    { key: RouteKeys.Services, title: t('paidAdditionalServices') },
+    { key: RouteKeys.Services, title: t('premiumPaidServices') },
     { key: RouteKeys.Payment, title: t('property:payment') },
   ];
   const Steps = [RouteKeys.Services, RouteKeys.Payment];
@@ -183,12 +183,13 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
 
   const renderTabHeader = (): ReactElement => {
     const tabTitle = Routes[currentIndex].title;
+    const hasServices = valueAddedServices.length > 0;
     return (
       <View style={styles.tabHeader}>
-        <Text type="small" textType="semiBold" style={styles.title}>
+        <Text type="small" textType="semiBold" style={hasServices ? styles.title : styles.headerWithoutSubHeader}>
           {tabTitle}
         </Text>
-        {valueAddedServices.length > 0 && (
+        {hasServices && (
           <Label type="regular" textType="regular" style={styles.subHeader}>
             {t('property:chooseServiceText')}
           </Label>
@@ -318,5 +319,8 @@ const styles = StyleSheet.create({
   subHeader: {
     marginTop: 5,
     marginBottom: 10,
+  },
+  headerWithoutSubHeader: {
+    paddingVertical: 16,
   },
 });
