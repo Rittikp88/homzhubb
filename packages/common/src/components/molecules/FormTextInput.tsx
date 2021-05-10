@@ -324,8 +324,11 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       return;
     }
     if (phoneCodes.length <= 0) {
-      const phoneCodesArr = countries.map((country) => country.phoneCodesDropdownData);
-      this.setState({ isBottomSheetVisible: !isBottomSheetVisible, phoneCodes: phoneCodesArr.flat() });
+      const phoneCodesArr = countries
+        .map((country) => country.phoneCodesDropdownData)
+        .flat()
+        .sort((a, b) => a.label.localeCompare(b.label));
+      this.setState({ isBottomSheetVisible: !isBottomSheetVisible, phoneCodes: phoneCodesArr });
       return;
     }
 
