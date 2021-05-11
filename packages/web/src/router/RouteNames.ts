@@ -14,6 +14,7 @@ export const RouteNames = {
     UPLOAD: '/upload',
     MAHARASHTRA_CONNECT: '/maharashtra_connect',
     FAQS: '/faqs',
+    MEMBERSHIP_PLANS: '/membership-plans',
   },
   protectedRoutes: {
     /* Mention protected route names here */

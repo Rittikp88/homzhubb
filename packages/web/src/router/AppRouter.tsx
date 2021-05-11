@@ -10,6 +10,7 @@ import AppLayout from '@homzhub/web/src/screens/appLayout';
 import Login from '@homzhub/web/src/screens/login';
 import SignUp from '@homzhub/web/src/screens/signUp';
 import Landing from '@homzhub/web/src/screens/landing';
+import MembershipPlans from '@homzhub/web/src/screens/membershipPlans';
 import MicroSite from '@homzhub/web/src/screens/microSite';
 import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerification';
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
@@ -36,6 +37,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
     MOBILE_VERIFICATION,
     MAHARASHTRA_CONNECT,
     FAQS,
+    MEMBERSHIP_PLANS,
   } = RouteNames.publicRoutes;
   const { DASHBOARD } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
@@ -71,8 +73,8 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
         <Route exact path={TERMS_CONDITION} component={TermsAndCondition} />
         <Route exact path={PRIVACY_POLICY} component={PrivacyPolicy} />
         <Route exact path={TERMS_SERVICES_PAYMENTS} component={TermsServicesPayment} />
-        <Route exact path={MAHARASHTRA_CONNECT} component={MicroSite} />
         <Route exact path={FAQS} component={FAQ} />
+        <Route exact path={MEMBERSHIP_PLANS} component={MembershipPlans} />
         <PrivateRoute path={DASHBOARD} component={AppLayout} isAuthenticated={isAuthenticated} />
       </Switch>
     </Suspense>

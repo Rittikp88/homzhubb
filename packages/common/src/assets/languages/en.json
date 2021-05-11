@@ -263,6 +263,10 @@
     "name": "Name",
     "emailId": "Email ID",
     "mobileNo": "Mobile No",
+    "free": "Free",
+    "contactUs": "Contact Us",
+    "freeSignUp": "Sign Up, It’s Free",
+    "features": "Features",
     "retry": "Retry",
     "referralCode": "Referral Code"
   },
@@ -1253,6 +1257,8 @@
     "maxOffer": "Max 3 offers are allowed",
     "compareOffer": "Compare Offers",
     "yourExpectation": "Your expectation for {{property}}",
-    "compareProspect": "Compare Prospects"
+    "compareProspect": "Compare Prospects",
+    "localTaxHeading": "(Local taxes (VAT, GST, etc.) will be charged in addition to the prices mentioned.)",
+    "pricingCost": "Pricing Cost"
   }
 }
