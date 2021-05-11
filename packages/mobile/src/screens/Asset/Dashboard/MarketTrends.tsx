@@ -12,7 +12,7 @@ type Props = WithTranslation & libraryProps;
 export class MarketTrends extends React.PureComponent<Props> {
   public render = (): React.ReactElement => {
     const { t, navigation, route } = this.props;
-    const title = route.params.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:more');
+    const title = route.params && route.params.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:more');
 
     return (
       <UserScreen

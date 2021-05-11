@@ -344,6 +344,6 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
   radioButton: {
-    marginBottom: 12,
+    marginBottom: 20,
   },
 });

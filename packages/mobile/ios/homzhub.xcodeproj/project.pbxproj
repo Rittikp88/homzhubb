@@ -1269,7 +1269,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
 				PRODUCT_NAME = "Homzhub - Property Investment And Management";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution-Homzhub";
+				PROVISIONING_PROFILE_SPECIFIER = "Distribution-homzhub";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

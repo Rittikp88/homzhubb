@@ -56,7 +56,7 @@ export type CommonParamList = {
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyVisits]: { visitId?: number; reviewVisitId?: number };
   [ScreensKeys.ServiceTicketScreen]: undefined | { isFromDashboard: boolean };
-  [ScreensKeys.MarketTrends]: { isFromDashboard: boolean };
+  [ScreensKeys.MarketTrends]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
   [ScreensKeys.AddServiceTicket]: IServiceTicketForm;
   [ScreensKeys.AddRecordScreen]: IAddRecordProps;

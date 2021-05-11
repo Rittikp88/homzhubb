@@ -26,15 +26,5 @@ exports[`SignUp Screen should render signup screen 1`] = `
     onSubmitFormSuccess={[Function]}
     testID="signupForm"
   />
-  <Connect(withI18nextTranslation(AuthenticationGateways))
-    isFromLogin={false}
-    navigation={
-      Object {
-        "goBack": [MockFunction],
-        "navigate": [MockFunction],
-      }
-    }
-    toggleLoading={[Function]}
-  />
 </Screen>
 `;

@@ -32,6 +32,7 @@ exports[`Dropdown should match snapshot 1`] = `
       style={
         Array [
           Object {
+            "color": "#001B36",
             "flex": 1,
           },
           Object {},
@@ -159,6 +160,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
       style={
         Array [
           Object {
+            "color": "#001B36",
             "flex": 1,
           },
           Object {
@@ -231,6 +233,7 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
       style={
         Array [
           Object {
+            "color": "#001B36",
             "flex": 1,
           },
           Object {
