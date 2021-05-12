@@ -28,12 +28,13 @@ import {
   IUpdateLeaseTerm,
   IUnitListingPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { Asset, Count } from '@homzhub/common/src/domain/models/Asset';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
 import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { Count } from '@homzhub/common/src/domain/models/Count';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';

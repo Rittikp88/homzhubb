@@ -1,6 +1,7 @@
 import React from 'react';
-import { FlatList, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { FlatList, Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
@@ -16,10 +17,20 @@ interface IProps {
   unreadCount: number;
   isTitle?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  isTablet?: boolean;
 }
 
 const NotificationBox = (props: IProps): React.ReactElement => {
-  const { data, onPress, isTitle = true, containerStyle, unreadCount, onLoadMore, shouldEnableOuterScroll } = props;
+  const {
+    data,
+    onPress,
+    isTitle = true,
+    containerStyle,
+    unreadCount,
+    onLoadMore,
+    shouldEnableOuterScroll,
+    isTablet,
+  } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDashboard);
 
   const renderItem = ({ item }: { item: Notifications }): React.ReactElement => {
@@ -47,7 +58,11 @@ const NotificationBox = (props: IProps): React.ReactElement => {
         )}
         <View style={styles.infoContainer}>
           <View style={styles.initialsContainer}>
-            <SVGUri uri={item.notificationType.attachmentLink} width={25} height={20} />
+            {PlatformUtils.isWeb() ? (
+              <Image source={{ uri: item.notificationType.attachmentLink }} style={styles.notificationIcon} />
+            ) : (
+              <SVGUri uri={item.notificationType.attachmentLink} width={25} height={20} />
+            )}
           </View>
           <View style={styles.description}>
             <View style={styles.nameAndTimeContainer}>
@@ -78,6 +93,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
         data={data}
         renderItem={renderItem}
         initialNumToRender={10}
+        numColumns={PlatformUtils.isWeb() ? (isTablet ? 1 : 2) : 1}
         showsVerticalScrollIndicator={false}
         onTouchStart={(): void => {
           if (shouldEnableOuterScroll) {
@@ -113,6 +129,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 4,
     backgroundColor: theme.colors.white,
+    marginHorizontal: PlatformUtils.isWeb() ? 12 : undefined,
   },
   infoContainer: {
     flexDirection: 'row',
@@ -152,5 +169,9 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     color: theme.colors.darkTint2,
+  },
+  notificationIcon: {
+    width: 25,
+    height: 25,
   },
 });

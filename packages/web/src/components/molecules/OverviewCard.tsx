@@ -13,6 +13,8 @@ interface IProps {
   isHovered?: boolean;
   isActive?: boolean;
   activeColor?: string;
+  iconBackgroundColor?: string;
+  iconColor?: string;
 }
 
 const OverviewCard: React.FC<IProps> = ({
@@ -23,6 +25,8 @@ const OverviewCard: React.FC<IProps> = ({
   isHovered = false,
   isActive = false,
   activeColor = theme.colors.transparent,
+  iconBackgroundColor = theme.colors.background,
+  iconColor = theme.colors.blue,
 }: IProps) => {
   const styles = cardStyle(activeColor);
   return (
@@ -37,8 +41,8 @@ const OverviewCard: React.FC<IProps> = ({
         />
       )}
       {icon && (
-        <View style={[styles.iconWrapper, styles.roundIcon as ImageStyle]}>
-          <Icon name={icon} size={30} color={theme.colors.blue} />
+        <View style={[styles.iconWrapper, { backgroundColor: iconBackgroundColor }, styles.roundIcon as ImageStyle]}>
+          <Icon name={icon} size={30} color={iconColor} />
         </View>
       )}
       <View>
@@ -113,7 +117,6 @@ const cardStyle = (activeColor: string): StyleSheet.NamedStyles<ICardStyle> =>
       width: 54,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme.colors.background,
     },
   });
 

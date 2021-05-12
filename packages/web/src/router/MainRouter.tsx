@@ -15,6 +15,7 @@ import ValueAddedServices from '@homzhub/web/src/screens/valueAddedServices';
 import SelectProperty from '@homzhub/web/src/screens/selectProperty';
 import SelectServices from '@homzhub/web/src/screens/selectServices';
 import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
+import Notifications from '@homzhub/web/src/screens/notifications';
 
 // Lazy imports
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
@@ -41,6 +42,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     SELECT_SERVICES,
     SAVED_PROPERTIES,
     PROPERTY_VISITS,
+    NOTIFICATIONS,
   } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
@@ -62,6 +64,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={SELECT_SERVICES} component={SelectServices} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SAVED_PROPERTIES} component={ComingSoon} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_VISITS} component={ComingSoon} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={NOTIFICATIONS} component={Notifications} isAuthenticated={isAuthenticated} />
         <PrivateRoute
           exact
           path={VALUE_ADDED_SERVICES}

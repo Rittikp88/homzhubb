@@ -1,14 +1,12 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Data } from '@homzhub/common/src/domain/models/Asset';
+import { MetricsCount } from '@homzhub/common/src/domain/models/MetricsCount';
+import { ICount, Count } from '@homzhub/common/src/domain/models/Count';
 
 interface IUserServicePlan {
   id: number;
   name: string;
   label: string;
-}
-
-export interface ICount {
-  count: number;
 }
 
 interface IAssetMetricsData {
@@ -56,16 +54,6 @@ export class UserServicePlan {
 
   get label(): string {
     return this._label;
-  }
-}
-
-@JsonObject('Count')
-export class Count {
-  @JsonProperty('count', Number)
-  private _count = 0;
-
-  get count(): number {
-    return this._count;
   }
 }
 
@@ -133,8 +121,8 @@ export class AssetMetricsData {
 
 @JsonObject('AssetUpdates')
 export class AssetUpdates {
-  @JsonProperty('notifications', Count)
-  private _notifications = new Count();
+  @JsonProperty('notifications', MetricsCount)
+  private _notifications = new MetricsCount();
 
   @JsonProperty('tickets', Count)
   private _tickets = new Count();
@@ -142,7 +130,7 @@ export class AssetUpdates {
   @JsonProperty('dues', Count)
   private _dues = new Count();
 
-  get notifications(): Count {
+  get notifications(): MetricsCount {
     return this._notifications;
   }
 

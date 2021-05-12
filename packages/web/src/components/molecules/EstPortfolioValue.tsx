@@ -1,34 +1,45 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { ImageStyle, View, StyleSheet, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon from '@homzhub/common/src/assets/icon';
 import HomzhubDashboard from '@homzhub/common/src/assets/images/homzhubDashboard.svg';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IEstPortfolioProps {
+  title?: string;
+  icon?: string;
+  iconColor?: string;
+  headerText?: string;
   propertiesCount: number;
 }
 
 const EstPortfolioValue: React.FC<IEstPortfolioProps> = (props: IEstPortfolioProps) => {
-  const { propertiesCount } = props;
+  const { propertiesCount, icon, iconColor, title, headerText } = props;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyOverviewStyle(isMobile);
   return (
     <View style={styles.portfolioContainer}>
       <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
-        {t('common:properties')}
+        {headerText || t('common:properties')}
       </Typography>
       <View style={styles.propertiesValueWrapper}>
-        <HomzhubDashboard width={61} height={64} />
+        {icon ? (
+          <View style={[styles.iconWrapper, styles.roundIcon as ImageStyle]}>
+            <Icon name={icon} size={30} color={iconColor} />
+          </View>
+        ) : (
+          <HomzhubDashboard width={61} height={64} />
+        )}
         <View style={styles.propertiesValueContainer}>
           <Typography variant="text" size="regular" fontWeight="bold" style={styles.valuation}>
             {propertiesCount}
           </Typography>
           <Typography variant="text" size="small" fontWeight="regular" style={styles.heading}>
-            {t('assetPortfolio:yourPortfolio')}
+            {title || t('assetPortfolio:yourPortfolio')}
           </Typography>
         </View>
       </View>
@@ -44,6 +55,8 @@ interface IEstPortfolioValueStyle {
   propertiesValueWrapper: ViewStyle;
   propertiesValueContainer: ViewStyle;
   valuation: ViewStyle;
+  iconWrapper: ViewStyle;
+  roundIcon: ViewStyle;
 }
 
 const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstPortfolioValueStyle> =>
@@ -59,7 +72,6 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstP
     },
     heading: {
       color: theme.colors.darkTint1,
-      // marginBottom: 8,
     },
     propertiesValueContainer: {
       marginLeft: 8,
@@ -67,5 +79,17 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstP
     },
     valuation: {
       color: theme.colors.darkTint3,
+    },
+    iconWrapper: {
+      overflow: 'hidden',
+      borderRadius: 54,
+      height: 54,
+      width: 54,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.colors.background,
+    },
+    roundIcon: {
+      marginRight: 8,
     },
   });

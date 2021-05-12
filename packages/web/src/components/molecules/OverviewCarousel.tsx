@@ -18,13 +18,17 @@ import OverviewCard from '@homzhub/web/src/components/molecules//OverviewCard';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export interface IOverviewCarousalData {
+  icon?: string;
   count: number;
   colorCode: string;
   label: string;
+  iconColor?: string;
+  imageBackgroundColor?: string;
 }
 interface IProps {
   data: IOverviewCarousalData[];
   onMetricsClicked?: (name: string) => void;
+  carouselTitle?: string;
 }
 
 export interface IDragOption {
@@ -35,7 +39,7 @@ export interface IDragOption {
   colorCode: string;
   count: number;
 }
-const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked }: IProps) => {
+const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTitle }: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<IOverviewCarousalData[]>([]);
   const [selectedCard, setSelectedCard] = useState('');
   const updateOptions = (updatedOptions: IOverviewCarousalData[]): void => {
@@ -47,7 +51,9 @@ const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked }: IProps) 
     draggable: true,
     focusOnSelect: false,
     renderButtonGroupOutside: true,
-    customButtonGroup: <CarouselControlsGrp options={detailsOptions} updatedOptions={updateOptions} />,
+    customButtonGroup: (
+      <CarouselControlsGrp carouselTitle={carouselTitle} options={detailsOptions} updatedOptions={updateOptions} />
+    ),
     responsive: CarouselResponsive,
   };
   useEffect(() => {
@@ -100,6 +106,7 @@ interface ICardProps {
   data: IOverviewCarousalData;
   isActive: boolean;
   onCardSelect: () => void;
+  icon?: string;
 }
 
 const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement => {
@@ -108,12 +115,14 @@ const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement 
       {(isHovered: boolean): React.ReactNode => (
         <TouchableOpacity activeOpacity={100} onPress={onCardSelect} style={{ padding: 0, margin: 0 }}>
           <OverviewCard
-            icon={icons.portfolioFilled}
+            icon={data?.icon ? data?.icon : icons.portfolioFilled}
             count={data.count}
             title={data.label}
             isActive={isActive}
             isHovered={isHovered}
+            iconColor={data?.iconColor}
             activeColor={data.colorCode}
+            iconBackgroundColor={data.imageBackgroundColor}
           />
         </TouchableOpacity>
       )}
@@ -125,6 +134,7 @@ const CarouselControlsGrp = ({
   previous,
   options,
   updatedOptions,
+  carouselTitle,
 }: ICarouselControlsGrp & ButtonGroupProps): React.ReactElement => {
   const { t } = useTranslation();
   const detailsOptions = getPropertyDetailsOptions(options);
@@ -157,7 +167,7 @@ const CarouselControlsGrp = ({
   return (
     <View style={styles.container}>
       <Typography variant="text" size="small" fontWeight="regular" style={styles.heading}>
-        {t('assetPortfolio:propertyDetails')}
+        {carouselTitle || t('assetPortfolio:propertyDetails')}
       </Typography>
       <Popover
         content={<DragAndDrop options={settingsOptions} onSavePress={updateOptionsList} modalClose={onSheetClose} />}
@@ -186,6 +196,7 @@ const CarouselControlsGrp = ({
 interface ICarouselControlsGrp {
   options: IOverviewCarousalData[];
   updatedOptions: (options: IOverviewCarousalData[]) => void;
+  carouselTitle?: string;
 }
 
 const getPropertyDetailsOptions = (data: IOverviewCarousalData[]): IDragOption[] => {

@@ -7,6 +7,7 @@ import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListi
 import { AssetOfferSummary } from '@homzhub/common/src/domain/models/AssetOfferSummary';
 import { AssetStatusInfo } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
+import { Count } from '@homzhub/common/src/domain/models/Count';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
@@ -138,16 +139,6 @@ export class Data {
 
   get description(): string {
     return this._description;
-  }
-}
-
-@JsonObject('Count')
-export class Count {
-  @JsonProperty('count', Number)
-  private _count = 0;
-
-  get count(): number {
-    return this._count;
   }
 }
 

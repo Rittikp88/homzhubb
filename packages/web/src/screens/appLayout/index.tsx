@@ -34,9 +34,19 @@ const AppLayout: FC<IProps> = (props: IProps) => {
     SELECT_PROPERTY,
     SAVED_PROPERTIES,
     PROPERTY_VISITS,
+    NOTIFICATIONS,
   } = protectedRoutes;
   const isSideMenuVisible = compareUrlsWithPathname(
-    [DASHBOARD, FINANCIALS, PORTFOLIO, VALUE_ADDED_SERVICES, SELECT_PROPERTY, SAVED_PROPERTIES, PROPERTY_VISITS],
+    [
+      DASHBOARD,
+      FINANCIALS,
+      PORTFOLIO,
+      VALUE_ADDED_SERVICES,
+      SELECT_PROPERTY,
+      SAVED_PROPERTIES,
+      PROPERTY_VISITS,
+      NOTIFICATIONS,
+    ],
     pathname
   );
   const isMobile = useDown(deviceBreakpoint.MOBILE);

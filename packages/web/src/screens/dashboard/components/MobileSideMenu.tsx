@@ -53,18 +53,24 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
     },
     {
       id: 4,
+      text: t('assetMore:notifications'),
+      icon: icons.bell,
+      url: RouteNames.protectedRoutes.NOTIFICATIONS,
+    },
+    {
+      id: 5,
       text: t('assetMore:propertyVisits'),
       icon: icons.visit,
       url: RouteNames.protectedRoutes.PROPERTY_VISITS,
     },
     {
-      id: 5,
+      id: 6,
       text: t('assetMore:valueAddedServices'),
       icon: icons.settingOutline,
       url: RouteNames.protectedRoutes.VALUE_ADDED_SERVICES,
     },
     {
-      id: 6,
+      id: 7,
       text: t('common:logout'),
       icon: icons.logOut,
       url: RouteNames.publicRoutes.APP_BASE,

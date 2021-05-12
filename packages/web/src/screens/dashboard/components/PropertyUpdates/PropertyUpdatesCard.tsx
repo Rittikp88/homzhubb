@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
-import { ImageStyle, StyleSheet, View, ViewStyle } from 'react-native';
+import { ImageStyle, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -18,8 +20,14 @@ const PropertyUpdatesCard: FC<IProp> = ({ data }: IProp) => {
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyUpdatesCardStyle(data.iconColor, isMobile);
+  const history = useHistory();
+
+  const onPress = (): void => {
+    NavigationUtils.navigate(history, { path: data.url });
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.header}>
         <View style={styles.leftChild}>
           <View style={styles.iconBackground}>
@@ -50,7 +58,7 @@ const PropertyUpdatesCard: FC<IProp> = ({ data }: IProp) => {
           </View>
         ))}
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

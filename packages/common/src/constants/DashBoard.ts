@@ -5,6 +5,9 @@ export interface IPropertyNotificationDetails {
   label: string;
   count: number;
   icon: string;
+  colorCode?: string;
+  iconColor?: string;
+  imageBackgroundColor?: string;
 }
 
 export interface IPropertyNotification {
@@ -13,6 +16,7 @@ export interface IPropertyNotification {
   title: string;
   count: number;
   details: IPropertyNotificationDetails[];
+  url: string;
 }
 
 export enum sideMenuItems {
@@ -62,18 +66,24 @@ export const MenuItemList: IMenuItemList[] = [
   },
   {
     id: 4,
+    name: sideMenuItems.notifications,
+    icon: icons.bell,
+    url: RouteNames.protectedRoutes.NOTIFICATIONS,
+  },
+  {
+    id: 5,
     name: sideMenuItems.propertyVisits,
     icon: icons.visit,
     url: RouteNames.protectedRoutes.PROPERTY_VISITS,
   },
   {
-    id: 5,
+    id: 6,
     name: sideMenuItems.valueAddedServices,
     icon: icons.settingOutline,
     url: RouteNames.protectedRoutes.SELECT_PROPERTY,
   },
   {
-    id: 6,
+    id: 7,
     name: sideMenuItems.logout,
     icon: icons.logOut,
     url: RouteNames.protectedRoutes.LOGOUT,

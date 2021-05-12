@@ -28,13 +28,7 @@ class InfiniteScrollView extends Component<IProps, IState> {
     const { children, height, style, hasMore, loader } = this.props;
     return (
       <div id="search-infinite-scroll" style={{ height, overflowY: 'auto', overflowX: 'hidden' }}>
-        <InfiniteScroll
-          loadMore={this.fetchMore}
-          hasMore={hasMore && !loader}
-          loader={<div> Loading ... </div>}
-          style={style}
-          useWindow={false}
-        >
+        <InfiniteScroll loadMore={this.fetchMore} hasMore={hasMore && !loader} style={style} useWindow={false}>
           {children}
         </InfiniteScroll>
       </div>
