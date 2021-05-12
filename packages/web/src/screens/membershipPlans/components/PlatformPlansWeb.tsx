@@ -2,10 +2,7 @@ import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
-import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -13,27 +10,21 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { PlatformPlans } from '@homzhub/common/src/domain/models/PlatformPlan';
 import { ServiceBundleItems } from '@homzhub/common/src/domain/models/ServiceBundleItems';
-import '@homzhub/web/src/screens/membershipPlans/components/PricingSection.scss';
+import '@homzhub/web/src/screens/membershipPlans/components/PlatformPlansWeb.scss';
 
-const PricingSection: FC = () => {
+interface IProp {
+  platformPlansData: PlatformPlans[];
+}
+const PlatformPlansWeb: FC<IProp> = (props: IProp) => {
+  const { platformPlansData } = props;
   const [servicePlan, setServicePlan] = useState<PlatformPlans[]>([]);
   const [featureList, setFeatureList] = useState<ServiceBundleItems[]>([]);
   const { t } = useTranslation();
   const history = useHistory();
 
   useEffect(() => {
-    getServicePlans();
+    getFeatureList(platformPlansData);
   }, []);
-
-  const getServicePlans = async (): Promise<void> => {
-    try {
-      const response: PlatformPlans[] = await ServiceRepository.getPlatformPlans();
-      getFeatureList(response);
-    } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
-    }
-  };
 
   const getFeatureList = (response: PlatformPlans[]): void => {
     setServicePlan(response.sort((a, b) => Number(a.id) - Number(b.id)));
@@ -195,7 +186,7 @@ const PricingSection: FC = () => {
     </View>
   );
 };
-export default PricingSection;
+export default PlatformPlansWeb;
 const styles = StyleSheet.create({
   container: {
     width: '91vw',

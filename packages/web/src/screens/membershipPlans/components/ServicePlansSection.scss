@@ -1,0 +1,21 @@
+.service-plans-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-self: stretch;
+  margin: 3% 8%;
+}
+
+@media (min-width: 694px) and (max-width: 991px) {
+  //Tablet
+  .service-plans-card-container {
+    margin: 3% 4%;
+  }
+}
+
+@media (max-width: 693px) {
+  //Mobile
+  .service-plans-card-container {
+    margin: 3% 5%;
+  }
+}

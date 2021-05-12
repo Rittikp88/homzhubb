@@ -268,7 +268,11 @@
     "freeSignUp": "Sign Up, It’s Free",
     "features": "Features",
     "retry": "Retry",
-    "referralCode": "Referral Code"
+    "totalServiceFees": "Total Service Fees",
+    "referralCode": "Referral Code",
+    "knowMore": "Know More",
+    "knowLess": "Know Less",
+    "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*"
   },
   "auth": {
     "verifyNumber": "Verify your number",

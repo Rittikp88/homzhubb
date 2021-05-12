@@ -8,6 +8,7 @@ export interface IUnit {
   title?: string;
   code?: string;
   value?: string;
+  description?: string;
 }
 
 @JsonObject('Unit')
@@ -35,6 +36,9 @@ export class Unit {
 
   @JsonProperty('type', String, true)
   private _type = '';
+
+  @JsonProperty('description', String, true)
+  private _description = '';
 
   get id(): number {
     return this._id;
@@ -66,5 +70,9 @@ export class Unit {
 
   get type(): string {
     return this._type;
+  }
+
+  get description(): string {
+    return this._description;
   }
 }

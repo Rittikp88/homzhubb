@@ -1,7 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 
-@JsonObject('ServicePlanPricing')
+@JsonObject('ServicePlanPricing') // Used in Landing Screen, Platform Plans - Web
 export class ServicePlanPricing {
   @JsonProperty('id', Number)
   private _id = 0;
