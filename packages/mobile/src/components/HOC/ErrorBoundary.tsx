@@ -2,6 +2,8 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import RNRestart from 'react-native-restart';
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -43,6 +45,7 @@ class ErrorBoundary extends Component<IProps, IState> {
 
   // eslint-disable-next-line react/sort-comp
   public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    AnalyticsService.track(EventType.Exception, error);
     this.setState({
       error,
       errorInfo,

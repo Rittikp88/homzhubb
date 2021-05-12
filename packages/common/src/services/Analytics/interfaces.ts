@@ -1,6 +1,7 @@
 import { Data } from '@homzhub/common/src/domain/models/Asset';
 import { ContactActions } from '@homzhub/common/src/domain/models/Search';
 import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
+import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 
 export enum AuthenticationType {
   EMAIL = 'email',
@@ -100,4 +101,6 @@ export type EventDataType =
   | IVisitEvent
   | IMessageEvent
   | IAddServiceEvent
-  | ICloseTicketEvent;
+  | ICloseTicketEvent
+  | IApiClientError
+  | Error;

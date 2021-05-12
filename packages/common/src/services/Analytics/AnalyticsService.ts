@@ -1,4 +1,4 @@
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -32,6 +32,8 @@ class AnalyticsService {
 
   public track = (eventName: EventType, data?: EventDataType): void => {
     const user = StoreProviderService.getUserData();
+    const isDebugMode = ConfigHelper.getAppMode() === AppModes.DEBUG;
+    if (isDebugMode && eventName === EventType.Exception) return;
     const properties = {
       token: this.projectToken,
       $event_name: eventName,

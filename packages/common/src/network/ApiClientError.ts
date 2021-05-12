@@ -1,3 +1,6 @@
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IApiClientError {
   message: string;
@@ -23,6 +26,7 @@ export class ApiClientError extends Error {
     // Set the prototype explicitly.
     Object.setPrototypeOf(this, ApiClientError.prototype);
     this.details = details;
+    AnalyticsService.track(EventType.Exception, details);
   }
 
   public toString(): string {
