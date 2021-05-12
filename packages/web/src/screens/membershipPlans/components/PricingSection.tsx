@@ -199,7 +199,6 @@ export default PricingSection;
 const styles = StyleSheet.create({
   container: {
     width: '91vw',
-    height: '100%',
     backgroundColor: theme.colors.background,
     shadowColor: theme.colors.shadow,
     shadowOpacity: 0.08,

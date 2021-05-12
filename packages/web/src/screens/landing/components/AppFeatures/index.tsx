@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import ToggleButtons from '@homzhub/web/src/components/molecules/ToggleButtons';
 import FeatureCard from '@homzhub/web/src/screens/landing/components/AppFeatures/FeatureCard';
 import MobileImage from '@homzhub/web/src/screens/landing/components/AppFeatures/MobileImage';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const AppFeatures: FC = () => {
@@ -16,19 +16,17 @@ const AppFeatures: FC = () => {
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const [image, setImage] = useState('');
   const [isOwner, setIsOwner] = useState(true);
+  const [selectedTab, setSelectedTab] = useState(0);
+
   const styles = containerStyles(isMobile);
   const relativeImage = (data: string): void => {
     setImage(data);
   };
-  const toggleOwner = (): void => {
-    setIsOwner(true);
-    setImage('');
-  };
-  const toggleTenant = (): void => {
-    setIsOwner(false);
-    setImage('');
-  };
 
+  const onTabChange = (argSelectedTab: number): void => {
+    setSelectedTab(argSelectedTab);
+    setIsOwner(!isOwner);
+  };
   return (
     <View style={styles.containers}>
       <View style={styles.content}>
@@ -49,14 +47,20 @@ const AppFeatures: FC = () => {
           {t('landing:appFeatureTitle')}
         </Typography>
       </View>
-      <ToggleButtons
-        toggleButton1Text={t('landing:homeOwner')}
-        toggleButton2Text={t('landing:tenantBuyer')}
-        toggleButton1={toggleOwner}
-        toggleButton2={toggleTenant}
-        buttonStyle={styles.buttonContainer}
-      />
 
+      <View style={styles.selectionPicker}>
+        <SelectionPicker
+          data={[
+            { title: t('landing:homeOwner'), value: 0 },
+            { title: t('landing:tenantBuyer'), value: 1 },
+          ]}
+          selectedItem={[selectedTab]}
+          onValueChange={onTabChange}
+          itemWidth={isMobile ? 140 : 175}
+          containerStyles={styles.pickerContainer}
+          primary={false}
+        />
+      </View>
       {(isOwner || isMobile || isTablet) && (
         <View style={styles.body}>
           <FeatureCard onDataPress={relativeImage} isOwner={isOwner} />
@@ -80,6 +84,8 @@ interface IContainerStyle {
   subHeading: ViewStyle;
   body: ViewStyle;
   buttonContainer: ViewStyle;
+  pickerContainer: ViewStyle;
+  selectionPicker: ViewStyle;
 }
 
 const containerStyles = (isMobile: boolean): StyleSheet.NamedStyles<IContainerStyle> =>
@@ -113,8 +119,11 @@ const containerStyles = (isMobile: boolean): StyleSheet.NamedStyles<IContainerSt
     },
     buttonContainer: {
       width: isMobile ? 140 : 'fit-content',
-      height: 46,
     },
+    pickerContainer: {
+      height: 54,
+    },
+    selectionPicker: { justifyContent: 'center', alignItems: 'center' },
   });
 
 export default AppFeatures;

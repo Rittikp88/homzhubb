@@ -16,6 +16,7 @@ interface IProps<T> {
   itemWidth?: number | string;
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
+  primary?: boolean;
 }
 
 interface IOwnState {
@@ -28,27 +29,27 @@ export class SelectionPicker<T> extends React.PureComponent<IProps<T>, IOwnState
   };
 
   public render(): React.ReactElement {
-    const { data, containerStyles } = this.props;
+    const { data, containerStyles, primary = true } = this.props;
     return (
-      <View style={[styles.container, containerStyles]} onLayout={this.onLayout}>
+      <View style={[styles.container, containerStyles, !primary && styles.secondaryButton]} onLayout={this.onLayout}>
         {data.map(this.renderItem)}
       </View>
     );
   }
 
   public renderItem = (item: ISelectionPicker<T>, index: number): React.ReactElement => {
-    const { onValueChange, data, selectedItem, itemWidth } = this.props;
+    const { onValueChange, data, selectedItem, itemWidth, primary = true } = this.props;
     const { tabWidth } = this.state;
 
     const selected = selectedItem.includes(item.value);
     const isLastIndex = index === data.length - 1;
 
     // Styling
-    let color = theme.colors.active;
+    let color = primary ? theme.colors.active : theme.colors.darkTint5;
     let backgroundColor = theme.colors.white;
     if (selected) {
       color = theme.colors.white;
-      backgroundColor = theme.colors.active;
+      backgroundColor = primary ? theme.colors.active : theme.colors.completed;
     }
     // event
     const onPress = (): void => onValueChange(item.value);
@@ -58,17 +59,23 @@ export class SelectionPicker<T> extends React.PureComponent<IProps<T>, IOwnState
         key={`${item.value}`}
         onPress={onPress}
         style={[
-          styles.itemContainer,
+          primary && styles.itemContainer,
           { backgroundColor },
-          index === 0 && styles.firstItem,
-          isLastIndex && styles.lastItem,
+          primary && index === 0 && styles.firstItem,
+          primary && isLastIndex && styles.lastItem,
+          !primary && styles.itemContainerSecondary,
+          !primary && selected && isLastIndex && styles.lastItemSecondary,
         ]}
         testID="to"
       >
-        <Text type="small" textType="semiBold" style={[styles.item, { color, width: itemWidth ?? tabWidth }]}>
+        <Text
+          type="small"
+          textType="semiBold"
+          style={[styles.item, !primary && styles.itemSecondary, { color, width: itemWidth ?? tabWidth }]}
+        >
           {item.title}
         </Text>
-        {!isLastIndex && <Divider containerStyles={styles.divider} />}
+        {primary && !isLastIndex && <Divider containerStyles={styles.divider} />}
       </TouchableOpacity>
     );
   };
@@ -100,6 +107,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 8,
   },
+  itemSecondary: {
+    padding: 0,
+  },
   itemContainer: {
     flexDirection: 'row',
     borderTopWidth: BORDER_WIDTH,
@@ -126,5 +136,13 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.active,
     borderTopWidth: BORDER_WIDTH,
     borderTopColor: theme.colors.active,
+  },
+  secondaryButton: { backgroundColor: theme.colors.white, padding: 4, justifyContent: 'center', width: 'fit-content' },
+  itemContainerSecondary: {
+    borderRadius: 4,
+    justifyContent: 'center',
+  },
+  lastItemSecondary: {
+    backgroundColor: theme.colors.active,
   },
 });

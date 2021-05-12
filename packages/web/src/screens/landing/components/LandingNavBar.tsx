@@ -26,6 +26,7 @@ interface IProps {
   featuredPropertiesRef?: any;
   plansSectionRef?: any;
   storeLinksSectionRef?: any;
+  membershipPlan?: boolean;
 }
 interface INavProps {
   featuredPropertiesRef?: any;
@@ -33,6 +34,7 @@ interface INavProps {
   storeLinksSectionRef?: any;
   onMenuClose: () => void;
   openModal?: () => void;
+  membershipPlan?: boolean;
 }
 const LandingNavBar: FC<IProps> = (props: IProps) => {
   const [scrollLength, setScrollLength] = useState(0);
@@ -55,7 +57,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   const { publicRoutes } = RouteNames;
   const { APP_BASE } = publicRoutes;
   const isMenuVisible = compareUrlsWithPathname([APP_BASE], pathname);
-  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef } = props;
+  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef, membershipPlan = false } = props;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
@@ -112,7 +114,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                   <NavLogo />
                 </View>
               </TouchableOpacity>
-              {isLaptop && isMenuVisible && (
+              {isLaptop && isMenuVisible && !membershipPlan && (
                 <RenderNavItems
                   featuredPropertiesRef={featuredPropertiesRef}
                   plansSectionRef={plansSectionRef}
@@ -123,7 +125,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
 
             {isLaptop ? (
               <View style={styles.subContainer}>
-                {!isMenuVisible && (
+                {!isMenuVisible && !membershipPlan && (
                   <TouchableOpacity onPress={openModal}>
                     <View>
                       <Image
@@ -133,15 +135,17 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                     </View>
                   </TouchableOpacity>
                 )}
-                <Button
-                  type="primary"
-                  textType="label"
-                  textSize="large"
-                  title={t('landing:downloadApp')}
-                  containerStyle={styles.downloadButton}
-                  titleStyle={styles.downloadButtonTitle}
-                  onPress={onButtonScrollPress}
-                />
+                {!membershipPlan && (
+                  <Button
+                    type="primary"
+                    textType="label"
+                    textSize="large"
+                    title={t('landing:downloadApp')}
+                    containerStyle={styles.downloadButton}
+                    titleStyle={styles.downloadButtonTitle}
+                    onPress={onButtonScrollPress}
+                  />
+                )}
                 <Button
                   type="text"
                   fontType="regular"
@@ -197,6 +201,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
             storeLinksSectionRef={storeLinksSectionRef}
             onMenuClose={onMenuClose}
             openModal={openModal}
+            membershipPlan={membershipPlan}
           />
         </SideBar>
       )}
@@ -204,7 +209,14 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   );
 };
 const RenderNavItems: FC<INavProps> = (props: INavProps) => {
-  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef, onMenuClose, openModal } = props;
+  const {
+    featuredPropertiesRef,
+    plansSectionRef,
+    storeLinksSectionRef,
+    onMenuClose,
+    openModal,
+    membershipPlan,
+  } = props;
   const [isSelected, setIsSelected] = useState(0);
   const [scrollLength, setScrollLength] = useState(0);
   const history = useHistory();
@@ -270,7 +282,11 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
   ];
   let menuItems = isLaptop ? navItems : [...navItems, ...mobileItems, ...login];
   if (!isMenuVisible) {
-    menuItems = !isTablet ? [...healthCheckItem, ...mobileItems, ...login] : [...mobileItems, ...login];
+    menuItems = !membershipPlan
+      ? !isTablet
+        ? [...healthCheckItem, ...mobileItems, ...login]
+        : [...mobileItems, ...login]
+      : [...login];
   }
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);

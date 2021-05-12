@@ -3,8 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import ToggleButtons from '@homzhub/web/src/components/molecules/ToggleButtons';
 import PlatformPlanSection from '@homzhub/web/src/screens/landing/components/PlansSection/PlatformPlanSection';
 import ServicePlansSection from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansSection';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -17,11 +17,11 @@ const PlansSection: FC<IProps> = (props: IProps) => {
   const { scrollRef } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const [isServicePlans, setIsServicePlans] = useState(false);
-  const togglePlatformPlans = (): void => {
-    setIsServicePlans(false);
-  };
-  const toggleServicePlans = (): void => {
-    setIsServicePlans(true);
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const onTabChange = (argSelectedTab: number): void => {
+    setSelectedTab(argSelectedTab);
+    setIsServicePlans(!isServicePlans);
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
@@ -45,15 +45,21 @@ const PlansSection: FC<IProps> = (props: IProps) => {
           {t('plansSectionHeader')}
         </Typography>
       </View>
-      <ToggleButtons
-        toggleButton1Text={t('landing:platformPlans')}
-        toggleButton2Text={t('landing:servicePlans')}
-        toggleButton1={togglePlatformPlans}
-        toggleButton2={toggleServicePlans}
-        containerStyle={styles.toggleContainerStyle}
-        buttonStyle={[styles.buttonStyle, isMobile && styles.buttonStyleMobile]}
-        titleStyle={styles.titleStyle}
-      />
+     
+      <View style={styles.selectionPicker}>
+        <SelectionPicker
+          data={[
+            { title: t('landing:platformPlans'), value: 0 },
+            { title: t('landing:servicePlans'), value: 1 },
+          ]}
+          selectedItem={[selectedTab]}
+          onValueChange={onTabChange}
+          itemWidth={isMobile ? 140 : 175}
+          containerStyles={styles.pickerContainer}
+          primary={false}
+        />
+      </View>
+
       <Typography variant="text" size="regular" fontWeight="regular" style={styles.plansHeaderTitle}>
         {isServicePlans ? t('landing:servicePlansHeader') : t('landing:platformPlansHeader')}
       </Typography>
@@ -98,4 +104,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     color: theme.colors.darkTint3,
   },
+  pickerContainer: {
+    height: 54,
+  },
+  selectionPicker: { justifyContent: 'center', alignItems: 'center', marginBottom: 50 },
 });
