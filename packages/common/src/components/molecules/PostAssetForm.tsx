@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
@@ -13,10 +13,16 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps {
   formProps: FormikProps<FormikValues>;
   isVerificationDone?: boolean;
+  isCityEditable?: boolean;
 }
 
-const PostAssetForm = ({ formProps, isVerificationDone }: IProps): React.ReactElement => {
+const PostAssetForm = ({ formProps, isVerificationDone, isCityEditable = false }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
+  const [editCity, setEditCity] = useState<boolean>(false);
+
+  useEffect(() => {
+    setEditCity(isCityEditable);
+  }, [isCityEditable]);
 
   const onChangePincode = useCallback(async (pincode: string): Promise<void> => {
     formProps.setFieldValue('pincode', pincode);
@@ -35,7 +41,9 @@ const PostAssetForm = ({ formProps, isVerificationDone }: IProps): React.ReactEl
       try {
         const response = await GooglePlacesService.getLocationData(undefined, pincode);
         const addressComponents = ResponseHelper.getLocationDetails(response);
-        formProps.setFieldValue('city', addressComponents.city ?? addressComponents.area);
+        const cityName = addressComponents.city ?? addressComponents.area;
+        setEditCity(!cityName);
+        formProps.setFieldValue('city', cityName);
         formProps.setFieldValue('state', addressComponents.state);
         formProps.setFieldValue('country', addressComponents.country);
         formProps.setFieldValue('countryIsoCode', addressComponents.countryIsoCode);
@@ -115,8 +123,9 @@ const PostAssetForm = ({ formProps, isVerificationDone }: IProps): React.ReactEl
               maxLength={20}
               numberOfLines={1}
               inputType="default"
-              editable={false}
+              editable={editCity}
               formProps={formProps}
+              isMandatory={editCity}
             />
           </View>
         </View>

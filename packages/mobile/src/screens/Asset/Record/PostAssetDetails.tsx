@@ -72,6 +72,7 @@ interface IOwnState {
   assetGroupSelectionDisabled: boolean;
   displayGoBackCaution: boolean;
   loading: boolean;
+  hasCity: boolean;
 }
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.PostAssetDetails>;
 type Props = WithTranslation & libraryProps & IDispatchProps & IStateProps;
@@ -96,6 +97,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     latitude: 0,
     displayGoBackCaution: false,
     loading: false,
+    hasCity: false,
   };
 
   private scrollView: KeyboardAwareScrollView | null = null;
@@ -158,6 +160,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       formData: { projectName, address },
       assetGroupSelectionDisabled,
       loading,
+      hasCity,
     } = this.state;
 
     // TODO: Update this logic once verification shield logic is on place
@@ -189,7 +192,11 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
                   testID="propertyLocation"
                   isVerificationDone={isVerificationDonne}
                 />
-                <PostAssetForm formProps={formProps} isVerificationDone={isVerificationDonne} />
+                <PostAssetForm
+                  formProps={formProps}
+                  isVerificationDone={isVerificationDonne}
+                  isCityEditable={!hasCity}
+                />
                 <AssetGroupSelection
                   isDisabled={assetGroupSelectionDisabled}
                   assetGroups={assetGroups}
@@ -455,7 +462,6 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       longitude,
       latitude,
     } = params as IPostAssetDetailsProps;
-
     this.setState({
       formData: {
         ...formData,
@@ -474,6 +480,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       assetGroupSelectionDisabled: !!asset,
       longitude,
       latitude,
+      hasCity: Boolean(city),
     });
   };
 
@@ -516,6 +523,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       assetGroupId,
       longitude,
       latitude,
+      hasCity: Boolean(city),
     });
   };
 
@@ -525,6 +533,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     blockNo: string;
     pincode: string;
     address: string;
+    city: string;
   }> => {
     const { t } = this.props;
     return yup.object().shape({
@@ -533,6 +542,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       blockNo: yup.string(),
       pincode: yup.string().required(t('common:requiredText', { field: t('pincode').toLowerCase() })),
       address: yup.string().required(t('common:requiredText', { field: t('address').toLowerCase() })),
+      city: yup.string().required(t('common:requiredText', { field: t('city').toLowerCase() })),
     });
   };
 }
