@@ -1,5 +1,6 @@
 import React, { Component, ReactElement } from 'react';
 import { View, StyleSheet, TextInput, ViewStyle } from 'react-native';
+import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { cloneDeep, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -8,6 +9,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -17,6 +19,7 @@ import { AssetHighlightCard } from '@homzhub/common/src/components/molecules/Ass
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { Amenity, AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { OtherDetails } from '@homzhub/common/src/constants/AssetHighlights';
@@ -34,7 +37,7 @@ export interface IOtherDetail {
   details: ICheckboxGroupData[];
 }
 
-interface IState {
+interface IOwnState {
   assetAmenity: AssetAmenity[];
   propertyHighlight: string[];
   selectedAmenity: number[];
@@ -42,6 +45,10 @@ interface IState {
   selectedDetails: string[];
   isSelected: boolean;
   loading: boolean;
+}
+
+interface IReduxState {
+  isEditPropertyFlow: boolean;
 }
 
 interface IHighlightProps {
@@ -57,9 +64,9 @@ interface IHighlightProps {
   ) => ReactElement;
 }
 
-type Props = IHighlightProps & WithTranslation & IWithMediaQuery;
+type Props = IHighlightProps & WithTranslation & IWithMediaQuery & IReduxState;
 
-export class AssetHighlights extends Component<Props, IState> {
+export class AssetHighlights extends Component<Props, IOwnState> {
   public state = {
     assetAmenity: [],
     propertyHighlight: [''],
@@ -73,8 +80,13 @@ export class AssetHighlights extends Component<Props, IState> {
   private MAX_ADDITIONAL_HIGHLIGHTS = 5;
 
   public componentDidMount = async (): Promise<void> => {
-    const { propertyDetail } = this.props;
+    const { propertyDetail, isEditPropertyFlow } = this.props;
+    const shouldGetProjectAmenities =
+      !isEditPropertyFlow && !propertyDetail?.lastVisitedStepSerialized.asset_creation?.is_highlights_done;
     await this.getAmenities();
+    if (shouldGetProjectAmenities) {
+      await this.getProjectAmenities();
+    }
     const propertyType = propertyDetail ? propertyDetail.assetGroup.name : '';
     const data = OtherDetails.find((item: IOtherDetail) => item.name === propertyType);
     if (data) {
@@ -377,13 +389,38 @@ export class AssetHighlights extends Component<Props, IState> {
     }
   };
 
+  private getProjectAmenities = async (): Promise<void> => {
+    const { propertyDetail } = this.props;
+    if (propertyDetail) {
+      try {
+        const { projectName, pinCode } = propertyDetail;
+        this.setLoader();
+        const projectAmenities = await RecordAssetRepository.getProjectAmenities(projectName, pinCode);
+        const projectAmenityIds = projectAmenities.map((item) => item.id);
+        this.setState({ selectedAmenity: projectAmenityIds });
+        this.resetLoader();
+      } catch (e) {
+        this.resetLoader();
+        const error = ErrorUtils.getErrorMessage(e);
+        AlertHelper.error({ message: error });
+      }
+    }
+  };
+
   private resetLoader = (): void => this.setState({ loading: false });
 
   private setLoader = (): void => this.setState({ loading: true });
 }
 const assetHighlights = withMediaQuery<Props>(AssetHighlights);
 
-export default withTranslation()(assetHighlights);
+const mapStateToProps = (state: IState): IReduxState => {
+  const { getEditPropertyFlowDetails } = RecordAssetSelectors;
+  return {
+    isEditPropertyFlow: getEditPropertyFlowDetails(state).isEditPropertyFlow,
+  };
+};
+
+export default connect(mapStateToProps, null)(withTranslation()(assetHighlights));
 
 const styles = StyleSheet.create({
   container: {

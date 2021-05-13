@@ -114,5 +114,6 @@ const styles = StyleSheet.create({
   },
   label: {
     textAlign: 'center',
+    color: theme.colors.darkTint4,
   },
 });
