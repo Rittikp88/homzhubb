@@ -54,7 +54,6 @@ interface IDashboardState {
   pendingProperties: Asset[];
   isLoading: boolean;
   showBottomSheet: boolean;
-  selectedRouteIndex: number;
 }
 
 interface IFormattedBottomSheetData {
@@ -73,14 +72,12 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     pendingProperties: [],
     isLoading: false,
     showBottomSheet: false,
-    selectedRouteIndex: -1,
   };
 
   public componentDidMount = (): void => {
     const { navigation } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
       this.getScreenData().then();
-      this.setState({ selectedRouteIndex: -1 });
     });
   };
 
@@ -139,28 +136,26 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   public renderBottomSheet = (): React.ReactElement => {
     const { t } = this.props;
-    const { showBottomSheet, selectedRouteIndex } = this.state;
+    const { showBottomSheet } = this.state;
     const data = this.formatBottomSheetData();
 
     const keyExtractor = (item: IFormattedBottomSheetData, index: number): string => `${item}:${index}`;
 
     const renderItem = ({ item, index }: { item: IFormattedBottomSheetData; index: number }): React.ReactElement => {
       const { icon, label, onPress } = item;
-      const isSelected = index === selectedRouteIndex;
 
       const onPressItem = (): void => {
-        this.setState({ selectedRouteIndex: index });
         onPress();
         this.closeBottomSheet();
       };
       return (
         <>
           <TouchableOpacity
-            style={[styles.bottomSheetItemContainer(isSelected), index % 2 === 0 && styles.evenItem()]}
+            style={[styles.bottomSheetItemContainer(), index % 2 === 0 && styles.evenItem()]}
             onPress={onPressItem}
           >
-            <Icon name={icon} size={25} color={isSelected ? theme.colors.blue : theme.colors.darkTint3} />
-            <Text type="small" textType="regular" style={styles.itemLabel(isSelected)}>
+            <Icon name={icon} size={25} color={theme.colors.blue} />
+            <Text type="small" textType="regular" style={styles.itemLabel()}>
               {label}
             </Text>
           </TouchableOpacity>
@@ -181,7 +176,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           contentContainerStyle={styles.flatList()}
-          extraData={selectedRouteIndex}
         />
       </BottomSheet>
     );
@@ -380,7 +374,7 @@ const styles = {
   evenItem: (): StyleProp<ViewStyle> => ({
     marginEnd: 17,
   }),
-  bottomSheetItemContainer: (isSelected: boolean): StyleProp<ViewStyle> => ({
+  bottomSheetItemContainer: (): StyleProp<ViewStyle> => ({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -388,13 +382,13 @@ const styles = {
     paddingVertical: 20,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: isSelected ? theme.colors.blue : theme.colors.disabled,
+    borderColor: theme.colors.disabled,
     borderRadius: 4,
   }),
-  itemLabel: (isSelected: boolean): StyleProp<TextStyle> => ({
+  itemLabel: (): StyleProp<TextStyle> => ({
     marginTop: 10,
     textAlign: 'center',
-    ...(isSelected && { color: theme.colors.blue }),
+    color: theme.colors.blue,
   }),
   flatList: (): StyleProp<ViewStyle> => ({
     marginBottom: 30,
