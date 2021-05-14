@@ -167,7 +167,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
       password: yup
         .string()
         .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
-        .min(6, t('auth:minimumCharacters'))
+        .min(6, t('auth:minimumCharacters', { count: 6 }))
         .required(t('auth:passwordRequired')),
       referralCode: yup.string().optional().uppercase(t('auth:upperCaseError')).strict(true).max(10),
     });

@@ -540,7 +540,10 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       projectName: yup.string().required(t('projectNameRequired')),
       unitNo: yup.string().required(t('unitNoRequired')),
       blockNo: yup.string(),
-      pincode: yup.string().required(t('common:requiredText', { field: t('pincode').toLowerCase() })),
+      pincode: yup
+        .string()
+        .required(t('common:requiredText', { field: t('pincode').toLowerCase() }))
+        .min(3, t('auth:minimumCharacters', { count: 3 })),
       address: yup.string().required(t('common:requiredText', { field: t('address').toLowerCase() })),
       city: yup.string().required(t('common:requiredText', { field: t('city').toLowerCase() })),
     });

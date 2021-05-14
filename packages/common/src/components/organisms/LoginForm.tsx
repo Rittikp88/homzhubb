@@ -222,7 +222,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
       password: yup
         .string()
         .matches(FormUtils.passwordRegex, t('auth:passwordValidation'))
-        .min(6, t('auth:minimumCharacters'))
+        .min(6, t('auth:minimumCharacters', { count: 6 }))
         .required(t('auth:passwordRequired')),
     });
   };

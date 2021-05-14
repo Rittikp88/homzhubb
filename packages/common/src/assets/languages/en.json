@@ -303,7 +303,7 @@
     "emailValidation": "Please enter valid email-id",
     "onlyAlphabets": "Only alphabets are allowed",
     "minimumDigits": "Minimum {{number}} digits required",
-    "minimumCharacters": "Minimum 6 characters allowed",
+    "minimumCharacters": "Minimum {{count}} characters allowed",
     "phoneWithCode": "Country Code + Phone No.",
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already registered?",

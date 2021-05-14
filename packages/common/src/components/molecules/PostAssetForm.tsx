@@ -1,11 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
-import { debounce } from 'lodash';
-import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { ResponseHelper } from '@homzhub/common/src/services/GooglePlaces/ResponseHelper';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -18,42 +14,6 @@ interface IProps {
 
 const PostAssetForm = ({ formProps, isVerificationDone, isCityEditable = false }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
-  const [editCity, setEditCity] = useState<boolean>(false);
-
-  useEffect(() => {
-    setEditCity(isCityEditable);
-  }, [isCityEditable]);
-
-  const onChangePincode = useCallback(async (pincode: string): Promise<void> => {
-    formProps.setFieldValue('pincode', pincode);
-    await updateValues(pincode);
-  }, []);
-
-  const updateValues = useCallback(
-    debounce(async (pincode: string): Promise<void> => {
-      if (pincode.length === 0) {
-        formProps.setFieldValue('city', '');
-        formProps.setFieldValue('state', '');
-        formProps.setFieldValue('country', '');
-        formProps.setFieldValue('countryIsoCode', '');
-        return;
-      }
-      try {
-        const response = await GooglePlacesService.getLocationData(undefined, pincode);
-        const addressComponents = ResponseHelper.getLocationDetails(response);
-        const cityName = addressComponents.city ?? addressComponents.area;
-        setEditCity(!cityName);
-        formProps.setFieldValue('city', cityName);
-        formProps.setFieldValue('state', addressComponents.state);
-        formProps.setFieldValue('country', addressComponents.country);
-        formProps.setFieldValue('countryIsoCode', addressComponents.countryIsoCode);
-      } catch (e) {
-        AlertHelper.error({ message: e.message });
-      }
-    }, 500),
-    []
-  );
-
   return (
     <>
       <View style={styles.fieldsView}>
@@ -108,10 +68,9 @@ const PostAssetForm = ({ formProps, isVerificationDone, isCityEditable = false }
             <FormTextInput
               name="pincode"
               label={t('pincode')}
-              maxLength={10}
+              maxLength={12}
               numberOfLines={1}
-              inputType="number"
-              onChangeText={onChangePincode}
+              inputType="default"
               formProps={formProps}
               isMandatory
             />
@@ -123,9 +82,9 @@ const PostAssetForm = ({ formProps, isVerificationDone, isCityEditable = false }
               maxLength={20}
               numberOfLines={1}
               inputType="default"
-              editable={editCity}
+              editable={isCityEditable}
               formProps={formProps}
-              isMandatory={editCity}
+              isMandatory={isCityEditable}
             />
           </View>
         </View>
