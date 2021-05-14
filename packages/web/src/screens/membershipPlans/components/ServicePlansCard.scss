@@ -79,7 +79,7 @@
   //Tablet
   .service-plans-card {
     flex-basis: calc((100% / 2) - 30px);
-    height: 15%;
+    height: 'max-content';
   }
 }
 

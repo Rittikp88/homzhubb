@@ -18,7 +18,7 @@ const PropertyOverview: FC<IProps> = ({ data, propertyCount }: IProps) => {
   return (
     <View style={styles.container}>
       <EstPortfolioValue propertiesCount={propertyCount} />
-      {total > 0 ? <OverviewCarousel data={data} /> : null}
+      {total > 0 ? <OverviewCarousel data={data} isVisible /> : null}
     </View>
   );
 };

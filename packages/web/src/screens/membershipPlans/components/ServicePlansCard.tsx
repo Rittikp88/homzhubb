@@ -40,6 +40,19 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
     );
   };
 
+  const renderList = (item: ServiceBundleItems): React.ReactElement | null => {
+    if (isKnowMore) {
+      return renderBulletList(item);
+    }
+    if (isMobile && item.displayOrder <= 2) {
+      return renderBulletList(item);
+    }
+    if (item.displayOrder <= 4) {
+      return renderBulletList(item);
+    }
+    return null;
+  };
+
   const toggleShowMore = (): void => {
     setIsKnowMore(!isKnowMore);
   };
@@ -106,7 +119,7 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
             {valueBundleItems
               .sort((a, b) => Number(a.displayOrder) - Number(b.displayOrder))
               .map((item) => (
-                <>{isKnowMore ? renderBulletList(item) : item.displayOrder <= 4 ? renderBulletList(item) : null}</>
+                <>{renderList(item)}</>
               ))}
           </ul>
         </div>

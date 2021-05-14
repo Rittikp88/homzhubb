@@ -29,6 +29,7 @@ interface IProps {
   data: IOverviewCarousalData[];
   onMetricsClicked?: (name: string) => void;
   carouselTitle?: string;
+  isVisible?: boolean;
 }
 
 export interface IDragOption {
@@ -39,7 +40,7 @@ export interface IDragOption {
   colorCode: string;
   count: number;
 }
-const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTitle }: IProps) => {
+const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTitle, isVisible }: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<IOverviewCarousalData[]>([]);
   const [selectedCard, setSelectedCard] = useState('');
   const updateOptions = (updatedOptions: IOverviewCarousalData[]): void => {
@@ -52,7 +53,12 @@ const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTi
     focusOnSelect: false,
     renderButtonGroupOutside: true,
     customButtonGroup: (
-      <CarouselControlsGrp carouselTitle={carouselTitle} options={detailsOptions} updatedOptions={updateOptions} />
+      <CarouselControlsGrp
+        carouselTitle={carouselTitle}
+        options={detailsOptions}
+        updatedOptions={updateOptions}
+        isVisible={isVisible}
+      />
     ),
     responsive: CarouselResponsive,
   };
@@ -135,6 +141,7 @@ const CarouselControlsGrp = ({
   options,
   updatedOptions,
   carouselTitle,
+  isVisible,
 }: ICarouselControlsGrp & ButtonGroupProps): React.ReactElement => {
   const { t } = useTranslation();
   const detailsOptions = getPropertyDetailsOptions(options);
@@ -181,13 +188,17 @@ const CarouselControlsGrp = ({
           modal: true,
         }}
       >
-        <Button
-          icon={icons.gearFilled}
-          iconSize={16}
-          iconColor={theme.colors.blue}
-          containerStyle={styles.settings}
-          type="secondary"
-        />
+        <>
+          {isVisible && (
+            <Button
+              icon={icons.gearFilled}
+              iconSize={16}
+              iconColor={theme.colors.blue}
+              containerStyle={styles.settings}
+              type="secondary"
+            />
+          )}
+        </>
       </Popover>
       <NextPrevBtn onBtnClick={updateCarouselIndex} />
     </View>
@@ -197,6 +208,7 @@ interface ICarouselControlsGrp {
   options: IOverviewCarousalData[];
   updatedOptions: (options: IOverviewCarousalData[]) => void;
   carouselTitle?: string;
+  isVisible?: boolean;
 }
 
 const getPropertyDetailsOptions = (data: IOverviewCarousalData[]): IDragOption[] => {

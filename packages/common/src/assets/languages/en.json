@@ -1267,5 +1267,14 @@
     "compareProspect": "Compare Prospects",
     "localTaxHeading": "(Local taxes (VAT, GST, etc.) will be charged in addition to the prices mentioned.)",
     "pricingCost": "Pricing Cost"
+  },
+  "error": {
+    "pageNotFound": "Page Not Found",
+    "gatewayTimeout": "Gateway Timeout Error",
+    "pageNotFoundMessage": "We are very sorry for inconvenience. It looks like you’re try to access a page that either has been deleted or never existed.",
+    "gatewayTimeoutMessage": "We are very sorry for inconvenience. It looks like some how our server did not receive a timely response.",
+    "genericError": "Something Unexpected Happened",
+    "genericErrorMessage": "We are not sure what caused this error, but engineers are looking into it. We are sorry for the inconvenience",
+    "backToHome": "Back to Home"
   }
 }

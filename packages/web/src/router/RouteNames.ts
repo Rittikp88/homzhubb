@@ -15,6 +15,9 @@ export const RouteNames = {
     MAHARASHTRA_CONNECT: '/maharashtra_connect',
     FAQS: '/faqs',
     MEMBERSHIP_PLANS: '/membership-plans',
+    ERROR404: '/*',
+    ERROR504: '/gateway-timeout',
+    ERROR: '/error',
   },
   protectedRoutes: {
     /* Mention protected route names here */

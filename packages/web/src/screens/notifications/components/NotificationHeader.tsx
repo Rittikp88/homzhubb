@@ -86,7 +86,12 @@ const NotificationHeader: React.FC<IProps> = (props: IProps) => {
         headerText={t('assetMore:notifications')}
       />
       {total > 0 ? (
-        <OverviewCarousel data={portfolioMetrics} onMetricsClicked={onMetricsClicked} carouselTitle="  " />
+        <OverviewCarousel
+          data={portfolioMetrics}
+          onMetricsClicked={onMetricsClicked}
+          carouselTitle="  "
+          isVisible={false}
+        />
       ) : null}
     </View>
   );

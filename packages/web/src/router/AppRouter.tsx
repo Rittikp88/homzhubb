@@ -17,6 +17,10 @@ import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndC
 import TermsServicesPayment from '@homzhub/web/src/components/staticPages/TermsServicesPayment';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
+import Error from '@homzhub/web/src/components/staticPages/ErrorGeneric';
+import Error404 from '@homzhub/web/src/components/staticPages/Error404';
+import Error504 from '@homzhub/web/src/components/staticPages/Error504';
+
 import FAQ from '@homzhub/web/src/screens/faq';
 
 const AppRouter = (props: AppRouterProps): React.ReactElement => {
@@ -38,6 +42,9 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
     MAHARASHTRA_CONNECT,
     FAQS,
     MEMBERSHIP_PLANS,
+    ERROR,
+    ERROR504,
+    ERROR404,
   } = RouteNames.publicRoutes;
   const { DASHBOARD } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
@@ -76,6 +83,9 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
         <Route exact path={FAQS} component={FAQ} />
         <Route exact path={MEMBERSHIP_PLANS} component={MembershipPlans} />
         <PrivateRoute path={DASHBOARD} component={AppLayout} isAuthenticated={isAuthenticated} />
+        <Route exact path={ERROR} component={Error} />
+        <Route exact path={ERROR504} component={Error504} />
+        <Route exact path={ERROR404} component={Error404} />
       </Switch>
     </Suspense>
   );

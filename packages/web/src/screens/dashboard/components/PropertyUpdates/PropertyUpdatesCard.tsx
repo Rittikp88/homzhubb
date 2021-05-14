@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -43,6 +43,10 @@ const PropertyUpdatesCard: FC<IProp> = ({ data }: IProp) => {
             </Text>
           </View>
         </View>
+        {/* TODO: Remove for other cards once the story is Picked  */}
+        {data.title === 'assetDashboard:notification' && (
+          <Icon name={icons.rightArrow} color={theme.colors.darkTint6} size={24} />
+        )}
       </View>
       <Divider />
       <View style={styles.content}>

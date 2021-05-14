@@ -38,7 +38,7 @@ const PortfolioOverview: React.FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <EstPortfolioValue propertiesCount={portfolioDetailsList.length} />
-      {total > 0 ? <OverviewCarousel data={portfolioMetrics} onMetricsClicked={onMetricsClicked} /> : null}
+      {total > 0 ? <OverviewCarousel isVisible data={portfolioMetrics} onMetricsClicked={onMetricsClicked} /> : null}
     </View>
   );
 };
