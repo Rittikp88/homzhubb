@@ -29,7 +29,6 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const [isKnowMore, setIsKnowMore] = useState(false);
   const history = useHistory();
-
   const renderBulletList = (item: ServiceBundleItems): React.ReactElement => {
     return (
       <li key={item.id} className="service-plans-card-features-li">
@@ -47,7 +46,7 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
     if (isMobile && item.displayOrder <= 2) {
       return renderBulletList(item);
     }
-    if (item.displayOrder <= 4) {
+    if (!isMobile && item.displayOrder <= 4) {
       return renderBulletList(item);
     }
     return null;
