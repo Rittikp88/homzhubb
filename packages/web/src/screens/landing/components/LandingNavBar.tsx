@@ -160,7 +160,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
               </View>
             ) : (
               <View style={styles.tabViewHeader}>
-                {!isMobile && !isMenuVisible && (
+                {!isMobile && !isMenuVisible && !membershipPlan && (
                   <TouchableOpacity onPress={openModal}>
                     <View>
                       <Image

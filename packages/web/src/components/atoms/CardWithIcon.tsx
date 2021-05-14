@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderRadius: 8,
     marginLeft: 40,
-    marginBottom: 40,
     padding: 24,
     shadowColor: theme.colors.landingCardShadow,
     shadowOffset: { width: 0, height: 42 },

@@ -1,7 +1,10 @@
 import React, { FC, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useHistory } from 'react-router-dom';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -18,6 +21,7 @@ const PlansSection: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const [isServicePlans, setIsServicePlans] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
+  const history = useHistory();
 
   const onTabChange = (argSelectedTab: number): void => {
     setSelectedTab(argSelectedTab);
@@ -25,6 +29,11 @@ const PlansSection: FC<IProps> = (props: IProps) => {
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
+  const navigateToMembershipPlans = (): void => {
+    NavigationUtils.navigate(history, {
+      path: RouteNames.publicRoutes.MEMBERSHIP_PLANS,
+    });
+  };
   return (
     <View ref={scrollRef}>
       <View style={styles.plansTextContainer}>
@@ -64,6 +73,15 @@ const PlansSection: FC<IProps> = (props: IProps) => {
         {isServicePlans ? t('landing:servicePlansHeader') : t('landing:platformPlansHeader')}
       </Typography>
       {isServicePlans ? <ServicePlansSection /> : <PlatformPlanSection />}
+      <Typography
+        variant="text"
+        size="small"
+        fontWeight="semiBold"
+        onPress={navigateToMembershipPlans}
+        style={[styles.featureComparison, (onlyTablet || isMobile) && styles.featureComparisionTab]}
+      >
+        {t('landing:featureComparison')}
+      </Typography>
     </View>
   );
 };
@@ -108,4 +126,12 @@ const styles = StyleSheet.create({
     height: 54,
   },
   selectionPicker: { justifyContent: 'center', alignItems: 'center', marginBottom: 50 },
+  featureComparison: {
+    textAlign: 'center',
+    marginBottom: 120,
+    color: theme.colors.primaryColor,
+  },
+  featureComparisionTab: {
+    marginBottom: 60,
+  },
 });

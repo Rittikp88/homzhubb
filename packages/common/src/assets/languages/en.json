@@ -1069,7 +1069,8 @@
     "platformPlansHeader": "Subscribe to the platform to digitally manage property from anywhere in the world.",
     "servicePlansHeader": "Subscribe to a service plan for on-the-ground services from our team or from our affiliates.",
     "emailValidations": "Please enter a valid email.",
-    "viewAllTitle": "View All"
+    "viewAllTitle": "View All",
+    "featureComparison": "See our complete feature comparison"
   },
   "serviceTickets": {
     "serviceTickets": "Service Tickets",

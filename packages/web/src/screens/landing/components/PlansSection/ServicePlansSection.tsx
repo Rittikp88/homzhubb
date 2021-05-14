@@ -56,7 +56,7 @@ export default ServicePlansSection;
 const styles = StyleSheet.create({
   servicePlansContainer: {
     backgroundColor: theme.colors.background,
-    marginBottom: 120,
+    marginBottom: 60,
     width: '100%',
     paddingVertical: 20,
   },

@@ -31,7 +31,6 @@ const PlatformPlansWeb: FC<IProp> = (props: IProp) => {
     const data = response.filter((plan) => plan.name === 'PRO');
     setFeatureList(data[0].servicePlanBundle);
   };
-
   const availableFeature = (label: ServiceBundleItems, servicePlans: PlatformPlans): ReactElement => {
     const data = servicePlans.servicePlanBundle.filter((feature) => feature.name === label.name);
     if (data.length !== 0) {
@@ -105,7 +104,7 @@ const PlatformPlansWeb: FC<IProp> = (props: IProp) => {
   return (
     <View style={styles.container}>
       <div className="header">
-        <table>
+        <table className="table-web">
           <tr className="header-row">
             <td className="image-cell">
               <img src={require('@homzhub/common/src/assets/images/PricingTag.svg')} alt="headerImage" />
@@ -115,7 +114,7 @@ const PlatformPlansWeb: FC<IProp> = (props: IProp) => {
               <td className="header-cards" key={item.id}>
                 <div className="card-container">
                   <p>
-                    <Typography variant="text" size="small" fontWeight="semiBold">
+                    <Typography variant="text" size="regular" fontWeight="semiBold">
                       {t(item.label)}
                     </Typography>
                   </p>
@@ -199,7 +198,6 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 120,
     marginHorizontal: 'auto',
-    marginBottom: '10%',
   },
   subTextColor: {
     color: theme.colors.darkTint3,

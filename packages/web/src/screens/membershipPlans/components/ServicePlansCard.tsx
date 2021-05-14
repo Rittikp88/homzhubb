@@ -1,12 +1,15 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useState } from 'react';
-import { Image } from 'react-native';
+import { StyleSheet, Image, View } from 'react-native';
+import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
+import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { ServiceBundleItems } from '@homzhub/common/src/domain/models/ServiceBundleItems';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -25,6 +28,7 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
   const minInvoiceAmount = 10000 / 1000;
   const { t } = useTranslation();
   const [isKnowMore, setIsKnowMore] = useState(false);
+  const history = useHistory();
 
   const renderBulletList = (item: ServiceBundleItems): React.ReactElement => {
     return (
@@ -39,7 +43,11 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
   const toggleShowMore = (): void => {
     setIsKnowMore(!isKnowMore);
   };
-
+  const navigationToScreen = (): void => {
+    NavigationUtils.navigate(history, {
+      path: RouteNames.publicRoutes.SIGNUP,
+    });
+  };
   return (
     <div
       className={isKnowMore ? 'service-plans-card expanded-view' : 'service-plans-card collapsed-view'}
@@ -48,7 +56,7 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
     >
       <div className="service-plans-card-content">
         <div className="service-plans-card-image">
-          <Image source={{ uri: attachment.link }} style={{ height: 40, width: 40 }} />
+          <Image source={{ uri: attachment.link }} style={styles.cardImage} />
         </div>
         <div className="service-plans-card-label">
           <Typography size="regular" fontWeight="semiBold">
@@ -114,18 +122,46 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
             </div>
           )}
           <div className="service-plans-card-button">
-            <Button
-              type="primary"
-              title={t('getStarted')}
-              fontType="semiBold"
-              textSize="small"
-              onPress={FunctionUtils.noop}
-            />
+            <Hoverable>
+              {(isHovered: boolean): React.ReactNode => (
+                <View>
+                  <Button
+                    type="primary"
+                    title={t('getStarted')}
+                    fontType="semiBold"
+                    textSize="small"
+                    containerStyle={[styles.buttonHoverOut, isHovered && styles.buttonHoverIn]}
+                    titleStyle={[styles.buttonHoverOutTitle, isHovered && styles.buttonHoverInTitle]}
+                    onPress={navigationToScreen}
+                  />
+                </View>
+              )}
+            </Hoverable>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+const styles = StyleSheet.create({
+  cardImage: {
+    height: 40,
+    width: 40,
+  },
+  buttonHoverIn: {
+    backgroundColor: theme.colors.blue,
+  },
+  buttonHoverInTitle: {
+    color: theme.colors.white,
+  },
+
+  buttonHoverOut: {
+    backgroundColor: theme.colors.blueOpacity,
+  },
+  buttonHoverOutTitle: {
+    color: theme.colors.blue,
+  },
+});
 
 export default ServicePlansCard;

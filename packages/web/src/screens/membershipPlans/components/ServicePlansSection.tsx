@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import ServicePlansCard from '@homzhub/web/src/screens/membershipPlans/components/ServicePlansCard';
-import '@homzhub/web/src/screens/membershipPlans/components/ServicePlansSection.scss';
 import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
+import '@homzhub/web/src/screens/membershipPlans/components/ServicePlansSection.scss';
 
 const ServicePlansSection: React.FC = () => {
   // Redux
