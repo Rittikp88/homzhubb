@@ -9,6 +9,8 @@ export interface IApiClientError {
   errors?: any[];
   original?: IError;
   errorType?: string;
+  url?: string;
+  method?: string;
 }
 
 interface IError {

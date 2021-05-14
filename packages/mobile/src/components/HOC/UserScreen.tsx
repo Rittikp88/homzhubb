@@ -198,6 +198,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
+    marginEnd: 4,
+    flex: 1,
   },
   pageTitle: {
     color: theme.colors.darkTint1,

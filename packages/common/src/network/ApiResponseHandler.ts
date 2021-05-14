@@ -72,6 +72,8 @@ export default class ApiResponseHandler implements IApiResponseHandler {
       description: errorResponse.data ? JSON.stringify(errorResponse.data) : '',
       errors: errorDetails.errors || [],
       original: errorResponse.data,
+      url: `${errorResponse.config?.baseURL ?? ''}${errorResponse.config?.url ?? ''}`,
+      method: errorResponse.config?.method ?? '',
     } as IApiClientError;
     return new ApiClientError(errorDetails.message, errorDetails);
   };

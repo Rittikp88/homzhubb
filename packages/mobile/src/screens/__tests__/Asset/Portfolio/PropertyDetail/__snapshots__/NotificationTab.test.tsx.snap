@@ -3,11 +3,14 @@
 exports[`Asset Notifications Screen should render snapshot 1`] = `
 <View
   style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "marginVertical": 16,
-      "paddingVertical": 16,
-    }
+    Array [
+      Object {
+        "backgroundColor": "#FFFFFF",
+        "marginVertical": 16,
+        "paddingVertical": 16,
+      },
+      false,
+    ]
   }
 >
   <TextWithIcon
