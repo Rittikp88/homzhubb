@@ -18,7 +18,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps extends WithTranslation {
   selectedCountry?: number;
   selectedProperty?: number;
-  shouldEnableOuterScroll: (enable: boolean) => void;
+  shouldEnableOuterScroll?: (enable: boolean) => void;
+  isFromPortfolio?: boolean;
 }
 
 interface IOwnState {
@@ -49,7 +50,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
   };
 
   public render(): ReactElement {
-    const { t, shouldEnableOuterScroll } = this.props;
+    const { t, shouldEnableOuterScroll, isFromPortfolio } = this.props;
     const { transactionsData } = this.state;
 
     return (
@@ -68,10 +69,15 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
           <ScrollView
             ref={this.scrollRef}
             onScroll={this.onScroll}
-            onTouchStart={transactionsData.length > 4 ? (): void => shouldEnableOuterScroll(false) : undefined}
+            onTouchStart={
+              transactionsData.length > 4 && shouldEnableOuterScroll
+                ? (): void => shouldEnableOuterScroll(false)
+                : undefined
+            }
             onMomentumScrollEnd={this.controlScroll}
             onScrollEndDrag={this.controlScroll}
             scrollEventThrottle={1500}
+            scrollEnabled={!isFromPortfolio}
             style={styles.contentContainer}
           >
             {transactionsData.map(this.renderTransactionCard)}
@@ -147,7 +153,9 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
 
   private controlScroll = (): void => {
     const { shouldEnableOuterScroll } = this.props;
-    shouldEnableOuterScroll(true);
+    if (shouldEnableOuterScroll) {
+      shouldEnableOuterScroll(true);
+    }
   };
 
   private getGeneralLedgers = async (reset = false): Promise<void> => {

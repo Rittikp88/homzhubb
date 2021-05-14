@@ -1,6 +1,6 @@
 import React from 'react';
 import { throttle } from 'lodash';
-import { FlatList, StyleSheet, ViewStyle, View, TextStyle } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -217,17 +217,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(Messages));
 
-interface IScreenStyles {
-  container: ViewStyle;
-  chatList: ViewStyle;
-  chatListContent: ViewStyle;
-  separator: ViewStyle;
-  noChat: ViewStyle;
-  searchBar: ViewStyle;
-  chat: TextStyle;
-}
-
-const styles: IScreenStyles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     marginHorizontal: 12,
     flex: 1,

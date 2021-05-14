@@ -253,7 +253,7 @@ class NotificationService {
             OfferActions.setCurrentOfferPayload({
               type: lease_listing_id ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
               listingId: Number(lease_listing_id) ?? Number(sale_listing_id) ?? 0,
-              ...(Boolean(message_group_id.length) && { threadId: message_group_id }),
+              ...(message_group_id && Boolean(message_group_id.length) && { threadId: message_group_id }),
             })
           );
 

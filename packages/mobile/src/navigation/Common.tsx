@@ -10,6 +10,11 @@ import CancelOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/CancelOff
 import ProspectProfile from '@homzhub/mobile/src/screens/Asset/More/Offers/ProspectProfile';
 import RejectOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/RejectOffer';
 import SubmitOfferForm from '@homzhub/mobile/src/screens/Asset/More/Offers/SubmitOfferForm';
+import { AssetReviews } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/AssetReviews';
+import AssetFinancial from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/AssetFinancial';
+import Documents from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/Documents';
+import TenantHistory from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/TenantHistory';
+import AssetDetail from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/AssetDetail';
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
@@ -20,8 +25,9 @@ import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/Service
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
-import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyDetailScreen';
+import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail';
 import AssetPlanSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetPlanSelection';
+import OfferDetail from '@homzhub/mobile/src/screens/Asset/More/Offers/OfferDetail';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
@@ -32,12 +38,13 @@ import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetP
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
-import { IChatScreen, IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
   IAddRecordProps,
   IAssetDescriptionProps,
   IBookVisitProps,
   IComingSoon,
+  ICommonNavProps,
   IForgotPasswordProps,
   IMarkdownProps,
   IOtpNavProps,
@@ -46,16 +53,20 @@ import {
   IResetPasswordProps,
   IUpdateProfileProps,
   IVerifyEmail,
+  IVisitNavParam,
   IWebviewProps,
   ScreensKeys,
+  IChatScreen,
+  IDetailNavParam,
+  IReviewNavParam,
 } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type CommonParamList = {
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
   [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
-  [ScreensKeys.PropertyVisits]: { visitId?: number; reviewVisitId?: number };
-  [ScreensKeys.ServiceTicketScreen]: undefined | { isFromDashboard: boolean };
+  [ScreensKeys.PropertyVisits]: IVisitNavParam;
+  [ScreensKeys.ServiceTicketScreen]: undefined | ICommonNavProps;
   [ScreensKeys.MarketTrends]: undefined | { isFromDashboard: boolean };
   [ScreensKeys.PropertyAssetDescription]: IAssetDescriptionProps;
   [ScreensKeys.AddServiceTicket]: IServiceTicketForm;
@@ -85,6 +96,12 @@ export type CommonParamList = {
   [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.AssetPlanSelection]: undefined | IPlanSelectionParam;
   [ScreensKeys.LandingScreen]: undefined;
+  [ScreensKeys.OfferDetail]: undefined | ICommonNavProps;
+  [ScreensKeys.AssetReviewScreen]: IReviewNavParam;
+  [ScreensKeys.AssetFinancialScreen]: ICommonNavProps;
+  [ScreensKeys.DocumentScreen]: ICommonNavProps;
+  [ScreensKeys.TenantHistoryScreen]: ICommonNavProps;
+  [ScreensKeys.AssetDetailScreen]: IDetailNavParam;
 };
 
 /**
@@ -127,6 +144,12 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.ChatScreen} component={ChatScreen} />
       <Stack.Screen name={ScreensKeys.AssetPlanSelection} component={AssetPlanSelection} />
       <Stack.Screen name={ScreensKeys.LandingScreen} component={LandingScreen} />
+      <Stack.Screen name={ScreensKeys.OfferDetail} component={OfferDetail} />
+      <Stack.Screen name={ScreensKeys.AssetReviewScreen} component={AssetReviews} />
+      <Stack.Screen name={ScreensKeys.AssetFinancialScreen} component={AssetFinancial} />
+      <Stack.Screen name={ScreensKeys.DocumentScreen} component={Documents} />
+      <Stack.Screen name={ScreensKeys.TenantHistoryScreen} component={TenantHistory} />
+      <Stack.Screen name={ScreensKeys.AssetDetailScreen} component={AssetDetail} />
     </>
   );
 };

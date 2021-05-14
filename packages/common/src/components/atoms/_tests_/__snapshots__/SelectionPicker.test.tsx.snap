@@ -11,6 +11,7 @@ exports[`SelectionPicker should match snapshot 1`] = `
         "width": "100%",
       },
       undefined,
+      false,
     ]
   }
 >
@@ -40,6 +41,8 @@ exports[`SelectionPicker should match snapshot 1`] = `
           "borderTopWidth": 1.5,
         },
         false,
+        false,
+        false,
       ]
     }
     testID="to"
@@ -51,6 +54,7 @@ exports[`SelectionPicker should match snapshot 1`] = `
             "padding": 8,
             "textAlign": "center",
           },
+          false,
           Object {
             "color": "#FFFFFF",
             "width": 375,
@@ -98,6 +102,8 @@ exports[`SelectionPicker should match snapshot 1`] = `
           "borderTopEndRadius": 4,
           "borderTopWidth": 1.5,
         },
+        false,
+        false,
       ]
     }
     testID="to"
@@ -109,6 +115,7 @@ exports[`SelectionPicker should match snapshot 1`] = `
             "padding": 8,
             "textAlign": "center",
           },
+          false,
           Object {
             "color": "#0084F8",
             "width": 375,
@@ -135,6 +142,7 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
         "width": "100%",
       },
       undefined,
+      false,
     ]
   }
 >
@@ -164,6 +172,8 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
           "borderTopWidth": 1.5,
         },
         false,
+        false,
+        false,
       ]
     }
     testID="to"
@@ -175,6 +185,7 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
             "padding": 8,
             "textAlign": "center",
           },
+          false,
           Object {
             "color": "#FFFFFF",
             "width": 375,
@@ -222,6 +233,8 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
           "borderTopEndRadius": 4,
           "borderTopWidth": 1.5,
         },
+        false,
+        false,
       ]
     }
     testID="to"
@@ -233,6 +246,7 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
             "padding": 8,
             "textAlign": "center",
           },
+          false,
           Object {
             "color": "#0084F8",
             "width": 375,

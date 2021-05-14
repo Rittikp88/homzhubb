@@ -156,12 +156,15 @@ const OfferView = (props: IProps): React.ReactElement => {
     <>
       <ScrollableDropdownList
         isScrollable={false}
-        dropDownTitle="Offers"
+        dropDownTitle={!isDetailView ? `${offers.length} Offers` : 'Offers'}
+        dropDownTitleType={!isDetailView ? 'large' : 'regular'}
+        dropDownFieldType={!isDetailView ? 'label' : 'text'}
         isOutlineView={!isDetailView}
         data={getDropdownData()}
         onDropdown={onSelectFromDropdown}
         mainContainerStyle={[styles.dropDownContainer, !isDetailView && styles.dropDownView]}
         containerStyle={styles.filterStyle}
+        dropDownTitleStyle={styles.titleStyle}
       />
       {offers.length > 0 && listingDetail ? (
         offers.map((offer, index) => {
@@ -212,5 +215,8 @@ const styles = StyleSheet.create({
   },
   filterStyle: {
     width: 130,
+  },
+  titleStyle: {
+    color: theme.colors.darkTint6,
   },
 });

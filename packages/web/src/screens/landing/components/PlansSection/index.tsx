@@ -45,7 +45,7 @@ const PlansSection: FC<IProps> = (props: IProps) => {
           {t('plansSectionHeader')}
         </Typography>
       </View>
-     
+
       <View style={styles.selectionPicker}>
         <SelectionPicker
           data={[

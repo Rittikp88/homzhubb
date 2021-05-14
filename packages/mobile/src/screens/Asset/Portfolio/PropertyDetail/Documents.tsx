@@ -17,11 +17,12 @@ import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
-import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { DocumentCard } from '@homzhub/mobile/src/components';
@@ -30,6 +31,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IStateProps {
   currentAssetId: number;
@@ -48,7 +50,8 @@ interface IDocumentState {
   isLoading: boolean;
 }
 
-type Props = IStateProps & IDispatchProps & WithTranslation;
+type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.DocumentScreen>;
+type Props = IStateProps & IDispatchProps & WithTranslation & NavProps;
 
 export class Documents extends PureComponent<Props, IDocumentState> {
   public state = {
@@ -76,27 +79,37 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   public render(): React.ReactNode {
     const { searchValue, isLoading } = this.state;
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+      navigation,
+    } = this.props;
 
     return (
-      <View style={styles.container}>
-        <UploadBox
-          icon={icons.document}
-          header={t('uploadDocument')}
-          subHeader={t('uploadDocHelperText')}
-          containerStyle={styles.uploadBox}
-          onPress={this.onCapture}
-        />
-        <SearchBar
-          placeholder={t('assetMore:searchByDoc')}
-          value={searchValue}
-          updateValue={this.onSearch}
-          containerStyle={styles.searchBar}
-          testID="searchBar"
-        />
-        {this.renderDocumentList()}
-        <Loader visible={isLoading} />
-      </View>
+      <UserScreen
+        title={params?.screenTitle ?? t('assetPortfolio:portfolio')}
+        pageTitle={t('assetMore:documents')}
+        onBackPress={navigation.goBack}
+        loading={isLoading}
+      >
+        <View style={styles.container}>
+          <UploadBox
+            icon={icons.document}
+            header={t('uploadDocument')}
+            subHeader={t('uploadDocHelperText')}
+            containerStyle={styles.uploadBox}
+            onPress={this.onCapture}
+          />
+          <SearchBar
+            placeholder={t('assetMore:searchByDoc')}
+            value={searchValue}
+            updateValue={this.onSearch}
+            containerStyle={styles.searchBar}
+            testID="searchBar"
+          />
+          {this.renderDocumentList()}
+        </View>
+      </UserScreen>
     );
   }
 

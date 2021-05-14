@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { OfferHelper } from '@homzhub/mobile/src/utils/OfferHelper';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
@@ -14,16 +14,19 @@ import CompareSelection from '@homzhub/mobile/src/components/molecules/CompareSe
 import PropertyOffers from '@homzhub/common/src/components/molecules/PropertyOffers';
 import CompareOfferView from '@homzhub/mobile/src/components/organisms/CompareOfferView';
 import OfferView from '@homzhub/common/src/components/organisms/OfferView';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ICommonNavProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const OfferDetail = (): React.ReactElement => {
   const { navigate, goBack } = useNavigation();
   const { t } = useTranslation();
+  const { params } = useRoute();
   const [selectedOffer, setSelectedOffer] = useState<number[]>([]);
   const [isCompare, setCompareVisibility] = useState(false);
   const offerPayload = useSelector(OfferSelectors.getOfferPayload);
   const listingDetail = useSelector(OfferSelectors.getListingDetail);
+  const loaders = useSelector(OfferSelectors.getOfferLoaders);
   const dispatch = useDispatch();
+  const param = params as ICommonNavProps;
 
   useFocusEffect(
     useCallback(() => {
@@ -40,7 +43,10 @@ const OfferDetail = (): React.ReactElement => {
   };
 
   const onPressMessages = (): void => {
-    navigate(ScreensKeys.ChatScreen, { isFromOffers: true });
+    navigate(ScreensKeys.ChatScreen, {
+      isFromOffers: true,
+      isFromPortfolio: param?.isFromPortfolio,
+    });
   };
 
   const handleCreateLease = (): void => {
@@ -75,20 +81,30 @@ const OfferDetail = (): React.ReactElement => {
     }
   };
 
+  const getTitle = (): string => {
+    if (!param) return t('offers');
+
+    return param.isFromPortfolio ? param?.screenTitle ?? '' : t('offers');
+  };
+
+  const isListingLoader = !listingDetail && !(param && param.isFromPortfolio);
+
   return (
     <>
       <UserScreen
-        title={t('offers')}
+        title={getTitle()}
         backgroundColor={theme.colors.background}
-        pageTitle={t('offers:offerDetails')}
+        pageTitle={param && param.isFromPortfolio ? t('offers') : t('offers:offerDetails')}
         onBackPress={handleBack}
         headerStyle={styles.headerStyle}
-        loading={!listingDetail}
+        loading={loaders.negotiations || isListingLoader}
       >
-        {listingDetail && <PropertyOffers propertyOffer={listingDetail} isCardExpanded isDetailView />}
+        {!(param && param.isFromPortfolio) && listingDetail && (
+          <PropertyOffers propertyOffer={listingDetail} isCardExpanded isDetailView />
+        )}
         <OfferView
           onPressAction={OfferHelper.handleOfferActions}
-          isDetailView
+          isDetailView={!param?.isFromPortfolio}
           onCreateLease={handleCreateLease}
           onSelectOffer={handleOfferSelection}
           selectedOffers={selectedOffer}

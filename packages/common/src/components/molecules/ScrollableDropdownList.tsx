@@ -1,9 +1,10 @@
 import React from 'react';
-import { FlatList, PickerItemProps, View, StyleSheet, ViewStyle, StyleProp } from 'react-native';
+import { FlatList, PickerItemProps, View, StyleSheet, ViewStyle, StyleProp, TextStyle } from 'react-native';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 export interface IDropdownData {
   key: string;
@@ -21,6 +22,9 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   mainContainerStyle?: StyleProp<ViewStyle>;
   allowDeselect?: boolean;
+  dropDownTitleType?: TextSizeType;
+  dropDownFieldType?: TextFieldType;
+  dropDownTitleStyle?: StyleProp<TextStyle>;
 }
 
 export interface ISelectedValue {
@@ -56,11 +60,23 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
 
   public render(): React.ReactElement {
     const { data } = this.state;
-    const { data: dropdownData, dropDownTitle, isScrollable = true, mainContainerStyle } = this.props;
+    const {
+      data: dropdownData,
+      dropDownTitle,
+      isScrollable = true,
+      mainContainerStyle,
+      dropDownTitleType = 'regular',
+      dropDownTitleStyle,
+      dropDownFieldType,
+    } = this.props;
 
     return (
       <View style={[styles.mainContainer, mainContainerStyle]}>
-        {!!dropDownTitle && <Text>{dropDownTitle}</Text>}
+        {!!dropDownTitle && (
+          <Typography size={dropDownTitleType} variant={dropDownFieldType} style={dropDownTitleStyle}>
+            {dropDownTitle}
+          </Typography>
+        )}
         <View>
           <FlatList
             extraData={dropdownData}
@@ -143,6 +159,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   dropdownContainer: {
     backgroundColor: theme.colors.white,

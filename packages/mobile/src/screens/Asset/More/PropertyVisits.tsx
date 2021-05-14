@@ -1,13 +1,13 @@
 import React from 'react';
-import { PickerItemProps, StyleSheet } from 'react-native';
+import { PickerItemProps, StyleSheet, TouchableOpacity } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { HeaderCard } from '@homzhub/mobile/src/components';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/SiteVisitCalendarView';
@@ -50,26 +50,42 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
   };
 
   public render(): React.ReactNode {
-    const { t } = this.props;
-    const { isCalendarView } = this.state;
+    const {
+      t,
+      route: { params },
+    } = this.props;
+
+    const title = params?.screenTitle ? params.screenTitle : t('assetMore:more');
     return (
-      <UserScreen isOuterScrollEnabled title={t('assetMore:more')}>
-        <HeaderCard
-          title={t('assetMore:propertyVisits')}
-          titleFontWeight="semiBold"
-          titleTextSize="small"
-          iconBackSize={24}
-          iconStyle={styles.calendarStyle}
-          renderItem={(): React.ReactElement => this.renderPropertyVisits()}
-          onIconPress={this.handleBack}
-          handleIcon={this.handleCalendarPress}
-          icon={isCalendarView ? icons.doubleBar : icons.calendar}
-          containerStyles={styles.headerContainer}
-          headerStyle={styles.headerStyle}
-        />
+      <UserScreen
+        isOuterScrollEnabled
+        title={title}
+        pageTitle={t('assetMore:propertyVisits')}
+        rightNode={this.renderRightNode()}
+        onBackPress={this.handleBack}
+      >
+        {this.renderPropertyVisits()}
       </UserScreen>
     );
   }
+
+  private renderRightNode = (): React.ReactElement | undefined => {
+    const {
+      route: { params },
+    } = this.props;
+    const { isCalendarView } = this.state;
+    if (params?.isFromPortfolio) return undefined;
+    return (
+      <TouchableOpacity onPress={this.handleCalendarPress}>
+        <Icon
+          size={24}
+          name={isCalendarView ? icons.doubleBar : icons.calendar}
+          color={theme.colors.primaryColor}
+          style={styles.calendarStyle}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   private renderPropertyVisits = (): React.ReactElement => {
     const { isCalendarView, countryData, propertiesByCountry, selectedAssetId, selectedCountry } = this.state;
@@ -79,15 +95,17 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     } = this.props;
     return (
       <>
-        <PropertyByCountryDropdown
-          selectedCountry={selectedCountry}
-          selectedProperty={selectedAssetId}
-          countryList={countryData}
-          propertyList={propertiesByCountry}
-          onCountryChange={this.onCountryChange}
-          onPropertyChange={this.handlePropertySelect}
-          containerStyle={styles.dropdownStyle}
-        />
+        {!params?.isFromPortfolio && (
+          <PropertyByCountryDropdown
+            selectedCountry={selectedCountry}
+            selectedProperty={selectedAssetId}
+            countryList={countryData}
+            propertyList={propertiesByCountry}
+            onCountryChange={this.onCountryChange}
+            onPropertyChange={this.handlePropertySelect}
+            containerStyle={styles.dropdownStyle}
+          />
+        )}
         {isCalendarView ? (
           <SiteVisitCalendarView onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
         ) : (
@@ -98,6 +116,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
             reviewVisitId={params && params.reviewVisitId}
             visitId={params && params.visitId ? params.visitId : null}
             setVisitPayload={this.setVisitPayload}
+            isFromProperty={params?.isFromPortfolio}
           />
         )}
       </>
@@ -195,12 +214,6 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 export default connect(null, mapDispatchToProps)(withTranslation()(PropertyVisits));
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    paddingHorizontal: 0,
-  },
-  headerStyle: {
-    paddingHorizontal: 10,
-  },
   calendarStyle: {
     paddingRight: 12,
   },

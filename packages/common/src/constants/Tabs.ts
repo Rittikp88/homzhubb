@@ -43,6 +43,7 @@ export interface IRoutes {
   key: Tabs;
   title: string;
   color?: string;
+  icon?: string;
 }
 
 // Property Detail Screen Tabs START
@@ -60,8 +61,7 @@ export const tabName = [
   Tabs.DETAILS,
 ];
 
-export const Routes = [
-  { key: Tabs.NOTIFICATIONS, title: Tabs.NOTIFICATIONS, icon: icons.alert },
+export const Routes: IRoutes[] = [
   { key: Tabs.TICKETS, title: Tabs.TICKETS, icon: icons.headset },
   { key: Tabs.OFFERS, title: Tabs.OFFERS, icon: icons.offers },
   { key: Tabs.REVIEWS, title: Tabs.REVIEWS, icon: icons.reviews },

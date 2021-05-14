@@ -42,8 +42,23 @@ AssetMetrics {
     "_dues": Count {
       "_count": 2,
     },
-    "_notifications": Count {
+    "_notifications": MetricsCount {
+      "_closed": Count {
+        "_count": 0,
+      },
       "_count": 2,
+      "_message": Count {
+        "_count": 0,
+      },
+      "_offer": Count {
+        "_count": 0,
+      },
+      "_open": Count {
+        "_count": 0,
+      },
+      "_siteVisit": Count {
+        "_count": 0,
+      },
     },
     "_tickets": Count {
       "_count": 3,

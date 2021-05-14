@@ -830,7 +830,8 @@
     "detailsCompletionText": "Complete your property details",
     "rentButton": "RENT",
     "sellButton": "SELL",
-    "manageButton": "MANAGE"
+    "manageButton": "MANAGE",
+    "tenantHistory": "Tenant History"
   },
   "assetFinancial": {
     "financial": "Financials",

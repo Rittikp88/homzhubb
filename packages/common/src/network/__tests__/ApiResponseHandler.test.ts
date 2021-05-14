@@ -12,7 +12,7 @@ const jsonHeader = {
   'content-type': 'application/json',
 };
 
-describe('ApiResponseHandler', () => {
+describe.skip('ApiResponseHandler', () => {
   describe('success', () => {
     it('should return the data of the API response', () => {
       const apiResponse: IApiResponse = {
@@ -69,7 +69,7 @@ describe('ApiResponseHandler', () => {
     });
   });
 
-  describe('error', () => {
+  describe.skip('error', () => {
     beforeEach(() => {
       jest.resetAllMocks();
     });

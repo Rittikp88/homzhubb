@@ -185,7 +185,6 @@ const getTabBarVisibility = (route: any): boolean => {
   const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
   const notAllowedRoutes = [
     ScreensKeys.PropertyAssetDescription,
-    ScreensKeys.PropertyDetailScreen,
     ScreensKeys.AssetReviews,
     ScreensKeys.ContactForm,
     ScreensKeys.AuthStack,
@@ -208,6 +207,13 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.WebViewScreen,
     ScreensKeys.SupportScreen,
     ScreensKeys.AssetPlanSelection,
+    ScreensKeys.AssetDetailScreen,
+    ScreensKeys.AssetFinancialScreen,
+    ScreensKeys.DocumentScreen,
+    ScreensKeys.PropertyVisits,
+    ScreensKeys.ServiceTicketScreen,
+    ScreensKeys.AssetReviewScreen,
+    ScreensKeys.TenantHistoryScreen,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
 };

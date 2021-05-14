@@ -64,12 +64,19 @@ class ServiceTicketList extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { selectedListType } = this.state;
-    const { t, onAddTicket, containerStyle } = this.props;
+    const { t, onAddTicket, containerStyle, isFromMore } = this.props;
 
     return (
       <View style={containerStyle}>
-        <View style={styles.container}>
-          <Button type="secondary" title={t('addNewTicket')} containerStyle={styles.addButton} onPress={onAddTicket} />
+        <View style={[styles.container, !isFromMore && { marginTop: 0 }]}>
+          {isFromMore && (
+            <Button
+              type="secondary"
+              title={t('addNewTicket')}
+              containerStyle={styles.addButton}
+              onPress={onAddTicket}
+            />
+          )}
           <SelectionPicker
             data={[
               { title: t('common:open'), value: TicketStatus.OPEN },

@@ -779,12 +779,6 @@ export interface ILeaseTermData {
   lease_listing_id?: number;
 }
 
-export interface IChatScreen {
-  groupId?: number | string;
-  isFromOffers?: boolean;
-  isFromNotifications?: boolean;
-}
-
 export interface IDeviceTokenPayload {
   registration_id: string;
   name: string;

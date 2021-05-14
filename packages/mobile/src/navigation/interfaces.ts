@@ -70,6 +70,11 @@ export enum ScreensKeys {
   UpdatePropertyScreen = 'UpdatePropertyScreen',
   ManageTenantScreen = 'ManageTenantScreen',
   UpdateLeaseScreen = 'UpdateLeaseScreen',
+  AssetReviewScreen = 'AssetReviewScreen',
+  AssetFinancialScreen = 'AssetFinancialScreen',
+  DocumentScreen = 'DocumentScreen',
+  TenantHistoryScreen = 'TenantHistoryScreen',
+  AssetDetailScreen = 'AssetDetailScreen',
 
   // Financials Stack
   FinancialsLandingScreen = 'FinancialsLandingScreen',
@@ -231,6 +236,7 @@ export interface IBookVisitProps {
 export interface IAddRecordProps {
   assetId?: number;
   isFromDashboard?: boolean;
+  screenTitle?: string;
 }
 
 // Webview
@@ -310,4 +316,32 @@ export interface IListingNavParam {
   isEditFlow?: boolean;
   leaseUnit?: number;
   startDate?: string;
+}
+
+export interface ICommonNavProps {
+  isFromDashboard?: boolean;
+  isFromPortfolio?: boolean;
+  isFromTenancies?: boolean;
+  screenTitle?: string;
+  propertyId?: number;
+}
+
+export interface IVisitNavParam extends ICommonNavProps {
+  visitId?: number;
+  reviewVisitId?: number;
+}
+
+export interface IChatScreen extends ICommonNavProps {
+  groupId?: number | string;
+  isFromOffers?: boolean;
+  isFromNotifications?: boolean;
+}
+
+export interface IDetailNavParam extends ICommonNavProps {
+  property: Asset;
+}
+
+export interface IReviewNavParam extends ICommonNavProps {
+  saleListingId: number | null;
+  leaseListingId: number | null;
 }

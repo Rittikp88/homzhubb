@@ -20,6 +20,7 @@ import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import ChatInputBox from '@homzhub/common/src/components/molecules/ChatInputBox';
 import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/DropdownModal';
 import MessagePreview from '@homzhub/common/src/components/organisms/MessagePreview';
@@ -101,28 +102,53 @@ class ChatScreen extends Component<Props, IScreenState> {
     const { isScrollToBottom, isMenuVisible, isLoading, assetName, users } = this.state;
     const menuItems = this.getMenuItems();
     const isFromOffers = Boolean(route?.params?.isFromOffers);
+    const isFromProperty = Boolean(route?.params?.isFromPortfolio);
+
+    const getPageTitle = (): string => {
+      if (isFromOffers) return assetName;
+      if (currentChat) return currentChat.groupName;
+
+      return t('common:message');
+    };
+
+    const getTitle = (): string => {
+      if (isFromProperty && isFromOffers) return t('assetPortfolio:portfolio');
+      if (isFromProperty) return route?.params?.screenTitle ?? '';
+
+      return t('assetMore:more');
+    };
+
+    const isPreview = (isFromOffers && !currentChat) || (!isFromOffers && currentChat);
 
     return (
       <>
         <UserScreen
-          title={t('assetMore:more')}
+          title={getTitle()}
           subTitle={isFromOffers ? users : undefined}
-          pageTitle={isFromOffers ? assetName : currentChat?.groupName ?? ''}
+          pageTitle={getPageTitle()}
           onBackPress={this.onGoBack}
           scrollEnabled={false}
-          rightNode={!isFromOffers ? this.renderRightNode() : undefined}
+          rightNode={!isFromOffers && currentChat ? this.renderRightNode() : undefined}
           onNavigateCallback={this.handleNavigationCallback}
           loading={isLoading}
         >
-          <MessagePreview
-            isFromOffers={isFromOffers}
-            isScrollToBottom={isScrollToBottom}
-            shouldScrollToBottom={this.updateScroll}
-            shouldReverseOrder={!isFromOffers}
-          />
+          {isPreview ? (
+            <MessagePreview
+              isFromOffers={isFromOffers}
+              isScrollToBottom={isScrollToBottom}
+              shouldScrollToBottom={this.updateScroll}
+              shouldReverseOrder={!isFromOffers}
+            />
+          ) : (
+            <EmptyState
+              isIconRequired={false}
+              title={t('assetMore:noActiveThread')}
+              subTitle={t('assetMore:accessOldMessage')}
+            />
+          )}
         </UserScreen>
         <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
-        {this.renderInputView()}
+        {isPreview && this.renderInputView()}
       </>
     );
   }

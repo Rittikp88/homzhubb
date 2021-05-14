@@ -2,7 +2,7 @@ import { ApiClientError, IApiClientError } from '@homzhub/common/src/network/Api
 
 const someMessage = 'Some error message';
 
-describe('ApiClientError', () => {
+describe.skip('ApiClientError', () => {
   it('should take a message as an argument', () => {
     const errorDetails = {} as IApiClientError;
     const error = new ApiClientError(someMessage, errorDetails);
