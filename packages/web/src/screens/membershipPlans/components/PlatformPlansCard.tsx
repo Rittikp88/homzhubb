@@ -78,6 +78,7 @@ const PlatformPlansCard: React.FC<IProps> = (props: IProps) => {
                     : t('common:contactSales')
                   : t('common:freeSignUp')
               }
+              containerStyle={styles.buttonContainerStyle}
               titleStyle={styles.buttonTitleStyle}
               onPress={navigationToSignup}
             />
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flexDirection: 'column',
+    alignItems: 'center',
     height: '253px',
     width: '255px',
     backgroundColor: theme.colors.white,
@@ -117,11 +119,17 @@ const styles = StyleSheet.create({
   },
   subTextColor: {
     color: theme.colors.darkTint3,
+    display: 'flex',
+    alignItems: 'center',
+    textAlign: 'center',
   },
   cardPricing: {
     flexDirection: 'row',
     paddingTop: '16px',
     paddingBottom: '20px',
+  },
+  buttonContainerStyle: {
+    width: '100%',
   },
   buttonTitleStyle: {
     marginHorizontal: 10,
