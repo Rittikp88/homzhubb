@@ -1,18 +1,19 @@
 import React, { ReactElement } from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AnimatedProfileHeader, HeaderCard } from '@homzhub/mobile/src/components';
-import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IScreenState {
   clearForm: number;
@@ -35,25 +36,34 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 
   public render(): ReactElement {
     const { t, route } = this.props;
-    const { isLoading, clearForm } = this.state;
+    const { isLoading } = this.state;
     const title = route?.params?.isFromDashboard ? t('assetDashboard:dashboard') : t('financial');
 
     return (
       <>
-        <AnimatedProfileHeader title={title}>
-          <HeaderCard
-            title={t('addRecords')}
-            subTitle={t('common:clear')}
-            renderItem={this.renderAddRecordForm}
-            onIconPress={this.goBack}
-            onClearPress={this.onClearPress}
-            clear={clearForm}
-          />
-        </AnimatedProfileHeader>
-        <Loader visible={isLoading} />
+        <UserScreen
+          title={title}
+          pageTitle={t('addRecords')}
+          loading={isLoading}
+          rightNode={this.renderRightNode()}
+          onBackPress={this.goBack}
+        >
+          <View style={styles.content}>{this.renderAddRecordForm()}</View>
+        </UserScreen>
       </>
     );
   }
+
+  private renderRightNode = (): ReactElement => {
+    const { t } = this.props;
+    return (
+      <TouchableOpacity onPress={this.onClearPress}>
+        <Text type="small" textType="bold" style={styles.clearText}>
+          {t('common:clear')}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
   private renderAddRecordForm = (): ReactElement => {
     const { clearForm } = this.state;
@@ -61,7 +71,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 
     return (
       <AddRecordForm
-        assetId={route.params?.assetId}
+        assetId={route?.params?.assetId}
         properties={assets}
         clear={clearForm}
         defaultCurrency={currency}
@@ -112,5 +122,11 @@ export default connect(
 const styles = StyleSheet.create({
   addFormContainer: {
     marginTop: 24,
+  },
+  content: {
+    marginHorizontal: 16,
+  },
+  clearText: {
+    color: theme.colors.primaryColor,
   },
 });

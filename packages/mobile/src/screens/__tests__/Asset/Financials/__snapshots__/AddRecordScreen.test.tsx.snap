@@ -2,20 +2,49 @@
 
 exports[`Add Record Screen should render snapshot 1`] = `
 <Fragment>
-  <Memo(AnimatedProfileHeader)
+  <Memo(UserScreen)
+    loading={false}
+    onBackPress={[Function]}
+    pageTitle="addRecords"
+    rightNode={
+      <ForwardRef
+        onPress={[Function]}
+      >
+        <Text
+          style={
+            Object {
+              "color": "#0084F8",
+            }
+          }
+          textType="bold"
+          type="small"
+        >
+          common:clear
+        </Text>
+      </ForwardRef>
+    }
     title="financial"
   >
-    <HeaderCard
-      clear={0}
-      onClearPress={[Function]}
-      onIconPress={[Function]}
-      renderItem={[Function]}
-      subTitle="common:clear"
-      title="addRecords"
-    />
-  </Memo(AnimatedProfileHeader)>
-  <Loader
-    visible={false}
-  />
+    <View
+      style={
+        Object {
+          "marginHorizontal": 16,
+        }
+      }
+    >
+      <withI18nextTranslation(AddRecordForm)
+        assetId={1}
+        clear={0}
+        containerStyles={
+          Object {
+            "marginTop": 24,
+          }
+        }
+        onFormClear={[Function]}
+        onSubmitFormSuccess={[Function]}
+        toggleLoading={[Function]}
+      />
+    </View>
+  </Memo(UserScreen)>
 </Fragment>
 `;

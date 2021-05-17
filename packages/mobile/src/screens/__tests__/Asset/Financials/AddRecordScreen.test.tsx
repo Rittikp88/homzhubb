@@ -12,6 +12,11 @@ describe('Add Record Screen', () => {
       navigation: {
         goBack: jest.fn(),
       },
+      route: {
+        params: {
+          assetId: 1,
+        },
+      },
     };
     component = shallow(<AddRecordScreen {...props} t={(key: string): string => key} />);
   });

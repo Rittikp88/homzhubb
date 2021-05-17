@@ -40,6 +40,7 @@ interface IDispatchProps {
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   setAddPropertyFlow: (payload: boolean) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
+  setInitialState: () => void;
 }
 
 interface IReduxStateProps {
@@ -135,7 +136,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   public renderBottomSheet = (): React.ReactElement => {
-    const { t } = this.props;
+    const { t, setInitialState } = this.props;
     const { showBottomSheet } = this.state;
     const data = this.formatBottomSheetData();
 
@@ -146,6 +147,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
       const onPressItem = (): void => {
         onPress();
+        setInitialState();
         this.closeBottomSheet();
       };
       return (
@@ -346,11 +348,11 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setCurrentFilter, setCurrentAsset } = PortfolioActions;
+  const { setCurrentFilter, setCurrentAsset, setInitialState } = PortfolioActions;
   const { setAddPropertyFlow } = UserActions;
   const { setAssetId, setSelectedPlan } = RecordAssetActions;
   return bindActionCreators(
-    { setCurrentFilter, setAssetId, setSelectedPlan, setAddPropertyFlow, setCurrentAsset },
+    { setCurrentFilter, setAssetId, setSelectedPlan, setAddPropertyFlow, setCurrentAsset, setInitialState },
     dispatch
   );
 };

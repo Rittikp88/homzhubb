@@ -3,6 +3,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { IFormData, LeaseFormKeys } from '@homzhub/common/src/components/molecules/LeaseTermForm';
 import { IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
@@ -78,13 +79,13 @@ class AssetService {
     if (bedroomCount) {
       remove(bedroomCount, (count: number) => count === -1);
     }
-
+    const searchCords = GeolocationService.getFormattedCords(search_latitude ?? 0, search_longitude ?? 0);
     const finalPayload = {
       asset_group,
       price__gte: min_price,
       price__lte: max_price,
-      latitude: search_latitude,
-      longitude: search_longitude,
+      latitude: searchCords.latValue,
+      longitude: searchCords.lngValue,
       limit,
       offset,
       currency_code,
@@ -209,6 +210,11 @@ class AssetService {
         search_radius_unit,
       };
     }
+    const { latValue, lngValue } = GeolocationService.getFormattedCords(
+      user_location_latitude ?? 0,
+      user_location_longitude ?? 0
+    );
+    const searchCords = GeolocationService.getFormattedCords(search_latitude ?? 0, search_longitude ?? 0);
 
     return {
       device_id: DeviceUtils.getDeviceId(),
@@ -216,15 +222,15 @@ class AssetService {
       results_count: count,
       currency: currency_code,
       asset_group,
-      search_latitude,
-      search_longitude,
+      search_latitude: searchCords.latValue,
+      search_longitude: searchCords.lngValue,
       min_price,
       max_price,
       ...(bath_count && bath_count > 0 && { bath_count }),
       ...(room_count && room_count.length > 0 && room_count[0] > 0 && { room_count }),
       asset_type,
-      ...(user_location_latitude && { user_location_latitude }),
-      ...(user_location_longitude && { user_location_longitude }),
+      ...(user_location_latitude && { user_location_latitude: latValue }),
+      ...(user_location_longitude && { user_location_longitude: lngValue }),
       asset_transaction_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
       miscellaneous_search_criteria,
     };

@@ -70,7 +70,6 @@ exports[`Dashboard Screen should render snapshot 1`] = `
         ]
       }
       disableVirtualization={false}
-      extraData={-1}
       horizontal={false}
       initialNumToRender={10}
       keyExtractor={[Function]}
