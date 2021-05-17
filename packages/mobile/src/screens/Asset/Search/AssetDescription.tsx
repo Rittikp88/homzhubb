@@ -342,13 +342,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
     const { visitDate, appPermissions, isAssetOwner, leaseNegotiation, saleNegotiation } = assetDetails;
     const hasCreatedOffer = Boolean(leaseNegotiation) || Boolean(saleNegotiation);
+    const backgroundColor = hasCreatedOffer ? theme.colors.reviewCardOpacity : theme.colors.blueOpacity;
     return (
       <View style={styles.timelineContainer}>
         {!isAssetOwner && (
-          <TouchableOpacity
-            style={[styles.offerButton, { backgroundColor: theme.colors.blueOpacity }]}
-            onPress={this.onOfferButtonClicked}
-          >
+          <TouchableOpacity style={[styles.offerButton, { backgroundColor }]} onPress={this.onOfferButtonClicked}>
             <Icon name={icons.offers} color={hasCreatedOffer ? theme.colors.green : theme.colors.blue} size={20} />
             <Text style={{ ...styles.offerText, ...(hasCreatedOffer && styles.seeOfferText) }} type="small">
               {t(hasCreatedOffer ? 'assetMore:seeOfferText' : 'assetMore:makeAnOfferText')}
@@ -1168,6 +1166,7 @@ const styles = StyleSheet.create({
   },
   offerText: {
     paddingLeft: 8,
+    color: theme.colors.blue,
   },
   seeOfferText: {
     color: theme.colors.green,
