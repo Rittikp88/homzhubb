@@ -10,6 +10,7 @@ import { GraphQLRepository } from '@homzhub/common/src/domain/repositories/Graph
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SearchField } from '@homzhub/web/src/components/atoms/SearchField';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import QuestionCards from '@homzhub/web/src/screens/faq/components/questionCard';
 import HaveAnyQuestionsForm from '@homzhub/web/src/screens/helpAndSupport/HaveAnyQuestionsForm';
 import { IFAQs } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -80,13 +81,13 @@ const FAQComponent = (): React.ReactElement => {
             {t('helpAndSupport:FAQ')}
           </Text>
           <SearchField
-            placeholder={t('property:search')}
+            placeholder={t('common:search')}
             value={searchText}
             updateValue={onChange}
             containerStyle={styles.searchBar}
           />
         </View>
-        {faqs && (
+        {Object.keys(faqs).length ? (
           <View>
             {Object.keys(faqs).map((item, key = 0) => {
               return (
@@ -116,6 +117,8 @@ const FAQComponent = (): React.ReactElement => {
               );
             })}
           </View>
+        ) : (
+          <EmptyState isIconRequired={false} />
         )}
       </View>
       <View style={styles.child2}>
