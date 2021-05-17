@@ -28,10 +28,10 @@ const ErrorGeneric: FC = () => {
     <View style={styles.comingSoonContent}>
       <Image source={require('@homzhub/common/src/assets/images/ErrorOops.svg')} style={bannerImage} />
       <View style={styles.errorMessageTitle}>
-        <Text type="large">{t('error:gatewayTimeout')}</Text>
+        <Text type="large">{t('error:genericError')}</Text>
       </View>
       <View style={[styles.errorMessage, isTablet && styles.errorMessageTablet, isMobile && styles.errorMessageMobile]}>
-        <Text type="small">{t('error:gatewayTimeoutMessage')}</Text>
+        <Text type="small">{t('error:genericErrorMessage')}</Text>
       </View>
       <View style={styles.errorMessageTitle}>
         <Button

@@ -1,5 +1,7 @@
 import { Alert, Keyboard } from 'react-native';
 import { hideMessage, showMessage } from 'react-native-flash-message';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 export interface IToastProps {
@@ -32,12 +34,16 @@ class AlertHelper {
   public error = (options: IToastProps): void => {
     Keyboard.dismiss();
     const { message } = options;
-    showMessage({
-      duration: 5000,
-      message,
-      type: 'danger',
-      backgroundColor: theme.colors.error,
-    });
+    if (PlatformUtils.isMobile()) {
+      showMessage({
+        duration: 5000,
+        message,
+        type: 'danger',
+        backgroundColor: theme.colors.error,
+      });
+    } else {
+      NavigationUtils.errorNavSwitch('');
+    }
   };
 
   public info = (options: IToastProps): void => {

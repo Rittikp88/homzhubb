@@ -2,6 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import FlashMessage, { MessageComponentProps } from 'react-native-flash-message';
 import { BrowserRouter } from 'react-router-dom';
+import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
@@ -45,7 +46,7 @@ export class App extends React.PureComponent<{}, IState> {
     return (
       <ErrorBoundary>
         <Provider store={store}>
-          <BrowserRouter>
+          <BrowserRouter ref={NavigationUtils.setTopLevelNavigator}>
             <AppRouter />
             <FlashMessage position="top" MessageComponent={this.renderToast} />
           </BrowserRouter>
