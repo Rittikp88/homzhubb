@@ -10,7 +10,7 @@ import { ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedS
 const ENDPOINTS = {
   amenities: 'v1/amenity-categories/',
   projectAmenities: (projectName: string, postalCode: string): string =>
-    `v1/assets/project-names/${projectName}/postal-codes/${postalCode}/amenities/`,
+    `v1/assets/project-names/${projectName}/postal-codes/${postalCode}/amenities`,
   tenantPreferences: 'v1/tenant-preferences/',
   orderSummary: 'v1/users/order-summary/',
   valueAddedServices: 'v1/value-added-services/',

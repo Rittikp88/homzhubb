@@ -9,10 +9,9 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps {
   formProps: FormikProps<FormikValues>;
   isVerificationDone?: boolean;
-  isCityEditable?: boolean;
 }
 
-const PostAssetForm = ({ formProps, isVerificationDone, isCityEditable = false }: IProps): React.ReactElement => {
+const PostAssetForm = ({ formProps, isVerificationDone }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   return (
     <>
@@ -82,9 +81,8 @@ const PostAssetForm = ({ formProps, isVerificationDone, isCityEditable = false }
               maxLength={20}
               numberOfLines={1}
               inputType="default"
-              editable={isCityEditable}
               formProps={formProps}
-              isMandatory={isCityEditable}
+              isMandatory
             />
           </View>
         </View>

@@ -401,6 +401,7 @@
     "selectType": "Select your type",
     "saveLocation": "Save Location",
     "setLocation": "Set Location",
+    "confirmLocation" : "Confirm Location",
     "locationDetails": "Location Details",
     "headerTitle": "Details",
     "propertyType": "Property type",

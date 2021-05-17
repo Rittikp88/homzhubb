@@ -69,7 +69,7 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
         <WithShadowView outerViewStyle={styles.shadowView}>
           <Button
             type="primary"
-            title={t('setLocation')}
+            title={t('confirmLocation')}
             containerStyle={styles.buttonStyle}
             onPress={this.onPressSetLocation}
           />
