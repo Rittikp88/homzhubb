@@ -39,6 +39,8 @@ export interface IDragOption {
   label: string;
   colorCode: string;
   count: number;
+  iconColor?: string;
+  imageBackgroundColor?: string;
 }
 const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTitle, isVisible }: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<IOverviewCarousalData[]>([]);
@@ -46,6 +48,7 @@ const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTi
   const updateOptions = (updatedOptions: IOverviewCarousalData[]): void => {
     setDetailsOptions(cloneDeep(updatedOptions));
   };
+
   const customCarouselProps: CarouselProps = {
     children: undefined,
     arrows: false,
@@ -220,6 +223,8 @@ const getPropertyDetailsOptions = (data: IOverviewCarousalData[]): IDragOption[]
       checked: false,
       colorCode: option.colorCode,
       count: option.count,
+      iconColor: option.iconColor,
+      imageBackgroundColor: option.imageBackgroundColor,
     });
   });
   return settingsOptions;

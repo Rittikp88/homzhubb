@@ -82,26 +82,14 @@ const LandingFeatures: FC = () => {
         >
           {t('landing:features')}
         </Typography>
-        {!isMobile ? (
-          !isTablet ? (
-            <Typography variant="title" size="large" fontWeight="semiBold" style={styles.subHeading}>
-              {t('landing:featureDescription')}
-            </Typography>
-          ) : (
-            <Typography variant="title" size="regular" fontWeight="semiBold" style={styles.subHeadingTab}>
-              {t('landing:mobileDescription')}
-            </Typography>
-          )
-        ) : (
-          <Typography
-            variant={isMobile ? 'text' : 'title'}
-            size="large"
-            fontWeight="semiBold"
-            style={styles.subHeadingMobile}
-          >
-            {t('landing:mobileDescription')}
-          </Typography>
-        )}
+        <Typography
+          variant={!isMobile ? 'title' : 'text'}
+          size={isTablet ? 'regular' : 'large'}
+          fontWeight="semiBold"
+          style={!isMobile ? (!isTablet ? styles.subHeading : styles.subHeadingTab) : styles.subHeadingMobile}
+        >
+          {t('landing:featureDescription')}
+        </Typography>
       </View>
 
       <View style={[styles.grid, isMobile && styles.gridMobile, !isMobile && isTablet && styles.gridTab]}>{Cards}</View>

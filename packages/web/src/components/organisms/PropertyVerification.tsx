@@ -344,7 +344,6 @@ const styles = StyleSheet.create({
     width: '50%',
   },
   buttonStyle: {
-    flex: 0,
     marginVertical: 20,
   },
   helperText: {
