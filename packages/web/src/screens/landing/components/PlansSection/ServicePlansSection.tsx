@@ -58,11 +58,13 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
     marginBottom: 60,
     width: '100%',
-    paddingVertical: 20,
+    paddingTop: 20,
   },
   servicePlansCardsContainer: {
     flexDirection: 'row',
     marginRight: 24,
+    marginBottom: 0,
+    paddingVertical: 0,
   },
   servicePlansContainerDesktop: {
     flexDirection: 'row',

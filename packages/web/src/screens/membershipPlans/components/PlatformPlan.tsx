@@ -30,11 +30,12 @@ const PlatformPlan: FC = () => {
     }
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isTab = useDown(deviceBreakpoint.TABLET);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const isIPadPro = useIsIpadPro();
   const { t } = useTranslation();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, (isTab || isIPadPro) && styles.containerTab]}>
       {platformPlansData.length &&
         (isLaptop && !isIPadPro ? (
           <PlatformPlansWeb platformPlansData={platformPlansData} />
@@ -67,6 +68,7 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: theme.colors.white,
+    paddingBottom: '10%',
   },
   heading: {
     textAlign: 'center',
@@ -75,6 +77,9 @@ const styles = StyleSheet.create({
   },
   platformCardGroup: {
     marginBottom: 30,
+  },
+  containerTab: {
+    paddingBottom: '0%',
   },
 });
 

@@ -73,6 +73,7 @@ const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTi
       onMetricsClicked(item);
     }
   };
+
   return (
     <View style={styles.carouselContainer}>
       <MultiCarousel passedProps={customCarouselProps}>
@@ -148,7 +149,6 @@ const CarouselControlsGrp = ({
   const [settingsOptions, setSettingsOptions] = useState<IDragOption[]>(detailsOptions);
   const styles = propertyDetailsControlStyle;
   const popupRef = useRef<PopupActions>(null);
-
   const updateCarouselIndex = (updateIndexBy: number): void => {
     if (updateIndexBy === 1 && next) {
       next();
@@ -161,7 +161,6 @@ const CarouselControlsGrp = ({
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
-
     setSettingsOptions(newOptions);
     updatedOptions(newOptions);
   };
@@ -186,6 +185,7 @@ const CarouselControlsGrp = ({
           children: undefined,
           onClose: onSheetClose,
           modal: true,
+          lockScroll: true,
         }}
       >
         <>
@@ -216,7 +216,7 @@ const getPropertyDetailsOptions = (data: IOverviewCarousalData[]): IDragOption[]
   data.forEach((option): void => {
     settingsOptions.push({
       label: option.label,
-      icon: icons.checkboxOff,
+      icon: option?.icon ? option?.icon : icons.portfolioFilled,
       checked: false,
       colorCode: option.colorCode,
       count: option.count,
