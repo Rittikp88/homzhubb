@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     margin: 36,
     height: 100,
     flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   imageBox: {
     height: 132,

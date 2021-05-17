@@ -1,79 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import OverviewCarousel, { IOverviewCarousalData } from '@homzhub/web/src/components/molecules/OverviewCarousel';
 import EstPortfolioValue from '@homzhub/web/src/components/molecules/EstPortfolioValue';
-import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
-import { MetricsCount } from '@homzhub/common/src/domain/models/MetricsCount';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { IPropertyNotificationDetails } from '@homzhub/common/src/constants/DashBoard';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   onMetricsClicked: (name: string) => void;
+  portfolioMetrics: IOverviewCarousalData[];
+  countMetrics: number;
 }
 
-// TODO - Remove once API integration is done.
-const getNotificationsData = (data: MetricsCount): IPropertyNotificationDetails[] => [
-  {
-    label: 'Visits',
-    count: data?.siteVisit?.count ?? 0,
-    iconColor: '#FFFFFF',
-    colorCode: 'rgba(255, 113, 68, 1)',
-    imageBackgroundColor: 'rgba(255, 127, 87, 1)',
-    icon: icons.visit,
-  },
-  {
-    label: 'Offer',
-    count: data?.offer?.count ?? 0,
-    iconColor: '#FFFFFF',
-    colorCode: 'rgba(44, 186, 103, 1)',
-    imageBackgroundColor: 'rgba(56, 205, 118, 1)',
-    icon: icons.offers,
-  },
-  {
-    label: 'Message',
-    count: data?.message?.count ?? 0,
-    iconColor: '#FFFFFF',
-    colorCode: 'rgba(198, 142, 58, 1)',
-    imageBackgroundColor: 'rgba(211, 159, 80, 1)',
-    icon: icons.mail,
-  },
-];
-
 const NotificationHeader: React.FC<IProps> = (props: IProps) => {
-  const { onMetricsClicked } = props;
+  const { onMetricsClicked, portfolioMetrics, countMetrics } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.landing);
-  const [portfolioMetrics, setPortfolioMetrics] = useState<IOverviewCarousalData[]>([]);
-  const [countMetrics, setCountMetrics] = useState(0);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyOverviewStyle(isMobile);
-  const transformData = (arrayObject: IPropertyNotificationDetails[]): IOverviewCarousalData[] => {
-    const newArrayOfObj = arrayObject.map(({ label, colorCode, count, ...rest }) => ({
-      label,
-      colorCode,
-      count,
-      ...rest,
-    }));
-    return newArrayOfObj as IOverviewCarousalData[];
-  };
-
-  const notificationsMetrics = (datum: MetricsCount): IPropertyNotificationDetails[] => {
-    setCountMetrics(datum.count);
-    return getNotificationsData(datum);
-  };
-
-  useEffect(() => {
-    getPorfolioMetrics((response) =>
-      setPortfolioMetrics(transformData(notificationsMetrics(response.updates?.notifications)))
-    ).then();
-  }, []);
 
   const total = portfolioMetrics?.length ?? 0;
   return (
@@ -95,16 +41,6 @@ const NotificationHeader: React.FC<IProps> = (props: IProps) => {
       ) : null}
     </View>
   );
-};
-
-const getPorfolioMetrics = async (callback: (response: AssetMetrics) => void): Promise<void> => {
-  try {
-    const response: AssetMetrics = await DashboardRepository.getAssetMetrics();
-    callback(response);
-  } catch (e) {
-    const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
-  }
 };
 
 interface IPropertyOverviewStyle {
