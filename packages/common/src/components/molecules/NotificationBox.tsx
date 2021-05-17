@@ -90,6 +90,13 @@ const NotificationBox = (props: IProps): React.ReactElement => {
         {t('newNotification', { count: unreadCount })}
       </Label>
       <FlatList
+        key={
+          PlatformUtils.isWeb()
+            ? isTablet
+              ? 'Notification-List-Tab'
+              : 'Notification-List-Web'
+            : 'Notification-List-App'
+        }
         data={data}
         renderItem={renderItem}
         initialNumToRender={10}

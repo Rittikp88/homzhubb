@@ -27,6 +27,7 @@ const Description = (props: IProps): React.ReactElement => {
   const renderFactsAndFeatures = (): React.ReactElement => {
     return (
       <FlatList<AssetFeature>
+        key={isTablet ? 'Asset-Feature-Tab' : isMobile ? 'Asset-Feature-Mobile' : 'Asset-Feature-Desktop'}
         numColumns={isTablet ? 3 : isMobile ? 2 : 4}
         contentContainerStyle={styles.listContainer}
         data={features ?? []}

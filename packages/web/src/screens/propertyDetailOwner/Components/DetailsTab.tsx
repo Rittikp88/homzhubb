@@ -33,6 +33,7 @@ const DetailsTab = (props: IProps): React.ReactElement => {
   const renderFactsAndFeatures = (): React.ReactElement => {
     return (
       <FlatList<AssetFeature>
+        key={isTablet ? 'Asset-Feature-Tab' : isMobile ? 'Asset-Feature-Mobile' : 'Asset-Feature-Desktop'}
         numColumns={isTablet ? 3 : isMobile ? 2 : 4}
         contentContainerStyle={styles.listContainer}
         data={features ?? []}
@@ -69,6 +70,7 @@ const DetailsTab = (props: IProps): React.ReactElement => {
         ) : (
           <>
             <FlatList
+              key={isTablet ? 'Asset-Amenities-Tab' : isMobile ? 'Asset-Amenities-Mobile' : 'Asset-Amenities-Desktop'}
               numColumns={isTablet ? 4 : isMobile ? 2 : 6}
               contentContainerStyle={styles.listContainer}
               data={data}
@@ -112,6 +114,7 @@ const DetailsTab = (props: IProps): React.ReactElement => {
     return (
       <FlatList<AssetHighlight>
         data={filterData}
+        key={isTablet ? 'Asset-Highlight-Tab' : isMobile ? 'Asset-Highlight-Mobile' : 'Asset-Highlight-Desktop'}
         numColumns={isTablet ? 4 : isMobile ? 2 : 6}
         contentContainerStyle={styles.listContainer}
         keyExtractor={(item: AssetHighlight): string => `${item.name}`}

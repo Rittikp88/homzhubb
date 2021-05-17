@@ -36,6 +36,7 @@ const Amenitites = (props: IProps): React.ReactElement => {
         ) : (
           <>
             <FlatList
+              key={isTablet ? 'Asset-Amenities-Tab' : isMobile ? 'Asset-Amenities-Mobile' : 'Asset-Amenities-Desktop'}
               numColumns={isTablet ? 4 : isMobile ? 2 : 6}
               contentContainerStyle={styles.listContainer}
               data={data}
@@ -78,6 +79,7 @@ const Amenitites = (props: IProps): React.ReactElement => {
 
     return (
       <FlatList<AssetHighlight>
+        key={isTablet ? 'Asset-Highlight-Tab' : isMobile ? 'Asset-Highlight-Mobile' : 'Asset-Highlight-Desktop'}
         data={filterData}
         numColumns={isTablet ? 4 : isMobile ? 2 : 6}
         contentContainerStyle={styles.listContainer}
