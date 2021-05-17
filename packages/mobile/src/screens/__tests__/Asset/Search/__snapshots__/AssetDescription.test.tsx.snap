@@ -31,7 +31,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           "justifyContent": "space-between",
           "paddingVertical": 5,
           "position": "absolute",
-          "top": 40,
           "zIndex": 100,
         },
         Object {
@@ -41,6 +40,9 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           "elevation": AnimatedValue {
             " __value": 0,
           },
+        },
+        Object {
+          "top": 0,
         },
       ]
     }
@@ -322,6 +324,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             <Text
               style={
                 Object {
+                  "color": "#0084F8",
                   "paddingLeft": 8,
                 }
               }

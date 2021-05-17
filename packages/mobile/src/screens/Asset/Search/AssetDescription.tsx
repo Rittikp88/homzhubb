@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  NativeModules,
   NativeScrollEvent,
   NativeSyntheticEvent,
   StatusBar as RNStatusBar,
@@ -74,6 +75,8 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
+const { StatusBarManager } = NativeModules;
+
 interface IStateProps {
   reviews: AssetReview | null;
   assetDetails: Asset | null;
@@ -102,13 +105,13 @@ interface IOwnState {
   isSharing: boolean;
   sharingMessage: string;
   showContactDetailsInFooter: boolean;
+  statusBarHeight: number;
 }
 
-const { width, height } = theme.viewport;
-const realWidth = height > width ? width : height;
+const { width, height: viewportHeight } = theme.viewport;
+const realWidth = viewportHeight > width ? width : viewportHeight;
 const relativeWidth = (num: number): number => (realWidth * num) / 100;
 
-// TODO: Do we require a byId reducer here?
 const initialState = {
   isFullScreen: false,
   activeSlide: 0,
@@ -118,6 +121,7 @@ const initialState = {
   isSharing: false,
   sharingMessage: I18nService.t('common:homzhub'),
   showContactDetailsInFooter: true,
+  statusBarHeight: 0,
 };
 
 type libraryProps = WithTranslation & NavigationScreenProps<SearchStackParamList, ScreensKeys.PropertyAssetDescription>;
@@ -147,9 +151,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       this.getAssetData();
     });
     await this.setSharingMessage();
+    if (PlatformUtils.isIOS()) {
+      StatusBarManager.getHeight(({ height }: { height: number }) => {
+        this.setState({ statusBarHeight: height });
+      });
+    }
   };
 
-  // TODO: Do we require a byId reducer here?
   public async componentDidUpdate(
     prevProps: Readonly<Props>,
     prevState: Readonly<IOwnState>,
@@ -209,7 +217,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   };
 
   private renderHeader = (): React.ReactElement | null => {
-    const { isScroll } = this.state;
+    const { isScroll, statusBarHeight } = this.state;
     const {
       assetDetails,
       route: { params },
@@ -218,8 +226,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { leaseTerm, saleTerm, isAssetOwner } = assetDetails;
     const iconColor = isScroll ? theme.colors.darkTint1 : theme.colors.white;
     const animatedViewStyle = { backgroundColor: this.backgroundColorAnimated, elevation: this.elevationAnimated };
+    const top = PlatformUtils.isIOS() ? statusBarHeight : RNStatusBar.currentHeight;
+
     return (
-      <Animated.View style={[styles.headerView, animatedViewStyle]}>
+      <Animated.View style={[styles.headerView, animatedViewStyle, { top }]}>
         <View style={styles.headerContent}>
           <Icon name={icons.leftArrow} size={26} color={iconColor} onPress={this.onGoBack} />
           <Animated.View style={{ ...styles.headerTextView, opacity: this.headerOpacityAnimated }}>
@@ -1069,7 +1079,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     position: 'absolute',
-    top: PlatformUtils.isIOS() ? 40 : RNStatusBar.currentHeight,
     zIndex: 100,
     paddingVertical: 5,
   },
