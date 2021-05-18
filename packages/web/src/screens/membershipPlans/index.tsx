@@ -96,12 +96,17 @@ const styles = StyleSheet.create({
     marginBottom: 42,
     lineHeight: 36,
   },
-  subText: { marginTop: 34, marginHorizontal: 'auto' },
-  pickerContainer: { height: 54 },
+  subText: {
+    marginTop: 34,
+    marginHorizontal: 'auto',
+  },
+  pickerContainer: {
+    height: 54,
+  },
   footerMobile: {
-    marginTop: '200%',
+    marginTop: '0%',
   },
   footerTab: {
-    marginTop: '25%',
+    marginTop: '-8%',
   },
 });
