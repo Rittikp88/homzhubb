@@ -34,7 +34,7 @@ const ConfirmationPopup: React.FC<Props> = (props: Props) => {
     if (popupRef && popupRef.current) {
       popupRef.current.open();
     }
-  });
+  }, []);
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
