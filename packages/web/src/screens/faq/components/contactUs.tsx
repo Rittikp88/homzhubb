@@ -33,7 +33,7 @@ const ContactUs: React.FC = () => {
         <View style={[styles.callUs, isTablet && styles.callUsTab, isMobile && styles.callUsMobile]}>
           <Icon name={icons.call} size={32} color={theme.colors.darkTint7} />
           <Typography variant="label" size="large" style={[styles.phoneNumber, styles.topMargin]}>
-            {t('+(91) - 999999999')}
+            {t('+(91) - 8088900900')}
           </Typography>
           <Typography variant="label" size="large" style={styles.titleText}>
             {t('happyToHelp')}

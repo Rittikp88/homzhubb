@@ -48,7 +48,7 @@ const PlatformPlansCard: React.FC<IProps> = (props: IProps) => {
               </Typography>
             </View>
           ) : (
-            <View style={{ paddingTop: '8px', paddingBottom: '12px' }}>
+            <View style={styles.pricing}>
               <Typography variant="text" size="small" fontWeight="semiBold">
                 {price[0].currency.currencySymbol}
                 {price[0].actualPrice}
@@ -164,6 +164,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     textAlign: 'center',
     color: theme.colors.green,
+  },
+  pricing: {
+    paddingTop: '8px',
+    paddingBottom: '12px',
   },
 });
 
