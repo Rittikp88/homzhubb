@@ -31,6 +31,7 @@ const ContinuePopup: React.FC<Props> = (props: Props) => {
   const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor, isSvg, isOpen, onContinueRoute } = props;
   const popupRef = useRef<PopupActions>(null);
   const { t } = useTranslation();
+
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();

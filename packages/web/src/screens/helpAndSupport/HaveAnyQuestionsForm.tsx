@@ -16,6 +16,7 @@ import FileUpload from '@homzhub/mobile/src/components/atoms/FileUpload';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import ConfirmationPopup from '@homzhub/web/src/components/molecules/ConfirmationPopup';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
@@ -42,6 +43,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
   const [categories, setCategories] = useState<IDropdownOption[]>([]);
   const [contact, setContact] = useState<User>();
   const [attachments, setAttachments] = useState<IDocumentSource[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
   const complainImage = '';
   const supportFormData = {
     subject: '',
@@ -52,6 +54,11 @@ const HaveAnyQuestionsForm: React.FC = () => {
     getCategories();
     getContact();
   }, []);
+
+  const popupDetails = {
+    title: t('common:confirmation'),
+    subTitle: t('helpAndSupport:ticketRaised'),
+  };
 
   const formSchema = (): yup.ObjectSchema<IFormData> => {
     return yup.object().shape({
@@ -107,7 +114,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
         attachments: attachmentIds,
       };
       await CommonRepository.postClientSupport(payload);
-
+      setIsOpen(true);
       formActions.resetForm({});
       setAttachments([]);
     } catch (e) {
@@ -214,6 +221,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
           );
         }}
       </Formik>
+      {isOpen && <ConfirmationPopup {...popupDetails} />}
     </View>
   );
 };

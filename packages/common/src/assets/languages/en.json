@@ -272,7 +272,8 @@
     "referralCode": "Referral Code",
     "knowMore": "Know More",
     "knowLess": "Know Less",
-    "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*"
+    "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*",
+    "confirmation": "Confirmation!"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1013,7 +1014,8 @@
     "categoryName": "Category Name",
     "caseId": "Case ID",
     "date": "Date",
-    "status": "Status"
+    "status": "Status",
+    "ticketRaised": "The support ticket has been raised."
   },
   "landing": {
     "manageProperties": "Lease and manage properties",
