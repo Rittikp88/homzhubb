@@ -11,7 +11,7 @@ import {
 import { IRefreshToken } from '@homzhub/common/src/domain/repositories/interfaces';
 import { TOKEN_NOT_VALID } from '@homzhub/common/src/network/Constants';
 
-const REFRESH_TOKEN_ENDPOINT = 'users/token/refresh/';
+const REFRESH_TOKEN_ENDPOINT = 'v1/users/token/refresh/';
 
 class Interceptor implements IApiInterceptor {
   private client: AxiosInstance = axios.create({
