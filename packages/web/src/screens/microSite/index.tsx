@@ -66,7 +66,7 @@ const ExitTriggeredPopup = (props: IExitPopupProps): React.ReactElement<IExitPop
     }
   };
   useEffect(() => {
-    const DELAY_POPUP_DISPLAY_TIME = 20000;
+    const DELAY_POPUP_DISPLAY_TIME = 60000;
     plzSubscribedTimer = setTimeout(() => {
       if (popupRef && popupRef.current) {
         popupRef.current.open();

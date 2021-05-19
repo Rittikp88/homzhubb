@@ -10,6 +10,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { PlatformPlans } from '@homzhub/common/src/domain/models/PlatformPlan';
 import { ServiceBundleItems } from '@homzhub/common/src/domain/models/ServiceBundleItems';
+import { ServicePlanPricing } from '@homzhub/common/src/domain/models/ServicePlanPricing';
 import '@homzhub/web/src/screens/membershipPlans/components/PlatformPlansWeb.scss';
 
 interface IProp {
@@ -51,6 +52,11 @@ const PlatformPlansWeb: FC<IProp> = (props: IProp) => {
     return theString?.charAt(0).toUpperCase() + theString?.slice(1) || ' ';
   };
 
+  const getFreeSubscriptionPeriod = (data: ServicePlanPricing[]): string => {
+    const duration = data[0].freeTrialDuration ?? 0;
+    return duration === 12 ? t('oneYear') : `${duration} ${t('months')}`;
+  };
+
   const availablePrice = (servicePlans: PlatformPlans): ReactElement => {
     const price = servicePlans.servicePlanPricing.filter((item) => item.currency.currencyCode === 'USD');
     if (servicePlans.name === 'FREEDOM')
@@ -64,13 +70,23 @@ const PlatformPlansWeb: FC<IProp> = (props: IProp) => {
     if (servicePlans.name === 'PRO' || servicePlans.name === 'PREMIUM')
       return (
         <td className="header-cards">
-          <Typography variant="text" size="small" fontWeight="semiBold">
-            {price[0].currency.currencySymbol}
-            {price[0].actualPrice}
-          </Typography>
-          <Typography variant="text" size="small">
-            {t('common:perYear')}
-          </Typography>
+          {price[0].freeTrialDuration ? (
+            <View style={styles.freeTierView}>
+              <Typography size="large" variant="label" fontWeight="semiBold" style={styles.freeTierText}>
+                {`${t('freeFor')}${getFreeSubscriptionPeriod(price)}`}
+              </Typography>
+            </View>
+          ) : (
+            <>
+              <Typography variant="text" size="small" fontWeight="semiBold">
+                {price[0].currency.currencySymbol}
+                {price[0].actualPrice}
+              </Typography>
+              <Typography variant="text" size="small">
+                {t('common:perYear')}
+              </Typography>
+            </>
+          )}
         </td>
       );
     return (
@@ -210,5 +226,19 @@ const styles = StyleSheet.create({
   },
   primary: {
     color: theme.colors.primaryColor,
+  },
+  freeTierView: {
+    alignItems: 'center',
+    marginBottom: 8,
+    marginTop: 8,
+  },
+  freeTierText: {
+    alignItems: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    backgroundColor: theme.colors.greenLightOpacity,
+    borderRadius: 4,
+    textAlign: 'center',
+    color: theme.colors.green,
   },
 });

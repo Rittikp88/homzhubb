@@ -43,7 +43,7 @@ const PlansSection: FC<IProps> = (props: IProps) => {
           fontWeight="semiBold"
           style={styles.plansTitle}
         >
-          {t('plansSectionTitle')}
+          {t('landing:membershipPlans')}
         </Typography>
         <Typography
           variant={isMobile ? 'text' : 'title'}

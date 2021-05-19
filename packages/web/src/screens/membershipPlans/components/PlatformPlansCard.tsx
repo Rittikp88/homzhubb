@@ -8,6 +8,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { PlatformPlans } from '@homzhub/common/src/domain/models/PlatformPlan';
+import { ServicePlanPricing } from '@homzhub/common/src/domain/models/ServicePlanPricing';
 
 interface IProps {
   platformPlansData: PlatformPlans[];
@@ -22,6 +23,11 @@ const PlatformPlansCard: React.FC<IProps> = (props: IProps) => {
       path: RouteNames.publicRoutes.SIGNUP,
     });
   };
+  const getFreeSubscriptionPeriod = (data: ServicePlanPricing[]): string => {
+    const duration = data[0].freeTrialDuration ?? 0;
+    return duration === 12 ? t('oneYear') : `${duration} ${t('months')}`;
+  };
+
   const availablePrice = (servicePlans: PlatformPlans): React.ReactElement => {
     const price = servicePlans.servicePlanPricing.filter((item) => item.currency.currencyCode === 'USD');
     if (servicePlans.name === 'FREEDOM')
@@ -35,13 +41,23 @@ const PlatformPlansCard: React.FC<IProps> = (props: IProps) => {
     if (servicePlans.name === 'PRO' || servicePlans.name === 'PREMIUM')
       return (
         <View style={styles.cardPricing}>
-          <Typography variant="text" size="small" fontWeight="semiBold">
-            {price[0].currency.currencySymbol}
-            {price[0].actualPrice}
-          </Typography>
-          <Typography variant="text" size="small">
-            {t('common:perYear')}
-          </Typography>
+          {price[0].freeTrialDuration ? (
+            <View style={styles.freeTierView}>
+              <Typography size="large" variant="label" fontWeight="semiBold" style={styles.freeTierText}>
+                {`${t('freeFor')}${getFreeSubscriptionPeriod(price)}`}
+              </Typography>
+            </View>
+          ) : (
+            <View style={{ paddingTop: '8px', paddingBottom: '12px' }}>
+              <Typography variant="text" size="small" fontWeight="semiBold">
+                {price[0].currency.currencySymbol}
+                {price[0].actualPrice}
+              </Typography>
+              <Typography variant="text" size="small">
+                {t('common:perYear')}
+              </Typography>
+            </View>
+          )}
         </View>
       );
     return (
@@ -115,7 +131,6 @@ const styles = StyleSheet.create({
   },
   cardDescription: {
     minHeight: '75px',
-    paddingTop: '8px',
   },
   subTextColor: {
     color: theme.colors.darkTint3,
@@ -125,17 +140,30 @@ const styles = StyleSheet.create({
   },
   cardPricing: {
     flexDirection: 'row',
-    paddingTop: '16px',
     paddingBottom: '20px',
   },
   buttonContainerStyle: {
-    width: '100%',
+    position: 'absolute',
+    bottom: 24,
+    width: '80%',
   },
   buttonTitleStyle: {
     marginHorizontal: 10,
   },
   primary: {
     color: theme.colors.primaryColor,
+  },
+  freeTierView: {
+    alignItems: 'center',
+  },
+  freeTierText: {
+    alignItems: 'center',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    backgroundColor: theme.colors.greenLightOpacity,
+    borderRadius: 4,
+    textAlign: 'center',
+    color: theme.colors.green,
   },
 });
 
