@@ -34,6 +34,8 @@ const {
   REACT_NATIVE_APP_GOOGLE_WEB_CLIENT_ID,
   REACT_NATIVE_APP_GOOGLE_IOS_CLIENT_ID,
   REACT_NATIVE_APP_MIXPANEL_KEY,
+  REACT_NATIVE_APP_APPLE_STORE_URL,
+  REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL,
 } = Config;
 
 class ConfigHelper {
@@ -49,6 +51,8 @@ class ConfigHelper {
   private readonly googleWebClientId: string | undefined;
   private readonly googleIosClientId: string | undefined;
   private readonly facebookClientId: string | undefined;
+  private readonly appleStoreUrl: string | undefined;
+  private readonly googlePlayStoreUrl: string | undefined;
 
   constructor() {
     this.baseUrl = REACT_APP_API_BASE_URL;
@@ -76,6 +80,8 @@ class ConfigHelper {
       this.googleWebClientId = REACT_NATIVE_APP_GOOGLE_WEB_CLIENT_ID;
       this.googleIosClientId = REACT_NATIVE_APP_GOOGLE_IOS_CLIENT_ID;
       this.mixpanelKey = REACT_NATIVE_APP_MIXPANEL_KEY;
+      this.appleStoreUrl = REACT_NATIVE_APP_APPLE_STORE_URL;
+      this.googlePlayStoreUrl = REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL;
     }
   }
 
@@ -102,6 +108,10 @@ class ConfigHelper {
   public getGoogleIosClientId = (): string => this.googleIosClientId || '';
 
   public getFacebookClientId = (): string => this.facebookClientId || '';
+
+  public getAppleStoreUrl = (): string => this.appleStoreUrl || '';
+
+  public getGooglePlayStoreUrl = (): string => this.googlePlayStoreUrl || '';
 }
 
 const configHelper = new ConfigHelper();

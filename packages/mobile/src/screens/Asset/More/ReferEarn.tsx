@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -6,6 +6,7 @@ import Clipboard from '@react-native-community/clipboard';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
@@ -13,7 +14,6 @@ import ReferEarnIcon from '@homzhub/common/src/assets/images/referEarn.svg';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
@@ -21,26 +21,16 @@ import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 type Props = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ReferEarn>;
 
+const APPLE_STORE_URL = ConfigHelper.getAppleStoreUrl();
+const GOOGLE_PLAYSTORE_URL = ConfigHelper.getGooglePlayStoreUrl();
+
 const ReferEarn = (props: Props): React.ReactElement => {
   const { navigation } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
   const code = useSelector(UserSelector.getReferralCode);
-  const url = useRef('');
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    LinkingService.buildShortLink(
-      DynamicLinkTypes.Referral,
-      `${DynamicLinkParamKeys.ReferralCode}=${code}&${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}`
-    )
-      .then((link) => {
-        url.current = `${t('shareHomzhub')} ${link}`;
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [code, t]);
+  const message = `${t('shareHomzhub')} \n ${t('appleStore')} : ${APPLE_STORE_URL} \n ${t(
+    'googlePlayStore'
+  )} : \n ${GOOGLE_PLAYSTORE_URL}`;
 
   const onCopyToClipboard = useCallback((): void => {
     Clipboard.setString(code);
@@ -49,22 +39,22 @@ const ReferEarn = (props: Props): React.ReactElement => {
   }, [code, t]);
 
   const onShare = useCallback(async (): Promise<void> => {
-    await Share.share({ message: url.current });
+    await Share.share({ message });
   }, []);
 
   const onMail = useCallback(async (): Promise<void> => {
     trackEvent(t('common:mail'));
-    await LinkingService.openEmail({ body: url.current, subject: t('shareHomzhubSubject') });
+    await LinkingService.openEmail({ body: message, subject: t('shareHomzhubSubject') });
   }, [t]);
 
   const onSms = useCallback(async (): Promise<void> => {
     trackEvent(t('common:sms'));
-    await LinkingService.openSMS({ message: url.current });
+    await LinkingService.openSMS({ message });
   }, []);
 
   const onWhatsapp = useCallback(async (): Promise<void> => {
     trackEvent(t('common:whatsapp'));
-    await LinkingService.openWhatsapp(url.current);
+    await LinkingService.openWhatsapp(message);
   }, []);
 
   const trackEvent = (source: string): void => {
@@ -98,7 +88,7 @@ const ReferEarn = (props: Props): React.ReactElement => {
   ]);
 
   return (
-    <UserScreen title={t('more')} loading={loading} onBackPress={navigation.goBack} pageTitle={t('referFriend')}>
+    <UserScreen title={t('more')} onBackPress={navigation.goBack} pageTitle={t('referFriend')}>
       <View style={styles.container}>
         <ReferEarnIcon style={styles.icon} />
         <Text type="small" textType="semiBold" style={styles.refer}>
