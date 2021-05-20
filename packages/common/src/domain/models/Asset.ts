@@ -761,4 +761,8 @@ export class Asset {
   get isAssetOwner(): boolean {
     return this._isAssetOwner;
   }
+
+  get formattedProjectName(): string {
+    return `${this.unitNumber},${this.blockNumber && ` ${this.blockNumber},`} ${this.projectName}`;
+  }
 }

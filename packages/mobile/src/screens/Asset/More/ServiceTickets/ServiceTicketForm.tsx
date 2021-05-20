@@ -376,7 +376,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     const { properties } = this.props;
 
     return properties.map((property: Asset) => {
-      return { value: property.id, label: property.projectName };
+      return { value: property.id, label: property.formattedProjectName };
     });
   };
 

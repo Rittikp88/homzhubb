@@ -410,12 +410,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     if (isEmpty(propertyData)) {
       return;
     }
-    const { projectName, id, assetStatusInfo } = propertyData;
+    const { formattedProjectName, id, assetStatusInfo } = propertyData;
 
     const param = {
       isFromPortfolio: true,
       isFromTenancies: isFromTenancies ?? false,
-      screenTitle: projectName,
+      screenTitle: formattedProjectName,
       propertyId: id,
     };
     switch (key) {

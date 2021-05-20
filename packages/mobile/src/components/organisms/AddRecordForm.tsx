@@ -255,7 +255,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { properties } = this.props;
 
     return properties.map((property: Asset) => {
-      return { value: property.id, label: property.projectName };
+      return { value: property.id, label: property.formattedProjectName };
     });
   };
 

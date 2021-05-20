@@ -87,7 +87,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
         <View style={{ backgroundColor: headerColor }}>
           <StatusBar barStyle="light-content" statusBarBackground={headerColor} />
           <View style={[styles.header, { backgroundColor: headerColor }, styles.rowStyle]}>
-            <Text type="regular" textType="semiBold" style={styles.title}>
+            <Text type="regular" textType="semiBold" style={styles.title} maxLength={25}>
               {title}
             </Text>
             <TouchableOpacity onPress={onProfilePress}>
@@ -199,7 +199,6 @@ const styles = StyleSheet.create({
   title: {
     color: theme.colors.white,
     marginEnd: 4,
-    flex: 1,
   },
   pageTitle: {
     color: theme.colors.darkTint1,

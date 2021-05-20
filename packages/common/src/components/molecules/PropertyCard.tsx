@@ -35,6 +35,8 @@ const PropertyCard = (props: IProps): React.ReactElement => {
       furnishing,
       spaces,
       assetGroup: { code },
+      isAssetOwner,
+      formattedProjectName,
     },
     isExpanded,
     containerStyle,
@@ -70,7 +72,7 @@ const PropertyCard = (props: IProps): React.ReactElement => {
       )}
       {isExpanded && <ShieldGroup propertyType={assetType} text={description} isInfoRequired />}
       <PropertyAddressCountry
-        primaryAddress={projectName}
+        primaryAddress={isAssetOwner ? formattedProjectName : projectName}
         countryFlag={flag}
         subAddress={address ?? `${unitNumber} ${blockNumber}`}
         isIcon

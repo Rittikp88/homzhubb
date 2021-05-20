@@ -114,7 +114,7 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
                 id,
                 attachments,
                 assetStatusInfo,
-                projectName,
+                formattedProjectName,
                 address,
                 unitNumber,
                 blockNumber,
@@ -141,7 +141,7 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
                 navigateToService(
                   id,
                   propertyType,
-                  projectName,
+                  formattedProjectName,
                   address,
                   flag,
                   { assetGroupId, countryId, city },
@@ -163,7 +163,7 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
                         {propertyType}
                       </Text>
                       <PropertyAddressCountry
-                        primaryAddress={projectName}
+                        primaryAddress={formattedProjectName}
                         countryFlag={flag}
                         subAddress={address ?? `${unitNumber} ${blockNumber}`}
                       />
