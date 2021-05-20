@@ -1231,6 +1231,7 @@
     "offerRejected": "Offer Rejected",
     "offerAccepted": "Offer Accepted",
     "offerCancelled": "Offer Cancelled",
+    "offerExpired": "Offer Expired",
     "cancelOffer": "Cancel Offer",
     "sort": "Sort by",
     "filterBy": "Filter by",

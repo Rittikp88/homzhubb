@@ -94,18 +94,7 @@ class OfferCard extends Component<Props, IOwnState> {
 
   private renderCardContent = (offer: Offer, isMoreInfo?: boolean): React.ReactElement => {
     const { hasMore, isProfileSheetVisible } = this.state;
-    const {
-      minLockInPeriod,
-      leasePeriod,
-      price,
-      role,
-      createdAt,
-      validDays,
-      validCount,
-      status,
-      user,
-      actions,
-    } = offer;
+    const { minLockInPeriod, leasePeriod, price, role, createdAt, validDays, validCount, status, user } = offer;
     const { t, isFromAccept = false, compareData, asset } = this.props;
 
     const isOfferValid = validCount > 6;
@@ -114,7 +103,6 @@ class OfferCard extends Component<Props, IOwnState> {
     const currency = asset && asset.country ? asset.country.currencies[0].currencySymbol : 'INR';
 
     const offerValues = OfferUtils.getOfferValues(offer, compareData, currency, isMoreInfo);
-    const isButtonView = (isOfferExpired && !actions.length) || !isOfferExpired;
 
     // For highlighting active offer
     const isHighlighted = hasMore && !isMoreInfo;
@@ -189,7 +177,7 @@ class OfferCard extends Component<Props, IOwnState> {
           )}
         </View>
         {!isMoreInfo && this.renderPreferences()}
-        {!isMoreInfo && !isFromAccept && isButtonView && this.renderActionView()}
+        {!isMoreInfo && !isFromAccept && this.renderActionView()}
       </View>
     );
   };
@@ -251,12 +239,28 @@ class OfferCard extends Component<Props, IOwnState> {
   private renderActionView = (): React.ReactElement => {
     const {
       t,
-      offer: { status, actions, canCounter, canCreateLease },
+      offer: { status, actions, canCounter, canCreateLease, validCount },
       onPressAction,
       onCreateLease,
     } = this.props;
     const buttonData = OfferUtils.getButtonStatus(status);
+    const isOfferExpired = validCount < 0;
     const onPressCounter = (): void | undefined => (onPressAction ? onPressAction(OfferAction.COUNTER) : undefined);
+    if (isOfferExpired) {
+      const { title, icon, iconColor, textStyle, container } = OfferUtils.getButtonStatus();
+      return (
+        <Button
+          type="primary"
+          title={title}
+          containerStyle={container}
+          titleStyle={textStyle}
+          icon={icon}
+          iconColor={iconColor}
+          iconSize={16}
+          disabled
+        />
+      );
+    }
     return (
       <>
         {actions.length < 2 && (

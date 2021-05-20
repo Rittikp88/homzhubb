@@ -161,7 +161,24 @@ class OfferUtils {
     }
   };
 
-  public getButtonStatus = (status: Status): IActionStyle => {
+  public getButtonStatus = (status?: Status): IActionStyle => {
+    const handleNegativeStatuses = (title: string): IActionStyle => ({
+      title,
+      icon: icons.circularCrossFilled,
+      iconColor: theme.colors.error,
+      container: {
+        backgroundColor: theme.colors.redOpacity,
+        flexDirection: 'row-reverse',
+        flex: 0,
+      },
+      textStyle: {
+        color: theme.colors.error,
+        marginHorizontal: 8,
+      },
+    });
+
+    if (!status) return handleNegativeStatuses(I18nService.t('offers:offerExpired'));
+
     switch (status) {
       case Status.ACCEPTED:
         return {
@@ -179,24 +196,9 @@ class OfferUtils {
           },
         };
       case Status.REJECTED:
+        return handleNegativeStatuses(I18nService.t('offers:offerRejected'));
       case Status.CANCELLED:
-        return {
-          title:
-            status === Status.CANCELLED
-              ? I18nService.t('offers:offerCancelled')
-              : I18nService.t('offers:offerRejected'),
-          icon: icons.circularCrossFilled,
-          iconColor: theme.colors.error,
-          container: {
-            backgroundColor: theme.colors.redOpacity,
-            flexDirection: 'row-reverse',
-            flex: 0,
-          },
-          textStyle: {
-            color: theme.colors.error,
-            marginHorizontal: 8,
-          },
-        };
+        return handleNegativeStatuses(I18nService.t('offers:offerCancelled'));
       case Status.PENDING:
       default:
         return {
