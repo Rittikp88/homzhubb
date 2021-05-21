@@ -2,14 +2,17 @@ import React, { ReactElement } from 'react';
 import { View, StyleSheet, TouchableOpacity, StyleProp, TextStyle, LayoutChangeEvent } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
-import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import SwipeableRow, { IGroupIcons } from '@homzhub/mobile/src/components/molecules/SwipeableRow';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
+import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 interface IProps extends WithTranslation {
   transaction: FinancialRecords;
@@ -22,6 +25,20 @@ interface IProps extends WithTranslation {
 interface IOwnState {
   height: number;
 }
+
+const cardIcons: IGroupIcons[] = [
+  // Todo (Praharsh) : Change onPress functionality in both.
+  {
+    iconName: icons.noteBookOutlined,
+    backgroundColor: theme.colors.primaryColor,
+    onPress: FunctionUtils.noop,
+  },
+  {
+    iconName: icons.trash,
+    backgroundColor: theme.colors.highPriority,
+    onPress: FunctionUtils.noop,
+  },
+];
 
 class TransactionCard extends React.PureComponent<IProps, IOwnState> {
   public state = {
@@ -46,7 +63,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
     }
     const onPress = (): void => onCardPress(height);
 
-    return (
+    const CardContent = (): React.ReactElement => (
       <View onLayout={this.onLayout}>
         <TouchableOpacity onPress={onPress} style={styles.transactionCardContainer}>
           <View style={styles.commonAlignStyle}>
@@ -88,6 +105,12 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
         <Divider />
       </View>
     );
+
+    return (
+      <SwipeableRow rightIcons={cardIcons} isSwipeable={!isExpanded}>
+        <CardContent />
+      </SwipeableRow>
+    );
   }
 
   private renderTransactionDetails = (): ReactElement => {
@@ -99,11 +122,37 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
 
     const hasAttachments = attachmentDetails.length > 0;
 
+    const ActionButtonGroup = (): React.ReactElement => (
+      <View style={styles.row}>
+        <View style={styles.flexOne} />
+        {/* Todo (Praharsh) : Handle onPress navigation */}
+        <View style={styles.buttonContainer}>
+          <Button
+            type="secondaryOutline"
+            title="Delete"
+            containerStyle={styles.deleteButton}
+            titleStyle={styles.deleteButtonText}
+          />
+          <Button
+            type="secondaryOutline"
+            title="Edit"
+            containerStyle={styles.editButton}
+            titleStyle={styles.editButtonText}
+          />
+        </View>
+      </View>
+    );
+
     if (!tellerName && !hasAttachments && !notes) {
       return (
-        <Label style={styles.noDescriptionText} type="large">
-          {t('noDescriptionText')}
-        </Label>
+        <>
+          <Label style={styles.noDescriptionText} type="large">
+            {t('noDescriptionText')}
+          </Label>
+          <View style={styles.actionButtonAlone}>
+            <ActionButtonGroup />
+          </View>
+        </>
       );
     }
 
@@ -166,6 +215,9 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
             <Label type="large">{notes}</Label>
           </View>
         )}
+        <View style={styles.actionButtonWithContent}>
+          <ActionButtonGroup />
+        </View>
       </View>
     );
   };
@@ -233,5 +285,38 @@ const styles = StyleSheet.create({
   },
   attachment: {
     marginBottom: 20,
+  },
+  flexOne: {
+    flex: 1,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  buttonContainer: {
+    flex: 2.5,
+    flexDirection: 'row-reverse',
+  },
+  deleteButton: {
+    borderColor: theme.colors.highPriority,
+    borderRadius: 2,
+    marginStart: 13,
+  },
+  deleteButtonText: {
+    color: theme.colors.highPriority,
+    fontSize: 12,
+  },
+  editButton: {
+    borderColor: theme.colors.blueTint12,
+    borderRadius: 2,
+  },
+  editButtonText: {
+    color: theme.colors.blueTint12,
+    fontSize: 12,
+  },
+  actionButtonAlone: {
+    margin: 16,
+  },
+  actionButtonWithContent: {
+    marginTop: 10,
   },
 });

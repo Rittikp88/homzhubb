@@ -184,6 +184,7 @@ export const icons = {
   supportTicket: 'support-ticket',
   faq: 'faq',
   dragIndicator: 'drag-indicator',
+  noteBookOutlined: 'noteBook-outlined',
 
   // COMMUTE
   train: 'train',
