@@ -8,7 +8,8 @@ import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo'
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
-import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/ValueAddedServices';
+import ServicesDashboard from '@homzhub/mobile/src/screens/Asset/More/Services';
+import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/Services/ValueAddedServices';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import SubscriptionPayment from '@homzhub/mobile/src/screens/Asset/More/SubscriptionPayment';
@@ -28,6 +29,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.AddServiceTicket]: undefined;
   [ScreensKeys.PropertyOfferList]: undefined;
   [ScreensKeys.SubscriptionPayment]: undefined;
+  [ScreensKeys.ServicesDashboard]: undefined;
 } & CommonParamList;
 
 const MoreStackNavigator = createStackNavigator<MoreStackNavigatorParamList>();
@@ -52,6 +54,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubscriptionPayment} component={SubscriptionPayment} />
+      <MoreStackNavigator.Screen name={ScreensKeys.ServicesDashboard} component={ServicesDashboard} />
       {commonScreen}
     </MoreStackNavigator.Navigator>
   );

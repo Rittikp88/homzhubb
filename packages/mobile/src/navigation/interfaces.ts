@@ -119,6 +119,7 @@ export enum ScreensKeys {
   ValueAddedServices = 'ValueAddedServices',
   ServicesForSelectedAsset = 'ServicesForSelectedAsset',
   SubscriptionPayment = 'SubscriptionPayment',
+  ServicesDashboard = 'ServicesDashboard',
 
   // Messages
   Messages = 'Messages',

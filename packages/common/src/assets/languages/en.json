@@ -639,7 +639,12 @@
     "dragAndDropText": "Drag the section to rearrange the sections according to your choice.",
     "contactOwner": "Contact Owner",
     "confirmCancellation": "Are you sure want to cancel the listing?",
-    "onFloorValidation": "This can't be more than total floor count"
+    "onFloorValidation": "This can't be more than total floor count",
+    "noPropertyAdded": "You haven't added any property yet. Click here to add your first property.",
+    "noServiceAdded": "You haven’t purchased any value-added service.",
+    "buyNewService": "Buy New Service",
+    "propertyAdded": "Property added",
+    "servicePurchased": "Services Purchased"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

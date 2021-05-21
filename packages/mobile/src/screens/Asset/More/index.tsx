@@ -144,7 +144,7 @@ export class More extends React.PureComponent<Props> {
         navigation.navigate(ScreensKeys.KYC);
         break;
       case MoreScreenTypes.VALUE_ADDED_SERVICES:
-        navigation.navigate(ScreensKeys.ValueAddedServices);
+        navigation.navigate(ScreensKeys.ServicesDashboard);
         break;
       case MoreScreenTypes.MESSAGES:
         navigation.navigate(ScreensKeys.Messages);
