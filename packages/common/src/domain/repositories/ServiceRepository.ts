@@ -2,13 +2,15 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import { AssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
 import { PlatformPlans } from '@homzhub/common/src/domain/models/PlatformPlan';
+import { ServiceManagement } from '@homzhub/common/src/domain/models/ServiceManagement';
+import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
 
 const ENDPOINTS = {
   getAssetPlan: (): string => 'v2/service-category-actions/',
   getServiceValueBundles: (): string => 'v1/value-bundles/',
   getServicePlatformPlans: (): string => 'v1/service-plans/',
+  managementTab: 'v1/value-added-services/management-tab',
 };
 
 class ServiceRepository {
@@ -31,6 +33,11 @@ class ServiceRepository {
   public getPlatformPlans = async (): Promise<PlatformPlans[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getServicePlatformPlans());
     return ObjectMapper.deserializeArray(PlatformPlans, response);
+  };
+
+  public getServiceManagementTab = async (): Promise<ServiceManagement> => {
+    const response = await this.apiClient.get(ENDPOINTS.managementTab);
+    return ObjectMapper.deserialize(ServiceManagement, response);
   };
 }
 
