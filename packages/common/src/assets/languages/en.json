@@ -862,7 +862,8 @@
     "addDatePlaceholder": "Select a date",
     "notes": "Notes",
     "notesPlaceholder": "Type your notes here...",
-    "addNow": "Add Now",
+    "addRecord": "Add Record",
+    "editRecord": "Edit Record",
     "propertyError": "Please enter your property",
     "detailsError": "Please enter your property details",
     "amountError": "Please enter the amount",
@@ -876,9 +877,13 @@
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg: Tenant",
     "addedSuccessfullyMessage": "Added successfully",
+    "editedSuccessfullyMessage": "Edited successfully",
+    "deletedSuccessfullyMessage": "Deleted successfully",
     "noDescriptionText": "No Description.",
     "addProperty": "Please add a property before adding a financial record",
-    "allProperties": "All properties"
+    "allProperties": "All properties",
+    "deleteRecordConfirmation": "Are you sure you want to delete this record?",
+    "systemGeneratedText": "System-generated records cannot be edited"
   },
   "assetMore": {
     "more": "More",

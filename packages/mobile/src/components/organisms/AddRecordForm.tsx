@@ -1,17 +1,21 @@
 import React, { ReactElement } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { UploadBoxComponent, IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
@@ -19,13 +23,14 @@ import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalen
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Attachment, UploadFileType } from '@homzhub/common/src/domain/models/Attachment';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-enum FormType {
+export enum FormType {
   Income = 1,
   Expense = 2,
 }
@@ -39,7 +44,6 @@ interface IFormData {
   date: string;
   notes?: string;
 }
-
 interface IState {
   ledgerCategories: LedgerCategory[];
   selectedFormType: FormType;
@@ -47,6 +51,7 @@ interface IState {
   attachments: IDocumentSource[];
   currencyCode: string;
   currencySymbol: string;
+  existingAttachments: IFormattedAttachment[];
 }
 
 export interface IUploadAttachmentResponse {
@@ -64,6 +69,14 @@ interface IOwnProps extends WithTranslation {
   testID?: string;
   toggleLoading: (isLoading: boolean) => void;
   defaultCurrency: Currency;
+  isEditFlow?: boolean;
+  transactionId: number;
+}
+
+interface IFormattedAttachment {
+  id: number;
+  fileName: string;
+  link: string;
 }
 
 const MAX_WORD_COUNT = 200;
@@ -74,7 +87,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   public constructor(props: IOwnProps) {
     super(props);
     const {
-      assetId,
       defaultCurrency: { currencySymbol, currencyCode },
     } = props;
     this.state = {
@@ -83,20 +95,17 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       currencyCode,
       currencySymbol,
       ledgerCategories: [],
-      formValues: {
-        property: assetId ?? -1,
-        label: '',
-        tellerName: '',
-        amount: '',
-        category: 0,
-        date: DateUtils.getCurrentDate(),
-        notes: '',
-      },
+      formValues: this.getInitialValues(),
+      existingAttachments: [],
     };
   }
 
   public async componentDidMount(): Promise<void> {
-    const { toggleLoading, assetId } = this.props;
+    const { toggleLoading, assetId, isEditFlow } = this.props;
+
+    if (isEditFlow) {
+      this.fetchExistingLedgerDetails();
+    }
 
     if (assetId) {
       this.onChangeProperty(`${assetId}`);
@@ -113,12 +122,12 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     const { clear: oldVal } = prevProps;
 
     if (newVal !== oldVal) {
-      this.formRef.current.resetForm();
+      this.resetFormValues();
     }
   };
 
   public render(): ReactElement {
-    const { containerStyles, t, assetId } = this.props;
+    const { containerStyles, t, assetId, isEditFlow } = this.props;
     const { selectedFormType, formValues, currencyCode, currencySymbol, attachments } = this.state;
     return (
       <View style={containerStyles}>
@@ -214,13 +223,16 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   onCapture={this.handleUpload}
                   onDelete={this.handleDocumentDelete}
                   containerStyle={styles.uploadBox}
-                />
+                >
+                  {this.renderExistingAttachments()}
+                </UploadBoxComponent>
                 <FormButton
                   // @ts-ignore
                   onPress={formProps.handleSubmit}
                   formProps={formProps}
                   type="primary"
-                  title={t('addNow')}
+                  title={t(isEditFlow ? 'editRecord' : 'addRecord')}
+                  disabled={!formProps.isValid || formProps.isSubmitting}
                 />
               </>
             );
@@ -230,8 +242,64 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     );
   }
 
+  public renderExistingAttachments = (): React.ReactElement => {
+    const { existingAttachments, attachments } = this.state;
+    return (
+      <>
+        {existingAttachments.map((item, index) => {
+          const { id, fileName, link } = item;
+          const extension = fileName.split('.').reverse()[0];
+          const fileType = extension === 'pdf' ? UploadFileType.PDF : UploadFileType.IMAGE;
+          const fileIcon = fileType === UploadFileType.PDF ? icons.doc : icons.imageFile;
+          const isLastAttachment = index === existingAttachments.length - 1;
+
+          const onPressCross = (): void => {
+            this.setState((prevState) => ({
+              existingAttachments: prevState.existingAttachments.filter((i) => i.id !== item.id),
+            }));
+          };
+
+          const onPress = (): void => {
+            LinkingService.canOpenURL(link).then();
+          };
+
+          return (
+            <>
+              <TouchableOpacity key={id} style={styles.existingFilesContainer} onPress={onPress}>
+                <View style={styles.iconView}>
+                  <Icon name={fileIcon} size={40} color={theme.colors.lowPriority} style={styles.fileIcon} />
+                </View>
+                <View style={styles.fileContainer}>
+                  <Text type="small" textType="semiBold" style={styles.existingFileName}>
+                    {AttachmentService.getFormattedFileName(fileName, extension)}
+                  </Text>
+                  <Icon
+                    name={icons.close}
+                    size={20}
+                    color={theme.colors.darkTint3}
+                    style={styles.closeIcon}
+                    onPress={onPressCross}
+                  />
+                </View>
+              </TouchableOpacity>
+              {!isLastAttachment ? (
+                <Divider containerStyles={styles.divider} />
+              ) : (
+                <View style={styles.endingEmptyView} />
+              )}
+            </>
+          );
+        })}
+        {attachments.length > 0 && existingAttachments.length > 0 && <Divider containerStyles={styles.divider} />}
+      </>
+    );
+  };
+
   private onFormTypeChange = (selectedType: number): void => {
-    this.setState({ selectedFormType: selectedType });
+    this.setState((prevState) => ({
+      selectedFormType: selectedType,
+      formValues: { ...prevState.formValues, category: 0 },
+    }));
   };
 
   private onChangeProperty = (value: string, formikProps?: FormikProps<FormikValues>): void => {
@@ -248,6 +316,43 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     if (formikProps) {
       const { setFieldValue } = formikProps;
       setFieldValue('property', value);
+    }
+  };
+
+  private fetchExistingLedgerDetails = async (): Promise<void> => {
+    const { transactionId, toggleLoading } = this.props;
+    try {
+      toggleLoading(true);
+      const transactionData = await LedgerRepository.getLedgerDetails(transactionId);
+      const {
+        asset,
+        label,
+        transactionDate,
+        attachmentDetails,
+        amount,
+        notes,
+        tellerName,
+        categoryId,
+        formType,
+      } = transactionData;
+      const existingAttachments = this.formatExistingAttachments(attachmentDetails);
+      this.setState({
+        selectedFormType: formType,
+        existingAttachments,
+        formValues: {
+          property: asset?.id ?? -1,
+          label,
+          tellerName,
+          amount: String(amount),
+          category: categoryId,
+          notes,
+          date: transactionDate,
+        },
+      });
+      toggleLoading(false);
+    } catch (e) {
+      toggleLoading(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
@@ -278,11 +383,30 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       label: yup.string().required(t('detailsError')),
       tellerName: yup.string().optional(),
       amount: yup.string().required(t('amountError')),
-      category: yup.number().required(t('categoryError')),
+      category: yup.number().required(t('categoryError')).moreThan(0, t('categoryError')),
       date: yup.string().required(t('dateError')),
       notes: yup.string().optional(),
     });
   };
+
+  private getInitialValues = (): IFormData => {
+    const { assetId } = this.props;
+    return {
+      property: assetId ?? -1,
+      label: '',
+      tellerName: '',
+      amount: '',
+      category: 0,
+      date: DateUtils.getCurrentDate(),
+      notes: '',
+    };
+  };
+
+  private resetFormValues = (): void =>
+    this.setState({
+      formValues: this.getInitialValues(),
+      attachments: [],
+    });
 
   private handleUpload = (attachments: IDocumentSource[]): void => {
     this.setState((prevState: IState) => {
@@ -296,11 +420,21 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     });
   };
 
+  private formatExistingAttachments = (attachments: Attachment[]): IFormattedAttachment[] => {
+    const formatted = attachments.map((item) => ({
+      id: item.id,
+      fileName: item.fileName,
+      link: item.link,
+    }));
+    return formatted;
+  };
+
   private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
+    const { toggleLoading, isEditFlow, transactionId } = this.props;
+    const { selectedFormType, attachments, currencyCode, existingAttachments } = this.state;
     const { property, label, tellerName, amount, category, notes, date } = values;
-    const { selectedFormType, attachments, currencyCode } = this.state;
-    const { toggleLoading } = this.props;
-    let attachmentIds: Array<number> = [];
+    const existingAttachmentIds = existingAttachments.map((i) => i.id);
+    let uploadedAttachmentIds: Array<number> = [];
 
     toggleLoading(true);
 
@@ -314,7 +448,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         });
         const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_RECORD);
         const { data } = response;
-        attachmentIds = data.map((i: IUploadAttachmentResponse) => i.id);
+        uploadedAttachmentIds = data.map((i: IUploadAttachmentResponse) => i.id);
       }
 
       formActions.setSubmitting(true);
@@ -331,10 +465,14 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         category: Number(category),
         transaction_date: date,
         ...(notes && { notes }),
-        attachments: attachmentIds,
+        attachments: [...existingAttachmentIds, ...uploadedAttachmentIds],
         currency: currencyCode,
       };
-      await LedgerRepository.postGeneralLedgers(payload);
+      if (isEditFlow && transactionId !== -1) {
+        await LedgerRepository.updateGeneralLedgers(payload, transactionId);
+      } else {
+        await LedgerRepository.postGeneralLedgers(payload);
+      }
       toggleLoading(false);
       formActions.setSubmitting(false);
 
@@ -362,4 +500,36 @@ const styles = StyleSheet.create({
   uploadBox: {
     marginVertical: 20,
   },
+  divider: {
+    borderWidth: 1,
+    marginVertical: 5,
+    borderColor: theme.colors.divider,
+  },
+  fileIcon: {
+    marginHorizontal: 10,
+  },
+  endingEmptyView: {
+    marginVertical: 5,
+  },
+  closeIcon: {
+    right: 0,
+  },
+  existingFilesContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginVertical: 10,
+  },
+  iconView: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  fileContainer: {
+    flex: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  existingFileName: {
+    color: theme.colors.primaryColor,
+  }
 });

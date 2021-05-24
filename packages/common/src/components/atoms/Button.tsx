@@ -4,6 +4,7 @@ import {
   ImageStyle,
   StyleProp,
   StyleSheet,
+  TextProps,
   TextStyle,
   TouchableOpacity,
   ViewStyle,
@@ -34,6 +35,8 @@ export interface IButtonProps {
   testID?: string;
   maxLength?: number;
   textStyle?: TextStyle;
+  numOfLines?: number;
+  ellipsizeMode?: TextProps['ellipsizeMode'];
 }
 
 export class Button extends React.PureComponent<IButtonProps> {
@@ -68,7 +71,16 @@ export class Button extends React.PureComponent<IButtonProps> {
   };
 
   private getTextField = (): React.ReactElement => {
-    const { textType, title, textSize = 'small', fontType = 'semiBold', maxLength, textStyle } = this.props;
+    const {
+      textType,
+      title,
+      textSize = 'small',
+      fontType = 'semiBold',
+      maxLength,
+      textStyle,
+      numOfLines,
+      ellipsizeMode = 'tail',
+    } = this.props;
     let TextField = Text;
 
     if (textType === 'label') {
@@ -81,6 +93,8 @@ export class Button extends React.PureComponent<IButtonProps> {
         textType={fontType}
         style={[this.getTextStyle(), textStyle && textStyle]}
         maxLength={maxLength}
+        ellipsizeMode={ellipsizeMode}
+        numberOfLines={numOfLines}
       >
         {title}
       </TextField>

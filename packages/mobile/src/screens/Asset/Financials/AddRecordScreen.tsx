@@ -79,6 +79,8 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
         containerStyles={styles.addFormContainer}
         onSubmitFormSuccess={this.onSubmitFormSuccess}
         toggleLoading={this.toggleLoading}
+        isEditFlow={route?.params?.isEditFlow}
+        transactionId={route?.params?.transactionId ?? -1}
       />
     );
   };
@@ -89,8 +91,10 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
   };
 
   private onSubmitFormSuccess = (): void => {
-    const { t } = this.props;
-    AlertHelper.success({ message: t('addedSuccessfullyMessage') });
+    const { t, route } = this.props;
+    AlertHelper.success({
+      message: t(route?.params?.isEditFlow ? 'editedSuccessfullyMessage' : 'addedSuccessfullyMessage'),
+    });
     this.goBack();
   };
 

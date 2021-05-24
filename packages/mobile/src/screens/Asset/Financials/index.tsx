@@ -84,6 +84,8 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
           selectedProperty={selectedProperty}
           selectedCountry={selectedCountry}
           shouldEnableOuterScroll={this.toggleScroll}
+          onEditRecord={this.onPressEdit}
+          toggleLoading={this.toggleLoading}
         />
       </UserScreen>
     );
@@ -120,8 +122,19 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     navigate(ScreensKeys.AddRecordScreen);
   };
 
+  private onPressEdit = (id: number): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+    navigate(ScreensKeys.AddRecordScreen, { isEditFlow: true, transactionId: id });
+  };
+
   private toggleScroll = (scrollEnabled: boolean): void => {
     this.setState({ scrollEnabled });
+  };
+
+  private toggleLoading = (loading: boolean): void => {
+    this.setState({ isLoading: loading });
   };
 
   private getHeaderData = (): IMetricsData[] => {

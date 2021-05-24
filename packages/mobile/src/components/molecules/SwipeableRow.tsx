@@ -7,8 +7,10 @@ import { AnimationService } from '@homzhub/mobile/src/services/AnimationService'
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 
+const { interpolateAnimation } = AnimationService;
 const AnimatedIcon = RNAnimated.createAnimatedComponent(Icon);
 const AnimatedTouchableOpacity = RNAnimated.createAnimatedComponent(TouchableOpacity);
+const AnimatedView = RNAnimated.createAnimatedComponent(View);
 
 // CONSTANTS START
 const LEFT_THRESHOLD = 30;
@@ -35,6 +37,8 @@ interface IProps {
   rightIcons?: IGroupIcons[];
   children: React.ReactElement;
   isSwipeable?: boolean;
+  renderCustomRightView?: () => React.ReactElement;
+  customBackgroundColor?: string;
 }
 
 export default class SwipeableRow extends Component<IProps> {
@@ -60,7 +64,6 @@ export default class SwipeableRow extends Component<IProps> {
     progress: RNAnimated.AnimatedInterpolation,
     dragX: RNAnimated.AnimatedInterpolation
   ): React.ReactElement => {
-    const { interpolateAnimation } = AnimationService;
     return (
       <>
         {iconItems.map((item, index) => {
@@ -107,8 +110,31 @@ export default class SwipeableRow extends Component<IProps> {
     progress: RNAnimated.AnimatedInterpolation,
     dragX: RNAnimated.AnimatedInterpolation
   ): React.ReactElement | null => {
-    const { rightIcons, isSwipeable = true } = this.props;
+    const {
+      rightIcons,
+      isSwipeable = true,
+      renderCustomRightView,
+      customBackgroundColor = theme.colors.gray14,
+    } = this.props;
+    const translateX = interpolateAnimation(progress, INCREASING_INPUT_RANGE_ANIMATION, [60, 0]);
+    const opacity = interpolateAnimation(dragX, OPACITY_INPUT, DECREASING_OUTPUT_RANGE_ANIMATION);
+
     if (!rightIcons || !(rightIcons.length > 0) || !isSwipeable) return null;
+
+    if (renderCustomRightView) {
+      return (
+        <AnimatedView
+          style={{
+            ...styles.customRightView,
+            opacity,
+            transform: [{ translateX }],
+            backgroundColor: customBackgroundColor,
+          }}
+        >
+          {renderCustomRightView()}
+        </AnimatedView>
+      );
+    }
     return <View style={styles.itemContainer}>{this.renderIcons(rightIcons, progress, dragX)}</View>;
   };
 
@@ -130,5 +156,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  customRightView: {
+    width: theme.viewport.width / 2.7,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

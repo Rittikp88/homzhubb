@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import ProgressBar from 'react-native-progress/Bar';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -21,12 +22,10 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
     const integral = parseFloat((bytes / (1024 * 1024)).toFixed(1));
     return integral ? `${integral} mb` : `${(bytes / 1024).toFixed(1)} kb`;
   };
-  const fileName = (name: string, extension: string): string =>
-    name.length > 15 ? `${name.slice(0, 15)}...${extension}` : name;
   if (attachments.length) {
     return (
       <>
-        {attachments.map((attachment: IDocumentSource) => {
+        {attachments.map((attachment: IDocumentSource, index) => {
           const { name, uri, size } = attachment;
           const extension = name.split('.').reverse()[0];
           const fileType = extension === 'pdf' ? UploadFileType.PDF : UploadFileType.IMAGE;
@@ -40,7 +39,7 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
 
           return (
             <>
-              <View key={uri} style={styles.fullContainer}>
+              <View key={index} style={styles.fullContainer}>
                 <View style={styles.fileIconView}>
                   <Icon name={fileIcon} size={40} color={theme.colors.lowPriority} style={styles.fileIcon} />
                 </View>
@@ -54,7 +53,7 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
                       ellipsizeMode="tail"
                       numberOfLines={1}
                     >
-                      {fileName(name, extension)}
+                      {AttachmentService.getFormattedFileName(name, extension)}
                     </Text>
                     <Icon
                       name={icons.close}

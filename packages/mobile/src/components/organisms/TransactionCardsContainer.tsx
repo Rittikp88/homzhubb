@@ -7,10 +7,12 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import TransactionCard from '@homzhub/mobile/src/components/molecules/TransactionCard';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -20,11 +22,15 @@ interface IProps extends WithTranslation {
   selectedProperty?: number;
   shouldEnableOuterScroll?: (enable: boolean) => void;
   isFromPortfolio?: boolean;
+  onEditRecord: (id: number) => void;
+  toggleLoading: (loading: boolean) => void;
 }
 
 interface IOwnState {
   expandedItem: number;
   transactionsData: FinancialRecords[];
+  showBottomSheet: boolean;
+  currentTransactionId: number;
 }
 
 const PAGE_LIMIT = 10;
@@ -34,6 +40,8 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
   public state = {
     transactionsData: [],
     expandedItem: -1,
+    showBottomSheet: false,
+    currentTransactionId: -1,
   };
 
   public componentDidMount = async (): Promise<void> => {
@@ -83,13 +91,59 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
             {transactionsData.map(this.renderTransactionCard)}
           </ScrollView>
         )}
+        {this.renderBottomSheet()}
       </View>
     );
   }
 
+  private renderBottomSheet = (): React.ReactElement => {
+    const { showBottomSheet } = this.state;
+    const { t } = this.props;
+    const onPressDelete = (): Promise<void> => this.onConfirmDelete().then();
+    return (
+      <BottomSheet
+        visible={showBottomSheet}
+        headerTitle={t('confirm')}
+        sheetHeight={theme.viewport.height / 3}
+        onCloseSheet={this.closeBottomSheet}
+      >
+        <View style={styles.bottomSheet}>
+          <Text type="small" style={styles.message}>
+            {t('assetFinancial:deleteRecordConfirmation')}
+          </Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              type="secondary"
+              title={t('common:delete')}
+              titleStyle={styles.buttonTitle}
+              onPress={onPressDelete}
+              containerStyle={styles.editButton}
+            />
+            <Button
+              type="primary"
+              title={t('common:cancel')}
+              onPress={this.closeBottomSheet}
+              titleStyle={styles.buttonTitle}
+              containerStyle={styles.doneButton}
+            />
+          </View>
+        </View>
+      </BottomSheet>
+    );
+  };
+
   private renderTransactionCard = (item: FinancialRecords, index: number): React.ReactNode => {
     const { expandedItem } = this.state;
+    const { onEditRecord } = this.props;
     const onCardPress = (height: number): void => this.onCardPress(index, height);
+
+    const handleEdit = (): void => {
+      onEditRecord(item.id);
+    };
+
+    const handleDelete = (): void => {
+      this.openBottomSheet(item.id);
+    };
 
     return (
       <TransactionCard
@@ -98,8 +152,30 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
         transaction={item}
         onCardPress={onCardPress}
         handleDownload={this.onDownloadDocument}
+        onPressEdit={handleEdit}
+        onPressDelete={handleDelete}
       />
     );
+  };
+
+  private onConfirmDelete = async (): Promise<void> => {
+    const { toggleLoading, t } = this.props;
+    const { currentTransactionId } = this.state;
+    if (currentTransactionId > -1) {
+      try {
+        toggleLoading(true);
+        await LedgerRepository.deleteLedger(currentTransactionId);
+        this.getGeneralLedgers(true);
+        this.setState({ expandedItem: -1 });
+        toggleLoading(false);
+        this.closeBottomSheet();
+        AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
+      } catch (e) {
+        toggleLoading(false);
+        this.closeBottomSheet();
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
+    }
   };
 
   private onCardPress = (expandedItem: number, height: number): void => {
@@ -158,6 +234,14 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
     }
   };
 
+  private openBottomSheet = (id: number): void => {
+    this.setState({ showBottomSheet: true, currentTransactionId: id });
+  };
+
+  private closeBottomSheet = (): void => {
+    this.setState({ showBottomSheet: false, currentTransactionId: -1 });
+  };
+
   private getGeneralLedgers = async (reset = false): Promise<void> => {
     const { transactionsData } = this.state;
     const { selectedCountry, selectedProperty } = this.props;
@@ -196,5 +280,28 @@ const styles = StyleSheet.create({
   },
   chequeIconStyle: {
     marginEnd: 12,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 12,
+  },
+  editButton: {
+    marginLeft: 10,
+    flexDirection: 'row-reverse',
+    height: 50,
+  },
+  doneButton: {
+    flexDirection: 'row-reverse',
+    height: 50,
+  },
+  buttonTitle: {
+    marginHorizontal: 4,
+  },
+  bottomSheet: {
+    paddingHorizontal: theme.layout.screenPadding,
+  },
+  message: {
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });

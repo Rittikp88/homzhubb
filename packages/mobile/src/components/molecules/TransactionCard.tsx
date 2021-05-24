@@ -2,7 +2,6 @@ import React, { ReactElement } from 'react';
 import { View, StyleSheet, TouchableOpacity, StyleProp, TextStyle, LayoutChangeEvent } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -19,26 +18,14 @@ interface IProps extends WithTranslation {
   isExpanded: boolean;
   handleDownload: (refKey: string, fileName: string) => void;
   onCardPress: (height: number) => void;
+  onPressEdit: () => void;
+  onPressDelete: () => void;
   key: string;
 }
 
 interface IOwnState {
   height: number;
 }
-
-const cardIcons: IGroupIcons[] = [
-  // Todo (Praharsh) : Change onPress functionality in both.
-  {
-    iconName: icons.noteBookOutlined,
-    backgroundColor: theme.colors.primaryColor,
-    onPress: FunctionUtils.noop,
-  },
-  {
-    iconName: icons.trash,
-    backgroundColor: theme.colors.highPriority,
-    onPress: FunctionUtils.noop,
-  },
-];
 
 class TransactionCard extends React.PureComponent<IProps, IOwnState> {
   public state = {
@@ -49,7 +36,17 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
     const { height } = this.state;
     const {
       isExpanded,
-      transaction: { transactionDate, category, label, assetName, amount, currency, entryType, attachmentDetails },
+      transaction: {
+        transactionDate,
+        category,
+        label,
+        assetName,
+        amount,
+        currency,
+        entryType,
+        attachmentDetails,
+        isSystemGenerated,
+      },
       onCardPress,
     } = this.props;
     const textLength = theme.viewport.width / 20;
@@ -62,6 +59,19 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
       pricePrefixText = '-';
     }
     const onPress = (): void => onCardPress(height);
+
+    const cardIcons: IGroupIcons[] = [
+      {
+        iconName: icons.noteBookOutlined,
+        backgroundColor: theme.colors.primaryColor,
+        onPress: this.onPressEdit,
+      },
+      {
+        iconName: icons.trash,
+        backgroundColor: theme.colors.highPriority,
+        onPress: this.onPressDelete,
+      },
+    ];
 
     const CardContent = (): React.ReactElement => (
       <View onLayout={this.onLayout}>
@@ -107,17 +117,30 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
     );
 
     return (
-      <SwipeableRow rightIcons={cardIcons} isSwipeable={!isExpanded}>
+      <SwipeableRow
+        rightIcons={cardIcons}
+        isSwipeable={!isExpanded}
+        renderCustomRightView={isSystemGenerated ? this.renderSystemGeneratedView : undefined}
+      >
         <CardContent />
       </SwipeableRow>
     );
   }
 
+  private renderSystemGeneratedView = (): React.ReactElement => {
+    const { t } = this.props;
+    return (
+      <Label type="small" textType="regular" style={styles.systemGeneratedText}>
+        {t('assetFinancial:systemGeneratedText')}
+      </Label>
+    );
+  };
+
   private renderTransactionDetails = (): ReactElement => {
     const {
       t,
       handleDownload,
-      transaction: { entryType, notes, tellerName, attachmentDetails },
+      transaction: { entryType, notes, tellerName, attachmentDetails, isSystemGenerated },
     } = this.props;
 
     const hasAttachments = attachmentDetails.length > 0;
@@ -125,22 +148,31 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
     const ActionButtonGroup = (): React.ReactElement => (
       <View style={styles.row}>
         <View style={styles.flexOne} />
-        {/* Todo (Praharsh) : Handle onPress navigation */}
         <View style={styles.buttonContainer}>
           <Button
             type="secondaryOutline"
-            title="Delete"
+            title={t('common:delete')}
             containerStyle={styles.deleteButton}
             titleStyle={styles.deleteButtonText}
+            onPress={this.onPressDelete}
+            numOfLines={1}
+            ellipsizeMode="tail"
           />
           <Button
             type="secondaryOutline"
-            title="Edit"
+            title={t('common:edit')}
             containerStyle={styles.editButton}
             titleStyle={styles.editButtonText}
+            onPress={this.onPressEdit}
+            numOfLines={1}
+            ellipsizeMode="tail"
           />
         </View>
       </View>
+    );
+
+    const SystemGeneratedView = (): React.ReactElement => (
+      <View style={styles.systemGeneratedView}>{this.renderSystemGeneratedView()}</View>
     );
 
     if (!tellerName && !hasAttachments && !notes) {
@@ -150,7 +182,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
             {t('noDescriptionText')}
           </Label>
           <View style={styles.actionButtonAlone}>
-            <ActionButtonGroup />
+            {isSystemGenerated ? <SystemGeneratedView /> : <ActionButtonGroup />}
           </View>
         </>
       );
@@ -216,7 +248,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
           </View>
         )}
         <View style={styles.actionButtonWithContent}>
-          <ActionButtonGroup />
+          {isSystemGenerated ? <SystemGeneratedView /> : <ActionButtonGroup />}
         </View>
       </View>
     );
@@ -229,6 +261,16 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
       return;
     }
     this.setState({ height: newHeight });
+  };
+
+  private onPressEdit = (): void => {
+    const { onPressEdit } = this.props;
+    onPressEdit();
+  };
+
+  private onPressDelete = (): void => {
+    const { onPressDelete } = this.props;
+    onPressDelete();
   };
 }
 
@@ -293,8 +335,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonContainer: {
-    flex: 2.5,
+    flex: 2.7,
     flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
   },
   deleteButton: {
     borderColor: theme.colors.highPriority,
@@ -318,5 +361,14 @@ const styles = StyleSheet.create({
   },
   actionButtonWithContent: {
     marginTop: 10,
+  },
+  systemGeneratedView: {
+    marginHorizontal: 36,
+    backgroundColor: theme.colors.gray14,
+    paddingVertical: 5,
+    borderRadius: 2,
+  },
+  systemGeneratedText: {
+    textAlign: 'center',
   },
 });

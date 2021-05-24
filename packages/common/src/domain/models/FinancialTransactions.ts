@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { FormType } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -44,6 +45,9 @@ export class FinancialRecords {
   @JsonProperty('attachments', [Attachment], true)
   private _attachments: Attachment[] = [new Attachment()];
 
+  @JsonProperty('is_system_generated', Boolean, true)
+  private _isSystemGenerated = false;
+
   get id(): number {
     return this._id;
   }
@@ -54,6 +58,10 @@ export class FinancialRecords {
 
   get category(): string {
     return this._category?.name || '';
+  }
+
+  get categoryId(): number {
+    return Number(this._category?.id) || 0;
   }
 
   get amount(): number {
@@ -100,8 +108,12 @@ export class FinancialRecords {
     return this._currency;
   }
 
-  get attachments(): Attachment[] {
-    return this._attachments;
+  get formType(): FormType {
+    return this.entryType === LedgerTypes.credit ? FormType.Income : FormType.Expense;
+  }
+
+  get isSystemGenerated(): boolean {
+    return this._isSystemGenerated;
   }
 }
 

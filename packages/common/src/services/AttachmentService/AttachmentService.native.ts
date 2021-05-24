@@ -71,6 +71,9 @@ class AttachmentService {
       }
     }
   };
+
+  public getFormattedFileName = (name: string, extension: string, maxLength = 15): string =>
+    name.length > maxLength ? `${name.slice(0, maxLength)}...${extension}` : name;
 }
 
 const attachmentService = new AttachmentService();

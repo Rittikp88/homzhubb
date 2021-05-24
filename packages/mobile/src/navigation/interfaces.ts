@@ -238,6 +238,8 @@ export interface IAddRecordProps {
   assetId?: number;
   isFromDashboard?: boolean;
   screenTitle?: string;
+  isEditFlow?: boolean;
+  transactionId?: number;
 }
 
 // Webview

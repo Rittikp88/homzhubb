@@ -31,10 +31,11 @@ interface IProps {
   displayThumbnail?: boolean;
   attachments: IDocumentSource[] | [];
   allowedTypes?: string[];
+  children?: React.ReactElement | React.ReactNode;
 }
 
 const UploadBoxComponent = (props: IProps): React.ReactElement => {
-  const { attachments, onDelete, allowedTypes, onCapture, ...rest } = props;
+  const { attachments, onDelete, allowedTypes, onCapture, children, ...rest } = props;
 
   const captureDocument = async (): Promise<void> => {
     const pickType = allowedTypes || [DocumentPicker.types.images, DocumentPicker.types.pdf];
@@ -56,6 +57,7 @@ const UploadBoxComponent = (props: IProps): React.ReactElement => {
   return (
     <>
       <UploadBox {...rest} onPress={captureDocument} />
+      {children}
       <FileUpload attachments={attachments} onDelete={onDelete} />
     </>
   );
