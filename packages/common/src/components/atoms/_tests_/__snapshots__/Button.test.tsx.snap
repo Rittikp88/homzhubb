@@ -16,6 +16,7 @@ exports[`Button should match snapshot for disabled 1`] = `
   }
 >
   <Text
+    ellipsizeMode="tail"
     style={
       Array [
         Object {
@@ -51,6 +52,7 @@ exports[`Button should match snapshot for primary 1`] = `
   }
 >
   <Text
+    ellipsizeMode="tail"
     style={
       Array [
         Object {
@@ -88,6 +90,7 @@ exports[`Button should match snapshot for secondary 1`] = `
   }
 >
   <Text
+    ellipsizeMode="tail"
     style={
       Array [
         Object {
@@ -123,6 +126,7 @@ exports[`Button should render with icon 1`] = `
   }
 >
   <Label
+    ellipsizeMode="tail"
     style={
       Array [
         Object {

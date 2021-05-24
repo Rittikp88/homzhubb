@@ -42,6 +42,30 @@ AssetMetrics {
     "_dues": Count {
       "_count": 2,
     },
+    "_messages": MetricsCount {
+      "_closed": Count {
+        "_count": 0,
+      },
+      "_count": 0,
+      "_message": Count {
+        "_count": 0,
+      },
+      "_offer": Count {
+        "_count": 0,
+      },
+      "_open": Count {
+        "_count": 0,
+      },
+      "_read": Count {
+        "_count": 0,
+      },
+      "_siteVisit": Count {
+        "_count": 0,
+      },
+      "_unread": Count {
+        "_count": 0,
+      },
+    },
     "_notifications": MetricsCount {
       "_closed": Count {
         "_count": 0,
@@ -56,12 +80,39 @@ AssetMetrics {
       "_open": Count {
         "_count": 0,
       },
+      "_read": Count {
+        "_count": 0,
+      },
       "_siteVisit": Count {
         "_count": 0,
       },
+      "_unread": Count {
+        "_count": 0,
+      },
     },
-    "_tickets": Count {
+    "_tickets": MetricsCount {
+      "_closed": Count {
+        "_count": 0,
+      },
       "_count": 3,
+      "_message": Count {
+        "_count": 0,
+      },
+      "_offer": Count {
+        "_count": 0,
+      },
+      "_open": Count {
+        "_count": 0,
+      },
+      "_read": Count {
+        "_count": 0,
+      },
+      "_siteVisit": Count {
+        "_count": 0,
+      },
+      "_unread": Count {
+        "_count": 0,
+      },
     },
   },
   "_userServicePlan": UserServicePlan {

@@ -19,8 +19,10 @@ exports[`Dashboard Screen should render snapshot 1`] = `
       }
     }
     dues={0}
+    messages={0}
     notification={0}
     onPressDue={[Function]}
+    onPressMessages={[Function]}
     onPressNotification={[Function]}
     onPressServiceTickets={[Function]}
     serviceTickets={0}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { KeyboardAvoidingView, StyleSheet, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -19,10 +19,10 @@ import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import ChatInputBox from '@homzhub/common/src/components/molecules/ChatInputBox';
-import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/DropdownModal';
+import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import MessagePreview from '@homzhub/common/src/components/organisms/MessagePreview';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { IGetMessageParam, IMessagePayload, MessageAction } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -99,8 +99,7 @@ class ChatScreen extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { t, currentChat, route } = this.props;
-    const { isScrollToBottom, isMenuVisible, isLoading, assetName, users } = this.state;
-    const menuItems = this.getMenuItems();
+    const { isScrollToBottom, isLoading, assetName, users } = this.state;
     const isFromOffers = Boolean(route?.params?.isFromOffers);
     const isFromProperty = Boolean(route?.params?.isFromPortfolio);
 
@@ -147,7 +146,6 @@ class ChatScreen extends Component<Props, IScreenState> {
             />
           )}
         </UserScreen>
-        <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
         {isPreview && this.renderInputView()}
       </>
     );
@@ -172,10 +170,15 @@ class ChatScreen extends Component<Props, IScreenState> {
   };
 
   private renderRightNode = (): React.ReactElement => {
+    const { t } = this.props;
+    const menuItems = this.getMenuItems();
     return (
-      <TouchableOpacity onPress={this.handleMenu}>
-        <Icon name={icons.verticalDots} size={16} />
-      </TouchableOpacity>
+      <Menu
+        data={menuItems}
+        onSelect={this.onSelectMenuItem}
+        sheetHeight={200}
+        optionTitle={t('assetMore:chatOptions')}
+      />
     );
   };
 

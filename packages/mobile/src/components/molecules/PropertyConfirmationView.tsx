@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
@@ -19,8 +19,8 @@ interface IProps {
   onCancel: () => void;
   onContinue: () => void;
   secondaryButtonTitle?: string;
-  secondaryTitleStyle?: TextStyle;
-  secondaryButtonStyle?: ViewStyle;
+  secondaryTitleStyle?: StyleProp<TextStyle>;
+  secondaryButtonStyle?: StyleProp<ViewStyle>;
 }
 
 const PropertyConfirmationView = (props: IProps): React.ReactElement => {
@@ -43,7 +43,7 @@ const PropertyConfirmationView = (props: IProps): React.ReactElement => {
         <PropertyAddressCountry
           primaryAddress={propertyData.projectName}
           subAddress={propertyData.address}
-          countryFlag={propertyData.country.flag}
+          countryFlag={propertyData.country?.flag}
         />
       )}
       {user && <Avatar fullName={user.name} designation={userRole} />}

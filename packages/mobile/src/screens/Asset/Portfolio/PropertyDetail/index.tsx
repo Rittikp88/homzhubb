@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -23,7 +23,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
-import DropdownModal, { IMenu } from '@homzhub/mobile/src/components/molecules/DropdownModal';
+import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
@@ -38,12 +38,7 @@ import {
   IPropertyDetailPayload,
   ListingType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import {
-  IBookVisitProps,
-  NavigationScreenProps,
-  ScreensKeys,
-  UpdatePropertyFormTypes,
-} from '@homzhub/mobile/src/navigation/interfaces';
+import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Routes, Tabs, IRoutes } from '@homzhub/common/src/constants/Tabs';
@@ -91,9 +86,7 @@ interface IDetailState {
   isFullScreen: boolean;
   activeSlide: number;
   isLoading: boolean;
-  isMenuVisible: boolean;
   isDeleteProperty: boolean;
-  scrollEnabled: boolean;
   isFromTenancies: boolean | null;
 }
 
@@ -114,8 +107,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       activeSlide: 0,
       attachments: [],
       isLoading: false,
-      isMenuVisible: false,
-      scrollEnabled: true,
       isDeleteProperty: false,
       isFromTenancies: params?.isFromTenancies ?? null,
     };
@@ -160,7 +151,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { propertyData, isLoading, isMenuVisible, scrollEnabled, isDeleteProperty, isFromTenancies } = this.state;
+    const { propertyData, isLoading, isDeleteProperty, isFromTenancies } = this.state;
 
     const { assetStatusInfo, id } = propertyData;
     const isOccupied = assetStatusInfo?.tag.label === Filters.OCCUPIED;
@@ -172,67 +163,59 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.EXPIRING && menuItems.length > 0;
 
     return (
-      <TouchableWithoutFeedback onPress={this.onCloseMenu}>
-        <View style={styles.flexOne}>
-          <UserScreen
-            isOuterScrollEnabled={scrollEnabled}
-            title={title}
-            pageTitle={t('propertyDetails')}
-            backgroundColor={theme.colors.background}
-            headerStyle={styles.background}
-            loading={isLoading}
-            onBackPress={this.handleIconPress}
-            rightNode={this.renderRightNode(isMenuIconVisible)}
-            keyboardShouldPersistTaps
-          >
-            {!isEmpty(propertyData) ? (
-              <>
-                <View onStartShouldSetResponder={this.handleResponder}>
-                  <AssetCard
-                    assetData={propertyData}
-                    isDetailView
-                    isFromTenancies={isFromTenancies ?? undefined}
-                    enterFullScreen={this.onFullScreenToggle}
-                    onCompleteDetails={this.onCompleteDetails}
-                    onOfferVisitPress={FunctionUtils.noop}
-                    onHandleAction={onPressAction}
-                    containerStyle={styles.card}
-                  />
-                </View>
-                {this.renderTabView()}
-                {!isFromTenancies && <NotificationTab propertyId={id} assetStatusInfo={assetStatusInfo} />}
-              </>
-            ) : (
-              <EmptyState title="No data available" icon={icons.portfolio} />
-            )}
-          </UserScreen>
-          {this.renderFullscreenCarousel()}
-          <DropdownModal isVisible={isMenuVisible} data={menuItems} onSelect={this.onSelectMenuItem} />
-          <BottomSheet
-            visible={isDeleteProperty}
-            headerTitle={t('property:deleteProperty')}
-            sheetHeight={460}
-            onCloseSheet={this.onCloseDeleteView}
-          >
-            <PropertyConfirmationView
-              propertyData={propertyData}
-              description={t('deletePropertyDescription')}
-              message={t('deleteConfirmation')}
-              onCancel={this.onCloseDeleteView}
-              onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
-            />
-          </BottomSheet>
-        </View>
-      </TouchableWithoutFeedback>
+      <View style={styles.flexOne}>
+        <UserScreen
+          title={title}
+          scrollEnabled
+          pageTitle={t('propertyDetails')}
+          backgroundColor={theme.colors.background}
+          headerStyle={styles.background}
+          loading={isLoading}
+          onBackPress={this.handleIconPress}
+          rightNode={isMenuIconVisible ? this.renderRightNode(menuItems) : undefined}
+          keyboardShouldPersistTaps
+        >
+          {!isEmpty(propertyData) ? (
+            <>
+              <AssetCard
+                assetData={propertyData}
+                isDetailView
+                isFromTenancies={isFromTenancies ?? undefined}
+                enterFullScreen={this.onFullScreenToggle}
+                onCompleteDetails={this.onCompleteDetails}
+                onOfferVisitPress={FunctionUtils.noop}
+                onHandleAction={onPressAction}
+                containerStyle={styles.card}
+              />
+              {this.renderTabView()}
+              {!isFromTenancies && <NotificationTab propertyId={id} assetStatusInfo={assetStatusInfo} />}
+            </>
+          ) : (
+            <EmptyState title={t('common:noDataAvailable')} icon={icons.portfolio} />
+          )}
+        </UserScreen>
+        {this.renderFullscreenCarousel()}
+        <BottomSheet
+          visible={isDeleteProperty}
+          headerTitle={t('property:deleteProperty')}
+          sheetHeight={460}
+          onCloseSheet={this.onCloseDeleteView}
+        >
+          <PropertyConfirmationView
+            propertyData={propertyData}
+            description={t('deletePropertyDescription')}
+            message={t('deleteConfirmation')}
+            onCancel={this.onCloseDeleteView}
+            onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
+          />
+        </BottomSheet>
+      </View>
     );
   };
 
-  private renderRightNode = (isMenuIconVisible: boolean): React.ReactElement => {
-    return (
-      <TouchableOpacity onPress={this.handleMenuIcon}>
-        <Icon size={18} name={isMenuIconVisible ? icons.verticalDots : ''} color={theme.colors.primaryColor} />
-      </TouchableOpacity>
-    );
+  private renderRightNode = (menuItems: IMenu[]): React.ReactElement => {
+    const { t } = this.props;
+    return <Menu data={menuItems} onSelect={this.onSelectMenuItem} optionTitle={t('property:propertyOption')} />;
   };
 
   private renderTabView = (): React.ReactElement | null => {
@@ -290,10 +273,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     });
   };
 
-  private onCloseMenu = (): void => {
-    this.setState({ isMenuVisible: false });
-  };
-
   private onCloseDeleteView = (): void => {
     this.setState({
       isDeleteProperty: false,
@@ -339,69 +318,59 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         assetStatusInfo,
         assetGroup,
       },
+      propertyData,
     } = this.state;
+    let params;
     setSelectedPlan({ id, selectedPlan: type });
     setAssetId(id);
     getAssetById();
 
-    this.onCloseMenu();
-
-    if (value === MenuItems.EDIT_LISTING) {
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.PropertyPostStack, {
-        screen: ScreensKeys.AssetListing,
-        params: { previousScreen: ScreensKeys.Dashboard, isEditFlow: true },
-      });
-      return;
-    }
-
-    if (value === MenuItems.EDIT_PROPERTY) {
-      let params;
-      setEditPropertyFlow(true);
-      if (assetStatusInfo && assetStatusInfo.status) {
-        params = {
-          status: assetStatusInfo.status,
-        };
-        if (assetStatusInfo.status === 'APPROVED') {
-          toggleEditPropertyFlowBottomSheet(true);
+    switch (value) {
+      case MenuItems.EDIT_LISTING:
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.PropertyPostStack, {
+          screen: ScreensKeys.AssetListing,
+          params: { previousScreen: ScreensKeys.Dashboard, isEditFlow: true },
+        });
+        break;
+      case MenuItems.EDIT_PROPERTY:
+        setEditPropertyFlow(true);
+        if (assetStatusInfo && assetStatusInfo.status) {
+          params = {
+            status: assetStatusInfo.status,
+          };
+          if (assetStatusInfo.status === 'APPROVED') {
+            toggleEditPropertyFlowBottomSheet(true);
+          }
         }
-      }
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.PropertyPostStack, {
-        screen: ScreensKeys.PostAssetDetails,
-        ...(params && { params }),
-      });
+        // @ts-ignore
+        navigation.navigate(ScreensKeys.PropertyPostStack, {
+          screen: ScreensKeys.PostAssetDetails,
+          ...(params && { params }),
+        });
+        break;
+      case MenuItems.DELETE_PROPERTY:
+        this.setState({
+          isDeleteProperty: true,
+        });
+        break;
+      case MenuItems.MANAGE_TENANT:
+        navigation.navigate(ScreensKeys.ManageTenantScreen, {
+          assetDetail: propertyData,
+        });
+        break;
+      case MenuItems.EDIT_LEASE:
+        if (assetStatusInfo?.leaseTransaction) {
+          navigation.navigate(ScreensKeys.UpdateLeaseScreen, {
+            transactionId: assetStatusInfo.leaseTransaction.id,
+            assetGroup: assetGroup.code,
+            user: assetStatusInfo.leaseTenantInfo.user,
+          });
+        }
+        break;
+      default:
+        FunctionUtils.noop();
     }
-
-    if (value === MenuItems.DELETE_PROPERTY) {
-      this.setState({
-        isDeleteProperty: true,
-      });
-    }
-
-    if (value === MenuItems.MANAGE_TENANT) {
-      const { propertyData } = this.state;
-      navigation.navigate(ScreensKeys.ManageTenantScreen, {
-        assetDetail: propertyData,
-      });
-    }
-
-    if (value === MenuItems.EDIT_LEASE && assetStatusInfo?.leaseTransaction) {
-      navigation.navigate(ScreensKeys.UpdateLeaseScreen, {
-        transactionId: assetStatusInfo.leaseTransaction.id,
-        assetGroup: assetGroup.code,
-        user: assetStatusInfo.leaseTenantInfo.user,
-      });
-    }
-  };
-
-  private navigateToBookVisit = (param: IBookVisitProps, isNew?: boolean): void => {
-    const { navigation } = this.props;
-    // @ts-ignore
-    navigation.navigate(ScreensKeys.BookVisit, {
-      isReschedule: !isNew,
-      ...param,
-    });
   };
 
   private handleTabAction = (key: Tabs): void => {
@@ -451,17 +420,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         navigation.navigate(ScreensKeys.AssetDetailScreen, { ...param, property: propertyData });
         break;
       default:
-        navigation.navigate(ScreensKeys.ComingSoonScreen, { title: key, tabHeader: projectName });
+        navigation.navigate(ScreensKeys.ComingSoonScreen, { title: key, tabHeader: formattedProjectName });
     }
-  };
-
-  private handleResponder = (): boolean => {
-    this.setState({
-      isMenuVisible: false,
-      scrollEnabled: true,
-    });
-
-    return true;
   };
 
   private getAssetDetail = async (): Promise<void> => {
@@ -585,11 +545,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     clearChatDetail();
     clearMessages();
     clearState();
-  };
-
-  private handleMenuIcon = (): void => {
-    const { isMenuVisible } = this.state;
-    this.setState({ isMenuVisible: !isMenuVisible });
   };
 }
 

@@ -1,13 +1,21 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import Bell from '@homzhub/common/src/assets/images/bell.svg';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+
+interface IProps {
+  menuOptions: IMenu[];
+  onSelectOption: (value: string) => void;
+}
 
 // TODO: (Shikha) - Remove hardcoded data after API integration
-const ServiceCard = (): React.ReactElement => {
+const ServiceCard = ({ menuOptions, onSelectOption }: IProps): React.ReactElement => {
+  const { t } = useTranslation();
   return (
     <View style={styles.container}>
       <View style={styles.topView}>
@@ -20,7 +28,7 @@ const ServiceCard = (): React.ReactElement => {
             <Badge title="Open" badgeColor={theme.colors.orange} badgeStyle={styles.badge} />
           </View>
         </View>
-        <Icon name={icons.verticalDots} color={theme.colors.primaryColor} size={18} />
+        <Menu data={menuOptions} onSelect={onSelectOption} optionTitle={t('assetMore:attachmentOptions')} />
       </View>
       <View style={styles.attachmentView}>
         <Icon name={icons.gallery} color={theme.colors.primaryColor} size={24} />

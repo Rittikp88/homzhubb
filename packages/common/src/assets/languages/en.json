@@ -273,7 +273,8 @@
     "knowMore": "Know More",
     "knowLess": "Know Less",
     "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*",
-    "confirmation": "Confirmation!"
+    "confirmation": "Confirmation!",
+    "noDataAvailable": "No data available"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -644,7 +645,8 @@
     "noServiceAdded": "You haven’t purchased any value-added service.",
     "buyNewService": "Buy New Service",
     "propertyAdded": "Property added",
-    "servicePurchased": "Services Purchased"
+    "servicePurchased": "Services Purchased",
+    "propertyOption": "Property Options"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -952,7 +954,9 @@
     "subscriptionPayment": "Subscription & Payment",
     "activePlan": "Active Plan",
     "faqs": "FAQs",
-    "noSubscriptions": "No subscription data found"
+    "noSubscriptions": "No subscription data found",
+    "chatOptions": "Chat Options",
+    "attachmentOptions": "Attachment Options"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

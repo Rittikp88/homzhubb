@@ -43,6 +43,7 @@ exports[`Add Record Screen should render snapshot 1`] = `
         onFormClear={[Function]}
         onSubmitFormSuccess={[Function]}
         toggleLoading={[Function]}
+        transactionId={-1}
       />
     </View>
   </Memo(UserScreen)>

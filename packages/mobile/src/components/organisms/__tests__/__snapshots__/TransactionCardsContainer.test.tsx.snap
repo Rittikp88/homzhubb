@@ -41,5 +41,73 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
   </View>
   <Divider />
   <EmptyState />
+  <BottomSheet
+    headerTitle="confirm"
+    onCloseSheet={[Function]}
+    sheetHeight={444.6666666666667}
+    visible={false}
+  >
+    <View
+      style={
+        Object {
+          "paddingHorizontal": 16,
+        }
+      }
+    >
+      <Text
+        style={
+          Object {
+            "marginVertical": 10,
+            "textAlign": "center",
+          }
+        }
+        type="small"
+      >
+        assetFinancial:deleteRecordConfirmation
+      </Text>
+      <View
+        style={
+          Object {
+            "flexDirection": "row",
+            "marginTop": 12,
+          }
+        }
+      >
+        <Button
+          containerStyle={
+            Object {
+              "flexDirection": "row-reverse",
+              "height": 50,
+              "marginLeft": 10,
+            }
+          }
+          onPress={[Function]}
+          title="common:delete"
+          titleStyle={
+            Object {
+              "marginHorizontal": 4,
+            }
+          }
+          type="secondary"
+        />
+        <Button
+          containerStyle={
+            Object {
+              "flexDirection": "row-reverse",
+              "height": 50,
+            }
+          }
+          onPress={[Function]}
+          title="common:cancel"
+          titleStyle={
+            Object {
+              "marginHorizontal": 4,
+            }
+          }
+          type="primary"
+        />
+      </View>
+    </View>
+  </BottomSheet>
 </View>
 `;
