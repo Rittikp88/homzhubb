@@ -1019,7 +1019,8 @@
     "duplicatePhoneError": "Your emergency contact number cannot be the same as your primary contact number",
     "editContactDetails": "Edit Contact Details",
     "emergencyEmptyState": "Emergency contact for when you might not be available to take decisions on urgent issues",
-    "workInfoEmptyState": "You can add details of your workplace to unlock additional discounts"
+    "workInfoEmptyState": "You can add details of your workplace to unlock additional discounts",
+    "addWorkInfoText": "Add Work Info"
   },
   "webLoader": {
     "loadingText": "Loading Application..."

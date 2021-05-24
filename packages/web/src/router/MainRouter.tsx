@@ -2,21 +2,25 @@ import React, { lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect, ConnectedProps } from 'react-redux';
+import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import PrivateRoute from '@homzhub/web/src/router/PrivateRoute';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
 import ComingSoon from '@homzhub/web/src/screens/comingSoon';
+import Profile from '@homzhub/web/src/screens/profile';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
 import PropertyDetails from '@homzhub/web/src/screens/propertyDetails';
 import SearchProperty from '@homzhub/web/src/screens/searchProperty';
+import Settings from '@homzhub/web/src/screens/settings';
 import ValueAddedServices from '@homzhub/web/src/screens/valueAddedServices';
 import SelectProperty from '@homzhub/web/src/screens/selectProperty';
 import SelectServices from '@homzhub/web/src/screens/selectServices';
 import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
 import Notifications from '@homzhub/web/src/screens/notifications';
 import Error404 from '@homzhub/web/src/components/staticPages/Error404';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 // Lazy imports
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
@@ -44,10 +48,13 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     SAVED_PROPERTIES,
     PROPERTY_VISITS,
     NOTIFICATIONS,
+    SETTINGS,
+    PROFILE,
     PROTECTEDERROR404,
   } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
+  const isDeskTop = useUp(deviceBreakpoint.DESKTOP);
 
   return (
     <Suspense fallback={<div>{t('webLoader:loadingText')}</div>}>
@@ -79,6 +86,8 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
           component={PropertyDetailsOwner}
           isAuthenticated={isAuthenticated}
         />
+        {!isDeskTop && <PrivateRoute exact path={SETTINGS} component={Settings} isAuthenticated={isAuthenticated} />}
+        <PrivateRoute exact path={PROFILE} component={Profile} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROTECTEDERROR404} component={Error404} isAuthenticated={isAuthenticated} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>
