@@ -13,6 +13,8 @@ import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 interface IProps {
   asset: Asset;
   isExpanded?: boolean;
+  isPriceVisible?: boolean;
+  isShieldVisible?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -40,6 +42,8 @@ const PropertyCard = (props: IProps): React.ReactElement => {
     },
     isExpanded,
     containerStyle,
+    isPriceVisible = true,
+    isShieldVisible = true,
   } = props;
 
   const isAttachmentPresent = images && images.length > 0;
@@ -70,14 +74,18 @@ const PropertyCard = (props: IProps): React.ReactElement => {
           )}
         </View>
       )}
-      {isExpanded && <ShieldGroup propertyType={assetType} text={description} isInfoRequired />}
+      {isExpanded && (
+        <ShieldGroup propertyType={assetType} text={description} isInfoRequired isShieldVisible={isShieldVisible} />
+      )}
       <PropertyAddressCountry
         primaryAddress={isAssetOwner ? formattedProjectName : projectName}
         countryFlag={flag}
         subAddress={address ?? `${unitNumber} ${blockNumber}`}
         isIcon
       />
-      {isExpanded && <PricePerUnit price={pricePerUnit} currency={currencyData} unit={maintenancePaymentSchedule} />}
+      {isExpanded && isPriceVisible && (
+        <PricePerUnit price={pricePerUnit} currency={currencyData} unit={maintenancePaymentSchedule} />
+      )}
       {showAmenities && (
         <>
           <PropertyAmenities

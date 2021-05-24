@@ -11,12 +11,19 @@ interface IProps {
   propertyType?: string;
   text?: string;
   isInfoRequired?: boolean;
+  isShieldVisible?: boolean;
   propertyTypeStyle?: StyleProp<TextStyle>;
 }
 
 // TODO: (Shikha) - Need to add proper bottom - sheet data once api integrate
 
-const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: IProps): React.ReactElement => {
+const ShieldGroup = ({
+  propertyType,
+  text,
+  isInfoRequired,
+  propertyTypeStyle,
+  isShieldVisible = true,
+}: IProps): React.ReactElement => {
   const [isVisible, setVisible] = useState(false);
 
   const handleInfo = (): void => {
@@ -38,7 +45,7 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: 
           {propertyType}
         </Text>
       )}
-      <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={23} badgesInfo={badgeInfo} />
+      {isShieldVisible && <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={23} badgesInfo={badgeInfo} />}
       <BottomSheet
         visible={isVisible}
         onCloseSheet={handleClose}

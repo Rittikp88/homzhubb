@@ -10,12 +10,15 @@ import { AssetMetricsList } from '@homzhub/mobile/src/components';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import PropertyServiceCard from '@homzhub/mobile/src/screens/Asset/More/Services/PropertyServiceCard';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const ServicesDashboard = (): React.ReactElement => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const userAsset = useSelector(UserSelector.getUserAssets);
+  // TODO:  (Shikha) - Remove after API integration
+  const service = 1;
 
   const onAddProperty = (): void => {
     navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
@@ -42,7 +45,7 @@ const ServicesDashboard = (): React.ReactElement => {
             // TODO: Use count from API
             data={[
               { name: t('property:propertyAdded'), count: userAsset.length, colorCode: theme.colors.completed },
-              { name: t('property:servicePurchased'), count: 0, colorCode: theme.colors.orange },
+              { name: t('property:servicePurchased'), count: service, colorCode: theme.colors.orange },
             ]}
             numOfElements={2}
             title={userAsset.length.toString()}
@@ -57,7 +60,11 @@ const ServicesDashboard = (): React.ReactElement => {
             containerStyle={styles.newServiceButton}
             onPress={onBuyService}
           />
-          <EmptyState title={t('property:noServiceAdded')} containerStyle={styles.emptyContainer} />
+          {service > 0 ? (
+            <PropertyServiceCard />
+          ) : (
+            <EmptyState title={t('property:noServiceAdded')} containerStyle={styles.emptyContainer} />
+          )}
         </View>
       )}
     </UserScreen>

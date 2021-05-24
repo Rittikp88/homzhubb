@@ -18,7 +18,7 @@ interface ICollapsibleSectionProps {
   isCollapsibleRequired?: boolean;
   collapseIcon?: string;
   expandIcon?: string;
-  iconStyle?: tyleProp<ViewStyle>;
+  iconStyle?: StyleProp<ViewStyle>;
 }
 const CollapsibleSection = (props: ICollapsibleSectionProps): React.ReactElement => {
   const {
