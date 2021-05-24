@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -37,7 +37,7 @@ interface IDispatchToProps {
   setCurrentChatDetail: (payload: IChatPayload) => void;
 }
 
-type NavProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.Messages>;
+type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.Messages>;
 
 type MessageProps = NavProps & WithTranslation & IStateToProps & IDispatchToProps;
 
@@ -67,6 +67,7 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
   public render(): React.ReactNode {
     const { searchValue } = this.state;
     const {
+      route,
       navigation: { goBack },
       t,
       groupMessages,
@@ -79,12 +80,14 @@ class Messages extends React.PureComponent<MessageProps, IScreenState> {
     const isMessagesPresent = groupMessages && groupMessages.length > 0;
     const isSearchFound = sortedMessages && sortedMessages.length > 0;
 
+    const headerText = route?.params?.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:more');
+
     if (groupMessagesLoading) {
       return <Loader visible />;
     }
 
     return (
-      <UserScreen title={t('assetMore:more')} onBackPress={goBack} pageTitle={t('assetMore:messages')}>
+      <UserScreen title={headerText} onBackPress={goBack} pageTitle={t('assetMore:messages')}>
         {isMessagesPresent ? (
           <View style={styles.container}>
             <SearchBar

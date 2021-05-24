@@ -11,9 +11,11 @@ interface IProps {
   notification?: number;
   serviceTickets?: number;
   dues?: number;
+  messages?: number;
   onPressNotification?: () => void;
   onPressServiceTickets?: () => void;
   onPressDue?: () => void;
+  onPressMessages?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -31,10 +33,12 @@ const AssetSummary = (props: IProps): React.ReactElement => {
     notification = 0,
     serviceTickets = 0,
     dues = 0,
+    messages = 0,
     containerStyle,
     onPressDue,
     onPressNotification,
     onPressServiceTickets,
+    onPressMessages,
   } = props;
 
   // Data for the static part of the component
@@ -56,14 +60,24 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         count: serviceTickets,
       },
       {
-        icon: icons.wallet,
-        color: theme.colors.danger,
-        title: t('dues'),
-        onPress: onPressDue,
-        count: dues,
+        icon: icons.mail,
+        color: theme.colors.blue,
+        title: t('moreSettings:messagesText'),
+        onPress: onPressMessages,
+        count: messages,
       },
     ]);
-  }, [dues, notification, serviceTickets, onPressDue, onPressNotification, onPressServiceTickets]);
+  }, [
+    dues,
+    notification,
+    messages,
+    serviceTickets,
+    onPressDue,
+    onPressNotification,
+    onPressServiceTickets,
+    onPressMessages,
+    t,
+  ]);
 
   return (
     <LinearGradient

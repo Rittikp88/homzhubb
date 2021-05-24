@@ -10,7 +10,6 @@ import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocument
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import ServicesDashboard from '@homzhub/mobile/src/screens/Asset/More/Services';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/Services/ValueAddedServices';
-import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import SubscriptionPayment from '@homzhub/mobile/src/screens/Asset/More/SubscriptionPayment';
 import More from '@homzhub/mobile/src/screens/Asset/More';
@@ -24,7 +23,6 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.KYC]: undefined;
   [ScreensKeys.ValueAddedServices]: undefined;
   [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
-  [ScreensKeys.Messages]: undefined;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam;
   [ScreensKeys.AddServiceTicket]: undefined;
   [ScreensKeys.PropertyOfferList]: undefined;
@@ -50,7 +48,6 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
       <MoreStackNavigator.Screen name={ScreensKeys.ValueAddedServices} component={ValueAddedServices} />
       <MoreStackNavigator.Screen name={ScreensKeys.ServicesForSelectedAsset} component={ServicesForSelectedAsset} />
-      <MoreStackNavigator.Screen name={ScreensKeys.Messages} component={Messages} />
       <MoreStackNavigator.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubscriptionPayment} component={SubscriptionPayment} />

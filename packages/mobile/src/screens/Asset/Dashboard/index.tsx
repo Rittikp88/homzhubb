@@ -112,7 +112,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   public renderAssetMetricsAndUpdates = (): React.ReactElement => {
     const { metrics } = this.state;
-
     return (
       <>
         <AssetMetricsList
@@ -124,12 +123,14 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
         />
         <AssetSummary
           notification={metrics?.updates?.notifications?.count ?? 0}
-          serviceTickets={metrics?.updates?.tickets?.count ?? 0}
+          serviceTickets={metrics?.updates?.tickets?.open?.count ?? 0}
           dues={metrics?.updates?.dues?.count ?? 0}
+          messages={metrics?.updates?.messages?.unread?.count ?? 0}
           containerStyle={styles.assetCards()}
           onPressDue={this.handleDues}
           onPressServiceTickets={this.handleServiceTickets}
           onPressNotification={this.handleNotification}
+          onPressMessages={this.handleMessages}
         />
       </>
     );
@@ -212,6 +213,11 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     const { setCurrentAsset, navigation } = this.props;
     setCurrentAsset(data);
     navigation.navigate(ScreensKeys.PropertyDetailScreen);
+  };
+
+  private handleMessages = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.Messages, { isFromDashboard: true });
   };
 
   private handleDues = (): void => {
@@ -327,7 +333,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
-      const response: AssetMetrics = await DashboardRepository.getAssetMetrics();
+      const response: AssetMetrics = await DashboardRepository.getAssetMetrics('v3');
       this.setState({ metrics: response, isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });

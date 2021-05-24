@@ -7,7 +7,7 @@ import { AssetAdvertisement } from '@homzhub/common/src/domain/models/AssetAdver
 import { AssetNotifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 
 const ENDPOINTS = {
-  getAssetMetrics: (): string => 'v2/dashboard/management-tab/',
+  getAssetMetrics: (version: string): string => `${version}/dashboard/management-tab/`,
   getAdvertisements: (): string => 'v1/advertisements/',
   getGeneralLedgers: (): string => 'v1/general-ledgers/overall-performances/',
   getAssetNotifications: (): string => 'v1/notifications/',
@@ -21,8 +21,9 @@ class DashboardRepository {
     this.apiClient = BootstrapAppService.clientInstance;
   }
 
-  public getAssetMetrics = async (): Promise<AssetMetrics> => {
-    const response = await this.apiClient.get(ENDPOINTS.getAssetMetrics());
+  // Todo (Praharsh) : Remove argument when web dashboard is updated with v3.
+  public getAssetMetrics = async (version = 'v2'): Promise<AssetMetrics> => {
+    const response = await this.apiClient.get(ENDPOINTS.getAssetMetrics(version));
     return ObjectMapper.deserialize(AssetMetrics, response);
   };
 

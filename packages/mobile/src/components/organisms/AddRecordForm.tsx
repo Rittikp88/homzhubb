@@ -531,5 +531,5 @@ const styles = StyleSheet.create({
   },
   existingFileName: {
     color: theme.colors.primaryColor,
-  }
+  },
 });

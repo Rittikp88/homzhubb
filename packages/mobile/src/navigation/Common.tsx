@@ -20,6 +20,7 @@ import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
 import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
 import ApproveQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ApproveQuote';
 import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
+import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
@@ -102,6 +103,7 @@ export type CommonParamList = {
   [ScreensKeys.DocumentScreen]: ICommonNavProps;
   [ScreensKeys.TenantHistoryScreen]: ICommonNavProps;
   [ScreensKeys.AssetDetailScreen]: IDetailNavParam;
+  [ScreensKeys.Messages]: ICommonNavProps;
 };
 
 /**
@@ -150,6 +152,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.DocumentScreen} component={Documents} />
       <Stack.Screen name={ScreensKeys.TenantHistoryScreen} component={TenantHistory} />
       <Stack.Screen name={ScreensKeys.AssetDetailScreen} component={AssetDetail} />
+      <Stack.Screen name={ScreensKeys.Messages} component={Messages} />
     </>
   );
 };

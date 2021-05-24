@@ -21,6 +21,12 @@ export class MetricsCount {
   @JsonProperty('site_visit', Count, true)
   private _siteVisit = new Count();
 
+  @JsonProperty('unread', Count, true)
+  private _unread = new Count();
+
+  @JsonProperty('read', Count, true)
+  private _read = new Count();
+
   get count(): number {
     return this._count;
   }
@@ -43,5 +49,13 @@ export class MetricsCount {
 
   get siteVisit(): Count {
     return this._siteVisit;
+  }
+
+  get unread(): Count {
+    return this._unread;
+  }
+
+  get read(): Count {
+    return this._read;
   }
 }

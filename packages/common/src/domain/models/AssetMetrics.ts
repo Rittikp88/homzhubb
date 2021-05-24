@@ -124,22 +124,30 @@ export class AssetUpdates {
   @JsonProperty('notifications', MetricsCount)
   private _notifications = new MetricsCount();
 
-  @JsonProperty('tickets', Count)
-  private _tickets = new Count();
+  @JsonProperty('tickets', MetricsCount)
+  private _tickets = new MetricsCount();
 
-  @JsonProperty('dues', Count)
+  // Optional not to break web functionality.
+  @JsonProperty('dues', Count, true)
   private _dues = new Count();
+
+  @JsonProperty('messages', MetricsCount, true)
+  private _messages = new MetricsCount();
 
   get notifications(): MetricsCount {
     return this._notifications;
   }
 
-  get tickets(): Count {
+  get tickets(): MetricsCount {
     return this._tickets;
   }
 
   get dues(): Count {
     return this._dues;
+  }
+
+  get messages(): MetricsCount {
+    return this._messages;
   }
 }
 
