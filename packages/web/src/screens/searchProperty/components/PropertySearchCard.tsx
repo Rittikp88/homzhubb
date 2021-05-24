@@ -61,7 +61,6 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
   } = investmentData;
 
   const history = useHistory();
-
   let currencyData = investmentData.country.currencies[0];
 
   if (leaseTerm && leaseTerm.currency) {
@@ -122,6 +121,9 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
           cardImageCarouselStyle={cardImageCarouselStyle}
           cardImageStyle={cardImageStyle}
           imagesArray={attachments}
+          leaseId={leaseTerm?.id}
+          saleId={saleTerm?.id}
+          assetData={investmentData}
         />
       </View>
       <TouchableOpacity onPress={navigateToSearchView}>

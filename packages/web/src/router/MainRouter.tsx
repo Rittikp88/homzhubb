@@ -16,6 +16,7 @@ import SelectProperty from '@homzhub/web/src/screens/selectProperty';
 import SelectServices from '@homzhub/web/src/screens/selectServices';
 import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
 import Notifications from '@homzhub/web/src/screens/notifications';
+import Error404 from '@homzhub/web/src/components/staticPages/Error404';
 
 // Lazy imports
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
@@ -43,6 +44,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     SAVED_PROPERTIES,
     PROPERTY_VISITS,
     NOTIFICATIONS,
+    PROTECTEDERROR404,
   } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
@@ -77,6 +79,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
           component={PropertyDetailsOwner}
           isAuthenticated={isAuthenticated}
         />
+        <PrivateRoute exact path={PROTECTEDERROR404} component={Error404} isAuthenticated={isAuthenticated} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>
     </Suspense>

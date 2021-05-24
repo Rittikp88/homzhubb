@@ -24,6 +24,7 @@ export enum EventType {
   NewServiceTicket = 'new_service_ticket',
   ClosedServiceTicket = 'closed_service_ticket',
   NewOffer = 'new_offer',
+  PropertyShortList = 'property_shortlist',
   // Errors
   Exception = 'exception',
 }

@@ -1,20 +1,34 @@
-import React, { FC, useState } from 'react';
-import { View, StyleSheet, ViewStyle, ImageStyle } from 'react-native';
+import React, { FC, useState, useEffect } from 'react';
+import { View, StyleSheet, ViewStyle, ImageStyle, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { ButtonGroupProps, CarouselProps } from 'react-multi-carousel';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
+import { LeadRepository } from '@homzhub/common/src/domain/repositories/LeadRepository';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import MultiCarousel from '@homzhub/web/src/components/molecules/MultiCarousel';
 import { NextPrevBtn } from '@homzhub/web/src/components';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { HeroSectionData } from '@homzhub/common/src/constants/LandingScreen';
+import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IProps {
-  cardImageCarouselStyle: ViewStyle;
-  cardImageStyle: ImageStyle;
-  imagesArray: Attachment[];
+  cardImageCarouselStyle?: ViewStyle;
+  cardImageStyle?: ImageStyle;
+  imagesArray?: Attachment[];
+  leaseId?: number;
+  saleId?: number;
   isListView?: boolean;
+  assetData?: Asset;
 }
 
 const defaultResponsive = {
@@ -28,17 +42,84 @@ const defaultResponsive = {
   },
 };
 
-const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle, imagesArray, isListView }: IProps) => {
+const CardImageCarousel: FC<IProps> = ({
+  cardImageCarouselStyle,
+  cardImageStyle,
+  imagesArray,
+  leaseId,
+  saleId,
+  isListView,
+  assetData,
+}: IProps) => {
+  const [isFavourite, setFavourite] = useState(false);
+  const dispatch = useDispatch();
+
+  const properties = useSelector(UserSelector.getFavouritePropertyIds);
+  const filters = useSelector(SearchSelector.getFilters);
+
+  useEffect(() => {
+    if (properties.length === 0) {
+      setFavourite(false);
+      return;
+    }
+
+    for (let i = 0; i < properties.length; i++) {
+      const item = properties[i];
+      if (item.leaseListingId && leaseId) {
+        if (item.leaseListingId === leaseId) {
+          setFavourite(true);
+          break;
+        }
+      } else if (item.saleListingId && saleId) {
+        if (item.saleListingId === saleId) {
+          setFavourite(true);
+          break;
+        }
+      }
+
+      setFavourite(false);
+    }
+  }, [properties]);
+
+  const handleFavourite = async (): Promise<void> => {
+    const { asset_transaction_type } = filters;
+    const payload: ILeadPayload = {
+      // @ts-ignore
+      propertyTermId: leaseId ?? saleId,
+      data: {
+        lead_type: 'WISHLIST',
+        is_wishlisted: !isFavourite,
+        user_search: null,
+      },
+    };
+
+    try {
+      if (asset_transaction_type === 0) {
+        // RENT FLOW
+        await LeadRepository.postLeaseLeadDetail(payload);
+      } else {
+        // SALE FLOW
+        await LeadRepository.postSaleLeadDetail(payload);
+      }
+      if (assetData) {
+        const trackData = AnalyticsHelper.getPropertyTrackData(assetData);
+        AnalyticsService.track(EventType.PropertyShortList, {
+          ...trackData,
+        });
+      }
+      dispatch(UserActions.getFavouriteProperties());
+    } catch (e) {
+      AlertHelper.error({ message: e.message });
+    }
+  };
   return (
     <View style={cardImageCarouselStyle}>
-      {imagesArray.length === 0 ? (
-        <View>
+      <MultiCarousel passedProps={carouselProps}>
+        {imagesArray && imagesArray.length === 0 ? (
           <ImagePlaceholder height={isListView ? 230 : 210} />
-          <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
-        </View>
-      ) : (
-        <MultiCarousel passedProps={carouselProps}>
-          {imagesArray.map((item) => (
+        ) : (
+          imagesArray &&
+          imagesArray.map((item) => (
             <View key={item.id}>
               <Image
                 style={[styles.image, cardImageStyle]}
@@ -47,16 +128,24 @@ const CardImageCarousel: FC<IProps> = ({ cardImageCarouselStyle, cardImageStyle,
                 }}
               />
             </View>
-          ))}
-        </MultiCarousel>
-      )}
+          ))
+        )}
+      </MultiCarousel>
+      <TouchableOpacity style={styles.favouriteIcon} onPress={handleFavourite}>
+        <Icon
+          name={isFavourite ? icons.filledHeart : icons.heartOutline}
+          size={20}
+          color={isFavourite ? theme.colors.favourite : theme.colors.white}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
-const CarouselButtons = ({ next, previous }: ButtonGroupProps): React.ReactElement => {
-  const [currentImage, setCurrentImage] = useState(0);
+type IIProps = ButtonGroupProps & IProps;
 
+const CarouselButtons = ({ next, previous, leaseId, saleId }: IIProps): React.ReactElement => {
+  const [currentImage, setCurrentImage] = useState(0);
   const updateCarouselIndex = (updateIndexBy: number): void => {
     if (updateIndexBy === 1 && next) {
       next();
@@ -92,7 +181,6 @@ const CarouselButtons = ({ next, previous }: ButtonGroupProps): React.ReactEleme
         }}
         onBtnClick={updateCarouselIndex}
       />
-      <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
     </>
   );
 };

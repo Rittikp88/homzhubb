@@ -49,6 +49,7 @@ export const RouteNames = {
     LOGOUT: '',
     HELP_SUPPORT: '/dashboard/help&Support',
     REFER_EARN: '/dashboard/refer&Earn',
+    PROTECTEDERROR404: '/dashboard/*',
   },
 };
 

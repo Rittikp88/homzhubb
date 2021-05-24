@@ -80,6 +80,7 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
       params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },
     });
   };
+
   const getPrice = (): number => {
     if (leaseTerm) {
       return Number(leaseTerm.expectedPrice);
@@ -106,7 +107,10 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
         cardImageCarouselStyle={cardImageCarouselStyle}
         cardImageStyle={cardImageStyle}
         imagesArray={attachments}
+        leaseId={leaseTerm?.id}
+        saleId={saleTerm?.id}
         isListView={isListView}
+        assetData={investmentData}
       />
       <View style={detailContainerStyle}>
         <TouchableOpacity onPress={navigateToSearchView}>
