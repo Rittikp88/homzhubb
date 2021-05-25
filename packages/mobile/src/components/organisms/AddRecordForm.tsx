@@ -25,15 +25,11 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment, UploadFileType } from '@homzhub/common/src/domain/models/Attachment';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { FormType } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-
-export enum FormType {
-  Income = 1,
-  Expense = 2,
-}
 
 interface IFormData {
   property: number;

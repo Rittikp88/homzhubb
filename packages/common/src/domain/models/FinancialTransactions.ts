@@ -1,11 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { FormType } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
 import { Links } from '@homzhub/common/src/domain/models/PaginationLinks';
 import { Property } from '@homzhub/common/src/domain/models/Property';
+
+export enum FormType {
+  Income = 1,
+  Expense = 2,
+}
 
 @JsonObject('FinancialRecords')
 export class FinancialRecords {
