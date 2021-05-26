@@ -1,12 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { IProp } from '@homzhub/web/src/screens/profile/components/ProfilePhoto';
+import ProfilePopover, { ProfileUserFormTypes } from '@homzhub/web/src/screens/profile/components/ProfilePopover';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export interface IDetailsInfo {
@@ -21,11 +23,10 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
   const { userProfileInfo } = props;
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-
+  const popupRef = useRef<PopupActions>(null);
   if (!userProfileInfo) {
     return null;
   }
-
   const { workInfoArray, emergencyContactArray } = userProfileInfo;
   const details = (data: IDetailsInfo[]): React.ReactNode => {
     return data?.map((item, index) => {
@@ -63,7 +64,7 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
         <Label type="large" style={styles.moreInfo}>
           {item === 'emergencyContact' ? t('moreProfile:emergencyEmptyState') : t('moreProfile:workInfoEmptyState')}
         </Label>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={(): void => popupRef?.current?.open()}>
           <Label
             type="large"
             textType="semiBold"
@@ -93,9 +94,17 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
             {t('moreProfile:workInformation')}
           </Text>
 
-          {workInfoArray && <Icon size={20} name={icons.noteBook} color={theme.colors.primaryColor} />}
+          {workInfoArray && (
+            <Icon
+              size={20}
+              name={icons.noteBook}
+              color={theme.colors.primaryColor}
+              onPress={(): void => popupRef?.current?.open()}
+            />
+          )}
         </View>
         {workInfoArray ? <View>{details(workInfoArray)}</View> : emptyData('workInfo')}
+        <ProfilePopover popupRef={popupRef} formType={ProfileUserFormTypes.WorkInfo} />
       </View>
     </View>
   );

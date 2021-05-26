@@ -7,17 +7,19 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { IUpdateWorkInfo } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { IUpdateWorkInfo } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
   onFormSubmitSuccess?: () => void;
   formData?: IWorkInfoForm;
   updateFormLoadingState: (isLoading: boolean) => void;
+  handlePopupClose?: () => void;
 }
 
 interface IWorkInfoForm {
@@ -49,7 +51,7 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
   }
 
   public render(): ReactElement {
-    const { t } = this.props;
+    const { t, handlePopupClose } = this.props;
     const { workInfoForm } = this.state;
 
     return (
@@ -82,14 +84,33 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
                     isMandatory
                   />
                 </View>
-                <FormButton
-                  formProps={formProps}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  type="primary"
-                  title={t('saveChanges')}
-                  containerStyle={styles.buttonStyle}
-                />
+                {!PlatformUtils.isWeb() ? (
+                  <FormButton
+                    formProps={formProps}
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    type="primary"
+                    title={t('saveChanges')}
+                    containerStyle={styles.buttonStyle}
+                  />
+                ) : (
+                  <View style={styles.modalFooter}>
+                    <FormButton
+                      formProps={formProps}
+                      title={t('common:cancel')}
+                      type="secondary"
+                      onPress={(): void => handlePopupClose && handlePopupClose()}
+                      containerStyle={styles.buttonReject}
+                    />
+                    <FormButton
+                      formProps={formProps}
+                      title={t('moreProfile:saveChanges')}
+                      type="primary"
+                      onPress={(): void => formProps.handleSubmit()}
+                      containerStyle={styles.buttonAccept}
+                    />
+                  </View>
+                )}
               </>
             );
           }}
@@ -99,7 +120,7 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
   }
 
   private onSubmit = async (values: IWorkInfoForm, formikHelpers: FormikHelpers<IWorkInfoForm>): Promise<void> => {
-    const { onFormSubmitSuccess, updateFormLoadingState } = this.props;
+    const { onFormSubmitSuccess, updateFormLoadingState, handlePopupClose } = this.props;
     formikHelpers.setSubmitting(true);
 
     const payload: IUpdateWorkInfo = {
@@ -115,9 +136,15 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
       updateFormLoadingState(false);
 
       if (onFormSubmitSuccess) {
+        if (PlatformUtils.isWeb() && handlePopupClose) {
+          handlePopupClose();
+        }
         onFormSubmitSuccess();
       }
     } catch (e) {
+      if (PlatformUtils.isWeb() && handlePopupClose) {
+        handlePopupClose();
+      }
       updateFormLoadingState(false);
       formikHelpers.setSubmitting(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -145,5 +172,23 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     margin: 16,
+  },
+  modalFooter: {
+    marginHorizontal: '-16px',
+    marginBottom: '-24px',
+    borderTopColor: theme.colors.divider,
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    height: '76px',
+  },
+  buttonReject: {
+    marginVertical: '16px',
+  },
+  buttonAccept: {
+    marginVertical: '16px',
+    marginHorizontal: '24px',
   },
 });
