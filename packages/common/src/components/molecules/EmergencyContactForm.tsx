@@ -7,11 +7,14 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUpdateEmergencyContact } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { FormTextInput, IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
+
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
@@ -19,6 +22,7 @@ interface IProps extends WithTranslation {
   formData?: IEmergencyContactForm;
   basicDetails: IBasicDetails;
   updateFormLoadingState: (isLoading: boolean) => void;
+  handlePopupClose?: () => void;
 }
 
 interface IEmergencyContactForm {
@@ -53,8 +57,10 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
   }
 
   public render(): ReactElement {
-    const { t } = this.props;
-
+    const { t, handlePopupClose } = this.props;
+    const handleWebView = (params: IWebProps): React.ReactElement => {
+      return <PhoneCodePrefix {...params} />;
+    };
     return (
       <>
         <Formik
@@ -84,6 +90,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                     phoneFieldDropdownText={t('auth:countryRegion')}
                     formProps={formProps}
                     isMandatory
+                    webGroupPrefix={handleWebView}
                   />
                   <FormTextInput
                     name="email"
@@ -95,14 +102,33 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                     isMandatory
                   />
                 </View>
-                <FormButton
-                  formProps={formProps}
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  type="primary"
-                  title={t('saveChanges')}
-                  containerStyle={styles.buttonStyle}
-                />
+                {!PlatformUtils.isWeb() ? (
+                  <FormButton
+                    formProps={formProps}
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    type="primary"
+                    title={t('saveChanges')}
+                    containerStyle={styles.buttonStyle}
+                  />
+                ) : (
+                  <View style={styles.modalFooter}>
+                    <FormButton
+                      formProps={formProps}
+                      title={t('common:cancel')}
+                      type="secondary"
+                      onPress={(): void => handlePopupClose && handlePopupClose()}
+                      containerStyle={styles.buttonReject}
+                    />
+                    <FormButton
+                      formProps={formProps}
+                      title={t('moreProfile:saveChanges')}
+                      type="primary"
+                      onPress={(): void => formProps.handleSubmit()}
+                      containerStyle={styles.buttonAccept}
+                    />
+                  </View>
+                )}
               </>
             );
           }}
@@ -115,7 +141,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
     values: IEmergencyContactForm,
     formikHelpers: FormikHelpers<IEmergencyContactForm>
   ): Promise<void> => {
-    const { onFormSubmitSuccess, updateFormLoadingState } = this.props;
+    const { onFormSubmitSuccess, updateFormLoadingState, handlePopupClose } = this.props;
     formikHelpers.setSubmitting(true);
 
     const payload: IUpdateEmergencyContact = {
@@ -134,8 +160,14 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
 
       if (onFormSubmitSuccess) {
         onFormSubmitSuccess();
+        if (PlatformUtils.isWeb() && handlePopupClose) {
+          handlePopupClose();
+        }
       }
     } catch (e) {
+      if (PlatformUtils.isWeb() && handlePopupClose) {
+        handlePopupClose();
+      }
       updateFormLoadingState(false);
       formikHelpers.setSubmitting(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -168,5 +200,23 @@ const styles = StyleSheet.create({
   buttonStyle: {
     flex: 0,
     margin: 16,
+  },
+  modalFooter: {
+    marginHorizontal: '-16px',
+    marginBottom: '-24px',
+    borderTopColor: theme.colors.divider,
+    borderTopWidth: 1,
+    borderStyle: 'solid',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    height: '76px',
+  },
+  buttonReject: {
+    marginVertical: '16px',
+  },
+  buttonAccept: {
+    marginVertical: '16px',
+    marginHorizontal: '24px',
   },
 });

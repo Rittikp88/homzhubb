@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
@@ -21,6 +21,7 @@ export interface IDetailsInfo {
 const WorkDetails: FC<IProp> = (props: IProp) => {
   const { t } = useTranslation();
   const { userProfileInfo } = props;
+  const [formType, setFormType] = useState<ProfileUserFormTypes>(ProfileUserFormTypes.EmergencyContact);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const popupRef = useRef<PopupActions>(null);
@@ -28,6 +29,7 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
     return null;
   }
   const { workInfoArray, emergencyContactArray } = userProfileInfo;
+
   const details = (data: IDetailsInfo[]): React.ReactNode => {
     return data?.map((item, index) => {
       return (
@@ -57,14 +59,19 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
       );
     });
   };
-
-  const emptyData = (item: string): React.ReactElement => {
+  const openModal = (type: ProfileUserFormTypes): void => {
+    setFormType(type);
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+  const emptyData = (item: string, type: ProfileUserFormTypes): React.ReactElement => {
     return (
       <View style={styles.marginTop}>
         <Label type="large" style={styles.moreInfo}>
           {item === 'emergencyContact' ? t('moreProfile:emergencyEmptyState') : t('moreProfile:workInfoEmptyState')}
         </Label>
-        <TouchableOpacity onPress={(): void => popupRef?.current?.open()}>
+        <TouchableOpacity onPress={(): void => openModal(type)}>
           <Label
             type="large"
             textType="semiBold"
@@ -76,6 +83,7 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
       </View>
     );
   };
+
   return (
     <View style={[styles.container, isTablet && styles.tabContainer]}>
       <View style={[styles.innerContainer, isMobile && styles.innerContainerMob, isTablet && styles.innerContainerTab]}>
@@ -85,9 +93,20 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
             {t('moreProfile:emergencyContact')}
           </Text>
 
-          {workInfoArray && <Icon size={20} name={icons.noteBook} color={theme.colors.primaryColor} />}
+          {emergencyContactArray && (
+            <Icon
+              size={20}
+              name={icons.noteBook}
+              color={theme.colors.primaryColor}
+              onPress={(): void => openModal(ProfileUserFormTypes.EmergencyContact)}
+            />
+          )}
         </View>
-        {emergencyContactArray ? <View>{details(emergencyContactArray)}</View> : emptyData('emergencyContact')}
+        {emergencyContactArray ? (
+          <View>{details(emergencyContactArray)}</View>
+        ) : (
+          emptyData('emergencyContact', ProfileUserFormTypes.EmergencyContact)
+        )}
         <Divider containerStyles={styles.divider} />
         <View style={styles.heading}>
           <Text type="small" textType="semiBold">
@@ -99,12 +118,12 @@ const WorkDetails: FC<IProp> = (props: IProp) => {
               size={20}
               name={icons.noteBook}
               color={theme.colors.primaryColor}
-              onPress={(): void => popupRef?.current?.open()}
+              onPress={(): void => openModal(ProfileUserFormTypes.WorkInfo)}
             />
           )}
         </View>
-        {workInfoArray ? <View>{details(workInfoArray)}</View> : emptyData('workInfo')}
-        <ProfilePopover popupRef={popupRef} formType={ProfileUserFormTypes.WorkInfo} />
+        {workInfoArray ? <View>{details(workInfoArray)}</View> : emptyData('workInfo', ProfileUserFormTypes.WorkInfo)}
+        <ProfilePopover popupRef={popupRef} formType={formType} />
       </View>
     </View>
   );

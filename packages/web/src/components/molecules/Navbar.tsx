@@ -107,6 +107,9 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
   const navigateToScreen = (): void => {
     NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
+  const navigateToProfile = (): void => {
+    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PROFILE });
+  };
   const { SEARCH_PROPERTY } = RouteNames.protectedRoutes;
   const isSearchBarVisible = !compareUrlsWithPathname([SEARCH_PROPERTY], location.pathname);
   return (
@@ -165,9 +168,11 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
                 index={index}
               />
             ))}
-            <View style={navBarStyles.items}>
-              <Avatar isOnlyAvatar fullName={userProfile?.name ?? 'User'} image={userProfile?.profilePicture ?? ''} />
-            </View>
+            <TouchableOpacity onPress={navigateToProfile}>
+              <View style={navBarStyles.items}>
+                <Avatar isOnlyAvatar fullName={userProfile?.name ?? 'User'} image={userProfile?.profilePicture ?? ''} />
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

@@ -2,11 +2,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import EmergencyContactForm from '@homzhub/common/src/components/molecules/EmergencyContactForm';
@@ -31,8 +33,11 @@ interface ICompProps {
 interface IStateProps {
   userProfile?: UserProfileModel;
 }
+interface IDispatchProps {
+  getUserProfile: () => void;
+}
 
-type Props = WithTranslation & IStateProps & ICompProps;
+type Props = WithTranslation & IStateProps & ICompProps & IDispatchProps;
 
 interface IOwnState {
   personalDetails: IUserProfileForm;
@@ -94,6 +99,7 @@ export class ProfileModalContent extends React.PureComponent<Props, IOwnState> {
             }}
             basicDetails={{ email: userProfile.email, phone: userProfile.phoneNumber }}
             updateFormLoadingState={this.changeLoadingStatus}
+            handlePopupClose={handlePopupClose}
           />
         );
       case ProfileUserFormTypes.WorkInfo:
@@ -143,13 +149,12 @@ export class ProfileModalContent extends React.PureComponent<Props, IOwnState> {
         otpSentTo: email,
       };
     }
-    // TODO: Mohak - Logic to navigate to OTPVerification
+    // Logic to navigate to OTPVerification
   };
 
   private onFormSubmissionSuccess = (): void => {
-    const { t } = this.props;
-
-    AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
+    const { getUserProfile } = this.props;
+    getUserProfile();
     // Navigation Logic
   };
 
@@ -225,6 +230,10 @@ const mapStateToProps = (state: IState): IStateProps => {
     userProfile: getUserProfile(state),
   };
 };
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getUserProfile } = UserActions;
+  return bindActionCreators({ getUserProfile }, dispatch);
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -237,5 +246,5 @@ const styles = StyleSheet.create({
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(withTranslation(LocaleConstants.namespacesKey.moreProfile)(ProfileModalContent));

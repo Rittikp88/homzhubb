@@ -32,6 +32,7 @@ const ProfilePopover: React.FC<IProfilePopover> = (props: IProfilePopover) => {
         closeOnDocumentClick: false,
         children: undefined,
         modal: true,
+        lockScroll: true,
       }}
     />
   );
@@ -48,7 +49,7 @@ const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
   const { t } = useTranslation();
   const profileFormElements = {
     EmergencyContact: {
-      modalTitleHeader: t(''),
+      modalTitleHeader: t('moreProfile:editContactDetails'),
     },
     WorkInfo: {
       modalTitleHeader: t('moreProfile:editHeaderText', { title: t('moreProfile:workInformation') }),

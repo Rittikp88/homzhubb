@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const compareUrlsWithPathname = (urls: any[], pathname: string) => {
   // TODO: check for all edge cases
+
   if (urls.includes(pathname)) {
     return true;
   }
