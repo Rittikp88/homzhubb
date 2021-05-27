@@ -392,15 +392,15 @@ PODS:
     - React
   - react-native-netinfo (5.9.10):
     - React-Core
-  - react-native-orientation-locker (1.2.0):
-    - React
+  - react-native-orientation-locker (1.3.1):
+    - React-Core
   - react-native-pdf (6.3.0):
     - React-Core
   - react-native-progress-bar-android (1.0.4):
     - React
-  - react-native-progress-view (1.3.0):
-    - React
-  - react-native-razorpay (2.2.4):
+  - react-native-progress-view (1.3.1):
+    - React-Core
+  - react-native-razorpay (2.2.5):
     - razorpay-pod
     - React
   - react-native-restart (0.0.22):
@@ -513,7 +513,7 @@ PODS:
   - RNGoogleSignin (5.0.0):
     - GoogleSignIn (~> 5.0.0)
     - React-Core
-  - RNIap (6.0.3):
+  - RNIap (6.0.6):
     - React-Core
   - RNImageCropPicker (0.32.3):
     - React-Core
@@ -878,11 +878,11 @@ SPEC CHECKSUMS:
   react-native-geolocation-service: 7c9436da6dfdecd9526c62eac62ea2bc3f0cc8ea
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
-  react-native-orientation-locker: 47aaa55d59bfc1613804dc22f159e6bb1cca5f30
+  react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
   react-native-pdf: ef641e79a6d550cfabe5d7ec1916799726514c43
   react-native-progress-bar-android: be43138ab7da30d51fc038bafa98e9ed594d0c40
-  react-native-progress-view: 0df09cfedf8f2ff745820b6c0a242cfb816ee567
-  react-native-razorpay: 56c4f4a15b7d502496fdbb7a72a7c86c441a986f
+  react-native-progress-view: 9e6b6a5305a9115c2157ae3b8852081aba0aab7c
+  react-native-razorpay: a9d00a5e617ed8fdc263849fcf4dc3bd24a7a391
   react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
   react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
   react-native-slider: e99fc201cefe81270fc9d81714a7a0f5e566b168
@@ -913,7 +913,7 @@ SPEC CHECKSUMS:
   RNFBMessaging: 1823217d31e942531cc3f51fb5367dcbc69c1e10
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNGoogleSignin: ad866d4c4af2651e36801dd3b7771d7715353499
-  RNIap: 766e9b9393fc7630d6dfae371fa998c573b99dec
+  RNIap: 78e7c7249c2c7145a13f231a725a3bfba6c7fbe2
   RNImageCropPicker: 54e5ea3d0e298ed51e1441a2fa0a0e7c90ee256d
   RNPermissions: 5df468064df661a4c8c017e2791ce90d7695eea5
   RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926

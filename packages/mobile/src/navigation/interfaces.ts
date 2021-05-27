@@ -120,6 +120,7 @@ export enum ScreensKeys {
   ServicesForSelectedAsset = 'ServicesForSelectedAsset',
   SubscriptionPayment = 'SubscriptionPayment',
   ServicesDashboard = 'ServicesDashboard',
+  AddPropertyImage = 'AddPropertyImage',
 
   // Messages
   Messages = 'Messages',
@@ -347,4 +348,8 @@ export interface IDetailNavParam extends ICommonNavProps {
 export interface IReviewNavParam extends ICommonNavProps {
   saleListingId: number | null;
   leaseListingId: number | null;
+}
+
+export interface IPropertyImageParam {
+  asset: Asset;
 }

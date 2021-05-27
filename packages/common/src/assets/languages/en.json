@@ -646,7 +646,8 @@
     "buyNewService": "Buy New Service",
     "propertyAdded": "Property added",
     "servicePurchased": "Services Purchased",
-    "propertyOption": "Property Options"
+    "propertyOption": "Property Options",
+    "gallery": "Gallery"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

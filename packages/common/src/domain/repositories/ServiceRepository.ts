@@ -10,7 +10,7 @@ const ENDPOINTS = {
   getAssetPlan: (): string => 'v2/service-category-actions/',
   getServiceValueBundles: (): string => 'v1/value-bundles/',
   getServicePlatformPlans: (): string => 'v1/service-plans/',
-  managementTab: 'v1/value-added-services/management-tab',
+  managementTab: 'v1/value-added-services/management-tab/',
 };
 
 class ServiceRepository {

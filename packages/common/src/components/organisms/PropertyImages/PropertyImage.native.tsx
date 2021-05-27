@@ -5,6 +5,7 @@ import { cloneDeep, findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { ImageService } from '@homzhub/common/src/services/Property/ImageService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -16,17 +17,17 @@ import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
-import { IYoutubeResponse } from '@homzhub/common/src/domain/models/VerificationDocuments';
-import { IPropertyImagesPostPayload, IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   propertyId: number;
   onPressContinue: () => void;
   onUploadImage: (files?: File[]) => void;
   selectedImages: AssetGallery[];
-  lastVisitedStep: ILastVisitedStep;
+  lastVisitedStep?: ILastVisitedStep;
   containerStyle?: StyleProp<ViewStyle>;
   setSelectedImages: (payload: AssetGallery[]) => void;
+  isButtonVisible?: boolean;
 }
 
 type Props = WithTranslation & IProps;
@@ -52,13 +53,13 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public render(): React.ReactNode {
-    const { t, onUploadImage, selectedImages } = this.props;
+    const { t, onUploadImage, selectedImages, containerStyle, isButtonVisible = true } = this.props;
     const { isBottomSheetVisible, videoUrl } = this.state;
     const header = selectedImages.length > 0 ? t('property:addMore') : t('property:addPhotos');
 
     return (
       <>
-        <View style={styles.container}>
+        <View style={[styles.container, containerStyle]}>
           <AssetListingSection title={t('property:images')}>
             <>
               <UploadBox
@@ -71,13 +72,15 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
             </>
           </AssetListingSection>
           {this.renderVideo()}
-          <Button
-            type="primary"
-            title={t('common:continue')}
-            containerStyle={styles.buttonStyle}
-            onPress={this.postAttachmentsForProperty}
-            disabled={!videoUrl && !selectedImages.length}
-          />
+          {isButtonVisible && (
+            <Button
+              type="primary"
+              title={t('common:continue')}
+              containerStyle={styles.buttonStyle}
+              onPress={this.postAttachmentsForProperty}
+              disabled={!videoUrl && !selectedImages.length}
+            />
+          )}
         </View>
         <BottomSheet
           isShadowView
@@ -281,35 +284,21 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
-    const { propertyId, onPressContinue, lastVisitedStep, t, selectedImages } = this.props;
+    const { propertyId, onPressContinue, lastVisitedStep, selectedImages } = this.props;
     const { isVideoToggled, videoUrl } = this.state;
-    const attachmentIds: IPropertyImagesPostPayload[] = [];
-    selectedImages.forEach((selectedImage: AssetGallery) =>
-      attachmentIds.push({ attachment: selectedImage.attachment, is_cover_image: selectedImage.isCoverImage })
-    );
-    if (isVideoToggled && !!videoUrl) {
-      const payload = [{ link: videoUrl }];
-      try {
-        const urlResponse: IYoutubeResponse[] = await AssetRepository.postAttachmentUpload(payload);
-        attachmentIds.push({ attachment: urlResponse[0].id, is_cover_image: false });
-      } catch (e) {
-        AlertHelper.error({ message: t('property:validVideoUrl') });
-        return;
-      }
-    }
 
     const updateAssetPayload: IUpdateAssetParams = {
       last_visited_step: {
         ...lastVisitedStep,
         asset_creation: {
-          ...lastVisitedStep.asset_creation,
+          ...lastVisitedStep?.asset_creation,
           is_gallery_done: true,
           total_step: 4,
         },
       },
     };
     try {
-      await AssetRepository.postAttachmentsForProperty(propertyId, attachmentIds);
+      await ImageService.postAttachment({ propertyId, selectedImages, isVideoToggled, videoUrl });
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
       onPressContinue();
     } catch (e) {

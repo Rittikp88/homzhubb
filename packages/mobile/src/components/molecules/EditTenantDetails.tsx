@@ -249,14 +249,7 @@ const styles = StyleSheet.create({
   bottomSheet: {
     padding: 20,
   },
-  closeIcon: {
-    marginLeft: 100,
-    marginTop: 5,
-  },
   designation: {
     color: theme.colors.green,
-  },
-  topLeftView: {
-    flexDirection: 'row',
   },
 });

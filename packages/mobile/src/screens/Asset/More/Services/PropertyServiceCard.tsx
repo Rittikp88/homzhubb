@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { useNavigation } from '@react-navigation/core';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -9,6 +9,7 @@ import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
 import ServiceCard from '@homzhub/mobile/src/components/molecules/ServiceCard';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 // TODO: (Shikha) - Remove hardcoded data after API integration
 const menuData = [
@@ -20,6 +21,14 @@ const menuData = [
 const PropertyServiceCard = (): React.ReactElement => {
   const [isExpanded, setIsExpanded] = useState(false);
   const userAsset = useSelector(UserSelector.getUserAssets);
+  const { navigate } = useNavigation();
+
+  const handleSelection = (value: string): void => {
+    // TODO: (Shikha) - use enum
+    if (value === 'ADD_IMAGE') {
+      navigate(ScreensKeys.AddPropertyImage, { asset: userAsset[0] });
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -48,7 +57,7 @@ const PropertyServiceCard = (): React.ReactElement => {
               <Text type="small" textType="semiBold" style={styles.serviceHeading}>
                 Services (1)
               </Text>
-              <ServiceCard menuOptions={menuData} onSelectOption={FunctionUtils.noop} />
+              <ServiceCard menuOptions={menuData} onSelectOption={handleSelection} />
             </>
           )}
         </>

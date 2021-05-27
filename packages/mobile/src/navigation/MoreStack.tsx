@@ -9,11 +9,16 @@ import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedPro
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
 import { ServicesForSelectedAsset } from '@homzhub/mobile/src/screens/Asset/More/ServicesForSelectedAsset';
 import ServicesDashboard from '@homzhub/mobile/src/screens/Asset/More/Services';
+import AddPropertyImage from '@homzhub/mobile/src/screens/Asset/More/Services/AddPropertyImage';
 import { ValueAddedServices } from '@homzhub/mobile/src/screens/Asset/More/Services/ValueAddedServices';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import SubscriptionPayment from '@homzhub/mobile/src/screens/Asset/More/SubscriptionPayment';
 import More from '@homzhub/mobile/src/screens/Asset/More';
-import { IServicesForSelectAssetParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import {
+  IPropertyImageParam,
+  IServicesForSelectAssetParams,
+  ScreensKeys,
+} from '@homzhub/mobile/src/navigation/interfaces';
 
 export type MoreStackNavigatorParamList = {
   [ScreensKeys.MoreScreen]: undefined;
@@ -28,6 +33,7 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.PropertyOfferList]: undefined;
   [ScreensKeys.SubscriptionPayment]: undefined;
   [ScreensKeys.ServicesDashboard]: undefined;
+  [ScreensKeys.AddPropertyImage]: IPropertyImageParam;
 } & CommonParamList;
 
 const MoreStackNavigator = createStackNavigator<MoreStackNavigatorParamList>();
@@ -52,6 +58,7 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubscriptionPayment} component={SubscriptionPayment} />
       <MoreStackNavigator.Screen name={ScreensKeys.ServicesDashboard} component={ServicesDashboard} />
+      <MoreStackNavigator.Screen name={ScreensKeys.AddPropertyImage} component={AddPropertyImage} />
       {commonScreen}
     </MoreStackNavigator.Navigator>
   );
