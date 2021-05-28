@@ -36,6 +36,9 @@ export const UserActionTypes = {
     USER_SUBSCRIPTIONS: `${actionTypePrefix}USER_SUBSCRIPTIONS`,
     USER_SUBSCRIPTIONS_SUCCESS: `${actionTypePrefix}USER_SUBSCRIPTIONS_SUCCESS`,
     USER_SUBSCRIPTIONS_FAILURE: `${actionTypePrefix}USER_SUBSCRIPTIONS_FAILURE`,
+    USER_SERVICES: `${actionTypePrefix}USER_SERVICES`,
+    USER_SERVICES_SUCCESS: `${actionTypePrefix}USER_SERVICES_SUCCESS`,
+    USER_SERVICES_FAILURE: `${actionTypePrefix}USER_SERVICES_FAILURE`,
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
@@ -192,6 +195,23 @@ const getUserSubscriptionsFailure = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.USER_SUBSCRIPTIONS_FAILURE,
 });
 
+const getUserServices = (): IFluxStandardAction => {
+  return {
+    type: UserActionTypes.GET.USER_SERVICES,
+  };
+};
+
+const getUserServicesSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]> => {
+  return {
+    type: UserActionTypes.GET.USER_SERVICES_SUCCESS,
+    payload: ObjectMapper.serializeArray(payload),
+  };
+};
+
+const getUserServicesFailure = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.USER_SERVICES_FAILURE,
+});
+
 export type UserPayloadTypes =
   | string
   | boolean
@@ -231,4 +251,7 @@ export const UserActions = {
   getUserSubscriptions,
   getUserSubscriptionsSuccess,
   getUserSubscriptionsFailure,
+  getUserServices,
+  getUserServicesSuccess,
+  getUserServicesFailure,
 };

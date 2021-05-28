@@ -1,6 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { LabelColor } from '@homzhub/common/src/domain/models/LabelColor';
+import { LeaseTransaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
-import { LabelColor, LeaseTransaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { User } from '@homzhub/common/src/domain/models/User';
 
 export enum ActionType {

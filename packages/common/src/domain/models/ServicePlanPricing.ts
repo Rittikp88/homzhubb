@@ -9,8 +9,8 @@ export class ServicePlanPricing {
   @JsonProperty('actual_price', Number, true)
   private _actualPrice = 0;
 
-  @JsonProperty('discounted_price', String, true)
-  private _discountedPrice = '';
+  @JsonProperty('discounted_price', Number, true)
+  private _discountedPrice = null;
 
   @JsonProperty('duration', String)
   private _duration = '';
@@ -32,7 +32,7 @@ export class ServicePlanPricing {
     return this._actualPrice;
   }
 
-  get discountedPrice(): string {
+  get discountedPrice(): number | null {
     return this._discountedPrice;
   }
 

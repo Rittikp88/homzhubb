@@ -19,6 +19,7 @@ export const initialAssetState: IAssetState = {
     documents: false,
     visits: false,
     activeAssets: false,
+    assetById: false,
   },
   asset: null,
   reviews: null,
@@ -27,6 +28,7 @@ export const initialAssetState: IAssetState = {
   visitIds: [],
   visitType: Tabs.UPCOMING,
   activeAssets: [],
+  assetById: null,
 };
 
 export const assetReducer = (
@@ -117,11 +119,21 @@ export const assetReducer = (
         ['activeAssets']: initialAssetState.activeAssets,
         ['loaders']: { ...state.loaders, ['activeAssets']: true },
       };
-    case AssetActionTypes.GET.USER_ACTIVE_ASSETS_SUCCESS:
+    case AssetActionTypes.GET.ASSET_BY_ID:
       return {
         ...state,
-        ['activeAssets']: action.payload as IAsset[],
-        ['loaders']: { ...state.loaders, ['activeAssets']: false },
+        ['loaders']: { ...state.loaders, ['assetById']: true },
+      };
+    case AssetActionTypes.GET.ASSET_BY_ID_SUCCESS:
+      return {
+        ...state,
+        ['assetById']: action.payload as IAsset,
+        ['loaders']: { ...state.loaders, ['assetById']: false },
+      };
+    case AssetActionTypes.GET.ASSET_BY_ID_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['assetById']: false },
       };
     case AssetActionTypes.SET.VISIT_IDS:
       return { ...state, ['visitIds']: action.payload as number[] };

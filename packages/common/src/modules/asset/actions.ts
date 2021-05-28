@@ -26,6 +26,9 @@ export const AssetActionTypes = {
     ASSET_VISIT_FAILURE: `${actionTypePrefix}ASSET_VISIT_FAILURE`,
     USER_ACTIVE_ASSETS: `${actionTypePrefix}USER_ACTIVE_ASSETS`,
     USER_ACTIVE_ASSETS_SUCCESS: `${actionTypePrefix}USER_ACTIVE_ASSETS_SUCCESS`,
+    ASSET_BY_ID: `${actionTypePrefix}ASSET_BY_ID`,
+    ASSET_BY_ID_SUCCESS: `${actionTypePrefix}ASSET_BY_ID_SUCCESS`,
+    ASSET_BY_ID_FAILURE: `${actionTypePrefix}ASSET_BY_ID_FAILURE`,
   },
   SET: {
     VISIT_IDS: `${actionTypePrefix}VISIT_IDS`,
@@ -122,6 +125,20 @@ const getActiveAssetsSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]>
   payload: ObjectMapper.serializeArray(payload),
 });
 
+const getAssetById = (payload: number): IFluxStandardAction<number> => ({
+  type: AssetActionTypes.GET.ASSET_BY_ID,
+  payload,
+});
+
+const getAssetByIdSuccess = (payload: Asset): IFluxStandardAction<IAsset> => ({
+  type: AssetActionTypes.GET.ASSET_BY_ID_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getAssetByIdFailure = (): IFluxStandardAction => ({
+  type: AssetActionTypes.GET.ASSET_BY_ID_FAILURE,
+});
+
 export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[] | Tabs | IAsset[];
 
 export const AssetActions = {
@@ -143,4 +160,7 @@ export const AssetActions = {
   clearVisits,
   getActiveAssets,
   getActiveAssetsSuccess,
+  getAssetById,
+  getAssetByIdSuccess,
+  getAssetByIdFailure,
 };

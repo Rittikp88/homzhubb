@@ -178,6 +178,17 @@ const isActiveAssetsLoading = (state: IState): boolean => {
 
   return activeAssets;
 };
+
+const getAssetById = (state: IState): Asset | null => {
+  const {
+    asset: { assetById },
+  } = state;
+
+  if (!assetById) return null;
+
+  return ObjectMapper.deserialize(Asset, assetById);
+};
+
 const getAssetLoaders = (state: IState): IAssetState['loaders'] => {
   return state.asset.loaders;
 };
@@ -197,4 +208,5 @@ export const AssetSelectors = {
   getUserActiveAssets,
   isActiveAssetsLoading,
   getAssetLoaders,
+  getAssetById,
 };

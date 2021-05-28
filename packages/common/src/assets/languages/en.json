@@ -274,7 +274,9 @@
     "knowLess": "Know Less",
     "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*",
     "confirmation": "Confirmation!",
-    "noDataAvailable": "No data available"
+    "noDataAvailable": "No data available",
+    "photos": "Photos",
+    "attachments": "Attachments"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -647,7 +649,11 @@
     "propertyAdded": "Property added",
     "servicePurchased": "Services Purchased",
     "propertyOption": "Property Options",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "downloadToDevice": "Download to Device",
+    "downloadInvoice": "Download invoice",
+    "addImageToProperty": "Add images to property",
+    "attachmentList": "Attachment List"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

@@ -199,6 +199,14 @@ const getUserLoaders = (state: IState): IUserState['loaders'] => {
   return state.user.loaders;
 };
 
+const getUserServices = (state: IState): Asset[] => {
+  const {
+    user: { userServices },
+  } = state;
+  if (!userServices) return [];
+  return ObjectMapper.deserializeArray(Asset, userServices);
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -220,4 +228,5 @@ export const UserSelector = {
   getUserAssetsCount,
   getUserSubscription,
   getUserLoaders,
+  getUserServices,
 };

@@ -7,8 +7,9 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -210,6 +211,16 @@ export function* getUserSubscriptions() {
   }
 }
 
+export function* getUserServices() {
+  try {
+    const response = yield call(ServiceRepository.getUserServices);
+    yield put(UserActions.getUserServicesSuccess(response));
+  } catch (e) {
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    yield put(UserActions.getUserServicesFailure());
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
@@ -219,4 +230,5 @@ export function* watchUser() {
   yield takeEvery(UserActionTypes.GET.USER_ASSETS, getUserAssets);
   yield takeEvery(UserActionTypes.GET.FAVOURITE_PROPERTIES, getFavouriteProperties);
   yield takeEvery(UserActionTypes.GET.USER_SUBSCRIPTIONS, getUserSubscriptions);
+  yield takeEvery(UserActionTypes.GET.USER_SERVICES, getUserServices);
 }

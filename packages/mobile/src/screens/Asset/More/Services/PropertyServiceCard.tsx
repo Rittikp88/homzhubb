@@ -1,33 +1,43 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/core';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { useTranslation } from 'react-i18next';
+import { ServiceHelper } from '@homzhub/mobile/src/utils/ServiceHelper';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+import { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
 import ServiceCard from '@homzhub/mobile/src/components/molecules/ServiceCard';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { ServiceOption } from '@homzhub/common/src/constants/Services';
 
-// TODO: (Shikha) - Remove hardcoded data after API integration
-const menuData = [
-  { label: 'Add images to property', value: 'ADD_IMAGE' },
-  { label: 'Download to Device', value: 'DOWNLOAD_TO_DEVICE' },
-  { label: 'Download invoice', value: 'DOWNLOAD_INVOICE' },
-];
+interface IProps {
+  data: Asset;
+  onAttachmentPress: (attachment: Attachment[]) => void;
+}
 
-const PropertyServiceCard = (): React.ReactElement => {
+const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactElement => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
-  const userAsset = useSelector(UserSelector.getUserAssets);
-  const { navigate } = useNavigation();
+  const { valueAddedServices, assetStatusInfo } = data;
+
+  const getMenuOptions = (isUploadAllowed: boolean): IMenu[] => {
+    const options = [
+      { label: t('property:downloadToDevice'), value: ServiceOption.DOWNLOAD_TO_DEVICE },
+      { label: t('property:downloadInvoice'), value: ServiceOption.DOWNLOAD_INVOICE },
+    ];
+
+    if (isUploadAllowed) {
+      options.unshift({ label: t('property:addImageToProperty'), value: ServiceOption.ADD_IMAGE });
+    }
+
+    return options;
+  };
 
   const handleSelection = (value: string): void => {
-    // TODO: (Shikha) - use enum
-    if (value === 'ADD_IMAGE') {
-      navigate(ScreensKeys.AddPropertyImage, { asset: userAsset[0] });
-    }
+    ServiceHelper.handleServiceActions(value, data.id);
   };
 
   return (
@@ -36,28 +46,40 @@ const PropertyServiceCard = (): React.ReactElement => {
         <>
           <TouchableOpacity onPress={(): void => setIsExpanded(!isExpanded)} style={styles.header}>
             <View style={styles.headerLeft}>
-              <Badge title="For Rent" badgeColor={theme.colors.red} />
+              {assetStatusInfo && <Badge title={assetStatusInfo.tag.label} badgeColor={assetStatusInfo.tag.color} />}
               <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={10} style={styles.separatorIcon} />
               <Icon name={icons.service} size={16} color={theme.colors.primaryColor} />
               <Label type="large" style={styles.count}>
-                1
+                {valueAddedServices.length}
               </Label>
             </View>
             <Icon name={isExpanded ? icons.upArrow : icons.downArrow} size={16} color={theme.colors.primaryColor} />
           </TouchableOpacity>
           <PropertyCard
-            asset={userAsset[0]}
+            asset={data}
             isExpanded={isExpanded}
             isPriceVisible={false}
             isShieldVisible={false}
+            isIcon={false}
             containerStyle={styles.propertyCard}
           />
           {isExpanded && (
             <>
               <Text type="small" textType="semiBold" style={styles.serviceHeading}>
-                Services (1)
+                {`Services (${valueAddedServices.length})`}
               </Text>
-              <ServiceCard menuOptions={menuData} onSelectOption={handleSelection} />
+              {valueAddedServices.map((item, index) => {
+                const menuData = getMenuOptions(item.isUploadAllowed);
+                return (
+                  <ServiceCard
+                    key={index}
+                    service={item}
+                    menuOptions={menuData}
+                    onSelectOption={handleSelection}
+                    onAttachmentPress={onAttachmentPress}
+                  />
+                );
+              })}
             </>
           )}
         </>
@@ -71,7 +93,8 @@ export default PropertyServiceCard;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
-    paddingVertical: 16,
+    paddingTop: 16,
+    marginBottom: 16,
   },
   header: {
     flexDirection: 'row',

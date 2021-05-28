@@ -14,6 +14,7 @@ import { ILastVisitedStep, LastVisitedStep } from '@homzhub/common/src/domain/mo
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { IOffer, Offer } from '@homzhub/common/src/domain/models/Offer';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
+import { IService, Service } from '@homzhub/common/src/domain/models/Service';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
@@ -56,7 +57,7 @@ export interface IAsset {
   id: number;
   project_name: string;
   is_subleased: boolean;
-  is_managed: boolean;
+  is_managed?: boolean;
   unit_number: string;
   posted_on: string;
   description: string;
@@ -89,6 +90,7 @@ export interface IAsset {
   investmentStatus?: string;
   lease_negotiation?: IOffer | null;
   sale_negotiation?: IOffer | null;
+  value_added_services?: IService[];
 }
 
 export interface IData {
@@ -210,7 +212,7 @@ export class Asset {
   @JsonProperty('is_subleased', Boolean, true)
   private _isSubleased = false;
 
-  @JsonProperty('is_managed', Boolean)
+  @JsonProperty('is_managed', Boolean, true)
   private _isManaged = false;
 
   @JsonProperty('latitude', Number)
@@ -395,6 +397,9 @@ export class Asset {
 
   @JsonProperty('is_asset_owner', Boolean, true)
   private _isAssetOwner = false;
+
+  @JsonProperty('value_added_services', [Service], true)
+  private _valueAddedServices = [];
 
   get investmentStatus(): string {
     return this._investmentStatus;
@@ -764,5 +769,9 @@ export class Asset {
 
   get formattedProjectName(): string {
     return `${this.unitNumber},${this.blockNumber && ` ${this.blockNumber},`} ${this.projectName}`;
+  }
+
+  get valueAddedServices(): Service[] {
+    return this._valueAddedServices;
   }
 }

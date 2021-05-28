@@ -18,6 +18,7 @@ export const initialUserState: IUserState = {
   userCountryCode: 0,
   assets: [],
   favouriteProperties: [],
+  userServices: [],
   error: {
     user: '',
   },
@@ -28,6 +29,7 @@ export const initialUserState: IUserState = {
     userSubscriptions: false,
     whileAssets: false,
     whileFavouriteProperties: false,
+    userService: false,
   },
 };
 
@@ -156,6 +158,25 @@ export const userReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['userSubscriptions']: false },
+      };
+    case UserActionTypes.GET.USER_SERVICES:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userService']: true },
+      };
+    case UserActionTypes.GET.USER_SERVICES_SUCCESS:
+      return {
+        ...state,
+        ['userServices']: action.payload as IAsset[],
+        ['loaders']: {
+          ...state.loaders,
+          ['userService']: false,
+        },
+      };
+    case UserActionTypes.GET.USER_SERVICES_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userService']: false },
       };
     default:
       return state;

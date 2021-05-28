@@ -15,6 +15,7 @@ export interface IUserState {
   userCountryCode: number;
   favouriteProperties: IAsset[];
   userSubscriptions: IUserSubscription | null;
+  userServices: IAsset[];
   error: {
     user: string;
   };
@@ -25,6 +26,7 @@ export interface IUserState {
     userSubscriptions: boolean;
     whileAssets: boolean;
     whileFavouriteProperties: boolean;
+    userService: boolean;
   };
 }
 

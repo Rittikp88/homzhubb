@@ -2,28 +2,7 @@ import moment from 'moment';
 import { DateFormats } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-
-export interface ILabelColor {
-  label: string;
-  color: string;
-}
-
-@JsonObject('LabelColor')
-export class LabelColor {
-  @JsonProperty('label', String)
-  private _label = '';
-
-  @JsonProperty('color', String)
-  private _color = '';
-
-  get label(): string {
-    return this._label;
-  }
-
-  get color(): string {
-    return this._color;
-  }
-}
+import { LabelColor } from '@homzhub/common/src/domain/models/LabelColor';
 
 @JsonObject('Transaction')
 export class Transaction {

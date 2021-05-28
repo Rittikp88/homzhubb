@@ -351,5 +351,5 @@ export interface IReviewNavParam extends ICommonNavProps {
 }
 
 export interface IPropertyImageParam {
-  asset: Asset;
+  assetId: number;
 }

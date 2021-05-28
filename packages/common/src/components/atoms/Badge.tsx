@@ -8,7 +8,7 @@ interface IProps {
   badgeColor: string;
   badgeStyle?: StyleProp<ViewStyle>;
   textType?: FontWeightType;
-  titleStyle?: TextStyle;
+  titleStyle?: StyleProp<TextStyle>;
 }
 
 export const Badge = (props: IProps): React.ReactElement => {

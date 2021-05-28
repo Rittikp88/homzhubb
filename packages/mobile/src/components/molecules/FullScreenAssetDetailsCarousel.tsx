@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, NativeSyntheticEvent, NativeScrollEvent, FlatList, ViewStyle } from 'react-native';
 import ImageZoom from 'react-native-image-pan-zoom';
+import { Logger } from '@homzhub/common/src/utils/Logger';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';
 import { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';
+import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IProps {
@@ -17,6 +19,9 @@ interface IProps {
   onShare?: () => void;
   hasOnlyImages?: boolean;
   containerStyle?: ViewStyle;
+  menuOptions?: IMenu[];
+  onSelectMenu?: (value: string) => void;
+  optionTitle?: string;
 }
 
 const heightValue = PlatformUtils.isIOS() ? (theme.viewport.width > 400 ? 3 : 2) : 2;
@@ -32,7 +37,17 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
   }
 
   public renderListHeader = (): React.ReactElement => {
-    const { activeSlide, data, onFullScreenToggle, onShare, hasOnlyImages = false, containerStyle = {} } = this.props;
+    const {
+      activeSlide,
+      data,
+      onFullScreenToggle,
+      onShare,
+      hasOnlyImages = false,
+      containerStyle = {},
+      menuOptions,
+      onSelectMenu,
+      optionTitle,
+    } = this.props;
     return (
       <View style={[styles.fullscreenContainer, containerStyle]}>
         <Icon name={icons.close} size={20} color={theme.colors.white} onPress={onFullScreenToggle} />
@@ -44,6 +59,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
           hasOnlyImages={hasOnlyImages}
         />
         {onShare && <Icon name={icons.share} size={23} color={theme.colors.white} onPress={onShare} />}
+        {menuOptions && onSelectMenu && <Menu data={menuOptions} optionTitle={optionTitle} onSelect={onSelectMenu} />}
       </View>
     );
   };
@@ -68,6 +84,7 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
         removeClippedSubviews
         initialScrollIndex={activeSlide}
         testID="attachmentFlatList"
+        onScrollToIndexFailed={(info): void => Logger.warn(info.index)}
       />
     );
   };

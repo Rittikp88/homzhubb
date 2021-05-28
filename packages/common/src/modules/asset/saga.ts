@@ -95,10 +95,21 @@ export function* getUserActiveAssets() {
   }
 }
 
+export function* getAssetById(action: IFluxStandardAction<number>) {
+  try {
+    const response = yield call(AssetRepository.getAssetById, action.payload as number);
+    yield put(AssetActions.getAssetByIdSuccess(response));
+  } catch (e) {
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    yield put(AssetActions.getAssetByIdFailure());
+  }
+}
+
 export function* watchAsset() {
   yield takeEvery(AssetActionTypes.GET.ASSET, getAssetDetails);
   yield takeEvery(AssetActionTypes.GET.REVIEWS, getAssetReviews);
   yield takeEvery(AssetActionTypes.GET.ASSET_DOCUMENT, getAssetDocuments);
   yield takeLatest(AssetActionTypes.GET.ASSET_VISIT, getAssetVisit);
   yield takeEvery(AssetActionTypes.GET.USER_ACTIVE_ASSETS, getUserActiveAssets);
+  yield takeEvery(AssetActionTypes.GET.ASSET_BY_ID, getAssetById);
 }
