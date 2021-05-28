@@ -12,6 +12,8 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import EmergencyContactForm from '@homzhub/common/src/components/molecules/EmergencyContactForm';
+import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
+import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import WorkInfoForm from '@homzhub/common/src/components/molecules/WorkInfoForm';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -85,7 +87,9 @@ export class ProfileModalContent extends React.PureComponent<Props, IOwnState> {
       return null;
     }
     const { emergencyContact, workInfo } = userProfile;
-
+    const handleWebView = (params: IWebProps): React.ReactElement => {
+      return <PhoneCodePrefix {...params} />;
+    };
     switch (formType || ProfileUserFormTypes.BasicDetails) {
       case ProfileUserFormTypes.EmergencyContact:
         return (
@@ -100,6 +104,7 @@ export class ProfileModalContent extends React.PureComponent<Props, IOwnState> {
             basicDetails={{ email: userProfile.email, phone: userProfile.phoneNumber }}
             updateFormLoadingState={this.changeLoadingStatus}
             handlePopupClose={handlePopupClose}
+            webGroupPrefix={handleWebView}
           />
         );
       case ProfileUserFormTypes.WorkInfo:

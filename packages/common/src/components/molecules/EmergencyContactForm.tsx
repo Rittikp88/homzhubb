@@ -13,8 +13,6 @@ import { IUpdateEmergencyContact } from '@homzhub/common/src/domain/repositories
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput, IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
-
-import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps extends WithTranslation {
@@ -23,6 +21,7 @@ interface IProps extends WithTranslation {
   basicDetails: IBasicDetails;
   updateFormLoadingState: (isLoading: boolean) => void;
   handlePopupClose?: () => void;
+  webGroupPrefix?: (params: IWebProps) => React.ReactElement;
 }
 
 interface IEmergencyContactForm {
@@ -57,10 +56,8 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
   }
 
   public render(): ReactElement {
-    const { t, handlePopupClose } = this.props;
-    const handleWebView = (params: IWebProps): React.ReactElement => {
-      return <PhoneCodePrefix {...params} />;
-    };
+    const { t, handlePopupClose, webGroupPrefix } = this.props;
+
     return (
       <>
         <Formik
@@ -90,7 +87,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                     phoneFieldDropdownText={t('auth:countryRegion')}
                     formProps={formProps}
                     isMandatory
-                    webGroupPrefix={handleWebView}
+                    webGroupPrefix={webGroupPrefix}
                   />
                   <FormTextInput
                     name="email"
