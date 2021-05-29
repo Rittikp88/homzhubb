@@ -4,7 +4,7 @@ import { ILabelColor, LabelColor } from '@homzhub/common/src/domain/models/Label
 
 export interface IService {
   id: number;
-  unique_service_id?: string;
+  referenceId?: string;
   name: string;
   label?: string;
   description: string;
@@ -21,8 +21,8 @@ export class Service {
   @JsonProperty('id', Number)
   private _id = '';
 
-  @JsonProperty('unique_service_id', String, true)
-  private _uniqueServiceId = '';
+  @JsonProperty('reference_id', String, true)
+  private _referenceId = '';
 
   @JsonProperty('name', String)
   private _name = '';
@@ -87,8 +87,8 @@ export class Service {
     return this._status;
   }
 
-  get uniqueServiceId(): string {
-    return this._uniqueServiceId;
+  get referenceId(): string {
+    return this._referenceId;
   }
 
   get statusUpdatedAt(): string {

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import { useDispatch, useSelector } from 'react-redux';
+import { useFocusEffect } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ServiceHelper } from '@homzhub/mobile/src/utils/ServiceHelper';
@@ -41,8 +42,13 @@ const ServicesDashboard = (): React.ReactElement => {
   const { userService } = useSelector(UserSelector.getUserLoaders);
   const userAsset = useSelector(UserSelector.getUserAssets);
 
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(UserActions.getUserServices());
+    }, [])
+  );
+
   useEffect(() => {
-    dispatch(UserActions.getUserServices());
     ServiceRepository.getServiceManagementTab()
       .then((res) => {
         const { asset, valueAddedService } = res;
@@ -61,7 +67,7 @@ const ServicesDashboard = (): React.ReactElement => {
   }, []);
 
   const onSelectMenu = (value: string): void => {
-    ServiceHelper.handleServiceActions(value, currentAsset);
+    ServiceHelper.handleServiceActions(value, currentAsset, attachments);
   };
 
   const handleAttachmentPress = (attachment: Attachment[], assetId: number): void => {

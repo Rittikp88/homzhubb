@@ -1,12 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { ImageHelper } from '@homzhub/mobile/src/utils/ImageHelper';
+import { ImageService } from '@homzhub/common/src/services/Property/ImageService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -24,16 +30,55 @@ const AddPropertyImage = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { goBack } = useNavigation();
   const { assetById } = useSelector(AssetSelectors.getAssetLoaders);
+  const selectedImages = useSelector(RecordAssetSelectors.getSelectedImages);
   const asset: Asset | null = useSelector(AssetSelectors.getAssetById);
+  const [videoData, setVideoData] = useState({ isVideoToggled: false, videoUrl: '' });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const param = params as IPropertyImageParam;
 
   useEffect(() => {
-    const param = params as IPropertyImageParam;
     dispatch(AssetActions.getAssetById(param.assetId));
   }, []);
 
+  const onChangeVideo = (isVideoToggled?: boolean, videoUrl?: string): void => {
+    setVideoData({
+      ...videoData,
+      ...(isVideoToggled !== undefined && { isVideoToggled }),
+      ...(videoUrl && { videoUrl }),
+    });
+  };
+
+  const onUploadImage = (): void => {
+    ImageHelper.handlePhotosUpload({ assetId: param.assetId, selectedImages, toggleLoader }).then();
+  };
+
+  const toggleLoader = (): void => {
+    setIsLoading(!isLoading);
+  };
+
+  const onSave = async (): Promise<void> => {
+    setIsLoading(true);
+    try {
+      await ImageService.postAttachment({
+        propertyId: param.assetId,
+        selectedImages,
+        isVideoToggled: videoData.isVideoToggled,
+        videoUrl: videoData.videoUrl,
+      });
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.detaills) });
+    }
+  };
+
   return (
     <>
-      <Screen isLoading={assetById} headerProps={{ title: t('property:addPropertyImages'), onIconPress: goBack }}>
+      <Screen
+        isLoading={assetById && isLoading}
+        headerProps={{ title: t('property:addPropertyImages'), onIconPress: goBack }}
+      >
         {asset ? (
           <>
             <PropertyCard asset={asset} isIcon={false} containerStyle={styles.propertyContainer} />
@@ -42,11 +87,13 @@ const AddPropertyImage = (): React.ReactElement => {
             </Text>
             <PropertyImages
               propertyId={asset.id}
-              selectedImages={asset.attachments}
+              selectedImages={selectedImages}
+              isButtonVisible={false}
               onPressContinue={FunctionUtils.noop}
-              onUploadImage={FunctionUtils.noop}
-              setSelectedImages={FunctionUtils.noop}
+              onUploadImage={onUploadImage}
+              setSelectedImages={RecordAssetActions.setSelectedImages}
               containerStyle={styles.imageContainer}
+              onUpdateVideo={onChangeVideo}
             />
           </>
         ) : (
@@ -54,12 +101,7 @@ const AddPropertyImage = (): React.ReactElement => {
         )}
       </Screen>
       <WithShadowView isBottomShadow={false}>
-        <Button
-          type="primary"
-          title={t('common:continue')}
-          containerStyle={styles.buttonContainer}
-          onPress={FunctionUtils.noop}
-        />
+        <Button type="primary" title={t('common:save')} containerStyle={styles.buttonContainer} onPress={onSave} />
       </WithShadowView>
     </>
   );

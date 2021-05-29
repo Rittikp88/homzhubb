@@ -21,7 +21,7 @@ interface IProps {
 
 const ServiceCard = ({ service, menuOptions, onSelectOption, onAttachmentPress }: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { label, status, attachment, iconAttachment, id, statusUpdatedAt } = service;
+  const { label, status, attachment, iconAttachment, referenceId, statusUpdatedAt } = service;
 
   return (
     <View style={styles.container}>
@@ -54,7 +54,7 @@ const ServiceCard = ({ service, menuOptions, onSelectOption, onAttachmentPress }
       )}
       <View style={styles.bottomView}>
         <Label type="large" style={styles.text}>
-          {`ID: ${id}`}
+          {`ID: ${referenceId}`}
         </Label>
         <Label type="large" style={styles.text}>
           {DateUtils.getDisplayDate(statusUpdatedAt, 'DD.MM.YYYY')}

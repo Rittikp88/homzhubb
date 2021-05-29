@@ -3,11 +3,14 @@ import { put, takeEvery, call, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { AssetActions, AssetActionTypes } from '@homzhub/common/src/modules/asset/actions';
+import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
@@ -97,8 +100,21 @@ export function* getUserActiveAssets() {
 
 export function* getAssetById(action: IFluxStandardAction<number>) {
   try {
-    const response = yield call(AssetRepository.getAssetById, action.payload as number);
+    const response: Asset = yield call(AssetRepository.getAssetById, action.payload as number);
     yield put(AssetActions.getAssetByIdSuccess(response));
+    const assetImage = response.attachments.map((item) => {
+      return {
+        id: null,
+        description: '',
+        is_cover_image: false,
+        asset: response.id,
+        attachment: item.id,
+        link: item.link,
+        file_name: item.fileName,
+        isLocalImage: false,
+      };
+    });
+    yield put(RecordAssetActions.setSelectedImages(ObjectMapper.deserializeArray(AssetGallery, assetImage)));
   } catch (e) {
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     yield put(AssetActions.getAssetByIdFailure());

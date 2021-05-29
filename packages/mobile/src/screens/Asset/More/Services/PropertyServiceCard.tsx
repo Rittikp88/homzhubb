@@ -36,8 +36,8 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
     return options;
   };
 
-  const handleSelection = (value: string): void => {
-    ServiceHelper.handleServiceActions(value, data.id);
+  const handleSelection = (value: string, attachment: Attachment[]): void => {
+    ServiceHelper.handleServiceActions(value, data.id, attachment);
   };
 
   return (
@@ -75,7 +75,7 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
                     key={index}
                     service={item}
                     menuOptions={menuData}
-                    onSelectOption={handleSelection}
+                    onSelectOption={(value): void => handleSelection(value, item.attachment)}
                     onAttachmentPress={onAttachmentPress}
                   />
                 );

@@ -1,13 +1,10 @@
 import React, { PureComponent, ReactElement, ReactNode } from 'react';
 import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
-import ImagePicker, { Image as ImagePickerResponse } from 'react-native-image-crop-picker';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { ImageHelper } from '@homzhub/mobile/src/utils/ImageHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
@@ -20,10 +17,8 @@ import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/Pagina
 import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropertyView';
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
-import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 
 interface IScreenState {
   loading: boolean;
@@ -110,58 +105,8 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   public onPhotosUpload = async (): Promise<void> => {
-    const { assetId, setSelectedImages, selectedImages } = this.props;
-
-    try {
-      // @ts-ignore
-      const images: ImagePickerResponse[] = await ImagePicker.openPicker({
-        multiple: true,
-        compressImageMaxWidth: 400,
-        compressImageMaxHeight: 400,
-        compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
-        includeBase64: true,
-        mediaType: 'photo',
-      });
-      const formData = new FormData();
-      images.forEach((image) => {
-        formData.append('files[]', {
-          // @ts-ignore
-          name: PlatformUtils.isIOS() ? image.filename : image.path.substring(image.path.lastIndexOf('/') + 1),
-          uri: image.path,
-          type: image.mime,
-        });
-      });
-
-      try {
-        this.toggleLoader();
-        const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
-
-        const { data } = response;
-        const localSelectedImages: IPropertySelectedImages[] = [];
-        images.forEach((image, index: number) => {
-          localSelectedImages.push({
-            id: null,
-            description: '',
-            is_cover_image: false,
-            asset: assetId,
-            attachment: data[index].id,
-            link: data[index].link,
-            file_name: 'localImage',
-            isLocalImage: true,
-          });
-        });
-        if (selectedImages.length === 0) {
-          localSelectedImages[0].is_cover_image = true;
-        }
-        setSelectedImages(selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages)));
-        this.toggleLoader();
-      } catch (e) {
-        this.toggleLoader();
-        AlertHelper.error({ message: e.message });
-      }
-    } catch (e) {
-      AlertHelper.error({ message: e.message });
-    }
+    const { assetId, selectedImages } = this.props;
+    await ImageHelper.handlePhotosUpload({ assetId, selectedImages, toggleLoader: this.toggleLoader });
   };
 
   private onEditPress = (): void => {

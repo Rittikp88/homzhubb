@@ -223,7 +223,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
               lastVisitedStep={lastVisitedStep}
               onUploadImage={onUploadImage}
               setSelectedImages={setSelectedImages}
-              containerStyle={isMobile ? styles.flexOne : styles.propertyImagesContainer}
+              containerStyle={isMobile && PlatformUtils.isWeb() ? styles.flexOne : styles.propertyImagesContainer}
             />
           </View>
         );

@@ -48,7 +48,7 @@ interface IOwnState {
 }
 
 interface IReduxState {
-  isEditPropertyFlow: boolean;
+  isEditPropertyFlow?: boolean;
 }
 
 interface IHighlightProps {

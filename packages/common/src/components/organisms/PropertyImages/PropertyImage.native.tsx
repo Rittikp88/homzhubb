@@ -28,6 +28,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   setSelectedImages: (payload: AssetGallery[]) => void;
   isButtonVisible?: boolean;
+  onUpdateVideo?: (isVideoToggled?: boolean, videoUrl?: string) => void;
 }
 
 type Props = WithTranslation & IProps;
@@ -136,7 +137,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       <>
         {coverPhoto}
         <FlatList
-          data={selectedImages.slice(1, 7)}
+          data={selectedImages.slice(1, 7).reverse()}
           numColumns={2}
           renderItem={this.renderImagesList}
           keyExtractor={this.renderKeyExtractor}
@@ -177,8 +178,19 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
 
   public renderVideo = (): React.ReactElement => {
     const { isVideoToggled, videoUrl } = this.state;
-    const onToggleVideo = (): void => this.setState({ isVideoToggled: !isVideoToggled });
-    const onUpdateVideoUrl = (url: string): void => this.setState({ videoUrl: url });
+    const { onUpdateVideo } = this.props;
+    const onToggleVideo = (): void => {
+      this.setState({ isVideoToggled: !isVideoToggled });
+      if (onUpdateVideo) {
+        onUpdateVideo(!isVideoToggled);
+      }
+    };
+    const onUpdateVideoUrl = (url: string): void => {
+      this.setState({ videoUrl: url });
+      if (onUpdateVideo) {
+        onUpdateVideo(isVideoToggled, url);
+      }
+    };
     return (
       <AddYoutubeUrl
         isToggled={isVideoToggled}
@@ -240,7 +252,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       setSelectedImages(clonedSelectedImages);
       return;
     }
-    await AssetRepository.deletePropertyImage(selectedImage.attachment);
+    await AssetRepository.deletePropertyImage(selectedImage.id as number);
     await this.getPropertyImagesByPropertyId(propertyId);
   };
 
