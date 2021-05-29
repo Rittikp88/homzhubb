@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -8,9 +8,12 @@ import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/in
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
+import { theme } from '@homzhub/common/src/styles/theme';
+import AddPropertyGraphic from '@homzhub/common/src/assets/images/addPropertyGraphic.svg';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CurrentLocation } from '@homzhub/mobile/src/components';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
@@ -54,7 +57,6 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
   public render(): React.ReactNode {
     const { t } = this.props;
     const { searchString, suggestions, showAutoDetect } = this.state;
-
     return (
       <Screen
         headerProps={{
@@ -80,9 +82,22 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
         {showAutoDetect && searchString.length <= 0 && (
           <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} testID="currentLocation" />
         )}
+        {!(suggestions.length > 0 && searchString.length > 0) && this.renderGraphicView()}
       </Screen>
     );
   }
+
+  private renderGraphicView = (): React.ReactElement => {
+    const { t } = this.props;
+    return (
+      <View style={styles.graphicContainer}>
+        <AddPropertyGraphic />
+        <Label textType="regular" type="large" style={styles.graphicText}>
+          {t('common:addLocationToStart')}
+        </Label>
+      </View>
+    );
+  };
 
   private onUpdateSearchString = (updatedSearchString: string): void => {
     this.setState({ searchString: updatedSearchString }, () => {
@@ -185,5 +200,14 @@ export default connect(
 const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 0,
+  },
+  graphicContainer: {
+    flex: 1,
+    marginTop: theme.viewport.height / 7,
+    alignItems: 'center',
+  },
+  graphicText: {
+    textAlign: 'center',
+    marginHorizontal: 50,
   },
 });

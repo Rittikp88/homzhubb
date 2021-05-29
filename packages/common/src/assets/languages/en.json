@@ -48,6 +48,8 @@
     "startingFrom": "Starting from",
     "saveAndContinue": "Save & Continue",
     "nearMe": "Near Me",
+    "autoDetect" : "Auto-Detect Current Location",
+    "addLocationToStart" : "Add location of your property in the search bar, to get started",
     "enableLocationPermission": "Please enable location permission",
     "errorFetchingLocation": "Sorry, we couldn't fetch your current location. Please type your location manually.",
     "searchProperties": "Search Properties",
