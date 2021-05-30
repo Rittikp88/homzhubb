@@ -52,6 +52,7 @@ export enum NotificationTypes {
   ServiceTicket = 'SERVICE_TICKET',
   Offer = 'OFFER',
   Asset = 'ASSET',
+  Campaign = 'CAMPAIGN',
 }
 
 /**

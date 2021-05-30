@@ -247,6 +247,10 @@ class NavigationService {
     store.dispatch(StoreCommonActions.setRedirectionDetails({ redirectionLink: '', shouldRedirect: false }));
   };
 
+  public setParams = (params: any): void => {
+    this.navigator.setParams(params);
+  };
+
   private goBack = (): void => {
     if (this.navigator) {
       if (this.navigator.canGoBack()) {

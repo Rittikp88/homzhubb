@@ -19,6 +19,7 @@ const notificationScreenMap = {
   [NotificationTypes.ServiceTicket]: ScreensKeys.ServiceTicketDetail,
   [NotificationTypes.Offer]: ScreensKeys.OfferDetail,
   [NotificationTypes.Asset]: ScreensKeys.Portfolio,
+  [NotificationTypes.Campaign]: ScreensKeys.Dashboard,
 };
 
 const notificationSubScreenMap = {
@@ -124,7 +125,7 @@ class NotificationService {
               message,
               onPress: () => this.redirectOnNotification(data),
               description: title,
-              duration: 5000,
+              duration: type === NotificationTypes.Campaign ? 10000 : 5000,
             });
         }
       }
@@ -201,15 +202,25 @@ class NotificationService {
 
     const { deeplink_metadata } = data as INotificationData;
     const JSONDeeplinkData: INotificationData = JSON.parse(deeplink_metadata);
-    const { type, screen } = JSONDeeplinkData;
+    const { type, screen, image_link } = JSONDeeplinkData;
 
-    let navigationTab = ScreensKeys.More;
-    const screenName =
-      (screen
-        ? notificationSubScreenMap[screen as NotificationScreens] || ScreensKeys.ChatScreen
-        : notificationScreenMap[type as NotificationTypes]) || ScreensKeys.ChatScreen;
+    const getScreenName = (notifType: string, notifScreen?: string): string => {
+      if (notifType === NotificationTypes.Campaign) return ScreensKeys.DashboardLandingScreen;
+      return (
+        (notifScreen
+          ? notificationSubScreenMap[screen as NotificationScreens] || ScreensKeys.ChatScreen
+          : notificationScreenMap[type as NotificationTypes]) || ScreensKeys.ChatScreen
+      );
+    };
 
-    const params = notificationParamsMap[screen as NotificationScreens] || {};
+    const getScreenParams = (notifType: string): INotificationData =>
+      notifType === NotificationTypes.Campaign
+        ? { imageLink: image_link }
+        : notificationParamsMap[screen as NotificationScreens] || {};
+
+    let navigationTab = type === NotificationTypes.Campaign ? ScreensKeys.Dashboard : ScreensKeys.More;
+    const screenName = getScreenName(type, screen);
+    const params = getScreenParams(type);
     const store = StoreProviderService.getStore();
 
     const { name: currentScreen } = this.getCurrentNavigation();
@@ -225,7 +236,6 @@ class NotificationService {
               groupId: Number(message_group_id),
             })
           );
-
           NavigationService.notificationNavigation(screenName, params, navigationTab);
         }
         break;
@@ -279,6 +289,16 @@ class NotificationService {
           );
           NavigationService.notificationNavigation(screenName, params, navigationTab);
         }
+        break;
+      case NotificationTypes.Campaign:
+        if (!image_link || (image_link && image_link.length <= 0)) {
+          return;
+        }
+        if (currentScreen === ScreensKeys.DashboardLandingScreen) {
+          NavigationService.setParams(params);
+          return;
+        }
+        NavigationService.notificationNavigation(screenName, params, ScreensKeys.Dashboard);
         break;
       default:
         NavigationService.notificationNavigation(screenName, params, navigationTab);

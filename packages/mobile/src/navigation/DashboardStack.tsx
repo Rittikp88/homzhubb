@@ -5,7 +5,7 @@ import Dashboard from '@homzhub/mobile/src/screens/Asset/Dashboard';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type DashboardNavigatorParamList = {
-  [ScreensKeys.DashboardLandingScreen]: undefined;
+  [ScreensKeys.DashboardLandingScreen]: undefined | { imageLink?: string };
 } & CommonParamList;
 
 const DashboardNavigator = createStackNavigator<DashboardNavigatorParamList>();

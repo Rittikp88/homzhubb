@@ -120,7 +120,17 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     const { navigation, setFilter, setCurrentTicket, setCurrentOfferPayload, setCurrentAsset } = this.props;
     const {
       id,
-      deeplinkMetadata: { objectId, type, assetId, leaseListingId, saleListingId, screen, leaseUnitId, messageGroupId },
+      deeplinkMetadata: {
+        objectId,
+        type,
+        assetId,
+        leaseListingId,
+        saleListingId,
+        screen,
+        leaseUnitId,
+        messageGroupId,
+        imageLink,
+      },
       isRead,
     } = data;
 
@@ -203,6 +213,18 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
         params: {
           screen: ScreensKeys.PropertyDetailScreen,
           initial: false,
+        },
+      });
+    } else if (type === NotificationType.CAMPAIGN) {
+      if (imageLink.length <= 0 || imageLink.split('.').reverse()[0] === 'svg') return;
+
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.Dashboard,
+        params: {
+          screen: ScreensKeys.DashboardLandingScreen,
+          initial: false,
+          params: { imageLink },
         },
       });
     }

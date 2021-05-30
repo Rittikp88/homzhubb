@@ -10,6 +10,7 @@ export enum NotificationType {
   SERVICE_TICKET = 'SERVICE_TICKET',
   OFFER = 'OFFER',
   ASSET = 'ASSET',
+  CAMPAIGN = 'CAMPAIGN',
 }
 
 @JsonObject('DeeplinkMetaData')
@@ -40,6 +41,9 @@ export class DeeplinkMetaData {
 
   @JsonProperty('message_group_name', String, true)
   private _messageGroupName = '';
+
+  @JsonProperty('image_link', String, true)
+  private _imageLink = '';
 
   get assetId(): number {
     return this._assetId;
@@ -75,5 +79,9 @@ export class DeeplinkMetaData {
 
   get messageGroupName(): string {
     return this._messageGroupName;
+  }
+
+  get imageLink(): string {
+    return this._imageLink;
   }
 }

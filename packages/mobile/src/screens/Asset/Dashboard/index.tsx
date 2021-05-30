@@ -4,8 +4,9 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
@@ -15,7 +16,12 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { AssetAdvertisementBanner, AssetMetricsList, AssetSummary } from '@homzhub/mobile/src/components';
+import {
+  AssetAdvertisementBanner,
+  AssetMetricsList,
+  AssetSummary,
+  FullScreenAssetDetailsCarousel,
+} from '@homzhub/mobile/src/components';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
@@ -30,6 +36,7 @@ import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/DashboardStack';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
@@ -67,6 +74,7 @@ const ShowInMvpRelease = false;
 
 export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   public focusListener: any;
+  public blurListener: any;
 
   public state = {
     metrics: {} as AssetMetrics,
@@ -80,33 +88,40 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     this.focusListener = navigation.addListener('focus', () => {
       this.getScreenData().then();
     });
+    this.blurListener = navigation.addListener('blur', () => {
+      this.handleScreenBlur();
+    });
   };
 
   public componentWillUnmount(): void {
     this.focusListener();
+    this.blurListener();
   }
 
   public render = (): React.ReactElement => {
-    const { t } = this.props;
+    const { t, route } = this.props;
     const { isLoading, pendingProperties } = this.state;
 
     return (
-      <UserScreen loading={isLoading} isGradient title={t('dashboard')}>
-        {this.renderAssetMetricsAndUpdates()}
-        {pendingProperties.length > 0 && (
-          <PendingPropertyListCard
-            data={pendingProperties}
-            onPressComplete={this.onCompleteDetails}
-            onSelectAction={this.handleActionSelection}
-            onViewProperty={this.onViewProperty}
-          />
-        )}
-        <FinanceOverview />
-        <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
-        <AssetAdvertisementBanner />
-        {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
-        {this.renderBottomSheet()}
-      </UserScreen>
+      <>
+        <UserScreen loading={isLoading} isGradient title={t('dashboard')}>
+          {this.renderAssetMetricsAndUpdates()}
+          {pendingProperties.length > 0 && (
+            <PendingPropertyListCard
+              data={pendingProperties}
+              onPressComplete={this.onCompleteDetails}
+              onSelectAction={this.handleActionSelection}
+              onViewProperty={this.onViewProperty}
+            />
+          )}
+          <FinanceOverview />
+          <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
+          <AssetAdvertisementBanner />
+          {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
+          {this.renderBottomSheet()}
+        </UserScreen>
+        {Boolean(route?.params?.imageLink && route?.params?.imageLink?.length > 0) && this.renderFullImageView()}
+      </>
     );
   };
 
@@ -184,6 +199,31 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     );
   };
 
+  public renderFullImageView = (): React.ReactElement | null => {
+    const { route } = this.props;
+
+    if (route?.params?.imageLink) {
+      const imageLink = ObjectMapper.deserialize(Attachment, { link: route?.params?.imageLink });
+
+      const onPressCross = (): void => {
+        this.handleScreenBlur();
+      };
+
+      return (
+        <>
+          <FullScreenAssetDetailsCarousel
+            data={[imageLink]}
+            activeSlide={0}
+            onFullScreenToggle={onPressCross}
+            hasOnlyImages
+          />
+        </>
+      );
+    }
+
+    return null;
+  };
+
   // HANDLERS
   private onAssetSubscriptionApiFailure = (err: IApiClientError): void => {
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(err) });
@@ -215,6 +255,11 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     navigation.navigate(ScreensKeys.PropertyDetailScreen);
   };
 
+  private handleScreenBlur = (): void => {
+    const { navigation } = this.props;
+    navigation.setParams({ imageLink: undefined });
+  };
+
   private handleMessages = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.Messages, { isFromDashboard: true });
@@ -222,14 +267,14 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private handleDues = (): void => {
     /**
-     *
-     navigation.dispatch(
-     CommonActions.reset({
-        index: 0,
-        routes: [{ name: ScreensKeys.Financials }],
-      })
-     );
-     */
+   *
+   navigation.dispatch(
+   CommonActions.reset({
+      index: 0,
+      routes: [{ name: ScreensKeys.Financials }],
+    })
+   );
+   */
     const { navigation, t } = this.props;
     navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('dues') ?? '', tabHeader: t('dashboard') });
   };

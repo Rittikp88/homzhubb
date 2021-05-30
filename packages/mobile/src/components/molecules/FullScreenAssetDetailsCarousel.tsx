@@ -15,7 +15,7 @@ interface IProps {
   activeSlide: number;
   data: Attachment[];
   onFullScreenToggle: () => void;
-  updateSlide: (index: number) => void;
+  updateSlide?: (index: number) => void;
   onShare?: () => void;
   hasOnlyImages?: boolean;
   containerStyle?: ViewStyle;
@@ -67,11 +67,16 @@ export class FullScreenAssetDetailsCarousel extends React.PureComponent<IProps> 
   public renderImageAndVideo = (): React.ReactElement => {
     const { activeSlide, data, updateSlide } = this.props;
     const onScrollEnd = (e: NativeSyntheticEvent<NativeScrollEvent>): void => {
-      const pageNumber =
-        Math.min(Math.max(Math.floor(e.nativeEvent.contentOffset.x / theme.viewport.width + 0.5) + 1, 0), data.length) -
-        1;
-      updateSlide(pageNumber);
+      if (updateSlide) {
+        const pageNumber =
+          Math.min(
+            Math.max(Math.floor(e.nativeEvent.contentOffset.x / theme.viewport.width + 0.5) + 1, 0),
+            data.length
+          ) - 1;
+        updateSlide(pageNumber);
+      }
     };
+
     return (
       <FlatList
         data={data}
