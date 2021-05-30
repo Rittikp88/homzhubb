@@ -131,13 +131,10 @@ const ServicesDashboard = (): React.ReactElement => {
             {totalService > 0 && services.length > 0 ? (
               <>
                 {services.map((item, index) => {
-                  return (
-                    <PropertyServiceCard
-                      data={item}
-                      key={index}
-                      onAttachmentPress={(attachment): void => handleAttachmentPress(attachment, item.id)}
-                    />
-                  );
+                  const attachmentPress = (attachment: Attachment[]): void => {
+                    handleAttachmentPress(attachment, item.id);
+                  };
+                  return <PropertyServiceCard data={item} key={index} onAttachmentPress={attachmentPress} />;
                 })}
               </>
             ) : (

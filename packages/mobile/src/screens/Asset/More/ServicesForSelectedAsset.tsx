@@ -1,6 +1,5 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { View, StyleSheet, LayoutChangeEvent, TouchableOpacity } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
@@ -249,12 +248,8 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
   };
 
   const onSuccessFullPayment = (): void => {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: ScreensKeys.MoreScreen }],
-      })
-    );
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.ServicesDashboard);
   };
 
   const setValueAddedServices = (payload: ISelectedValueServices): void => {

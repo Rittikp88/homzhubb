@@ -44,7 +44,11 @@ const ServiceCard = ({ service, menuOptions, onSelectOption, onAttachmentPress }
       </View>
       {attachment.length > 0 && (
         <TouchableOpacity style={styles.attachmentView} onPress={(): void => onAttachmentPress(attachment)}>
-          <Icon name={icons.gallery} color={theme.colors.primaryColor} size={24} />
+          <Icon
+            name={attachment[0].mediaType === MediaType.image ? icons.image : icons.pdfFile}
+            color={theme.colors.primaryColor}
+            size={20}
+          />
           <Text type="small" style={styles.attachmentText}>
             {attachment.length > 1
               ? `${attachment.length} ${attachment[0].mediaType === MediaType.image ? t('photos') : t('attachments')}`

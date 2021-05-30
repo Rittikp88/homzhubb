@@ -23,11 +23,12 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
   const [isExpanded, setIsExpanded] = useState(false);
   const { valueAddedServices, assetStatusInfo } = data;
 
-  const getMenuOptions = (isUploadAllowed: boolean): IMenu[] => {
-    const options = [
-      { label: t('property:downloadToDevice'), value: ServiceOption.DOWNLOAD_TO_DEVICE },
-      { label: t('property:downloadInvoice'), value: ServiceOption.DOWNLOAD_INVOICE },
-    ];
+  const getMenuOptions = (attachmentLength: number, isUploadAllowed: boolean): IMenu[] => {
+    const options = [{ label: t('property:downloadInvoice'), value: ServiceOption.DOWNLOAD_INVOICE }];
+
+    if (attachmentLength > 0) {
+      options.unshift({ label: t('property:downloadToDevice'), value: ServiceOption.DOWNLOAD_TO_DEVICE });
+    }
 
     if (isUploadAllowed) {
       options.unshift({ label: t('property:addImageToProperty'), value: ServiceOption.ADD_IMAGE });
@@ -36,8 +37,8 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
     return options;
   };
 
-  const handleSelection = (value: string, attachment: Attachment[]): void => {
-    ServiceHelper.handleServiceActions(value, data.id, attachment);
+  const handleSelection = (value: string, attachment: Attachment[], invoice: Attachment): void => {
+    ServiceHelper.handleServiceActions(value, data.id, attachment, invoice);
   };
 
   return (
@@ -69,14 +70,14 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
                 {`Services (${valueAddedServices.length})`}
               </Text>
               {valueAddedServices.map((item, index) => {
-                const menuData = getMenuOptions(item.isUploadAllowed);
+                const menuData = getMenuOptions(item.attachment.length, item.isUploadAllowed);
                 return (
                   <ServiceCard
                     key={index}
                     service={item}
                     menuOptions={menuData}
-                    onSelectOption={(value): void => handleSelection(value, item.attachment)}
-                    onAttachmentPress={onAttachmentPress}
+                    onSelectOption={(value): void => handleSelection(value, item.attachment, item.invoice.attachment)}
+                    onAttachmentPress={(attachments): void => onAttachmentPress(attachments)}
                   />
                 );
               })}

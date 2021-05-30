@@ -1,5 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
+import { IInvoice, Invoice } from '@homzhub/common/src/domain/models/Invoice';
 import { ILabelColor, LabelColor } from '@homzhub/common/src/domain/models/LabelColor';
 
 export interface IService {
@@ -14,6 +15,7 @@ export interface IService {
   attachment?: IAttachment;
   status?: ILabelColor;
   status_updated_at?: string;
+  invoice?: IInvoice;
 }
 
 @JsonObject('Service')
@@ -44,6 +46,9 @@ export class Service {
 
   @JsonProperty('icon_attachment', Attachment, true)
   private _iconAttachment: Attachment = new Attachment();
+
+  @JsonProperty('invoice', Invoice, true)
+  private _invoice: Invoice = new Invoice();
 
   @JsonProperty('attachment', [Attachment])
   private _attachment: Attachment[] = [];
@@ -93,5 +98,9 @@ export class Service {
 
   get statusUpdatedAt(): string {
     return this._statusUpdatedAt;
+  }
+
+  get invoice(): Invoice {
+    return this._invoice;
   }
 }

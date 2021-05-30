@@ -185,6 +185,8 @@ export const icons = {
   faq: 'faq',
   dragIndicator: 'drag-indicator',
   noteBookOutlined: 'noteBook-outlined',
+  image: 'image',
+  pdfFile: 'pdf-file',
 
   // COMMUTE
   train: 'train',
