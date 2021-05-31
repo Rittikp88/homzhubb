@@ -288,7 +288,7 @@ const EditProfileModal: React.FC<Props> = (props: Props) => {
           position: 'right center',
           on: [],
           arrow: false,
-          closeOnDocumentClick: true,
+          closeOnDocumentClick: false,
           children: undefined,
           modal: true,
           contentStyle: {

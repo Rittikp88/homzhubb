@@ -43,7 +43,7 @@ const ProfilePopover: React.FC<IProfilePopover> = (props: IProfilePopover) => {
 const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
   const styles = contentStyles;
   const { formType, popupRef } = props;
-  const isMobile = useOnly(deviceBreakpoint.MOBILE)
+  const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
@@ -87,8 +87,8 @@ const contentStyles = StyleSheet.create({
   modalContainer: {
     width: '37.5vw',
   },
-  modalContainerMobile:{
-    width:'95vw'
+  modalContainerMobile: {
+    width: '95vw',
   },
   modalHeader: {
     height: '64px',

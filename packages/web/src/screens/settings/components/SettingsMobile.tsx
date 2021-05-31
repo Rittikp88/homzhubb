@@ -41,7 +41,7 @@ const Settings: FC<IOwnProps> = (props: IOwnProps) => {
   const [settingData, setSettingData] = useState<SettingsData[]>([]);
   const [cautionMessage, setCautionMessage] = useState(false);
   const [keys, setKeys] = useState('');
-  const [values, setValues] = useState<SelectedPreferenceType>('');  
+  const [values, setValues] = useState<SelectedPreferenceType>('');
   const [messages, setMessages] = useState('');
   const [messageTitle, setMessageTitle] = useState('');
 

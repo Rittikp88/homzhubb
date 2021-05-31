@@ -30,7 +30,7 @@ const BasicInformations: FC<IProps> = (props: IProps) => {
           <View style={styles.userContent}>
             <View style={styles.rowStyle}>
               <Icon size={20} name={item.icon} color={theme.colors.darkTint4} />
-              <Label type="large" style={styles.text}>
+              <Label type="large" style={[styles.text]}>
                 {item.text || item.helperText}
               </Label>
             </View>
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 10,
+    width: 200,
   },
 });
 export default BasicInformations;

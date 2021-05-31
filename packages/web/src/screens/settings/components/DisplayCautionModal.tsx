@@ -146,6 +146,6 @@ const styles = StyleSheet.create({
   footerMobile: {
     right: '46%',
   },
-  title:{ marginHorizontal: 5 }
+  title: { marginHorizontal: 5 },
 });
 export default DisplayCautionModal;
