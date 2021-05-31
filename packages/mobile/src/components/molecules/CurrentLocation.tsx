@@ -13,11 +13,12 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 interface IProps {
   onGetCurrentPositionSuccess: (data: GeolocationResponse) => void;
   testID?: string;
+  textToShow?: string;
 }
 
 const CurrentLocation = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { onGetCurrentPositionSuccess } = props;
+  const { onGetCurrentPositionSuccess, textToShow = t('common:nearMe') } = props;
 
   const onAutoDetectPress = async (): Promise<void> => {
     const isLocationEnabled = await PermissionsService.checkPermission(PERMISSION_TYPE.location);
@@ -36,7 +37,7 @@ const CurrentLocation = (props: IProps): React.ReactElement => {
     <TouchableOpacity onPress={onAutoDetectPress} style={styles.autoDetectTextContainer} testID="touchableNearMe">
       <Icon name={icons.location} size={16} color={theme.colors.primaryColor} />
       <Label type="large" textType="semiBold" style={styles.autoDetectText}>
-        {t('autoDetect')}
+        {textToShow}
       </Label>
     </TouchableOpacity>
   );

@@ -206,6 +206,7 @@ class NotificationService {
 
     const getScreenName = (notifType: string, notifScreen?: string): string => {
       if (notifType === NotificationTypes.Campaign) return ScreensKeys.DashboardLandingScreen;
+      if (notifType === NotificationTypes.ValueAddedService) return ScreensKeys.ServicesDashboard;
       return (
         (notifScreen
           ? notificationSubScreenMap[screen as NotificationScreens] || ScreensKeys.ChatScreen

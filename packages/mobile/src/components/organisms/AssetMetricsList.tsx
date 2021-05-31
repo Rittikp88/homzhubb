@@ -88,6 +88,8 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
                 colorCode={item.colorCode}
                 onPressMetrics={handlePress}
                 selectedAssetType={selectedAssetType}
+                // Todo : Check in multiple devices
+                maxLength={items.length === 2 ? 15 : undefined}
               />
             );
           })}

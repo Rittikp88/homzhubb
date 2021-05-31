@@ -194,7 +194,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
     this.setState({ expandedItem }, () => {
       if (
         expandedItem > transactionsData.length - 5 &&
-        !(transactionsData as FinancialRecords[])[expandedItem].attachments.length
+        !(transactionsData as FinancialRecords[])[expandedItem].attachmentDetails.length
       ) {
         setTimeout(() => {
           this.scrollRef.current?.scrollToEnd();

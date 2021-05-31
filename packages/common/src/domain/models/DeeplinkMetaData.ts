@@ -11,6 +11,7 @@ export enum NotificationType {
   OFFER = 'OFFER',
   ASSET = 'ASSET',
   CAMPAIGN = 'CAMPAIGN',
+  VALUE_ADDED_SERVICE = 'VALUE_ADDED_SERVICE',
 }
 
 @JsonObject('DeeplinkMetaData')

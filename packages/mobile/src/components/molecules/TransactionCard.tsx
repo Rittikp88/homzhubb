@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonContainer: {
-    flex: 2.7,
+    flex: 4,
     flexDirection: 'row-reverse',
     justifyContent: 'space-between',
   },

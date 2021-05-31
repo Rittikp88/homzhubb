@@ -227,6 +227,8 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
           params: { imageLink },
         },
       });
+    } else if (type === NotificationType.VALUE_ADDED_SERVICE) {
+      navigation.navigate(ScreensKeys.ServicesDashboard);
     }
   };
 

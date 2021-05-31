@@ -80,7 +80,11 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
           <SearchResults results={suggestions} onResultPress={this.onSuggestionPress} testID="searchResults" />
         )}
         {showAutoDetect && searchString.length <= 0 && (
-          <CurrentLocation onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess} testID="currentLocation" />
+          <CurrentLocation
+            textToShow={t('common:autoDetect')}
+            onGetCurrentPositionSuccess={this.onGetCurrentPositionSuccess}
+            testID="currentLocation"
+          />
         )}
         {!(suggestions.length > 0 && searchString.length > 0) && this.renderGraphicView()}
       </Screen>

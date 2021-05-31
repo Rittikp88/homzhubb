@@ -15,10 +15,21 @@ interface IProps {
   cardStyle?: StyleProp<ViewStyle>;
   testID?: string;
   onPressMetrics?: () => void;
+  maxLength?: number;
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const { header, value, cardStyle, testID, onPressMetrics, isCurrency, selectedAssetType, colorCode } = props;
+  const {
+    header,
+    value,
+    cardStyle,
+    testID,
+    onPressMetrics,
+    isCurrency,
+    selectedAssetType,
+    colorCode,
+    maxLength,
+  } = props;
 
   const currency = useSelector(UserSelector.getCurrency);
 
@@ -31,7 +42,7 @@ const AssetMetrics = (props: IProps): React.ReactElement => {
   const renderItem = (): React.ReactElement => {
     return (
       <>
-        <Text type="small" textType="semiBold" style={styles.metricName}>
+        <Text type="small" textType="semiBold" style={styles.metricName} maxLength={maxLength}>
           {header}
         </Text>
         {isCurrency ? (
