@@ -49,3 +49,7 @@ target 'homzhub-tvOS' do
     # Pods for testing
   end
 end
+
+target 'ImageNotification' do
+  pod 'Firebase/Messaging', '~> 7.6.0' # eg 6.31.0
+end

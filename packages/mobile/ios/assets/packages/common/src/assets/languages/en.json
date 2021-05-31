@@ -48,6 +48,8 @@
     "startingFrom": "Starting from",
     "saveAndContinue": "Save & Continue",
     "nearMe": "Near Me",
+    "autoDetect" : "Auto-Detect Current Location",
+    "addLocationToStart" : "Add location of your property in the search bar, to get started",
     "enableLocationPermission": "Please enable location permission",
     "errorFetchingLocation": "Sorry, we couldn't fetch your current location. Please type your location manually.",
     "searchProperties": "Search Properties",
@@ -274,7 +276,9 @@
     "knowLess": "Know Less",
     "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*",
     "confirmation": "Confirmation!",
-    "noDataAvailable": "No data available"
+    "noDataAvailable": "No data available",
+    "photos": "Photos",
+    "attachments": "Attachments"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -646,7 +650,13 @@
     "buyNewService": "Buy New Service",
     "propertyAdded": "Property added",
     "servicePurchased": "Services Purchased",
-    "propertyOption": "Property Options"
+    "propertyOption": "Property Options",
+    "gallery": "Gallery",
+    "downloadToDevice": "Download to Device",
+    "downloadInvoice": "Download invoice",
+    "addImageToProperty": "Add images to property",
+    "attachmentList": "Attachment List",
+    "imageUploaded": "Successfully Image uploaded"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

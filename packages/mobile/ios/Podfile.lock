@@ -547,6 +547,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../../../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../../../node_modules/react-native/Libraries/FBReactNativeSpec`)
+  - Firebase/Messaging (~> 7.6.0)
   - Flipper (~> 0.54.0)
   - Flipper-DoubleConversion (= 1.1.7)
   - Flipper-Folly (~> 2.2)
@@ -926,6 +927,6 @@ SPEC CHECKSUMS:
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
   YoutubePlayer-in-WKWebView: cfbf46da51d7370662a695a8f351e5fa1d3e1008
 
-PODFILE CHECKSUM: 65845a7a53fb2344a98c342ba891884e89bdd18b
+PODFILE CHECKSUM: 8d217dca7c6eea702fecc4c525d448148e7e6269
 
 COCOAPODS: 1.10.1
