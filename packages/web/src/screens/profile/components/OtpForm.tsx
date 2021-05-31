@@ -151,6 +151,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
           type="primary"
           title={buttonTitle || t('common:continue')}
           containerStyle={[styles.signupButtonStyle]}
+          disabled={userOtp.length < 6}
           onPress={verifyOtp}
         />
       </View>

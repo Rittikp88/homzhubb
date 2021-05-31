@@ -69,6 +69,7 @@ const EditProfileModal: React.FC<Props> = (props: Props) => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
+    openEditModal(false);
   };
 
   const handleWebView = (params: IWebProps): React.ReactElement => {
@@ -171,7 +172,7 @@ const EditProfileModal: React.FC<Props> = (props: Props) => {
 
       try {
         await UserRepository.updateUserProfileByActions(payload);
-        openEditModal(false);
+        handlePopupClose();
         updateUserProfile();
       } catch (e) {
         AlertHelper.error({ message: e.message });
@@ -338,6 +339,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 24,
     top: 12,
+    cursor: 'pointer',
   },
   passwordBox: {
     width: '90%',
