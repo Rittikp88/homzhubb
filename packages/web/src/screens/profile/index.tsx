@@ -24,13 +24,8 @@ const Profile: FC = () => {
 };
 
 const styles = StyleSheet.create({
-  setting: {
-    marginLeft: 24,
-    width: '57vw',
-  },
-  rowStyle: {
-    flexDirection: 'row',
-  },
+  setting: { marginLeft: 24, width: '58vw' },
+  rowStyle: { flexDirection: 'row' },
 });
 
 export default Profile;

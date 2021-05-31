@@ -2,11 +2,13 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ProfileModalContent from '@homzhub/web/src/screens/profile/components/ProfileModalContent';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProfilePopover {
   popupRef: React.RefObject<PopupActions>;
@@ -41,6 +43,7 @@ const ProfilePopover: React.FC<IProfilePopover> = (props: IProfilePopover) => {
 const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
   const styles = contentStyles;
   const { formType, popupRef } = props;
+  const isMobile = useOnly(deviceBreakpoint.MOBILE)
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
@@ -60,7 +63,7 @@ const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
   };
   const { modalTitleHeader } = profileFormElements[formType];
   return (
-    <View style={styles.modalContainer}>
+    <View style={[styles.modalContainer, isMobile && styles.modalContainerMobile]}>
       <View style={styles.modalHeader}>
         <Typography size="regular" fontWeight="semiBold" style={styles.modalHeaderTitle}>
           {modalTitleHeader || t('common:congratulations')}
@@ -83,6 +86,9 @@ const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
 const contentStyles = StyleSheet.create({
   modalContainer: {
     width: '37.5vw',
+  },
+  modalContainerMobile:{
+    width:'95vw'
   },
   modalHeader: {
     height: '64px',

@@ -122,7 +122,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
                       title={t('moreProfile:saveChanges')}
                       type="primary"
                       onPress={(): void => formProps.handleSubmit()}
-                      containerStyle={styles.buttonAccept}
+                      containerStyle={ styles.buttonAccept }
                     />
                   </View>
                 )}
@@ -214,6 +214,6 @@ const styles = StyleSheet.create({
   },
   buttonAccept: {
     marginVertical: '16px',
-    marginHorizontal: '24px',
-  },
+    marginRight:'24px',
+    marginLeft:'16px'  },
 });

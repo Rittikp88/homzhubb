@@ -2,7 +2,6 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect, ConnectedProps, useDispatch, useSelector } from 'react-redux';
-
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import PrivateRoute from '@homzhub/web/src/router/PrivateRoute';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -23,7 +22,6 @@ import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
 import Notifications from '@homzhub/web/src/screens/notifications';
 import Error404 from '@homzhub/web/src/components/staticPages/Error404';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-
 // Lazy imports
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));

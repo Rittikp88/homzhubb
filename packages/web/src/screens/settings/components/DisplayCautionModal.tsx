@@ -57,13 +57,25 @@ const DisplayCautionModal: React.FC<ICautionMessage> = (props: ICautionMessage) 
           <Typography variant="text" size="small" fontWeight="regular" style={styles.text}>
             {message}
           </Typography>
-          <Typography variant="text" size="small" fontWeight="regular" style={styles.text}>
+          <Typography variant="text" size="small" fontWeight="regular" style={styles.continue}>
             {t('common:wantToContinue')}
           </Typography>
         </View>
-        <View style={styles.footer}>
-          <Button title={t('common:continue')} type="secondary" containerStyle={styles.button} onPress={handlePress} />
-          <Button type="primary" title={t('common:cancel')} onPress={handlePopupClose} containerStyle={styles.button} />
+        <View style={[styles.footer, isMobile && styles.footerMobile]}>
+          <Button
+            title={t('common:continue')}
+            type="secondary"
+            containerStyle={[!isMobile && styles.button, isMobile && styles.buttonMobile1]}
+            titleStyle={styles.title}
+            onPress={handlePress}
+          />
+          <Button
+            type="primary"
+            title={t('common:cancel')}
+            onPress={handlePopupClose}
+            containerStyle={[styles.button, isMobile && styles.buttonMobile]}
+            titleStyle={styles.title}
+          />
         </View>
       </View>
     );
@@ -93,17 +105,21 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: 42,
+    top: 20,
   },
   text: {
     paddingTop: 12,
     paddingBottom: 24,
     textAlign: 'center',
   },
+  continue: {
+    marginBottom: 24,
+    textAlign: 'center',
+  },
   container: {
     marginHorizontal: '5%',
     marginVertical: 30,
-    height: 300,
+    minHeight: 300,
   },
   header: {
     flexDirection: 'row-reverse',
@@ -113,10 +129,23 @@ const styles = StyleSheet.create({
     height: 44,
     marginLeft: 10,
   },
+  buttonMobile1: {
+    width: '90%',
+    marginRight: '5%',
+    marginLeft: 0,
+  },
+  buttonMobile: {
+    width: '90%',
+    marginLeft: 0,
+  },
   image: {
     height: 120,
     width: 120,
   },
-  footer: { flexDirection: 'row', position: 'absolute', bottom: 0, right: 0 },
+  footer: { flexDirection: 'row', position: 'absolute', bottom: 0, right: '10%' },
+  footerMobile: {
+    right: '46%',
+  },
+  title:{ marginHorizontal: 5 }
 });
 export default DisplayCautionModal;
