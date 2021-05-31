@@ -42,6 +42,7 @@ export class AssetTypeFilter extends React.PureComponent<Props> {
           labelStyle={styles.checkboxLabel}
           containerStyle={styles.checkboxGroupContainer}
           testID="assetGroupCheck"
+          numOfColumns={2}
         />
       </View>
     );

@@ -1,7 +1,6 @@
 import React from 'react';
 import { FlatList, StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 
 export interface ICheckboxGroupData {
@@ -37,21 +36,17 @@ class CheckboxGroup extends React.PureComponent<IProps, {}> {
     const keyExtractor = (item: ICheckboxGroupData): string => item.id.toString();
 
     // ToDo (Praharsh: 19 Mar 2021) : Check if both cases can be covered using FlatList alone.
-    return PlatformUtils.isMobile() ? (
-      !numOfColumns ? (
-        <View style={[styles.container, containerStyle]}>
-          <View style={styles.col}>
-            {data.filter((item, index) => index % 2 === 0).map((item) => this.renderCheckbox(item))}
-          </View>
-          <View style={styles.col}>
-            {data.filter((item, index) => index % 2 !== 0).map((item) => this.renderCheckbox(item))}
-          </View>
+    return !numOfColumns ? (
+      <View style={[styles.container, containerStyle]}>
+        <View style={styles.col}>
+          {data.filter((item, index) => index % 2 === 0).map((item) => this.renderCheckbox(item))}
         </View>
-      ) : (
-        <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor} numColumns={numOfColumns} />
-      )
+        <View style={styles.col}>
+          {data.filter((item, index) => index % 2 !== 0).map((item) => this.renderCheckbox(item))}
+        </View>
+      </View>
     ) : (
-      <View style={styles.checkboxStyle}>{data.map((item) => this.renderCheckbox(item))}</View>
+      <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor} numColumns={numOfColumns} />
     );
   };
 

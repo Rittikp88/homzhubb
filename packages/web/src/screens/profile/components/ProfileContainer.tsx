@@ -12,6 +12,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import BasicInformations from '@homzhub/web/src/screens/profile/components/BasicInformations';
 import EditProfileModal from '@homzhub/web/src/screens/profile/components/EditProfileModal';
 import ProfilePhoto from '@homzhub/web/src/screens/profile/components/ProfilePhoto';
+import WorkDetails from '@homzhub/web/src/screens/profile/components/WorkDetails';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -73,6 +74,9 @@ const ProfileContainer: FC<IProps> = (props: IProps) => {
               <Icon size={20} name={icons.rightArrow} color={theme.colors.primaryColor} />
             </View>
           </View>
+        </View>
+        <View style={isTablet && styles.workDetailTab}>
+          <WorkDetails userProfileInfo={userProfile} />
         </View>
       </View>
     </View>

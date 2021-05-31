@@ -186,13 +186,18 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
       children: undefined,
     });
 
-    const moreFilterDefaultDropDownProps = (mobile: boolean | undefined, tablet: boolean | undefined): PopupProps => ({
+    const moreFilterDefaultDropDownProps = (
+      mobile: boolean | undefined,
+      tablet: boolean | undefined,
+      width: number | string,
+      height: number | string
+    ): PopupProps => ({
       arrow: false,
       contentStyle: {
         minWidth: 10,
         marginTop: isTablet ? 20 : 12,
-        width: '90%',
-        height: 536,
+        width: mobile ? '90%' : width,
+        height,
         marginRight: mobile ? 10 : undefined,
         marginLeft: !mobile ? (tablet ? 40 : 64) : 15,
       },
@@ -235,7 +240,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
         ),
         popupProps: isMobile
           ? mobileDefaultDropDownProps(125)
-          : defaultDropDownProps(125, isMobile, 400, 'bottom left'),
+          : moreFilterDefaultDropDownProps(undefined, isTablet, 400, 120),
       },
       {
         id: 2,
@@ -250,7 +255,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
             />
           </View>
         ),
-        popupProps: isMobile ? mobileDefaultDropDownProps(330) : defaultDropDownProps(304, isMobile, 420),
+        popupProps: isMobile ? mobileDefaultDropDownProps(330) : defaultDropDownProps(304, isMobile, 405),
       },
       {
         id: 3,
@@ -290,7 +295,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
         id: 5,
         label: t('assetMore:more'),
         content: <MoreFilters closePopover={closePopover} history={history} />,
-        popupProps: moreFilterDefaultDropDownProps(isMobile, isTablet),
+        popupProps: moreFilterDefaultDropDownProps(isMobile, isTablet, '90%', 536),
       },
     ];
 

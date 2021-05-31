@@ -68,7 +68,6 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
     height: 50,
     right: 18,
   };
-  console.log([APP_BASE], pathname, isMenuVisible);
 
   const onMenuClose = (): void => {
     setIsMenuOpen(false);

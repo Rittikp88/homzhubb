@@ -12,11 +12,10 @@ type Props = IWebProps;
 const PhoneCodePrefix: FC<Props> = (props: Props) => {
   const { phoneCodes, fetchFlag, fetchPhoneCodes, inputPrefixText, isBottomSheetVisible, onCloseDropDownWeb } = props;
   const defaultDropDownProps = (isOpen: boolean, width: string): PopupProps => ({
-    position: 'bottom right' as 'bottom right',
     on: ['click' as 'click'],
     open: isOpen,
     arrow: false,
-    contentStyle: { minWidth: width, marginTop: '4px', alignItems: 'stretch' },
+    contentStyle: { minWidth: width, marginTop: '4px' },
     closeOnDocumentClick: true,
     children: undefined,
   });
