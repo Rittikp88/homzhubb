@@ -60,17 +60,20 @@ const EditProfileModal: React.FC<Props> = (props: Props) => {
     setResponseFromPassword(data);
   };
 
-  useEffect(() => {
-    if (popupRef && popupRef.current) {
-      popupRef.current.open();
-    }
-  }, []);
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
     openEditModal(false);
+    updateUserProfile();
+    updatePopUp('');
   };
+
+  useEffect(() => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  }, []);
 
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
@@ -180,14 +183,13 @@ const EditProfileModal: React.FC<Props> = (props: Props) => {
     };
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
+        <View style={styles.buttonHeader}>
           <Button
             icon={icons.close}
             type="text"
             iconSize={20}
             iconColor={theme.colors.darkTint3}
             onPress={handlePopupClose}
-            containerStyle={styles.closeButton}
           />
         </View>
         <OtpForm
@@ -253,16 +255,16 @@ const EditProfileModal: React.FC<Props> = (props: Props) => {
         AlertHelper.error({ message: e.message });
       }
     };
+
     return (
       <View style={styles.container}>
-        <View style={styles.header}>
+        <View style={styles.buttonHeader}>
           <Button
             icon={icons.close}
             type="text"
             iconSize={20}
             iconColor={theme.colors.darkTint3}
             onPress={handlePopupClose}
-            containerStyle={styles.closeButton}
           />
         </View>
         <View style={styles.passwordConatiner}>
@@ -321,6 +323,11 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     paddingLeft: 18,
+  },
+  buttonHeader: {
+    flexDirection: 'row-reverse',
+    paddingRight: 24,
+    paddingTop: 24,
   },
   button: {
     width: '100%',

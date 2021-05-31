@@ -274,7 +274,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     formikHelpers: FormikHelpers<IUserProfileForm>
   ): Promise<void> => {
     const { isAddressRequired } = this.state;
-    const { userData, t, updatePopUp, updateUserProfile, updateProfileWithoutPassword } = this.props;
+    const { userData, t, updatePopUp, updateUserProfile, updateProfileWithoutPassword, closePopUp } = this.props;
     const { phone, phoneCode, email, address, postalCode } = values;
 
     formikHelpers.setSubmitting(true);
@@ -330,7 +330,11 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     try {
       const response = await UserRepository.updateUserProfileByActions(payload);
       updateProfileWithoutPassword(response);
-      updatePopUp('otpWithEmail');
+      if (response && response.user_id) {
+        closePopUp();
+      } else {
+        updatePopUp('otpWithEmail');
+      }
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }
