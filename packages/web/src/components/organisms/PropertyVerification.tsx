@@ -172,6 +172,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
   };
 
   public onImageSelection = async (value: VerificationDocumentTypes, files?: File[]): Promise<void> => {
+    const { t } = this.props;
     if (!files) {
       return;
     }
@@ -179,14 +180,19 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     const image = files[0];
     const formData = new FormData();
     formData.append('files[]', image);
-
-    const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
-    const { data } = response;
-    const source = { uri: data[0].link, type: image.type, name: image.name, id: data[0].id };
-    if (Object.values(AllowedAttachmentFormats).includes(image.type)) {
-      this.updateLocalDocuments(verificationDocumentId, source, value);
-    } else {
-      AlertHelper.error({ message: value.helpText });
+    try {
+      const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
+      const { data } = response;
+      const source = { uri: data[0].link, type: image.type, name: image.name, id: data[0].id };
+      if (Object.values(AllowedAttachmentFormats).includes(image.type)) {
+        this.updateLocalDocuments(verificationDocumentId, source, value);
+      } else {
+        AlertHelper.error({ message: value.helpText });
+      }
+    } catch (e) {
+      if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
+        AlertHelper.error({ message: t('common:fileCorrupt'), statusCode: e.details.statusCode });
+      }
     }
   };
 
@@ -322,7 +328,7 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
     } catch (e) {
       this.setState({ isLoading: false });
       if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
-        AlertHelper.error({ message: t('common:fileCorrupt') });
+        AlertHelper.error({ message: t('common:fileCorrupt'), statusCode: e.details.statusCode });
       }
     }
   };

@@ -224,7 +224,7 @@ export class ProfileModalContent extends React.PureComponent<Props, IOwnState> {
       AlertHelper.success({ message: t('profileUpdatedSuccessfully') });
       // Navigate Logic
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 }

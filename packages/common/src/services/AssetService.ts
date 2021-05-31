@@ -163,7 +163,7 @@ class AssetService {
         };
       });
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
       return [];
     }
   };

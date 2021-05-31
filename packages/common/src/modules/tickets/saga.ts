@@ -14,7 +14,7 @@ export function* getUserTickets(action: IFluxStandardAction<IGetTicketParam>) {
     yield put(TicketActions.getTicketsSuccess(response));
   } catch (e) {
     yield put(TicketActions.getTicketsFailure());
-    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }
 }
 
@@ -41,7 +41,7 @@ export function* getTicketDetails(action: IFluxStandardAction<number>) {
       })
     );
   } catch (e) {
-    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     yield put(TicketActions.getTicketDetailFailure());
   }
 }

@@ -53,21 +53,21 @@ const SignUp: FC<IProps> = (props: IProps) => {
     try {
       const isEmailUsed = await UserRepository.emailExists(formData.email);
       if (isEmailUsed.is_exists) {
-        AlertHelper.error({ message: t('auth:emailAlreadyExists') });
+        AlertHelper.error({ message: t('auth:emailAlreadyExists') }); // TODOS: Lakshit - Require clarity on usage
         return;
       }
 
       const phone = `${formData.phone_code}~${formData.phone_number}`;
       const isPhoneUsed = await UserRepository.phoneExists(phone);
       if (isPhoneUsed.is_exists) {
-        AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
+        AlertHelper.error({ message: t('auth:phoneAlreadyExists') }); // TODOS: Lakshit - Require clarity on usage
         return;
       }
 
       if (formData.signup_referral_code) {
         const isValidCode = await UserRepository.verifyReferalCode(formData.signup_referral_code);
         if (!isValidCode.is_applicable) {
-          AlertHelper.error({ message: t('auth:invalidReferralCodeError') });
+          AlertHelper.error({ message: t('auth:invalidReferralCodeError') }); // TODOS: Lakshit - Require clarity on usage
           return;
         }
       }
@@ -94,7 +94,7 @@ const SignUp: FC<IProps> = (props: IProps) => {
       });
       // TODO: ONCE THE DATA IS VALIDATED NAVIGATE TO OTP SCREEN
     } catch (err) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
     }
   };
 

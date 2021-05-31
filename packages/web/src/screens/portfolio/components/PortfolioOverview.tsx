@@ -49,7 +49,7 @@ const getPorfolioMetrics = async (callback: (response: AssetMetrics) => void): P
     callback(response);
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 };
 const getPorfolioAssetDetails = async (callback: (response: Asset[]) => void): Promise<void> => {
@@ -58,7 +58,7 @@ const getPorfolioAssetDetails = async (callback: (response: Asset[]) => void): P
     callback(response);
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 };
 

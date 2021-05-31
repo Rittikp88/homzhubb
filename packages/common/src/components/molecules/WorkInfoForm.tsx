@@ -150,7 +150,7 @@ export class WorkInfoForm extends React.PureComponent<IProps, IState> {
       }
       updateFormLoadingState(false);
       formikHelpers.setSubmitting(false);
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 

@@ -302,7 +302,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
       this.setState({ loading: false });
     } catch (err) {
       this.setState({ loading: false });
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
     }
     formActions.setSubmitting(false);
   };
@@ -312,7 +312,7 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
     try {
       await onNextStep(TypeOfPlan.MANAGE, { is_managed: true });
     } catch (err) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
     }
   };
 

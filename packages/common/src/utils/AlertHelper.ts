@@ -9,6 +9,7 @@ export interface IToastProps {
   onPress?: () => void;
   description?: string;
   duration?: number;
+  statusCode?: number;
 }
 
 export interface IAlertProps {
@@ -42,7 +43,11 @@ class AlertHelper {
         backgroundColor: theme.colors.error,
       });
     } else {
-      NavigationUtils.errorNavSwitch('');
+      const { statusCode } = options;
+      const messageProps = {
+        message,
+      };
+      NavigationUtils.errorNavSwitch(statusCode as number, messageProps);
     }
   };
 

@@ -82,7 +82,7 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
       yield AnalyticsService.track(EventType.LoginFailure, trackData);
     }
 
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.loginFailure(error));
   }
 }
@@ -106,7 +106,7 @@ export function* logout(action: IFluxStandardAction<IAuthCallback>) {
     }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.logoutFailure(error));
     if (payload?.callback) {
       payload.callback(false);
@@ -120,7 +120,7 @@ export function* userProfile() {
     yield put(UserActions.getUserProfileSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.getUserProfileFailure());
   }
 }
@@ -146,7 +146,7 @@ export function* userPreferences() {
     }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.getUserPreferencesFailure());
   }
 }
@@ -175,7 +175,7 @@ export function* updateUserPreferences(action: IFluxStandardAction<IUpdateUserPr
     );
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.getUserPreferencesFailure());
   }
 }
@@ -186,7 +186,7 @@ export function* getUserAssets() {
     yield put(UserActions.getAssetsSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.getAssetsFailure());
   }
 }
@@ -197,7 +197,7 @@ export function* getFavouriteProperties() {
     yield put(UserActions.getFavouritePropertiesSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.getFavouritePropertiesFailure());
   }
 }
@@ -216,7 +216,7 @@ export function* getUserServices() {
     const response = yield call(ServiceRepository.getUserServices);
     yield put(UserActions.getUserServicesSuccess(response));
   } catch (e) {
-    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     yield put(UserActions.getUserServicesFailure());
   }
 }

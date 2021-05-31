@@ -64,10 +64,10 @@ class AttachmentService {
             }
           })
           .catch((err) => {
-            AlertHelper.error({ message: err });
+            AlertHelper.error({ message: err }); //  TODOS: Lakshit: Require clarity on usage.
           });
       } catch (err) {
-        AlertHelper.error({ message: err });
+        AlertHelper.error({ message: err }); // TODOS: Lakshit- Require clarity on usage.
       }
     }
   };

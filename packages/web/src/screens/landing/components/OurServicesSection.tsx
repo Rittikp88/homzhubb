@@ -93,7 +93,7 @@ const Newsletter = (): React.ReactElement => {
         })
         .catch((error) => {
           const errorMessage = ErrorUtils.getErrorMessage(error.details);
-          AlertHelper.error({ message: errorMessage });
+          AlertHelper.error({ message: errorMessage, statusCode: error.details.statusCode });
         });
     } else {
       setIsEmailValid(true);

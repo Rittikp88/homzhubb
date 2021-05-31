@@ -94,7 +94,7 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
         });
       }
     } catch (err) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
     }
   };
 
@@ -260,7 +260,7 @@ class SaleTermController extends React.PureComponent<Props, IOwnState> {
       this.setState({ loading: false });
     } catch (err) {
       this.setState({ loading: false });
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
     }
     formActions.setSubmitting(false);
   };

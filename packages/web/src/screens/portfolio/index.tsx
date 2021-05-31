@@ -331,7 +331,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
       this.setState({
         whilePortfolioFilters: false,
       });
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 }

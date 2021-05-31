@@ -110,10 +110,10 @@ const AddProperty: FC = () => {
           )
         );
       } catch (e) {
-        AlertHelper.error({ message: e.message });
+        AlertHelper.error({ message: e.message, statusCode: e.details.statusCode }); // TODOS: Lakshit - Require clarity on usage
       }
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: e.message, statusCode: e.details.statusCode }); // TODOS Lakshit - Require clarity on usage
     }
   };
   const compArray: IComponentMap[] = [

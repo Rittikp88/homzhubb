@@ -59,7 +59,7 @@ class ListingService {
       }
       updateState({ existingDocuments });
     } catch (error) {
-      AlertHelper.error({ message: error.message });
+      AlertHelper.error({ message: error.message, statusCode: error.details.statusCode }); // TODOS: Lakshit - Require Clarity on Usage
     }
   };
 
@@ -83,7 +83,7 @@ class ListingService {
           await this.getExistingDocuments(propertyId, updateState);
         }
       } catch (error) {
-        AlertHelper.error({ message: error.message });
+        AlertHelper.error({ message: error.message, statusCode: error.details.statusCode });
       }
     }
   };

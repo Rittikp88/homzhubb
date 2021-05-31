@@ -49,7 +49,7 @@ const CancelTerminateListing: FC<IProps> = (props: IProps) => {
           setReasons(formattedData);
         })
         .catch((err) => {
-          AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });
+          AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
         });
     }
   }, []);
@@ -83,7 +83,7 @@ const CancelTerminateListing: FC<IProps> = (props: IProps) => {
         updateAsset().then();
       })
       .catch((err) => {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail), statusCode: err.details.statusCode });
       });
   };
 

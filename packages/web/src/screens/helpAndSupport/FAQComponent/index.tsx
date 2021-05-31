@@ -45,7 +45,7 @@ const FAQComponent = (): React.ReactElement => {
       setFAQs(getOrderedCategories(response));
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
   const getSearchFAQs = async (searchParam: string): Promise<void> => {
@@ -54,7 +54,7 @@ const FAQComponent = (): React.ReactElement => {
       setFAQs(getOrderedCategories(response));
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
   useEffect(() => {

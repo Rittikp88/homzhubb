@@ -82,7 +82,7 @@ class MobileVerificationForm extends PureComponent<ILoginFormProps, IFormData> {
         return;
       }
     } catch (err) {
-      AlertHelper.error({ message: t('common:genericErrorMessage') });
+      AlertHelper.error({ message: t('common:genericErrorMessage'), statusCode: err.details.statusCode });
       return;
     }
 

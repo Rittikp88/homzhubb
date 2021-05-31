@@ -26,7 +26,7 @@ const PlatformPlan: FC = () => {
       setPlatformPlansData(response);
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
   const isMobile = useDown(deviceBreakpoint.MOBILE);

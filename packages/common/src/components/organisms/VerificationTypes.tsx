@@ -186,7 +186,7 @@ class VerificationTypes extends Component<IProps, IVerificationState> {
         verificationTypes: filteredResponse,
       });
     } catch (error) {
-      AlertHelper.error({ message: error.message });
+      AlertHelper.error({ message: error.message, statusCode: error.details.statusCode });
     }
   };
 }

@@ -442,7 +442,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
       onSuccess();
     } catch (e) {
       this.setState({ loading: false });
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 

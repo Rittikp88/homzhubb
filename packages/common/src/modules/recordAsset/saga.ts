@@ -19,7 +19,7 @@ export function* getAssetPlanList() {
     yield put(RecordAssetActions.getAssetPlanListSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(RecordAssetActions.getAssetPlanListFailure(error));
   }
 }
@@ -30,7 +30,7 @@ export function* getAssetGroups() {
     yield put(RecordAssetActions.getAssetGroupsSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(RecordAssetActions.getAssetGroupsFailure(error));
   }
 }
@@ -46,7 +46,7 @@ export function* getAssetById() {
     }
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(RecordAssetActions.getAssetByIdFailure(error));
   }
 }
@@ -57,7 +57,7 @@ export function* getMaintenanceUnits() {
     yield put(RecordAssetActions.getMaintenanceUnitsSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 }
 
@@ -78,7 +78,7 @@ export function* getValueAddedServices(action: IFluxStandardAction<IGetServicesB
     yield put(RecordAssetActions.getValueAddedServicesSuccess(data));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 }
 

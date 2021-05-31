@@ -218,7 +218,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
     } catch (e) {
       this.toggleLoader();
       const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 
@@ -274,7 +274,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
         },
       });
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: e.message, statusCode: e.details.statusCode });
     }
   };
 }

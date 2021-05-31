@@ -96,7 +96,7 @@ const OfferView = (props: IProps): React.ReactElement => {
       const detailFilter = await OffersRepository.getOfferFilters(OfferFilterType.DETAIL);
       setOfferFilter(detailFilter);
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 
@@ -120,7 +120,7 @@ const OfferView = (props: IProps): React.ReactElement => {
       const response = await OffersRepository.getCounterOffer(payload);
       setPastOffers(response);
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 

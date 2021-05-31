@@ -33,7 +33,7 @@ const PaymentGateway = (props: IProps): React.ReactElement => {
     initiatePayment()
       .then(onPayment)
       .catch((error) => {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details), statusCode: error.details.statusCode });
       });
   };
 

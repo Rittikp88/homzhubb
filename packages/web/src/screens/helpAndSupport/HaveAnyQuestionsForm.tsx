@@ -78,7 +78,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
       });
       setCategories(formattedData);
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 
@@ -87,7 +87,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
       const response: User = await CommonRepository.getSupportContacts();
       setContact(response);
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 
@@ -119,7 +119,7 @@ const HaveAnyQuestionsForm: React.FC = () => {
       setAttachments([]);
     } catch (e) {
       formActions.setSubmitting(false);
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
   const onDropRejection = (): void => {

@@ -136,7 +136,7 @@ class ActionController extends React.PureComponent<Props, {}> {
       onNextStep();
     } catch (error) {
       const e = ErrorUtils.getErrorMessage(error.details);
-      AlertHelper.error({ message: e });
+      AlertHelper.error({ message: e, statusCode: error.details.statusCode });
       AnalyticsService.track(EventType.AddListingFailure, { ...trackData, error: error.message });
     }
   };

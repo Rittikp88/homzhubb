@@ -140,7 +140,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
 
       dispatch(UserActions.login(loginPayload));
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: e.message, statusCode: e.details.statusCode });
     }
   };
 
@@ -168,7 +168,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
       navigateToHomeScreen();
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: e.message, statusCode: e.details.statusCode }); // TODOS: Lakshit - Require clarity on usage
       AnalyticsService.track(EventType.SignupFailure, { ...trackData, error: e.message });
     }
   };
@@ -203,6 +203,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
     } catch (e) {
       AlertHelper.error({
         message: e.message,
+        statusCode: e.details.statusCode,
       });
     }
   };

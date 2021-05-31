@@ -88,7 +88,7 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
       }
     } catch (e) {
       setIsApiActive(false);
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: e.message, statusCode: e.details.statusCode });
     }
   };
 

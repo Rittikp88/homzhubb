@@ -226,7 +226,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
       this.setState({ isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 
@@ -278,7 +278,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
       if (data?.promo_code) {
         this.setState({ isPromoFailed: true });
       } else {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
       }
     }
   };

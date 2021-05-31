@@ -228,7 +228,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     const areMandatoryFilled = this.checkAvailableMandatorySpaces();
     if (areMandatoryFilled || !routes[currentIndex].id) {
       const messageKey = areMandatoryFilled ? 'cannotAddUnit' : 'finishCurrent';
-      AlertHelper.error({ message: t(messageKey) });
+      AlertHelper.error({ message: t(messageKey) }); // TODOS: Lakshit: Require clarity on availability of statusCode
       return;
     }
 
@@ -257,7 +257,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
     const { t, currentAssetId } = this.props;
 
     if (routes.length === 1) {
-      AlertHelper.error({ message: t('lessUnitsToDelete') });
+      AlertHelper.error({ message: t('lessUnitsToDelete') }); // TODOS: Lakshit: Require clarity on availability of statusCode
       return;
     }
 
@@ -267,7 +267,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         await AssetRepository.deleteLeaseTerm(currentAssetId, routes[currentIndex].id);
         await this.getAvailableSpaces();
       } catch (err) {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
         return;
       }
     }
@@ -337,7 +337,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       this.setState({ loading: false });
     } catch (err) {
       this.setState({ loading: false });
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
     }
   };
 
@@ -379,7 +379,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
         });
       }
     } catch (err) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
     }
   };
 
@@ -389,7 +389,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       const response = await RecordAssetRepository.getTenantPreferences(currentAssetId);
       this.setState({ preferences: response });
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 
@@ -399,7 +399,7 @@ class LeaseTermController extends React.PureComponent<IProps, IOwnState> {
       const response = await AssetRepository.getAssetAvailableSpaces(currentAssetId);
       this.setState({ availableSpaces: response });
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
   // APIs END

@@ -44,7 +44,7 @@ export function* getListingDetail(action: IFluxStandardAction<ICurrentOffer>) {
     yield put(OfferActions.getListingDetailSuccess(response));
   } catch (e) {
     yield put(OfferActions.getListingDetailFailure());
-    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }
 }
 
@@ -55,7 +55,7 @@ export function* getNegotiations(action: IFluxStandardAction<INegotiation>) {
     yield put(OfferActions.getNegotiationsSuccess(response));
   } catch (e) {
     yield put(OfferActions.getNegotiationsFailure());
-    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }
 }
 
@@ -66,7 +66,7 @@ export function* getNegotiationComments(): VoidGenerator {
     yield put(OfferActions.getNegotiationCommentsSucess(response as Message[]));
   } catch (e) {
     yield put(OfferActions.getNegotiationCommentsFailure());
-    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }
 }
 

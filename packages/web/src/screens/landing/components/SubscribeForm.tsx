@@ -39,7 +39,7 @@ const SubscribeForm: FC<IProp> = ({ onUserSubscription }: IProp) => {
       })
       .catch((error) => {
         const errorMessage = ErrorUtils.getErrorMessage(error.details);
-        AlertHelper.error({ message: errorMessage });
+        AlertHelper.error({ message: errorMessage, statusCode: error.details.statusCode });
       });
   };
 

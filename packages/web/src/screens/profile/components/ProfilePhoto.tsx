@@ -39,7 +39,7 @@ const ProfilePhoto: FC<IProp> = (props: IProp) => {
         setIsLoading(false);
       } catch (e) {
         if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
-          AlertHelper.error({ message: t('property:supportedImageFormats') });
+          AlertHelper.error({ message: t('property:supportedImageFormats'), statusCode: e.details.statusCode });
         }
         setIsLoading(false);
       }

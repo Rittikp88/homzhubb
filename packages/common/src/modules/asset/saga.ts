@@ -50,7 +50,7 @@ function* getAssetDetails(action: IFluxStandardAction<IGetAssetPayload>) {
       if (onCallback) onCallback({ status: false });
 
       const error = ErrorUtils.getErrorMessage(err.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: err.details.statusCode });
 
       yield put(AssetActions.getAssetFailure(err.message));
     }
@@ -71,7 +71,7 @@ function* getAssetDocuments(action: IFluxStandardAction<IGetDocumentPayload>) {
         onCallback({ status: false });
       }
       const error = ErrorUtils.getErrorMessage(err.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: err.details.statusCode });
       yield put(AssetActions.getAssetDocumentFailure(err.message));
     }
   }
@@ -83,7 +83,7 @@ function* getAssetVisit(action: IFluxStandardAction<IAssetVisitPayload>) {
     yield put(AssetActions.getAssetVisitSuccess(response));
   } catch (err) {
     const error = ErrorUtils.getErrorMessage(err.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: err.details.statusCode });
     yield put(AssetActions.getAssetVisitFailure(err.message));
   }
 }
@@ -94,7 +94,7 @@ export function* getUserActiveAssets() {
     yield put(AssetActions.getActiveAssetsSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 }
 
@@ -116,7 +116,7 @@ export function* getAssetById(action: IFluxStandardAction<number>) {
     });
     yield put(RecordAssetActions.setSelectedImages(ObjectMapper.deserializeArray(AssetGallery, assetImage)));
   } catch (e) {
-    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     yield put(AssetActions.getAssetByIdFailure());
   }
 }

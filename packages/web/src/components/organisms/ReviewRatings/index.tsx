@@ -35,7 +35,7 @@ const ReviewRatings: FC<IProps> = (props: IProps) => {
         setPieData(response.pillarRatings);
       })
       .catch((e) => {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
       });
     AssetRepository.getListingReviews({ lease_listing: propertyTermId })
       .then((response) => {
@@ -43,7 +43,7 @@ const ReviewRatings: FC<IProps> = (props: IProps) => {
         setNonFiltered(response);
       })
       .catch((e) => {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
       });
   }, []);
 

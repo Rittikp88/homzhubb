@@ -112,7 +112,7 @@ const Favorite = (props: IProps): React.ReactElement => {
       dispatch(UserActions.getFavouriteProperties());
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 

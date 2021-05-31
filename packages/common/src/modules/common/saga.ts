@@ -15,7 +15,7 @@ function* getCountries() {
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     yield put(CommonActions.getCountriesFaliure(error));
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 }
 
@@ -25,7 +25,7 @@ function* getMessages(action: IFluxStandardAction<IGetMessageParam>) {
     yield put(CommonActions.getMessagesSuccess({ response, isNew: action.payload?.isNew }));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 }
 
@@ -35,7 +35,7 @@ function* getGroupMessages() {
     yield put(CommonActions.getGroupMessageSuccess(response));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
-    AlertHelper.error({ message: error });
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
   }
 }
 

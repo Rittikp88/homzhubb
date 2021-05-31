@@ -167,7 +167,7 @@ export class EmergencyContactForm extends React.PureComponent<IProps, IEmergency
       }
       updateFormLoadingState(false);
       formikHelpers.setSubmitting(false);
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 

@@ -79,7 +79,7 @@ const Notification: FC = () => {
       callback(response);
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 
@@ -111,7 +111,7 @@ const Notification: FC = () => {
       setOffset(offset + response.results.length);
       setLoading(false);
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
       setLoading(false);
     }
   };
@@ -131,7 +131,7 @@ const Notification: FC = () => {
       );
       setOffset(response.results.length);
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 

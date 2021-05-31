@@ -1,9 +1,15 @@
+import { showMessage } from 'react-native-flash-message';
 import { History, LocationState } from 'history';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { theme } from '@homzhub/common/src/styles/theme';
 
 interface INavigationOptions<S> {
   path: string;
   params?: S;
+}
+
+interface IErrorMessageProps {
+  message: string;
 }
 
 class NavigationUtils<T extends History> {
@@ -39,16 +45,26 @@ class NavigationUtils<T extends History> {
     }
   }
 
-  public errorNavSwitch = (status: string): void => {
-    switch (status) {
-      case '504':
+  public errorNavSwitch = (status: number, messageProps: IErrorMessageProps): void => {
+    const statusCode = Number(status) >= 500 && Number(status) !== 504 ? 500 : Number(status);
+    const { message } = messageProps;
+    switch (statusCode) {
+      case 504:
         this.navigate(this.history, { path: RouteNames.publicRoutes.ERROR504 });
         break;
-      case '404':
+      case 404:
         this.navigate(this.history, { path: RouteNames.publicRoutes.ERROR404 });
         break;
-      default:
+      case 500:
         this.navigate(this.history, { path: RouteNames.publicRoutes.ERROR });
+        break;
+      default:
+        showMessage({
+          duration: 5000,
+          message,
+          type: 'danger',
+          backgroundColor: theme.colors.error,
+        });
     }
   };
 }

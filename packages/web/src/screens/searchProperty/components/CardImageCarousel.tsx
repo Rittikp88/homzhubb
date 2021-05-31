@@ -109,7 +109,7 @@ const CardImageCarousel: FC<IProps> = ({
       }
       dispatch(UserActions.getFavouriteProperties());
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: e.message, statusCode: e.details.statusCode });
     }
   };
   return (

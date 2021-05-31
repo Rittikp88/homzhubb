@@ -19,7 +19,7 @@ const PlatformPlanSection: FC = () => {
       })
       .catch((e) => {
         const error = ErrorUtils.getErrorMessage(e.details);
-        AlertHelper.error({ message: error });
+        AlertHelper.error({ message: error, statusCode: e.details.statusCode });
       });
   }, []);
 

@@ -64,7 +64,7 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
       });
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
       didLoad();
     }
   }, []);

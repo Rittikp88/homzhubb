@@ -224,7 +224,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       if (assetId < 1) {
         AnalyticsService.track(EventType.AddPropertyFailure, { property_address: address, error });
       }
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode }); // TODOS: Lakshit: Require clarity on usage
     }
     formActions.setSubmitting(false);
   };

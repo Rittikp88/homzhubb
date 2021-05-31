@@ -159,7 +159,7 @@ class ValueAddedServicesView extends React.PureComponent<IProps, IOwnState> {
       }
       handleNextStep();
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 }

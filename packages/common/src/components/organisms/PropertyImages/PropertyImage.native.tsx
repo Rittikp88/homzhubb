@@ -269,7 +269,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       }
       setSelectedImages(response);
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: e.message, statusCode: e.details.statusCode });
     }
   };
 
@@ -314,7 +314,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       await AssetRepository.updateAsset(propertyId, updateAssetPayload);
       onPressContinue();
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 }

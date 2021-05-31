@@ -356,7 +356,7 @@ export class AssetHighlights extends Component<Props, IOwnState> {
     } catch (e) {
       this.resetLoader();
       const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 
@@ -385,7 +385,7 @@ export class AssetHighlights extends Component<Props, IOwnState> {
     } catch (e) {
       this.resetLoader();
       const error = ErrorUtils.getErrorMessage(e);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 
@@ -402,7 +402,7 @@ export class AssetHighlights extends Component<Props, IOwnState> {
       } catch (e) {
         this.resetLoader();
         const error = ErrorUtils.getErrorMessage(e);
-        AlertHelper.error({ message: error });
+        AlertHelper.error({ message: error, statusCode: e.details.statusCode });
       }
     }
   };
