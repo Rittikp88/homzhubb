@@ -655,7 +655,8 @@
     "downloadToDevice": "Download to Device",
     "downloadInvoice": "Download invoice",
     "addImageToProperty": "Add images to property",
-    "attachmentList": "Attachment List"
+    "attachmentList": "Attachment List",
+    "imageUploaded": "Successfully Image uploaded"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

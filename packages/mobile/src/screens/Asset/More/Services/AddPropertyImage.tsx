@@ -66,6 +66,7 @@ const AddPropertyImage = (): React.ReactElement => {
         isVideoToggled: videoData.isVideoToggled,
         videoUrl: videoData.videoUrl,
       });
+      AlertHelper.success({ message: t('property:imageUploaded') });
       setIsLoading(false);
     } catch (e) {
       setIsLoading(false);

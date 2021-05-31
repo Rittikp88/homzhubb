@@ -64,7 +64,7 @@ class ImageHelper {
         if (selectedImages.length === 0) {
           localSelectedImages[0].is_cover_image = true;
         }
-        console.log(localSelectedImages, selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages)))
+
         store.dispatch(
           RecordAssetActions.setSelectedImages(
             selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages))
