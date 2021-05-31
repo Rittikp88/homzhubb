@@ -9,13 +9,13 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-export interface IProps {
+interface IProps {
   userProfileInfo: UserProfileModel;
+  openEditModal: (status: boolean) => void;
 }
-
 const BasicInformations: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
-  const { userProfileInfo } = props;
+  const { userProfileInfo, openEditModal } = props;
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   if (!userProfileInfo) {
@@ -59,7 +59,12 @@ const BasicInformations: FC<IProps> = (props: IProps) => {
             {t('moreProfile:basicDetails')}
           </Text>
 
-          <Icon size={20} name={icons.noteBook} color={theme.colors.primaryColor} />
+          <Icon
+            size={20}
+            name={icons.noteBook}
+            color={theme.colors.primaryColor}
+            onPress={(): void => openEditModal(true)}
+          />
         </View>
         <View>{details()}</View>
         {!isTablet && <Divider containerStyles={styles.divider} />}

@@ -16,11 +16,13 @@ interface IProps {
   otpType?: OtpTypes;
   bubbleOtp: (otp: string, otpType?: OtpTypes) => void;
   toggleError: () => void;
+  shouldClear?: boolean;
 }
 
 interface IState {
   otp: string[];
   currentFocus: number;
+  valuesFlushed: boolean;
 }
 
 export class OtpInputs extends React.PureComponent<IProps, IState> {
@@ -31,6 +33,7 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
   public state = {
     otp: Array(this.OtpLength).fill(''),
     currentFocus: 0,
+    valuesFlushed: true,
   };
 
   public componentDidMount = (): void => {
@@ -44,9 +47,13 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
   };
 
   public componentDidUpdate(prevProps: IProps, prevState: IState): void {
-    const { error } = this.props;
+    const { error, shouldClear } = this.props;
+    const { valuesFlushed } = this.state;
     if (!!prevProps.error && !error) {
       this.OtpTextInput[0].setNativeProps({ style: styles.active });
+    }
+    if (shouldClear && valuesFlushed) {
+      this.flushOtpValues();
     }
   }
 
@@ -165,6 +172,10 @@ export class OtpInputs extends React.PureComponent<IProps, IState> {
       bubbleOtp(otp.join(''), otpType);
     }
     this.setState({ otp: [...otp], currentFocus });
+  };
+
+  public flushOtpValues = (): void => {
+    this.setState({ otp: Array(this.OtpLength).fill(''), valuesFlushed: false, currentFocus: 0 });
   };
 
   private otpHandler = (message: string): void => {

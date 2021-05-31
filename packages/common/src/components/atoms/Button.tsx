@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colors.white,
     marginVertical: 12,
-    marginHorizontal: 36,
+    marginHorizontal: 18,
   },
   disabled: {
     backgroundColor: theme.colors.disabled,

@@ -112,6 +112,14 @@ const CardImageCarousel: FC<IProps> = ({
       AlertHelper.error({ message: e.message, statusCode: e.details.statusCode });
     }
   };
+
+  const getOutLineColor = (): string => {
+    if (imagesArray && imagesArray.length === 0) {
+      return theme.colors.darkTint5;
+    }
+    return theme.colors.white;
+  };
+
   return (
     <View style={cardImageCarouselStyle}>
       <MultiCarousel passedProps={carouselProps}>
@@ -135,7 +143,7 @@ const CardImageCarousel: FC<IProps> = ({
         <Icon
           name={isFavourite ? icons.filledHeart : icons.heartOutline}
           size={20}
-          color={isFavourite ? theme.colors.favourite : theme.colors.white}
+          color={isFavourite ? theme.colors.favourite : getOutLineColor()}
         />
       </TouchableOpacity>
     </View>

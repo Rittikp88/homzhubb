@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -10,8 +10,8 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import BasicInformations from '@homzhub/web/src/screens/profile/components/BasicInformations';
+import EditProfileModal from '@homzhub/web/src/screens/profile/components/EditProfileModal';
 import ProfilePhoto from '@homzhub/web/src/screens/profile/components/ProfilePhoto';
-import WorkDetails from '@homzhub/web/src/screens/profile/components/WorkDetails';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -29,21 +29,36 @@ const ProfileContainer: FC<IProps> = (props: IProps) => {
   const { getUserProfile, userProfile } = props;
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const [renderPopup, setRenderPopup] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   useEffect(() => {
     getUserProfile();
   }, []);
 
-  if (!userProfile) {
-    return null;
-  }
+  const updatePopUpState = (data: string): void => {
+    setRenderPopup(data);
+  };
+
+  const openEditModal = (status: boolean): void => {
+    setIsOpen(status);
+  };
 
   return (
     <View style={[styles.container, (isTablet || isMobile) && styles.containerTab]}>
       <ProfilePhoto userProfileInfo={userProfile} getUserProfile={getUserProfile} />
+      {isOpen && (
+        <EditProfileModal
+          userProfileInfo={userProfile}
+          renderPopup={renderPopup}
+          updatePopUp={updatePopUpState}
+          openEditModal={openEditModal}
+          updateUserProfile={getUserProfile}
+        />
+      )}
       <View style={isTablet && styles.subContainerTab}>
         <View style={isTablet && styles.basicInfoTab}>
-          <BasicInformations userProfileInfo={userProfile} />
+          <BasicInformations userProfileInfo={userProfile} openEditModal={openEditModal} />
           <View style={[styles.changePassword, isTablet && styles.changePasswordTab]}>
             <View
               style={[
@@ -58,9 +73,6 @@ const ProfileContainer: FC<IProps> = (props: IProps) => {
               <Icon size={20} name={icons.rightArrow} color={theme.colors.primaryColor} />
             </View>
           </View>
-        </View>
-        <View style={isTablet && styles.workDetailTab}>
-          <WorkDetails userProfileInfo={userProfile} />
         </View>
       </View>
     </View>
