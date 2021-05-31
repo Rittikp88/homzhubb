@@ -84,12 +84,6 @@ export const MenuItemList: IMenuItemList[] = [
   },
   {
     id: 7,
-    name: sideMenuItems.settings,
-    icon: icons.logOut,
-    url: RouteNames.protectedRoutes.SETTINGS,
-  },
-  {
-    id: 8,
     name: sideMenuItems.logout,
     icon: icons.logOut,
     url: RouteNames.protectedRoutes.LOGOUT,

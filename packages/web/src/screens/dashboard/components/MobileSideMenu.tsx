@@ -71,6 +71,12 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
     },
     {
       id: 7,
+      text: t('assetMore:settings'),
+      icon: icons.gearFilled,
+      url: RouteNames.protectedRoutes.SETTINGS,
+    },
+    {
+      id: 8,
       text: t('common:logout'),
       icon: icons.logOut,
       url: RouteNames.publicRoutes.APP_BASE,

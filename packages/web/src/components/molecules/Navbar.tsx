@@ -86,6 +86,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
     //   url: RouteNames.protectedRoutes.REFER_EARN,
     // },
   ];
+
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
     NavigationUtils.navigate(history, { path: navItems[index].url });

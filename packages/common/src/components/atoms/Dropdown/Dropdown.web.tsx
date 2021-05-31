@@ -48,6 +48,7 @@ export interface IProps {
 
 export const Dropdown = (props: IProps): React.ReactElement => {
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
+  const [updatedValue, setUpdatedValue] = useState<IPopupOptions>();
   const {
     value,
     data,
@@ -72,6 +73,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
 
   const valueChange = (changedValue: IPopupOptions): void => {
     const selectedValue = changedValue.value === placeholder ? '' : changedValue.value;
+    setUpdatedValue(changedValue);
     if (onDonePress && selectedValue) {
       onDonePress(selectedValue);
       closeDropdown();
@@ -80,9 +82,8 @@ export const Dropdown = (props: IProps): React.ReactElement => {
 
   const openDropdown = (): void => setDropdownVisible(true);
   const closeDropdown = (): void => setDropdownVisible(false);
-
   const selectedItem = data.find((d: PickerItemProps) => d.value === value);
-  const label = selectedItem?.label;
+  const label = updatedValue ? updatedValue.label : selectedItem?.label;
   const placeholderColor = !label ? styles.placeholderColor : {};
 
   const disabledStyles = StyleSheet.flatten([disable && styles.disabled]);
@@ -116,14 +117,16 @@ export const Dropdown = (props: IProps): React.ReactElement => {
             <RenderFlagSvg />
           )
         ) : (
-          <Label
-            type={fontSize}
-            numberOfLines={1}
-            textType={fontWeight}
-            style={[styles.text, placeholderColor, textStyle]}
-          >
-            {label ?? placeholder}
-          </Label>
+          <View>
+            <Label
+              type={fontSize}
+              numberOfLines={1}
+              textType={fontWeight}
+              style={[styles.text, placeholderColor, textStyle]}
+            >
+              {label ?? placeholder}
+            </Label>
+          </View>
         )}
 
         <Icon name={icon} size={iconSize} color={iconColor} style={[styles.iconStyle, iconStyle]} />

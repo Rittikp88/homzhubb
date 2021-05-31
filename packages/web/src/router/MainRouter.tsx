@@ -1,10 +1,12 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Redirect } from 'react-router-dom';
-import { connect, ConnectedProps } from 'react-redux';
+import { connect, ConnectedProps, useDispatch, useSelector } from 'react-redux';
+
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import PrivateRoute from '@homzhub/web/src/router/PrivateRoute';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
@@ -55,6 +57,15 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
   const isDeskTop = useUp(deviceBreakpoint.DESKTOP);
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(UserSelector.isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(UserActions.getUserProfile());
+      dispatch(UserActions.getUserPreferences());
+    }
+  }, [isLoggedIn]);
 
   return (
     <Suspense fallback={<div>{t('webLoader:loadingText')}</div>}>
