@@ -6,10 +6,14 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { IProp } from '@homzhub/web/src/screens/profile/components/ProfilePhoto';
+import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-const BasicInformations: FC<IProp> = (props: IProp) => {
+export interface IProps {
+  userProfileInfo: UserProfileModel;
+}
+
+const BasicInformations: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const { userProfileInfo } = props;
   const isTablet = useOnly(deviceBreakpoint.TABLET);

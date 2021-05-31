@@ -40,7 +40,7 @@ const ProfileContainer: FC<IProps> = (props: IProps) => {
 
   return (
     <View style={[styles.container, (isTablet || isMobile) && styles.containerTab]}>
-      <ProfilePhoto userProfileInfo={userProfile} />
+      <ProfilePhoto userProfileInfo={userProfile} getUserProfile={getUserProfile} />
       <View style={isTablet && styles.subContainerTab}>
         <View style={isTablet && styles.basicInfoTab}>
           <BasicInformations userProfileInfo={userProfile} />

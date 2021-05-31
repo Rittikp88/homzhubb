@@ -7,8 +7,8 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { IProp } from '@homzhub/web/src/screens/profile/components/ProfilePhoto';
 import ProfilePopover, { ProfileUserFormTypes } from '@homzhub/web/src/screens/profile/components/ProfilePopover';
+import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export interface IDetailsInfo {
@@ -18,7 +18,11 @@ export interface IDetailsInfo {
   type?: 'TEXT' | 'EMAIL';
   emailVerified?: boolean;
 }
-const WorkDetails: FC<IProp> = (props: IProp) => {
+export interface IProps {
+  userProfileInfo: UserProfileModel;
+}
+
+const WorkDetails: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const { userProfileInfo } = props;
   const [formType, setFormType] = useState<ProfileUserFormTypes>(ProfileUserFormTypes.EmergencyContact);

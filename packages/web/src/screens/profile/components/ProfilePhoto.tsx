@@ -4,6 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress';
@@ -14,15 +15,16 @@ import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/mode
 import { AttachmentError, AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-export interface IProp {
+export interface IProps {
   userProfileInfo: UserProfileModel;
+  getUserProfile: () => void;
 }
 
-const ProfilePhoto: FC<IProp> = (props: IProp) => {
+const ProfilePhoto: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
-  const { userProfileInfo } = props;
+  const { userProfileInfo, getUserProfile } = props;
   if (!userProfileInfo) {
     return null;
   }
@@ -34,8 +36,14 @@ const ProfilePhoto: FC<IProp> = (props: IProp) => {
       setIsLoading(true);
       try {
         // eslint-disable-next-line no-unused-vars
-        const response = await AttachmentService.uploadImage(formData, AttachmentType.PROFILE_IMAGE);
-        // TODOS - Mohak: Use { link, id} to display and upload photo
+        const imageData = await AttachmentService.uploadImage(formData, AttachmentType.PROFILE_IMAGE);
+        const { data, error } = imageData;
+        if (data) {
+          await UserRepository.updateProfileImage({ profile_picture: data[0].id });
+          getUserProfile();
+        } else if (error && error.length > 0) {
+          AlertHelper.error({ message: error[0].message });
+        }
         setIsLoading(false);
       } catch (e) {
         if (e === AttachmentError.UPLOAD_IMAGE_ERROR) {
