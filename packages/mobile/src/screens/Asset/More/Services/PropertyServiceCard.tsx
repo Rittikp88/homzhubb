@@ -28,10 +28,10 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
 
     if (attachmentLength > 0) {
       options.unshift({ label: t('property:downloadToDevice'), value: ServiceOption.DOWNLOAD_TO_DEVICE });
-    }
 
-    if (isUploadAllowed) {
-      options.unshift({ label: t('property:addImageToProperty'), value: ServiceOption.ADD_IMAGE });
+      if (isUploadAllowed) {
+        options.unshift({ label: t('property:addImageToProperty'), value: ServiceOption.ADD_IMAGE });
+      }
     }
 
     return options;

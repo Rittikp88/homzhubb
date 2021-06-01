@@ -82,7 +82,7 @@ const AddPropertyImage = (): React.ReactElement => {
   return (
     <>
       <Screen
-        isLoading={assetById && isLoading}
+        isLoading={assetById || isLoading}
         headerProps={{ title: t('property:addPropertyImages'), onIconPress: goBack }}
       >
         {asset ? (

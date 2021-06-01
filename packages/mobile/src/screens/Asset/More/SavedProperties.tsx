@@ -14,6 +14,7 @@ import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
@@ -92,7 +93,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
       navigateToOffersMadeScreen();
       return;
     }
-
+    dispatch(SearchActions.setFilter({ asset_transaction_type: asset.leaseTerm ? 0 : 1 }));
     dispatch(AssetActions.getAsset({ propertyTermId: asset.leaseTerm ? asset.leaseTerm.id : asset.saleTerm?.id ?? 0 }));
     getProspectProfile().then((hasProspect: number): void => {
       // API Error case
