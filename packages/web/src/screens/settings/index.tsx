@@ -9,22 +9,16 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export const Settings: FC<SettingsProps> = (props: SettingsProps) => {
-  const { isUserPreferencesLoading, userPreferences } = props;
+  const { userPreferences } = props;
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(UserActions.getUserPreferences());
     }
-  }, [isLoggedIn]);
+  }, []);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  if (!isUserPreferencesLoading && userPreferences) {
-    if (!isMobile) {
-      return <SettingsTab />;
-    }
-    return <SettingsMobile />;
-  }
-  return null;
+  return userPreferences && (!isMobile ? <SettingsTab /> : <SettingsMobile />);
 };
 const mapStateToProps = (state: IState): any => {
   const { getUserPreferences, isUserPreferencesLoading } = UserSelector;
