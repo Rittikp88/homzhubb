@@ -230,7 +230,7 @@ const mobileVerificationStyle = (): StyleSheet.NamedStyles<IVerificationStyle> =
     numberContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingLeft: 36,
+      paddingLeft: 24,
       paddingTop: 8,
       marginTop: '2%',
     },
@@ -257,7 +257,7 @@ const mobileVerificationStyle = (): StyleSheet.NamedStyles<IVerificationStyle> =
       left: '-25%',
     },
     otpInputEmail: {
-      left: '-5%',
+      left: '-25%',
     },
     topPadding: {
       paddingTop: 8,
