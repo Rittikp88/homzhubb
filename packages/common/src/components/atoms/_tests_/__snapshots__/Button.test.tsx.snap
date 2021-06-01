@@ -21,7 +21,7 @@ exports[`Button should match snapshot for disabled 1`] = `
       Array [
         Object {
           "color": "#FFFFFF",
-          "marginHorizontal": 36,
+          "marginHorizontal": 18,
           "marginVertical": 12,
           "textAlign": "center",
         },
@@ -57,7 +57,7 @@ exports[`Button should match snapshot for primary 1`] = `
       Array [
         Object {
           "color": "#FFFFFF",
-          "marginHorizontal": 36,
+          "marginHorizontal": 18,
           "marginVertical": 12,
           "textAlign": "center",
         },
@@ -95,7 +95,7 @@ exports[`Button should match snapshot for secondary 1`] = `
       Array [
         Object {
           "color": "#0084F8",
-          "marginHorizontal": 36,
+          "marginHorizontal": 18,
           "marginVertical": 12,
           "textAlign": "center",
         },
@@ -131,7 +131,7 @@ exports[`Button should render with icon 1`] = `
       Array [
         Object {
           "color": "#FFFFFF",
-          "marginHorizontal": 36,
+          "marginHorizontal": 18,
           "marginVertical": 12,
           "textAlign": "center",
         },

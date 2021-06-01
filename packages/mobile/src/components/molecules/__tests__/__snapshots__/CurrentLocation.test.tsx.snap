@@ -39,7 +39,7 @@ exports[`CurrentLocation should match snapshot 1`] = `
     textType="semiBold"
     type="large"
   >
-    nearMe
+    common:nearMe
   </Label>
 </ForwardRef>
 `;
@@ -83,7 +83,7 @@ exports[`CurrentLocation should match snapshot with props 1`] = `
     textType="semiBold"
     type="large"
   >
-    nearMe
+    common:nearMe
   </Label>
 </ForwardRef>
 `;

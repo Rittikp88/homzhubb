@@ -18,6 +18,7 @@ import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
 interface IForgotPasswordState {
   email: string;
+  isRequestDisable: boolean;
 }
 
 type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, ScreensKeys.ForgotPassword>;
@@ -25,6 +26,7 @@ type Props = WithTranslation & NavigationScreenProps<AuthStackParamList, Screens
 export class ForgotPassword extends Component<Props, IForgotPasswordState> {
   public state = {
     email: '',
+    isRequestDisable: false,
   };
 
   public render(): React.ReactNode {
@@ -32,6 +34,7 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
       t,
       route: { params },
     } = this.props;
+    const { isRequestDisable } = this.state;
     const formData = { ...this.state };
     return (
       <Screen
@@ -57,6 +60,7 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
                 label="Email"
                 placeholder={t('auth:enterEmail')}
                 isMandatory
+                onValueChange={this.onValueChange}
               />
               <FormButton
                 formProps={formProps}
@@ -65,6 +69,7 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
                 // @ts-ignore
                 onPress={formProps.handleSubmit}
                 containerStyle={styles.formButtonStyle}
+                disabled={!formProps.values.email || (formProps.values.email && isRequestDisable)}
               />
             </>
           )}
@@ -84,6 +89,13 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
     );
   }
 
+  private onValueChange = (): void => {
+    const { isRequestDisable } = this.state;
+    if (isRequestDisable) {
+      this.setState({ isRequestDisable: false });
+    }
+  };
+
   private onSubmit = async (formProps: IForgotPasswordState): Promise<void> => {
     const { t } = this.props;
     const { email } = formProps;
@@ -93,6 +105,8 @@ export class ForgotPassword extends Component<Props, IForgotPasswordState> {
         email,
       },
     };
+
+    this.setState({ isRequestDisable: true });
 
     try {
       const emailData = await UserRepository.emailExists(email);

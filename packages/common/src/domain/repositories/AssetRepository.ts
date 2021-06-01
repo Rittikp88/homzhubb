@@ -121,6 +121,8 @@ const ENDPOINTS = {
   activeAssets: 'v1/active-assets/',
   createUnitListing: (propertyId: number, unitId: number): string =>
     `v1/assets/${propertyId}/lease-units/${unitId}/lease-listings/`,
+  assetAttachmentById: (propertyId: number, attachmentId: number): string =>
+    `v1/assets/${propertyId}/attachments/${attachmentId}`,
 };
 
 class AssetRepository {
@@ -451,6 +453,10 @@ class AssetRepository {
   public createUnitListing = async (payload: IUnitListingPayload): Promise<{ id: number }> => {
     const { propertyId, unitId, leaseTerms } = payload;
     return await this.apiClient.post(ENDPOINTS.createUnitListing(propertyId, unitId), leaseTerms);
+  };
+
+  public deleteAssetAttachment = async (propertyId: number, attachmentId: number): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.assetAttachmentById(propertyId, attachmentId));
   };
 }
 

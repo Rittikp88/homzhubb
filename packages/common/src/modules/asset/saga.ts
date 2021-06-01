@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { put, takeEvery, call, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
+import { findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
@@ -11,6 +12,7 @@ import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
@@ -102,11 +104,15 @@ export function* getAssetById(action: IFluxStandardAction<number>) {
   try {
     const response: Asset = yield call(AssetRepository.getAssetById, action.payload as number);
     yield put(AssetActions.getAssetByIdSuccess(response));
-    const assetImage = response.attachments.map((item) => {
+
+    const existingCoverImageIndex = findIndex(response.attachments, (attachment: Attachment) => {
+      return attachment.isCoverImage;
+    });
+    const assetImage = response.attachments.map((item, index) => {
       return {
         id: null,
         description: '',
-        is_cover_image: false,
+        is_cover_image: existingCoverImageIndex === -1 && index === 0,
         asset: response.id,
         attachment: item.id,
         link: item.link,
@@ -114,6 +120,7 @@ export function* getAssetById(action: IFluxStandardAction<number>) {
         isLocalImage: false,
       };
     });
+
     yield put(RecordAssetActions.setSelectedImages(ObjectMapper.deserializeArray(AssetGallery, assetImage)));
   } catch (e) {
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });

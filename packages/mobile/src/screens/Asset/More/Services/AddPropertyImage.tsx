@@ -22,6 +22,7 @@ import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
 import { PropertyImages } from '@homzhub/common/src/components/organisms/PropertyImages';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { IPropertyImageParam } from '@homzhub/mobile/src/navigation/interfaces';
 
 const AddPropertyImage = (): React.ReactElement => {
@@ -55,6 +56,10 @@ const AddPropertyImage = (): React.ReactElement => {
 
   const toggleLoader = (): void => {
     setIsLoading(!isLoading);
+  };
+
+  const updateImage = (payload: AssetGallery[]): void => {
+    dispatch(RecordAssetActions.setSelectedImages(payload));
   };
 
   const onSave = async (): Promise<void> => {
@@ -92,9 +97,10 @@ const AddPropertyImage = (): React.ReactElement => {
               isButtonVisible={false}
               onPressContinue={FunctionUtils.noop}
               onUploadImage={onUploadImage}
-              setSelectedImages={RecordAssetActions.setSelectedImages}
+              setSelectedImages={updateImage}
               containerStyle={styles.imageContainer}
               onUpdateVideo={onChangeVideo}
+              isAssetImage
             />
           </>
         ) : (

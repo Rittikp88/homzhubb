@@ -48,8 +48,8 @@
     "startingFrom": "Starting from",
     "saveAndContinue": "Save & Continue",
     "nearMe": "Near Me",
-    "autoDetect" : "Auto-Detect Current Location",
-    "addLocationToStart" : "Add location of your property in the search bar, to get started",
+    "autoDetect": "Auto-Detect Current Location",
+    "addLocationToStart": "Add location of your property in the search bar, to get started",
     "enableLocationPermission": "Please enable location permission",
     "errorFetchingLocation": "Sorry, we couldn't fetch your current location. Please type your location manually.",
     "searchProperties": "Search Properties",
@@ -994,7 +994,8 @@
     "privacyPolicyText": "Privacy Policy",
     "dataPrivacyCautionTextWhenEnabling": "If you switch this on, users who see your listings and site visits request will also be able to see your {{name}}.",
     "dataPrivacyCautionTextWhenDisabling": "No user will be able to view your {{name}}, on the properties you post, site visits and offers.",
-    "communicationsCautionText": "You will not receive automated notifications from the app through {{name}}. However, Homzhub might still use {{name}} to communicate with you for important messages"
+    "communicationsCautionText": "You will not receive automated notifications from the app through {{name}}. However, Homzhub might still use {{name}} to communicate with you for important messages",
+    "deactivateAccount": "Deactivate Account"
   },
   "moreProfile": {
     "basicDetails": "Personal Info",
@@ -1030,7 +1031,11 @@
     "editContactDetails": "Edit Contact Details",
     "emergencyEmptyState": "Emergency contact for when you might not be available to take decisions on urgent issues",
     "workInfoEmptyState": "You can add details of your workplace to unlock additional discounts",
-    "addWorkInfoText": "Add Work Info"
+    "addWorkInfoText": "Add Work Info",
+    "preferenceSubHeading": "Customize the application the way you want.",
+    "dataAndPrivacySubHeading": "Protect your personal information by hiding sensitive data.",
+    "communicationSubHeading": "Choose the mediums you wish to receive notifications on.",
+    "appInfoSubHeading": "Show the current version of the app here."
   },
   "webLoader": {
     "loadingText": "Loading Application..."

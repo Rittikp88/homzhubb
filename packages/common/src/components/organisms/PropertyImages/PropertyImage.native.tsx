@@ -19,6 +19,8 @@ import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { IUpdateAssetParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
+// TODO: (Shikha) - Move common logic for web and mobile to Image Service
+
 interface IProps {
   propertyId: number;
   onPressContinue: () => void;
@@ -29,6 +31,7 @@ interface IProps {
   setSelectedImages: (payload: AssetGallery[]) => void;
   isButtonVisible?: boolean;
   onUpdateVideo?: (isVideoToggled?: boolean, videoUrl?: string) => void;
+  isAssetImage?: boolean;
 }
 
 type Props = WithTranslation & IProps;
@@ -120,6 +123,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
     if (selectedImages.length <= 0) {
       return null;
     }
+
     const coverImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
       return image.isCoverImage;
     });
@@ -236,7 +240,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public deletePropertyImage = async (selectedImage: AssetGallery): Promise<void> => {
-    const { propertyId, selectedImages, setSelectedImages } = this.props;
+    const { propertyId, selectedImages, setSelectedImages, isAssetImage } = this.props;
     const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
     if (selectedImage.isLocalImage) {
       const localImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
@@ -252,7 +256,11 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       setSelectedImages(clonedSelectedImages);
       return;
     }
-    await AssetRepository.deletePropertyImage(selectedImage.id as number);
+    if (isAssetImage) {
+      await AssetRepository.deleteAssetAttachment(propertyId, selectedImage.attachment);
+    } else {
+      await AssetRepository.deletePropertyImage(selectedImage.attachment);
+    }
     await this.getPropertyImagesByPropertyId(propertyId);
   };
 
@@ -276,6 +284,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   public markAttachmentAsCoverImage = async (selectedImage: AssetGallery): Promise<void> => {
     const { propertyId, selectedImages, setSelectedImages } = this.props;
     const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
+
     if (!selectedImage.id) {
       const existingCoverImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
         return image.isCoverImage;

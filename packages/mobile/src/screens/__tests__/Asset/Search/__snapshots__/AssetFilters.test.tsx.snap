@@ -278,7 +278,7 @@ exports[`Asset filter should render snapshot 1`] = `
           label="expectedMoveInDate"
           name="expected_move_in_date"
           placeHolder="selectMoveInDate"
-          selectedValue="2021-05-31"
+          selectedValue="2021-06-30"
           textSize="small"
           textType="text"
         />
