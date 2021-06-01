@@ -54,8 +54,10 @@ const AddPropertyImage = (): React.ReactElement => {
     ImageHelper.handlePhotosUpload({ assetId: param.assetId, selectedImages, toggleLoader }).then();
   };
 
-  const toggleLoader = (): void => {
-    setIsLoading(!isLoading);
+  const toggleLoader = (value?: boolean): void => {
+    if (value !== undefined) {
+      setIsLoading(value);
+    }
   };
 
   const updateImage = (payload: AssetGallery[]): void => {
@@ -82,7 +84,7 @@ const AddPropertyImage = (): React.ReactElement => {
   return (
     <>
       <Screen
-        isLoading={assetById || isLoading}
+        isLoading={isLoading || assetById}
         headerProps={{ title: t('property:addPropertyImages'), onIconPress: goBack }}
       >
         {asset ? (

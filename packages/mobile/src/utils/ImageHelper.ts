@@ -12,7 +12,7 @@ import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 interface IUploadImage {
   assetId: number;
   selectedImages: AssetGallery[];
-  toggleLoader?: () => void;
+  toggleLoader?: (value?: boolean) => void;
 }
 
 class ImageHelper {
@@ -20,6 +20,10 @@ class ImageHelper {
     const { assetId, selectedImages, toggleLoader } = props;
 
     const store = StoreProviderService.getStore();
+
+    if (toggleLoader) {
+      toggleLoader(true);
+    }
 
     try {
       // @ts-ignore
@@ -42,9 +46,6 @@ class ImageHelper {
       });
 
       try {
-        if (toggleLoader) {
-          toggleLoader();
-        }
         const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
 
         const { data } = response;
@@ -70,11 +71,11 @@ class ImageHelper {
           )
         );
         if (toggleLoader) {
-          toggleLoader();
+          toggleLoader(false);
         }
       } catch (e) {
         if (toggleLoader) {
-          toggleLoader();
+          toggleLoader(false);
         }
         AlertHelper.error({ message: e.message });
       }
