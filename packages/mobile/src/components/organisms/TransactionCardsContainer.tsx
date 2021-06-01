@@ -103,7 +103,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
     return (
       <BottomSheet
         visible={showBottomSheet}
-        headerTitle={t('confirm')}
+        headerTitle={t('common:confirm')}
         sheetHeight={theme.viewport.height / 3}
         onCloseSheet={this.closeBottomSheet}
       >

@@ -29,7 +29,7 @@ const ServicesDashboard = (): React.ReactElement => {
   const [imageView, setImageView] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
   const [currentAsset, setCurrentAsset] = useState(0);
-  const [totalService, setTotalService] = useState(0);
+  const [openServiceCount, setOpenServiceCount] = useState(0);
   const [attachmentListView, setAttachmentListView] = useState(false);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [metricsData, setMetricsData] = useState<IMetricsData[]>([]);
@@ -51,17 +51,21 @@ const ServicesDashboard = (): React.ReactElement => {
   useEffect(() => {
     ServiceRepository.getServiceManagementTab()
       .then((res) => {
-        const { asset, valueAddedService } = res;
+        const { valueAddedService } = res;
         const data = [
-          { name: t('property:propertyAdded'), count: asset.count, colorCode: theme.colors.completed },
           {
-            name: t('property:servicePurchased'),
+            name: t('property:openServices'),
             count: valueAddedService.open.count,
+            colorCode: theme.colors.completed,
+          },
+          {
+            name: t('property:totalServices'),
+            count: valueAddedService.count,
             colorCode: theme.colors.orange,
           },
         ];
         setMetricsData(data);
-        setTotalService(valueAddedService.open.count);
+        setOpenServiceCount(valueAddedService.open.count);
       })
       .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
   }, []);
@@ -128,7 +132,7 @@ const ServicesDashboard = (): React.ReactElement => {
               containerStyle={styles.newServiceButton}
               onPress={onBuyService}
             />
-            {totalService > 0 && services.length > 0 ? (
+            {openServiceCount > 0 && services.length > 0 ? (
               <>
                 {services.map((item, index) => {
                   const attachmentPress = (attachment: Attachment[]): void => {

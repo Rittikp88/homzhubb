@@ -227,7 +227,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   onPress={formProps.handleSubmit}
                   formProps={formProps}
                   type="primary"
-                  title={t(isEditFlow ? 'editRecord' : 'addRecord')}
+                  title={t(isEditFlow ? 'submitRecord' : 'addRecord')}
                   disabled={!formProps.isValid || formProps.isSubmitting}
                 />
               </>
