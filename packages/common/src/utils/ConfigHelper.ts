@@ -18,6 +18,7 @@ const {
   REACT_APP_GOOGLE_CLIENT_ID = '',
   REACT_APP_FACEBOOK_CLIENT_ID = '',
   REACT_APP_MIXPANEL_KEY = '',
+  REACT_APP_FACEBOOK_PIXEL_ID = '',
   REACT_APP_MODE = AppModes.DEBUG,
 } = process.env;
 
@@ -53,6 +54,7 @@ class ConfigHelper {
   private readonly facebookClientId: string | undefined;
   private readonly appleStoreUrl: string | undefined;
   private readonly googlePlayStoreUrl: string | undefined;
+  private readonly facebookPixelId: string | undefined;
 
   constructor() {
     this.baseUrl = REACT_APP_API_BASE_URL;
@@ -66,6 +68,7 @@ class ConfigHelper {
     this.googleWebClientId = REACT_APP_GOOGLE_CLIENT_ID;
     this.facebookClientId = REACT_APP_FACEBOOK_CLIENT_ID;
     this.mixpanelKey = REACT_APP_MIXPANEL_KEY;
+    this.facebookPixelId = REACT_APP_FACEBOOK_PIXEL_ID;
     this.appMode = REACT_APP_MODE as AppModes;
 
     if (PlatformUtils.isMobile()) {
@@ -112,6 +115,8 @@ class ConfigHelper {
   public getAppleStoreUrl = (): string => this.appleStoreUrl || '';
 
   public getGooglePlayStoreUrl = (): string => this.googlePlayStoreUrl || '';
+
+  public getFacebookPixelId = (): string => this.facebookPixelId || '';
 }
 
 const configHelper = new ConfigHelper();

@@ -7,6 +7,7 @@ import { AnalyticsService } from '@homzhub/common/src/services/Analytics/Analyti
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { FacebookPixel } from '@homzhub/web/src/services/FacebookPixel';
 import AppRouter from '@homzhub/web/src/router/AppRouter';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { configureStore } from '@homzhub/common/src/modules/store';
@@ -34,6 +35,7 @@ export class App extends React.PureComponent<{}, IState> {
     await I18nService.init();
     await AnalyticsService.initMixpanel();
     this.setState({ isLocalizationInitialised: true });
+    FacebookPixel();
   };
 
   public render = (): React.ReactNode => {
