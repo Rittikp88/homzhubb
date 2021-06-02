@@ -252,7 +252,7 @@ export const NavigationInfo: FC = () => {
       case protectedRoutes.PORTFOLIO_ADD_PROPERTY:
         return <GoBackActionButton />;
       default:
-        return <></>;
+        return <GoBackActionButton />;
     }
   };
   return (

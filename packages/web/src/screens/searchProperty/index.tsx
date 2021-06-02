@@ -267,6 +267,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
     justifyContent: 'center',
+    fontFamily: 'OpenSans-SemiBold',
+    fontStyle: 'normal',
+    fontWeight: '600',
+    fontSize: 14,
   },
   filters: {
     marginVertical: 20,
