@@ -27,6 +27,9 @@ class AttachmentService {
   public downloadAttachment = async (refKey: string, fileName: string): Promise<void> => {
     // todo implementation for web
   };
+
+  public getFormattedFileName = (name: string, extension: string, maxLength = 15): string =>
+    name.length > maxLength ? `${name.slice(0, maxLength)}...${extension}` : name;
 }
 
 const attachmentService = new AttachmentService();
