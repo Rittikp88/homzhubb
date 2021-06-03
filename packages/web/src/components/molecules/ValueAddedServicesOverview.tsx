@@ -20,7 +20,7 @@ const ValueAddedServicesOverview: React.FC<IProps> = ({
     <View style={styles.container}>
       <EstPortfolioValue propertiesCount={propertiesCount} />
       {propertySelected && <OverviewCard icon={icons.portfolio} count={propertySelected} title="Property Selected" />}
-      {servicesAvailable && (
+      {!!servicesAvailable && (
         <OverviewCard icon={icons.settingOutline} count={servicesAvailable} title="Services Available" />
       )}
     </View>
