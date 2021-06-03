@@ -183,7 +183,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
                 isFromTenancies={isFromTenancies ?? undefined}
                 enterFullScreen={this.onFullScreenToggle}
                 onCompleteDetails={this.onCompleteDetails}
-                onOfferVisitPress={FunctionUtils.noop}
                 onHandleAction={onPressAction}
                 containerStyle={styles.card}
               />

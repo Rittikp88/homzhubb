@@ -48,6 +48,8 @@
     "startingFrom": "Starting from",
     "saveAndContinue": "Save & Continue",
     "nearMe": "Near Me",
+    "autoDetect": "Auto-Detect Current Location",
+    "addLocationToStart": "Add location of your property in the search bar, to get started",
     "enableLocationPermission": "Please enable location permission",
     "errorFetchingLocation": "Sorry, we couldn't fetch your current location. Please type your location manually.",
     "searchProperties": "Search Properties",
@@ -272,7 +274,11 @@
     "referralCode": "Referral Code",
     "knowMore": "Know More",
     "knowLess": "Know Less",
-    "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*"
+    "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*",
+    "confirmation": "Confirmation!",
+    "noDataAvailable": "No data available",
+    "photos": "Photos",
+    "attachments": "Attachments"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -303,7 +309,7 @@
     "emailValidation": "Please enter valid email-id",
     "onlyAlphabets": "Only alphabets are allowed",
     "minimumDigits": "Minimum {{number}} digits required",
-    "minimumCharacters": "Minimum 6 characters allowed",
+    "minimumCharacters": "Minimum {{count}} characters allowed",
     "phoneWithCode": "Country Code + Phone No.",
     "signUpConfirm": "By clicking signup you confirm that you agree to Homzhub",
     "alreadyRegistered": "Already registered?",
@@ -401,6 +407,7 @@
     "selectType": "Select your type",
     "saveLocation": "Save Location",
     "setLocation": "Set Location",
+    "confirmLocation": "Confirm Location",
     "locationDetails": "Location Details",
     "headerTitle": "Details",
     "propertyType": "Property type",
@@ -637,7 +644,19 @@
     "dragAndDropText": "Drag the section to rearrange the sections according to your choice.",
     "contactOwner": "Contact Owner",
     "confirmCancellation": "Are you sure want to cancel the listing?",
-    "onFloorValidation": "This can't be more than total floor count"
+    "onFloorValidation": "This can't be more than total floor count",
+    "noPropertyAdded": "You haven't added any property yet. Click here to add your first property.",
+    "noServiceAdded": "You haven’t purchased any value-added service.",
+    "buyNewService": "Buy New Service",
+    "openServices": "Open Services",
+    "totalServices": "Total Services",
+    "propertyOption": "Property Options",
+    "gallery": "Gallery",
+    "downloadToDevice": "Download to Device",
+    "downloadInvoice": "Download invoice",
+    "addImageToProperty": "Add images to property",
+    "attachmentList": "Attachment List",
+    "imageUploaded": "Successfully Image uploaded"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -855,7 +874,8 @@
     "addDatePlaceholder": "Select a date",
     "notes": "Notes",
     "notesPlaceholder": "Type your notes here...",
-    "addNow": "Add Now",
+    "addRecord": "Add Record",
+    "submitRecord": "Submit Record",
     "propertyError": "Please enter your property",
     "detailsError": "Please enter your property details",
     "amountError": "Please enter the amount",
@@ -869,9 +889,13 @@
     "receivedFrom": "Received From",
     "tellerPlaceholder": "Eg: Tenant",
     "addedSuccessfullyMessage": "Added successfully",
+    "editedSuccessfullyMessage": "Edited successfully",
+    "deletedSuccessfullyMessage": "Deleted successfully",
     "noDescriptionText": "No Description.",
     "addProperty": "Please add a property before adding a financial record",
-    "allProperties": "All properties"
+    "allProperties": "All properties",
+    "deleteRecordConfirmation": "Are you sure you want to delete this record?",
+    "systemGeneratedText": "System-generated records cannot be edited"
   },
   "assetMore": {
     "more": "More",
@@ -902,7 +926,9 @@
     "copiedCode": "Referral code copied to the clipboard",
     "clickCopy": "Click below to copy the code",
     "copyUrl": "Copy URL",
-    "shareHomzhub": "Hey, Homzhub has made managing properties super easy. You can start for free and get addition discounts on service if you use this link",
+    "shareHomzhub": "Hi, I am using Homzhub Digital Property Manager to rent and manage my investment properties, tenants, communications, documents, maintenance issues and much more on my Homzhub app. Try Homzhub",
+    "appleStore": "Apple AppStore",
+    "googlePlayStore": "Google Playstore",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
     "shareDoc": "Hey, I have shared this document with you from the Homzhub app. Please use the link to download.",
     "paymentMethods": "Subscriptions & Payments",
@@ -938,7 +964,9 @@
     "subscriptionPayment": "Subscription & Payment",
     "activePlan": "Active Plan",
     "faqs": "FAQs",
-    "noSubscriptions": "No subscription data found"
+    "noSubscriptions": "No subscription data found",
+    "chatOptions": "Chat Options",
+    "attachmentOptions": "Attachment Options"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
@@ -950,7 +978,7 @@
     "currency": "Currency",
     "language": "Language",
     "financialYear": "Financial Year",
-    "metricSystem": "Units Of Measurement",
+    "metricSystem": "Unit Of Measurement",
     "dataAndPrivacy": "Data & Privacy",
     "showLastName": "Show Last Name",
     "showMobileNumber": "Show Mobile Number",
@@ -966,7 +994,8 @@
     "privacyPolicyText": "Privacy Policy",
     "dataPrivacyCautionTextWhenEnabling": "If you switch this on, users who see your listings and site visits request will also be able to see your {{name}}.",
     "dataPrivacyCautionTextWhenDisabling": "No user will be able to view your {{name}}, on the properties you post, site visits and offers.",
-    "communicationsCautionText": "You will not receive automated notifications from the app through {{name}}. However, Homzhub might still use {{name}} to communicate with you for important messages"
+    "communicationsCautionText": "You will not receive automated notifications from the app through {{name}}. However, Homzhub might still use {{name}} to communicate with you for important messages",
+    "deactivateAccount": "Deactivate Account"
   },
   "moreProfile": {
     "basicDetails": "Personal Info",
@@ -1001,7 +1030,12 @@
     "duplicatePhoneError": "Your emergency contact number cannot be the same as your primary contact number",
     "editContactDetails": "Edit Contact Details",
     "emergencyEmptyState": "Emergency contact for when you might not be available to take decisions on urgent issues",
-    "workInfoEmptyState": "You can add details of your workplace to unlock additional discounts"
+    "workInfoEmptyState": "You can add details of your workplace to unlock additional discounts",
+    "addWorkInfoText": "Add Work Info",
+    "preferenceSubHeading": "Customize the application the way you want.",
+    "dataAndPrivacySubHeading": "Protect your personal information by hiding sensitive data.",
+    "communicationSubHeading": "Choose the mediums you wish to receive notifications on.",
+    "appInfoSubHeading": "Show the current version of the app here."
   },
   "webLoader": {
     "loadingText": "Loading Application..."
@@ -1012,7 +1046,8 @@
     "categoryName": "Category Name",
     "caseId": "Case ID",
     "date": "Date",
-    "status": "Status"
+    "status": "Status",
+    "ticketRaised": "The support ticket has been raised."
   },
   "landing": {
     "manageProperties": "Lease and manage properties",
@@ -1069,7 +1104,8 @@
     "platformPlansHeader": "Subscribe to the platform to digitally manage property from anywhere in the world.",
     "servicePlansHeader": "Subscribe to a service plan for on-the-ground services from our team or from our affiliates.",
     "emailValidations": "Please enter a valid email.",
-    "viewAllTitle": "View All"
+    "viewAllTitle": "View All",
+    "featureComparison": "See our complete feature comparison"
   },
   "serviceTickets": {
     "serviceTickets": "Service Tickets",
@@ -1225,6 +1261,7 @@
     "offerRejected": "Offer Rejected",
     "offerAccepted": "Offer Accepted",
     "offerCancelled": "Offer Cancelled",
+    "offerExpired": "Offer Expired",
     "cancelOffer": "Cancel Offer",
     "sort": "Sort by",
     "filterBy": "Filter by",
@@ -1266,5 +1303,14 @@
     "compareProspect": "Compare Prospects",
     "localTaxHeading": "(Local taxes (VAT, GST, etc.) will be charged in addition to the prices mentioned.)",
     "pricingCost": "Pricing Cost"
+  },
+  "error": {
+    "pageNotFound": "Page Not Found",
+    "gatewayTimeout": "Gateway Timeout Error",
+    "pageNotFoundMessage": "We are very sorry for inconvenience. It looks like you’re try to access a page that either has been deleted or never existed.",
+    "gatewayTimeoutMessage": "We are very sorry for inconvenience. It looks like some how our server did not receive a timely response.",
+    "genericError": "Something Unexpected Happened",
+    "genericErrorMessage": "We are not sure what caused this error, but engineers are looking into it. We are sorry for the inconvenience",
+    "backToHome": "Back to Home"
   }
 }

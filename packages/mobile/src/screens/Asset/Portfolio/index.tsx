@@ -18,7 +18,6 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { AssetMetricsList } from '@homzhub/mobile/src/components';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
@@ -32,6 +31,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetPropertiesPayload,
   IGetTenanciesPayload,
+  IPortfolioState,
   ISetAssetPayload,
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
@@ -45,8 +45,8 @@ import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 interface IStateProps {
   tenancies: Asset[] | null;
   properties: Asset[] | null;
-  isTenanciesLoading: boolean;
   currentFilter: Filters;
+  loaders: IPortfolioState['loaders'];
 }
 
 interface IDispatchProps {
@@ -59,11 +59,9 @@ interface IDispatchProps {
   clearMessages: () => void;
 }
 
-interface IPortfolioState {
+interface IScreenState {
   metrics: AssetMetrics;
   filters: PickerItemProps[];
-  isLoading: boolean;
-  isSpinnerLoading: boolean;
   expandedTenanciesId: number;
   expandedAssetId: number;
   assetType: string;
@@ -72,14 +70,12 @@ interface IPortfolioState {
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PortfolioLandingScreen>;
 type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
-export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
+export class Portfolio extends React.PureComponent<Props, IScreenState> {
   public focusListener: any;
 
   public state = {
     metrics: {} as AssetMetrics,
     filters: [],
-    isLoading: false,
-    isSpinnerLoading: false,
     expandedTenanciesId: 0,
     expandedAssetId: 0,
     assetType: '',
@@ -110,10 +106,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   }
 
   public render = (): React.ReactElement => {
-    const { t, tenancies, properties, isTenanciesLoading } = this.props;
-    const { metrics, isSpinnerLoading, assetType, isLoading } = this.state;
+    const { t, tenancies, properties, loaders } = this.props;
+    const { metrics, assetType } = this.state;
     return (
-      <UserScreen isGradient loading={isLoading || isTenanciesLoading || isSpinnerLoading} title={t('portfolio')}>
+      <UserScreen isGradient loading={loaders.tenancies || loaders.properties} title={t('portfolio')}>
         <AssetMetricsList
           title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
           data={metrics?.assetMetrics?.assetGroups ?? []}
@@ -156,8 +152,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
 
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
+    const filterValue = currentFilter.replace('_', ' ');
+    const filteredData =
+      currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.label === filterValue);
 
-    const isEmpty = !data || data.length <= 0;
+    const isEmpty = !filteredData || filteredData.length <= 0;
 
     return (
       <>
@@ -186,7 +185,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         {isEmpty ? (
           <EmptyState title={title} icon={icons.home} containerStyle={styles.emptyView} />
         ) : (
-          data?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
+          filteredData?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
         )}
       </>
     );
@@ -209,7 +208,6 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
         onViewProperty={handleViewProperty}
         onPressArrow={handleArrowPress}
         onCompleteDetails={this.onCompleteDetails}
-        onOfferVisitPress={this.onOfferVisitPress}
         onHandleAction={onPressAction}
       />
     );
@@ -218,9 +216,7 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   private onSelectFilter = (value: Filters): void => {
     const { setCurrentFilter } = this.props;
     setCurrentFilter(value);
-    this.setState({ expandedAssetId: 0 }, (): void => {
-      this.getPortfolioProperty(true);
-    });
+    this.setState({ expandedAssetId: 0 });
   };
 
   private onViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
@@ -242,14 +238,11 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
 
   private onPropertiesCallback = (): void => {
     this.verifyData();
-    this.setState({ isSpinnerLoading: false, isLoading: false });
   };
 
   private onTenanciesCallback = (): void => {
     this.verifyData();
   };
-
-  private onOfferVisitPress = (type: OffersVisitsType): void => {};
 
   private onCompleteDetails = (assetId: number): void => {
     const { navigation, setAssetId, setEditPropertyFlow } = this.props;
@@ -274,10 +267,10 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private getScreenData = async (): Promise<void> => {
-    await this.getAssetMetrics();
-    await this.getAssetFilters();
     this.getTenancies();
     this.getPortfolioProperty();
+    await this.getAssetMetrics();
+    await this.getAssetFilters();
   };
 
   private handleExpandCollapse = (id: number, type: DataType): void => {
@@ -290,24 +283,20 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
   };
 
   private getAssetMetrics = async (): Promise<void> => {
-    this.setState({ isLoading: true });
     try {
       const response: AssetMetrics = await PortfolioRepository.getAssetMetrics();
-      this.setState({ metrics: response, isLoading: false });
+      this.setState({ metrics: response });
     } catch (e) {
-      this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
     }
   };
 
   private getAssetFilters = async (): Promise<void> => {
-    this.setState({ isLoading: true });
     try {
       const response: AssetFilter = await PortfolioRepository.getAssetFilters();
-      this.setState({ filters: response.statusDropdown, isLoading: false });
+      this.setState({ filters: response.statusDropdown });
     } catch (e) {
-      this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
     }
@@ -318,14 +307,9 @@ export class Portfolio extends React.PureComponent<Props, IPortfolioState> {
     getTenanciesDetails({ onCallback: this.onTenanciesCallback });
   };
 
-  private getPortfolioProperty = (isFromFilter?: boolean): void => {
-    const { getPropertyDetails, currentFilter } = this.props;
-    if (isFromFilter) {
-      this.setState({ isSpinnerLoading: true });
-    } else {
-      this.setState({ isLoading: true });
-    }
-    getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
+  private getPortfolioProperty = (): void => {
+    const { getPropertyDetails } = this.props;
+    getPropertyDetails({ onCallback: this.onPropertiesCallback });
   };
 
   private handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
@@ -380,7 +364,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     tenancies: PortfolioSelectors.getTenancies(state),
     properties: PortfolioSelectors.getProperties(state),
     currentFilter: PortfolioSelectors.getCurrentFilter(state),
-    isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
+    loaders: PortfolioSelectors.getPortfolioLoaders(state),
   };
 };
 

@@ -17,6 +17,7 @@ const ENDPOINTS = {
   getPropertyDetailById: (id: number): string => `v2/assets/${id}/detail/`,
   getPropertyDetailByListing: (id: number, listingType: string, listingId: number): string =>
     `v2/assets/${id}/${listingType}/${listingId}/`,
+  getPortfolioAsset: 'v1/assets/portfolio/listings',
 };
 
 class PortfolioRepository {
@@ -59,6 +60,11 @@ class PortfolioRepository {
         : ENDPOINTS.getPropertyDetailByListing(asset_id, type, id);
     const response = await this.apiClient.get(url);
     return ObjectMapper.deserialize(Asset, response);
+  };
+
+  public getPortfolioAssets = async (): Promise<Asset[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.getPortfolioAsset);
+    return ObjectMapper.deserializeArray(Asset, response);
   };
 }
 

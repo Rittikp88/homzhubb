@@ -42,7 +42,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
   <Divider />
   <EmptyState />
   <BottomSheet
-    headerTitle="confirm"
+    headerTitle="common:confirm"
     onCloseSheet={[Function]}
     sheetHeight={444.6666666666667}
     visible={false}

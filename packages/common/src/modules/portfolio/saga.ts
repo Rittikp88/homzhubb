@@ -2,6 +2,7 @@
 import { put, takeEvery, call } from '@redux-saga/core/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioActions, PortfolioActionTypes } from '@homzhub/common/src/modules/portfolio/actions';
@@ -36,7 +37,9 @@ function* getProperties(action: IFluxStandardAction<IGetPropertiesPayload>) {
   }
   const { status, onCallback } = action.payload;
   try {
-    const response = yield call(PortfolioRepository.getUserAssetDetails, status);
+    const response = PlatformUtils.isWeb()
+      ? yield call(PortfolioRepository.getUserAssetDetails, status)
+      : yield call(PortfolioRepository.getPortfolioAssets);
     yield put(PortfolioActions.getPropertyDetailsSuccess(response));
     onCallback({ status: true });
   } catch (err) {

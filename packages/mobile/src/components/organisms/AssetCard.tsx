@@ -50,7 +50,6 @@ interface IListProps {
   customDesignation?: string;
   onPressArrow?: (id: number) => void;
   onCompleteDetails: (id: number) => void;
-  onOfferVisitPress: (type: OffersVisitsType) => void;
   containerStyle?: StyleProp<ViewStyle>;
   enterFullScreen?: (attachments: Attachment[]) => void;
   onViewProperty?: (data: ISetAssetPayload, key?: Tabs) => void;
@@ -258,7 +257,7 @@ export class AssetCard extends Component<Props, IState> {
   };
 
   private renderExpandedView = (): React.ReactNode => {
-    const { assetData, t, onOfferVisitPress, isDetailView, isFromTenancies = false } = this.props;
+    const { assetData, t, isDetailView, isFromTenancies = false } = this.props;
     if (!assetData || !assetData.assetStatusInfo) return null;
     const {
       assetStatusInfo: {
@@ -329,7 +328,6 @@ export class AssetCard extends Component<Props, IState> {
         )}
         {isVerificationDocumentUploaded && isListed && (
           <OffersVisitsSection
-            onNav={onOfferVisitPress}
             isDetailView={isDetailView}
             values={{
               [OffersVisitsType.offers]: [totalOffers, activeOffers, pendingOffers],
