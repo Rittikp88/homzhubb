@@ -58,7 +58,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
   };
 
   public render(): ReactElement {
-    const { t, shouldEnableOuterScroll, isFromPortfolio } = this.props;
+    const { t, shouldEnableOuterScroll } = this.props;
     const { transactionsData } = this.state;
 
     return (
@@ -85,7 +85,6 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
             onMomentumScrollEnd={this.controlScroll}
             onScrollEndDrag={this.controlScroll}
             scrollEventThrottle={1500}
-            scrollEnabled={!isFromPortfolio}
             style={styles.contentContainer}
           >
             {transactionsData.map(this.renderTransactionCard)}

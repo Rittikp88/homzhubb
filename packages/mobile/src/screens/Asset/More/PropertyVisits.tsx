@@ -3,8 +3,9 @@ import { PickerItemProps, StyleSheet, TouchableOpacity } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -107,7 +108,11 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
           />
         )}
         {isCalendarView ? (
-          <SiteVisitCalendarView onReschedule={this.rescheduleVisit} selectedAssetId={selectedAssetId} />
+          <SiteVisitCalendarView
+            onReschedule={this.rescheduleVisit}
+            selectedAssetId={selectedAssetId}
+            navigateToAssetDetail={this.navigateToAssetDetails}
+          />
         ) : (
           <SiteVisitTab
             onReschedule={this.rescheduleVisit}
@@ -125,6 +130,18 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 
   private onCountryChange = (countryId: number): void => {
     this.setState({ selectedCountry: countryId });
+  };
+
+  private navigateToAssetDetails = (listingId: number | null, id: number, isValidVisit: boolean): void => {
+    const { navigation, t } = this.props;
+    if (isValidVisit && listingId) {
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+        propertyTermId: listingId,
+        propertyId: id,
+      });
+    } else {
+      AlertHelper.error({ message: t('property:inValidVisit') });
+    }
   };
 
   private handleBack = (): void => {

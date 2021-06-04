@@ -511,6 +511,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   dropDown: {
-    width: 140,
+    width: theme.viewport.width / 3,
   },
 });

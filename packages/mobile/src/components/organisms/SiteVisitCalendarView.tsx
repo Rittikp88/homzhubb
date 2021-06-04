@@ -53,6 +53,7 @@ interface IStateProps {
 interface IProps {
   onReschedule: (param: IBookVisitProps, isNew?: boolean) => void;
   selectedAssetId: number;
+  navigateToAssetDetail: (listingId: number | null, id: number, isValidVisit: boolean) => void;
 }
 
 interface IScreenState {
@@ -177,14 +178,22 @@ class SiteVisitCalendarView extends Component<Props, IScreenState> {
   };
 
   private renderVisits = (visit: IVisitByKey): React.ReactElement => {
+    const { navigateToAssetDetail } = this.props;
     const { key, results } = visit;
     const visitData = results as AssetVisit[];
     const visitByStatus = this.getVisitByStatus(visitData);
+
+    const navigateToAssetDescription = (): void => {
+      const { leaseListing, saleListing, isValidVisit, id } = visitData[0];
+      const listingId = saleListing === 0 ? leaseListing : saleListing;
+      navigateToAssetDetail(listingId, id, isValidVisit);
+    };
+
     return (
       <View style={styles.visitCard}>
         <AddressWithVisitDetail
           primaryAddress={key}
-          isRescheduleAll
+          navigateToAssetDetails={navigateToAssetDescription}
           subAddress={visitData[0].asset.address}
           startDate={visitData[0].startDate}
           endDate={visitData[0].endDate}

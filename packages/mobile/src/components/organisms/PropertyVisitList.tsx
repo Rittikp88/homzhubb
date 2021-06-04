@@ -425,6 +425,8 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
       handleAction({
         id: currentVisitId,
         action: VisitActions.CANCEL,
+        // Setting to true explicitly since bottomsheet will open only when visit is valid.
+        isValidVisit: true,
       });
     }
     this.onCancelSheet();
@@ -483,16 +485,9 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     const { navigation, t } = this.props;
     if (isValidVisit && navigation) {
       // @ts-ignore
-      navigation.navigate(ScreensKeys.BottomTabs, {
-        screen: ScreensKeys.Search,
-        params: {
-          screen: ScreensKeys.PropertyAssetDescription,
-          initial: false,
-          params: {
-            propertyTermId: listingId,
-            propertyId: id,
-          },
-        },
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, {
+        propertyTermId: listingId,
+        propertyId: id,
       });
     } else {
       AlertHelper.error({ message: t('property:inValidVisit') });

@@ -214,6 +214,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
                         inputType="default"
                         editable={false}
                         formProps={formProps}
+                        multiline
                       />
                     </View>
                     <View style={styles.flexOne}>
