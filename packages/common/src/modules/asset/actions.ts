@@ -26,6 +26,7 @@ export const AssetActionTypes = {
     ASSET_VISIT_FAILURE: `${actionTypePrefix}ASSET_VISIT_FAILURE`,
     USER_ACTIVE_ASSETS: `${actionTypePrefix}USER_ACTIVE_ASSETS`,
     USER_ACTIVE_ASSETS_SUCCESS: `${actionTypePrefix}USER_ACTIVE_ASSETS_SUCCESS`,
+    USER_ACTIVE_ASSETS_FAILURE: `${actionTypePrefix}USER_ACTIVE_ASSETS_FAILURE`,
     ASSET_BY_ID: `${actionTypePrefix}ASSET_BY_ID`,
     ASSET_BY_ID_SUCCESS: `${actionTypePrefix}ASSET_BY_ID_SUCCESS`,
     ASSET_BY_ID_FAILURE: `${actionTypePrefix}ASSET_BY_ID_FAILURE`,
@@ -125,6 +126,10 @@ const getActiveAssetsSuccess = (payload: Asset[]): IFluxStandardAction<IAsset[]>
   payload: ObjectMapper.serializeArray(payload),
 });
 
+const getActiveAssetsFailure = (): IFluxStandardAction => ({
+  type: AssetActionTypes.GET.USER_ACTIVE_ASSETS_FAILURE,
+});
+
 const getAssetById = (payload: number): IFluxStandardAction<number> => ({
   type: AssetActionTypes.GET.ASSET_BY_ID,
   payload,
@@ -163,4 +168,5 @@ export const AssetActions = {
   getAssetById,
   getAssetByIdSuccess,
   getAssetByIdFailure,
+  getActiveAssetsFailure,
 };

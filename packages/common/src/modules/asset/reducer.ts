@@ -116,8 +116,18 @@ export const assetReducer = (
     case AssetActionTypes.GET.USER_ACTIVE_ASSETS:
       return {
         ...state,
-        ['activeAssets']: initialAssetState.activeAssets,
         ['loaders']: { ...state.loaders, ['activeAssets']: true },
+      };
+    case AssetActionTypes.GET.USER_ACTIVE_ASSETS_SUCCESS:
+      return {
+        ...state,
+        ['activeAssets']: action.payload as IAsset[],
+        ['loaders']: { ...state.loaders, ['activeAssets']: false },
+      };
+    case AssetActionTypes.GET.USER_ACTIVE_ASSETS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['activeAssets']: false },
       };
     case AssetActionTypes.GET.ASSET_BY_ID:
       return {

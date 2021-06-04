@@ -57,6 +57,7 @@ interface IDispatchProps {
   setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
   clearMessages: () => void;
+  clearAssetData: () => void;
 }
 
 interface IScreenState {
@@ -334,7 +335,8 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
   };
 
   private handleAddProperty = (): void => {
-    const { navigation } = this.props;
+    const { navigation, clearAssetData } = this.props;
+    clearAssetData();
     // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
     AnalyticsService.track(EventType.AddPropertyInitiation);
@@ -370,7 +372,7 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
-  const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
+  const { setAssetId, setEditPropertyFlow, clearAssetData } = RecordAssetActions;
   const { clearMessages } = CommonActions;
   return bindActionCreators(
     {
@@ -381,6 +383,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setAssetId,
       setEditPropertyFlow,
       clearMessages,
+      clearAssetData,
     },
     dispatch
   );

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -16,14 +16,27 @@ interface IProps {
   optionTitle?: string;
   onSelect: (value: string) => void;
   sheetHeight?: number;
+  extraNode?: React.ReactElement;
+  isExtraNode?: boolean;
 }
 
 const Menu = (props: IProps): React.ReactElement => {
-  const { data, onSelect, optionTitle, sheetHeight } = props;
+  const { data, onSelect, optionTitle, sheetHeight, extraNode, isExtraNode } = props;
   const [isVisible, setIsVisible] = useState(false);
+  const [isExtraData, setExtraData] = useState(false);
+
+  useEffect(() => {
+    if (!isExtraNode) {
+      setIsVisible(false);
+    }
+  }, [isExtraNode]);
 
   const handleSelection = (value: string): void => {
-    setIsVisible(false);
+    if (value !== 'DELETE_PROPERTY') {
+      setIsVisible(false);
+    } else {
+      setExtraData(true);
+    }
     onSelect(value);
   };
 
@@ -47,9 +60,12 @@ const Menu = (props: IProps): React.ReactElement => {
         visible={isVisible}
         headerTitle={optionTitle}
         sheetHeight={sheetHeight}
-        onCloseSheet={(): void => setIsVisible(false)}
+        onCloseSheet={(): void => {
+          setIsVisible(false);
+          setExtraData(false);
+        }}
       >
-        <>{data.map((item, index) => renderMenuItem(item, index))}</>
+        <>{isExtraData ? extraNode : data.map((item, index) => renderMenuItem(item, index))}</>
       </BottomSheet>
     </>
   );

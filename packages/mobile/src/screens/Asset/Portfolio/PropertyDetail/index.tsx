@@ -151,7 +151,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       t,
       route: { params },
     } = this.props;
-    const { propertyData, isLoading, isDeleteProperty, isFromTenancies } = this.state;
+    const { propertyData, isLoading, isFromTenancies } = this.state;
 
     const { assetStatusInfo, id } = propertyData;
     const isOccupied = assetStatusInfo?.tag.label === Filters.OCCUPIED;
@@ -194,27 +194,43 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           )}
         </UserScreen>
         {this.renderFullscreenCarousel()}
-        <BottomSheet
-          visible={isDeleteProperty}
-          headerTitle={t('property:deleteProperty')}
-          sheetHeight={460}
-          onCloseSheet={this.onCloseDeleteView}
-        >
-          <PropertyConfirmationView
-            propertyData={propertyData}
-            description={t('deletePropertyDescription')}
-            message={t('deleteConfirmation')}
-            onCancel={this.onCloseDeleteView}
-            onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
-          />
-        </BottomSheet>
       </View>
     );
   };
 
   private renderRightNode = (menuItems: IMenu[]): React.ReactElement => {
     const { t } = this.props;
-    return <Menu data={menuItems} onSelect={this.onSelectMenuItem} optionTitle={t('property:propertyOption')} />;
+    const { isDeleteProperty } = this.state;
+    return (
+      <Menu
+        data={menuItems}
+        onSelect={this.onSelectMenuItem}
+        optionTitle={t('property:propertyOption')}
+        extraNode={this.renderConfirmationView()}
+        isExtraNode={isDeleteProperty}
+      />
+    );
+  };
+
+  private renderConfirmationView = (): React.ReactElement => {
+    const { t } = this.props;
+    const { propertyData, isDeleteProperty } = this.state;
+    return (
+      <BottomSheet
+        visible={isDeleteProperty}
+        headerTitle={t('property:deleteProperty')}
+        sheetHeight={460}
+        onCloseSheet={this.onCloseDeleteView}
+      >
+        <PropertyConfirmationView
+          propertyData={propertyData}
+          description={t('deletePropertyDescription')}
+          message={t('deleteConfirmation')}
+          onCancel={this.onCloseDeleteView}
+          onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
+        />
+      </BottomSheet>
+    );
   };
 
   private renderTabView = (): React.ReactElement | null => {
@@ -555,13 +571,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setAssetId,
-    setSelectedPlan,
-    getAssetById,
-    setEditPropertyFlow,
-    toggleEditPropertyFlowBottomSheet,
-  } = RecordAssetActions;
+  const { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } =
+    RecordAssetActions;
   const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;

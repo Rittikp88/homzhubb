@@ -97,6 +97,7 @@ export function* getUserActiveAssets() {
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error, statusCode: e.details.statusCode });
+    yield put(AssetActions.getActiveAssetsFailure());
   }
 }
 

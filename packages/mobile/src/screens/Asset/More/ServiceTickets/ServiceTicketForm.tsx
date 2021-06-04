@@ -38,6 +38,7 @@ import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { IAddServiceEvent } from '@homzhub/common/src/services/Analytics/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 
 interface IFormValues {
   property: number;
@@ -61,7 +62,7 @@ interface IScreeState {
 
 interface IStateToProps {
   properties: Asset[];
-  isActiveAssetsLoading: boolean;
+  loaders: IAssetState['loaders'];
 }
 
 interface IDispatchToProps {
@@ -144,7 +145,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       route,
       navigation: { goBack },
       properties,
-      isActiveAssetsLoading,
+      loaders: { activeAssets },
     } = this.props;
     const { serviceForm, attachments, isScreenLoading, categories, subCategories, selectedCategoryId } = this.state;
 
@@ -160,7 +161,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
           onBackPress={goBack}
           rightNode={this.renderClearButton()}
           scrollEnabled
-          loading={isActiveAssetsLoading || isScreenLoading}
+          loading={activeAssets || isScreenLoading}
         >
           {isPropertiesPresent ? (
             <View style={styles.container}>
@@ -490,7 +491,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 const mapStateToProps = (state: IState): IStateToProps => {
   return {
     properties: AssetSelectors.getUserActiveAssets(state),
-    isActiveAssetsLoading: AssetSelectors.isActiveAssetsLoading(state),
+    loaders: AssetSelectors.getAssetLoaders(state),
   };
 };
 
