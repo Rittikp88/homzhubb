@@ -229,6 +229,8 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       });
     } else if (type === NotificationType.VALUE_ADDED_SERVICE) {
       navigation.navigate(ScreensKeys.ServicesDashboard);
+    } else if (type === NotificationType.ASSET_DOCUMENT) {
+      navigation.navigate(ScreensKeys.DocumentScreen, { isFromDashboard: true, propertyId: assetId });
     }
   };
 

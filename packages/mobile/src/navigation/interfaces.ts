@@ -326,6 +326,7 @@ export interface ICommonNavProps {
   isFromDashboard?: boolean;
   isFromPortfolio?: boolean;
   isFromTenancies?: boolean;
+  shouldReload?: boolean;
   screenTitle?: string;
   propertyId?: number;
 }

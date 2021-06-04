@@ -15,9 +15,11 @@ class ObjectMapper {
     return jsonConvert.serializeArray<T>(instanceArray);
   }
 
-  public static deserialize<T>(classReference: new () => T, jsonObject: any): T {
+  public static deserialize<T>(classReference: new () => T, jsonObject: any, ignoreRequiredCheck = false): T {
     const jsonConvert: JsonConvert = new JsonConvert();
     jsonConvert.operationMode = OperationMode.ENABLE;
+    // ignoreRequiredCheck TRUE ignores missing keys as if they are optional.
+    jsonConvert.ignoreRequiredCheck = ignoreRequiredCheck;
 
     return jsonConvert.deserializeObject(jsonObject, classReference);
   }

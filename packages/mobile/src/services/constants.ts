@@ -54,6 +54,7 @@ export enum NotificationTypes {
   Asset = 'ASSET',
   Campaign = 'CAMPAIGN',
   ValueAddedService = 'VALUE_ADDED_SERVICE',
+  AssetDocuments = 'ASSET_DOCUMENT',
 }
 
 /**

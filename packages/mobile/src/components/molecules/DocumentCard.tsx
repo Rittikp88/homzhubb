@@ -28,9 +28,17 @@ export const DocumentCard = ({
   const {
     attachment: { fileName, link, presignedReferenceKey },
     user,
+    isSystemGenerated,
   } = document;
   const { t } = useTranslation();
-  const uploadedBy = userEmail === user?.email ? t('you') : user?.fullName;
+
+  const getUploadedBy = (): string | undefined => {
+    if (isSystemGenerated) return t('common:homzhub');
+    if (userEmail === user?.email) return t('you');
+    return user?.fullName;
+  };
+
+  const uploadedBy = getUploadedBy();
   const uploadedOn = DateUtils.getDisplayDate(document.uploadedOn, DateFormats.DD_MM_YYYY);
   const onShare = (): void => handleShare(link);
   const onDelete = (): void => handleDelete(document.id);

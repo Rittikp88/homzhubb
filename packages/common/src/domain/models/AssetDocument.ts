@@ -31,6 +31,9 @@ export class AssetDocument {
   @JsonProperty('can_delete', Boolean, true)
   private _canDelete = false;
 
+  @JsonProperty('is_system_generated', Boolean, true)
+  private _isSystemGenerated = false;
+
   get id(): number {
     return this._id;
   }
@@ -65,5 +68,9 @@ export class AssetDocument {
 
   get canDelete(): boolean {
     return this._canDelete;
+  }
+
+  get isSystemGenerated(): boolean {
+    return this._isSystemGenerated;
   }
 }

@@ -138,6 +138,12 @@ class AssetRepository {
     return ObjectMapper.deserialize(Asset, response);
   };
 
+  public getRequiredAssetFieldsById = async (propertyId: number, requiredFields: string[]): Promise<Asset> => {
+    const queryParams = requiredFields.toString();
+    const response = await this.apiClient.get(ENDPOINTS.getAssetById(propertyId), { fields: queryParams });
+    return ObjectMapper.deserialize(Asset, response, true);
+  };
+
   public getAssetGroups = async (): Promise<AssetGroup[]> => {
     const response = await this.apiClient.get(ENDPOINTS.getAssetGroups());
     return ObjectMapper.deserializeArray(AssetGroup, response);

@@ -48,18 +48,13 @@ interface IDocumentState {
   searchValue: string;
   documents: AssetDocument[];
   isLoading: boolean;
+  header: string;
 }
 
 type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.DocumentScreen>;
 type Props = IStateProps & IDispatchProps & WithTranslation & NavProps;
 
 export class Documents extends PureComponent<Props, IDocumentState> {
-  public state = {
-    searchValue: '',
-    documents: [],
-    isLoading: false,
-  };
-
   private search = debounce(() => {
     const { searchValue } = this.state;
     const { documents } = this.props;
@@ -73,21 +68,46 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     this.setState({ documents: results, isLoading: false });
   }, 1000);
 
-  public componentDidMount(): void {
-    this.getDocuments();
-  }
-
-  public render(): React.ReactNode {
-    const { searchValue, isLoading } = this.state;
+  constructor(props: Props) {
+    super(props);
     const {
       t,
       route: { params },
-      navigation,
     } = this.props;
+    this.state = {
+      searchValue: '',
+      documents: [],
+      isLoading: false,
+      header: params?.screenTitle ?? t('assetPortfolio:portfolio'),
+    };
+  }
+
+  public componentDidMount(): void {
+    const {
+      route: { params },
+    } = this.props;
+    if (params?.isFromDashboard) {
+      this.getProjectName().then();
+    }
+    this.getDocuments();
+  }
+
+  public componentDidUpdate(): void {
+    const {
+      route: { params },
+    } = this.props;
+    if (params?.shouldReload) {
+      this.getDocuments();
+    }
+  }
+
+  public render(): React.ReactNode {
+    const { searchValue, isLoading, header } = this.state;
+    const { t, navigation } = this.props;
 
     return (
       <UserScreen
-        title={params?.screenTitle ?? t('assetPortfolio:portfolio')}
+        title={header}
         pageTitle={t('assetMore:documents')}
         onBackPress={navigation.goBack}
         loading={isLoading}
@@ -250,14 +270,45 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   };
 
   private getDocuments = (): void => {
-    const { getAssetDocument, currentAssetId } = this.props;
+    const {
+      getAssetDocument,
+      currentAssetId,
+      route: { params },
+      navigation,
+    } = this.props;
+    const assetId = params?.isFromDashboard ? params?.propertyId ?? -1 : currentAssetId;
     this.setState({ isLoading: true });
-    getAssetDocument({ assetId: currentAssetId, onCallback: this.getDocumentCallback });
+    getAssetDocument({ assetId, onCallback: this.getDocumentCallback });
+    navigation.setParams({ shouldReload: false });
   };
 
   private getDocumentCallback = (): void => {
     const { documents } = this.props;
     this.setState({ documents, isLoading: false });
+  };
+
+  private getProjectName = async (): Promise<void> => {
+    const {
+      route: { params },
+    } = this.props;
+
+    const returnWithComma = (text: string): string => (text.length > 0 ? `${text}, ` : text);
+
+    try {
+      if (params?.propertyId) {
+        const requiredFields = ['project_name', 'unit_number', 'block_number'];
+        this.setState({ isLoading: true });
+        const { projectName, unitNumber, blockNumber } = await AssetRepository.getRequiredAssetFieldsById(
+          params.propertyId,
+          requiredFields
+        );
+        const headerText = `${returnWithComma(unitNumber)}${returnWithComma(blockNumber)}${projectName}`;
+        this.setState({ header: headerText, isLoading: false });
+      }
+    } catch (e) {
+      this.setState({ isLoading: false });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 }
 
