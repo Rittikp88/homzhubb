@@ -185,6 +185,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
                 onCompleteDetails={this.onCompleteDetails}
                 onHandleAction={onPressAction}
                 containerStyle={styles.card}
+                onResend={this.onResendInvite}
               />
               {this.renderTabView()}
               {!isFromTenancies && <NotificationTab propertyId={id} assetStatusInfo={assetStatusInfo} />}
@@ -312,6 +313,15 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       this.setState({ isDeleteProperty: false, isLoading: false });
+    }
+  };
+
+  private onResendInvite = async (tenantId: number): Promise<void> => {
+    try {
+      await AssetRepository.inviteTenant(tenantId);
+      await this.getAssetDetail();
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 

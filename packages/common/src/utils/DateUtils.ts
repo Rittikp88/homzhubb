@@ -383,6 +383,10 @@ class DateUtils {
       .add(dateCount, unit)
       .format(format || 'YYYY-MM-DD');
   };
+
+  public getDateDifference = (date: string, unit?: unitOfTime.Diff): number => {
+    return moment().diff(moment(date), unit || 'hours');
+  };
 }
 
 const dateUtils = new DateUtils();

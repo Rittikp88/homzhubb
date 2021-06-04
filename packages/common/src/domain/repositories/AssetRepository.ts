@@ -123,6 +123,7 @@ const ENDPOINTS = {
     `v1/assets/${propertyId}/lease-units/${unitId}/lease-listings/`,
   assetAttachmentById: (propertyId: number, attachmentId: number): string =>
     `v1/assets/${propertyId}/attachments/${attachmentId}`,
+  inviteTenant: (id: number): string => `v1/lease-tenants/${id}/invites/`,
 };
 
 class AssetRepository {
@@ -457,6 +458,10 @@ class AssetRepository {
 
   public deleteAssetAttachment = async (propertyId: number, attachmentId: number): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.assetAttachmentById(propertyId, attachmentId));
+  };
+
+  public inviteTenant = async (tenantId: number): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.inviteTenant(tenantId));
   };
 }
 

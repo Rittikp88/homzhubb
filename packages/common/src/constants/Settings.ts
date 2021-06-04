@@ -106,7 +106,7 @@ export const SettingsScreenData: ISettingsData[] = [
         name: 'releaseNotes',
         label: 'releaseNotes',
         type: OptionTypes.Webview,
-        url: 'https://www.homzhub.com/privacyPolicy',
+        url: 'https://releasenote.homzhub.com',
       },
       {
         name: 'termsConditionsText',

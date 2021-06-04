@@ -1,3 +1,4 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { LeasePeriod } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -18,6 +19,9 @@ export class TenantInfo {
 
   @JsonProperty('lease_tenant_id', Number, true)
   private _leaseTenantId = 0;
+
+  @JsonProperty('invite_sent_at', String, true)
+  private _inviteSentAt = '';
 
   @JsonProperty('lease_unit_id', Number, true)
   private _leaseUnitId = 0;
@@ -57,6 +61,14 @@ export class TenantInfo {
 
   get tenantUser(): User | null {
     return this._tenantUser;
+  }
+
+  get inviteSentAt(): string {
+    return this._inviteSentAt;
+  }
+
+  get inviteSentTime(): number {
+    return DateUtils.getDateDifference(this.inviteSentAt);
   }
 }
 

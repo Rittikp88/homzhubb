@@ -6,6 +6,7 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 
@@ -19,14 +20,16 @@ interface IProps {
   phoneCode?: string;
   rating?: number;
   date?: string;
+  isButtonType?: boolean;
   isRightIcon?: boolean;
   rightIconName?: string;
   rightIconColor?: string;
   imageSize?: number;
   onPressCamera?: () => void;
+  onPressButton?: () => void;
   onPressRightIcon?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
-  customDesignation?: TextStyle;
+  customDesignation?: StyleProp<TextStyle>;
   initialsContainerStyle?: StyleProp<ViewStyle>;
   customText?: string;
   customTextStyle?: StyleProp<TextStyle>;
@@ -45,6 +48,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     isRightIcon = false,
     phoneCode,
     isOnlyAvatar = false,
+    isButtonType = false,
     image,
     icon,
     initialsContainerStyle,
@@ -54,6 +58,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     rightIconName = icons.rightArrow,
     rightIconColor = theme.colors.blue,
     customText,
+    onPressButton,
     customTextStyle = {},
     nameStyle = {},
   } = props;
@@ -120,9 +125,20 @@ const Avatar = (props: IProps): React.ReactElement => {
               {fullName}
             </Label>
             <View style={styles.leftView}>
-              <Label textType="regular" type="regular" style={[styles.designation, customDesignation]}>
-                {designation}
-              </Label>
+              {isButtonType ? (
+                <Button
+                  type="primary"
+                  onPress={onPressButton}
+                  title={designation}
+                  containerStyle={styles.buttonContainer}
+                  textStyle={styles.buttonStyle}
+                />
+              ) : (
+                <Label textType="regular" type="regular" style={[styles.designation, customDesignation]}>
+                  {designation}
+                </Label>
+              )}
+
               {!!phoneNumber && (
                 <View style={styles.numberContainer}>
                   <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
@@ -221,6 +237,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     top: 60,
     left: 50,
+  },
+  buttonContainer: {
+    flex: 0,
+    marginVertical: 6,
+  },
+  buttonStyle: {
+    marginVertical: 6,
+    marginHorizontal: 8,
   },
 });
 

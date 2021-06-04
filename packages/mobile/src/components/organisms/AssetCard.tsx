@@ -39,6 +39,7 @@ interface IUserInfo {
   icon?: string;
   image?: string;
   designation: string;
+  isButtonType?: boolean;
   designationStyle?: TextStyle;
 }
 
@@ -49,6 +50,7 @@ interface IListProps {
   isFromTenancies?: boolean;
   customDesignation?: string;
   onPressArrow?: (id: number) => void;
+  onResend?: (id: number) => void;
   onCompleteDetails: (id: number) => void;
   containerStyle?: StyleProp<ViewStyle>;
   enterFullScreen?: (attachments: Attachment[]) => void;
@@ -257,13 +259,13 @@ export class AssetCard extends Component<Props, IState> {
   };
 
   private renderExpandedView = (): React.ReactNode => {
-    const { assetData, t, isDetailView, isFromTenancies = false } = this.props;
+    const { assetData, t, isDetailView, isFromTenancies = false, onResend } = this.props;
     if (!assetData || !assetData.assetStatusInfo) return null;
     const {
       assetStatusInfo: {
         action,
         tag: { label },
-        leaseTenantInfo: { user, isInviteAccepted },
+        leaseTenantInfo: { user, isInviteAccepted, inviteSentTime, leaseTenantId },
         leaseListingId,
         saleListingId,
         leaseOwnerInfo,
@@ -277,7 +279,7 @@ export class AssetCard extends Component<Props, IState> {
     } = assetData;
     const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
-    const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
+    const userInfo = this.getFormattedInfo(userData, isInviteAccepted, inviteSentTime);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
     return (
@@ -291,8 +293,10 @@ export class AssetCard extends Component<Props, IState> {
               icon={userInfo.icon}
               fullName={userInfo.name}
               image={userInfo.image}
+              isButtonType={userInfo.isButtonType ?? false}
               designation={userInfo.designation}
               customDesignation={userInfo.designationStyle}
+              onPressButton={onResend ? (): void => onResend(leaseTenantId) : undefined}
             />
           </>
         )}
@@ -421,13 +425,15 @@ export class AssetCard extends Component<Props, IState> {
     }
   };
 
-  private getFormattedInfo = (user: User, isInviteAccepted: boolean): IUserInfo => {
+  private getFormattedInfo = (user: User, isInviteAccepted: boolean, inviteSentTime: number): IUserInfo => {
     const { t, isFromTenancies = false } = this.props;
+    const inviteSent = inviteSentTime > 24 ? t('property:resendInvite') : t('common:invitationSent');
     let icon = isInviteAccepted ? undefined : icons.circularCheckFilled;
     let name = isInviteAccepted ? user.name : user.email;
     let image = isInviteAccepted ? user.profilePicture : undefined;
-    let designation = isInviteAccepted ? t('property:tenant') : t('common:invitationSent');
+    let designation = isInviteAccepted ? t('property:tenant') : inviteSent;
     let designationStyle = isInviteAccepted ? undefined : styles.designation;
+    let isButtonType = !isInviteAccepted && inviteSentTime > 24;
 
     if (isFromTenancies) {
       icon = undefined;
@@ -435,6 +441,7 @@ export class AssetCard extends Component<Props, IState> {
       image = user.profilePicture;
       designation = t('property:owner');
       designationStyle = undefined;
+      isButtonType = false;
     }
 
     return {
@@ -443,6 +450,7 @@ export class AssetCard extends Component<Props, IState> {
       icon,
       image,
       designationStyle,
+      isButtonType,
     };
   };
 

@@ -210,6 +210,7 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
         onPressArrow={handleArrowPress}
         onCompleteDetails={this.onCompleteDetails}
         onHandleAction={onPressAction}
+        onResend={this.onResendInvite}
       />
     );
   };
@@ -227,6 +228,15 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
       isFromTenancies: data.dataType === DataType.TENANCIES,
       ...(key && { tabKey: key }),
     });
+  };
+
+  private onResendInvite = async (tenantId: number): Promise<void> => {
+    try {
+      await AssetRepository.inviteTenant(tenantId);
+      this.getPortfolioProperty();
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   private onMetricsClicked = (name: string): void => {

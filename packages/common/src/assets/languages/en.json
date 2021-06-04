@@ -657,7 +657,8 @@
     "downloadInvoice": "Download invoice",
     "addImageToProperty": "Add images to property",
     "attachmentList": "Attachment List",
-    "imageUploaded": "Successfully Image uploaded"
+    "imageUploaded": "Successfully Image uploaded",
+    "resendInvite": "Resend Invite"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
