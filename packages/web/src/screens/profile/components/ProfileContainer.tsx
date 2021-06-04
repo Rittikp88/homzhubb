@@ -82,7 +82,7 @@ const ProfileContainer: FC<IProps> = (props: IProps) => {
       <View style={isTablet && styles.subContainerTab}>
         <View style={isTablet && styles.basicInfoTab}>
           <BasicInformations userProfileInfo={userProfile} openEditModal={openEditModal} />
-          {userProfile && !userProfile.isPasswordCreated ? (
+          {userProfile && userProfile.isPasswordCreated ? (
             <TouchableOpacity
               style={[styles.changePassword, isTablet && styles.changePasswordTab]}
               onPress={(): void => openModal(ProfileUserFormTypes.ChangePassword)}
