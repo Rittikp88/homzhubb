@@ -1,7 +1,7 @@
 // @ts-noCheck
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { CommonActions, useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -130,6 +130,11 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
         },
       },
     });
+  };
+
+  const navigateToProperty = (listingId: number, transaction: number, assetId: number): void => {
+    dispatch(SearchActions.setFilter({ asset_transaction_type: transaction }));
+    navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId: listingId, propertyId: assetId });
   };
 
   const navigateToPropertyVisit = (leaseTermId?: number, saleTermId?: number): void => {
@@ -277,6 +282,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
         {wishListedAssets && wishListedAssets.length > 0 ? (
           wishListedAssets.map((asset, index) => {
             const {
+              id,
               assetType: { name },
               projectName,
               address,
@@ -288,6 +294,8 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
               carpetArea,
               carpetAreaUnit,
               assetGroup: { code },
+              leaseTerm,
+              saleTerm,
             } = asset;
             const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
               spaces,
@@ -296,11 +304,15 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
               carpetArea,
               carpetAreaUnit?.title ?? ''
             );
-
+            const listingId = leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0;
+            const transaction = leaseTerm ? 0 : 1;
             return (
               <View style={styles.cardView} key={index}>
                 {renderImages(asset.attachments, asset.leaseTerm?.id, asset.saleTerm?.id)}
-                <View style={styles.screenPadding}>
+                <TouchableOpacity
+                  style={styles.screenPadding}
+                  onPress={(): void => navigateToProperty(listingId, transaction, id)}
+                >
                   <ShieldGroup propertyType={name} />
                   <PropertyAddress
                     isIcon
@@ -315,7 +327,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
                     />
                     <PropertyAmenities data={amenitiesData} direction="row" />
                   </View>
-                </View>
+                </TouchableOpacity>
                 <Divider containerStyles={styles.dividerStyle} />
                 {renderButtonGroup(asset)}
               </View>
