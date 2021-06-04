@@ -371,7 +371,8 @@
     "appleNotSupported": "Apple Authentication is not supported on this device",
     "enterEmailText": "Enter email address",
     "emailUsed": "This email is already used by someone. Please use unique email",
-    "enterMobileNo": "Enter your mobile number"
+    "enterMobileNo": "Enter your mobile number",
+    "updatePasswordWeb": "Update password"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",

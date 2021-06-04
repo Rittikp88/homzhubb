@@ -19,6 +19,7 @@ export enum ProfileUserFormTypes {
   EmergencyContact = 'EmergencyContact',
   WorkInfo = 'WorkInfo',
   BasicDetails = 'BasicDetails',
+  ChangePassword = 'ChangePassword',
 }
 
 const ProfilePopover: React.FC<IProfilePopover> = (props: IProfilePopover) => {
@@ -44,6 +45,7 @@ const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
   const styles = contentStyles;
   const { formType, popupRef } = props;
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
   const handlePopupClose = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
@@ -60,10 +62,15 @@ const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
     BasicDetails: {
       modalTitleHeader: t(''),
     },
+    ChangePassword: {
+      modalTitleHeader: t('moreProfile:changePassword'),
+    },
   };
   const { modalTitleHeader } = profileFormElements[formType];
   return (
-    <View style={[styles.modalContainer, isMobile && styles.modalContainerMobile]}>
+    <View
+      style={[styles.modalContainer, isTablet && styles.modalContainerTab, isMobile && styles.modalContainerMobile]}
+    >
       <View style={styles.modalHeader}>
         <Typography size="regular" fontWeight="semiBold" style={styles.modalHeaderTitle}>
           {modalTitleHeader || t('common:congratulations')}
@@ -86,6 +93,9 @@ const ProfileModal: React.FC<IProfilePopover> = (props: IProfilePopover) => {
 const contentStyles = StyleSheet.create({
   modalContainer: {
     width: '37.5vw',
+  },
+  modalContainerTab: {
+    width: '50.5vw',
   },
   modalContainerMobile: {
     width: '95vw',

@@ -13,6 +13,7 @@ import { IWebProps } from '@homzhub/common/src/components/molecules/FormTextInpu
 import PhoneCodePrefix from '@homzhub/web/src/components/molecules/PhoneCodePrefix';
 import WorkInfoForm from '@homzhub/common/src/components/molecules/WorkInfoForm';
 import { ProfileUserFormTypes } from '@homzhub/web/src/screens/profile/components/ProfilePopover';
+import ChangePassword from '@homzhub/web/src/screens/profile/components/ChangePassword';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -88,8 +89,10 @@ export class ProfileModalContent extends React.PureComponent<Props, IOwnState> {
             handlePopupClose={handlePopupClose}
           />
         );
+      case ProfileUserFormTypes.ChangePassword:
+        return <ChangePassword handlePopupClose={handlePopupClose} />;
       default:
-        return <View />; // TODO: Mohak - UserProfile Component
+        return <View />;
     }
   };
 
