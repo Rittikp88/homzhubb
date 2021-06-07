@@ -167,7 +167,6 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
           </Text>
           <Dropdown
             data={filters}
-            placeholder={currentFilter}
             value={currentFilter}
             onDonePress={this.onSelectFilter}
             textStyle={styles.placeholder}
