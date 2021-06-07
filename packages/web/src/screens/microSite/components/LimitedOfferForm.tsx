@@ -7,6 +7,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PixelEventType, PixelService } from '@homzhub/web/src/services/PixelService';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
@@ -35,6 +36,7 @@ const LimitedOfferForm: FC<IProp> = ({ onUserSubscription }: IProp) => {
 
   const handleSubmit = (values: IFormData, formActions: FormikHelpers<IFormData>): void => {
     formActions.setSubmitting(true);
+    PixelService.ReactPixel.track(PixelEventType.Lead);
     CommonRepository.subscribeToNewsLetter({
       email: values.emailAddress,
       name: values.fullName,

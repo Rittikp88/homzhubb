@@ -3,6 +3,7 @@ import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { LinkingService, URLs } from '@homzhub/web/src/services/LinkingService';
+import { PixelEventType, PixelService } from '@homzhub/web/src/services/PixelService';
 import { GraphQLRepository, IFeaturedProperties } from '@homzhub/common/src/domain/repositories/GraphQLRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -29,6 +30,7 @@ const FeaturedProperties: FC<IProps> = (props: IProps) => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const navigateToScreen = (): void => {
+    PixelService.ReactPixel.track(PixelEventType.ViewContent);
     LinkingService.redirect(URLs.featuredPropertiesSearch);
   };
   return (

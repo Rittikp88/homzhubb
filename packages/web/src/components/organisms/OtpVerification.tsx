@@ -8,6 +8,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { PixelEventType, PixelService } from '@homzhub/web/src/services/PixelService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserService } from '@homzhub/common/src/services/UserService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -162,6 +163,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
         phone_number: otpSentTo,
       });
       const tokens = { refresh_token: data.refreshToken, access_token: data.accessToken };
+      PixelService.ReactPixel.track(PixelEventType.CompleteRegistration);
       AnalyticsService.track(EventType.SignupSuccess, trackData);
       AnalyticsService.setUser(ObjectMapper.deserialize(User, socialUserData.user));
       dispatch(UserActions.loginSuccess(tokens));

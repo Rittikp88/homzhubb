@@ -5,6 +5,7 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PixelEventType, PixelService } from '@homzhub/web/src/services/PixelService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -56,6 +57,7 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
     setIsKnowMore(!isKnowMore);
   };
   const navigationToScreen = (): void => {
+    PixelService.ReactPixel.track(PixelEventType.Subscribe);
     NavigationUtils.navigate(history, {
       path: RouteNames.publicRoutes.SIGNUP,
     });

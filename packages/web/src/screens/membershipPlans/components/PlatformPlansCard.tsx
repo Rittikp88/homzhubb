@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { PixelEventType, PixelService } from '@homzhub/web/src/services/PixelService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -19,6 +20,7 @@ const PlatformPlansCard: React.FC<IProps> = (props: IProps) => {
   const history = useHistory();
   const { t } = useTranslation();
   const navigationToSignup = (): void => {
+    PixelService.ReactPixel.track(PixelEventType.Subscribe);
     NavigationUtils.navigate(history, {
       path: RouteNames.publicRoutes.SIGNUP,
     });
