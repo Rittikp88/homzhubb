@@ -383,6 +383,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     backgroundColor: theme.colors.background,
+    left: 16,
   },
   title: {
     paddingVertical: 16,

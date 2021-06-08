@@ -312,7 +312,6 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
 
   private onCloseDropDownWeb = (selectedOption: IDropdownOption): void => {
     this.handleSelection(selectedOption.value);
-    this.setState({ isBottomSheetVisible: false });
   };
 
   private fetchPhoneCodes = (): void => {
@@ -411,7 +410,6 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
   private handleSelection = (value: string): void => {
     const { isBottomSheetVisible } = this.state;
     const { formProps, phoneCodeKey = PHONE_CODE } = this.props;
-
     formProps.setFieldValue(phoneCodeKey, value);
 
     this.setState({ isBottomSheetVisible: !isBottomSheetVisible });

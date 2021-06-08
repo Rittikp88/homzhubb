@@ -199,7 +199,7 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
         width: mobile ? '90%' : width,
         height,
         marginRight: mobile ? 10 : undefined,
-        marginLeft: !mobile ? (tablet ? 40 : 64) : 15,
+        marginLeft: '5%',
       },
       closeOnDocumentClick: false,
       children: undefined,

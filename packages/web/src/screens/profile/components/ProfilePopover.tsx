@@ -35,7 +35,6 @@ const ProfilePopover: React.FC<IProfilePopover> = (props: IProfilePopover) => {
         closeOnDocumentClick: false,
         children: undefined,
         modal: true,
-        lockScroll: true,
       }}
     />
   );

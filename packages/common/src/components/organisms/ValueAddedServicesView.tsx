@@ -56,9 +56,11 @@ class ValueAddedServicesView extends React.PureComponent<IProps, IOwnState> {
     const { searchString } = this.state;
     if (valueAddedServices && valueAddedServices.length <= 0) {
       return (
-        <Text style={styles.noResults} type="regular">
-          {t('common:noServicesFound')}
-        </Text>
+        <View style={styles.background}>
+          <Text style={styles.noResults} type="regular">
+            {t('common:noServicesFound')}
+          </Text>
+        </View>
       );
     }
     return (
@@ -193,4 +195,5 @@ const styles = StyleSheet.create({
     left: '60%',
     width: 256,
   },
+  background: { backgroundColor: theme.colors.white, height: 200, justifyContent: 'center' },
 });
