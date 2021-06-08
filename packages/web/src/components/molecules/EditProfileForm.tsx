@@ -98,7 +98,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
     const { userProfileForm } = this.state;
 
     return (
-      <>
+      <View style={styles.container}>
         <Formik
           onSubmit={this.handleUpdate}
           initialValues={userProfileForm}
@@ -226,7 +226,7 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
             );
           }}
         </Formik>
-      </>
+      </View>
     );
   }
 

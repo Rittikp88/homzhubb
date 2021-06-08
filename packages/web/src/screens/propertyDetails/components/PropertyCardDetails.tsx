@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -19,26 +21,44 @@ import GalleryView from '@homzhub/web/src/components/molecules/GalleryView';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { ShieldGroup } from '@homzhub/web/src/components/molecules/ShieldGroupHeader';
+import TenancyFormPopover from '@homzhub/web/src/screens/propertyDetails/components/TenancyFormPopover';
 import TabSections from '@homzhub/web/src/screens/propertyDetails/components/tabSection';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFilter, IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+
+export enum propertyTypes {
+  rent = 'RENT',
+  sale = 'SALE',
+}
 
 interface IStateProps {
   filters: IFilter;
+  userProfile: UserProfileModel;
 }
 interface IProp {
   assetDetails: Asset | null;
   propertyTermId: number;
 }
+interface IStateData {
+  propertyLeaseType: string;
+}
 
 type Props = IProp & IStateProps & WithTranslation & IWithMediaQuery;
 
-export class PropertyCardDetails extends React.PureComponent<Props> {
+export class PropertyCardDetails extends React.PureComponent<Props, IStateData> {
+  public state = {
+    propertyLeaseType: '',
+  };
+
+  public popupRef = createRef<PopupActions>();
+
   public render = (): React.ReactNode => {
     const {
       assetDetails,
       filters: { asset_transaction_type },
+      userProfile,
       isTablet,
       isMobile,
       isIpadPro,
@@ -84,6 +104,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
       true
     );
     const styles = propertyDetailStyle(isMobile, isTablet);
+    const { propertyLeaseType } = this.state;
 
     let currencyData = currencies[0];
 
@@ -96,6 +117,13 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     }
     const salePrice = saleTerm && Number(saleTerm.expectedPrice) > 0 ? Number(saleTerm.expectedPrice) : 0;
     const price = leaseTerm && leaseTerm.expectedPrice > 0 ? leaseTerm.expectedPrice : salePrice;
+
+    const triggerPopUp = (): void => {
+      if (this.popupRef && this.popupRef.current) {
+        this.popupRef.current.open();
+      }
+      this.setState({ propertyLeaseType: leaseTerm ? propertyTypes.rent : propertyTypes.sale });
+    };
     return (
       <>
         <View style={styles.container}>
@@ -141,10 +169,10 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
             <Divider />
             <View style={styles.footer}>
               <View style={(isMobile || isTablet || isIpadPro) && styles.enquireContainer}>
-                <Button type="primary" containerStyle={styles.enquire} disabled>
-                  <Icon name={icons.envelope} size={24} color={theme.colors.primaryColor} />
+                <Button type="primary" containerStyle={styles.enquire} onPress={triggerPopUp}>
+                  <Icon name={icons.offers} size={24} color={theme.colors.primaryColor} />
                   <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleEnquire}>
-                    {t('propertySearch:enquire')}
+                    {t('assetMore:makeAnOfferText')}
                   </Typography>
                 </Button>
               </View>
@@ -162,6 +190,12 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
         <View style={styles.dividerContainer}>
           <TabSections assetDetails={assetDetails} propertyTermId={propertyTermId} />
         </View>
+        <TenancyFormPopover
+          userData={userProfile}
+          isOpen
+          propertyLeaseType={propertyLeaseType}
+          popupRef={this.popupRef}
+        />
       </>
     );
   };
@@ -191,7 +225,9 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
 const propertyCardDetails = withMediaQuery<Props>(PropertyCardDetails);
 
 const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserProfile } = UserSelector;
   return {
+    userProfile: getUserProfile(state),
     filters: SearchSelector.getFilters(state),
   };
 };
@@ -242,14 +278,14 @@ const propertyDetailStyle = (
     },
     gallery: {
       margin: isMobile ? 12 : 20,
-      width: !isMobile ? (isTablet ? '47%' : '55%') : '',
+      width: !isMobile ? (isTablet ? '40%' : '55%') : '',
       height: isMobile ? 244 : '',
     },
     cardDetails: {
       marginVertical: !isMobile ? 20 : '',
       marginEnd: isMobile ? 12 : 20,
       marginStart: isMobile ? 12 : '',
-      width: !isMobile ? (isTablet ? '45%' : '40%') : '',
+      width: !isMobile ? (isTablet ? '50%' : '40%') : '',
     },
     addressStyle: {
       width: '100%',
@@ -290,14 +326,15 @@ const propertyDetailStyle = (
       flexDirection: 'row',
     },
     enquireContainer: {
-      width: '38%',
+      width: isMobile ? '47%' : isTablet ? '45%' : '38%',
+      marginRight: 18,
     },
     scheduleContainer: {
       width: '60%',
       left: 'auto',
     },
     schedule: {
-      width: !isMobile ? (isTablet || isIpadPro ? '100%' : 216) : '100%',
+      width: !isMobile ? (isTablet || isIpadPro ? '85%' : 216) : '82%',
       backgroundColor: theme.colors.darkTint10,
     },
 
