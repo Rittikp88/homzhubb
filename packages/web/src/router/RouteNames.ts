@@ -37,7 +37,7 @@ export const RouteNames = {
     TICKETS: '',
     KYC_DOCUMENTS: '',
     PROPERTY_VISITS: '/dashboard/propertyVisits',
-    OFFERS: '',
+    OFFERS: '/dashboard/offers',
     NEW_LAUNCHES: '',
     MARKET_TRENDS: '',
     SELECT_PROPERTY: '/dashboard/valueAddedService/selectProperty',

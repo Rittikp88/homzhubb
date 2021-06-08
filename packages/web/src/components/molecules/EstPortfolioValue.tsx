@@ -64,7 +64,7 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstP
     propertiesValueWrapper: {
       flexDirection: 'row',
       marginVertical: 'auto',
-      paddingTop: '4%',
+      paddingTop: '2%',
     },
     portfolioContainer: {
       flex: 1,
