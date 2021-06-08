@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -11,19 +12,33 @@ interface IProps {
   testID?: string;
   userEmail: string;
   document: AssetDocument;
-  handleShare: (link: string) => void;
-  handleDelete: (id: number) => void;
-  handleDownload: (refKey: string, fileName: string) => void;
+  handleShare?: (link: string) => void;
+  handleDelete?: (id: number) => void;
+  handleDownload?: (refKey: string, fileName: string) => void;
   canDelete?: boolean;
+  showIcons?: boolean;
+  rightIcon?: string;
+  leftIcon?: string;
+  onRightIconPress?: () => void;
+  rightIconSize?: number;
+  leftIconSize?: number;
+  renderRightNode?: () => React.ReactElement;
 }
 
 export const DocumentCard = ({
   document,
-  handleShare,
+  handleShare = FunctionUtils.noop,
   userEmail,
-  handleDelete,
-  handleDownload,
+  handleDelete = FunctionUtils.noop,
+  handleDownload = FunctionUtils.noop,
   canDelete = true,
+  showIcons = true,
+  rightIcon,
+  rightIconSize = 35,
+  leftIcon,
+  leftIconSize = 35,
+  onRightIconPress,
+  renderRightNode,
 }: IProps): React.ReactElement => {
   const {
     attachment: { fileName, link, presignedReferenceKey },
@@ -43,9 +58,19 @@ export const DocumentCard = ({
   const onShare = (): void => handleShare(link);
   const onDelete = (): void => handleDelete(document.id);
   const onDownload = (): void => handleDownload(presignedReferenceKey, fileName);
+
+  const RightView = (): React.ReactElement => {
+    if (rightIcon)
+      return <Icon name={rightIcon} size={rightIconSize} color={theme.colors.lowPriority} onPress={onRightIconPress} />;
+    return <>{renderRightNode && !rightIcon && renderRightNode()}</>;
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
+        {leftIcon && (
+          <Icon name={leftIcon} size={leftIconSize} color={theme.colors.lowPriority} style={styles.leftIcon} />
+        )}
         <View style={styles.leftView}>
           <Label type="large" textType="semiBold" style={styles.title} numberOfLines={1}>
             {fileName}
@@ -54,15 +79,29 @@ export const DocumentCard = ({
             {t('assetPortfolio:uploadedOn', { uploadedOn, uploadedBy })}
           </Label>
         </View>
-        <Icon name={icons.doc} size={35} color={theme.colors.lowPriority} />
+        <RightView />
       </View>
-      <View style={styles.iconContainer}>
-        {canDelete && (
-          <Icon name={icons.trash} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDelete} />
-        )}
-        <Icon name={icons.shareFilled} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onShare} />
-        <Icon name={icons.download} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDownload} />
-      </View>
+      {showIcons && (
+        <View style={styles.iconContainer}>
+          {canDelete && (
+            <Icon name={icons.trash} size={22} color={theme.colors.blue} style={styles.iconStyle} onPress={onDelete} />
+          )}
+          <Icon
+            name={icons.shareFilled}
+            size={22}
+            color={theme.colors.blue}
+            style={styles.iconStyle}
+            onPress={onShare}
+          />
+          <Icon
+            name={icons.download}
+            size={22}
+            color={theme.colors.blue}
+            style={styles.iconStyle}
+            onPress={onDownload}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -93,5 +132,8 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     marginEnd: 28,
+  },
+  leftIcon: {
+    marginEnd: 15,
   },
 });

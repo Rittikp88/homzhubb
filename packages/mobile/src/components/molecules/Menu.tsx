@@ -9,19 +9,21 @@ export interface IMenu {
   icon?: string;
   label: string;
   value: string;
+  onPressItem?: () => void | Promise<void>;
 }
 
 interface IProps {
   data: IMenu[];
   optionTitle?: string;
-  onSelect: (value: string) => void;
+  onSelect?: (value: string) => void;
   sheetHeight?: number;
   extraNode?: React.ReactElement;
   isExtraNode?: boolean;
+  onPressIcon?: () => void;
 }
 
 const Menu = (props: IProps): React.ReactElement => {
-  const { data, onSelect, optionTitle, sheetHeight, extraNode, isExtraNode } = props;
+  const { data, onSelect, optionTitle, sheetHeight, extraNode, isExtraNode, onPressIcon } = props;
   const [isVisible, setIsVisible] = useState(false);
   const [isExtraData, setExtraData] = useState(false);
 
@@ -31,18 +33,25 @@ const Menu = (props: IProps): React.ReactElement => {
     }
   }, [isExtraNode]);
 
-  const handleSelection = (value: string): void => {
-    if (value !== 'DELETE_PROPERTY') {
+  const handleSelection = (item: IMenu): void => {
+    if (item.onPressItem) {
+      setIsVisible(false);
+      item.onPressItem();
+      return;
+    }
+    if (item.value !== 'DELETE_PROPERTY') {
       setIsVisible(false);
     } else {
       setExtraData(true);
     }
-    onSelect(value);
+    if (onSelect) {
+      onSelect(item.value);
+    }
   };
 
   const renderMenuItem = (item: IMenu, index: number): React.ReactElement => {
     return (
-      <TouchableOpacity onPress={(): void => handleSelection(item.value)} key={index} style={styles.content}>
+      <TouchableOpacity onPress={(): void => handleSelection(item)} key={index} style={styles.content}>
         {!!item.icon && <Icon name={item.icon} size={24} color={theme.colors.darkTint3} style={styles.iconStyle} />}
         <Text type="small" style={styles.label}>
           {item.label}
@@ -51,9 +60,14 @@ const Menu = (props: IProps): React.ReactElement => {
     );
   };
 
+  const onPress = (): void => {
+    if (onPressIcon) onPressIcon();
+    setIsVisible(!isVisible);
+  };
+
   return (
     <>
-      <TouchableOpacity onPress={(): void => setIsVisible(!isVisible)}>
+      <TouchableOpacity onPress={onPress}>
         <Icon name={icons.verticalDots} color={theme.colors.primaryColor} size={18} />
       </TouchableOpacity>
       <BottomSheet

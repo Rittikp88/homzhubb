@@ -7,6 +7,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -81,6 +82,7 @@ const KYCDocuments = (props: Props): React.ReactElement => {
           handleDownload={AttachmentService.downloadAttachment}
           canDelete={doc.canDelete}
           userEmail={user?.email ?? ''}
+          rightIcon={icons.doc}
         />
         {index !== arrToDisplay.length - 1 && <Divider containerStyles={styles.divider} />}
       </View>

@@ -278,7 +278,10 @@
     "confirmation": "Confirmation!",
     "noDataAvailable": "No data available",
     "photos": "Photos",
-    "attachments": "Attachments"
+    "attachments": "Attachments",
+    "rename" : "Rename",
+    "download" : "Download",
+    "options" : "Options"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -968,7 +971,8 @@
     "faqs": "FAQs",
     "noSubscriptions": "No subscription data found",
     "chatOptions": "Chat Options",
-    "attachmentOptions": "Attachment Options"
+    "attachmentOptions": "Attachment Options",
+    "documentOptions" : "Document Options"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

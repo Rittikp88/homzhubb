@@ -4,9 +4,11 @@ import DocumentPicker from 'react-native-document-picker';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { Formik, FormikProps, FormikValues } from 'formik';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
@@ -22,16 +24,22 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
+import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { DocumentCard } from '@homzhub/mobile/src/components';
 import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { DocumentOperations } from '@homzhub/common/src/constants/Documents';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+
 
 interface IStateProps {
   currentAssetId: number;
@@ -49,6 +57,9 @@ interface IDocumentState {
   documents: AssetDocument[];
   isLoading: boolean;
   header: string;
+  selectedDocumentId: number;
+  showBottomSheet: boolean;
+  formValues: FormikValues;
 }
 
 type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.DocumentScreen>;
@@ -79,6 +90,11 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       documents: [],
       isLoading: false,
       header: params?.screenTitle ?? t('assetPortfolio:portfolio'),
+      selectedDocumentId: -1,
+      showBottomSheet: false,
+      formValues: {
+        fileName: '',
+      },
     };
   }
 
@@ -128,6 +144,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
             testID="searchBar"
           />
           {this.renderDocumentList()}
+          {this.renderRenameBottomSheet()}
         </View>
       </UserScreen>
     );
@@ -150,16 +167,105 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     );
   };
 
+  private renderRenameBottomSheet = (): React.ReactElement | null => {
+    const { t } = this.props;
+    const { showBottomSheet, formValues, selectedDocumentId } = this.state;
+
+    if (selectedDocumentId === -1) return null;
+
+    const BottomSheetContent = (): React.ReactElement => {
+      return (
+        // Todo(Praharsh) : Handle onSubmit & yup validation
+        <Formik onSubmit={FunctionUtils.noop} initialValues={formValues} enableReinitialize>
+          {(formProps: FormikProps<FormikValues>): React.ReactElement => {
+            const onPress = (): void => formProps.handleSubmit();
+            return (
+              <>
+                {/* Todo (Praharsh) : Handle cross icon at the right end */}
+                <FormTextInput
+                  name="fileName"
+                  inputType="name"
+                  formProps={formProps}
+                  style={styles.nameField}
+                  multiline
+                />
+                <FormButton
+                  type="primary"
+                  formProps={formProps}
+                  title={t('common:save')}
+                  onPress={onPress}
+                  containerStyle={styles.saveButton}
+                />
+              </>
+            );
+          }}
+        </Formik>
+      );
+    };
+
+    return (
+      <BottomSheet
+        visible={showBottomSheet}
+        headerTitle={t('common:rename')}
+        onCloseSheet={this.onCloseBottomSheet}
+        sheetHeight={theme.viewport.height / 3}
+      >
+        <BottomSheetContent />
+      </BottomSheet>
+    );
+  };
+
   private renderDocumentCard = ({ item }: { item: AssetDocument }): React.ReactElement => {
     const { user } = this.props;
+    const rightNode = (): React.ReactElement => this.renderMenu(item.id);
     return (
       <DocumentCard
         document={item}
-        handleShare={this.onShare}
-        handleDelete={this.onDeleteDocument}
-        handleDownload={this.onDownloadDocument}
         userEmail={user?.email ?? ''}
         testID="documentCard"
+        showIcons={false}
+        leftIcon={icons.doc}
+        renderRightNode={rightNode}
+      />
+    );
+  };
+
+  private renderMenu = (id: number): React.ReactElement => {
+    const { t } = this.props;
+
+    const data: IMenu[] = [
+      {
+        label: t('common:rename'),
+        value: DocumentOperations.RENAME,
+        onPressItem: this.onSelectRename,
+      },
+      {
+        label: t('common:share'),
+        value: DocumentOperations.SHARE,
+        onPressItem: this.onSelectShare,
+      },
+      {
+        label: t('common:download'),
+        value: DocumentOperations.DOWNLOAD,
+        onPressItem: this.onSelectDownload,
+      },
+      {
+        label: t('common:delete'),
+        value: DocumentOperations.DELETE,
+        onPressItem: this.onSelectDelete,
+      },
+    ];
+
+    const onClickIcon = (): void => {
+      this.setState({ selectedDocumentId: id });
+    };
+
+    return (
+      <Menu
+        data={data}
+        optionTitle={t('assetMore:documentOptions')}
+        sheetHeight={theme.viewport.height / 2.7}
+        onPressIcon={onClickIcon}
       />
     );
   };
@@ -207,30 +313,62 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     }
   };
 
-  private onShare = async (link: string): Promise<void> => {
+  private onSelectShare = async (): Promise<void> => {
+    const { selectedDocumentId, documents } = this.state;
     const { t } = this.props;
+    const currentDocumentLink = documents.filter((i) => i.id === selectedDocumentId)[0].attachment.link;
     try {
       await Share.share({
-        message: `${t('assetMore:shareDoc')} ${link}`,
+        message: `${t('assetMore:shareDoc')} ${currentDocumentLink}`,
       });
     } catch (error) {
       AlertHelper.error({ message: error });
     }
   };
 
-  private onDownloadDocument = async (key: string, fileName: string): Promise<void> => {
+  private onSelectDownload = async (): Promise<void> => {
+    const { documents, selectedDocumentId } = this.state;
+    const { presignedReferenceKey: key, fileName } = documents.filter((i) => i.id === selectedDocumentId)[0].attachment;
     await AttachmentService.downloadAttachment(key, fileName);
   };
 
-  private onDeleteDocument = async (id: number): Promise<void> => {
-    const { currentAssetId } = this.props;
+  private onSelectDelete = async (): Promise<void> => {
+    const { selectedDocumentId } = this.state;
+    const { currentAssetId, t } = this.props;
     try {
-      await AssetRepository.deleteAssetDocument(currentAssetId, id);
+      this.setState({ isLoading: true });
+      await AssetRepository.deleteAssetDocument(currentAssetId, selectedDocumentId);
       this.getDocuments();
+      AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
+      this.setState({ isLoading: false });
     } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e);
+      this.setState({ isLoading: false });
+      const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
     }
+  };
+
+  private onSelectRename = (): void => {
+    const { documents, selectedDocumentId } = this.state;
+    const currentFileName = documents
+      .filter((item) => item.id === selectedDocumentId)[0]
+      .attachment.fileName.split('.')
+      .reverse()
+      .slice(1)
+      .toString();
+
+    this.setState({
+      showBottomSheet: true,
+      formValues: {
+        fileName: currentFileName,
+      },
+    });
+  };
+
+  private onCloseBottomSheet = (): void => {
+    this.setState({
+      showBottomSheet: false,
+    });
   };
 
   private uploadDocument = async (DocumentSource: IDocumentSource): Promise<void> => {
@@ -340,7 +478,16 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   divider: {
-    marginTop: 16,
     borderColor: theme.colors.darkTint10,
+  },
+  nameField: {
+    marginTop: 25,
+    marginBottom: 17,
+    maxHeight: 40,
+    marginHorizontal: 24,
+  },
+  saveButton: {
+    maxHeight: 45,
+    marginHorizontal: 24,
   },
 });
