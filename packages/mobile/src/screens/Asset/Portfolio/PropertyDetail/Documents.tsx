@@ -13,6 +13,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -238,8 +239,16 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   };
 
   private renderDocumentCard = ({ item }: { item: AssetDocument }): React.ReactElement => {
-    const { user } = this.props;
+    const { user, t } = this.props;
     const rightNode = (): React.ReactElement => this.renderMenu(item.id);
+
+    const handleOpenDocument = async (): Promise<void> => {
+      const result = await LinkingService.canOpenURL(item.attachment.link);
+      if (!result) {
+        AlertHelper.error({ message: t('common:genericErrorMessage') });
+      }
+    };
+
     return (
       <DocumentCard
         document={item}
@@ -248,6 +257,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         showIcons={false}
         leftIcon={icons.doc}
         renderRightNode={rightNode}
+        handleOpenDocument={handleOpenDocument}
       />
     );
   };

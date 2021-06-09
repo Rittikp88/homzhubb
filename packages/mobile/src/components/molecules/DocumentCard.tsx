@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
@@ -15,6 +15,7 @@ interface IProps {
   handleShare?: (link: string) => void;
   handleDelete?: (id: number) => void;
   handleDownload?: (refKey: string, fileName: string) => void;
+  handleOpenDocument?: () => Promise<void>;
   canDelete?: boolean;
   showIcons?: boolean;
   rightIcon?: string;
@@ -31,6 +32,7 @@ export const DocumentCard = ({
   userEmail,
   handleDelete = FunctionUtils.noop,
   handleDownload = FunctionUtils.noop,
+  handleOpenDocument = FunctionUtils.noopAsync,
   canDelete = true,
   showIcons = true,
   rightIcon,
@@ -65,20 +67,31 @@ export const DocumentCard = ({
     return <>{renderRightNode && !rightIcon && renderRightNode()}</>;
   };
 
+  const TextualContent = (): React.ReactElement => (
+    <TouchableOpacity style={styles.leftView} onPress={handleOpenDocument}>
+      <Label type="large" textType="semiBold" style={styles.title} numberOfLines={1}>
+        {fileName}
+      </Label>
+      <Label type="regular" style={styles.description} numberOfLines={1}>
+        {t('assetPortfolio:uploadedOn', { uploadedOn, uploadedBy })}
+      </Label>
+    </TouchableOpacity>
+  );
+
+  const LeftView = (): React.ReactElement | null => {
+    if (!leftIcon) return null;
+    return (
+      <TouchableOpacity onPress={handleOpenDocument}>
+        <Icon name={leftIcon} size={leftIconSize} color={theme.colors.lowPriority} style={styles.leftIcon} />
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.contentContainer}>
-        {leftIcon && (
-          <Icon name={leftIcon} size={leftIconSize} color={theme.colors.lowPriority} style={styles.leftIcon} />
-        )}
-        <View style={styles.leftView}>
-          <Label type="large" textType="semiBold" style={styles.title} numberOfLines={1}>
-            {fileName}
-          </Label>
-          <Label type="regular" style={styles.description} numberOfLines={1}>
-            {t('assetPortfolio:uploadedOn', { uploadedOn, uploadedBy })}
-          </Label>
-        </View>
+        <LeftView />
+        <TextualContent />
         <RightView />
       </View>
       {showIcons && (
