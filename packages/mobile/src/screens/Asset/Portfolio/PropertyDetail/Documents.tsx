@@ -5,10 +5,11 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
+import * as yup from 'yup';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
@@ -20,8 +21,9 @@ import { IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interface
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
-import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
@@ -39,7 +41,6 @@ import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { DocumentOperations } from '@homzhub/common/src/constants/Documents';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-
 
 interface IStateProps {
   currentAssetId: number;
@@ -169,37 +170,58 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   private renderRenameBottomSheet = (): React.ReactElement | null => {
     const { t } = this.props;
-    const { showBottomSheet, formValues, selectedDocumentId } = this.state;
+    const { showBottomSheet, formValues, selectedDocumentId, isLoading } = this.state;
 
     if (selectedDocumentId === -1) return null;
 
     const BottomSheetContent = (): React.ReactElement => {
       return (
-        // Todo(Praharsh) : Handle onSubmit & yup validation
-        <Formik onSubmit={FunctionUtils.noop} initialValues={formValues} enableReinitialize>
-          {(formProps: FormikProps<FormikValues>): React.ReactElement => {
-            const onPress = (): void => formProps.handleSubmit();
-            return (
-              <>
-                {/* Todo (Praharsh) : Handle cross icon at the right end */}
-                <FormTextInput
-                  name="fileName"
-                  inputType="name"
-                  formProps={formProps}
-                  style={styles.nameField}
-                  multiline
-                />
-                <FormButton
+        <View style={styles.bottomSheetContainer}>
+          <Formik
+            onSubmit={this.onRenameDocument}
+            initialValues={formValues}
+            enableReinitialize
+            validate={FormUtils.validate(this.validateForm)}
+          >
+            {(formProps: FormikProps<FormikValues>): React.ReactElement => {
+              const onPress = (): void => formProps.handleSubmit();
+
+              const onPressCross = (): void => formProps.setFieldValue('fileName', '');
+
+              const renderCrossMark = (): React.ReactNode => (
+                <Button
                   type="primary"
-                  formProps={formProps}
-                  title={t('common:save')}
-                  onPress={onPress}
-                  containerStyle={styles.saveButton}
+                  icon={icons.close}
+                  iconSize={20}
+                  iconColor={theme.colors.darkTint8}
+                  containerStyle={styles.crossIconInTextInput}
+                  onPress={onPressCross}
                 />
-              </>
-            );
-          }}
-        </Formik>
+              );
+              return (
+                <>
+                  <FormTextInput
+                    name="fileName"
+                    inputType="default"
+                    formProps={formProps}
+                    containerStyle={styles.nameField}
+                    style={styles.textInput}
+                    multiline
+                    inputGroupSuffix={renderCrossMark()}
+                  />
+                  <FormButton
+                    type="primary"
+                    formProps={formProps}
+                    title={t('common:save')}
+                    onPress={onPress}
+                    containerStyle={styles.saveButton}
+                    disabled={formProps.values.fileName.length === 0 || isLoading}
+                  />
+                </>
+              );
+            }}
+          </Formik>
+        </View>
       );
     };
 
@@ -208,7 +230,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         visible={showBottomSheet}
         headerTitle={t('common:rename')}
         onCloseSheet={this.onCloseBottomSheet}
-        sheetHeight={theme.viewport.height / 3}
+        sheetHeight={theme.viewport.height / 2.7}
       >
         <BottomSheetContent />
       </BottomSheet>
@@ -313,6 +335,26 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     }
   };
 
+  private onRenameDocument = async (values: FormikValues): Promise<void> => {
+    const { currentAssetId, t } = this.props;
+    const { selectedDocumentId } = this.state;
+    const { fileName } = values;
+    try {
+      this.setState({ isLoading: true });
+      await AssetRepository.renameAssetDocument({
+        assetId: currentAssetId,
+        assetDocumentId: selectedDocumentId,
+        fileName,
+      });
+      AlertHelper.success({ message: t('assetFinancial:renamedSuccessfullyMessage') });
+      this.setState({ isLoading: false, showBottomSheet: false });
+      this.getDocuments();
+    } catch (e) {
+      this.setState({ isLoading: false, showBottomSheet: false });
+      AlertHelper.error({ message: e.utils });
+    }
+  };
+
   private onSelectShare = async (): Promise<void> => {
     const { selectedDocumentId, documents } = this.state;
     const { t } = this.props;
@@ -407,6 +449,13 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     }
   };
 
+  private validateForm = (): yup.ObjectSchema => {
+    const { t } = this.props;
+    return yup.object().shape({
+      fileName: yup.string().required(t('moreProfile:fieldRequiredError')),
+    });
+  };
+
   private getDocuments = (): void => {
     const {
       getAssetDocument,
@@ -482,12 +531,20 @@ const styles = StyleSheet.create({
   },
   nameField: {
     marginTop: 25,
-    marginBottom: 17,
-    maxHeight: 40,
-    marginHorizontal: 24,
+  },
+  textInput: {
+    maxHeight: 45,
   },
   saveButton: {
     maxHeight: 45,
-    marginHorizontal: 24,
+    marginTop: 20,
+  },
+  crossIconInTextInput: {
+    backgroundColor: theme.colors.secondaryColor,
+    marginHorizontal: 14,
+  },
+  bottomSheetContainer: {
+    paddingHorizontal: 25,
+    flex: 1,
   },
 });

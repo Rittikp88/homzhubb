@@ -1,4 +1,4 @@
-// enums related Documents
+// enums related to Documents
 export enum DocumentOperations {
   RENAME = 'RENAME',
   SHARE = 'SHARE',

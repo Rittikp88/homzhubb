@@ -28,6 +28,7 @@ import {
   IUpdateLeaseTerm,
   IUnitListingPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUpdateDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
@@ -86,7 +87,7 @@ const ENDPOINTS = {
   getSimilarPropertiesForSale: (propertyTermId: number): string =>
     `v1/sale-listings/${propertyTermId}/similar-properties/`,
   assetDocument: (propertyId: number): string => `v1/assets/${propertyId}/asset-documents/`,
-  deleteAssetDocument: (propertyId: number, documentId: number): string =>
+  handleAssetDocument: (propertyId: number, documentId: number): string =>
     `v1/assets/${propertyId}/asset-documents/${documentId}/`,
   downloadAttachment: (): string => 'v1/attachments/download/',
   getVisitLead: (): string => 'v1/list-of-values/site-visit-lead-types/',
@@ -289,8 +290,13 @@ class AssetRepository {
     return ObjectMapper.deserializeArray(AssetDocument, response);
   };
 
+  public renameAssetDocument = async (payload: IUpdateDocumentPayload): Promise<void> => {
+    const { assetId, assetDocumentId, fileName } = payload;
+    await this.apiClient.patch(ENDPOINTS.handleAssetDocument(assetId, assetDocumentId), { file_name: fileName });
+  };
+
   public deleteAssetDocument = async (propertyId: number, documentId: number): Promise<void> => {
-    await this.apiClient.delete(ENDPOINTS.deleteAssetDocument(propertyId, documentId));
+    await this.apiClient.delete(ENDPOINTS.handleAssetDocument(propertyId, documentId));
   };
 
   public downloadAttachment = async (refKey: string): Promise<DownloadAttachment> => {

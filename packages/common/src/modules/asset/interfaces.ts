@@ -39,3 +39,8 @@ export interface IGetDocumentPayload {
   assetId: number;
   onCallback?: (params: ICallback) => void;
 }
+
+export interface IUpdateDocumentPayload extends IGetDocumentPayload {
+  assetDocumentId: number;
+  fileName: string;
+}
