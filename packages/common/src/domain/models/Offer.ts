@@ -1,4 +1,5 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { IProspectProfile, ProspectProfile } from '@homzhub/common/src/domain/models/ProspectProfile';
 import { ITenantPreference, TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
@@ -238,10 +239,10 @@ export class Offer {
   }
 
   get validDays(): string {
+    const { t } = I18nService;
     const count = this.validCount;
-    // TODO: Add translation
-    const text = count > 1 ? 'hours' : 'hour';
-    return count >= 0 ? `${count} ${text}` : 'Expired';
+    const text = count > 1 ? t('common:hours') : t('common:hour');
+    return count >= 0 ? `${count} ${text}` : t('common:expired');
   }
 
   get isAssetOwner(): boolean {

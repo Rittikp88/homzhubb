@@ -30,11 +30,11 @@ class AnimationService {
    * Interpolates the value based on inputRange.
    */
   public interpolateAnimation = (
-    value: Animated.Value<AnimatedValue>,
-    inputRange: Animated.Adaptable<number>[],
-    outputRange: Animated.Adaptable<string | number>[],
+    value: any,
+    inputRange: number[],
+    outputRange: Array<string | number>,
     extrapolate?: Animated.Extrapolate
-  ): Animated.Node<number> =>
+  ): any =>
     value.interpolate({
       inputRange,
       outputRange,

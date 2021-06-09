@@ -282,7 +282,10 @@
     "rename": "Rename",
     "download": "Download",
     "options": "Options",
-    "docExceedsMaxSize": "Please upload a document smaller than {{size}}"
+    "docExceedsMaxSize": "Please upload a document smaller than {{size}}",
+    "hours" : "hours",
+    "hour" : "hour",
+    "expired" : "Expired"
   },
   "auth": {
     "verifyNumber": "Verify your number",

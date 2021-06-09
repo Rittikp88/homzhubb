@@ -1,5 +1,3 @@
-// @ts-nocheck
-// Todo (Praharsh) : Handle right swipe case, if required for future and resolve ts-errors.
 import React, { Component, Ref } from 'react';
 import { Animated as RNAnimated, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -52,6 +50,7 @@ export default class SwipeableRow extends Component<IProps> {
         friction={2}
         leftThreshold={leftThreshold}
         rightThreshold={rightThreshold}
+        // @ts-ignore
         renderRightActions={this.handleRightToLeftSwipe}
       >
         {children}
