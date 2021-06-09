@@ -333,6 +333,12 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         type: [DocumentPicker.types.allFiles],
       });
 
+      /* Check if the uploaded document's size is lesser than 5mb */
+      if (document.size > 5000000) {
+        AlertHelper.error({ message: t('common:docExceedsMaxSize', { size: '5mb' }) });
+        return;
+      }
+
       /* Check if the uploaded document is one of the allowed type */
       if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
         const documentSource = { uri: document.uri, type: document.type, name: document.name };

@@ -281,7 +281,8 @@
     "attachments": "Attachments",
     "rename": "Rename",
     "download": "Download",
-    "options": "Options"
+    "options": "Options",
+    "docExceedsMaxSize": "Please upload a document smaller than {{size}}"
   },
   "auth": {
     "verifyNumber": "Verify your number",
