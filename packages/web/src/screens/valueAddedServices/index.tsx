@@ -9,8 +9,8 @@ interface IProps {
 
 const ValueAddedServices: FC<IProps> = ({ propertyAdded = 0 }: IProps) => {
   if (!propertyAdded) {
-    const { DASHBOARD } = RouteNames.protectedRoutes;
-    return <Redirect to={DASHBOARD} />;
+    const { SELECT_PROPERTY } = RouteNames.protectedRoutes;
+    return <Redirect to={SELECT_PROPERTY} />;
   }
 
   return <View style={styles.container}>hello there</View>;

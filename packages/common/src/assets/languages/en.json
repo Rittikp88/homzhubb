@@ -274,7 +274,7 @@
     "referralCode": "Referral Code",
     "knowMore": "Know More",
     "knowLess": "Know Less",
-    "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*",
+    "servicePlansSubText": "or {{minInvoiceAmount}}K INR, whichever is higher*",
     "confirmation": "Confirmation!",
     "noDataAvailable": "No data available",
     "photos": "Photos",
