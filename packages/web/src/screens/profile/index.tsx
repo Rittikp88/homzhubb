@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useHistory, useLocation } from 'react-router';
+import { RouteComponentProps, useHistory, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -14,7 +14,11 @@ interface IDynamicLinkProps {
   verificationId: string;
 }
 
-const Profile: FC = () => {
+interface IProps extends RouteComponentProps {
+  getUserProfile: () => void;
+}
+
+const Profile: FC<IProps> = (props: IProps) => {
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
@@ -41,6 +45,7 @@ const Profile: FC = () => {
       await UserRepository.sendOrVerifyEmail(payload);
       setVerifyEmailProps({ isModalOpen: true, isApiError: false });
       clearRouterState();
+      props.getUserProfile();
       // getUserProfile(); TODO: Lakshit: To reinitialize profile
     } catch (e) {
       setVerifyEmailProps({ isModalOpen: true, isApiError: true });

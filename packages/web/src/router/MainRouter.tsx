@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Switch, Redirect } from 'react-router-dom';
 import { connect, ConnectedProps, useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import PrivateRoute from '@homzhub/web/src/router/PrivateRoute';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -29,8 +30,12 @@ const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/ind
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
 const PropertyView = lazy(() => import('@homzhub/common/src/components/organisms/AddPropertyView'));
 
+interface IDispatchProps {
+  getUserProfile: () => void;
+}
+
 const MainRouter = (props: MainRouterProps): React.ReactElement => {
-  const { isAuthenticated } = props;
+  const { isAuthenticated, getUserProfile } = props;
   const {
     DASHBOARD,
     ADD_PROPERTY,
@@ -97,6 +102,12 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
           isAuthenticated={isAuthenticated}
         />
         {!isDeskTop && <PrivateRoute exact path={SETTINGS} component={Settings} isAuthenticated={isAuthenticated} />}
+        <PrivateRoute
+          exact
+          path={APP_BASE}
+          isAuthenticated={isAuthenticated}
+          render={(renderProps): any => <Profile getUserProfile={getUserProfile} {...renderProps} />}
+        />
         <PrivateRoute exact path={PROFILE} component={Profile} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROTECTEDERROR404} component={Error404} isAuthenticated={isAuthenticated} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
@@ -112,7 +123,12 @@ const mapStateToProps = (state: any): any => {
   };
 };
 
-const connector = connect(mapStateToProps, null);
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { getUserProfile } = UserActions;
+  return bindActionCreators({ getUserProfile }, dispatch);
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type MainRouterProps = ConnectedProps<typeof connector>;
 

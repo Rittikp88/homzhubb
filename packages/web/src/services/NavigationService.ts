@@ -122,6 +122,7 @@ class NavigationService<T extends History> {
     const { type } = dynamicLinkParams;
     switch (type) {
       case DynamicLinkTypes.PrimaryEmailVerification:
+      case DynamicLinkTypes.WorkEmailVerification:
         this.navigate(this.history, {
           path: RouteNames.protectedRoutes.PROFILE,
           params: { ...dynamicLinkParams.params },
