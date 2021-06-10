@@ -104,11 +104,10 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         {!isDeskTop && <PrivateRoute exact path={SETTINGS} component={Settings} isAuthenticated={isAuthenticated} />}
         <PrivateRoute
           exact
-          path={APP_BASE}
+          path={PROFILE}
           isAuthenticated={isAuthenticated}
           render={(renderProps): any => <Profile getUserProfile={getUserProfile} {...renderProps} />}
         />
-        <PrivateRoute exact path={PROFILE} component={Profile} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROTECTEDERROR404} component={Error404} isAuthenticated={isAuthenticated} />
         <Redirect exact path={APP_BASE} to={DASHBOARD} />
       </Switch>

@@ -46,7 +46,6 @@ const Profile: FC<IProps> = (props: IProps) => {
       setVerifyEmailProps({ isModalOpen: true, isApiError: false });
       clearRouterState();
       props.getUserProfile();
-      // getUserProfile(); TODO: Lakshit: To reinitialize profile
     } catch (e) {
       setVerifyEmailProps({ isModalOpen: true, isApiError: true });
       clearRouterState();
