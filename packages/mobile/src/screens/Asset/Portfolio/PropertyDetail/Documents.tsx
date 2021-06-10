@@ -286,7 +286,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         sheetHeight={theme.viewport.height / 2.7}
         onPressIcon={(): void => this.onClickIcon(id)}
         isExtraNode={showDeleteSheet}
-        onSelect={(value) => this.onSelectMenu(value, isDeleteAllowed)}
+        onSelect={(value): Promise<void> => this.onSelectMenu(value, isDeleteAllowed)}
         extraNode={this.renderDeleteConfirmation()}
       />
     );

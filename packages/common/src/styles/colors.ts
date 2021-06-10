@@ -79,6 +79,9 @@ const tintColors = {
   greenTint6: '#006A0A',
   greenTint7: '#73ce64',
   greenTint8: '#47C2B1',
+
+  // red
+  redTint1: '#EE7979',
 };
 
 // Theme based color scheme

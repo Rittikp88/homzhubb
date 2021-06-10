@@ -1,36 +1,50 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-community/clipboard';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import ReferEarnIcon from '@homzhub/common/src/assets/images/referEarn.svg';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
+import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
-
-type Props = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ReferEarn>;
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const APPLE_STORE_URL = ConfigHelper.getAppleStoreUrl();
 const GOOGLE_PLAYSTORE_URL = ConfigHelper.getGooglePlayStoreUrl();
 
-const ReferEarn = (props: Props): React.ReactElement => {
-  const { navigation } = props;
+const ReferEarn = (): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
   const code = useSelector(UserSelector.getReferralCode);
+  const [management, setManagementData] = useState<IMetricsData[]>([]);
+  const [totalInvite, setTotalInvite] = useState('');
   const message = `${t('shareHomzhub')} \n ${t('appleStore')} : ${APPLE_STORE_URL} \n ${t(
     'googlePlayStore'
   )} : \n ${GOOGLE_PLAYSTORE_URL}`;
+
+  useEffect(() => {
+    UserRepository.getCoinManagement()
+      .then((res) => {
+        setTotalInvite(res.invites.totalAccepted.toString());
+        setManagementData([
+          { name: t('coinsWon'), count: res.coins.totalEarned, colorCode: theme.colors.greenTint8 },
+          { name: t('coinsUsed'), count: res.coins.totalUsed, colorCode: theme.colors.redTint1 },
+        ]);
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      });
+  }, []);
 
   const onCopyToClipboard = useCallback((): void => {
     Clipboard.setString(code);
@@ -88,7 +102,8 @@ const ReferEarn = (props: Props): React.ReactElement => {
   ]);
 
   return (
-    <UserScreen title={t('more')} onBackPress={navigation.goBack} pageTitle={t('referFriend')}>
+    <UserScreen title={t('more')} backgroundColor={theme.colors.background}>
+      <AssetMetricsList data={management} title={totalInvite} numOfElements={2} subTitleText={t('acceptedInvites')} />
       <View style={styles.container}>
         <ReferEarnIcon style={styles.icon} />
         <Text type="small" textType="semiBold" style={styles.refer}>
@@ -133,8 +148,10 @@ export { memoizedComponent as ReferEarn };
 
 const styles = StyleSheet.create({
   container: {
+    marginVertical: 16,
     paddingVertical: 24,
     paddingHorizontal: 18,
+    borderRadius: 4,
     backgroundColor: theme.colors.white,
   },
   shareContainer: {

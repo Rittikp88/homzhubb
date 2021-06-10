@@ -982,7 +982,10 @@
     "noSubscriptions": "No subscription data found",
     "chatOptions": "Chat Options",
     "attachmentOptions": "Attachment Options",
-    "documentOptions": "Document Options"
+    "documentOptions": "Document Options",
+    "acceptedInvites": "Total accepted invites",
+    "coinsWon": "Total coins won",
+    "coinsUsed": "Total coins used"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
