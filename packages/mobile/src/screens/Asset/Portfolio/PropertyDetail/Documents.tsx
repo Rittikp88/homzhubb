@@ -27,6 +27,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
@@ -39,9 +40,9 @@ import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/Upload
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
-import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
-import { DocumentOperations } from '@homzhub/common/src/constants/Documents';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
+import { DocumentOperations, DocumentOptions } from '@homzhub/common/src/constants/Documents';
 
 interface IStateProps {
   currentAssetId: number;
@@ -62,6 +63,7 @@ interface IDocumentState {
   selectedDocumentId: number;
   showBottomSheet: boolean;
   formValues: FormikValues;
+  showDeleteSheet: boolean;
 }
 
 type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.DocumentScreen>;
@@ -94,6 +96,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       header: params?.screenTitle ?? t('assetPortfolio:portfolio'),
       selectedDocumentId: -1,
       showBottomSheet: false,
+      showDeleteSheet: false,
       formValues: {
         fileName: '',
       },
@@ -122,7 +125,6 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   public render(): React.ReactNode {
     const { searchValue, isLoading, header } = this.state;
     const { t, navigation } = this.props;
-
     return (
       <UserScreen
         title={header}
@@ -157,10 +159,11 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     if (documents.length === 0) {
       return <EmptyState />;
     }
+
     return (
       <FlatList
         data={documents}
-        renderItem={this.renderDocumentCard}
+        renderItem={({ item }): React.ReactElement => this.renderDocumentCard(item)}
         ItemSeparatorComponent={this.renderSeparatorComponent}
         keyExtractor={this.renderKeyExtractor}
         showsVerticalScrollIndicator={false}
@@ -238,9 +241,10 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     );
   };
 
-  private renderDocumentCard = ({ item }: { item: AssetDocument }): React.ReactElement => {
+  private renderDocumentCard = (item: AssetDocument): React.ReactElement => {
     const { user, t } = this.props;
-    const rightNode = (): React.ReactElement => this.renderMenu(item.id);
+    const isDeleteAllowed = !item.isSystemGenerated && item.user?.id === user?.id;
+    const rightNode = (): React.ReactElement => this.renderMenu(item.id, isDeleteAllowed);
 
     const handleOpenDocument = async (): Promise<void> => {
       const result = await LinkingService.canOpenURL(item.attachment.link);
@@ -262,43 +266,60 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     );
   };
 
-  private renderMenu = (id: number): React.ReactElement => {
+  private renderMenu = (id: number, isDeleteAllowed: boolean): React.ReactElement => {
     const { t } = this.props;
+    const { showDeleteSheet } = this.state;
 
-    const data: IMenu[] = [
-      {
-        label: t('common:rename'),
-        value: DocumentOperations.RENAME,
-        onPressItem: this.onSelectRename,
-      },
-      {
-        label: t('common:share'),
-        value: DocumentOperations.SHARE,
-        onPressItem: this.onSelectShare,
-      },
-      {
-        label: t('common:download'),
-        value: DocumentOperations.DOWNLOAD,
-        onPressItem: this.onSelectDownload,
-      },
-      {
-        label: t('common:delete'),
-        value: DocumentOperations.DELETE,
-        onPressItem: this.onSelectDelete,
-      },
-    ];
-
-    const onClickIcon = (): void => {
-      this.setState({ selectedDocumentId: id });
-    };
+    const formattedData: IMenu[] = DocumentOptions.map((item) => {
+      return {
+        label: t(item.label),
+        value: item.value,
+        isExtraData: item.isExtraData,
+        isExtraDataAllowed: isDeleteAllowed,
+      };
+    });
 
     return (
       <Menu
-        data={data}
+        data={formattedData}
         optionTitle={t('assetMore:documentOptions')}
         sheetHeight={theme.viewport.height / 2.7}
-        onPressIcon={onClickIcon}
+        onPressIcon={(): void => this.onClickIcon(id)}
+        isExtraNode={showDeleteSheet}
+        onSelect={(value) => this.onSelectMenu(value, isDeleteAllowed)}
+        extraNode={this.renderDeleteConfirmation()}
       />
+    );
+  };
+
+  private renderDeleteConfirmation = (): React.ReactElement => {
+    const { t } = this.props;
+    const { showDeleteSheet, selectedDocumentId, documents } = this.state;
+    const selectedDocument = documents.filter((item) => item.id === selectedDocumentId)[0];
+    return (
+      <BottomSheet
+        visible={showDeleteSheet}
+        headerTitle={t('property:deleteDocument')}
+        sheetHeight={theme.viewport.height / 2.7}
+      >
+        <View style={styles.deleteContainer}>
+          <Text type="small">{t('property:deleteConfirmation', { name: selectedDocument?.attachment.fileName })}</Text>
+          <View style={styles.buttonContainer}>
+            <Button
+              type="secondary"
+              title={t('common:cancel')}
+              containerStyle={[styles.button, styles.buttonView]}
+              onPress={this.onCloseDeleteSheet}
+            />
+            <Button
+              type="primary"
+              title={t('common:delete')}
+              containerStyle={styles.button}
+              onPress={this.onSelectDelete}
+            />
+          </View>
+        </View>
+      </BottomSheet>
     );
   };
 
@@ -308,6 +329,34 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   private renderKeyExtractor = (item: AssetDocument, index: number): string => {
     return `${item.id}-${index}`;
+  };
+
+  private onSelectMenu = async (value: string, isDeleteAllowed: boolean): Promise<void> => {
+    const { t } = this.props;
+    switch (value) {
+      case DocumentOperations.RENAME:
+        this.onSelectRename();
+        break;
+      case DocumentOperations.SHARE:
+        await this.onSelectShare();
+        break;
+      case DocumentOperations.DOWNLOAD:
+        await this.onSelectDownload();
+        break;
+      case DocumentOperations.DELETE:
+        if (isDeleteAllowed) {
+          this.onPressDelete();
+        } else {
+          AlertHelper.error({ message: t('property:cannotDeleteDocument') });
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  private onClickIcon = (id: number): void => {
+    this.setState({ selectedDocumentId: id });
   };
 
   private onSearch = (value: string): void => {
@@ -324,6 +373,14 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         });
       }
     });
+  };
+
+  private onPressDelete = (): void => {
+    this.setState({ showDeleteSheet: true });
+  };
+
+  private onCloseDeleteSheet = (): void => {
+    this.setState({ showDeleteSheet: false });
   };
 
   private onCapture = async (): Promise<void> => {
@@ -393,16 +450,15 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   private onSelectDelete = async (): Promise<void> => {
     const { selectedDocumentId } = this.state;
     const { currentAssetId, t } = this.props;
+    this.setState({ isLoading: true });
     try {
-      this.setState({ isLoading: true });
       await AssetRepository.deleteAssetDocument(currentAssetId, selectedDocumentId);
       this.getDocuments();
       AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
-      this.setState({ isLoading: false });
+      this.setState({ isLoading: false, showDeleteSheet: false });
     } catch (e) {
       this.setState({ isLoading: false });
-      const error = ErrorUtils.getErrorMessage(e.details);
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
@@ -562,5 +618,18 @@ const styles = StyleSheet.create({
   bottomSheetContainer: {
     paddingHorizontal: 25,
     flex: 1,
+  },
+  deleteContainer: {
+    margin: 16,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    marginTop: 40,
+  },
+  button: {
+    height: 50,
+  },
+  buttonView: {
+    marginRight: 10,
   },
 });

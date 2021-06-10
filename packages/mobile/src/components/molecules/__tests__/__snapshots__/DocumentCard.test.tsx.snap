@@ -56,15 +56,10 @@ exports[`DocumentCard should match snapshot 1`] = `
             }
           }
         >
-          <View
-            style={
-              Object {
-                "flex": 1,
-                "marginEnd": 16,
-              }
-            }
-          >
-            <View
+          <LeftView />
+          <TextualContent>
+            <ForwardRef
+              onPress={[Function]}
               style={
                 Object {
                   "flex": 1,
@@ -72,157 +67,210 @@ exports[`DocumentCard should match snapshot 1`] = `
                 }
               }
             >
-              <Label
-                numberOfLines={1}
+              <TouchableOpacity
+                hostRef={null}
+                onPress={[Function]}
                 style={
                   Object {
-                    "color": "#33495E",
+                    "flex": 1,
+                    "marginEnd": 16,
                   }
                 }
-                textType="semiBold"
-                type="large"
               >
-                <Text
-                  numberOfLines={1}
+                <ForwardRef(AnimatedComponentWrapper)
+                  accessible={true}
+                  focusable={true}
+                  onClick={[Function]}
+                  onResponderGrant={[Function]}
+                  onResponderMove={[Function]}
+                  onResponderRelease={[Function]}
+                  onResponderTerminate={[Function]}
+                  onResponderTerminationRequest={[Function]}
+                  onStartShouldSetResponder={[Function]}
                   style={
                     Array [
                       Object {
-                        "fontSize": 14,
-                        "lineHeight": 22,
-                        "textAlign": "left",
+                        "flex": 1,
+                        "marginEnd": 16,
                       },
                       Object {
-                        "fontFamily": "OpenSans-SemiBold",
-                        "fontWeight": "600",
-                      },
-                      Object {
-                        "color": "#33495E",
+                        "opacity": 1,
                       },
                     ]
                   }
                 >
-                  <Text
-                    numberOfLines={1}
+                  <AnimatedComponent
+                    accessible={true}
+                    focusable={true}
+                    onClick={[Function]}
+                    onResponderGrant={[Function]}
+                    onResponderMove={[Function]}
+                    onResponderRelease={[Function]}
+                    onResponderTerminate={[Function]}
+                    onResponderTerminationRequest={[Function]}
+                    onStartShouldSetResponder={[Function]}
                     style={
                       Array [
                         Object {
-                          "fontSize": 14,
-                          "lineHeight": 22,
-                          "textAlign": "left",
+                          "flex": 1,
+                          "marginEnd": 16,
                         },
                         Object {
-                          "fontFamily": "OpenSans-SemiBold",
-                          "fontWeight": "600",
-                        },
-                        Object {
-                          "color": "#33495E",
+                          "opacity": 1,
                         },
                       ]
                     }
                   >
-                    Dummy
-                  </Text>
-                </Text>
-              </Label>
-              <Label
-                numberOfLines={1}
-                style={
-                  Object {
-                    "color": "#667686",
-                  }
-                }
-                type="regular"
-              >
-                <Text
-                  numberOfLines={1}
-                  style={
-                    Array [
-                      Object {
-                        "fontSize": 12,
-                        "lineHeight": 18,
-                        "textAlign": "left",
-                      },
-                      Object {
-                        "fontFamily": "OpenSans-Regular",
-                        "fontWeight": "400",
-                      },
-                      Object {
-                        "color": "#667686",
-                      },
-                    ]
-                  }
-                >
-                  <Text
-                    numberOfLines={1}
-                    style={
-                      Array [
+                    <View
+                      accessible={true}
+                      focusable={true}
+                      onClick={[Function]}
+                      onResponderGrant={[Function]}
+                      onResponderMove={[Function]}
+                      onResponderRelease={[Function]}
+                      onResponderTerminate={[Function]}
+                      onResponderTerminationRequest={[Function]}
+                      onStartShouldSetResponder={[Function]}
+                      style={
                         Object {
-                          "fontSize": 12,
-                          "lineHeight": 18,
-                          "textAlign": "left",
-                        },
-                        Object {
-                          "fontFamily": "OpenSans-Regular",
-                          "fontWeight": "400",
-                        },
-                        Object {
-                          "color": "#667686",
-                        },
-                      ]
-                    }
-                  >
-                    assetPortfolio:uploadedOn
-                  </Text>
-                </Text>
-              </Label>
-            </View>
-          </View>
-          <Icon
-            allowFontScaling={false}
-            color="#78B7FA"
-            name="doc"
-            size={35}
-          >
-            <Text
-              allowFontScaling={false}
-              style={
-                Array [
-                  Object {
-                    "color": "#78B7FA",
-                    "fontSize": 35,
-                  },
-                  undefined,
-                  Object {
-                    "fontFamily": "icomoon",
-                    "fontStyle": "normal",
-                    "fontWeight": "normal",
-                  },
-                  Object {},
-                ]
-              }
-            >
-              <Text
-                allowFontScaling={false}
-                style={
-                  Array [
-                    Object {
-                      "color": "#78B7FA",
-                      "fontSize": 35,
-                    },
-                    undefined,
-                    Object {
-                      "fontFamily": "icomoon",
-                      "fontStyle": "normal",
-                      "fontWeight": "normal",
-                    },
-                    Object {},
-                  ]
-                }
-              >
-                
-              </Text>
-            </Text>
-          </Icon>
+                          "flex": 1,
+                          "marginEnd": 16,
+                          "opacity": 1,
+                        }
+                      }
+                    >
+                      <View
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Object {
+                            "flex": 1,
+                            "marginEnd": 16,
+                            "opacity": 1,
+                          }
+                        }
+                      >
+                        <Label
+                          numberOfLines={1}
+                          style={
+                            Object {
+                              "color": "#33495E",
+                            }
+                          }
+                          textType="semiBold"
+                          type="large"
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={
+                              Array [
+                                Object {
+                                  "fontSize": 14,
+                                  "lineHeight": 22,
+                                  "textAlign": "left",
+                                },
+                                Object {
+                                  "fontFamily": "OpenSans-SemiBold",
+                                  "fontWeight": "600",
+                                },
+                                Object {
+                                  "color": "#33495E",
+                                },
+                              ]
+                            }
+                          >
+                            <Text
+                              numberOfLines={1}
+                              style={
+                                Array [
+                                  Object {
+                                    "fontSize": 14,
+                                    "lineHeight": 22,
+                                    "textAlign": "left",
+                                  },
+                                  Object {
+                                    "fontFamily": "OpenSans-SemiBold",
+                                    "fontWeight": "600",
+                                  },
+                                  Object {
+                                    "color": "#33495E",
+                                  },
+                                ]
+                              }
+                            >
+                              Dummy
+                            </Text>
+                          </Text>
+                        </Label>
+                        <Label
+                          numberOfLines={1}
+                          style={
+                            Object {
+                              "color": "#667686",
+                            }
+                          }
+                          type="regular"
+                        >
+                          <Text
+                            numberOfLines={1}
+                            style={
+                              Array [
+                                Object {
+                                  "fontSize": 12,
+                                  "lineHeight": 18,
+                                  "textAlign": "left",
+                                },
+                                Object {
+                                  "fontFamily": "OpenSans-Regular",
+                                  "fontWeight": "400",
+                                },
+                                Object {
+                                  "color": "#667686",
+                                },
+                              ]
+                            }
+                          >
+                            <Text
+                              numberOfLines={1}
+                              style={
+                                Array [
+                                  Object {
+                                    "fontSize": 12,
+                                    "lineHeight": 18,
+                                    "textAlign": "left",
+                                  },
+                                  Object {
+                                    "fontFamily": "OpenSans-Regular",
+                                    "fontWeight": "400",
+                                  },
+                                  Object {
+                                    "color": "#667686",
+                                  },
+                                ]
+                              }
+                            >
+                              assetPortfolio:uploadedOn
+                            </Text>
+                          </Text>
+                        </Label>
+                        <PressabilityDebugView
+                          color="cyan"
+                        />
+                      </View>
+                    </View>
+                  </AnimatedComponent>
+                </ForwardRef(AnimatedComponentWrapper)>
+              </TouchableOpacity>
+            </ForwardRef>
+          </TextualContent>
+          <RightView />
         </View>
       </View>
       <View

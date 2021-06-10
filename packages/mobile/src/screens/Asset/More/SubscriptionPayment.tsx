@@ -16,6 +16,7 @@ import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepo
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -24,6 +25,16 @@ import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigati
 import { PurchaseTypes } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
+
+// TODO: (Shikha) - remove after API integration
+const serviceData: any = {
+  Homzhub_Pro: [
+    'Everything in Homzhub Premium and',
+    'Special Discount on Value Added Service',
+    'Digital Property Management',
+  ],
+  Homzhub_Premium: ['List Properties and Receive Enquiries', 'Schedule and Manage Property Visits', 'Document Vault'],
+};
 
 interface IStateProps {
   userSubscription: UserSubscription | null;
@@ -46,23 +57,10 @@ class SubscriptionPayment extends Component<Props, IScreenState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
-    const { t } = this.props;
     this.setState({ loading: true });
     try {
       await RNIap.initConnection();
       await this.getItems();
-      this.purchaseUpdateSubscription = purchaseUpdatedListener((purchase: ProductPurchase) => {
-        if (purchase) {
-          this.purchaseConfirmed(purchase);
-        }
-      });
-      this.purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
-        if (error.code === IAPErrorCode.E_USER_CANCELLED) {
-          AlertHelper.error({ message: t('userCancelled') });
-        } else {
-          AlertHelper.error({ message: error.message ?? '' });
-        }
-      });
     } catch (err) {
       this.setState({ loading: false });
       AlertHelper.error({ message: err.message });
@@ -96,15 +94,49 @@ class SubscriptionPayment extends Component<Props, IScreenState> {
             const isSubscribed = (currentSubscription && currentSubscription === item.productId) || false;
             return (
               <View style={styles.container} key={index}>
-                <Text type="small">{item.title}</Text>
-                <Label type="regular" style={styles.description}>
+                <Text type="regular" textType="semiBold" style={styles.margin}>
+                  {item.title}
+                </Text>
+                <Label type="large" style={[styles.description, styles.margin]}>
                   {item.description}
                 </Label>
-                <Text type="small">{item.localizedPrice}</Text>
+                <View style={styles.priceSection}>
+                  <Label type="large" style={styles.priceLabel}>
+                    {t('common:totalPrice')}
+                  </Label>
+                  <Text type="small">{`${item.localizedPrice} / ${t('common:annually')}`}</Text>
+                </View>
+                <View style={styles.list}>
+                  {Object.keys(serviceData).map((key): React.ReactElement | null => {
+                    if (key === item.productId) {
+                      const data = serviceData[key];
+                      return (
+                        <>
+                          {data.map((value: string, indexKey: number) => {
+                            return (
+                              <View key={indexKey} style={styles.listItem}>
+                                <Icon
+                                  name={icons.roundFilled}
+                                  style={styles.icon}
+                                  size={14}
+                                  color={theme.colors.darkTint3}
+                                />
+                                <Label type="large" style={styles.listValue}>
+                                  {value}
+                                </Label>
+                              </View>
+                            );
+                          })}
+                        </>
+                      );
+                    }
+                    return null;
+                  })}
+                </View>
                 <Button
                   type="primary"
                   title={isSubscribed ? t('assetMore:activePlan') : t('propertySearch:buy')}
-                  containerStyle={[styles.buttonContainer, isSubscribed && styles.subscribed]}
+                  containerStyle={[styles.buttonContainer, styles.margin, isSubscribed && styles.subscribed]}
                   titleStyle={[styles.buttonTitle, isSubscribed && styles.subscribedTitle]}
                   disabled={isSubscribed}
                   onPress={(): Promise<void> => this.requestSubscription(item.productId)}
@@ -136,11 +168,24 @@ class SubscriptionPayment extends Component<Props, IScreenState> {
   };
 
   private requestSubscription = async (product: string): Promise<void> => {
+    const { t } = this.props;
     this.setState({ loading: true });
     try {
       await RNIap.requestPurchase(product);
+      this.purchaseUpdateSubscription = purchaseUpdatedListener((purchase: ProductPurchase) => {
+        if (purchase) {
+          this.purchaseConfirmed(purchase);
+        }
+      });
       this.setState({ loading: false });
     } catch (err) {
+      this.purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
+        if (error.code === IAPErrorCode.E_USER_CANCELLED) {
+          AlertHelper.error({ message: t('userCancelled') });
+        } else {
+          AlertHelper.error({ message: error.message ?? '' });
+        }
+      });
       this.setState({ loading: false });
     }
   };
@@ -182,7 +227,7 @@ const styles = StyleSheet.create({
   container: {
     margin: 16,
     borderWidth: 0.5,
-    padding: 16,
+    paddingVertical: 16,
     borderRadius: 5,
     borderColor: theme.colors.disabled,
   },
@@ -192,15 +237,43 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flex: 0,
-    marginTop: 24,
+    marginTop: 16,
   },
   buttonTitle: {
     marginVertical: 8,
+  },
+  margin: {
+    marginHorizontal: 16,
   },
   subscribed: {
     backgroundColor: theme.colors.greenOpacity,
   },
   subscribedTitle: {
     color: theme.colors.green,
+  },
+  list: {
+    margin: 20,
+  },
+  priceSection: {
+    backgroundColor: theme.colors.lightGrayishBlue,
+    padding: 16,
+    marginTop: 10,
+  },
+  priceLabel: {
+    marginBottom: 8,
+    color: theme.colors.darkTint5,
+  },
+  listItem: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginBottom: 10,
+  },
+  icon: {
+    marginTop: 6,
+  },
+  listValue: {
+    color: theme.colors.darkTint5,
+    marginHorizontal: 8,
   },
 });

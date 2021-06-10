@@ -9,13 +9,15 @@ export interface IMenu {
   icon?: string;
   label: string;
   value: string;
+  isExtraData?: boolean;
+  isExtraDataAllowed?: boolean;
   onPressItem?: () => void | Promise<void>;
 }
 
 interface IProps {
   data: IMenu[];
   optionTitle?: string;
-  onSelect?: (value: string) => void;
+  onSelect: (value: string) => void;
   sheetHeight?: number;
   extraNode?: React.ReactElement;
   isExtraNode?: boolean;
@@ -34,18 +36,11 @@ const Menu = (props: IProps): React.ReactElement => {
   }, [isExtraNode]);
 
   const handleSelection = (item: IMenu): void => {
-    if (item.onPressItem) {
-      setIsVisible(false);
-      item.onPressItem();
-      return;
-    }
-    if (item.value !== 'DELETE_PROPERTY') {
+    onSelect(item.value);
+    if (!item.isExtraData || (!item.isExtraDataAllowed && item.isExtraData)) {
       setIsVisible(false);
     } else {
       setExtraData(true);
-    }
-    if (onSelect) {
-      onSelect(item.value);
     }
   };
 

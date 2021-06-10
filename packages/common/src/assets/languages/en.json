@@ -285,7 +285,9 @@
     "docExceedsMaxSize": "Please upload a document smaller than {{size}}",
     "hours" : "hours",
     "hour" : "hour",
-    "expired" : "Expired"
+    "expired" : "Expired",
+    "annually": "Annually",
+    "totalPrice": "Total Price"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -665,7 +667,10 @@
     "addImageToProperty": "Add images to property",
     "attachmentList": "Attachment List",
     "imageUploaded": "Successfully Image uploaded",
-    "resendInvite": "Resend Invite"
+    "resendInvite": "Resend Invite",
+    "deleteDocument": "Delete Document",
+    "deleteConfirmation": "Are you sure you want to delete {{name}}",
+    "cannotDeleteDocument": "You cannot delete this document"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

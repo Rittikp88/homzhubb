@@ -79,7 +79,7 @@ exports[`AssetAdvertisementBanner should call function 1`] = `
     inactiveDotStyle={
       Object {
         "backgroundColor": "#808D9B",
-        "borderColor": "transparent",
+        "borderColor": "rgba(0,0,0,0)",
       }
     }
   />
@@ -165,7 +165,7 @@ exports[`AssetAdvertisementBanner should match snapshot 1`] = `
     inactiveDotStyle={
       Object {
         "backgroundColor": "#808D9B",
-        "borderColor": "transparent",
+        "borderColor": "rgba(0,0,0,0)",
       }
     }
   />
@@ -217,7 +217,7 @@ exports[`AssetAdvertisementBanner should match snapshot without banners 1`] = `
     inactiveDotStyle={
       Object {
         "backgroundColor": "#808D9B",
-        "borderColor": "transparent",
+        "borderColor": "rgba(0,0,0,0)",
       }
     }
   />

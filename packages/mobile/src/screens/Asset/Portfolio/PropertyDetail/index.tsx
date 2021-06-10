@@ -523,7 +523,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
 
     list = [
       { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
-      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY },
+      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY, isExtraData: true },
     ];
 
     if (isListingCreated) {
