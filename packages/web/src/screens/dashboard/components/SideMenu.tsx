@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { TFunction } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import ReactTooltip from 'react-tooltip';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import Icon from '@homzhub/common/src/assets/icon';
@@ -59,12 +59,12 @@ const SideMenu: FC<Props> = (props: Props) => {
       logout({
         callback: (status: boolean): void => {
           if (status) {
-            NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
+            NavigationService.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
           }
         },
       });
     } else {
-      NavigationUtils.navigate(history, { path: MenuItemList[id - 1].url });
+      NavigationService.navigate(history, { path: MenuItemList[id - 1].url });
     }
   };
   const isSelectedItem = (id: number): boolean => selectedItem.id === id && selectedItem.url === pathname;

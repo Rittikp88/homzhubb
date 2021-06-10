@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useContext } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { IRedirectionDetailsWeb, NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
@@ -44,7 +44,7 @@ const Dashboard: FC = () => {
   const onCompleteDetails = (assetId: number): void => {
     dispatch(RecordAssetActions.setAssetId(assetId));
     dispatch(RecordAssetActions.setEditPropertyFlow(true));
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_VIEW,
       params: {
         previousScreen: ScreensKeys.Dashboard,
@@ -55,7 +55,7 @@ const Dashboard: FC = () => {
   const handleActionSelection = (item: IActions, assetId: number): void => {
     dispatch(RecordAssetActions.setAssetId(assetId));
     dispatch(RecordAssetActions.setSelectedPlan({ id: item.id, selectedPlan: item.type }));
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.ADD_LISTING,
       params: {
         previousScreen: ScreensKeys.Dashboard,
@@ -64,7 +64,7 @@ const Dashboard: FC = () => {
   };
 
   const onViewProperty = (id: number): void => {
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_SELECTED,
       params: { propertyId: id },
     });
@@ -100,17 +100,25 @@ const Dashboard: FC = () => {
       setIsVacantProperties(false);
     }
   };
+
+  const redirectionDetails = useSelector(CommonSelectors.getRedirectionDetails);
+  const { dynamicLinks: dynamicLinkParams } = redirectionDetails as IRedirectionDetailsWeb;
+
   useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(UserActions.getUserPreferences());
-      dispatch(UserActions.getUserProfile());
-      dispatch(UserActions.getFavouriteProperties());
-      dispatch(UserActions.getAssets());
-      dispatch(CommonActions.getCountries());
+    if (dynamicLinkParams?.type?.length) {
+      NavigationService.handleDynamicLinkNavigation(dynamicLinkParams);
+    } else {
+      if (isLoggedIn) {
+        dispatch(UserActions.getUserPreferences());
+        dispatch(UserActions.getUserProfile());
+        dispatch(UserActions.getFavouriteProperties());
+        dispatch(UserActions.getAssets());
+        dispatch(CommonActions.getCountries());
+      }
+      getPendingPropertyDetails(setPendingProperty).then();
+      getPropertyMetrics((response) => setPropertyMetrics(response)).then();
+      getVacantPropertyDetails((response) => setVacantProperty(response)).then();
     }
-    getPendingPropertyDetails(setPendingProperty).then();
-    getPropertyMetrics((response) => setPropertyMetrics(response)).then();
-    getVacantPropertyDetails((response) => setVacantProperty(response)).then();
   }, [dispatch, isLoggedIn]);
   const commonLoaders = useSelector(CommonSelectors.getCommonLoaders);
   const { whileGetCountries } = commonLoaders;

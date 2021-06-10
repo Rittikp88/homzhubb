@@ -9,7 +9,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
@@ -253,7 +253,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const { setAssetId, setEditPropertyFlow, history } = this.props;
     setAssetId(assetId);
     setEditPropertyFlow(true);
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_VIEW,
       params: {
         previousScreen: 'Dashboard',
@@ -270,7 +270,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const formType = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
     this.setState({ formType, param: param || {} });
     const onNavigateToPlanSelection = (): void => {
-      NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING });
+      NavigationService.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING });
     };
     if (param && param.hasTakeAction) {
       onNavigateToPlanSelection();
@@ -286,7 +286,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const { history, setCurrentAsset } = this.props;
     setCurrentAsset(data);
     const { asset_id, assetType, listing_id } = data;
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_SELECTED,
       params: {
         isFromTenancies: data.dataType === DataType.TENANCIES,

@@ -1,7 +1,11 @@
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { EmailVerificationActions, IEmailVerification } from '@homzhub/common/src/domain/repositories/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -22,7 +26,22 @@ const BasicInformations: FC<IProps> = (props: IProps) => {
     return null;
   }
   const { basicDetailsArray } = userProfileInfo;
-  // TODO :  Email verification - Shagun
+  const onVerifyEmail = async (): Promise<void> => {
+    const { email } = userProfileInfo;
+    const payload: IEmailVerification = {
+      action: EmailVerificationActions.GET_VERIFICATION_EMAIL,
+      payload: {
+        email,
+        is_work_email: false,
+      },
+    };
+    try {
+      await UserRepository.sendOrVerifyEmail(payload);
+      AlertHelper.info({ message: t('moreProfile:emailVerificationSetAlert', { email }) });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.statusCode });
+    }
+  };
   const details = (): React.ReactNode => {
     return basicDetailsArray?.map((item, index) => {
       return (
@@ -43,7 +62,7 @@ const BasicInformations: FC<IProps> = (props: IProps) => {
           </View>
 
           {item.type === 'EMAIL' && !item.emailVerified && (
-            <Label type="large" style={styles.verifyMail}>
+            <Label type="large" style={styles.verifyMail} onPress={onVerifyEmail}>
               {t('moreProfile:verifyYourEmailText')}
             </Label>
           )}

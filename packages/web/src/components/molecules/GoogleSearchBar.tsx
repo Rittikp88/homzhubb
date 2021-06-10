@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Script from 'react-load-script';
 import { useHistory } from 'react-router-dom';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
@@ -42,7 +42,7 @@ const GoogleSearchBar = (props: SearchBarProps): React.ReactElement => {
     });
 
     const locationParams = `?search_latitude=${latValue}&search_longitude=${lngValue}`;
-    NavigationUtils.navigate(history, { path: `${RouteNames.protectedRoutes.SEARCH_PROPERTY}${locationParams}` });
+    NavigationService.navigate(history, { path: `${RouteNames.protectedRoutes.SEARCH_PROPERTY}${locationParams}` });
     getProperties();
   };
   const setSearchedPropertyCurrency = (placeDetail: IAddressComponent[]): void => {

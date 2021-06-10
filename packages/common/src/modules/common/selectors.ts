@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
+import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationService';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
@@ -47,7 +48,7 @@ const getDefaultCurrency = (state: IState): Currency => {
   return new Currency();
 };
 
-const getRedirectionDetails = (state: IState): IRedirectionDetails => {
+const getRedirectionDetails = (state: IState): IRedirectionDetails | IRedirectionDetailsWeb => {
   const {
     common: { redirectionDetails },
   } = state;

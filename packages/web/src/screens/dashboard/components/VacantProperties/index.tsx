@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -49,7 +49,7 @@ const VacantProperties: FC<IProps> = ({ data }: IProps) => {
 
   const navigateToDetailView = (): void => {
     const { id, leaseTerm, saleTerm } = data[currentAssetIndex];
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_SELECTED,
       params: {
         isFromTenancies: false,

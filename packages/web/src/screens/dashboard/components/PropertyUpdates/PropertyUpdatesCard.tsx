@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { ImageStyle, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -23,7 +23,7 @@ const PropertyUpdatesCard: FC<IProp> = ({ data }: IProp) => {
   const history = useHistory();
 
   const onPress = (): void => {
-    NavigationUtils.navigate(history, { path: data.url });
+    NavigationService.navigate(history, { path: data.url });
   };
 
   return (

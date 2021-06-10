@@ -6,7 +6,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { useDispatch, useSelector } from 'react-redux';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -69,7 +69,7 @@ const AddProperty: FC = () => {
   };
 
   const navigateToDashboard = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
   const handleEditSelection = (): void => {
     setCurrentScreen(AddPropertyStack.PropertyDetailsMapScreen);
@@ -126,7 +126,7 @@ const AddProperty: FC = () => {
     wasRedirected: true,
   };
   const onNavigateToPlanSelection = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING, params: { ...compProps } });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING, params: { ...compProps } });
   };
   const renderScreen = (comp: AddPropertyStack): React.ReactElement => {
     const { AddPropertyLocationScreen, PropertyDetailsMapScreen, AddPropertyViewScreen } = AddPropertyStack;

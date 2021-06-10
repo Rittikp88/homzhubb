@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import RNBootSplash from 'react-native-bootsplash';
 import { NavigationContainer } from '@react-navigation/native';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
+import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -51,7 +52,7 @@ export const RootNavigator = (props: IProps): React.ReactElement | null => {
     <NavigationContainer
       ref={NavigationService.setTopLevelNavigator}
       onReady={(): void => {
-        NavigationService.handleDynamicLinkNavigation(redirectionDetails).then();
+        NavigationService.handleDynamicLinkNavigation(redirectionDetails as IRedirectionDetails).then();
       }}
     >
       {isLoggedIn && isChangeStack ? <AppNavigator /> : <GuestStack />}

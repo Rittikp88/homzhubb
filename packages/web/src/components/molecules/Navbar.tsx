@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { History } from 'history';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -89,7 +89,7 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
 
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
-    NavigationUtils.navigate(history, { path: navItems[index].url });
+    NavigationService.navigate(history, { path: navItems[index].url });
   };
   const popOverContentStyle = {
     height: 40,
@@ -106,10 +106,10 @@ const Navbar: FC<NavbarProps> = (props: NavbarProps) => {
     );
   };
   const navigateToScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
   const navigateToProfile = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PROFILE });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.PROFILE });
   };
   const { SEARCH_PROPERTY } = RouteNames.protectedRoutes;
   const isSearchBarVisible = !compareUrlsWithPathname([SEARCH_PROPERTY], location.pathname);

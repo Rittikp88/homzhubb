@@ -5,7 +5,7 @@ import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -109,7 +109,7 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
         AnalyticsService.track(EventType.ClickSimilarProperty, data);
       }
     }
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
       params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },
     });

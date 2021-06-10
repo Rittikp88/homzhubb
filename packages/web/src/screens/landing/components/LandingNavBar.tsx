@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useHistory } from 'react-router-dom';
 import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { compareUrlsWithPathname } from '@homzhub/web/src/utils/LayoutUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -76,7 +76,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
     setIsMenuOpen(true);
   };
   const navigateToScreen = (path: string): void => {
-    NavigationUtils.navigate(history, { path });
+    NavigationService.navigate(history, { path });
     setTimeout(() => {
       if (PlatformUtils.isWeb()) {
         window.scrollTo(0, 0);
@@ -322,7 +322,7 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
       }
     }
     if (menuItems[index].url !== RouteNames.publicRoutes.APP_BASE) {
-      NavigationUtils.navigate(history, { path: menuItems[index].url });
+      NavigationService.navigate(history, { path: menuItems[index].url });
       setTimeout(() => {
         if (PlatformUtils.isWeb()) {
           window.scrollTo(0, 0);

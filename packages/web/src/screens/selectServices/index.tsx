@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -118,7 +118,7 @@ const SelectServices = (): ReactElement => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
     }
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.SELECT_PROPERTY });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.SELECT_PROPERTY });
   };
   const render = (): ReactElement => {
     return (

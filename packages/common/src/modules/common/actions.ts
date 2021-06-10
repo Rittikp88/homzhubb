@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
+import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationService';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
@@ -46,7 +47,9 @@ const setDeviceCountry = (countryCode: string): IFluxStandardAction<string> => (
   payload: countryCode,
 });
 
-const setRedirectionDetails = (payload: IRedirectionDetails): IFluxStandardAction<IRedirectionDetails> => ({
+const setRedirectionDetails = (
+  payload: IRedirectionDetails | IRedirectionDetailsWeb
+): IFluxStandardAction<IRedirectionDetails | IRedirectionDetailsWeb> => ({
   type: CommonActionTypes.SET.REDIRECTION_DETAILS,
   payload,
 });

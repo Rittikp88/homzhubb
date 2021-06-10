@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { CarouselProps } from 'react-multi-carousel';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames, ScreensKeys } from '@homzhub/web/src/router/RouteNames';
@@ -97,7 +97,7 @@ const AddPropertyListing = (): React.ReactElement => {
   // }, []);
 
   const navigateToDashboard = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
 
   const renderScene = (): React.ReactElement | null => {

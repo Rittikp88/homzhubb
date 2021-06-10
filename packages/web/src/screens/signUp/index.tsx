@@ -5,7 +5,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useOnly, useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
@@ -38,7 +38,7 @@ const SignUp: FC<IProps> = (props: IProps) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (isAuthenticated) {
-      NavigationUtils.navigate(history, {
+      NavigationService.navigate(history, {
         path: RouteNames.protectedRoutes.DASHBOARD,
       });
     }
@@ -88,7 +88,7 @@ const SignUp: FC<IProps> = (props: IProps) => {
         buttonTitle: t('auth:signup'),
         navigationPath: RouteNames.publicRoutes.SIGNUP,
       };
-      NavigationUtils.navigate(props.history, {
+      NavigationService.navigate(props.history, {
         path: RouteNames.publicRoutes.OTP_VERIFICATION,
         params: { ...compProps },
       });
@@ -99,14 +99,14 @@ const SignUp: FC<IProps> = (props: IProps) => {
   };
 
   const handleTermsCondition = (): void => {
-    NavigationUtils.navigate(props.history, { path: RouteNames.publicRoutes.TERMS_CONDITION });
+    NavigationService.navigate(props.history, { path: RouteNames.publicRoutes.TERMS_CONDITION });
   };
 
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;
   };
   const navigateToScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.LOGIN });
+    NavigationService.navigate(history, { path: RouteNames.publicRoutes.LOGIN });
   };
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);

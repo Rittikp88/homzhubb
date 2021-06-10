@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -62,7 +62,7 @@ const SettingsContent: FC<IProps> = (props: IProps) => {
     });
   };
   const navigateToWebview = (url: string): void => {
-    NavigationUtils.openNewTab({ path: url });
+    NavigationService.openNewTab({ path: url });
   };
 
   const renderOptionTypes = (titleText: string, options: SettingOptions): React.ReactElement => {

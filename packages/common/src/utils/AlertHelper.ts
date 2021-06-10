@@ -1,6 +1,6 @@
 import { Alert, Keyboard } from 'react-native';
 import { hideMessage, showMessage } from 'react-native-flash-message';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 
@@ -47,7 +47,7 @@ class AlertHelper {
       const messageProps = {
         message,
       };
-      NavigationUtils.errorNavSwitch(statusCode as number, messageProps);
+      NavigationService.errorNavSwitch(statusCode as number, messageProps);
     }
   };
 

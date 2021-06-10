@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { ValueAddedServiceCardList } from '@homzhub/common/src/components/organisms/ValueAddedServiceCardList';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
@@ -38,7 +38,7 @@ const SelectProperty: FC = () => {
       iso2Code,
     };
 
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.SELECT_SERVICES,
       params: { ...locationState },
     });

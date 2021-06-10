@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -16,10 +16,10 @@ export const FooterWithSocialMedia: FC = () => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const navigateToPrivacyPolicyScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.PRIVACY_POLICY });
+    NavigationService.navigate(history, { path: RouteNames.publicRoutes.PRIVACY_POLICY });
   };
   const navigateToTermsAndConditionScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.TERMS_CONDITION });
+    NavigationService.navigate(history, { path: RouteNames.publicRoutes.TERMS_CONDITION });
   };
   return (
     <View style={[styles.footerContainer]}>

@@ -5,7 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -91,13 +91,13 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
       logout({
         callback: (status: boolean): void => {
           if (status) {
-            NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
+            NavigationService.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
           }
         },
       });
     } else {
       onMenuClose();
-      NavigationUtils.navigate(history, { path: menuItems[index].url });
+      NavigationService.navigate(history, { path: menuItems[index].url });
       setTimeout(() => {
         if (PlatformUtils.isWeb()) {
           window.scrollTo(0, 0);

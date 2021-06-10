@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -22,7 +22,7 @@ const Error504: FC = () => {
     width: isMobile ? 300 : 500,
   };
   const navigateToScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
+    NavigationService.navigate(history, { path: RouteNames.publicRoutes.APP_BASE });
   };
   return (
     <View style={styles.comingSoonContent}>

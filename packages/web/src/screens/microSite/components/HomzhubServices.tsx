@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -16,7 +16,7 @@ const HomzhubServices: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
 
   const navigateToScreen = (path: string): void => {
-    NavigationUtils.navigate(history, { path });
+    NavigationService.navigate(history, { path });
   };
   return (
     <View style={styles.services}>

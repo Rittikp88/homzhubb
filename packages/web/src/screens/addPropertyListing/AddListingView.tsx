@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { TabView } from 'react-native-tab-view';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -509,7 +509,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
   private navigateToDashboard = (): void => {
     const { resetState, history } = this.props;
     resetState();
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
 
   private scrollToTop = (): void => {

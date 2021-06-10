@@ -4,7 +4,7 @@ import { PopupActions } from 'reactjs-popup/dist/types';
 import { useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { useDown, useViewPort } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -22,14 +22,16 @@ import PromiseSection from '@homzhub/web/src/screens/landing/components/PromiseS
 import { StoreLinkSection } from '@homzhub/web/src/screens/landing/components/StoreLinksSection';
 import SubscribePopUp from '@homzhub/web/src/screens/landing/components/SubscribePopUp';
 import Testimonials from '@homzhub/web/src/screens/landing/components/Testimonials';
+import { IDynamicLinkParams } from '@homzhub/web/src/services/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps extends RouteComponentProps {
   isAuthenticated: boolean;
+  dynamicLinkParams?: IDynamicLinkParams;
 }
 
 const Landing: FC<IProps> = (props: IProps) => {
-  const { isAuthenticated, history } = props;
+  const { isAuthenticated, history, dynamicLinkParams } = props;
   const [featuredPropertiesRef, setFeaturedPropertiesRef] = useState(null);
   const [plansRef, setPlansRef] = useState(null);
   const [storeLinksRef, setStoreLinksRef] = useState(null);
@@ -46,8 +48,10 @@ const Landing: FC<IProps> = (props: IProps) => {
   };
   const [isInitialized, setIsInitialized] = useState(false);
   useEffect(() => {
-    if (isAuthenticated) {
-      NavigationUtils.navigate(history, {
+    if (dynamicLinkParams?.type?.length) {
+      NavigationService.handleDynamicLinkNavigation(dynamicLinkParams);
+    } else if (isAuthenticated) {
+      NavigationService.navigate(history, {
         path: RouteNames.protectedRoutes.DASHBOARD,
       });
     }

@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PixelEventType, PixelService } from '@homzhub/web/src/services/PixelService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -115,7 +115,7 @@ const PlatformPlansWeb: FC<IProp> = (props: IProp) => {
   };
   const navigationToSignup = (): void => {
     PixelService.ReactPixel.track(PixelEventType.Subscribe);
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.publicRoutes.SIGNUP,
     });
   };

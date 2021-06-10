@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { PopupActions } from 'reactjs-popup/dist/types';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -21,14 +21,26 @@ interface IProps {
   iconColor?: string;
   isSvg: boolean;
   isOpen: boolean;
-  onContinueRoute: string | null;
+  onContinueRoute?: string | null;
+  svgSource?: string;
 }
 
 type Props = IContinuePopupProps & IProps;
 
 const ContinuePopup: React.FC<Props> = (props: Props) => {
   const history = useHistory();
-  const { title, subTitle, buttonSubText, buttonTitle, iconName, iconColor, isSvg, isOpen, onContinueRoute } = props;
+  const {
+    title,
+    subTitle,
+    buttonSubText,
+    buttonTitle,
+    iconName,
+    iconColor,
+    isSvg,
+    isOpen,
+    onContinueRoute,
+    svgSource,
+  } = props;
   const popupRef = useRef<PopupActions>(null);
   const { t } = useTranslation();
 
@@ -39,7 +51,7 @@ const ContinuePopup: React.FC<Props> = (props: Props) => {
   };
   const handleContinue = (): void => {
     if (onContinueRoute) {
-      NavigationUtils.navigate(history, { path: onContinueRoute });
+      NavigationService.navigate(history, { path: onContinueRoute });
     }
     handlePopupClose();
   };
@@ -61,7 +73,10 @@ const ContinuePopup: React.FC<Props> = (props: Props) => {
           {subTitle}
         </Typography>
         {isSvg ? (
-          <Image source={require('@homzhub/common/src/assets/images/propertySearch.svg')} style={styles.colorSVG} />
+          <Image
+            source={svgSource || require('@homzhub/common/src/assets/images/propertySearch.svg')}
+            style={styles.colorSVG}
+          />
         ) : (
           <Icon
             name={iconName || icons.circularCheckFilled}
@@ -132,7 +147,7 @@ const styles = StyleSheet.create({
   },
   colorSVG: {
     height: 140,
-    width: 132,
+    width: 140,
     marginTop: 8,
   },
 });

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
 import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -108,7 +108,7 @@ const DashBoardActionsGrp: FC = () => {
     if (option.label === 'Add Property') {
       AnalyticsService.track(EventType.AddPropertyInitiation);
     }
-    NavigationUtils.navigate(history, { path: option.route });
+    NavigationService.navigate(history, { path: option.route });
   };
   const onCurrencyOptionSelect = (option: ICurrencyOption): void => {
     setSelectedCurrency(option);
@@ -202,7 +202,7 @@ const AddPropertyAction: FC = () => {
   const history = useHistory();
   const onAddProperty = (): void => {
     AnalyticsService.track(EventType.AddPropertyInitiation);
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.PORTFOLIO_ADD_PROPERTY });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.PORTFOLIO_ADD_PROPERTY });
   };
   return (
     <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={onAddProperty}>

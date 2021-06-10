@@ -3,7 +3,7 @@ import { StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -80,7 +80,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
     (state as IOtpProps) || defaultOtpProps;
   useEffect(() => {
     if (isAuthenticated) {
-      NavigationUtils.navigate(history, {
+      NavigationService.navigate(history, {
         path: RouteNames.protectedRoutes.DASHBOARD,
       });
     } else {
@@ -117,7 +117,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
   };
 
   const navigateToHomeScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
 
   const signUp = async (): Promise<void> => {
@@ -192,7 +192,7 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
   };
 
   const onIconPress = (): void => {
-    if (navigationPath) NavigationUtils.navigate(history, { path: navigationPath });
+    if (navigationPath) NavigationService.navigate(history, { path: navigationPath });
     else history.goBack();
   };
   const { t } = useTranslation();

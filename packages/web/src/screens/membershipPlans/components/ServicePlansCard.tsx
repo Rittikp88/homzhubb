@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Image, View } from 'react-native';
 import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PixelEventType, PixelService } from '@homzhub/web/src/services/PixelService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -58,7 +58,7 @@ const ServicePlansCard: React.FC<IProps> = (props: IProps) => {
   };
   const navigationToScreen = (): void => {
     PixelService.ReactPixel.track(PixelEventType.Subscribe);
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.publicRoutes.SIGNUP,
     });
   };

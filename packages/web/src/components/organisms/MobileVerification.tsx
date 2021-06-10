@@ -5,7 +5,7 @@ import { connect, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { bindActionCreators, Dispatch } from 'redux';
 import { useDown, useOnly, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -72,14 +72,14 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!state) {
-      NavigationUtils.navigate(history, {
+      NavigationService.navigate(history, {
         path: RouteNames.publicRoutes.SIGNUP,
       });
     }
   }, []);
   useEffect(() => {
     if (isAuthenticated) {
-      NavigationUtils.navigate(history, {
+      NavigationService.navigate(history, {
         path: RouteNames.protectedRoutes.DASHBOARD,
       });
     }
@@ -105,7 +105,7 @@ const MobileVerification: FC<IProps> = (props: IProps) => {
       navigationPath: RouteNames.publicRoutes.SIGNUP,
       socialUserData,
     };
-    NavigationUtils.navigate(props.history, {
+    NavigationService.navigate(props.history, {
       path: RouteNames.publicRoutes.OTP_VERIFICATION,
       params: { ...compProps },
     });

@@ -5,7 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -180,7 +180,7 @@ const Settings: FC<IOwnProps> = (props: IOwnProps) => {
   };
 
   const navigateToWebview = (url: string): void => {
-    NavigationUtils.openNewTab({ path: url });
+    NavigationService.openNewTab({ path: url });
   };
 
   const renderSubTitle = (title: string, options: SettingOptions, showDivider: boolean): ReactElement => {

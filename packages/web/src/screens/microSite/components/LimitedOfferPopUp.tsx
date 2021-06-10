@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -41,7 +41,7 @@ const LimitedOfferPopUp = ({ handlePopupClose }: IPopup): React.ReactElement => 
     width: '100%',
   };
   const navigateToNewScreen = (): void => {
-    NavigationUtils.openNewTab({ path: 'https://rebrand.ly/homzhub-inspection-report' });
+    NavigationService.openNewTab({ path: 'https://rebrand.ly/homzhub-inspection-report' });
   };
 
   return (

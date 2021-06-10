@@ -10,7 +10,7 @@ import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { SocialAuthUtils } from '@homzhub/common/src/utils/SocialAuthUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
@@ -135,14 +135,14 @@ class SocialMediaGateway extends React.PureComponent<IProps, IState> {
             isEmailLogin: false,
           };
         }
-        NavigationUtils.navigate(history, {
+        NavigationService.navigate(history, {
           path: RouteNames.publicRoutes.MOBILE_VERIFICATION,
           params: { ...compProps },
         });
       },
       (tokens) => {
         loginSuccess(tokens);
-        NavigationUtils.navigate(history, {
+        NavigationService.navigate(history, {
           path: RouteNames.protectedRoutes.DASHBOARD,
         });
       }

@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
@@ -30,7 +30,7 @@ const PlansSection: FC<IProps> = (props: IProps) => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const navigateToMembershipPlans = (): void => {
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.publicRoutes.MEMBERSHIP_PLANS,
     });
   };

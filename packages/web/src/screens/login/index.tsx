@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { RouteComponentProps } from 'react-router';
 import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -67,7 +67,7 @@ const Login: FC<IProps> = (props: IProps) => {
           window.scrollTo(0, 0);
         }
       }, 100);
-      NavigationUtils.navigate(history, {
+      NavigationService.navigate(history, {
         path: RouteNames.protectedRoutes.DASHBOARD,
       });
     }
@@ -78,7 +78,7 @@ const Login: FC<IProps> = (props: IProps) => {
         window.scrollTo(0, 0);
       }
     }, 100);
-    NavigationUtils.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    NavigationService.navigate(props.history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
 
   const handleSubmitEmailLogin = (values: IFormData): void => {
@@ -119,13 +119,13 @@ const Login: FC<IProps> = (props: IProps) => {
       buttonTitle: t('common:login'),
       navigationPath: RouteNames.publicRoutes.LOGIN,
     };
-    NavigationUtils.navigate(props.history, {
+    NavigationService.navigate(props.history, {
       path: RouteNames.publicRoutes.OTP_VERIFICATION,
       params: { ...compProps },
     });
   };
   const navigateToScreen = (): void => {
-    NavigationUtils.navigate(history, { path: RouteNames.publicRoutes.SIGNUP });
+    NavigationService.navigate(history, { path: RouteNames.publicRoutes.SIGNUP });
   };
   const handleWebView = (params: IWebProps): React.ReactElement => {
     return <PhoneCodePrefix {...params} />;

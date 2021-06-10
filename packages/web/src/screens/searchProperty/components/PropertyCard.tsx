@@ -3,7 +3,7 @@ import { View, StyleSheet, ImageStyle, ViewStyle, TouchableOpacity } from 'react
 import { useHistory } from 'react-router';
 import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -75,7 +75,7 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
   const navigateToSearchView = (): void => {
     const trackData = AnalyticsHelper.getPropertyTrackData(investmentData);
     AnalyticsService.track(EventType.SearchPropertyOpen, trackData);
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
       params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },
     });

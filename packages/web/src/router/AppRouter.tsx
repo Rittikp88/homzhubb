@@ -1,7 +1,8 @@
 import React, { Suspense, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import { connect, useDispatch, ConnectedProps } from 'react-redux';
+import * as QueryString from 'query-string';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import PrivateRoute from '@homzhub/web/src/router/PrivateRoute';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -24,7 +25,7 @@ import Error504 from '@homzhub/web/src/components/staticPages/Error504';
 import FAQ from '@homzhub/web/src/screens/faq';
 
 const AppRouter = (props: AppRouterProps): React.ReactElement => {
-  const { isAuthenticated } = props;
+  const { isAuthenticated, location } = props;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(CommonActions.getCountries());
@@ -48,13 +49,23 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
   } = RouteNames.publicRoutes;
   const { DASHBOARD } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
+  const params = QueryString.parse(location.search);
+  const { type, routeType, ...rest } = params;
+  const dynamicLinkParams = { type, routeType, params: rest };
+
   return (
     <Suspense fallback={<div style={{ height: '100vh' }}>{t('webLoader:loadingText')}</div>}>
       <Switch>
         <Route
           exact
           path={APP_BASE}
-          render={(renderProps): any => <Landing isAuthenticated={isAuthenticated} {...renderProps} />}
+          render={(renderProps): any =>
+            Object.keys(dynamicLinkParams).length ? (
+              <Landing isAuthenticated={isAuthenticated} dynamicLinkParams={dynamicLinkParams} {...renderProps} />
+            ) : (
+              <Landing isAuthenticated={isAuthenticated} {...renderProps} />
+              // eslint-disable-next-line prettier/prettier
+            )}
         />
         <Route
           exact
@@ -101,4 +112,4 @@ const connector = connect(mapStateToProps, null);
 
 type AppRouterProps = ConnectedProps<typeof connector>;
 
-export default connector(AppRouter);
+export default connector(withRouter(AppRouter));

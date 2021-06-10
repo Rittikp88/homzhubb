@@ -1,5 +1,6 @@
 import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
+import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationService';
 import { CommonActionPayloadTypes, CommonActionTypes } from '@homzhub/common/src/modules/common/actions';
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
@@ -16,6 +17,11 @@ export const initialCommonState: ICommonState = {
   redirectionDetails: {
     redirectionLink: '',
     shouldRedirect: false,
+    dynamicLinks: {
+      routeType: '',
+      type: '',
+      params: {},
+    },
   },
   groupMessages: null,
   loaders: {
@@ -55,7 +61,7 @@ export const commonReducer = (
     case CommonActionTypes.SET.REDIRECTION_DETAILS:
       return {
         ...state,
-        ['redirectionDetails']: action.payload as IRedirectionDetails,
+        ['redirectionDetails']: action.payload as IRedirectionDetails | IRedirectionDetailsWeb,
       };
     case CommonActionTypes.GET.MESSAGES:
       // eslint-disable-next-line no-case-declarations

@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -49,11 +49,11 @@ const UserValidationScreensTemplate: FC<IProps> = (props: IProps) => {
     if (backButtonPressed) {
       backButtonPressed();
     }
-    if (navigationPath) NavigationUtils.navigate(history, { path: navigationPath });
+    if (navigationPath) NavigationService.navigate(history, { path: navigationPath });
   };
 
   const navigateToScreen = (path: string = RouteNames.publicRoutes.LOGIN): void => {
-    NavigationUtils.navigate(history, { path });
+    NavigationService.navigate(history, { path });
   };
   return (
     <View style={[styles.baseContainerStyle, containerStyle]}>

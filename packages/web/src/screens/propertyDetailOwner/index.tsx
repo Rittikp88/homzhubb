@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { NavigationUtils } from '@homzhub/web/src/utils/NavigationUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -82,7 +82,7 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
   const [formType, setFormType] = useState('');
   const [submittedSuccessfully, setSubmittedSuccessfully] = useState(false);
   const updateData = (): void => {
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PORTFOLIO,
     });
   };
@@ -90,7 +90,7 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
     const { setAssetId, setEditPropertyFlow } = props;
     setAssetId(assetId);
     setEditPropertyFlow(true);
-    NavigationUtils.navigate(history, {
+    NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_VIEW,
       params: {
         previousScreen: 'Portfolio',
@@ -118,7 +118,7 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
     const formTypes = payload.type === LEASE_TRANSACTION_TERMINATION ? TerminateListing : CancelListing;
     setFormType(formTypes);
     const onNavigateToPlanSelection = (): void => {
-      NavigationUtils.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING });
+      NavigationService.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING });
     };
     if (param && param.hasTakeAction) {
       onNavigateToPlanSelection();
