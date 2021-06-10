@@ -12,6 +12,7 @@ const ENDPOINTS = {
   getGeneralLedgers: (): string => 'v1/general-ledgers/overall-performances/',
   getAssetNotifications: (): string => 'v1/notifications/',
   updateNotifications: (id: number): string => `v1/notifications/${id}/`,
+  markAllNotificationsRead: (): string => 'v1/notifications/mark-as-read/',
 };
 
 class DashboardRepository {
@@ -39,6 +40,10 @@ class DashboardRepository {
 
   public updateNotificationStatus = async (id: number): Promise<void> => {
     return await this.apiClient.patch(ENDPOINTS.updateNotifications(id));
+  };
+
+  public markAllNotificationsRead = async (latestCreatedAt: string): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.markAllNotificationsRead(), { created_at: latestCreatedAt });
   };
 }
 

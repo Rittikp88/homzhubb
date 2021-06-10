@@ -187,6 +187,7 @@ export const icons = {
   noteBookOutlined: 'noteBook-outlined',
   image: 'image',
   pdfFile: 'pdf-file',
+  tickWithCircle: 'tick-with-circle',
 
   // COMMUTE
   train: 'train',

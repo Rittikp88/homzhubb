@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions'
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
@@ -67,14 +68,25 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       t,
       route: { params },
     } = this.props;
-    const { scrollEnabled } = this.state;
+    const { scrollEnabled, notifications, searchText } = this.state;
     const title = params && params.isFromDashboard ? t('dashboard') : t('assetMore:more');
+
+    const markAsReadIcon = (): React.ReactElement => {
+      const isDisabled = notifications?.unreadCount === 0;
+      return (
+        <TouchableOpacity disabled={isDisabled} onPress={this.handleMarkAsRead}>
+          <Icon name={icons.tickWithCircle} size={20} color={isDisabled ? theme.colors.disabled : theme.colors.blue} />
+        </TouchableOpacity>
+      );
+    };
+
     return (
       <UserScreen
         isOuterScrollEnabled={scrollEnabled}
         title={title}
         onBackPress={this.handleIconPress}
         pageTitle={t('notification')}
+        rightNode={!searchText ? markAsReadIcon() : undefined}
       >
         {this.renderNotifications()}
       </UserScreen>
@@ -260,7 +272,22 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     navigation.goBack();
   };
 
-  public getAssetNotifications = async (): Promise<void> => {
+  public handleMarkAsRead = async (): Promise<void> => {
+    const { notifications } = this.state;
+    const { t } = this.props;
+    if (notifications?.results?.length > 0) {
+      try {
+        const latestCreatedAt = notifications.results[0].createdAt;
+        await DashboardRepository.markAllNotificationsRead(latestCreatedAt);
+        this.getAssetNotifications(true);
+        AlertHelper.success({ message: t('assetDashboard:allNotificationsAreRead') });
+      } catch (e) {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
+    }
+  };
+
+  public getAssetNotifications = async (updateAll?: boolean): Promise<void> => {
     const { searchText, limit, offset, notifications } = this.state;
     const requestPayload = {
       limit,
@@ -269,13 +296,13 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     };
     try {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
-      if (!searchText) {
+      if (updateAll || searchText) {
         this.setState({
-          notifications: NotificationService.transformNotificationsData(response, notifications),
+          notifications: response,
         });
       } else {
         this.setState({
-          notifications: response,
+          notifications: NotificationService.transformNotificationsData(response, notifications),
         });
       }
     } catch (e) {

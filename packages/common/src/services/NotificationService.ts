@@ -13,7 +13,7 @@ class NotificationService {
       ...serializedNewResponse,
       results:
         serializedOldResponse.results && serializedOldResponse.results.length > 0
-          ? [...serializedNewResponse.results, ...serializedOldResponse.results]
+          ? [...serializedOldResponse.results, ...serializedNewResponse.results]
           : serializedNewResponse.results,
     };
     return ObjectMapper.deserialize(AssetNotifications, updatedNotifications);

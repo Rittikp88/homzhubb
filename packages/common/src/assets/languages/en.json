@@ -827,7 +827,8 @@
     "incomeOrExpense": "Income / Expense",
     "serviceTicket": "Service Ticket",
     "supportTicket": "Support Ticket",
-    "addPropertyForTicket": "Please add a property before raising a service ticket"
+    "addPropertyForTicket": "Please add a property before raising a service ticket",
+    "allNotificationsAreRead" : "All notifications are marked as read"
   },
   "assetPortfolio": {
     "portfolio": "Portfolio",
