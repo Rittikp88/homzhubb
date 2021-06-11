@@ -32,6 +32,7 @@ interface IProps {
   isVisible?: boolean;
   isActive?: string;
   isCarousel?: boolean;
+  isIcon?: boolean;
 }
 
 export interface IDragOption {
@@ -51,6 +52,7 @@ const OverviewCarousel: React.FC<IProps> = ({
   isVisible,
   isActive = '',
   isCarousel = true,
+  isIcon,
 }: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<IOverviewCarousalData[]>([]);
   const [selectedCard, setSelectedCard] = useState(isActive);
@@ -99,11 +101,17 @@ const OverviewCarousel: React.FC<IProps> = ({
         </MultiCarousel>
       )}
       {!isCarousel && (
-        <View style={propertyDetailsControlStyle.selectionCard}>
+        <View style={[propertyDetailsControlStyle.selectionCard]}>
           {detailsOptions.map((item: IOverviewCarousalData) => {
             const onCardPress = (): void => onSelection(item.label);
             return (
-              <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
+              <Card
+                key={item.label}
+                data={item}
+                onCardSelect={onCardPress}
+                isActive={selectedCard === item.label}
+                isIcon={isIcon}
+              />
             );
           })}
         </View>
@@ -131,7 +139,7 @@ const overviewCarousalStyle = (
     },
     carouselContainer: {
       width: isCarousel ? (isMobile ? '100%' : '55%') : undefined,
-      marginTop: isMobile ? 24 : undefined,
+      marginTop: isMobile ? (!isCarousel ? 12 : 24) : undefined,
       flexDirection: 'column-reverse',
     },
   });
@@ -141,9 +149,10 @@ interface ICardProps {
   isActive: boolean;
   onCardSelect: () => void;
   icon?: string;
+  isIcon?: boolean;
 }
 
-const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement => {
+const Card = ({ isActive, onCardSelect, data, isIcon }: ICardProps): React.ReactElement => {
   return (
     <Hoverable>
       {(isHovered: boolean): React.ReactNode => (
@@ -157,6 +166,7 @@ const Card = ({ isActive, onCardSelect, data }: ICardProps): React.ReactElement 
             iconColor={data?.iconColor}
             activeColor={data.colorCode}
             iconBackgroundColor={data.imageBackgroundColor}
+            isIcon={isIcon}
           />
         </TouchableOpacity>
       )}

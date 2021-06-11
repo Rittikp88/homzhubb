@@ -15,6 +15,7 @@ interface IProps {
   activeColor?: string;
   iconBackgroundColor?: string;
   iconColor?: string;
+  isIcon?: boolean;
 }
 
 const OverviewCard: React.FC<IProps> = ({
@@ -27,10 +28,11 @@ const OverviewCard: React.FC<IProps> = ({
   activeColor = theme.colors.transparent,
   iconBackgroundColor = theme.colors.background,
   iconColor = theme.colors.blue,
+  isIcon = true,
 }: IProps) => {
   const styles = cardStyle(activeColor);
   return (
-    <View style={[styles.card, (isHovered || isActive) && styles.cardActive]}>
+    <View style={[styles.card, (isHovered || isActive) && styles.cardActive, !isIcon && styles.cardWithNoIcon]}>
       {imageUri && (
         <ImageRound
           style={styles.roundIcon as ImageStyle}
@@ -40,12 +42,12 @@ const OverviewCard: React.FC<IProps> = ({
           }}
         />
       )}
-      {icon && (
+      {icon && isIcon && (
         <View style={[styles.iconWrapper, { backgroundColor: iconBackgroundColor }, styles.roundIcon as ImageStyle]}>
           <Icon name={icon} size={30} color={iconColor} />
         </View>
       )}
-      <View>
+      <View style={!isIcon && styles.noIcon}>
         <Typography
           variant="text"
           size="large"
@@ -74,6 +76,8 @@ interface ICardStyle {
   cardActive: ViewStyle;
   roundIcon: ImageStyle;
   iconWrapper: ViewStyle;
+  noIcon: ViewStyle;
+  cardWithNoIcon: ViewStyle;
 }
 
 const cardStyle = (activeColor: string): StyleSheet.NamedStyles<ICardStyle> =>
@@ -117,6 +121,13 @@ const cardStyle = (activeColor: string): StyleSheet.NamedStyles<ICardStyle> =>
       width: 54,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    noIcon: {
+      flexDirection: 'column-reverse',
+      textAlign: 'center',
+    },
+    cardWithNoIcon: {
+      width: '90%',
     },
   });
 

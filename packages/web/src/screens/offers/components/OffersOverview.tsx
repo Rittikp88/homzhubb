@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import EstPortfolioValue from '@homzhub/web/src/components/molecules/EstPortfolioValue';
 import OverviewCarousel, { IOverviewCarousalData } from '@homzhub/web/src/components/molecules/OverviewCarousel';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   onMetricsClicked: (name: string) => void;
@@ -15,7 +17,7 @@ interface IProps {
 const OffersOverview: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const { onMetricsClicked, offerCountData, isActive } = props;
-
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
   const getMetricData = (): IOverviewCarousalData[] => {
     const { offerReceived, offerMade } = offerCountData;
     return [
@@ -33,7 +35,7 @@ const OffersOverview: FC<IProps> = (props: IProps) => {
     return null;
   }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isMobile && styles.mobileContainer]}>
       <EstPortfolioValue
         propertiesCount={offerCountData.totalOffers}
         title={t('assetPortfolio:totalOffers')}
@@ -46,6 +48,7 @@ const OffersOverview: FC<IProps> = (props: IProps) => {
         onMetricsClicked={onMetricsClicked}
         isActive={isActive}
         isCarousel={false}
+        isIcon={!isMobile}
       />
     </View>
   );
@@ -62,5 +65,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     width: '100%',
     flexDirection: 'row',
+  },
+  mobileContainer: {
+    flexDirection: 'column',
+    paddingHorizontal: 10,
   },
 });

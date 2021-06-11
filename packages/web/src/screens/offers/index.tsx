@@ -50,8 +50,8 @@ const Offers: FC = () => {
       setOfferMadeInfoRead(isOfferMadeInfoRead);
       getPropertyListData();
     } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e.details)
-      AlertHelper.error({ message:error, statusCode: e.details.statusCode });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 
@@ -84,8 +84,8 @@ const Offers: FC = () => {
         setPropertyListingData(propertyListingDatas);
       }
     } catch (e) {
-      const error = ErrorUtils.getErrorMessage(e.details)
-      AlertHelper.error({ message:error, statusCode: e.details.statusCode });
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
 
@@ -111,18 +111,14 @@ const Offers: FC = () => {
   }
 
   const renderPropertyOffer = (item: Asset, index: number): React.ReactElement => {
-    switch (offerType) {
-      case OfferType.OFFER_RECEIVED:
-        return (
-          <PropertyDataCard
-            property={item}
-            // onViewOffer={FunctionUtils.noop()}---TODO: on click view offers:Shagun
-          />
-        );
-      case OfferType.OFFER_MADE:
-      default:
-        return <ComingSoon />;
-    }
+    const isCardExpanded = index === 0;
+    return (
+      <PropertyDataCard
+        property={item}
+        isCardExpanded={isCardExpanded}
+        // onViewOffer={FunctionUtils.noop()}---TODO: on click view offers:Shagun
+      />
+    ); // tODO: handle iffers made flow by switch - Shagun
   };
   return (
     <View style={[styles.container, isTablet && styles.containerTab]}>
@@ -130,7 +126,7 @@ const Offers: FC = () => {
       {!isInfoRead && propertyListingData && propertyListingData.length > 0 && (
         <View style={styles.infoContainer}>
           <View style={styles.infoSubContainer}>
-            <View style={styles.iconTextContainer}>
+            <View style={[styles.iconTextContainer, isTablet && styles.iconTextContainerMobile]}>
               <Icon name={icons.circularFilledInfo} size={15} color={theme.colors.darkTint4} />
               <Typography variant="label" size="large" style={styles.infoText}>
                 {infoText}
@@ -141,20 +137,26 @@ const Offers: FC = () => {
         </View>
       )}
       {propertyListingData && propertyListingData.length > 0 ? (
-        <>
-          {propertyListingData.map((property: Asset, index: number) => {
-            return (
-              <View key={index} style={styles.marginTop}>
-                {renderPropertyOffer(property, index)}
-              </View>
-            );
-          })}
-        </>
+        OfferType.OFFER_MADE !== offerType ? (
+          <>
+            {propertyListingData.map((property: Asset, index: number) => {
+              return (
+                <View key={index} style={styles.marginTop}>
+                  {renderPropertyOffer(property, index)}
+                </View>
+              );
+            })}
+          </>
+        ) : (
+          <View style={styles.commingSoon}>
+            <ComingSoon />
+          </View>
+        )
       ) : (
-          <EmptyState title={title} containerStyle={styles.emptyView} />
+        <EmptyState title={title} containerStyle={styles.emptyView} />
       )}
     </View>
-  ); 
+  );
 };
 export default Offers;
 
@@ -180,8 +182,14 @@ const styles = StyleSheet.create({
   marginTop: { marginTop: 16 },
   infoText: { marginLeft: 8, color: theme.colors.darkTint4 },
   iconTextContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center' },
+  iconTextContainerMobile: {
+    width: '80%',
+  },
   emptyView: {
     marginTop: 12,
     height: '60vh',
+  },
+  commingSoon: {
+    marginTop: 24,
   },
 });

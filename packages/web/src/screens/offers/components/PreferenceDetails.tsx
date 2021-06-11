@@ -3,6 +3,7 @@ import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -11,6 +12,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { TenantPreference } from '@homzhub/common/src/domain/models/TenantInfo';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   isCardExpanded?: boolean;
@@ -18,6 +20,7 @@ interface IProps {
   onViewOffer?: () => void;
   isDetailView?: boolean;
   containerStyles?: StyleProp<ViewStyle>;
+  colunm?: number;
 }
 
 interface IExpectation {
@@ -101,8 +104,11 @@ const saleListingExpectationData = (
 const PreferenceDetails: FC<IProps> = (props: IProps) => {
   const {
     property: { isLeaseListing, leaseTerm, saleTerm, currencySymbol, projectName },
+    colunm = 2,
   } = props;
   const { t } = useTranslation();
+  const isMobile = useOnly(deviceBreakpoint.MOBILE);
+  const isTab = useOnly(deviceBreakpoint.TABLET);
 
   const expectationData = isLeaseListing
     ? leaseListingExpectationData(leaseTerm, currencySymbol, t)
@@ -159,7 +165,7 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
 
   return (
     <>
-      <View style={styles.container}>
+      <View style={[styles.container, isMobile && styles.containerMobile, isTab && styles.containerTab]}>
         <Label textType="semiBold" type="large" style={[styles.expectationHeading, styles.tintColor]}>
           {`${t('offers:yourExpectationFor')} ${projectName}`}
         </Label>
@@ -168,7 +174,7 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
             data={filteredData}
             renderItem={renderExpectedItem}
             keyExtractor={renderKeyExtractor}
-            numColumns={4}
+            numColumns={colunm}
             ItemSeparatorComponent={renderItemSeparator}
           />
         )}
@@ -182,7 +188,16 @@ export default PreferenceDetails;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 14,
-    width: 410,
+    width: 540,
+  },
+  containerMobile: {
+    width: '100%',
+    marginHorizontal: 0,
+    top: 16,
+  },
+  containerTab: {
+    width: '100%',
+    paddingBottom: 16,
   },
   button: {
     position: 'absolute',
@@ -221,7 +236,7 @@ const styles = StyleSheet.create({
   },
 
   separator: {
-    width: 100,
+    width: 60,
     height: 24,
   },
   viewOfferButton: {

@@ -20,6 +20,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IProps {
   property: Asset;
+  isExpanded: boolean;
 }
 interface IStateProps {
   filters: IFilter;
@@ -27,7 +28,9 @@ interface IStateProps {
 type IPropertyOfferDetails = IProps & IStateProps;
 const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDetails) => {
   const isTab = useDown(deviceBreakpoint.TABLET);
-  const { property, filters } = props;
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+
+  const { property, filters, isExpanded } = props;
   const {
     projectName,
     unitNumber,
@@ -69,13 +72,27 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
 
   const renderAttachmentView = (attachments: Attachment[]): React.ReactNode => {
     const item = attachments[0];
-    if (!item) return <ImagePlaceholder containerStyle={[styles.imgPlaceHolder, isTab && styles.imgPlaceHolderTab]} />;
+
+    if (!item) {
+      return (
+        <ImagePlaceholder
+          containerStyle={[
+            styles.imgPlaceHolder,
+            isTab && styles.imgPlaceHolderTab,
+            isMobile && styles.mobImageContainer,
+          ]}
+        />
+      );
+    }
+
     const { link, mediaType } = item;
 
     return (
       <TouchableOpacity>
         {mediaType === 'IMAGE' && (
-          <View style={[styles.imageContainer, isTab && styles.tabImageContainer]}>
+          <View
+            style={[styles.imageContainer, isTab && styles.tabImageContainer, isMobile && styles.mobImageContainer]}
+          >
             <Image
               source={{
                 uri: link,
@@ -90,16 +107,18 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
   };
 
   return (
-    <View style={styles.containerAlign}>
-      {renderAttachmentView(property.attachments)}
-      <View style={[styles.details, isTab && styles.detailsTab]}>
-        <ShieldGroup
-          propertyType={property.assetType.name}
-          isInfoRequired
-          containerStyle={containerStyle}
-          textType="label"
-          textSize="large"
-        />
+    <View style={[styles.containerAlign, isMobile && styles.containerMobile]}>
+      {isExpanded && renderAttachmentView(property.attachments)}
+      <View style={[styles.details, isTab && styles.detailsTab, isMobile && styles.detailMobile]}>
+        {isExpanded && (
+          <ShieldGroup
+            propertyType={property.assetType.name}
+            isInfoRequired
+            containerStyle={containerStyle}
+            textType="label"
+            textSize="large"
+          />
+        )}
         <PropertyAddressCountry
           isIcon
           primaryAddress={projectName}
@@ -109,19 +128,23 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
           primaryAddressTextStyles={{ size: 'small' }}
           subAddressTextStyles={{ variant: 'label', size: 'large' }}
         />
-        <PricePerUnit
-          price={price}
-          currency={currencyData}
-          unit={filters.asset_transaction_type === 0 ? 'mo' : ''}
-          textStyle={styles.pricing}
-          textSizeType="regular"
-        />
-        <PropertyAmenities
-          data={amenitiesData}
-          direction="row"
-          containerStyle={styles.amenitiesContainer}
-          contentContainerStyle={styles.amenities}
-        />
+        {isExpanded && (
+          <PricePerUnit
+            price={price}
+            currency={currencyData}
+            unit={filters.asset_transaction_type === 0 ? 'mo' : ''}
+            textStyle={styles.pricing}
+            textSizeType="regular"
+          />
+        )}
+        {isExpanded && (
+          <PropertyAmenities
+            data={amenitiesData}
+            direction="row"
+            containerStyle={styles.amenitiesContainer}
+            contentContainerStyle={styles.amenities}
+          />
+        )}
       </View>
     </View>
   );
@@ -181,9 +204,17 @@ const styles = StyleSheet.create({
   tabImageContainer: {
     width: 300,
   },
+  mobImageContainer: {
+    width: '100%',
+  },
   details: { marginHorizontal: 12, width: 296 },
   detailsTab: {
     width: '52.5%',
+  },
+  detailMobile: {
+    marginHorizontal: 0,
+    marginVertical: 8,
+    width: '100%',
   },
   imgPlaceHolder: {
     height: 153,
@@ -193,4 +224,5 @@ const styles = StyleSheet.create({
     width: 300,
   },
   containerAlign: { flexDirection: 'row' },
+  containerMobile: { flexDirection: 'column' },
 });

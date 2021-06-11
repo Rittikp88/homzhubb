@@ -1,41 +1,47 @@
 import React, { FC } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import ExpandableCard from '@homzhub/web/src/screens/offers/components/ExpandableCard';
 import PreferenceDetails from '@homzhub/web/src/screens/offers/components/PreferenceDetails';
-import PropertyOfferDetais from '@homzhub/web/src/screens/offers/components/PropertyOfferDetails';
+import PropertyOfferDetails from '@homzhub/web/src/screens/offers/components/PropertyOfferDetails';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   property: Asset;
-  containerStyles?: StyleProp<ViewStyle>;
+  isCardExpanded: boolean;
 }
 const PropertyDataCard: FC<IProps> = (props: IProps) => {
-  const { property, containerStyles } = props;
+  const { property, isCardExpanded } = props;
   const isTablet = useDown(deviceBreakpoint.TABLET);
+  const isMobile = useDown(deviceBreakpoint.MOBILE);
+
   const { t } = useTranslation();
   return (
     <>
-      <View style={[styles.container, isTablet && styles.tabContainer]}>
-        <View style={styles.innerContainer}>
-          <View style={!isTablet && styles.rowStyle}>
-            <PropertyOfferDetais property={property} />
-            <Divider containerStyles={{ marginBottom: 14 }} />
-            <PreferenceDetails property={property} containerStyles={containerStyles} />
+      <View style={[styles.container, isTablet && !isMobile && styles.tabContainer, isMobile && styles.mobContainer]}>
+        {!isMobile && (
+          <View style={styles.innerContainer}>
+            <View style={!isTablet && styles.rowStyle}>
+              <PropertyOfferDetails property={property} isExpanded />
+              <Divider containerStyles={{ marginBottom: 14 }} />
+              <PreferenceDetails property={property} colunm={4} />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button
+                type="primary"
+                title={`${t('offers:viewOffers')} (${property.offerCount})`}
+                containerStyle={styles.button}
+                titleStyle={styles.buttonText}
+              />
+            </View>
           </View>
-          <View style={styles.buttonContainer}>
-            <Button
-              type="primary"
-              title={`${t('offers:viewOffers')} (${property.offerCount})`}
-              containerStyle={styles.button}
-              titleStyle={styles.buttonText}
-            />
-          </View>
-        </View>
+        )}
+        {isMobile && <ExpandableCard property={property} isCardExpanded={isCardExpanded} />}
       </View>
     </>
   );
@@ -52,6 +58,9 @@ const styles = StyleSheet.create({
   },
   tabContainer: {
     height: 426,
+  },
+  mobContainer: {
+    minHeight: 114,
   },
   button: {
     width: '100%',
