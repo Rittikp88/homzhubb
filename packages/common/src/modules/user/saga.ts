@@ -221,6 +221,16 @@ export function* getUserServices() {
   }
 }
 
+export function* getUserTransaction() {
+  try {
+    const response = yield call(UserRepository.getCoinTransaction);
+    yield put(UserActions.getUserCoinTransactionSuccess(response));
+  } catch (e) {
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    yield put(UserActions.getUserCoinTransactionFailure());
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
@@ -231,4 +241,5 @@ export function* watchUser() {
   yield takeEvery(UserActionTypes.GET.FAVOURITE_PROPERTIES, getFavouriteProperties);
   yield takeEvery(UserActionTypes.GET.USER_SUBSCRIPTIONS, getUserSubscriptions);
   yield takeEvery(UserActionTypes.GET.USER_SERVICES, getUserServices);
+  yield takeEvery(UserActionTypes.GET.USER_COIN_TRANSACTION, getUserTransaction);
 }

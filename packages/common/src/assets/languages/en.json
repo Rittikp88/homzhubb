@@ -986,7 +986,11 @@
     "documentOptions": "Document Options",
     "acceptedInvites": "Total accepted invites",
     "coinsWon": "Total coins won",
-    "coinsUsed": "Total coins used"
+    "totalCoinsUsed": "Total coins used",
+    "coinActivity": "Homzhub coin activity",
+    "coinUsed": "Coins used",
+    "creditedOn": "Credited on",
+    "debitOn": "Debited on"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

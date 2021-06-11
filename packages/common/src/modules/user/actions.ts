@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { CoinTransaction, ICoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { IUserSubscription, UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
@@ -39,6 +40,9 @@ export const UserActionTypes = {
     USER_SERVICES: `${actionTypePrefix}USER_SERVICES`,
     USER_SERVICES_SUCCESS: `${actionTypePrefix}USER_SERVICES_SUCCESS`,
     USER_SERVICES_FAILURE: `${actionTypePrefix}USER_SERVICES_FAILURE`,
+    USER_COIN_TRANSACTION: `${actionTypePrefix}USER_COIN_TRANSACTION`,
+    USER_COIN_TRANSACTION_SUCCESS: `${actionTypePrefix}USER_COIN_TRANSACTION_SUCCESS`,
+    USER_COIN_TRANSACTION_FAILURE: `${actionTypePrefix}USER_COIN_TRANSACTION_FAILURE`,
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
@@ -212,6 +216,23 @@ const getUserServicesFailure = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.USER_SERVICES_FAILURE,
 });
 
+const getUserCoinTransaction = (): IFluxStandardAction => {
+  return {
+    type: UserActionTypes.GET.USER_COIN_TRANSACTION,
+  };
+};
+
+const getUserCoinTransactionSuccess = (payload: CoinTransaction[]): IFluxStandardAction<ICoinTransaction[]> => {
+  return {
+    type: UserActionTypes.GET.USER_COIN_TRANSACTION_SUCCESS,
+    payload: ObjectMapper.serializeArray(payload),
+  };
+};
+
+const getUserCoinTransactionFailure = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.USER_COIN_TRANSACTION_FAILURE,
+});
+
 export type UserPayloadTypes =
   | string
   | boolean
@@ -221,7 +242,8 @@ export type UserPayloadTypes =
   | IUserPreferences
   | IUserSubscription
   | IAsset[]
-  | IWishlist[];
+  | IWishlist[]
+  | ICoinTransaction[];
 
 export const UserActions = {
   login,
@@ -254,4 +276,7 @@ export const UserActions = {
   getUserServices,
   getUserServicesSuccess,
   getUserServicesFailure,
+  getUserCoinTransaction,
+  getUserCoinTransactionSuccess,
+  getUserCoinTransactionFailure,
 };

@@ -1,22 +1,26 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-community/clipboard';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import ReferEarnIcon from '@homzhub/common/src/assets/images/referEarn.svg';
+import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { TransactionType } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -24,8 +28,10 @@ const APPLE_STORE_URL = ConfigHelper.getAppleStoreUrl();
 const GOOGLE_PLAYSTORE_URL = ConfigHelper.getGooglePlayStoreUrl();
 
 const ReferEarn = (): React.ReactElement => {
+  const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
   const code = useSelector(UserSelector.getReferralCode);
+  const transaction = useSelector(UserSelector.getUserCoinTransaction);
   const [management, setManagementData] = useState<IMetricsData[]>([]);
   const [totalInvite, setTotalInvite] = useState('');
   const message = `${t('shareHomzhub')} \n ${t('appleStore')} : ${APPLE_STORE_URL} \n ${t(
@@ -38,12 +44,13 @@ const ReferEarn = (): React.ReactElement => {
         setTotalInvite(res.invites.totalAccepted.toString());
         setManagementData([
           { name: t('coinsWon'), count: res.coins.totalEarned, colorCode: theme.colors.greenTint8 },
-          { name: t('coinsUsed'), count: res.coins.totalUsed, colorCode: theme.colors.redTint1 },
+          { name: t('totalCoinsUsed'), count: res.coins.totalUsed, colorCode: theme.colors.redTint1 },
         ]);
       })
       .catch((e) => {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       });
+    dispatch(UserActions.getUserCoinTransaction());
   }, []);
 
   const onCopyToClipboard = useCallback((): void => {
@@ -139,6 +146,49 @@ const ReferEarn = (): React.ReactElement => {
           ))}
         </View>
       </View>
+      <View style={styles.transactionContainer}>
+        <View style={styles.transactionHeader}>
+          <Text type="small" textType="semiBold" style={styles.title}>
+            {t('coinActivity')}
+          </Text>
+          <Text type="small" textType="semiBold" style={styles.title}>
+            {t('coinUsed')}
+          </Text>
+        </View>
+        <Divider />
+        {transaction.map((item, index) => {
+          const isCredit = item.transactionType === TransactionType.CREDIT;
+          return (
+            <>
+              <View key={index} style={styles.transactionItem}>
+                <View>
+                  {/** TODO: (Shikha) - Replace with BE data * */}
+                  <Text type="small" textType="semiBold" style={styles.itemTitle}>
+                    Coin Transaction
+                  </Text>
+                  <Label type="large" style={styles.itemLabel}>
+                    {isCredit ? t('creditedOn') : t('debitOn')}{' '}
+                    {DateUtils.getDisplayDate(item.transactionDate, 'DD MMM YYYY')}
+                  </Label>
+                </View>
+                <View style={styles.itemValue}>
+                  <Text
+                    type="small"
+                    textType="semiBold"
+                    style={[styles.statusIcon, isCredit ? styles.credit : styles.debit]}
+                  >
+                    {isCredit ? '+' : '-'}
+                  </Text>
+                  <Text type="small" textType="semiBold" style={isCredit ? styles.credit : styles.debit}>
+                    {item.coins}
+                  </Text>
+                </View>
+              </View>
+              {index !== transaction.length - 1 && <Divider containerStyles={styles.divider} />}
+            </>
+          );
+        })}
+      </View>
     </UserScreen>
   );
 };
@@ -213,5 +263,48 @@ const styles = StyleSheet.create({
     marginTop: 8,
     textAlign: 'center',
     color: theme.colors.darkTint5,
+  },
+  transactionContainer: {
+    marginVertical: 16,
+    borderRadius: 4,
+    backgroundColor: theme.colors.white,
+  },
+  transactionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 16,
+    paddingVertical: 16,
+  },
+  title: {
+    color: theme.colors.darkTint3,
+  },
+  transactionItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 16,
+  },
+  divider: {
+    marginHorizontal: 16,
+    borderColor: theme.colors.darkTint10,
+  },
+  statusIcon: {
+    marginHorizontal: 6,
+  },
+  credit: {
+    color: theme.colors.green,
+  },
+  debit: {
+    color: theme.colors.red,
+  },
+  itemLabel: {
+    color: theme.colors.darkTint3,
+    marginTop: 4,
+  },
+  itemValue: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  itemTitle: {
+    color: theme.colors.darkTint1,
   },
 });

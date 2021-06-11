@@ -1,10 +1,11 @@
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { ICoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
 import { IUserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 
 export const initialUserState: IUserState = {
@@ -19,6 +20,7 @@ export const initialUserState: IUserState = {
   assets: [],
   favouriteProperties: [],
   userServices: [],
+  userTransaction: [],
   error: {
     user: '',
   },
@@ -30,6 +32,7 @@ export const initialUserState: IUserState = {
     whileAssets: false,
     whileFavouriteProperties: false,
     userService: false,
+    userTransaction: false,
   },
 };
 
@@ -177,6 +180,25 @@ export const userReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['userService']: false },
+      };
+    case UserActionTypes.GET.USER_COIN_TRANSACTION:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userTransaction']: true },
+      };
+    case UserActionTypes.GET.USER_COIN_TRANSACTION_SUCCESS:
+      return {
+        ...state,
+        ['userTransaction']: action.payload as ICoinTransaction[],
+        ['loaders']: {
+          ...state.loaders,
+          ['userTransaction']: false,
+        },
+      };
+    case UserActionTypes.GET.USER_COIN_TRANSACTION_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userTransaction']: false },
       };
     default:
       return state;

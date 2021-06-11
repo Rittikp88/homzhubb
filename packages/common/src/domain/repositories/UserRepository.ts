@@ -29,6 +29,7 @@ import {
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { CoinsManagement } from '@homzhub/common/src/domain/models/CoinsManagement';
+import { CoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
@@ -61,7 +62,8 @@ const ENDPOINTS = {
   KYCDocuments: 'v1/kyc-documents/',
   verifyAuthToken: 'v1/users/verify-token/',
   userServicePlan: 'v1/users/user-service-plans/',
-  coinManagement: 'v1/user-coins/management-tab',
+  coinManagement: 'v1/user-coins/management-tab/',
+  coinTransaction: 'v1/user-coins/transactions/',
   emailExists: (emailId: string): string => `v1/users/emails/${emailId}/`,
   phoneExists: (phone: string): string => `v1/users/phone-numbers/${phone}/`,
   interactions: (userId: number): string => `v1/users/${userId}/interactions/`,
@@ -220,6 +222,11 @@ class UserRepository {
   public getCoinManagement = async (): Promise<CoinsManagement> => {
     const response = await this.apiClient.get(ENDPOINTS.coinManagement);
     return ObjectMapper.deserialize(CoinsManagement, response);
+  };
+
+  public getCoinTransaction = async (): Promise<CoinTransaction[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.coinTransaction);
+    return ObjectMapper.deserializeArray(CoinTransaction, response);
   };
 }
 
