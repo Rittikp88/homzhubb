@@ -76,7 +76,6 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
       onClosePopover();
       changePopUpStatus('CONFIRM');
     }
-    // dispatch(OfferActions.clearOfferFormValues());
   };
 
   const navigateToTermsAndConditionScreen = (): void => {
@@ -100,7 +99,7 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
           />
         </View>
         <Divider containerStyles={styles.bottomMargin} />
-        {propertyLeaseType === 'TENAN' ? (
+        {propertyLeaseType === 'TENANT' ? (
           <ProspectProfileForm
             userDetails={userData}
             editData={false}
