@@ -14,7 +14,7 @@ interface IProps {
 
 export class RadioButtonGroup extends React.Component<IProps, {}> {
   public render = (): React.ReactNode => {
-    const { data, numColumns = 2, containerStyle = {} } = this.props;
+    const { data, numColumns = 2, containerStyle = {}, selectedValue } = this.props;
     return (
       <FlatList<Unit>
         numColumns={numColumns}
@@ -23,6 +23,7 @@ export class RadioButtonGroup extends React.Component<IProps, {}> {
         contentContainerStyle={containerStyle}
         keyExtractor={(item): string => `${item.id}`}
         testID="ftlist"
+        extraData={selectedValue}
       />
     );
   };
