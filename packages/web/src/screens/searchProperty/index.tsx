@@ -52,11 +52,11 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     setFilter,
     filters,
     clearProperties,
-    setInitialState,
+    // setInitialState,         // TODO - Revisit Later
     filterData,
     getFilterDetails,
     loader,
-    setInitialFilters,
+    // setInitialFilters,     // TODO - Revisit Later
   } = props;
 
   const toggleGridView = (): void => {
@@ -98,8 +98,9 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
       getFilterDetails({ asset_group: filters.asset_group });
     }
     return (): void => {
-      setInitialState();
-      setInitialFilters();
+      // Revisit Later
+      // setInitialState();
+      // setInitialFilters();
     };
   }, []);
 

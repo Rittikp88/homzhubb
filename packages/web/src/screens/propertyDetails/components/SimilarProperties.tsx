@@ -12,12 +12,13 @@ interface IProps {
   isMobile: boolean;
   isTablet: boolean;
   propertyTermId: number;
+  isLease: boolean;
 }
 
 type Props = IProps;
 
 const SimilarProperties = (props: Props): React.ReactElement => {
-  const { propertyTermId, isMobile, isTablet } = props;
+  const { propertyTermId, isMobile, isTablet, isLease } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetDescription);
   const [similarProperties, setSimilarProperties] = useState<Asset[]>([]);
 
@@ -27,7 +28,7 @@ const SimilarProperties = (props: Props): React.ReactElement => {
 
   // eslint-disable-next-line no-shadow
   const getSimilarProperties = async (propertyTermId: number): Promise<void> => {
-    const transaction_type = 0;
+    const transaction_type = isLease ? 0 : 1;
     const response = await AssetRepository.getSimilarProperties(propertyTermId, transaction_type);
     setSimilarProperties(response);
   };

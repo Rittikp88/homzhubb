@@ -23,6 +23,7 @@ interface IStateProps {
 
 interface IRouteProps {
   listingId: number;
+  isLease: boolean;
 }
 interface IProps {
   history: History<IRouteProps>;
@@ -33,7 +34,7 @@ const PropertyDetails: FC<Props> = (props: Props) => {
   const { assetDetails, history } = props;
   const { location } = history;
   const {
-    state: { listingId },
+    state: { listingId, isLease },
   } = location;
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
@@ -50,7 +51,7 @@ const PropertyDetails: FC<Props> = (props: Props) => {
     <View style={styles.container}>
       <PropertyCardDetails assetDetails={assetDetails} propertyTermId={listingId} />
       <View style={[styles.detail, isTablet && styles.detailTab, isMobile && styles.detailMobile]}>
-        <SimilarProperties isMobile={isMobile} isTablet={isTablet} propertyTermId={listingId} />
+        <SimilarProperties isMobile={isMobile} isTablet={isTablet} propertyTermId={listingId} isLease={isLease} />
       </View>
     </View>
   );

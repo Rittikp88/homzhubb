@@ -3,6 +3,7 @@ import { View, FlatList, StyleSheet, ImageStyle, ViewStyle, Image } from 'react-
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
@@ -54,7 +55,7 @@ const OfferDetails = React.memo(
 
     const keyExtractor = (item: IFormattedDetails, index: number): string => `${item} [${index}]`;
     return (
-      <>
+      <View style={PlatformUtils.isWeb() && styles.flatListWeb}>
         <FlatList
           data={formattedDetails}
           renderItem={renderItem}
@@ -70,7 +71,7 @@ const OfferDetails = React.memo(
             containerStyle={styles.checkBox}
           />
         )}
-      </>
+      </View>
     );
   }
 );
@@ -110,8 +111,8 @@ const OfferDetailsCard = (props: IProps): React.ReactElement | null => {
   };
   return (
     <>
-      <View key={id} style={styles.OfferDetailsCard}>
-        <View style={styles.ownerOfferHeader}>
+      <View key={id} style={[styles.OfferDetailsCard, PlatformUtils.isWeb() && styles.OfferDetailsCardWeb]}>
+        <View style={[styles.ownerOfferHeader, PlatformUtils.isWeb() && styles.ownerOfferHeaderWeb]}>
           <View style={styles.flexOne}>{image()}</View>
           <View style={styles.assetAddress}>
             <PropertyAddressCountry
@@ -139,11 +140,14 @@ export default React.memo(OfferDetailsCard);
 
 interface IStyles {
   OfferDetailsCard: ViewStyle;
+  OfferDetailsCardWeb: ViewStyle;
   ownerOfferHeader: ViewStyle;
+  ownerOfferHeaderWeb: ViewStyle;
   assetImage: ImageStyle;
   assetAddress: ViewStyle;
   detailItem: ViewStyle;
   flatList: ViewStyle;
+  flatListWeb: ViewStyle;
   placeholder: ViewStyle;
   flexOne: ViewStyle;
   checkBox: ViewStyle;
@@ -159,9 +163,15 @@ const getStyles = (index = 0): IStyles =>
       backgroundColor: theme.colors.background,
       padding: 16,
     },
+    OfferDetailsCardWeb: {
+      maxHeight: 320, // FOR WEB
+    },
     ownerOfferHeader: {
       flex: 1,
       flexDirection: 'row',
+    },
+    ownerOfferHeaderWeb: {
+      maxHeight: 80, // FOR WEB
     },
     assetImage: {
       flex: 1,
@@ -185,6 +195,9 @@ const getStyles = (index = 0): IStyles =>
     },
     flatList: {
       marginTop: 10,
+    },
+    flatListWeb: {
+      maxHeight: 200,
     },
     checkBox: {
       marginTop: 10,

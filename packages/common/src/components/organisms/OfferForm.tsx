@@ -11,12 +11,14 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Slider } from '@homzhub/common/src/components/atoms/Slider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -49,6 +51,7 @@ interface IProps {
   onPressTerms: () => void;
   onSuccess: () => void;
   offersLeft: number;
+  isMobileWeb?: boolean;
 }
 
 interface IReduxProps {
@@ -175,8 +178,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
             </Label>
           </Label>
         </View>
-
-        {renderInfoBox(offersLeft)}
+        <View style={styles.infoBox}>{renderInfoBox(offersLeft)}</View>
       </>
     );
   };
@@ -186,7 +188,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
     const offersText =
       offersLeft === 1 ? `${t('offers:oneOfferLeft')}` : `${t('offers:offersCount', { count: offersLeft })}`;
     return (
-      <View style={styles.formHeader}>
+      <View style={[styles.formHeader, PlatformUtils.isWeb() && styles.formHeaderWeb]}>
         <Text textType="semiBold" type="small">
           {t('offers:enterFormDetails')}
         </Text>
@@ -204,7 +206,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private renderForm = (): React.ReactElement | null => {
-    const { t, isRentFlow, offersLeft, currentOffer, asset } = this.props;
+    const { t, isRentFlow, offersLeft, currentOffer, asset, isMobileWeb = false } = this.props;
     const { formData, loading } = this.state;
     const { renderFormHeader, renderBottomFields } = this;
     if (!formData) return null;
@@ -305,7 +307,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                                 isDoubleDigited
                                 minSliderValue={values[OfferFormKeys.minimumLeasePeriod]}
                                 onSliderChange={onMinDurationChange}
-                                sliderLength={theme.viewport.width - 32}
+                                sliderLength={PlatformUtils.isWeb() ? 360 : theme.viewport.width - 32}
                                 key="minSlider"
                               />
                             </WithFieldError>
@@ -326,7 +328,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
                                 isDoubleDigited
                                 minSliderValue={values[OfferFormKeys.maximumLeasePeriod]}
                                 onSliderChange={onMaxDurationChange}
-                                sliderLength={theme.viewport.width - 32}
+                                sliderLength={PlatformUtils.isWeb() ? 360 : theme.viewport.width - 32}
                                 key="maxSlider"
                               />
                             </WithFieldError>
@@ -359,15 +361,35 @@ class OfferForm extends React.Component<Props, IScreenState> {
                       {renderBottomFields(formProps)}
                     </View>
                   </KeyboardAwareScrollView>
-                  <View style={styles.formButtonContainer}>
-                    <FormButton
-                      type="primary"
-                      formProps={formProps}
-                      disabled={(!currentOffer && offersLeft === 0) || disabled || showLeaseDurationError || loading}
-                      onPress={onPress}
-                      title={t('common:submit')}
-                    />
-                  </View>
+                  {PlatformUtils.isMobile() ? (
+                    <View style={styles.formButtonContainer}>
+                      <FormButton
+                        type="primary"
+                        formProps={formProps}
+                        disabled={(!currentOffer && offersLeft === 0) || disabled || showLeaseDurationError || loading}
+                        onPress={onPress}
+                        title={t('common:submit')}
+                      />
+                    </View>
+                  ) : (
+                    <View style={styles.formButtonContainerWeb}>
+                      <FormButton
+                        // @ts-ignore
+                        onPress={formProps.handleSubmit}
+                        formProps={formProps}
+                        disabled={(!currentOffer && offersLeft === 0) || disabled || showLeaseDurationError || loading}
+                        type="primary"
+                        title={t('common:submit')}
+                        containerStyle={styles.submitButton}
+                      />
+                      <Button
+                        disabled
+                        type="secondary"
+                        title={t('moreProfile:editProfile')}
+                        containerStyle={[styles.cancelButton, isMobileWeb && styles.cancelButtonMobile]}
+                      />
+                    </View>
+                  )}
                 </View>
               </>
             );
@@ -660,11 +682,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 16,
   },
+  infoBox: {
+    height: 'fit-content',
+  },
+  formHeaderWeb: {
+    maxHeight: 28, // For Web
+  },
   badgeText: {
     color: theme.colors.darkTint4,
   },
   badge: {
     borderRadius: 4,
+    paddingVertical: 6,
     paddingHorizontal: 10,
   },
   calendarText: {
@@ -722,5 +751,31 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 2.9,
+  },
+  submitButton: {
+    height: 46,
+  },
+  cancelButtonMobile: {
+    marginRight: 80,
+  },
+  cancelButton: {
+    marginRight: 150,
+  },
+  formButtonContainerWeb: {
+    width: '100%',
+    flex: 0.1,
+    backgroundColor: theme.colors.white,
+    flexDirection: 'row-reverse',
+    alignItems: 'flex-end',
+    marginTop: 28,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    shadowColor: theme.colors.boxShadow,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.5,
+    elevation: 7,
   },
 });

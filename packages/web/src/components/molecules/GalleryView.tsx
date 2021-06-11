@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   imageContainerTab: {
-    width: 157,
+    width: 100,
   },
   imageIPadPro: {
     width: 160,

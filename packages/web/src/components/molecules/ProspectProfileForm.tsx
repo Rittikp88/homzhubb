@@ -48,6 +48,7 @@ interface IProp {
   isTablet: boolean;
   isMobile: boolean;
   onClosePopover: () => void;
+  changePopUpStatus: (datum: string) => void;
 }
 
 type libraryProps = WithTranslation;
@@ -206,7 +207,7 @@ class ProspectProfileForm extends Component<Props, IScreenState> {
   };
 
   public onSubmit = async (values: IOfferForm): Promise<void> => {
-    const { t } = this.props;
+    const { t, changePopUpStatus } = this.props;
     const { userType } = this.state;
     const isValid = await this.validateEmail(values.workEmail);
     if (!isValid) {
@@ -224,6 +225,7 @@ class ProspectProfileForm extends Component<Props, IScreenState> {
 
     try {
       await OffersRepository.updateProspects(payload);
+      changePopUpStatus('OFFER');
       return;
     } catch (err) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });

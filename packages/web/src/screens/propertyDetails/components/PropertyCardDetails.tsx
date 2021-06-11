@@ -17,6 +17,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { AssetDetailsImageCarousel } from '@homzhub/common/src/components/molecules/AssetDetailsImageCarousel';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import ConfirmationPopup from '@homzhub/web/src/components/molecules/ConfirmationPopup';
 import GalleryView from '@homzhub/web/src/components/molecules/GalleryView';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
@@ -28,9 +29,10 @@ import { IFilter, IAmenitiesIcons } from '@homzhub/common/src/domain/models/Sear
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
-export enum propertyTypes {
-  rent = 'RENT',
-  sale = 'SALE',
+export enum renderPopUpTypes {
+  tenancy = 'TENANT',
+  offer = 'OFFER',
+  confirm = 'CONFIRM',
 }
 
 interface IStateProps {
@@ -105,6 +107,10 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
     );
     const styles = propertyDetailStyle(isMobile, isTablet);
     const { propertyLeaseType } = this.state;
+    const popupDetails = {
+      title: t('offers:offerSucessHeader'),
+      subTitle: t('offers:offerSucessSubHeader'),
+    };
 
     let currencyData = currencies[0];
 
@@ -122,8 +128,13 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       if (this.popupRef && this.popupRef.current) {
         this.popupRef.current.open();
       }
-      this.setState({ propertyLeaseType: leaseTerm ? propertyTypes.rent : propertyTypes.sale });
+      this.setState({ propertyLeaseType: leaseTerm ? renderPopUpTypes.tenancy : renderPopUpTypes.offer });
     };
+
+    const changePopUpStatus = (datum: string): void => {
+      this.setState({ propertyLeaseType: datum });
+    };
+
     return (
       <>
         <View style={styles.container}>
@@ -195,7 +206,10 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
           isOpen
           propertyLeaseType={propertyLeaseType}
           popupRef={this.popupRef}
+          changePopUpStatus={changePopUpStatus}
+          asset={assetDetails}
         />
+        {propertyLeaseType === renderPopUpTypes.confirm && <ConfirmationPopup {...popupDetails} />}
       </>
     );
   };
