@@ -32,12 +32,12 @@ export const RouteNames = {
     PROPERTY_VIEW: '/dashboard/propertyView',
     PROPERTY_SELECTED: '/dashboard/portfolio/propertySelected',
     SAVED_PROPERTIES: '/dashboard/savedProperties',
+    OFFERS: '/dashboard/offers',
     // WRITE YOUR routes here accordingly
     NOTIFICATIONS: '/dashboard/notifications',
     TICKETS: '',
     KYC_DOCUMENTS: '',
     PROPERTY_VISITS: '/dashboard/propertyVisits',
-    OFFERS: '/dashboard/offers',
     NEW_LAUNCHES: '',
     MARKET_TRENDS: '',
     SELECT_PROPERTY: '/dashboard/valueAddedService/selectProperty',

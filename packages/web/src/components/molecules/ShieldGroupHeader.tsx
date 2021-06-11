@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { AmenitiesShieldIconGroup } from '@homzhub/common/src/components/molecules/AmenitiesShieldIconGroup';
 
 interface IProps {
   propertyType?: string;
-  text?: string;
   isInfoRequired?: boolean;
   propertyTypeStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
+  textType?: TextFieldType;
+  textSize?: TextSizeType;
 }
 
-const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: IProps): React.ReactElement => {
+const ShieldGroup = ({
+  propertyType,
+  textType = 'text',
+  textSize = 'small',
+  isInfoRequired,
+  propertyTypeStyle,
+  containerStyle,
+}: IProps): React.ReactElement => {
   const [isVisible, setVisible] = useState(false);
 
   const handleInfo = (): void => {
@@ -25,11 +35,11 @@ const ShieldGroup = ({ propertyType, text, isInfoRequired, propertyTypeStyle }: 
     { color: theme.colors.disabledPreference },
   ];
   return (
-    <View style={customStyle.container}>
+    <View style={[customStyle.container, containerStyle]}>
       {!!propertyType && (
-        <Text type="small" textType="regular" style={[styles.propertyTypeText, propertyTypeStyle]}>
+        <Typography variant={textType} size={textSize} style={[styles.propertyTypeText, propertyTypeStyle]}>
           {propertyType}
-        </Text>
+        </Typography>
       )}
       <AmenitiesShieldIconGroup onBadgePress={handleInfo} iconSize={23} badgesInfo={badgeInfo} />
     </View>
@@ -58,6 +68,6 @@ const customizedStyles = (isWithText: boolean): IStyle => ({
     flexDirection: isWithText ? 'row' : 'row-reverse',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 8,
+    marginVertical: 0,
   },
 });

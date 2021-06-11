@@ -14,19 +14,22 @@ interface IEstPortfolioProps {
   iconColor?: string;
   headerText?: string;
   propertiesCount: number;
+  isHeaderText?: boolean;
 }
 
 const EstPortfolioValue: React.FC<IEstPortfolioProps> = (props: IEstPortfolioProps) => {
-  const { propertiesCount, icon, iconColor, title, headerText } = props;
+  const { propertiesCount, icon, iconColor, title, headerText, isHeaderText = true } = props;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const styles = propertyOverviewStyle(isMobile);
   return (
     <View style={styles.portfolioContainer}>
-      <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
-        {headerText || t('common:properties')}
-      </Typography>
-      <View style={styles.propertiesValueWrapper}>
+      {isHeaderText && (
+        <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
+          {headerText || t('common:properties')}
+        </Typography>
+      )}
+      <View style={[styles.propertiesValueWrapper, !isHeaderText && styles.propertiesValueWrapperTab]}>
         {icon ? (
           <View style={[styles.iconWrapper, styles.roundIcon as ImageStyle]}>
             <Icon name={icon} size={30} color={iconColor} />
@@ -57,6 +60,7 @@ interface IEstPortfolioValueStyle {
   valuation: ViewStyle;
   iconWrapper: ViewStyle;
   roundIcon: ViewStyle;
+  propertiesValueWrapperTab: ViewStyle;
 }
 
 const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstPortfolioValueStyle> =>
@@ -64,7 +68,10 @@ const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IEstP
     propertiesValueWrapper: {
       flexDirection: 'row',
       marginVertical: 'auto',
-      paddingTop: '2%',
+      paddingTop: '4%',
+    },
+    propertiesValueWrapperTab: {
+      paddingTop: '0%',
     },
     portfolioContainer: {
       flex: 1,

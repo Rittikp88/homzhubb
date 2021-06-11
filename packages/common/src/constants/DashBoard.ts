@@ -66,24 +66,30 @@ export const MenuItemList: IMenuItemList[] = [
   },
   {
     id: 4,
+    name: sideMenuItems.offers,
+    icon: icons.offers,
+    url: RouteNames.protectedRoutes.OFFERS,
+  },
+  {
+    id: 5,
     name: sideMenuItems.notifications,
     icon: icons.bell,
     url: RouteNames.protectedRoutes.NOTIFICATIONS,
   },
   {
-    id: 5,
+    id: 6,
     name: sideMenuItems.propertyVisits,
     icon: icons.visit,
     url: RouteNames.protectedRoutes.PROPERTY_VISITS,
   },
   {
-    id: 6,
+    id: 7,
     name: sideMenuItems.valueAddedServices,
     icon: icons.settingOutline,
     url: RouteNames.protectedRoutes.SELECT_PROPERTY,
   },
   {
-    id: 7,
+    id: 8,
     name: sideMenuItems.logout,
     icon: icons.logOut,
     url: RouteNames.protectedRoutes.LOGOUT,

@@ -30,6 +30,8 @@ interface IProps {
   onMetricsClicked?: (name: string) => void;
   carouselTitle?: string;
   isVisible?: boolean;
+  isActive?: string;
+  isCarousel?: boolean;
 }
 
 export interface IDragOption {
@@ -42,9 +44,16 @@ export interface IDragOption {
   iconColor?: string;
   imageBackgroundColor?: string;
 }
-const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTitle, isVisible }: IProps) => {
+const OverviewCarousel: React.FC<IProps> = ({
+  data,
+  onMetricsClicked,
+  carouselTitle,
+  isVisible,
+  isActive = '',
+  isCarousel = true,
+}: IProps) => {
   const [detailsOptions, setDetailsOptions] = useState<IOverviewCarousalData[]>([]);
-  const [selectedCard, setSelectedCard] = useState('');
+  const [selectedCard, setSelectedCard] = useState(isActive);
   const updateOptions = (updatedOptions: IOverviewCarousalData[]): void => {
     setDetailsOptions(cloneDeep(updatedOptions));
   };
@@ -69,7 +78,7 @@ const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTi
     setDetailsOptions(data);
   }, [data]);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const styles = overviewCarousalStyle(isMobile);
+  const styles = overviewCarousalStyle(isMobile, isCarousel);
   const onSelection = (item: string): void => {
     setSelectedCard(item);
     if (onMetricsClicked) {
@@ -79,14 +88,26 @@ const OverviewCarousel: React.FC<IProps> = ({ data, onMetricsClicked, carouselTi
 
   return (
     <View style={styles.carouselContainer}>
-      <MultiCarousel passedProps={customCarouselProps}>
-        {detailsOptions.map((item: IOverviewCarousalData) => {
-          const onCardPress = (): void => onSelection(item.label);
-          return (
-            <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
-          );
-        })}
-      </MultiCarousel>
+      {isCarousel && (
+        <MultiCarousel passedProps={customCarouselProps}>
+          {detailsOptions.map((item: IOverviewCarousalData) => {
+            const onCardPress = (): void => onSelection(item.label);
+            return (
+              <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
+            );
+          })}
+        </MultiCarousel>
+      )}
+      {!isCarousel && (
+        <View style={propertyDetailsControlStyle.selectionCard}>
+          {detailsOptions.map((item: IOverviewCarousalData) => {
+            const onCardPress = (): void => onSelection(item.label);
+            return (
+              <Card key={item.label} data={item} onCardSelect={onCardPress} isActive={selectedCard === item.label} />
+            );
+          })}
+        </View>
+      )}
     </View>
   );
 };
@@ -94,7 +115,10 @@ interface IOverviewCarousalStyle {
   container: ViewStyle;
   carouselContainer: ViewStyle;
 }
-const overviewCarousalStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IOverviewCarousalStyle> =>
+const overviewCarousalStyle = (
+  isMobile?: boolean,
+  isCarousel?: boolean
+): StyleSheet.NamedStyles<IOverviewCarousalStyle> =>
   StyleSheet.create<IOverviewCarousalStyle>({
     container: {
       paddingHorizontal: 20,
@@ -106,7 +130,7 @@ const overviewCarousalStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IOver
       backgroundColor: theme.colors.white,
     },
     carouselContainer: {
-      width: isMobile ? '100%' : '55%',
+      width: isCarousel ? (isMobile ? '100%' : '55%') : undefined,
       marginTop: isMobile ? 24 : undefined,
       flexDirection: 'column-reverse',
     },
@@ -251,6 +275,9 @@ const propertyDetailsControlStyle = StyleSheet.create({
     border: 'none',
     marginLeft: 8,
     backgroundColor: theme.colors.lightGrayishBlue,
+  },
+  selectionCard: {
+    flexDirection: 'row',
   },
 });
 const CarouselResponsive = {
