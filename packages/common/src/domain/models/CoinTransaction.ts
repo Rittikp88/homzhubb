@@ -22,6 +22,9 @@ export class CoinTransaction {
   @JsonProperty('transaction_type', String)
   private _transactionType = '';
 
+  @JsonProperty('title', String)
+  private _title = '';
+
   get coins(): number {
     return this._coins;
   }
@@ -32,5 +35,9 @@ export class CoinTransaction {
 
   get transactionType(): TransactionType {
     return this._transactionType as TransactionType;
+  }
+
+  get title(): string {
+    return this._title;
   }
 }

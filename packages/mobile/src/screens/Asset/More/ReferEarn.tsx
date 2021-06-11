@@ -162,9 +162,8 @@ const ReferEarn = (): React.ReactElement => {
             <>
               <View key={index} style={styles.transactionItem}>
                 <View>
-                  {/** TODO: (Shikha) - Replace with BE data * */}
                   <Text type="small" textType="semiBold" style={styles.itemTitle}>
-                    Coin Transaction
+                    {item.title}
                   </Text>
                   <Label type="large" style={styles.itemLabel}>
                     {isCredit ? t('creditedOn') : t('debitOn')}{' '}
