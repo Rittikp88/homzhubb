@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   contentContainer: {
-    maxHeight: 400,
+    maxHeight: theme.viewport.height / 1.7,
   },
   chequeIconStyle: {
     marginEnd: 12,
