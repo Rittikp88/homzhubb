@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -13,10 +13,13 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ComingSoon from '@homzhub/web/src/screens/comingSoon';
 import OffersOverview from '@homzhub/web/src/screens/offers/components/OffersOverview';
 import PropertyDataCard from '@homzhub/web/src/screens/offers/components/PropertyDataCard';
+import OffersDropdown, { OffersDropdownType } from '@homzhub/web/src/screens/offers/components/OffersDropDown';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { OfferFilter } from '@homzhub/common/src/domain/models/OfferFilter';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
+import { NegotiationOfferType, OfferFilterType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { NegotiationOfferType } from '@homzhub/common/src/domain/repositories/interfaces';
+
 // TODO -- saved property metrics integration :Shagun
 export enum OfferType {
   OFFER_RECEIVED = 'Offer Received',
@@ -29,7 +32,15 @@ const Offers: FC = () => {
   const [offerType, setOfferType] = useState(OfferType.OFFER_RECEIVED);
   const [offerCountData, setOfferCountData] = useState<OfferManagement>();
   const [propertyListingData, setPropertyListingData] = useState<Asset[]>([]);
+  const [offerFilters, setOfferFilters] = useState(new OfferFilter());
+  const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.LAPTOP);
+  const [selectedFilters, setSelectedFilters] = useState({
+    countary_id: Number(),
+    type: '',
+    asset_id: Number(),
+    filter_by: '',
+  });
   const { t } = useTranslation();
 
   const title = offerType === 'Offer Received' ? t('offers:noOfferReceived') : t('offers:noOfferMade');
@@ -37,6 +48,7 @@ const Offers: FC = () => {
   const filters = {}; // maintain state :Shagun
   useEffect(() => {
     getOfferDetails();
+    getOfferFilters();
   }, []);
 
   const getOfferDetails = async (): Promise<void> => {
@@ -55,16 +67,31 @@ const Offers: FC = () => {
     }
   };
 
+  const getOfferFilters = async (): Promise<void> => {
+    try {
+      const response: OfferFilter = await OffersRepository.getOfferFilters(OfferFilterType.RECEIVED);
+      setOfferFilters(response);
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
+    }
+  };
   const getPropertyListData = async (): Promise<void> => {
     let propertyListingDatas: Asset[] = [];
     let currencies: string[] = [];
+    const dynamicFilters = {
+      ...(selectedFilters.countary_id && { countary_id: selectedFilters.countary_id }),
+      ...(selectedFilters.type.length && { type: selectedFilters.type }),
+      ...(selectedFilters.asset_id && { asset_id: selectedFilters.asset_id }),
+      ...(selectedFilters.filter_by && { filter_by: selectedFilters.filter_by }),
+    };
     const payload = {
       type: offerType === OfferType.OFFER_RECEIVED ? NegotiationOfferType.RECEIVED : NegotiationOfferType.CREATED,
       ...(offerType === OfferType.OFFER_RECEIVED && { params: filters }),
       // ...(offerType === OfferType.OFFER_MADE && { //TODO: for offers made :Shagun
-      //   params: {
-      //     filter_by: filters.filter_by,
-      //   },
+      params: {
+        ...dynamicFilters,
+      },
       // }),
     };
     try {
@@ -88,6 +115,19 @@ const Offers: FC = () => {
       AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     }
   };
+
+  const onSelectFilter = (selectedFilterType: OffersDropdownType, value: string | number): void => {
+    setSelectedFilters((prevState) => {
+      return {
+        ...prevState,
+        [selectedFilterType]: value,
+      };
+    });
+  };
+
+  useEffect(() => {
+    getPropertyListData();
+  }, [selectedFilters.countary_id, selectedFilters.type, selectedFilters.asset_id, selectedFilters.filter_by]);
 
   const onMetricsClicked = (name: string): void => {
     setOfferType(name as OfferType);
@@ -136,6 +176,26 @@ const Offers: FC = () => {
           </View>
         </View>
       )}
+      <View style={[styles.filtersContainer, isMobile && styles.filtersContainerMobile]}>
+        <OffersDropdown
+          filterData={offerFilters.countryDropdownData}
+          defaultTitle={t('assetPortfolio:selectCountry')}
+          onSelectFilter={onSelectFilter}
+          offerType={OffersDropdownType.Country}
+        />
+        <OffersDropdown
+          filterData={offerFilters.listingDropdownData}
+          defaultTitle={t('offers:selectType')}
+          onSelectFilter={onSelectFilter}
+          offerType={OffersDropdownType.Listing}
+        />
+        <OffersDropdown
+          filterData={offerFilters.assetsDropdownData}
+          defaultTitle={t('offers:selectProperty')}
+          onSelectFilter={onSelectFilter}
+          offerType={OffersDropdownType.Assets}
+        />
+      </View>
       {propertyListingData && propertyListingData.length > 0 ? (
         OfferType.OFFER_MADE !== offerType ? (
           <>
@@ -188,6 +248,12 @@ const styles = StyleSheet.create({
   emptyView: {
     marginTop: 12,
     height: '60vh',
+  },
+  filtersContainer: {
+    flexDirection: 'row',
+  },
+  filtersContainerMobile: {
+    overflow: 'scroll',
   },
   commingSoon: {
     marginTop: 24,

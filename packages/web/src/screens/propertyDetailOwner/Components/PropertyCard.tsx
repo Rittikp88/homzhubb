@@ -243,7 +243,11 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
           )}
           {isListed && isOccupied && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
             <View style={styles.latestUpdates}>
-              <LatestUpdates propertyVisitsData={assetDetails.listingVisits} propertyDetailTab />
+              <LatestUpdates
+                propertyVisitsData={assetDetails.listingVisits}
+                propertyOffersData={assetDetails.listingOffers}
+                propertyDetailTab
+              />
             </View>
           )}
           {action && label !== Filters.VACANT && (

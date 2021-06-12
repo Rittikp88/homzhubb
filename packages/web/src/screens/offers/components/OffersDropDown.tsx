@@ -1,28 +1,30 @@
 import React, { useState, useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { View, StyleSheet, TouchableOpacity, PickerItemProps } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import PopupMenuOptions from '@homzhub/web/src/components/molecules/PopupMenuOptions';
-import { AssetFilter } from '@homzhub/common/src/domain/models/AssetFilter';
 
-// TODO: Integration of rest of the filter buttons and optimization: Shagun
-
-interface IPortfolioFilterProps {
-  filterData: AssetFilter;
-  getStatus: (status: string) => void;
+export enum OffersDropdownType {
+  Country = 'countary_id',
+  Listing = 'type',
+  Assets = 'asset_id',
+  Filter = 'filter_by',
 }
 
-type IProps = IPortfolioFilterProps;
-const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
-  const { t } = useTranslation();
-  const status = t('helpAndSupport:status');
-  const [selectedOption, setSelectedOption] = useState(status);
-  const { filterData, getStatus } = props;
+interface IOffersFilterProps {
+  filterData: PickerItemProps[];
+  defaultTitle: string;
+  onSelectFilter: (selectedFilterType: OffersDropdownType, value: string | number) => void;
+  offerType: OffersDropdownType;
+}
+
+type IProps = IOffersFilterProps;
+const OffersDropdown: React.FC<IProps> = (props: IProps) => {
+  const { filterData, defaultTitle, onSelectFilter, offerType } = props;
+  const [selectedOption, setSelectedOption] = useState(defaultTitle);
   const popupRef = useRef<PopupActions>(null);
   const popupProps = {
     position: 'bottom left' as 'bottom left',
@@ -33,8 +35,8 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
     children: undefined,
   };
 
-  const selectedFilter = (selectedValue: IDropdownOption): void => {
-    getStatus(selectedValue.value);
+  const selectedFilter = (selectedValue: PickerItemProps): void => {
+    onSelectFilter(offerType, selectedValue.value);
     setSelectedOption(selectedValue.label);
     closePopup();
   };
@@ -43,13 +45,12 @@ const PortfolioFilter: React.FC<IProps> = (props: IProps) => {
       popupRef.current.close();
     }
   };
-
   return (
     <View style={styles.filterSection}>
       <View>
         <Popover
           forwardedRef={popupRef}
-          content={<PopupMenuOptions options={filterData.statusDropdown} onMenuOptionPress={selectedFilter} />}
+          content={<PopupMenuOptions options={filterData} onMenuOptionPress={selectedFilter} />}
           popupProps={popupProps}
         >
           <TouchableOpacity activeOpacity={1}>
@@ -89,4 +90,4 @@ const styles = StyleSheet.create({
     color: theme.colors.primaryColor,
   },
 });
-export default PortfolioFilter;
+export default OffersDropdown;

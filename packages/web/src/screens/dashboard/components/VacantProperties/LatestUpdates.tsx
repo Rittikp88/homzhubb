@@ -5,21 +5,20 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListingVisits';
+import { AssetOfferSummary } from '@homzhub/common/src/domain/models/AssetOfferSummary';
 
 interface IProps {
   propertyVisitsData: AssetListingVisits;
+  propertyOffersData: AssetOfferSummary;
   propertyDetailTab?: boolean;
 }
 
-// TODO: (Bishal) replace offers dummy data once api is ready
 const LatestUpdates: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
-  const { propertyDetailTab, propertyVisitsData } = props;
+  const { propertyDetailTab, propertyVisitsData, propertyOffersData } = props;
 
   const { upcomingVisits, missedVisits, completedVisits } = propertyVisitsData;
-  const totalOffers = 0;
-  const highestOffer = 0;
-  const lowestOffer = 0;
+  const { totalOffers, activeOffers, pendingOffers } = propertyOffersData;
 
   return (
     <>
@@ -29,7 +28,7 @@ const LatestUpdates: FC<IProps> = (props: IProps) => {
       <OffersVisitsSection
         propertyDetailTab={propertyDetailTab}
         values={{
-          [OffersVisitsType.offers]: [totalOffers, highestOffer, lowestOffer],
+          [OffersVisitsType.offers]: [totalOffers, activeOffers, pendingOffers],
           [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],
         }}
       />

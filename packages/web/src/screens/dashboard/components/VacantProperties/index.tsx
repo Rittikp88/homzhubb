@@ -17,6 +17,7 @@ import PropertyDetails from '@homzhub/web/src/screens/dashboard/components/Vacan
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListingVisits';
+import { AssetOfferSummary } from '@homzhub/common/src/domain/models/AssetOfferSummary';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
@@ -90,7 +91,10 @@ const VacantProperties: FC<IProps> = ({ data }: IProps) => {
         </View>
         {!isTablet && <Divider containerStyles={styles.divider} />}
         <View style={styles.latestUpdates}>
-          <LatestUpdates propertyVisitsData={data[currentAssetIndex]?.listingVisits ?? ({} as AssetListingVisits)} />
+          <LatestUpdates
+            propertyVisitsData={data[currentAssetIndex]?.listingVisits ?? ({} as AssetListingVisits)}
+            propertyOffersData={data[currentAssetIndex]?.listingOffers ?? ({} as AssetOfferSummary)}
+          />
         </View>
       </TouchableOpacity>
     </View>

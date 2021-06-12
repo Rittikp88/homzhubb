@@ -275,7 +275,10 @@ export class AssetCard extends Component<Props> {
           )}
           {isListed && isOccupied && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
             <View style={[styles.latestUpdates, isTablet && styles.latestUpdatesMobile]}>
-              <LatestUpdates propertyVisitsData={assetData.listingVisits} />
+              <LatestUpdates
+                propertyVisitsData={assetData.listingVisits}
+                propertyOffersData={assetData.listingOffers}
+              />
             </View>
           )}
           {action && label !== Filters.VACANT && (
