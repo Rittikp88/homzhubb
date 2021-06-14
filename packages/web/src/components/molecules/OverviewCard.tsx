@@ -124,10 +124,13 @@ const cardStyle = (activeColor: string): StyleSheet.NamedStyles<ICardStyle> =>
     },
     noIcon: {
       flexDirection: 'column-reverse',
-      textAlign: 'center',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     cardWithNoIcon: {
-      width: '90%',
+      paddingHorizontal: 20,
+      marginLeft: 0,
+      marginRight: 0,
     },
   });
 

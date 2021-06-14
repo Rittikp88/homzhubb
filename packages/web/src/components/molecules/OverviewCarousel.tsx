@@ -156,7 +156,11 @@ const Card = ({ isActive, onCardSelect, data, isIcon }: ICardProps): React.React
   return (
     <Hoverable>
       {(isHovered: boolean): React.ReactNode => (
-        <TouchableOpacity activeOpacity={100} onPress={onCardSelect} style={{ padding: 0, margin: 0 }}>
+        <TouchableOpacity
+          activeOpacity={100}
+          onPress={onCardSelect}
+          style={[propertyDetailsControlStyle.overViewCard, !isIcon && propertyDetailsControlStyle.OverviewCardIcon]}
+        >
           <OverviewCard
             icon={data?.icon ? data?.icon : icons.portfolioFilled}
             count={data.count}
@@ -288,6 +292,14 @@ const propertyDetailsControlStyle = StyleSheet.create({
   },
   selectionCard: {
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  overViewCard: {
+    padding: 0,
+    margin: 0,
+  },
+  OverviewCardIcon: {
+    minWidth: '45%',
   },
 });
 const CarouselResponsive = {

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
@@ -104,7 +104,6 @@ const saleListingExpectationData = (
 const PreferenceDetails: FC<IProps> = (props: IProps) => {
   const {
     property: { isLeaseListing, leaseTerm, saleTerm, currencySymbol, projectName },
-    colunm = 2,
   } = props;
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
@@ -114,70 +113,65 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
     ? leaseListingExpectationData(leaseTerm, currencySymbol, t)
     : saleListingExpectationData(saleTerm, currencySymbol, t);
   const filteredData = expectationData?.filter((item) => item.value);
+  if (filteredData === undefined) return null;
+  const data = Object.values(filteredData);
 
-  const renderExpectedItem = ({ item, index }: { item: IExpectation; index: number }): React.ReactElement | null => {
-    const { title, value } = item;
-    if (!value) {
-      return null;
-    }
-    if (title === t('moreSettings:preferencesText')) {
-      const preferences = value as TenantPreference[];
-      if (!preferences.length) return null;
-      return (
-        <View>
-          <Label textType="regular" type="small" style={styles.tintColor}>
-            {title}
-          </Label>
-          <View style={styles.preferenceView}>
-            {!!preferences.length &&
-              preferences.map((preference, valueIndex) => {
-                return (
-                  <TextWithIcon
-                    key={valueIndex}
-                    icon={icons.check}
-                    text={preference.name}
-                    variant="label"
-                    textSize="large"
-                    iconColor={theme.colors.green}
-                    containerStyle={styles.preferenceContent}
-                  />
-                );
-              })}
+  const renderExpectation = (): React.ReactNode =>
+    data.map((item, index): React.ReactElement | null => {
+      if (item.title === t('moreSettings:preferencesText')) {
+        const preferences = item.value as TenantPreference[];
+        if (!preferences.length) return null;
+        return (
+          <View>
+            <Label textType="regular" type="small" style={[styles.tintColor, styles.topMargin]}>
+              {item.title}
+            </Label>
+            <View style={styles.preferenceView}>
+              {!!preferences.length &&
+                preferences.map((preference, valueIndex) => {
+                  return (
+                    <TextWithIcon
+                      key={valueIndex}
+                      icon={icons.check}
+                      text={preference.name}
+                      variant="label"
+                      textSize="large"
+                      iconColor={theme.colors.green}
+                      containerStyle={styles.preferenceContent}
+                    />
+                  );
+                })}
+            </View>
           </View>
+        );
+      }
+      return (
+        <View
+          key={index}
+          style={[
+            styles.expectedItem,
+            isTab && styles.expectedItemTab,
+            isMobile && styles.expectedItemMob,
+            (!isMobile ? (isTab ? index === 5 : index === 3) : (index + 1) % 2 === 0) && styles.separator,
+          ]}
+        >
+          <Label textType="regular" type="small" style={styles.tintColor}>
+            {item.title}
+          </Label>
+          <Label textType="semiBold" type="large" style={styles.tintColor}>
+            {item.value}
+          </Label>
         </View>
       );
-    }
-    return (
-      <View key={index} style={styles.expectedItem}>
-        <Label textType="regular" type="small" style={styles.tintColor}>
-          {title}
-        </Label>
-        <Label textType="semiBold" type="large" style={styles.tintColor}>
-          {value}
-        </Label>
-      </View>
-    );
-  };
-
-  const renderKeyExtractor = (item: IExpectation, index: number): string => `${item.title}-${index}`;
-
-  const renderItemSeparator = (): React.ReactElement => <View style={styles.separator} />;
+    });
 
   return (
     <>
       <View style={[styles.container, isMobile && styles.containerMobile, isTab && styles.containerTab]}>
-        <Label textType="semiBold" type="large" style={[styles.expectationHeading, styles.tintColor]}>
+        <Label textType="semiBold" type="large" style={styles.tintColor}>
           {`${t('offers:yourExpectationFor')} ${projectName}`}
         </Label>
-        {filteredData && (
-          <FlatList
-            data={filteredData}
-            renderItem={renderExpectedItem}
-            keyExtractor={renderKeyExtractor}
-            numColumns={colunm}
-            ItemSeparatorComponent={renderItemSeparator}
-          />
-        )}
+        <View style={styles.expectedData}>{filteredData && renderExpectation()}</View>
       </View>
     </>
   );
@@ -190,6 +184,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 14,
     width: 540,
   },
+
   containerMobile: {
     width: '100%',
     marginHorizontal: 0,
@@ -198,6 +193,7 @@ const styles = StyleSheet.create({
   containerTab: {
     width: '100%',
     paddingBottom: 16,
+    marginHorizontal: 0,
   },
   button: {
     position: 'absolute',
@@ -210,8 +206,8 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     height: '210px',
   },
-  expectationHeading: {
-    marginBottom: 20,
+  topMargin: {
+    marginTop: 20,
   },
   offerText: {
     color: theme.colors.blue,
@@ -236,14 +232,21 @@ const styles = StyleSheet.create({
   },
 
   separator: {
-    width: 60,
-    height: 24,
+    marginRight: 0,
   },
   viewOfferButton: {
     marginTop: 24,
   },
   expectedItem: {
-    flex: 2,
+    marginRight: 60,
+    marginTop: 20,
+  },
+  expectedItemTab: {
+    marginRight: 20,
+  },
+  expectedItemMob: {
+    marginRight: '3.1%',
+    width: 124,
   },
   countWithIcon: {
     marginBottom: 15,
@@ -257,4 +260,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginEnd: 14,
   },
+  expectedData: { flexDirection: 'row', flexWrap: 'wrap' },
 });
