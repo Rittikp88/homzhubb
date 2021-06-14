@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { cloneDeep } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -9,13 +10,14 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
 import { NotificationService } from '@homzhub/common/src/services/NotificationService';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
+import { IOverviewCarousalData } from '@homzhub/web/src/components/molecules/OverviewCarousel';
+import InfiniteScrollView from '@homzhub/web/src/components/hoc/InfiniteScroll';
+import NotificationHeader from '@homzhub/web/src/screens/notifications/components/NotificationHeader';
 import { AssetNotifications, Notifications } from '@homzhub/common/src/domain/models/AssetNotifications';
 import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { MetricsCount } from '@homzhub/common/src/domain/models/MetricsCount';
-import InfiniteScrollView from '@homzhub/web/src/components/hoc/InfiniteScroll';
-import { NotificationBox } from '@homzhub/common/src/components/molecules/NotificationBox';
-import NotificationHeader from '@homzhub/web/src/screens/notifications/components/NotificationHeader';
-import { IOverviewCarousalData } from '@homzhub/web/src/components/molecules/OverviewCarousel';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IPropertyNotificationDetails } from '@homzhub/common/src/constants/DashBoard';
 
@@ -169,7 +171,7 @@ const Notification: FC = () => {
       setNotifications(NotificationService.getUpdatedNotifications(id, notifications));
     }
   };
-
+  const { t } = useTranslation();
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
   const isTab = useDown(deviceBreakpoint.TABLET);
   return (
@@ -193,7 +195,7 @@ const Notification: FC = () => {
         loader={loading}
       >
         <View style={styles.bodyContainer}>
-          {notifications && notificationsArray.length > 0 && (
+          {notifications && notificationsArray.length && filterData().length > 0 ? (
             <NotificationBox
               data={filterData()}
               onPress={onNotificationClicked}
@@ -202,6 +204,8 @@ const Notification: FC = () => {
               onLoadMore={FunctionUtils.noop}
               isTablet={isTab}
             />
+          ) : (
+            <EmptyState title={t('propertySearch:noResultsTitle')} containerStyle={styles.emptyState} />
           )}
         </View>
       </InfiniteScrollView>
@@ -219,6 +223,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     backgroundColor: theme.colors.white,
+  },
+  emptyState: {
+    height: '60vh',
   },
 });
 
