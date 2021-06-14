@@ -283,9 +283,9 @@
     "download": "Download",
     "options": "Options",
     "docExceedsMaxSize": "Please upload a document smaller than {{size}}",
-    "hours" : "hours",
-    "hour" : "hour",
-    "expired" : "Expired",
+    "hours": "hours",
+    "hour": "hour",
+    "expired": "Expired",
     "annually": "Annually",
     "totalPrice": "Total Price"
   },
@@ -828,7 +828,7 @@
     "serviceTicket": "Service Ticket",
     "supportTicket": "Support Ticket",
     "addPropertyForTicket": "Please add a property before raising a service ticket",
-    "allNotificationsAreRead" : "All notifications are marked as read"
+    "allNotificationsAreRead": "All notifications are marked as read"
   },
   "assetPortfolio": {
     "portfolio": "Portfolio",

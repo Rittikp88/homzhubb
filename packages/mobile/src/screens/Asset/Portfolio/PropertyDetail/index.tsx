@@ -11,6 +11,7 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { ListingService } from '@homzhub/common/src/services/Property/ListingService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -20,6 +21,7 @@ import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
@@ -48,7 +50,6 @@ import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { ICurrentOffer, IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
-import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 
 enum MenuItems {
   EDIT_LISTING = 'EDIT_LISTING',
@@ -317,12 +318,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private onResendInvite = async (tenantId: number): Promise<void> => {
-    try {
-      await AssetRepository.inviteTenant(tenantId);
-      await this.getAssetDetail();
-    } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-    }
+    await ListingService.resendInvite(tenantId);
+    await this.getAssetDetail();
   };
 
   private onSelectMenuItem = (value: string): void => {
@@ -581,13 +578,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setAssetId,
-    setSelectedPlan,
-    getAssetById,
-    setEditPropertyFlow,
-    toggleEditPropertyFlowBottomSheet,
-  } = RecordAssetActions;
+  const { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } =
+    RecordAssetActions;
   const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;

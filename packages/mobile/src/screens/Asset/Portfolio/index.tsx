@@ -9,6 +9,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { ListingService } from '@homzhub/common/src/services/Property/ListingService';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
@@ -230,12 +231,8 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
   };
 
   private onResendInvite = async (tenantId: number): Promise<void> => {
-    try {
-      await AssetRepository.inviteTenant(tenantId);
-      this.getPortfolioProperty();
-    } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-    }
+    await ListingService.resendInvite(tenantId);
+    this.getPortfolioProperty();
   };
 
   private onMetricsClicked = (name: string): void => {

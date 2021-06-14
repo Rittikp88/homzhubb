@@ -1,11 +1,16 @@
 import { cloneDeep, findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { Logger } from '@homzhub/common/src/utils/Logger';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ExistingVerificationDocuments } from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IRoutes } from '@homzhub/common/src/constants/Tabs';
+
+const baseUrl = ConfigHelper.getBaseUrl();
 
 export interface IDocsProps {
   document?: ExistingVerificationDocuments;
@@ -163,6 +168,21 @@ class ListingService {
     }
 
     updateState(updatedStates);
+  };
+
+  // TODO: (Shikha) - Fix Network request failed issue
+  public resendInvite = async (id: number): Promise<void> => {
+    const token = StoreProviderService.getUserToken();
+    await fetch(`${baseUrl}v1/lease-tenants/${id}/invites/`, {
+      method: 'PATCH',
+      headers: {
+        'content-type': 'application/json',
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then()
+      .catch((e) => Logger.warn(JSON.stringify(e)));
   };
 }
 
