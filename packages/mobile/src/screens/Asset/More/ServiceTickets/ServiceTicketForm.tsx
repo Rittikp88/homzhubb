@@ -43,7 +43,7 @@ import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 interface IFormValues {
   property: number;
   title: string;
-  category: string;
+  category: number;
   subCategory: string;
   issueDescription?: string;
   otherCategory?: string;
@@ -87,7 +87,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       serviceForm: {
         property: propertyId,
         title: '',
-        category: '',
+        category: -1,
         subCategory: '',
         issueDescription: '',
         otherCategory: '',
@@ -224,7 +224,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
                         formProps={formProps}
                         placeholder={t('serviceTickets:selectCategory')}
                         isMandatory
-                        onChange={this.setSelectedCatogory}
+                        onChange={this.setSelectedCategory}
                       />
                       {selectedCategoryId > 0 && (
                         <FormDropdown
@@ -333,7 +333,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     });
   };
 
-  private setSelectedCatogory = (value: string, props?: FormikProps<FormikValues>): void => {
+  private setSelectedCategory = (value: string, props?: FormikProps<FormikValues>): void => {
     if (props) {
       const { setFieldValue } = props;
       setFieldValue('subCategory', '');
@@ -388,7 +388,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     return yup.object().shape({
       property: yup.number().moreThan(-1, t('serviceTickets:propertyError')),
       title: yup.string().required(t('serviceTickets:titleError')),
-      category: yup.string().required(t('serviceTickets:categoryError')),
+      category: yup.number().required(t('serviceTickets:categoryError')),
       subCategory: yup.string().required(t('serviceTickets:subCategoryError')),
       issueDescription: yup.string().optional(),
       otherCategory: yup.string().when('subCategory', {

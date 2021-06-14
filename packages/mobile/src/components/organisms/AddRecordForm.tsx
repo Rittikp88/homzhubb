@@ -192,6 +192,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                   options={this.loadCategories()}
                   placeholder={t('categoryPlaceholder')}
                   isMandatory
+                  onChange={this.onChangeCategory}
                 />
                 <FormCalendar
                   allowPastDates
@@ -312,6 +313,13 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     if (formikProps) {
       const { setFieldValue } = formikProps;
       setFieldValue('property', value);
+    }
+  };
+
+  private onChangeCategory = (value: string, formikProps?: FormikProps<FormikValues>): void => {
+    if (formikProps) {
+      const { setFieldValue } = formikProps;
+      setFieldValue('category', value);
     }
   };
 

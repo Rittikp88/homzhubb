@@ -274,11 +274,20 @@
     "referralCode": "Referral Code",
     "knowMore": "Know More",
     "knowLess": "Know Less",
-    "servicePlansSubText": "or ${{minInvoiceAmount}}K INR, whichever is higher*",
+    "servicePlansSubText": "or {{minInvoiceAmount}}K INR, whichever is higher*",
     "confirmation": "Confirmation!",
     "noDataAvailable": "No data available",
     "photos": "Photos",
-    "attachments": "Attachments"
+    "attachments": "Attachments",
+    "rename": "Rename",
+    "download": "Download",
+    "options": "Options",
+    "docExceedsMaxSize": "Please upload a document smaller than {{size}}",
+    "hours" : "hours",
+    "hour" : "hour",
+    "expired" : "Expired",
+    "annually": "Annually",
+    "totalPrice": "Total Price"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -371,7 +380,8 @@
     "appleNotSupported": "Apple Authentication is not supported on this device",
     "enterEmailText": "Enter email address",
     "emailUsed": "This email is already used by someone. Please use unique email",
-    "enterMobileNo": "Enter your mobile number"
+    "enterMobileNo": "Enter your mobile number",
+    "updatePasswordWeb": "Update password"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -656,7 +666,11 @@
     "downloadInvoice": "Download invoice",
     "addImageToProperty": "Add images to property",
     "attachmentList": "Attachment List",
-    "imageUploaded": "Successfully Image uploaded"
+    "imageUploaded": "Successfully Image uploaded",
+    "resendInvite": "Resend Invite",
+    "deleteDocument": "Delete Document",
+    "deleteConfirmation": "Are you sure you want to delete {{name}}",
+    "cannotDeleteDocument": "You cannot delete this document"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -813,7 +827,8 @@
     "incomeOrExpense": "Income / Expense",
     "serviceTicket": "Service Ticket",
     "supportTicket": "Support Ticket",
-    "addPropertyForTicket": "Please add a property before raising a service ticket"
+    "addPropertyForTicket": "Please add a property before raising a service ticket",
+    "allNotificationsAreRead" : "All notifications are marked as read"
   },
   "assetPortfolio": {
     "portfolio": "Portfolio",
@@ -891,6 +906,7 @@
     "addedSuccessfullyMessage": "Added successfully",
     "editedSuccessfullyMessage": "Edited successfully",
     "deletedSuccessfullyMessage": "Deleted successfully",
+    "renamedSuccessfullyMessage": "Renamed successfully",
     "noDescriptionText": "No Description.",
     "addProperty": "Please add a property before adding a financial record",
     "allProperties": "All properties",
@@ -966,7 +982,15 @@
     "faqs": "FAQs",
     "noSubscriptions": "No subscription data found",
     "chatOptions": "Chat Options",
-    "attachmentOptions": "Attachment Options"
+    "attachmentOptions": "Attachment Options",
+    "documentOptions": "Document Options",
+    "acceptedInvites": "Total accepted invites",
+    "coinsWon": "Total coins won",
+    "totalCoinsUsed": "Total coins used",
+    "coinActivity": "Homzhub coin activity",
+    "coinUsed": "Coins used",
+    "creditedOn": "Credited on",
+    "debitOn": "Debited on"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
