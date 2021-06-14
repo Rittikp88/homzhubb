@@ -59,7 +59,7 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
 
   public render(): ReactElement {
     const { t, shouldEnableOuterScroll } = this.props;
-    const { transactionsData } = this.state;
+    const { transactionsData, expandedItem } = this.state;
 
     return (
       <View style={styles.container}>
@@ -85,7 +85,8 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
             onMomentumScrollEnd={this.controlScroll}
             onScrollEndDrag={this.controlScroll}
             scrollEventThrottle={1500}
-            style={styles.contentContainer}
+            // Increase container's height if any item is expanded to fit things in.
+            style={expandedItem === -1 ? styles.contentContainer : styles.contentContainerExpanded}
           >
             {transactionsData.map(this.renderTransactionCard)}
           </ScrollView>
@@ -275,6 +276,9 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   contentContainer: {
+    maxHeight: 400,
+  },
+  contentContainerExpanded: {
     maxHeight: theme.viewport.height / 1.7,
   },
   chequeIconStyle: {
