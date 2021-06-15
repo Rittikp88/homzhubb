@@ -3,8 +3,8 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormikProps, FormikValues } from 'formik';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { FormDropdown } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
@@ -86,25 +86,28 @@ const AssetDescriptionForm = ({ formProps, dropDownOptions }: IProps): React.Rea
         </View>
       </View>
       <View style={[styles.counter, isTablet && styles.counterTab, isMobile && styles.counterMobile]}>
-        <FormTextInput
-          style={styles.inputFieldStyle}
-          name="totalFloors"
-          label={t('totalFloor')}
-          maxLength={3}
-          numberOfLines={1}
-          inputType="number"
-          formProps={formProps}
-        />
-        {!isMobile && <Divider containerStyles={styles.divider} />}
-        <FormTextInput
-          style={styles.inputFieldStyle}
-          name="onFloorNumber"
-          label={t('onFloorText')}
-          maxLength={3}
-          numberOfLines={1}
-          inputType="number"
-          formProps={formProps}
-        />
+        <View style={[PlatformUtils.isWeb() && styles.subContentView, styles.subContentViewAlign]}>
+          <FormTextInput
+            style={styles.inputFieldStyle}
+            name="totalFloors"
+            label={t('totalFloor')}
+            maxLength={3}
+            numberOfLines={1}
+            inputType="number"
+            formProps={formProps}
+          />
+        </View>
+        <View style={[PlatformUtils.isWeb() && styles.subContentView, styles.subContentViewAlign]}>
+          <FormTextInput
+            style={styles.inputFieldStyle}
+            name="onFloorNumber"
+            label={t('onFloorText')}
+            maxLength={3}
+            numberOfLines={1}
+            inputType="number"
+            formProps={formProps}
+          />
+        </View>
       </View>
     </View>
   );
@@ -129,6 +132,7 @@ interface IFormStyles {
   counterTab: ViewStyle;
   counterMobile: ViewStyle;
   divider: ViewStyle;
+  subContentViewAlign: ViewStyle;
 }
 
 const formStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyles<IFormStyles> =>
@@ -198,7 +202,7 @@ const formStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyle
     },
     counter: {
       flexDirection: 'row',
-      width: '31%',
+      width: '30%',
     },
     counterTab: {
       width: '48%',
@@ -211,6 +215,9 @@ const formStyles = (isMobile: boolean, isTablet: boolean): StyleSheet.NamedStyle
       marginLeft: 20,
       marginRight: 30,
       marginTop: 20,
+    },
+    subContentViewAlign: {
+      marginRight: isMobile ? 0 : 38,
     },
   });
 
