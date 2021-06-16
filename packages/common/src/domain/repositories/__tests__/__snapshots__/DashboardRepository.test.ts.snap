@@ -37,6 +37,36 @@ AssetMetrics {
         "_name": "SELL",
       },
     ],
+    "_userServicePlan": UserServicePlan {
+      "_id": 0,
+      "_label": "",
+      "_name": "",
+    },
+  },
+  "_dashboardRole": "OWNER",
+  "_ownerMetrics": AssetMetricsData {
+    "_assetGroups": Array [],
+    "_assets": Count {
+      "_count": 0,
+    },
+    "_miscellaneous": Array [],
+    "_userServicePlan": UserServicePlan {
+      "_id": 0,
+      "_label": "",
+      "_name": "",
+    },
+  },
+  "_tenantMetrics": AssetMetricsData {
+    "_assetGroups": Array [],
+    "_assets": Count {
+      "_count": 0,
+    },
+    "_miscellaneous": Array [],
+    "_userServicePlan": UserServicePlan {
+      "_id": 0,
+      "_label": "",
+      "_name": "",
+    },
   },
   "_updates": AssetUpdates {
     "_dues": Count {

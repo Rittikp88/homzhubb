@@ -670,7 +670,8 @@
     "resendInvite": "Resend Invite",
     "deleteDocument": "Delete Document",
     "deleteConfirmation": "Are you sure you want to delete {{name}}",
-    "cannotDeleteDocument": "You cannot delete this document"
+    "cannotDeleteDocument": "You cannot delete this document",
+    "siteVisits": "Site Visits"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

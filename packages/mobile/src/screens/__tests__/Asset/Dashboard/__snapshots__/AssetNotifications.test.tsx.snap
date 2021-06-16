@@ -5,6 +5,19 @@ exports[`Asset Notifications Screen should render snapshot 1`] = `
   isOuterScrollEnabled={true}
   onBackPress={[Function]}
   pageTitle="notification"
+  rightNode={
+    <ForwardRef
+      disabled={false}
+      onPress={[Function]}
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="tick-with-circle"
+        size={20}
+      />
+    </ForwardRef>
+  }
   title="dashboard"
 >
   <View
@@ -49,6 +62,19 @@ exports[`Asset Notifications Screen should render snapshot with empty notificati
   isOuterScrollEnabled={true}
   onBackPress={[Function]}
   pageTitle="notification"
+  rightNode={
+    <ForwardRef
+      disabled={false}
+      onPress={[Function]}
+    >
+      <Icon
+        allowFontScaling={false}
+        color="#0084F8"
+        name="tick-with-circle"
+        size={20}
+      />
+    </ForwardRef>
+  }
   title="dashboard"
 >
   <View

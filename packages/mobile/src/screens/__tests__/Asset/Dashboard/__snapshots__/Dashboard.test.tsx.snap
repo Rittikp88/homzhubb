@@ -11,6 +11,7 @@ exports[`Dashboard Screen should render snapshot 1`] = `
       data={Array []}
       onMetricsClicked={[Function]}
       onPlusIconClicked={[Function]}
+      subTitleText="common:properties"
       title="0"
     />
     <AssetSummary
@@ -22,7 +23,6 @@ exports[`Dashboard Screen should render snapshot 1`] = `
       dues={0}
       messages={0}
       notification={0}
-      onPressDue={[Function]}
       onPressMessages={[Function]}
       onPressNotification={[Function]}
       onPressServiceTickets={[Function]}

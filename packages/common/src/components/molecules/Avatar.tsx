@@ -163,7 +163,7 @@ const Avatar = (props: IProps): React.ReactElement => {
         )}
       </View>
       {(isRightIcon || !!date) && (
-        <View style={styles.rightView}>
+        <View style={[styles.rightView, !isRightIcon && { flexDirection: 'column-reverse' }]}>
           {isRightIcon && onPressRightIcon && (
             <Icon
               name={rightIconName}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, TouchableOpacity, ViewStyle, TextStyle, StyleProp } from 'react-native';
+import { FlatList, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -11,6 +11,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { DashboardRepository } from '@homzhub/common/src/domain/repositories/DashboardRepository';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -29,6 +30,7 @@ import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMar
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
+import VisitListCard from '@homzhub/mobile/src/components/organisms/VisitListCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -41,6 +43,7 @@ import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
+import { IAssetVisitPayload, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IDispatchProps {
   setCurrentFilter: (payload: Filters) => void;
@@ -49,6 +52,7 @@ interface IDispatchProps {
   setAddPropertyFlow: (payload: boolean) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setInitialState: () => void;
+  getAssetVisit: (payload: IAssetVisitPayload) => void;
 }
 
 interface IReduxStateProps {
@@ -121,6 +125,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
               onViewProperty={this.onViewProperty}
             />
           )}
+          {metrics?.isTenant && <VisitListCard />}
           {!metrics?.isTenant && <FinanceOverview />}
           <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
           <AssetAdvertisementBanner />
@@ -151,7 +156,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           dues={metrics?.updates?.dues?.count ?? 0}
           messages={metrics?.updates?.messages?.unread?.count ?? 0}
           containerStyle={styles.assetCards()}
-          onPressDue={this.handleDues}
           onPressServiceTickets={this.handleServiceTickets}
           onPressNotification={this.handleNotification}
           onPressMessages={this.handleMessages}
@@ -274,20 +278,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     navigation.navigate(ScreensKeys.Messages, { isFromDashboard: true });
   };
 
-  private handleDues = (): void => {
-    /**
-   *
-   navigation.dispatch(
-   CommonActions.reset({
-      index: 0,
-      routes: [{ name: ScreensKeys.Financials }],
-    })
-   );
-   */
-    const { navigation, t } = this.props;
-    navigation.navigate(ScreensKeys.ComingSoonScreen, { title: t('dues') ?? '', tabHeader: t('dashboard') });
-  };
-
   private handleServiceTickets = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.ServiceTicketScreen, { isFromDashboard: true });
@@ -324,7 +314,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       }
     };
 
-    if ([MetricType.OFFER, MetricType.SHORTLISTED, MetricType.SITE_VISITS].includes(name)) {
+    if ([MetricType.OFFER, MetricType.SHORTLISTED, MetricType.SITE_VISITS].includes(name as MetricType)) {
       handleNavigation();
       return;
     }
@@ -379,7 +369,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       navigation.navigate(ScreensKeys.SupportScreen, { isFromDashboard: true });
     };
 
-    const formattedDetails = [
+    return [
       {
         icon: icons.portfolioFilled,
         label: t('assetFinancial:property'),
@@ -401,7 +391,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
         onPress: handleAddSupportTicket,
       },
     ];
-    return formattedDetails;
   };
 
   // HANDLERS end
@@ -410,6 +399,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private getScreenData = async (): Promise<void> => {
     await this.getAssetMetrics();
     await this.getPendingProperties();
+    this.getVisitData();
   };
 
   private getAssetMetrics = async (): Promise<void> => {
@@ -432,6 +422,14 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
+
+  private getVisitData = (): void => {
+    const { getAssetVisit } = this.props;
+    getAssetVisit({
+      start_date__gte: new Date().toISOString(),
+      status__in: `${VisitStatus.APPROVED},${VisitStatus.PENDING}`,
+    });
+  };
   // APIs end
 }
 
@@ -439,8 +437,17 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentFilter, setCurrentAsset, setInitialState } = PortfolioActions;
   const { setAddPropertyFlow } = UserActions;
   const { setAssetId, setSelectedPlan } = RecordAssetActions;
+  const { getAssetVisit } = AssetActions;
   return bindActionCreators(
-    { setCurrentFilter, setAssetId, setSelectedPlan, setAddPropertyFlow, setCurrentAsset, setInitialState },
+    {
+      setCurrentFilter,
+      setAssetId,
+      setSelectedPlan,
+      setAddPropertyFlow,
+      setCurrentAsset,
+      setInitialState,
+      getAssetVisit,
+    },
     dispatch
   );
 };
