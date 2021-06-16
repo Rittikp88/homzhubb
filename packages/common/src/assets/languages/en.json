@@ -287,7 +287,9 @@
     "hour": "hour",
     "expired": "Expired",
     "annually": "Annually",
-    "totalPrice": "Total Price"
+    "totalPrice": "Total Price",
+    "maxDocumentUploads": "You can upload a maximum of {{count}} documents",
+    "someFilesWereNotUploaded": "Some files were not uploaded because they were greater than {{size}}"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -671,7 +673,8 @@
     "deleteDocument": "Delete Document",
     "deleteConfirmation": "Are you sure you want to delete {{name}}",
     "cannotDeleteDocument": "You cannot delete this document",
-    "siteVisits": "Site Visits"
+    "siteVisits": "Site Visits",
+    "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

@@ -1,17 +1,17 @@
 import React, { PureComponent } from 'react';
 import { FlatList, Share, StyleSheet, View } from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
+import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import * as yup from 'yup';
-import { debounce } from 'lodash';
+import { debounce, isEqual } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
-import { ICreateDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICreateDocumentPayload, IDocumentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -36,9 +36,8 @@ import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { DocumentCard } from '@homzhub/mobile/src/components';
-import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
+import { IUploadAttachmentResponse } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { AllowedAttachmentFormats } from '@homzhub/common/src/domain/models/Attachment';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
@@ -347,7 +346,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         if (isDeleteAllowed) {
           this.onPressDelete();
         } else {
-          AlertHelper.error({ message: t('property:cannotDeleteDocument') });
+          AlertHelper.error({ message: t('property:cannotDeleteSystemDocuments') });
         }
         break;
       default:
@@ -385,24 +384,24 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   private onCapture = async (): Promise<void> => {
     const { t } = this.props;
+
     try {
-      const document = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+      const documents = await DocumentPicker.pickMultiple({
+        type: [DocumentPicker.types.images, DocumentPicker.types.pdf],
       });
 
-      /* Check if the uploaded document's size is lesser than 5mb */
-      if (document.size > 5000000) {
-        AlertHelper.error({ message: t('common:docExceedsMaxSize', { size: '5mb' }) });
+      /* Check if more than 5 are uploaded */
+      if (documents.length > 5) {
+        AlertHelper.error({ message: t('common:maxDocumentUploads', { count: 5 }) });
         return;
       }
+      /* Upload those which are lesser than 5mb only */
+      const validDocuments = documents.filter((document) => document.size <= 5000000);
 
-      /* Check if the uploaded document is one of the allowed type */
-      if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
-        const documentSource = { uri: document.uri, type: document.type, name: document.name };
-        await this.uploadDocument(documentSource as IDocumentSource);
-      } else {
-        AlertHelper.error({ message: t('unsupportedFormat') });
+      if (!isEqual(documents, validDocuments)) {
+        AlertHelper.error({ message: t('common:someFilesWereNotUploaded', { size: '5 mb' }) });
       }
+      await this.uploadDocument(validDocuments);
     } catch (e) {
       AlertHelper.error({ message: t('pleaseTryAgain') });
     }
@@ -485,7 +484,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     });
   };
 
-  private uploadDocument = async (DocumentSource: IDocumentSource): Promise<void> => {
+  private uploadDocument = async (DocumentSource: DocumentPickerResponse[]): Promise<void> => {
     const { currentAssetId, assetData } = this.props;
     if (!assetData || !assetData.assetStatusInfo) {
       return;
@@ -495,27 +494,33 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       assetStatusInfo: { leaseListingId, saleListingId },
     } = assetData;
     const formData = new FormData();
-    // @ts-ignore
-    formData.append('files[]', DocumentSource);
+    DocumentSource.forEach((documentSource) => {
+      // @ts-ignore
+      formData.append('files[]', documentSource);
+    });
+
+    const returnDocumentData = (id: number): IDocumentPayload => ({
+      attachment: id,
+      ...(leaseListingId && { lease_listing_id: leaseListingId }),
+      ...(saleListingId && { sale_listing_id: saleListingId }),
+    });
 
     try {
+      this.setState({ isLoading: true });
       const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_DOCUMENT);
       const { data } = response;
-      const attachmentId = data[0].id;
+      const documentData: IDocumentPayload[] = data.map((item: IUploadAttachmentResponse) =>
+        returnDocumentData(item.id)
+      );
       const payload: ICreateDocumentPayload = {
         propertyId: currentAssetId,
-        documentData: [
-          {
-            attachment: attachmentId,
-            ...(leaseListingId && { lease_listing_id: leaseListingId }),
-            ...(saleListingId && { sale_listing_id: saleListingId }),
-          },
-        ],
+        documentData,
       };
-
       await AssetRepository.createAssetDocument(payload);
+      this.setState({ isLoading: false });
       this.getDocuments();
     } catch (e) {
+      this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e);
       AlertHelper.error({ message: error });
     }

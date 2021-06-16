@@ -51,7 +51,7 @@ interface IState {
 }
 
 export interface IUploadAttachmentResponse {
-  id: string;
+  id: number;
   link: string;
 }
 
