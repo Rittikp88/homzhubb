@@ -5,6 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
@@ -30,9 +31,9 @@ import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOve
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset, PropertyStatus } from '@homzhub/common/src/domain/models/Asset';
-import { AssetMetrics } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { IActions, ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { IMetricsData } from '@homzhub/common/src/domain/models/AssetMetrics';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/DashboardStack';
@@ -58,7 +59,7 @@ type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKe
 type Props = WithTranslation & libraryProps & IDispatchProps & IReduxStateProps;
 
 interface IDashboardState {
-  metrics: AssetMetrics;
+  metrics: IMetricsData;
   pendingProperties: Asset[];
   isLoading: boolean;
   showBottomSheet: boolean;
@@ -70,6 +71,12 @@ interface IFormattedBottomSheetData {
   onPress: () => void;
 }
 
+enum MetricType {
+  OFFER = 'OFFER',
+  SITE_VISITS = 'SITE_VISIT',
+  SHORTLISTED = 'SHORTLISTED',
+}
+
 const ShowInMvpRelease = false;
 
 export class Dashboard extends React.PureComponent<Props, IDashboardState> {
@@ -77,7 +84,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   public blurListener: any;
 
   public state = {
-    metrics: {} as AssetMetrics,
+    metrics: {} as IMetricsData,
     pendingProperties: [],
     isLoading: false,
     showBottomSheet: false,
@@ -100,7 +107,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   public render = (): React.ReactElement => {
     const { t, route } = this.props;
-    const { isLoading, pendingProperties } = this.state;
+    const { isLoading, pendingProperties, metrics } = this.state;
 
     return (
       <>
@@ -114,7 +121,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
               onViewProperty={this.onViewProperty}
             />
           )}
-          <FinanceOverview />
+          {!metrics?.isTenant && <FinanceOverview />}
           <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
           <AssetAdvertisementBanner />
           {ShowInMvpRelease && <UserSubscriptionPlan onApiFailure={this.onAssetSubscriptionApiFailure} />}
@@ -126,15 +133,17 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   public renderAssetMetricsAndUpdates = (): React.ReactElement => {
+    const { t } = this.props;
     const { metrics } = this.state;
     return (
       <>
         <AssetMetricsList
-          title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
-          data={metrics?.assetMetrics?.miscellaneous ?? []}
-          subscription={metrics?.userServicePlan?.label}
+          title={`${metrics?.metricValues?.assets?.count ?? 0}`}
+          data={metrics?.metricValues?.miscellaneous ?? []}
+          subscription={metrics?.metricValues?.userServicePlan?.label}
           onMetricsClicked={this.handleMetricsNavigation}
           onPlusIconClicked={this.openBottomSheet}
+          subTitleText={metrics?.isTenant ? t('assetPortfolio:tenancies') : t('common:properties')}
         />
         <AssetSummary
           notification={metrics?.updates?.notifications?.count ?? 0}
@@ -290,7 +299,35 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   private handleMetricsNavigation = (name: string): void => {
-    const { navigation, setCurrentFilter } = this.props;
+    const { navigation, setCurrentFilter, t } = this.props;
+
+    const handleNavigation = (): void => {
+      const callNavigation = (screen: ScreensKeys): void =>
+        // @ts-ignore
+        navigation.navigate(screen, { screenTitle: t('assetDashboard:dashboard') });
+
+      switch (name) {
+        case MetricType.OFFER:
+          callNavigation(ScreensKeys.PropertyOfferList);
+          break;
+
+        case MetricType.SHORTLISTED:
+          callNavigation(ScreensKeys.SavedPropertiesScreen);
+          break;
+
+        case MetricType.SITE_VISITS:
+          callNavigation(ScreensKeys.PropertyVisits);
+          break;
+
+        default:
+          FunctionUtils.noop();
+      }
+    };
+
+    if ([MetricType.OFFER, MetricType.SHORTLISTED, MetricType.SITE_VISITS].includes(name)) {
+      handleNavigation();
+      return;
+    }
     setCurrentFilter(name as Filters);
     // @ts-ignore
     navigation.navigate(ScreensKeys.Portfolio, {
@@ -378,8 +415,8 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private getAssetMetrics = async (): Promise<void> => {
     this.setState({ isLoading: true });
     try {
-      const response: AssetMetrics = await DashboardRepository.getAssetMetrics('v3');
-      this.setState({ metrics: response, isLoading: false });
+      const { metricsData } = await DashboardRepository.getAssetMetrics('v4');
+      this.setState({ metrics: metricsData, isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });
       const error = ErrorUtils.getErrorMessage(e.details);

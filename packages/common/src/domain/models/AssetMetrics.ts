@@ -1,36 +1,17 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Count } from '@homzhub/common/src/domain/models/Count';
 import { Data } from '@homzhub/common/src/domain/models/Asset';
 import { MetricsCount } from '@homzhub/common/src/domain/models/MetricsCount';
-import { ICount, Count } from '@homzhub/common/src/domain/models/Count';
 
-interface IUserServicePlan {
-  id: number;
-  name: string;
-  label: string;
+enum DashboardRole {
+  OWNER = 'OWNER',
+  TENANT = 'TENANT',
 }
 
-interface IAssetMetricsData {
-  asset: ICount;
-  miscellaneous: IMiscellaneous;
-}
-
-interface IMiscellaneous {
-  name: string;
-  label: string;
-  count: number;
-  colorCode: string;
-}
-
-interface IUpdates {
-  notifications: ICount;
-  tickets: ICount;
-  dues: ICount;
-}
-
-interface IAssetMetrics {
-  user_service_plan: IUserServicePlan;
-  asset_metrics: IAssetMetricsData;
-  updates: IUpdates;
+export interface IMetricsData {
+  metricValues: AssetMetricsData;
+  updates: AssetUpdates;
+  isTenant: boolean;
 }
 
 @JsonObject('UserServicePlan')
@@ -106,6 +87,9 @@ export class AssetMetricsData {
   @JsonProperty('asset_groups', [Data], true)
   private _assetGroups: Data[] = [];
 
+  @JsonProperty('user_service_plan', UserServicePlan, true)
+  private _userServicePlan = new UserServicePlan();
+
   get assets(): Count {
     return this._assets;
   }
@@ -116,6 +100,10 @@ export class AssetMetricsData {
 
   get assetGroups(): Data[] {
     return this._assetGroups;
+  }
+
+  get userServicePlan(): UserServicePlan {
+    return this._userServicePlan;
   }
 }
 
@@ -153,14 +141,25 @@ export class AssetUpdates {
 
 @JsonObject('AssetMetrics')
 export class AssetMetrics {
-  @JsonProperty('user_service_plan', UserServicePlan)
+  @JsonProperty('user_service_plan', UserServicePlan, true)
   private _userServicePlan = new UserServicePlan();
 
-  @JsonProperty('asset_metrics', AssetMetricsData)
+  @JsonProperty('asset_metrics', AssetMetricsData, true)
   private _assetMetrics = new AssetMetricsData();
 
   @JsonProperty('updates', AssetUpdates, true)
   private _updates = new AssetUpdates();
+
+  // v4 changes START
+  @JsonProperty('dashboard_role', String, true)
+  private _dashboardRole = DashboardRole.OWNER;
+
+  @JsonProperty('owner_metrics', AssetMetricsData, true)
+  private _ownerMetrics = new AssetMetricsData();
+
+  @JsonProperty('tenant_metrics', AssetMetricsData, true)
+  private _tenantMetrics = new AssetMetricsData();
+  // v4 changes END
 
   get userServicePlan(): UserServicePlan {
     return this._userServicePlan;
@@ -172,5 +171,36 @@ export class AssetMetrics {
 
   get updates(): AssetUpdates {
     return this._updates;
+  }
+
+  get dashboardRole(): DashboardRole {
+    return this._dashboardRole;
+  }
+
+  get ownerMetrics(): AssetMetricsData {
+    return this._ownerMetrics;
+  }
+
+  get tenantMetrics(): AssetMetricsData {
+    return this._tenantMetrics;
+  }
+
+  get metricsValues(): AssetMetricsData {
+    if (this._dashboardRole === DashboardRole.OWNER) return this._ownerMetrics;
+    return this._tenantMetrics;
+  }
+
+  get metricsData(): IMetricsData {
+    return {
+      metricValues: this.metricsValues,
+      updates: this.updates,
+      isTenant: this._dashboardRole === DashboardRole.TENANT,
+    };
+  }
+
+  get assetCount(): number {
+    return this._dashboardRole === DashboardRole.OWNER
+      ? this.ownerMetrics.assets.count
+      : this.tenantMetrics.assets.count;
   }
 }

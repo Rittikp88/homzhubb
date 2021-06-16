@@ -178,7 +178,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
             </Label>
           </Label>
         </View>
-        <View style={styles.infoBox}>{renderInfoBox(offersLeft)}</View>
+        <View style={{ ...(PlatformUtils.isWeb() && styles.infoBox) }}>{renderInfoBox(offersLeft)}</View>
       </>
     );
   };

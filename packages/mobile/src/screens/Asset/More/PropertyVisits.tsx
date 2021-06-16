@@ -51,12 +51,9 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
   };
 
   public render(): React.ReactNode {
-    const {
-      t,
-      route: { params },
-    } = this.props;
+    const { t, route } = this.props;
 
-    const title = params?.screenTitle ? params.screenTitle : t('assetMore:more');
+    const title = route?.params?.screenTitle ? route?.params.screenTitle : t('assetMore:more');
     return (
       <UserScreen
         isOuterScrollEnabled

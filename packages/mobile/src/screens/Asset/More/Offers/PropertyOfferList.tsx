@@ -6,7 +6,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -62,7 +62,7 @@ interface IScreenState {
   currencies: string[];
 }
 
-type LibProps = WithTranslation & NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.PropertyOfferList>;
+type LibProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.PropertyOfferList>;
 type Props = LibProps & IDispatchProps & IStateProps;
 
 export interface IMetricsData {
@@ -127,7 +127,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
   };
 
   public render(): React.ReactElement {
-    const { t } = this.props;
+    const { t, route } = this.props;
     const {
       offerType,
       isOfferReceivedInfoRead,
@@ -151,9 +151,11 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
       return <Loader visible />;
     }
 
+    const screenTitle = route?.params?.screenTitle ? route?.params.screenTitle : t('offers');
+
     return (
       <>
-        <UserScreen title={t('offers')} scrollEnabled backgroundColor={theme.colors.transparent} loading={isTabLoading}>
+        <UserScreen title={screenTitle} scrollEnabled backgroundColor={theme.colors.transparent} loading={isTabLoading}>
           <>
             <AssetMetricsList
               title={offerCountData?.totalOffers?.toString()}

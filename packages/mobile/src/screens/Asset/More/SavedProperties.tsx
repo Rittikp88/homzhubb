@@ -12,7 +12,7 @@ import { OffersRepository } from '@homzhub/common/src/domain/repositories/Offers
 import { LeadRepository } from '@homzhub/common/src/domain/repositories/LeadRepository';
 import { ILeadPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -35,10 +35,10 @@ import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-type NavigationProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.SavedPropertiesScreen>;
+type NavigationProps = NavigationScreenProps<CommonParamList, ScreensKeys.SavedPropertiesScreen>;
 
 export const SavedProperties = (props: NavigationProps): React.ReactElement => {
-  const { navigation } = props;
+  const { navigation, route } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
 
   // Redux
@@ -276,8 +276,10 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
     );
   };
 
+  const screenTitle = route?.params?.screenTitle ? route?.params.screenTitle : t('assetMore:more');
+
   return (
-    <UserScreen title={t('more')} pageTitle={t('savedProperties')} onBackPress={navigation.goBack} loading={loading}>
+    <UserScreen title={screenTitle} pageTitle={t('savedProperties')} onBackPress={navigation.goBack} loading={loading}>
       <>
         {wishListedAssets && wishListedAssets.length > 0 ? (
           wishListedAssets.map((asset, index) => {
