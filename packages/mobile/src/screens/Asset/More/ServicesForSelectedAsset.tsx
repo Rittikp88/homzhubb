@@ -80,7 +80,7 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
     return (
       <UserScreen
         loading={loading}
-        title={t('more')}
+        title={t('property:services')}
         pageTitle={t('selectedProperty')}
         onBackPress={goBack}
         rightNode={renderRightHandHeader()}

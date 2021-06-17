@@ -1,6 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/core';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Logo from '@homzhub/common/src/assets/images/homzhubDashboard.svg';
@@ -30,6 +32,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   subTitleText?: string;
   headerIcon?: string;
+  showBackIcon?: boolean;
 }
 
 const COMPONENT_PADDING = 12;
@@ -46,10 +49,13 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
     isSubTextRequired = true,
     subTitleText,
     headerIcon,
+    showBackIcon = false,
   } = props;
 
   // HOOKS
   const { t } = useTranslation();
+  const { goBack, setParams } = useNavigation();
+  const { params } = useRoute();
   const [activeIndex, setActiveIndex] = useState(0);
   // HELPERS
   const bubblePlusIcon = useCallback((): void => {
@@ -67,6 +73,13 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
 
     return newArr;
   }, [data, numOfElements]);
+
+  const onGoBack = (): void => {
+    goBack();
+    if (params) {
+      setParams({ isFromNavigation: false });
+    }
+  };
   // HELPERS END
 
   const renderItem = useCallback(
@@ -102,6 +115,11 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={[styles.header, !isSubTextRequired && styles.financialView]}>
+        {showBackIcon && (
+          <TouchableOpacity onPress={onGoBack} style={styles.backIcon}>
+            <Icon name={icons.leftArrow} size={25} color={theme.colors.blue} />
+          </TouchableOpacity>
+        )}
         {headerIcon ? (
           <View>
             <Icon name={headerIcon} size={30} style={styles.icon} color={theme.colors.blue} />
@@ -211,5 +229,9 @@ const styles = StyleSheet.create({
   plusIconContainer: {
     justifyContent: 'center',
     padding: 5,
+  },
+  backIcon: {
+    alignSelf: 'center',
+    marginRight: 10,
   },
 });

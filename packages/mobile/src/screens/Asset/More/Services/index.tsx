@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ServiceHelper } from '@homzhub/mobile/src/utils/ServiceHelper';
@@ -37,6 +37,7 @@ const ServicesDashboard = (): React.ReactElement => {
   // HOOKS
   const { t } = useTranslation();
   const { navigate } = useNavigation();
+  const { params } = useRoute();
   const dispatch = useDispatch();
   const services = useSelector(UserSelector.getUserServices);
   const { userService } = useSelector(UserSelector.getUserLoaders);
@@ -121,7 +122,13 @@ const ServicesDashboard = (): React.ReactElement => {
           />
         ) : (
           <View>
-            <AssetMetricsList data={metricsData} numOfElements={2} title={userAsset.length.toString()} />
+            <AssetMetricsList
+              // @ts-ignore
+              showBackIcon={params?.isFromNavigation ?? false}
+              data={metricsData}
+              numOfElements={2}
+              title={userAsset.length.toString()}
+            />
             <Button
               type="secondary"
               iconSize={20}

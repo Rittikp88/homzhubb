@@ -435,6 +435,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     const {
       t,
       filters: { search_address, asset_group },
+      navigation: { goBack },
     } = this.props;
     const { selectedOnScreenFilter, isMenuTrayCollapsed } = this.state;
     const onScreenFilters = [
@@ -449,18 +450,23 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     return (
       <>
         <View style={styles.tray}>
-          <TouchableOpacity onPress={this.toggleSearchBar} style={styles.addressContainer}>
-            <Icon name={icons.search} size={20} color={theme.colors.darkTint5} />
-            {search_address ? (
-              <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
-                {search_address}
-              </Text>
-            ) : (
-              <Label type="large" textType="regular" style={styles.placeholder} numberOfLines={1}>
-                {t('enterLocation')}
-              </Label>
-            )}
-          </TouchableOpacity>
+          <View style={styles.addressContainer}>
+            <TouchableOpacity style={styles.back} onPress={goBack}>
+              <Icon name={icons.leftArrow} size={18} color={theme.colors.darkTint5} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.toggleSearchBar} style={styles.searchContent}>
+              <Icon name={icons.search} size={16} color={theme.colors.darkTint5} />
+              {search_address ? (
+                <Text type="small" textType="regular" style={styles.address} numberOfLines={1}>
+                  {search_address}
+                </Text>
+              ) : (
+                <Label type="large" textType="regular" style={styles.placeholder} numberOfLines={1}>
+                  {t('enterLocation')}
+                </Label>
+              )}
+            </TouchableOpacity>
+          </View>
           <View style={styles.menuTrayContainer}>
             {onScreenFilters.map((item: { type: OnScreenFilters; label: string }, index: number) => {
               const { type, label } = item;
@@ -720,14 +726,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setFilter,
-    getFilterDetails,
-    getProperties,
-    setInitialFilters,
-    setInitialState,
-    getPropertiesListView,
-  } = SearchActions;
+  const { setFilter, getFilterDetails, getProperties, setInitialFilters, setInitialState, getPropertiesListView } =
+    SearchActions;
   const { setChangeStack } = UserActions;
   return bindActionCreators(
     {
@@ -844,11 +844,11 @@ const styles = StyleSheet.create({
     borderColor: colors.darkTint12,
     borderWidth: 1,
     marginBottom: 12,
-    padding: 8,
   },
   address: {
-    marginStart: 8,
-    flex: 1,
+    marginStart: 10,
+    alignSelf: 'flex-start',
+    flex: 0.9,
   },
   flexRow: {
     flexDirection: 'row',
@@ -899,5 +899,16 @@ const styles = StyleSheet.create({
   placeholder: {
     marginStart: 8,
     color: colors.darkTint7,
+  },
+  back: {
+    padding: 8,
+  },
+  searchContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderLeftWidth: 0.5,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderLeftColor: theme.colors.darkTint12,
   },
 });

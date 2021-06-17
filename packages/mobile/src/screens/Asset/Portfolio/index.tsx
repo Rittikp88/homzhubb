@@ -91,7 +91,7 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
       route: { params },
     } = this.props;
     this.focusListener = navigation.addListener('focus', () => {
-      if (params) {
+      if (params && params.inviteId) {
         this.acceptInvite().then();
       }
       this.getScreenData().then();
@@ -108,11 +108,18 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
   }
 
   public render = (): React.ReactElement => {
-    const { t, tenancies, properties, loaders } = this.props;
+    const {
+      t,
+      tenancies,
+      properties,
+      loaders,
+      route: { params },
+    } = this.props;
     const { metrics, assetType } = this.state;
     return (
       <UserScreen isGradient loading={loaders.tenancies || loaders.properties} title={t('portfolio')}>
         <AssetMetricsList
+          showBackIcon={params?.isFromNavigation ?? false}
           title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
           data={metrics?.assetMetrics?.assetGroups ?? []}
           subscription={metrics?.userServicePlan?.label}

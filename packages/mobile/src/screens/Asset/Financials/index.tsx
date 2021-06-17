@@ -59,7 +59,10 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   }
 
   public render = (): React.ReactElement => {
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     const { scrollEnabled, selectedProperty, selectedCountry, isLoading } = this.state;
 
     return (
@@ -67,6 +70,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         <AssetMetricsList
           title={t('assetFinancial:summary')}
           numOfElements={2}
+          showBackIcon={params?.isFromNavigation ?? false}
           isSubTextRequired={false}
           data={this.getHeaderData()}
           onPlusIconClicked={this.onPlusIconPress}

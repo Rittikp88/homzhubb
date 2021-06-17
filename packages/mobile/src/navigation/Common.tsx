@@ -37,7 +37,6 @@ import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
-import ServicesDashboard from '@homzhub/mobile/src/screens/Asset/More/Services';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
@@ -107,7 +106,6 @@ export type CommonParamList = {
   [ScreensKeys.TenantHistoryScreen]: ICommonNavProps;
   [ScreensKeys.AssetDetailScreen]: IDetailNavParam;
   [ScreensKeys.Messages]: ICommonNavProps;
-  [ScreensKeys.ServicesDashboard]: undefined;
   [ScreensKeys.SavedPropertiesScreen]: undefined | ICommonNavProps;
   [ScreensKeys.PropertyOfferList]: undefined | ICommonNavProps;
 };
@@ -159,7 +157,6 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.TenantHistoryScreen} component={TenantHistory} />
       <Stack.Screen name={ScreensKeys.AssetDetailScreen} component={AssetDetail} />
       <Stack.Screen name={ScreensKeys.Messages} component={Messages} />
-      <Stack.Screen name={ScreensKeys.ServicesDashboard} component={ServicesDashboard} />
       <Stack.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <Stack.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
     </>

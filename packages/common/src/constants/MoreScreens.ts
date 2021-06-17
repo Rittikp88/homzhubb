@@ -20,6 +20,7 @@ export enum MoreScreenTypes {
   TICKETS = 'tickets',
   KYC_DOCUMENTS = 'kycDocuments',
   MESSAGES = 'messages',
+  SEARCH = 'search',
   SAVED_PROPERTIES = 'savedProperties',
   PROPERTY_VISITS = 'propertyVisits',
   NEW_LAUNCHES = 'newLaunches',
@@ -76,6 +77,14 @@ export const MORE_SCREENS: IMoreScreens = {
   sectionB: [
     {
       id: 4,
+      title: 'common:search',
+      icon: icons.search,
+      iconColor: ICON_COLOR,
+      textColor: TEXT_COLOR,
+      type: MoreScreenTypes.SEARCH,
+    },
+    {
+      id: 4,
       title: `${translationKey}:savedProperties`,
       icon: icons.heartOutline,
       iconColor: ICON_COLOR,
@@ -113,14 +122,6 @@ export const MORE_SCREENS: IMoreScreens = {
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.MARKET_TRENDS,
-    },
-    {
-      id: 9,
-      title: `${translationKey}:premiumPaidServices`,
-      icon: icons.settingOutline,
-      iconColor: ICON_COLOR,
-      textColor: TEXT_COLOR,
-      type: MoreScreenTypes.VALUE_ADDED_SERVICES,
     },
   ],
   sectionC: [

@@ -5,7 +5,7 @@ import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type FinancialsNavigatorParamList = {
-  [ScreensKeys.FinancialsLandingScreen]: undefined;
+  [ScreensKeys.FinancialsLandingScreen]: undefined | { isFromNavigation: boolean };
 } & CommonParamList;
 
 const FinancialsNavigator = createStackNavigator<FinancialsNavigatorParamList>();

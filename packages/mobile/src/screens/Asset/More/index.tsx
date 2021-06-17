@@ -34,24 +34,22 @@ export class More extends React.PureComponent<Props> {
     return (
       <UserScreen title={t('assetMore:more')}>
         <MoreProfile onIconPress={this.onIconPress} />
-        {screenKeys.map(
-          (section: string, sectionCount: number): React.ReactElement => {
-            const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
-            return (
-              <React.Fragment key={sectionCount}>
-                {currentData.map((item, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      {this.renderItem(item)}
-                      {index !== currentData.length - 1 && this.renderSeparator()}
-                    </React.Fragment>
-                  );
-                })}
-                {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
-              </React.Fragment>
-            );
-          }
-        )}
+        {screenKeys.map((section: string, sectionCount: number): React.ReactElement => {
+          const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
+          return (
+            <React.Fragment key={sectionCount}>
+              {currentData.map((item, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    {this.renderItem(item)}
+                    {index !== currentData.length - 1 && this.renderSeparator()}
+                  </React.Fragment>
+                );
+              })}
+              {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
+            </React.Fragment>
+          );
+        })}
         {this.renderLogout()}
       </UserScreen>
     );
@@ -137,14 +135,14 @@ export class More extends React.PureComponent<Props> {
       case MoreScreenTypes.REFER_FRIEND:
         navigation.navigate(ScreensKeys.ReferEarn);
         break;
+      case MoreScreenTypes.SEARCH:
+        navigation.navigate(ScreensKeys.Search);
+        break;
       case MoreScreenTypes.SAVED_PROPERTIES:
         navigation.navigate(ScreensKeys.SavedPropertiesScreen);
         break;
       case MoreScreenTypes.KYC_DOCUMENTS:
         navigation.navigate(ScreensKeys.KYC);
-        break;
-      case MoreScreenTypes.VALUE_ADDED_SERVICES:
-        navigation.navigate(ScreensKeys.ServicesDashboard);
         break;
       case MoreScreenTypes.MESSAGES:
         navigation.navigate(ScreensKeys.Messages);

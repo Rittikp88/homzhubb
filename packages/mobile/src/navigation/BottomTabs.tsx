@@ -15,19 +15,19 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import DefaultLogin from '@homzhub/mobile/src/screens/Asset/DefaultLogin';
-import { SearchStack, SearchStackParamList } from '@homzhub/mobile/src/navigation/SearchStack';
+import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 import { MoreStack, MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
-import { PortfolioNavigatorParamList, PortfolioStack } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { DashboardNavigatorParamList, DashboardStack } from '@homzhub/mobile/src/navigation/DashboardStack';
 import { FinancialsNavigatorParamList, FinancialsStack } from '@homzhub/mobile/src/navigation/FinancialStack';
+import { PortfolioNavigatorParamList, PortfolioStack } from '@homzhub/mobile/src/navigation/PortfolioStack';
+import { ServiceNavigatorParamList, ServiceStack } from '@homzhub/mobile/src/navigation/ServiceStack';
 import { NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { AuthStackParamList } from '@homzhub/mobile/src/navigation/AuthStack';
 
 export type BottomTabNavigatorParamList = {
   [ScreensKeys.Portfolio]: NestedNavigatorParams<PortfolioNavigatorParamList>;
   [ScreensKeys.Financials]: NestedNavigatorParams<FinancialsNavigatorParamList>;
   [ScreensKeys.Dashboard]: NestedNavigatorParams<DashboardNavigatorParamList>;
-  [ScreensKeys.Search]: NestedNavigatorParams<SearchStackParamList>;
+  [ScreensKeys.Service]: NestedNavigatorParams<ServiceNavigatorParamList>;
   [ScreensKeys.More]: NestedNavigatorParams<MoreStackNavigatorParamList>;
   [ScreensKeys.AuthStack]: NestedNavigatorParams<AuthStackParamList>;
   [ScreensKeys.DefaultLogin]: undefined;
@@ -63,6 +63,23 @@ export const BottomTabs = (): React.ReactElement => {
         },
       }}
     >
+      <BottomTabNavigator.Screen
+        name={ScreensKeys.Dashboard}
+        component={isLoggedIn ? DashboardStack : DefaultLogin}
+        listeners={({ navigation }): any => ({
+          tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
+          tabBarLabel: t('assetDashboard:dashboard'),
+          tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
+            return focused ? <Focused /> : <Unfocused />;
+          },
+        })}
+      />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Portfolio}
         component={isLoggedIn ? PortfolioStack : DefaultLogin}
@@ -109,8 +126,8 @@ export const BottomTabs = (): React.ReactElement => {
         }}
       />
       <BottomTabNavigator.Screen
-        name={ScreensKeys.Dashboard}
-        component={isLoggedIn ? DashboardStack : DefaultLogin}
+        name={ScreensKeys.Service}
+        component={ServiceStack}
         listeners={({ navigation }): any => ({
           tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
           focus: (e: any): void => {
@@ -119,29 +136,12 @@ export const BottomTabs = (): React.ReactElement => {
         })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: t('assetDashboard:dashboard'),
-          tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
-            return focused ? <Focused /> : <Unfocused />;
-          },
-        })}
-      />
-      <BottomTabNavigator.Screen
-        name={ScreensKeys.Search}
-        component={SearchStack}
-        listeners={({ navigation }): any => ({
-          tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
-          focus: (e: any): void => {
-            resetStackOnTabPress(e, navigation);
-          },
-        })}
-        options={({ route }): any => ({
-          tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: t('common:search'),
+          tabBarLabel: t('property:services'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return focused ? (
-              <Icon name={icons.searchFilled} color={color} size={26} />
+              <Icon name={icons.settingFilled} color={color} size={26} />
             ) : (
-              <Icon name={icons.search} color={color} size={22} />
+              <Icon name={icons.settingOutline} color={color} size={22} />
             );
           },
         })}

@@ -165,6 +165,7 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
               numOfElements={2}
               subTitleText={t('assetPortfolio:totalOffers')}
               isSubTextRequired
+              showBackIcon
               headerIcon={icons.offers}
               containerStyle={[styles.metricList, styles.borderRadius]}
             />

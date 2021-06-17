@@ -300,15 +300,12 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
         case MetricType.OFFER:
           callNavigation(ScreensKeys.PropertyOfferList);
           break;
-
         case MetricType.SHORTLISTED:
           callNavigation(ScreensKeys.SavedPropertiesScreen);
           break;
-
         case MetricType.SITE_VISITS:
           callNavigation(ScreensKeys.PropertyVisits);
           break;
-
         default:
           FunctionUtils.noop();
       }
@@ -322,6 +319,9 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     // @ts-ignore
     navigation.navigate(ScreensKeys.Portfolio, {
       screen: ScreensKeys.PortfolioLandingScreen,
+      params: {
+        isFromNavigation: true,
+      }
     });
   };
 

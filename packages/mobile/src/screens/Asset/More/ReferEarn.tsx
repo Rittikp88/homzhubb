@@ -110,7 +110,13 @@ const ReferEarn = (): React.ReactElement => {
 
   return (
     <UserScreen title={t('more')} backgroundColor={theme.colors.background}>
-      <AssetMetricsList data={management} title={totalInvite} numOfElements={2} subTitleText={t('acceptedInvites')} />
+      <AssetMetricsList
+        data={management}
+        showBackIcon
+        title={totalInvite}
+        numOfElements={2}
+        subTitleText={t('acceptedInvites')}
+      />
       <View style={styles.container}>
         <ReferEarnIcon style={styles.icon} />
         <Text type="small" textType="semiBold" style={styles.refer}>

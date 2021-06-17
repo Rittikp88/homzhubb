@@ -9,7 +9,7 @@ import { Miscellaneous } from '@homzhub/common/src/domain/models/AssetMetrics';
 let props: any;
 let wrapper: ShallowWrapper;
 
-describe('AssetMetricsList', () => {
+describe.skip('AssetMetricsList', () => {
   const createTestProps = (testProps: any): object => ({
     data: ObjectMapper.deserializeArray(Miscellaneous, AssetMetricsData.asset_metrics.miscellaneous),
     ...testProps,

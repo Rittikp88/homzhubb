@@ -757,7 +757,8 @@ export interface IUpdateMessagePayload {
 }
 
 export interface IAcceptInvitePayload {
-  inviteId: string;
+  inviteId?: string;
+  isFromNavigation?: boolean;
 }
 export interface IUpdateLeaseTerm {
   transactionId: number;

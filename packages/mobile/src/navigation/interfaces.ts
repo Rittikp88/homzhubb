@@ -55,6 +55,7 @@ export enum ScreensKeys {
   Financials = 'Financials',
   Dashboard = 'Dashboard',
   Search = 'Search',
+  Service = 'Service',
   More = 'More',
 
   // Dashboard Stack
