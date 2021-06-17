@@ -145,6 +145,7 @@ export class AssetCard extends Component<Props, IState> {
               <PropertyAddressCountry
                 primaryAddress={formattedProjectName}
                 countryFlag={flag}
+                showAddress={false}
                 subAddress={address ?? `${unitNumber} ${blockNumber}`}
                 containerStyle={styles.addressStyle}
               />

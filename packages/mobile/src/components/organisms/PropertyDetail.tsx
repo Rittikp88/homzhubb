@@ -35,9 +35,14 @@ class PropertyDetail extends Component<Props, IDetailState> {
   };
 
   public render(): React.ReactElement {
-    const { t, isCollapsible = true } = this.props;
+    const { t, isCollapsible = true, detail } = this.props;
     return (
       <>
+        <CollapsibleSection title={t('property:address')} isDividerRequired isCollapsibleRequired={isCollapsible}>
+          <Label type="large" textType="regular" style={styles.description}>
+            {detail.address}
+          </Label>
+        </CollapsibleSection>
         <CollapsibleSection title={t('description')} isDividerRequired isCollapsibleRequired={isCollapsible}>
           {this.renderAssetDescription()}
         </CollapsibleSection>

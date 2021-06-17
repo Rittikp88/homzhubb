@@ -674,7 +674,8 @@
     "deleteConfirmation": "Are you sure you want to delete {{name}}",
     "cannotDeleteDocument": "You cannot delete this document",
     "siteVisits": "Site Visits",
-    "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted"
+    "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
+    "vacantPropertyMsg": "Your property is vacant, choose what you want to do next"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

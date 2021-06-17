@@ -128,6 +128,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         <PropertyAddressCountry
           primaryAddress={projectName}
           countryFlag={flag}
+          showAddress={false}
           subAddress={address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`}
           containerStyle={styles.addressStyle}
         />
@@ -207,6 +208,11 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         {isCompleteDetailsRequired && (
           <Label type="regular" style={styles.infoText}>
             {t('completeProperty')}
+          </Label>
+        )}
+        {isListingRequired && (
+          <Label type="regular" style={styles.infoText}>
+            {t('property:vacantPropertyMsg')}
           </Label>
         )}
       </>

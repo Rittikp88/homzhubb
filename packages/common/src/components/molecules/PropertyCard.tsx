@@ -14,6 +14,7 @@ interface IProps {
   asset: Asset;
   isExpanded?: boolean;
   isIcon?: boolean;
+  showAddress?: boolean;
   isPriceVisible?: boolean;
   isShieldVisible?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
@@ -46,6 +47,7 @@ const PropertyCard = (props: IProps): React.ReactElement => {
     isPriceVisible = true,
     isShieldVisible = true,
     isIcon = true,
+    showAddress = true,
   } = props;
 
   const isAttachmentPresent = images && images.length > 0;
@@ -84,7 +86,9 @@ const PropertyCard = (props: IProps): React.ReactElement => {
         countryFlag={flag}
         subAddress={address ?? `${unitNumber} ${blockNumber}`}
         isIcon={isIcon}
+        showAddress={showAddress}
       />
+      {!showAddress && <View style={styles.emptyView} />}
       {isExpanded && isPriceVisible && (
         <PricePerUnit price={pricePerUnit} currency={currencyData} unit={maintenancePaymentSchedule} />
       )}
@@ -122,5 +126,8 @@ const styles = StyleSheet.create({
   },
   amenities: {
     marginEnd: 16,
+  },
+  emptyView: {
+    marginVertical: 10,
   },
 });

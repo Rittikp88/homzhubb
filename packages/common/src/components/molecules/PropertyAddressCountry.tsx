@@ -15,6 +15,7 @@ interface IProps {
   primaryAddressStyle?: StyleProp<TextStyle>;
   subAddressStyle?: StyleProp<TextStyle>;
   containerStyle?: StyleProp<ViewStyle>;
+  showAddress?: boolean;
 }
 
 const PropertyAddressCountry = (props: IProps): React.ReactElement => {
@@ -28,6 +29,7 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
     containerStyle = {},
     countryFlag,
     isIcon,
+    showAddress = true,
   } = props;
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
@@ -43,18 +45,20 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
           {primaryAddress}
         </Typography>
       </View>
-      <View style={styles.flexRow}>
-        {isIcon && <Icon name={icons.locationMarker} size={16} color={theme.colors.darkTint3} style={styles.icon} />}
-        <Typography
-          variant={subAddressTextStyles?.variant ?? 'text'}
-          size={subAddressTextStyles?.size ?? 'small'}
-          fontWeight={subAddressTextStyles?.fontWeight ?? 'regular'}
-          style={[styles.subAddress, subAddressStyle]}
-          numberOfLines={2}
-        >
-          {subAddress}
-        </Typography>
-      </View>
+      {showAddress && (
+        <View style={styles.flexRow}>
+          {isIcon && <Icon name={icons.locationMarker} size={16} color={theme.colors.darkTint3} style={styles.icon} />}
+          <Typography
+            variant={subAddressTextStyles?.variant ?? 'text'}
+            size={subAddressTextStyles?.size ?? 'small'}
+            fontWeight={subAddressTextStyles?.fontWeight ?? 'regular'}
+            style={[styles.subAddress, subAddressStyle]}
+            numberOfLines={2}
+          >
+            {subAddress}
+          </Typography>
+        </View>
+      )}
     </View>
   );
 };
