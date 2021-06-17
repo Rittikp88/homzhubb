@@ -52,11 +52,11 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     setFilter,
     filters,
     clearProperties,
-    // setInitialState,         // TODO - Revisit Later
+    // setInitialState, // TODO - Revisit Later
     filterData,
     getFilterDetails,
     loader,
-    // setInitialFilters,     // TODO - Revisit Later
+    // setInitialFilters, // TODO - Revisit Later
   } = props;
 
   const toggleGridView = (): void => {

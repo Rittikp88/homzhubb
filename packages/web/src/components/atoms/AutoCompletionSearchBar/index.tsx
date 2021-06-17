@@ -22,6 +22,12 @@ interface IAddressComponent {
   short_name: string;
   types: Array<string>;
 }
+// TODO Lakshit / Mohak - To resolve state persistent bug
+
+// interface IDispatchProps {
+//   setInitialFilters: () => void;
+//   setInitialState: () => void;
+// }
 
 interface ISearchBarProps {
   setUpdatedLatLng?: (latLng: ILatLng) => void;
@@ -30,8 +36,11 @@ interface ISearchBarProps {
   onSuggestionPress?: (place: IAddressComponent[], address: string, latLng: ILatLng) => void;
   setProjectName?: (name: string | null) => void;
 }
+type IProps = ISearchBarProps;
 
-const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) => {
+const AutoCompletionSearchBar: FC<IProps> = (props: IProps) => {
+  // TODO - To resolve state persistent bug
+  // const { setInitialFilters, setInitialState } = props;
   const history = useHistory();
   const address = useSelector(SearchSelector.getSearchAddress);
   const [searchText, setSearchText] = useState('');
@@ -62,7 +71,6 @@ const AutoCompletionSearchBar: FC<ISearchBarProps> = (props: ISearchBarProps) =>
       }
     } else if (popupRef && popupRef.current) {
       popupRef.current.close();
-      setSearchText(address);
     }
   }, [searchText]);
 
@@ -180,5 +188,18 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
+// TODO - To resolve state persistent bug
 
+// const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+//   const { setInitialFilters, setInitialState } = SearchActions;
+//   return bindActionCreators(
+//     {
+//       setInitialFilters,
+//       setInitialState,
+//     },
+//     dispatch
+//   );
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(AutoCompletionSearchBar);
 export default AutoCompletionSearchBar;
