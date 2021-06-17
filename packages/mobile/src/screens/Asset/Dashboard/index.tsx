@@ -321,7 +321,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       screen: ScreensKeys.PortfolioLandingScreen,
       params: {
         isFromNavigation: true,
-      }
+      },
     });
   };
 

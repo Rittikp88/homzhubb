@@ -30,7 +30,6 @@ export enum MoreScreenTypes {
   PAYMENT_METHODS = 'paymentMethods',
   REFER_FRIEND = 'referFriend',
   SUPPORT = 'support',
-  LOGOUT = 'logout',
   OFFERS = 'Offers',
   FAQS = 'Faqs',
 }
@@ -168,13 +167,4 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.FAQS,
     },
   ],
-};
-
-export const LOGOUT = {
-  id: 12,
-  title: `${translationKey}:logout`,
-  icon: icons.logOut,
-  iconColor: theme.colors.error,
-  textColor: theme.colors.error,
-  type: MoreScreenTypes.LOGOUT,
 };

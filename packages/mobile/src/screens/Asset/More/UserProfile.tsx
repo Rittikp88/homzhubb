@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -30,6 +30,7 @@ type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, Scr
 
 interface IDispatchProps {
   getUserProfile: () => void;
+  logout: () => void;
 }
 
 interface IStateProps {
@@ -116,55 +117,65 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
     const title = params && params.screenTitle ? params.screenTitle : t('assetMore:more');
     return (
       <>
-        <UserScreen title={title} pageTitle={t('assetMore:profile')} onBackPress={navigation.goBack}>
-          <View style={styles.container}>
-            <View style={styles.profileImage}>
-              <Avatar
-                isOnlyAvatar
-                fullName={name || ''}
-                imageSize={80}
-                onPressCamera={(): void => this.onUpdatePress(t('basicDetails'))}
-                image={profilePicture}
+        <UserScreen
+          title={title}
+          pageTitle={t('assetMore:profile')}
+          onBackPress={navigation.goBack}
+          backgroundColor={theme.colors.background}
+          headerStyle={styles.headerStyle}
+        >
+          <>
+            <View style={styles.container}>
+              <View style={styles.profileImage}>
+                <Avatar
+                  isOnlyAvatar
+                  fullName={name || ''}
+                  imageSize={80}
+                  onPressCamera={(): void => this.onUpdatePress(t('basicDetails'))}
+                  image={profilePicture}
+                />
+              </View>
+              <Progress
+                containerStyles={styles.progressBar}
+                title={t('assetMore:profile')}
+                progress={profileProgress || 0}
+              />
+              <DetailsCard
+                headerInfo={{ title: t('basicDetails'), icon: icons.noteBook, onPress: this.onUpdatePress }}
+                details={basicDetailsArray}
+                type={UpdateUserFormTypes.BasicDetails}
+                onVerifyPress={this.onVerifyPress}
+                showDivider
+              />
+              <DetailsCard
+                headerInfo={{ title: t('changePassword'), icon: icons.rightArrow, onPress: this.onChangePassword }}
+                showDivider
+              />
+              <DetailsCard
+                headerInfo={{
+                  title: t('emergencyContact'),
+                  icon: emergencyContactArray ? icons.noteBook : undefined,
+                  onPress: this.onUpdatePress,
+                }}
+                details={emergencyContactArray}
+                type={UpdateUserFormTypes.EmergencyContact}
+                showDivider
+              />
+              <DetailsCard
+                headerInfo={{
+                  title: t('workInformation'),
+                  icon: workInfoArray ? icons.noteBook : undefined,
+                  onPress: this.onUpdatePress,
+                }}
+                details={workInfoArray}
+                onVerifyPress={this.onVerifyPress}
+                type={UpdateUserFormTypes.WorkInfo}
               />
             </View>
-            <Progress
-              containerStyles={styles.progressBar}
-              title={t('assetMore:profile')}
-              progress={profileProgress || 0}
-            />
-            <DetailsCard
-              headerInfo={{ title: t('basicDetails'), icon: icons.noteBook, onPress: this.onUpdatePress }}
-              details={basicDetailsArray}
-              type={UpdateUserFormTypes.BasicDetails}
-              onVerifyPress={this.onVerifyPress}
-              showDivider
-            />
-            <DetailsCard
-              headerInfo={{ title: t('changePassword'), icon: icons.rightArrow, onPress: this.onChangePassword }}
-              showDivider
-            />
-            <DetailsCard
-              headerInfo={{
-                title: t('emergencyContact'),
-                icon: emergencyContactArray ? icons.noteBook : undefined,
-                onPress: this.onUpdatePress,
-              }}
-              details={emergencyContactArray}
-              type={UpdateUserFormTypes.EmergencyContact}
-              showDivider
-            />
-            <DetailsCard
-              headerInfo={{
-                title: t('workInformation'),
-                icon: workInfoArray ? icons.noteBook : undefined,
-                onPress: this.onUpdatePress,
-              }}
-              details={workInfoArray}
-              onVerifyPress={this.onVerifyPress}
-              type={UpdateUserFormTypes.WorkInfo}
-            />
-          </View>
+            {this.renderLogout()}
+          </>
         </UserScreen>
+
         <BottomSheet sheetHeight={400} visible={isBottomSheetOpen} onCloseSheet={this.closeBottomSheet}>
           <View>
             <Text style={styles.commonTextStyle} type="large" textType="semiBold">
@@ -189,6 +200,18 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
           </View>
         </BottomSheet>
       </>
+    );
+  };
+
+  public renderLogout = (): React.ReactElement => {
+    const { logout, t } = this.props;
+    return (
+      <TouchableOpacity style={styles.logOutHolder} onPress={logout}>
+        <Icon name={icons.logOut} size={22} color={theme.colors.error} style={styles.logOutIcon} />
+        <Text type="small" textType="semiBold" style={styles.logOutText} minimumFontScale={0.1} numberOfLines={1}>
+          {t('assetMore:logout')}
+        </Text>
+      </TouchableOpacity>
     );
   };
 
@@ -264,8 +287,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getUserProfile } = UserActions;
-  return bindActionCreators({ getUserProfile }, dispatch);
+  const { getUserProfile, logout } = UserActions;
+  return bindActionCreators({ getUserProfile, logout }, dispatch);
 };
 
 export default connect(
@@ -296,5 +319,22 @@ const styles = StyleSheet.create({
   iconStyles: {
     paddingTop: 30,
     paddingBottom: 60,
+  },
+  logOutHolder: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 17,
+    backgroundColor: theme.colors.white,
+    marginVertical: 30,
+  },
+  headerStyle: {
+    backgroundColor: theme.colors.white,
+  },
+  logOutText: {
+    color: theme.colors.error,
+  },
+  logOutIcon: {
+    marginEnd: 13.5,
   },
 });

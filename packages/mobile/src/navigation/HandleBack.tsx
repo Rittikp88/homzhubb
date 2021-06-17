@@ -1,6 +1,7 @@
 import React from 'react';
-import { BackHandler } from 'react-native';
+import { BackHandler, View, StyleSheet } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { theme } from '@homzhub/common/src/styles/theme';
 
 interface IProps {
   navigation?: any;
@@ -54,7 +55,7 @@ class HandleBack extends React.Component<IProps> {
 
   public render(): React.ReactElement | React.ReactNode {
     const { children } = this.props;
-    return children;
+    return <View style={styles.container}>{children}</View>;
   }
 
   public onBack = (): boolean => {
@@ -69,3 +70,10 @@ class HandleBack extends React.Component<IProps> {
 }
 
 export default HandleBack;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+});

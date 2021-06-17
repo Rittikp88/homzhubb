@@ -2,21 +2,18 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { MoreProfile } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { MORE_SCREENS, LOGOUT, IMoreScreenItem, MoreScreenTypes } from '@homzhub/common/src/constants/MoreScreens';
+import { MORE_SCREENS, IMoreScreenItem, MoreScreenTypes } from '@homzhub/common/src/constants/MoreScreens';
 
 interface IDispatchProps {
   logout: () => void;
@@ -34,23 +31,24 @@ export class More extends React.PureComponent<Props> {
     return (
       <UserScreen title={t('assetMore:more')}>
         <MoreProfile onIconPress={this.onIconPress} />
-        {screenKeys.map((section: string, sectionCount: number): React.ReactElement => {
-          const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
-          return (
-            <React.Fragment key={sectionCount}>
-              {currentData.map((item, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    {this.renderItem(item)}
-                    {index !== currentData.length - 1 && this.renderSeparator()}
-                  </React.Fragment>
-                );
-              })}
-              {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
-            </React.Fragment>
-          );
-        })}
-        {this.renderLogout()}
+        {screenKeys.map(
+          (section: string, sectionCount: number): React.ReactElement => {
+            const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
+            return (
+              <React.Fragment key={sectionCount}>
+                {currentData.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      {this.renderItem(item)}
+                      {index !== currentData.length - 1 && this.renderSeparator()}
+                    </React.Fragment>
+                  );
+                })}
+                {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
+              </React.Fragment>
+            );
+          }
+        )}
       </UserScreen>
     );
   };
@@ -85,24 +83,8 @@ export class More extends React.PureComponent<Props> {
     );
   };
 
-  public renderLogout = (): React.ReactElement => {
-    const { logout } = this.props;
-    return (
-      <>
-        {this.renderLogoutSeparator()}
-        <TouchableOpacity onPress={logout} style={styles.logout} testID="touchLogout">
-          {this.renderItemWithIcon(LOGOUT, true)}
-        </TouchableOpacity>
-      </>
-    );
-  };
-
   public renderSeparator = (): React.ReactElement => {
     return <Divider containerStyles={styles.divider} />;
-  };
-
-  public renderLogoutSeparator = (): React.ReactElement => {
-    return <Divider containerStyles={styles.logoutSeparator} />;
   };
 
   public onIconPress = (): void => {
@@ -174,17 +156,7 @@ export class More extends React.PureComponent<Props> {
   };
 }
 
-export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { logout } = UserActions;
-  return bindActionCreators(
-    {
-      logout,
-    },
-    dispatch
-  );
-};
-
-export default connect(null, mapDispatchToProps)(withTranslation()(More));
+export default withTranslation()(More);
 
 const styles = StyleSheet.create({
   moreItem: {
@@ -197,18 +169,10 @@ const styles = StyleSheet.create({
   itemText: {
     marginStart: 10,
   },
-  logout: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   divider: {
     borderColor: theme.colors.unreadNotification,
     borderWidth: 1,
     marginLeft: 65,
-  },
-  logoutSeparator: {
-    borderColor: theme.colors.unreadNotification,
-    borderWidth: 1.5,
   },
   iconAndText: {
     flexDirection: 'row',
