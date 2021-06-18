@@ -299,6 +299,9 @@ export class Asset {
   @JsonProperty('service_tickets', Count, true)
   private _serviceTickets: Count = new Count();
 
+  @JsonProperty('messages', Count, true)
+  private _messages: Count = new Count();
+
   @JsonProperty('asset_status_info', AssetStatusInfo, true)
   private _assetStatusInfo: AssetStatusInfo | null = null;
 
@@ -562,6 +565,10 @@ export class Asset {
 
   get serviceTickets(): Count {
     return this._serviceTickets;
+  }
+
+  get messages(): Count {
+    return this._messages;
   }
 
   get assetStatusInfo(): AssetStatusInfo | null {

@@ -221,8 +221,16 @@ class FinanceUtils {
   };
 
   public getGraphColor = (category: string): string => {
-    const { FURNISHING_RENOVATION, PAYMENT, LOAN_PAYMENT, SOCIETY_CHARGES, TAXES, INSURANCE, REPAIR, OTHERS } =
-      ExpenseCategory;
+    const {
+      FURNISHING_RENOVATION,
+      PAYMENT,
+      LOAN_PAYMENT,
+      SOCIETY_CHARGES,
+      TAXES,
+      INSURANCE,
+      REPAIR,
+      OTHERS,
+    } = ExpenseCategory;
     const { purple, greenTint5, yellowTint1, redTint2, redTint3, rental, disabledSearch, other } = theme.colors;
 
     switch (category) {

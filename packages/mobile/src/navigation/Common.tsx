@@ -7,6 +7,7 @@ import PropertyVisits from '@homzhub/mobile/src/screens/Asset/More/PropertyVisit
 import AcceptOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/AcceptOffer';
 import CreateLease from '@homzhub/mobile/src/screens/Asset/More/Offers/CreateLease';
 import CancelOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/CancelOffer';
+import GroupChatInfo from '@homzhub/mobile/src/screens/Asset/More/GroupChatInfo';
 import ProspectProfile from '@homzhub/mobile/src/screens/Asset/More/Offers/ProspectProfile';
 import RejectOffer from '@homzhub/mobile/src/screens/Asset/More/Offers/RejectOffer';
 import SubmitOfferForm from '@homzhub/mobile/src/screens/Asset/More/Offers/SubmitOfferForm';
@@ -41,7 +42,7 @@ import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetP
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
-import { IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IGetMessageParam, IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
   IAddRecordProps,
   IAssetDescriptionProps,
@@ -108,6 +109,7 @@ export type CommonParamList = {
   [ScreensKeys.Messages]: ICommonNavProps;
   [ScreensKeys.SavedPropertiesScreen]: undefined | ICommonNavProps;
   [ScreensKeys.PropertyOfferList]: undefined | ICommonNavProps;
+  [ScreensKeys.GroupChatInfo]: IGetMessageParam & ICommonNavProps;
 };
 
 /**
@@ -159,6 +161,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.Messages} component={Messages} />
       <Stack.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <Stack.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
+      <Stack.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
     </>
   );
 };

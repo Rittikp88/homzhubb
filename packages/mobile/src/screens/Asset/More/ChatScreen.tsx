@@ -101,7 +101,6 @@ class ChatScreen extends Component<Props, IScreenState> {
     const { t, currentChat, route } = this.props;
     const { isScrollToBottom, isLoading, assetName, users } = this.state;
     const isFromOffers = Boolean(route?.params?.isFromOffers);
-    const isFromProperty = Boolean(route?.params?.isFromPortfolio);
 
     const getPageTitle = (): string => {
       if (isFromOffers) return assetName;
@@ -110,19 +109,12 @@ class ChatScreen extends Component<Props, IScreenState> {
       return t('common:message');
     };
 
-    const getTitle = (): string => {
-      if (isFromProperty && isFromOffers) return t('assetPortfolio:portfolio');
-      if (isFromProperty) return route?.params?.screenTitle ?? '';
-
-      return t('assetMore:more');
-    };
-
     const isPreview = (isFromOffers && !currentChat) || (!isFromOffers && currentChat);
 
     return (
       <>
         <UserScreen
-          title={getTitle()}
+          title={this.getTitle()}
           subTitle={isFromOffers ? users : undefined}
           pageTitle={getPageTitle()}
           onBackPress={this.onGoBack}
@@ -200,10 +192,13 @@ class ChatScreen extends Component<Props, IScreenState> {
   };
 
   private onSelectMenuItem = (value: string): void => {
-    const { navigation, currentChat } = this.props;
+    const { navigation, currentChat, route, t } = this.props;
     if (value === MenuItems.VIEW_INFO && currentChat) {
       // @ts-ignore
-      navigation.navigate(ScreensKeys.GroupChatInfo, { groupId: currentChat.groupId });
+      navigation.navigate(ScreensKeys.GroupChatInfo, {
+        groupId: currentChat.groupId,
+        screenTitle: route?.params?.isFromPortfolio ? t('assetPortfolio:portfolio') : this.getTitle(),
+      });
       this.handleMenu();
     }
   };
@@ -291,6 +286,17 @@ class ChatScreen extends Component<Props, IScreenState> {
     if (!isAttachment && !!payload.message) {
       this.handleSend(payload);
     }
+  };
+
+  private getTitle = (): string => {
+    const { t, route } = this.props;
+    const isFromOffers = Boolean(route?.params?.isFromOffers);
+    const isFromProperty = Boolean(route?.params?.isFromPortfolio);
+
+    if (isFromProperty && isFromOffers) return t('assetPortfolio:portfolio');
+    if (isFromProperty) return route?.params?.screenTitle ?? '';
+
+    return t('assetMore:more');
   };
 
   private postComment = async (comment: string): Promise<void> => {

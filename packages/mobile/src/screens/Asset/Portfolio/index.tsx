@@ -42,6 +42,7 @@ import {
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 interface IStateProps {
   tenancies: Asset[] | null;
@@ -59,6 +60,7 @@ interface IDispatchProps {
   setAssetId: (payload: number) => void;
   clearMessages: () => void;
   clearAssetData: () => void;
+  setCurrentChatDetail: (payload: IChatPayload) => void;
 }
 
 interface IScreenState {
@@ -201,8 +203,8 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
-    const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void =>
-      this.onViewProperty({ ...data, dataType: type }, key);
+    const handleViewProperty = (data: ISetAssetPayload, assetData: Asset, key?: Tabs): void =>
+      this.onViewProperty({ ...data, dataType: type }, assetData, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
       this.handleActions(item, payload, param);
@@ -228,13 +230,41 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     this.setState({ expandedAssetId: 0 });
   };
 
-  private onViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
-    const { navigation, setCurrentAsset } = this.props;
+  private onViewProperty = (data: ISetAssetPayload, asset: Asset, key?: Tabs): void => {
+    const { navigation, setCurrentAsset, setCurrentChatDetail } = this.props;
+    const { formattedProjectName, assetStatusInfo, projectName } = asset;
     setCurrentAsset(data);
-    navigation.navigate(ScreensKeys.PropertyDetailScreen, {
+
+    const param = {
+      isFromPortfolio: true,
       isFromTenancies: data.dataType === DataType.TENANCIES,
-      ...(key && { tabKey: key }),
-    });
+      screenTitle: formattedProjectName,
+      propertyId: data.asset_id,
+    };
+
+    const handleNavigation = (): void => {
+      switch (key) {
+        case Tabs.TICKETS:
+          navigation.navigate(ScreensKeys.ServiceTicketScreen, param);
+          break;
+
+        case Tabs.MESSAGES:
+          setCurrentChatDetail({
+            groupName: projectName,
+            groupId:
+              assetStatusInfo?.leaseTransaction?.id && assetStatusInfo?.leaseTransaction?.id > 0
+                ? assetStatusInfo?.leaseTransaction?.messageGroupId
+                : 0,
+          });
+          navigation.navigate(ScreensKeys.ChatScreen, param);
+          break;
+
+        default:
+          navigation.navigate(ScreensKeys.PropertyDetailScreen);
+      }
+    };
+
+    handleNavigation();
   };
 
   private onResendInvite = async (tenantId: number): Promise<void> => {
@@ -386,7 +416,7 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
   const { setAssetId, setEditPropertyFlow, clearAssetData } = RecordAssetActions;
-  const { clearMessages } = CommonActions;
+  const { clearMessages, setCurrentChatDetail } = CommonActions;
   return bindActionCreators(
     {
       getTenanciesDetails,
@@ -397,6 +427,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setEditPropertyFlow,
       clearMessages,
       clearAssetData,
+      setCurrentChatDetail,
     },
     dispatch
   );

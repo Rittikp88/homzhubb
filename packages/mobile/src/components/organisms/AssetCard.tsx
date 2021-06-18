@@ -56,7 +56,7 @@ interface IListProps {
   onCompleteDetails: (id: number) => void;
   containerStyle?: StyleProp<ViewStyle>;
   enterFullScreen?: (attachments: Attachment[]) => void;
-  onViewProperty?: (data: ISetAssetPayload, key?: Tabs) => void;
+  onViewProperty?: (data: ISetAssetPayload, assetData: Asset, key?: Tabs) => void;
   onHandleAction?: (payload: IClosureReasonPayload, param?: IListingParam) => void;
 }
 
@@ -64,6 +64,12 @@ interface IState {
   isOwnerSheetVisible: boolean;
   isBottomSheetVisible: boolean;
   listOfTenant: number;
+}
+
+interface ICountWithIcon {
+  iconName: string;
+  onPress: () => void;
+  count: number;
 }
 
 type Props = WithTranslation & IListProps;
@@ -82,6 +88,7 @@ export class AssetCard extends Component<Props, IState> {
       blockNumber,
       notifications,
       serviceTickets,
+      messages,
       attachments,
       assetStatusInfo,
       address,
@@ -93,9 +100,54 @@ export class AssetCard extends Component<Props, IState> {
       detailPayload = PropertyUtils.getAssetPayload(assetStatusInfo, id);
     }
 
-    const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(detailPayload, key);
+    const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(detailPayload, assetData, key);
     const handleArrowPress = (): void => onPressArrow && onPressArrow(id);
     const isExpanded: boolean = expandedId === id;
+
+    const RenderIconWithCount = ({ item }: { item: ICountWithIcon }): React.ReactElement | null => {
+      const { count, iconName, onPress } = item;
+      if (!count) return null;
+      return (
+        <>
+          <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
+          <TouchableOpacity style={styles.topLeftView} onPress={onPress}>
+            <Icon name={iconName} color={theme.colors.blue} size={18} style={styles.iconStyle} />
+            <Label type="large" style={styles.count}>
+              {count}
+            </Label>
+          </TouchableOpacity>
+        </>
+      );
+    };
+
+    const iconData = [
+      {
+        iconName: icons.bell,
+        onPress: (): void => handlePropertyView(Tabs.NOTIFICATIONS),
+        count: notifications?.count,
+      },
+      {
+        iconName: icons.headPhone,
+        onPress: (): void => handlePropertyView(Tabs.TICKETS),
+        count: serviceTickets?.count,
+      },
+      {
+        iconName: icons.mail,
+        onPress: (): void => handlePropertyView(Tabs.MESSAGES),
+        count: messages?.count,
+      },
+    ];
+
+    const RenderIcons = (): React.ReactElement => {
+      return (
+        <>
+          {iconData.map((item, index) => (
+            <RenderIconWithCount key={`${item.iconName}-${index}`} item={item} />
+          ))}
+        </>
+      );
+    };
+
     return (
       <View style={styles.mainContainer}>
         <View style={[styles.container, containerStyle]}>
@@ -107,23 +159,7 @@ export class AssetCard extends Component<Props, IState> {
                   badgeColor={assetStatusInfo?.tag.color ?? ''}
                   badgeStyle={styles.badgeStyle}
                 />
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                <TouchableOpacity
-                  style={styles.topLeftView}
-                  onPress={(): void => handlePropertyView(Tabs.NOTIFICATIONS)}
-                >
-                  <Icon name={icons.bell} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                  <Label type="large" style={styles.count}>
-                    {notifications?.count}
-                  </Label>
-                </TouchableOpacity>
-                <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={8} style={styles.dotStyle} />
-                <TouchableOpacity style={styles.topLeftView} onPress={(): void => handlePropertyView(Tabs.TICKETS)}>
-                  <Icon name={icons.headPhone} color={theme.colors.blue} size={18} style={styles.iconStyle} />
-                  <Label type="large" style={styles.count}>
-                    {serviceTickets?.count}
-                  </Label>
-                </TouchableOpacity>
+                <RenderIcons />
               </View>
               <Icon
                 name={isExpanded ? icons.upArrow : icons.downArrow}

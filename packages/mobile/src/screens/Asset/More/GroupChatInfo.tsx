@@ -4,7 +4,7 @@ import { ActivityIndicator, FlatList, Image, StyleSheet, View, ViewStyle, Toucha
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { MessageRepository } from '@homzhub/common/src/domain/repositories/MessageRepository';
-import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
+import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -20,16 +20,14 @@ import { Links } from '@homzhub/common/src/domain/models/Links';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
-type Props = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.GroupChatInfo>;
+type Props = NavigationScreenProps<CommonParamList, ScreensKeys.GroupChatInfo>;
 
 const LOAD_MORE = 'loadMore';
 
 const GroupChatInfo = (props: Props): React.ReactElement => {
   const {
     navigation,
-    route: {
-      params: { groupId },
-    },
+    route: { params },
   } = props;
   const { t } = useTranslation();
 
@@ -65,7 +63,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
 
   const fetchGroupChatInfo = async (): Promise<void> => {
     setLoading(true);
-    const membersData = await MessageRepository.getGroupChatInfo({ groupId });
+    const membersData = await MessageRepository.getGroupChatInfo({ groupId: params.groupId });
     setUsersData(membersData);
     setLoading(false);
   };
@@ -77,7 +75,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
       setLoading(true);
     }
     const { results, links: responseLink } = await MessageRepository.getGroupChatMedia({
-      groupId,
+      groupId: params.groupId,
       cursor: link?.next || '',
       count,
     });
@@ -250,7 +248,7 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
   return (
     <>
       <UserScreen
-        title={t('assetMore:more')}
+        title={params.screenTitle ?? t('assetMore:more')}
         pageTitle={t('assetMore:profileDetails')}
         loading={loading && !loadingMore}
         rightNode={crossIcon}
