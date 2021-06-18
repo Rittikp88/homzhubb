@@ -114,17 +114,17 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
           <View style={styles.buttonContainer}>
             <Button
               type="secondary"
-              title={t('common:delete')}
+              title={t('common:cancel')}
+              onPress={this.closeBottomSheet}
               titleStyle={styles.buttonTitle}
-              onPress={onPressDelete}
               containerStyle={styles.editButton}
             />
             <Button
               type="primary"
-              title={t('common:cancel')}
-              onPress={this.closeBottomSheet}
+              title={t('common:delete')}
               titleStyle={styles.buttonTitle}
-              containerStyle={styles.doneButton}
+              onPress={onPressDelete}
+              containerStyle={styles.deleteButton}
             />
           </View>
         </View>
@@ -293,9 +293,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     height: 50,
   },
-  doneButton: {
+  deleteButton: {
     flexDirection: 'row-reverse',
     height: 50,
+    backgroundColor: theme.colors.error,
   },
   buttonTitle: {
     marginHorizontal: 4,

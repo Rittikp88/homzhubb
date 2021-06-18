@@ -313,7 +313,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
             <Button
               type="primary"
               title={t('common:delete')}
-              containerStyle={styles.button}
+              containerStyle={[styles.button, styles.deleteButton]}
               onPress={this.onSelectDelete}
             />
           </View>
@@ -636,5 +636,8 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     marginRight: 10,
+  },
+  deleteButton: {
+    backgroundColor: theme.colors.error,
   },
 });

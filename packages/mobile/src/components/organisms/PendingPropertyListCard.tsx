@@ -124,7 +124,13 @@ export class PendingPropertyListCard extends Component<Props, IState> {
 
     return (
       <TouchableOpacity style={styles.cardContainer} onPress={(): void => onViewProperty(viewPayload)}>
-        <ShieldGroup propertyType={name} propertyTypeStyle={styles.heading} text={description} isInfoRequired />
+        <ShieldGroup
+          isShieldVisible={false}
+          propertyType={name}
+          propertyTypeStyle={styles.heading}
+          text={description}
+          isInfoRequired
+        />
         <PropertyAddressCountry
           primaryAddress={projectName}
           countryFlag={flag}

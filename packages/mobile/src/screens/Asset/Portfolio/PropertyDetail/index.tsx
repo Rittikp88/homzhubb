@@ -230,6 +230,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           message={t('deleteConfirmation')}
           onCancel={this.onCloseDeleteView}
           onContinue={(): Promise<void> => this.onDeleteProperty(propertyData.id)}
+          secondaryButtonStyle={styles.deleteButtonContainer}
+          secondaryTitleStyle={styles.deleteButtonText}
         />
       </BottomSheet>
     );
@@ -636,5 +638,11 @@ const styles = StyleSheet.create({
   tabItem: {
     marginHorizontal: 16,
     alignItems: 'center',
+  },
+  deleteButtonContainer: {
+    borderColor: theme.colors.error,
+  },
+  deleteButtonText: {
+    color: theme.colors.white,
   },
 });

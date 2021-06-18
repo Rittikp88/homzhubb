@@ -287,8 +287,8 @@ const VisitCard = (props: IProps): React.ReactElement => {
                   key={index}
                   title={item}
                   onPress={(): void => onPressConfirmation(item)}
-                  containerStyle={styles.confirmationContainer}
-                  titleStyle={styles.confirmationTitle}
+                  containerStyle={item === 'Yes' ? styles.yesButton : styles.confirmationContainer}
+                  titleStyle={item === 'Yes' ? styles.yesText : styles.confirmationTitle}
                 />
               );
             })}
@@ -392,6 +392,13 @@ const styles = StyleSheet.create({
   },
   confirmationContainer: {
     marginHorizontal: 6,
+  },
+  yesButton: {
+    backgroundColor: theme.colors.error,
+    borderColor: theme.colors.error,
+  },
+  yesText: {
+    color: theme.colors.white,
   },
   confirmationTitle: {
     marginVertical: 0,
