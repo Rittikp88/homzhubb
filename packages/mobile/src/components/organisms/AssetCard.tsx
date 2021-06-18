@@ -3,6 +3,7 @@ import { Image, StyleProp, StyleSheet, ScrollView, TextStyle, TouchableOpacity, 
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { OfferHelper } from '@homzhub/mobile/src/utils/OfferHelper';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -14,7 +15,7 @@ import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlac
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
+import { OffersVisitsSection } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeaseProgress';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
@@ -33,6 +34,7 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
+import { OffersVisitsType } from '@homzhub/common/src/constants/Offers';
 
 interface IUserInfo {
   name: string;
@@ -270,19 +272,24 @@ export class AssetCard extends Component<Props, IState> {
         leaseListingId,
         saleListingId,
         leaseOwnerInfo,
+        status,
         leaseTransaction: { rent, securityDeposit, totalSpendPeriod, leaseEndDate, leaseStartDate, currency },
       },
       listingVisits: { upcomingVisits, missedVisits, completedVisits },
       lastVisitedStep: { assetCreation },
-      isVerificationDocumentUploaded,
       spaces,
+      formattedProjectName,
+      id,
       listingOffers: { totalOffers, activeOffers, pendingOffers },
     } = assetData;
     const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
+    const isListingApproved = !!status && status === 'APPROVED' && isListed;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted, inviteSentTime);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
+    const onNavPress = (type: OffersVisitsType): void =>
+      OfferHelper.handleOfferVisitAction(type, formattedProjectName, id);
     return (
       <>
         {!!userData.fullName && (
@@ -331,9 +338,10 @@ export class AssetCard extends Component<Props, IState> {
             onPress={this.onCompleteDetails}
           />
         )}
-        {isVerificationDocumentUploaded && isListed && (
+        {isListingApproved && (
           <OffersVisitsSection
             isDetailView={isDetailView}
+            onNav={onNavPress}
             values={{
               [OffersVisitsType.offers]: [totalOffers, activeOffers, pendingOffers],
               [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],

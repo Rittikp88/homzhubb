@@ -39,3 +39,8 @@ export const offerFilterBy = [
   { label: 'Rejected by prospect', value: OfferFilter.REJECTED_PROSPECT },
   { label: 'Expiring soon (in 12 hours)', value: OfferFilter.EXPIRING },
 ];
+
+export enum OffersVisitsType {
+  offers = 'Offers',
+  visits = 'Visits',
+}

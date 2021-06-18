@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -8,11 +8,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-
-export enum OffersVisitsType {
-  offers = 'Offers',
-  visits = 'Visits',
-}
+import { OffersVisitsType } from '@homzhub/common/src/constants/Offers';
 
 const Data = [
   {
@@ -33,7 +29,6 @@ const Data = [
 interface IProps {
   isDetailView?: boolean;
   propertyDetailTab?: boolean;
-
   onNav?: (from: OffersVisitsType) => void;
   values: {
     [OffersVisitsType.offers]: number[];
@@ -43,7 +38,7 @@ interface IProps {
 
 // TODO: Display the Offer section post the MVP
 const OffersVisitsSection = (props: IProps): React.ReactElement => {
-  const { values, propertyDetailTab } = props;
+  const { values, propertyDetailTab, onNav } = props;
   const { t } = useTranslation();
   // Todo (Praharsh) : Check with web team if Offers come before Visits.
   const data = PlatformUtils.isWeb() ? Data : [...Data].reverse();
@@ -59,7 +54,7 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
       ]}
     >
       {data.map((item) => {
-        // const onPress = (): void => onNav && onNav(item.type);
+        const onPress = (): void => onNav && onNav(item.type);
         return (
           <View key={item.type}>
             <Divider containerStyles={styles.divider} />
@@ -70,11 +65,11 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
                   <Label type="large" textType="regular" style={styles.title}>
                     {t(item.title)}
                   </Label>
-                  {/* {!isDetailView && ( */}
-                  {/*  <TouchableOpacity onPress={onPress}> */}
-                  {/*    <Icon name={icons.rightArrow} color={theme.colors.active} size={20} /> */}
-                  {/*  </TouchableOpacity> */}
-                  {/* )} */}
+                  {!PlatformUtils.isWeb() && (
+                    <TouchableOpacity onPress={onPress} style={styles.iconStyle}>
+                      <Icon name={icons.rightArrow} color={theme.colors.active} size={20} />
+                    </TouchableOpacity>
+                  )}
                 </View>
                 <View style={styles.subSectionContainer}>
                   {item.sections.map((section, index) => {
@@ -143,5 +138,8 @@ const styles = StyleSheet.create({
   containerTablet: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  iconStyle: {
+    paddingHorizontal: 4,
   },
 });
