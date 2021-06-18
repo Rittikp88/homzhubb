@@ -20,6 +20,9 @@ class ErrorUtils {
       }
 
       if (typeof data[0].message !== 'string') {
+        if (data[0].message.length > 0) {
+          return data[0].message[0];
+        }
         return I18nService.t('genericErrorMessage');
       }
       return data[0].message;

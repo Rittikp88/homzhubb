@@ -90,6 +90,12 @@ export interface IExtraTrackData {
   price?: number;
 }
 
+export interface IComponentError {
+  isComponentError: boolean;
+  componentStack: string;
+  message: string;
+}
+
 export type EventDataType =
   | IAuthenticationEvent
   | IAddPropertyEvent
@@ -103,4 +109,4 @@ export type EventDataType =
   | IAddServiceEvent
   | ICloseTicketEvent
   | IApiClientError
-  | Error;
+  | IComponentError;

@@ -36,7 +36,6 @@ interface IProps {
   };
 }
 
-// TODO: Display the Offer section post the MVP
 const OffersVisitsSection = (props: IProps): React.ReactElement => {
   const { values, propertyDetailTab, onNav } = props;
   const { t } = useTranslation();
@@ -56,7 +55,7 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
       {data.map((item) => {
         const onPress = (): void => onNav && onNav(item.type);
         return (
-          <View key={item.type}>
+          <TouchableOpacity key={item.type} onPress={onPress}>
             <Divider containerStyles={styles.divider} />
             <View style={styles.contentContainer}>
               <Icon name={item.icon} size={22} color={theme.colors.darkTint2} />
@@ -66,9 +65,9 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
                     {t(item.title)}
                   </Label>
                   {!PlatformUtils.isWeb() && (
-                    <TouchableOpacity onPress={onPress} style={styles.iconStyle}>
+                    <View style={styles.iconStyle}>
                       <Icon name={icons.rightArrow} color={theme.colors.active} size={20} />
-                    </TouchableOpacity>
+                    </View>
                   )}
                 </View>
                 <View style={styles.subSectionContainer}>
@@ -88,7 +87,7 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
                 </View>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         );
       })}
     </View>

@@ -308,7 +308,6 @@ export class AssetCard extends Component<Props, IState> {
         leaseListingId,
         saleListingId,
         leaseOwnerInfo,
-        status,
         leaseTransaction: { rent, securityDeposit, totalSpendPeriod, leaseEndDate, leaseStartDate, currency },
       },
       listingVisits: { upcomingVisits, missedVisits, completedVisits },
@@ -319,7 +318,6 @@ export class AssetCard extends Component<Props, IState> {
       listingOffers: { totalOffers, activeOffers, pendingOffers },
     } = assetData;
     const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
-    const isListingApproved = !!status && status === 'APPROVED' && isListed;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted, inviteSentTime);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
@@ -339,6 +337,7 @@ export class AssetCard extends Component<Props, IState> {
               image={userInfo.image}
               isButtonType={userInfo.isButtonType ?? false}
               designation={userInfo.designation}
+              // @ts-ignore
               customDesignation={userInfo.designationStyle}
               onPressButton={onResend ? (): void => onResend(leaseTenantId) : undefined}
             />
@@ -374,7 +373,7 @@ export class AssetCard extends Component<Props, IState> {
             onPress={this.onCompleteDetails}
           />
         )}
-        {isListingApproved && (
+        {isListed && (
           <OffersVisitsSection
             isDetailView={isDetailView}
             onNav={onNavPress}

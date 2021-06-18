@@ -45,7 +45,11 @@ class ErrorBoundary extends Component<IProps, IState> {
 
   // eslint-disable-next-line react/sort-comp
   public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    AnalyticsService.track(EventType.Exception, error);
+    AnalyticsService.track(EventType.Exception, {
+      isComponentError: true,
+      componentStack: errorInfo.componentStack,
+      message: error.message,
+    });
     this.setState({
       error,
       errorInfo,
