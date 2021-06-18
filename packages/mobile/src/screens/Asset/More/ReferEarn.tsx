@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Clipboard from '@react-native-community/clipboard';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
@@ -23,9 +22,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { TransactionType } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-
-const APPLE_STORE_URL = ConfigHelper.getAppleStoreUrl();
-const GOOGLE_PLAYSTORE_URL = ConfigHelper.getGooglePlayStoreUrl();
+import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 const ReferEarn = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -34,24 +31,37 @@ const ReferEarn = (): React.ReactElement => {
   const transaction = useSelector(UserSelector.getUserCoinTransaction);
   const [management, setManagementData] = useState<IMetricsData[]>([]);
   const [totalInvite, setTotalInvite] = useState('');
-  const message = `${t('shareHomzhub')} \n ${t('appleStore')} : ${APPLE_STORE_URL} \n ${t(
-    'googlePlayStore'
-  )} : \n ${GOOGLE_PLAYSTORE_URL}`;
+  const url = useRef('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     UserRepository.getCoinManagement()
       .then((res) => {
         setTotalInvite(res.invites.totalAccepted.toString());
         setManagementData([
-          { name: t('coinsWon'), count: res.coins.totalEarned, colorCode: theme.colors.greenTint8 },
-          { name: t('totalCoinsUsed'), count: res.coins.totalUsed, colorCode: theme.colors.redTint1 },
+          { name: t('coinsWon'), count: res.coins.coinsEarned, colorCode: theme.colors.greenTint8 },
+          { name: t('totalCoinsUsed'), count: res.coins.coinsUsed, colorCode: theme.colors.redTint1 },
         ]);
       })
       .catch((e) => {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       });
-    dispatch(UserActions.getUserCoinTransaction());
   }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    LinkingService.buildShortLink(
+      DynamicLinkTypes.Referral,
+      `${DynamicLinkParamKeys.ReferralCode}=${code}&${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}`
+    )
+      .then((link) => {
+        url.current = `${t('shareHomzhub', { code, url: link })}`;
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    dispatch(UserActions.getUserCoinTransaction());
+  }, [code, t]);
 
   const onCopyToClipboard = useCallback((): void => {
     Clipboard.setString(code);
@@ -60,22 +70,22 @@ const ReferEarn = (): React.ReactElement => {
   }, [code, t]);
 
   const onShare = useCallback(async (): Promise<void> => {
-    await Share.share({ message });
+    await Share.share({ message: url.current });
   }, []);
 
   const onMail = useCallback(async (): Promise<void> => {
     trackEvent(t('common:mail'));
-    await LinkingService.openEmail({ body: message, subject: t('shareHomzhubSubject') });
+    await LinkingService.openEmail({ body: url.current, subject: t('shareHomzhubSubject') });
   }, [t]);
 
   const onSms = useCallback(async (): Promise<void> => {
     trackEvent(t('common:sms'));
-    await LinkingService.openSMS({ message });
+    await LinkingService.openSMS({ message: url.current });
   }, []);
 
   const onWhatsapp = useCallback(async (): Promise<void> => {
     trackEvent(t('common:whatsapp'));
-    await LinkingService.openWhatsapp(message);
+    await LinkingService.openWhatsapp(url.current);
   }, []);
 
   const trackEvent = (source: string): void => {
@@ -109,7 +119,7 @@ const ReferEarn = (): React.ReactElement => {
   ]);
 
   return (
-    <UserScreen title={t('more')} backgroundColor={theme.colors.background}>
+    <UserScreen loading={loading} title={t('referEarn')} backgroundColor={theme.colors.background}>
       <AssetMetricsList
         data={management}
         showBackIcon

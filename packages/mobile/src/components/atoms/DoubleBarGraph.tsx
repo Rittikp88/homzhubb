@@ -70,9 +70,10 @@ const DoubleBarGraph = (props: IProps): React.ReactElement => {
             />
             <BarChart
               contentInset={VERTICAL_INSET}
-              spacingInner={0.35}
+              spacingInner={0.6}
               style={{ width: WIDTH, height: HEIGHT }}
               data={barData}
+              numberOfTicks={5}
             >
               <Grid direction={Grid.Direction.HORIZONTAL} svg={SVG_GRID} />
             </BarChart>

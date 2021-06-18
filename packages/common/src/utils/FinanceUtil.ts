@@ -15,6 +15,7 @@ import {
 import {
   DateFilter,
   DateRangeType,
+  ExpenseCategory,
   FINANCIAL_DROPDOWN_DATA,
   IDropdownObject,
 } from '@homzhub/common/src/constants/FinanceOverview';
@@ -217,6 +218,32 @@ class FinanceUtils {
       label: weekList,
       type: DateRangeType.Month,
     };
+  };
+
+  public getGraphColor = (category: string): string => {
+    const { FURNISHING_RENOVATION, PAYMENT, LOAN_PAYMENT, SOCIETY_CHARGES, TAXES, INSURANCE, REPAIR, OTHERS } =
+      ExpenseCategory;
+    const { purple, greenTint5, yellowTint1, redTint2, redTint3, rental, disabledSearch, other } = theme.colors;
+
+    switch (category) {
+      case FURNISHING_RENOVATION:
+        return purple;
+      case TAXES:
+        return yellowTint1;
+      case REPAIR:
+        return redTint2;
+      case INSURANCE:
+        return rental;
+      case LOAN_PAYMENT:
+        return redTint3;
+      case SOCIETY_CHARGES:
+        return disabledSearch;
+      case PAYMENT:
+        return greenTint5;
+      case OTHERS:
+      default:
+        return other;
+    }
   };
 }
 

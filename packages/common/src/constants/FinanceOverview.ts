@@ -25,6 +25,17 @@ export enum DateRangeType {
   Year = 'year',
 }
 
+export enum ExpenseCategory {
+  FURNISHING_RENOVATION = 'Furnishing and Renovation',
+  TAXES = 'Taxes',
+  REPAIR = 'Repair',
+  INSURANCE = 'Insurance',
+  LOAN_PAYMENT = 'Loan Payment',
+  SOCIETY_CHARGES = 'Society Charges',
+  OTHERS = 'Others',
+  PAYMENT = 'Payments',
+}
+
 const translationKey = LocaleConstants.namespacesKey.common;
 
 export const FINANCIAL_DROPDOWN_DATA = {

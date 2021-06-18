@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { PieChart } from 'react-native-svg-charts';
 import { isEqual } from 'lodash';
+import { FinanceUtils } from '@homzhub/common/src/utils/FinanceUtil';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { GraphLegends } from '@homzhub/mobile/src/components/atoms/GraphLegends';
 import { GeneralLedgers, IGeneralLedgerGraphData } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -35,7 +35,7 @@ const DonutGraph = (props: IProps): React.ReactElement => {
         key: Number(categoryId),
         title: category,
         value: amount,
-        svg: { fill: theme.randomHex() },
+        svg: { fill: FinanceUtils.getGraphColor(category) },
       });
     });
 

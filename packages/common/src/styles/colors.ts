@@ -46,6 +46,8 @@ const namedColors = {
   yellow: '#ffe603',
   pinkRed: '#AE434D',
   red: '#D42E17',
+  purple: '#A4BDFD',
+  other: '#CCB6B3',
 };
 
 const tintColors = {
@@ -76,12 +78,18 @@ const tintColors = {
   blueTint12: '#0084F8',
 
   // green
+  greenTint5: '#95E258',
   greenTint6: '#006A0A',
   greenTint7: '#73ce64',
   greenTint8: '#47C2B1',
 
   // red
   redTint1: '#EE7979',
+  redTint2: '#FF9D91',
+  redTint3: '#F66351',
+
+  // yellow
+  yellowTint1: '#FCD980',
 };
 
 // Theme based color scheme

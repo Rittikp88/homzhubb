@@ -995,7 +995,8 @@
     "coinActivity": "Homzhub coin activity",
     "coinUsed": "Coins used",
     "creditedOn": "Credited on",
-    "debitOn": "Debited on"
+    "debitOn": "Debited on",
+    "referEarn": "Refer and Earn"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
