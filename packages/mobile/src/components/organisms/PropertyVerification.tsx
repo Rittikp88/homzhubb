@@ -128,27 +128,39 @@ export class PropertyVerification extends React.PureComponent<Props, IPropertyVe
       compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
       useFrontCamera: true,
       cropping: true,
-    }).then((image: any) => {
-      const source = {
-        uri: image.path,
-        type: image.mime,
-        name: PlatformUtils.isIOS()
-          ? image.filename ?? image.path.substring(image.path.lastIndexOf('/') + 1)
-          : image.path.substring(image.path.lastIndexOf('/') + 1),
-      };
-      this.updateLocalDocuments(verificationDocumentId, source, data);
-    });
+    })
+      .then((image: any) => {
+        const source = {
+          uri: image.path,
+          type: image.mime,
+          name: PlatformUtils.isIOS()
+            ? image.filename ?? image.path.substring(image.path.lastIndexOf('/') + 1)
+            : image.path.substring(image.path.lastIndexOf('/') + 1),
+        };
+        this.updateLocalDocuments(verificationDocumentId, source, data);
+      })
+      .catch((e) => {
+        if (e.code !== 'E_PICKER_CANCELLED') {
+          AlertHelper.error({ message: e.message });
+        }
+      });
   };
 
   public uploadDocument = async (verificationDocumentId: number, data: VerificationDocumentTypes): Promise<void> => {
-    const document = await DocumentPicker.pick({
-      type: [DocumentPicker.types.allFiles],
-    });
-    if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
-      const source = { uri: document.uri, type: document.type, name: document.name };
-      this.updateLocalDocuments(verificationDocumentId, source, data);
-    } else {
-      AlertHelper.error({ message: data.helpText });
+    try {
+      const document = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      if (Object.values(AllowedAttachmentFormats).includes(document.type)) {
+        const source = { uri: document.uri, type: document.type, name: document.name };
+        this.updateLocalDocuments(verificationDocumentId, source, data);
+      } else {
+        AlertHelper.error({ message: data.helpText });
+      }
+    } catch (e) {
+      if (!DocumentPicker.isCancel(e)) {
+        AlertHelper.error({ message: e.message });
+      }
     }
   };
 

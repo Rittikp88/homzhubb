@@ -50,7 +50,9 @@ const UploadBoxComponent = (props: IProps): React.ReactElement => {
       }
       onCapture(documents);
     } catch (e) {
-      AlertHelper.error({ message: e.toString() || I18nService.t('common:pleaseTryAgain') });
+      if (!DocumentPicker.isCancel(e)) {
+        AlertHelper.error({ message: e.message });
+      }
     }
   };
 

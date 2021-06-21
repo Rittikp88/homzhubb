@@ -220,7 +220,9 @@ class ChatScreen extends Component<Props, IScreenState> {
         setAttachment(image.path);
       })
       .catch((err) => {
-        AlertHelper.error({ message: err.message });
+        if (err.code !== 'E_PICKER_CANCELLED') {
+          AlertHelper.error({ message: err.message });
+        }
       });
   };
 
@@ -238,7 +240,9 @@ class ChatScreen extends Component<Props, IScreenState> {
       this.setState({ attachment: image });
       setAttachment(image.path);
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      if (e.code !== 'E_PICKER_CANCELLED') {
+        AlertHelper.error({ message: e.message });
+      }
     }
   };
 

@@ -59,8 +59,10 @@ const WorkCompleted = (): React.ReactElement => {
         ];
       });
       dispatch(TicketActions.setAttachment(attachment));
-    } catch (err) {
-      AlertHelper.error({ message: err.message });
+    } catch (e) {
+      if (e.code !== 'E_PICKER_CANCELLED') {
+        AlertHelper.error({ message: e.message });
+      }
     }
   };
 

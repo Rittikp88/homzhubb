@@ -407,7 +407,9 @@ export class UserProfileForm extends React.PureComponent<IProps, IState> {
       this.setState({ selectedImage: image });
       formProps.setFieldTouched('firstName');
     } catch (e) {
-      AlertHelper.error({ message: e.message });
+      if (e.code !== 'E_PICKER_CANCELLED') {
+        AlertHelper.error({ message: e.message });
+      }
     }
   };
 

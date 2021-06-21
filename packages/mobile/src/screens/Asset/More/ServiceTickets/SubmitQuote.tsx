@@ -142,7 +142,9 @@ const SubmitQuote = (): ReactElement => {
         setQuotes(prevQuotes);
       })
       .catch((e) => {
-        AlertHelper.error({ message: e.message });
+        if (!DocumentPicker.isCancel(e)) {
+          AlertHelper.error({ message: e.message });
+        }
       });
   };
 

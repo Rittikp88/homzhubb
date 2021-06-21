@@ -403,7 +403,9 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       }
       await this.uploadDocument(validDocuments);
     } catch (e) {
-      AlertHelper.error({ message: t('pleaseTryAgain') });
+      if (!DocumentPicker.isCancel(e)) {
+        AlertHelper.error({ message: t('pleaseTryAgain') });
+      }
     }
   };
 
