@@ -12,6 +12,8 @@ export enum ExperienceType {
 
 export enum TicketStatusTitle {
   OPEN = 'Open',
+  REQUEST_RAISED = 'Request Raised',
+  // Remove once BE removes this key
   TICKET_RAISED = 'Ticket Raised',
   QUOTE_REQUESTED = 'Quote Requested',
   QUOTE_SUBMITTED = 'Quote Submitted',

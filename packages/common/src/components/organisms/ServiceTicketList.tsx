@@ -139,7 +139,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
       case Tabs.LOW:
         return this.renderContent(TicketPriority.LOW);
       default:
-        return <EmptyState />;
+        return <EmptyState icon={icons.headPhone} />;
     }
   };
 
@@ -150,7 +150,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
       <View style={styles.listContainer}>
         {data.length > 0 && (
           <Label type="large" textType="regular" style={styles.count}>
-            {data.length} {t('tickets')}
+            {data.length} {t('assetMore:tickets')}
           </Label>
         )}
         <FlatList
@@ -177,7 +177,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
 
   private renderEmptyComponent = (): ReactElement => {
     const { t } = this.props;
-    return <EmptyState title={t('serviceTickets:noTickets')} icon={icons.ticket} />;
+    return <EmptyState title={t('serviceTickets:noTickets')} icon={icons.headPhone} />;
   };
 
   // HANDLERS START

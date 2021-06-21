@@ -159,7 +159,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
           title={title}
           pageTitle={t('serviceTickets:newTicket')}
           onBackPress={goBack}
-          rightNode={this.renderClearButton()}
+          rightNode={isPropertiesPresent ? this.renderClearButton() : undefined}
           scrollEnabled
           loading={activeAssets || isScreenLoading}
         >

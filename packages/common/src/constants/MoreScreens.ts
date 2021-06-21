@@ -51,7 +51,7 @@ export const MORE_SCREENS: IMoreScreens = {
     {
       id: 2,
       title: `${translationKey}:tickets`,
-      icon: icons.ticket,
+      icon: icons.headPhone,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.TICKETS,
