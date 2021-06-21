@@ -13,7 +13,6 @@ const namedColors = {
   warning: '#F9A901',
   mediumPriority: '#FBC02D',
   highPriority: '#FF8576',
-  expenseOrange: '#FDB113',
   error: '#F23C06',
   dark: '#001B36',
   background: '#F0F5F9',
@@ -90,6 +89,7 @@ const tintColors = {
 
   // yellow
   yellowTint1: '#FCD980',
+  yellowTint2: '#FDB113',
 };
 
 // Theme based color scheme

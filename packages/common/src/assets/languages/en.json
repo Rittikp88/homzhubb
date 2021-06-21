@@ -289,7 +289,9 @@
     "annually": "Annually",
     "totalPrice": "Total Price",
     "maxDocumentUploads": "You can upload a maximum of {{count}} documents",
-    "someFilesWereNotUploaded": "Some files were not uploaded because they were greater than {{size}}"
+    "someFilesWereNotUploaded": "Some files were not uploaded because they were greater than {{size}}",
+    "activities": "Activities",
+    "score": "Score"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -989,14 +991,16 @@
     "chatOptions": "Chat Options",
     "attachmentOptions": "Attachment Options",
     "documentOptions": "Document Options",
-    "acceptedInvites": "Total accepted invites",
+    "acceptedInvites": "Invites Accepted",
     "coinsWon": "Total coins won",
     "totalCoinsUsed": "Total coins used",
     "coinActivity": "Homzhub coin activity",
     "coinUsed": "Coins used",
     "creditedOn": "Credited on",
     "debitOn": "Debited on",
-    "referEarn": "Refer and Earn"
+    "referEarn": "Refer and Earn",
+    "coinBalance": "Coin Balance",
+    "coinsEarned": "Coins Earned"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

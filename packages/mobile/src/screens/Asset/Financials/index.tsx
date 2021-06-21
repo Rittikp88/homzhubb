@@ -157,7 +157,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         name: t('assetFinancial:expense', { year: currentYear }),
         count: `${LedgerUtils.totalByType(LedgerTypes.debit, ledgerData)}`,
         isCurrency: true,
-        colorCode: theme.colors.expenseOrange,
+        colorCode: theme.colors.yellowTint2,
       },
     ];
   };

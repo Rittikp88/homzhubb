@@ -39,8 +39,8 @@ const ReferEarn = (): React.ReactElement => {
       .then((res) => {
         setTotalInvite(res.invites.totalAccepted.toString());
         setManagementData([
-          { name: t('coinsWon'), count: res.coins.coinsEarned, colorCode: theme.colors.greenTint8 },
-          { name: t('totalCoinsUsed'), count: res.coins.coinsUsed, colorCode: theme.colors.redTint1 },
+          { name: t('coinBalance'), count: res.coins.coinsBalance, colorCode: theme.colors.greenTint8 },
+          { name: t('coinsEarned'), count: res.coins.coinsEarned, colorCode: theme.colors.yellowTint2 },
         ]);
       })
       .catch((e) => {
@@ -162,48 +162,50 @@ const ReferEarn = (): React.ReactElement => {
           ))}
         </View>
       </View>
-      <View style={styles.transactionContainer}>
-        <View style={styles.transactionHeader}>
-          <Text type="small" textType="semiBold" style={styles.title}>
-            {t('coinActivity')}
-          </Text>
-          <Text type="small" textType="semiBold" style={styles.title}>
-            {t('coinUsed')}
-          </Text>
+      {transaction.length > 0 && (
+        <View style={styles.transactionContainer}>
+          <View style={styles.transactionHeader}>
+            <Text type="small" textType="semiBold" style={styles.title}>
+              {t('common:activities')}
+            </Text>
+            <Text type="small" textType="semiBold" style={styles.title}>
+              {t('common:score')}
+            </Text>
+          </View>
+          <Divider />
+          {transaction.map((item, index) => {
+            const isCredit = item.transactionType === TransactionType.CREDIT;
+            return (
+              <>
+                <View key={index} style={styles.transactionItem}>
+                  <View>
+                    <Text type="small" textType="semiBold" style={styles.itemTitle}>
+                      {item.title}
+                    </Text>
+                    <Label type="large" style={styles.itemLabel}>
+                      {isCredit ? t('creditedOn') : t('debitOn')}{' '}
+                      {DateUtils.getDisplayDate(item.transactionDate, 'DD MMM YYYY')}
+                    </Label>
+                  </View>
+                  <View style={styles.itemValue}>
+                    <Text
+                      type="small"
+                      textType="semiBold"
+                      style={[styles.statusIcon, isCredit ? styles.credit : styles.debit]}
+                    >
+                      {isCredit ? '+' : '-'}
+                    </Text>
+                    <Text type="small" textType="semiBold" style={isCredit ? styles.credit : styles.debit}>
+                      {item.coins}
+                    </Text>
+                  </View>
+                </View>
+                {index !== transaction.length - 1 && <Divider containerStyles={styles.divider} />}
+              </>
+            );
+          })}
         </View>
-        <Divider />
-        {transaction.map((item, index) => {
-          const isCredit = item.transactionType === TransactionType.CREDIT;
-          return (
-            <>
-              <View key={index} style={styles.transactionItem}>
-                <View>
-                  <Text type="small" textType="semiBold" style={styles.itemTitle}>
-                    {item.title}
-                  </Text>
-                  <Label type="large" style={styles.itemLabel}>
-                    {isCredit ? t('creditedOn') : t('debitOn')}{' '}
-                    {DateUtils.getDisplayDate(item.transactionDate, 'DD MMM YYYY')}
-                  </Label>
-                </View>
-                <View style={styles.itemValue}>
-                  <Text
-                    type="small"
-                    textType="semiBold"
-                    style={[styles.statusIcon, isCredit ? styles.credit : styles.debit]}
-                  >
-                    {isCredit ? '+' : '-'}
-                  </Text>
-                  <Text type="small" textType="semiBold" style={isCredit ? styles.credit : styles.debit}>
-                    {item.coins}
-                  </Text>
-                </View>
-              </View>
-              {index !== transaction.length - 1 && <Divider containerStyles={styles.divider} />}
-            </>
-          );
-        })}
-      </View>
+      )}
     </UserScreen>
   );
 };
