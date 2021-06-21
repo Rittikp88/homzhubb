@@ -287,7 +287,9 @@
     "hour": "hour",
     "expired": "Expired",
     "annually": "Annually",
-    "totalPrice": "Total Price"
+    "totalPrice": "Total Price",
+    "maxDocumentUploads": "You can upload a maximum of {{count}} documents",
+    "someFilesWereNotUploaded": "Some files were not uploaded because they were greater than {{size}}"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -670,7 +672,10 @@
     "resendInvite": "Resend Invite",
     "deleteDocument": "Delete Document",
     "deleteConfirmation": "Are you sure you want to delete {{name}}",
-    "cannotDeleteDocument": "You cannot delete this document"
+    "cannotDeleteDocument": "You cannot delete this document",
+    "siteVisits": "Site Visits",
+    "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
+    "vacantPropertyMsg": "Your property is vacant, choose what you want to do next"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -990,7 +995,8 @@
     "coinActivity": "Homzhub coin activity",
     "coinUsed": "Coins used",
     "creditedOn": "Credited on",
-    "debitOn": "Debited on"
+    "debitOn": "Debited on",
+    "referEarn": "Refer and Earn"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

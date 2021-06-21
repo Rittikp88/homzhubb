@@ -29,6 +29,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
+import LeasePropertyList from '@homzhub/mobile/src/components/organisms/LeasePropertyList';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
 import VisitListCard from '@homzhub/mobile/src/components/organisms/VisitListCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
@@ -51,8 +52,9 @@ interface IDispatchProps {
   setSelectedPlan: (payload: ISelectedAssetPlan) => void;
   setAddPropertyFlow: (payload: boolean) => void;
   setCurrentAsset: (payload: ISetAssetPayload) => void;
-  setInitialState: () => void;
   getAssetVisit: (payload: IAssetVisitPayload) => void;
+  setInitialState: () => void;
+  getTenanciesDetails: () => void;
 }
 
 interface IReduxStateProps {
@@ -125,6 +127,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
               onViewProperty={this.onViewProperty}
             />
           )}
+          {metrics?.isTenant && <LeasePropertyList />}
           {metrics?.isTenant && <VisitListCard />}
           {!metrics?.isTenant && <FinanceOverview />}
           <AssetMarketTrends isDashboard onViewAll={this.onViewAll} onTrendPress={this.onTrendPress} />
@@ -397,9 +400,11 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   // APIs
   private getScreenData = async (): Promise<void> => {
+    const { getTenanciesDetails } = this.props;
     await this.getAssetMetrics();
     await this.getPendingProperties();
     this.getVisitData();
+    getTenanciesDetails();
   };
 
   private getAssetMetrics = async (): Promise<void> => {
@@ -434,7 +439,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 }
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setCurrentFilter, setCurrentAsset, setInitialState } = PortfolioActions;
+  const { setCurrentFilter, setCurrentAsset, setInitialState, getTenanciesDetails } = PortfolioActions;
   const { setAddPropertyFlow } = UserActions;
   const { setAssetId, setSelectedPlan } = RecordAssetActions;
   const { getAssetVisit } = AssetActions;
@@ -447,6 +452,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setCurrentAsset,
       setInitialState,
       getAssetVisit,
+      getTenanciesDetails,
     },
     dispatch
   );

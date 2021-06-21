@@ -45,7 +45,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IStateProps {
-  tenancies: Asset[] | null;
+  tenancies: Asset[];
   properties: Asset[] | null;
   isTenanciesLoading: boolean;
   currentFilter: Filters;

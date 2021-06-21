@@ -13,17 +13,17 @@ import {
 } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 function* getTenancies(action: IFluxStandardAction<IGetTenanciesPayload>) {
-  if (!action.payload) {
-    AlertHelper.error({ message: 'Payload missing' });
-    return;
-  }
-  const { onCallback } = action.payload;
+  const { payload } = action;
   try {
     const response = yield call(PortfolioRepository.getUserTenancies);
     yield put(PortfolioActions.getTenanciesDetailsSuccess(response));
-    onCallback({ status: true });
+    if (payload) {
+      payload.onCallback({ status: true });
+    }
   } catch (err) {
-    onCallback({ status: false });
+    if (payload) {
+      payload.onCallback({ status: false });
+    }
     const error = ErrorUtils.getErrorMessage(err.details);
     AlertHelper.error({ message: error, statusCode: err.details.statusCode });
     yield put(PortfolioActions.getTenanciesDetailsFailure(error));
@@ -38,7 +38,7 @@ function* getProperties(action: IFluxStandardAction<IGetPropertiesPayload>) {
   const { status, onCallback } = action.payload;
   try {
     const response = PlatformUtils.isWeb()
-      ? yield call(PortfolioRepository.getUserAssetDetails, status)
+      ? yield call(PortfolioRepository.getUserAssetDetails, status as string)
       : yield call(PortfolioRepository.getPortfolioAssets);
     yield put(PortfolioActions.getPropertyDetailsSuccess(response));
     onCallback({ status: true });

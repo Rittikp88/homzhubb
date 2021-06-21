@@ -4,12 +4,12 @@ import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
 import { IPortfolioState, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
-const getTenancies = (state: IState): Asset[] | null => {
+const getTenancies = (state: IState): Asset[] => {
   const {
     portfolio: { tenancies },
   } = state;
 
-  if (!tenancies) return null;
+  if (!tenancies) return [];
   return Object.values(tenancies);
 };
 

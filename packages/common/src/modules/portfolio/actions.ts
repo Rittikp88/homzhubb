@@ -29,7 +29,7 @@ export const PortfolioActionTypes = {
     INITIAL_STATE: `${actionTypePrefix}INITIAL_STATE`,
   },
 };
-const getTenanciesDetails = (payload: IGetTenanciesPayload): IFluxStandardAction<IGetTenanciesPayload> => {
+const getTenanciesDetails = (payload?: IGetTenanciesPayload): IFluxStandardAction<IGetTenanciesPayload> => {
   return {
     type: PortfolioActionTypes.GET.TENANCIES_DETAILS,
     payload,

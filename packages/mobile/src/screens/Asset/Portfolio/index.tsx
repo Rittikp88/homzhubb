@@ -45,7 +45,7 @@ import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 interface IStateProps {
-  tenancies: Asset[] | null;
+  tenancies: Asset[];
   properties: Asset[] | null;
   currentFilter: Filters;
   loaders: IPortfolioState['loaders'];

@@ -61,7 +61,7 @@ exports[`Dashboard Screen should render snapshot 1`] = `
               "onPress": [Function],
             },
             Object {
-              "icon": "service-ticket",
+              "icon": "head-phone",
               "label": "assetDashboard:serviceTicket",
               "onPress": [Function],
             },

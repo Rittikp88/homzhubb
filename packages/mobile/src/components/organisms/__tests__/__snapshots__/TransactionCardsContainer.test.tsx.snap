@@ -82,7 +82,7 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
             }
           }
           onPress={[Function]}
-          title="common:delete"
+          title="common:cancel"
           titleStyle={
             Object {
               "marginHorizontal": 4,
@@ -93,12 +93,13 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
         <Button
           containerStyle={
             Object {
+              "backgroundColor": "#F23C06",
               "flexDirection": "row-reverse",
               "height": 50,
             }
           }
           onPress={[Function]}
-          title="common:cancel"
+          title="common:delete"
           titleStyle={
             Object {
               "marginHorizontal": 4,

@@ -152,7 +152,7 @@ android {
         versionName "1.0.0"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        missingDimensionStrategy 'react-native-iap', 'general'
+        missingDimensionStrategy 'store', 'play'
     }
     splits {
         abi {

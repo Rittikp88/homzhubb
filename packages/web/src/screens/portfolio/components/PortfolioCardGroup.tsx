@@ -14,7 +14,6 @@ import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlac
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
@@ -27,14 +26,15 @@ import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Tabs } from '@homzhub/common/src/constants/Tabs';
 import {
   ClosureReasonType,
   IClosureReasonPayload,
   IListingParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { OffersVisitsType } from '@homzhub/common/src/constants/Offers';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IUserInfo {
   name: string | undefined;

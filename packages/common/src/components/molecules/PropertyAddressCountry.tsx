@@ -8,7 +8,7 @@ import { ITypographyProps, Typography } from '@homzhub/common/src/components/ato
 interface IProps {
   primaryAddress: string;
   isIcon?: boolean;
-  subAddress: string;
+  subAddress?: string;
   countryFlag: React.ReactElement | null;
   primaryAddressTextStyles?: ITypographyProps;
   subAddressTextStyles?: ITypographyProps;
@@ -45,7 +45,7 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
           {primaryAddress}
         </Typography>
       </View>
-      {showAddress && (
+      {showAddress && !!subAddress && (
         <View style={styles.flexRow}>
           {isIcon && <Icon name={icons.locationMarker} size={16} color={theme.colors.darkTint3} style={styles.icon} />}
           <Typography
