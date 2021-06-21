@@ -49,7 +49,7 @@ const UpdateLeaseTerm = (props: Props): React.ReactElement => {
   if (!leaseData) return <Loader visible />;
 
   return (
-    <UserScreen title={t('assetMore:more')} pageTitle={t('property:editLeaseTerm')} onBackPress={navigation.goBack}>
+    <UserScreen title={t('assetMore:more')} pageTitle={t('property:editLease')} onBackPress={navigation.goBack}>
       <ProfileLeaseTerm user={user} assetGroup={assetGroup} leaseData={leaseData} onSubmit={onSubmit} />
     </UserScreen>
   );

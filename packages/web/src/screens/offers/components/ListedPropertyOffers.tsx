@@ -1,8 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector} from 'react-redux';
-import { History } from 'history'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { History } from 'history';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';

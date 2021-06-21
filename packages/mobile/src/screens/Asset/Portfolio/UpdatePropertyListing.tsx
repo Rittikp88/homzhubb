@@ -138,7 +138,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
       case UpdatePropertyFormTypes.CancelListing:
         return t('property:cancelListing');
       case UpdatePropertyFormTypes.TerminateListing:
-        return t('property:terminateListing');
+        return t('property:noticeToVacate');
       case UpdatePropertyFormTypes.RenewListing:
         return t('property:renewListing');
       default:

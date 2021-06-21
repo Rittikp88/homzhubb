@@ -502,19 +502,16 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private getMenuList = (isListingCreated: boolean, isOccupied: boolean): IMenu[] => {
-    const {
-      t,
-      route: { params },
-    } = this.props;
+    const { t } = this.props;
     const { isFromTenancies } = this.state;
     let list;
     if (isFromTenancies) {
       return [];
     }
 
-    if (params && isOccupied) {
+    if (isOccupied) {
       list = [
-        { label: t('property:editLeaseTerm'), value: MenuItems.EDIT_LEASE },
+        { label: t('property:editLease'), value: MenuItems.EDIT_LEASE },
         { label: t('property:manageTenants'), value: MenuItems.MANAGE_TENANT },
       ];
       return list;
