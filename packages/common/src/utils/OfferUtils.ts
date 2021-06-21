@@ -2,6 +2,7 @@ import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -169,7 +170,7 @@ class OfferUtils {
       container: {
         backgroundColor: theme.colors.redOpacity,
         flexDirection: 'row-reverse',
-        flex: 0,
+        flex: !PlatformUtils.isWeb() ? 0 : undefined,
       },
       textStyle: {
         color: theme.colors.error,

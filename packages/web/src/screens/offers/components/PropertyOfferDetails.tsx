@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
@@ -21,6 +20,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 interface IProps {
   property: Asset;
   isExpanded: boolean;
+  containerStyles?: any;
 }
 interface IStateProps {
   filters: IFilter;
@@ -30,7 +30,7 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
   const isTab = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
 
-  const { property, filters, isExpanded } = props;
+  const { property, filters, isExpanded, containerStyles } = props;
   const {
     projectName,
     unitNumber,
@@ -107,7 +107,7 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
   };
 
   return (
-    <View style={[styles.containerAlign, isMobile && styles.containerMobile]}>
+    <View style={[styles.containerAlign, isMobile && styles.containerMobile, containerStyles]}>
       {isExpanded && renderAttachmentView(property.attachments)}
       <View style={[styles.details, isTab && styles.detailsTab, isMobile && styles.detailMobile]}>
         {isExpanded && (
@@ -159,23 +159,6 @@ const mapStateToProps = (state: IState): IStateProps => {
 export default connect(mapStateToProps)(PropertyOfferDetais);
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    backgroundColor: theme.colors.white,
-    height: 242,
-    marginTop: 16,
-  },
-  button: {
-    position: 'absolute',
-    width: '100%',
-    bottom: 0,
-    backgroundColor: theme.colors.reminderBackground,
-  },
-  innerContainer: {
-    marginHorizontal: 20,
-    marginVertical: 16,
-    height: '210px',
-  },
   imageContainer: {
     width: 220,
     height: 153,

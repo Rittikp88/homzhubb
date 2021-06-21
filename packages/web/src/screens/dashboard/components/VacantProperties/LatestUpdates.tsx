@@ -3,9 +3,10 @@ import { StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { OffersVisitsSection, OffersVisitsType } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
+import { OffersVisitsSection } from '@homzhub/common/src/components/molecules/OffersVisitsSection';
 import { AssetListingVisits } from '@homzhub/common/src/domain/models/AssetListingVisits';
 import { AssetOfferSummary } from '@homzhub/common/src/domain/models/AssetOfferSummary';
+import { OffersVisitsType } from '@homzhub/common/src/constants/Offers';
 
 interface IProps {
   propertyVisitsData: AssetListingVisits;

@@ -14,9 +14,10 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 interface IProps {
   property: Asset;
   isCardExpanded: boolean;
+  onViewOffer: () => void;
 }
 const PropertyDataCard: FC<IProps> = (props: IProps) => {
-  const { property, isCardExpanded } = props;
+  const { property, isCardExpanded, onViewOffer } = props;
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
 
@@ -37,11 +38,12 @@ const PropertyDataCard: FC<IProps> = (props: IProps) => {
                 title={`${t('offers:viewOffers')} (${property.offerCount})`}
                 containerStyle={styles.button}
                 titleStyle={styles.buttonText}
+                onPress={(): void => onViewOffer()}
               />
             </View>
           </View>
         )}
-        {isMobile && <ExpandableCard property={property} isCardExpanded={isCardExpanded} />}
+        {isMobile && <ExpandableCard property={property} isCardExpanded={isCardExpanded} onViewOffer={onViewOffer} />}
       </View>
     </>
   );

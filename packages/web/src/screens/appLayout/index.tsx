@@ -37,6 +37,7 @@ const AppLayout: FC<IProps> = (props: IProps) => {
     SETTINGS,
     NOTIFICATIONS,
     OFFERS,
+    OFFERS_LISTED_PROPERTY,
   } = protectedRoutes;
   const isSideMenuVisible = compareUrlsWithPathname(
     [
@@ -50,6 +51,7 @@ const AppLayout: FC<IProps> = (props: IProps) => {
       SETTINGS,
       NOTIFICATIONS,
       OFFERS,
+      OFFERS_LISTED_PROPERTY,
     ],
     pathname
   );

@@ -14,6 +14,7 @@ interface IProps {
   property: Asset;
   isCardExpanded: boolean;
   isDetailView?: boolean;
+  onViewOffer: () => void;
 }
 const ExpandableCard: FC<IProps> = (props: IProps) => {
   const {
@@ -21,6 +22,7 @@ const ExpandableCard: FC<IProps> = (props: IProps) => {
     isCardExpanded,
     isDetailView = false,
     property,
+    onViewOffer,
   } = props;
   const [isExpanded, setIsExpanded] = useState(isCardExpanded || false);
   const { t } = useTranslation();
@@ -70,7 +72,12 @@ const ExpandableCard: FC<IProps> = (props: IProps) => {
           </TouchableOpacity>
           {isExpanded && (
             <View style={styles.buttonContainer}>
-              <Button type="primary" title={t('offers:viewOffers')} containerStyle={styles.button} />
+              <Button
+                type="primary"
+                title={t('offers:viewOffers')}
+                containerStyle={styles.button}
+                onPress={(): void => onViewOffer()}
+              />
             </View>
           )}
         </View>

@@ -1,11 +1,18 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -14,11 +21,15 @@ import ComingSoon from '@homzhub/web/src/screens/comingSoon';
 import OffersOverview from '@homzhub/web/src/screens/offers/components/OffersOverview';
 import PropertyDataCard from '@homzhub/web/src/screens/offers/components/PropertyDataCard';
 import OffersDropdown, { OffersDropdownType } from '@homzhub/web/src/screens/offers/components/OffersDropDown';
+import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { OfferFilter } from '@homzhub/common/src/domain/models/OfferFilter';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
-import { NegotiationOfferType, OfferFilterType } from '@homzhub/common/src/domain/repositories/interfaces';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
 
 // TODO -- saved property metrics integration :Shagun
 export enum OfferType {
@@ -26,7 +37,17 @@ export enum OfferType {
   OFFER_MADE = 'Offer Made',
 }
 
-const Offers: FC = () => {
+interface IDispatchProps {
+  setCurrentOfferPayload: (payload: ICurrentOffer) => void;
+  setFilter: (payload: IFilter) => void;
+}
+interface IStateProps {
+  assetCount: number;
+}
+
+type IProps = IDispatchProps & IStateProps;
+
+const Offers: FC<IProps> = (props: IProps) => {
   const [offerReceivedInfoRead, setOfferRecievedInfoRead] = useState(false);
   const [offerMadeInfoRead, setOfferMadeInfoRead] = useState(false);
   const [offerType, setOfferType] = useState(OfferType.OFFER_RECEIVED);
@@ -42,6 +63,7 @@ const Offers: FC = () => {
     filter_by: '',
   });
   const { t } = useTranslation();
+  const history = useHistory();
 
   const title = offerType === 'Offer Received' ? t('offers:noOfferReceived') : t('offers:noOfferMade');
 
@@ -150,13 +172,54 @@ const Offers: FC = () => {
     return null;
   }
 
+  const viewOffers = (payload: ICurrentOffer | null, assetId: number, offerCount: number | null): void => {
+    const count = offerCount;
+    const { setCurrentOfferPayload } = props;
+    const isValidListing = payload && payload.listingId > 0;
+    if (!isValidListing) {
+      AlertHelper.error({ message: t('property:listingNotValid') });
+      return;
+    }
+
+    if (offerType === OfferType.OFFER_MADE) {
+      // TODO : Handle offers made scenarioa - Shagun
+    } else {
+      if (payload) {
+        setCurrentOfferPayload(payload);
+      }
+      // @ts-ignore
+      NavigationService.navigate(history, {
+        path: RouteNames.protectedRoutes.OFFERS_LISTED_PROPERTY,
+        params: {
+          offerCountData,
+          offerType,
+          count,
+        },
+      });
+    }
+  };
+
   const renderPropertyOffer = (item: Asset, index: number): React.ReactElement => {
     const isCardExpanded = index === 0;
+    const { offerCount } = item;
+    let payload: ICurrentOffer | null = null;
+    const { saleTerm, leaseTerm, id } = item;
+    if (saleTerm) {
+      payload = {
+        type: ListingType.SALE_LISTING,
+        listingId: saleTerm.id,
+      };
+    } else if (leaseTerm) {
+      payload = {
+        type: ListingType.LEASE_LISTING,
+        listingId: leaseTerm.id,
+      };
+    }
     return (
       <PropertyDataCard
         property={item}
         isCardExpanded={isCardExpanded}
-        // onViewOffer={FunctionUtils.noop()}---TODO: on click view offers:Shagun
+        onViewOffer={(): void => viewOffers(payload, id, offerCount)}
       />
     ); // tODO: handle iffers made flow by switch - Shagun
   };
@@ -218,7 +281,26 @@ const Offers: FC = () => {
     </View>
   );
 };
-export default Offers;
+
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getUserAssetsCount } = UserSelector;
+  return {
+    assetCount: getUserAssetsCount(state),
+  };
+};
+
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentOfferPayload } = OfferActions;
+  const { setFilter } = SearchActions;
+  return bindActionCreators(
+    {
+      setCurrentOfferPayload,
+      setFilter,
+    },
+    dispatch
+  );
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Offers);
 
 const styles = StyleSheet.create({
   container: {

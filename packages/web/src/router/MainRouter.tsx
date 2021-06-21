@@ -11,6 +11,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
 import ComingSoon from '@homzhub/web/src/screens/comingSoon';
+import ListedPropertyOffers from '@homzhub/web/src/screens/offers/components/ListedPropertyOffers';
 import Profile from '@homzhub/web/src/screens/profile';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
 import PropertyDetails from '@homzhub/web/src/screens/propertyDetails';
@@ -59,6 +60,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     PROFILE,
     PROTECTEDERROR404,
     OFFERS,
+    OFFERS_LISTED_PROPERTY,
   } = RouteNames.protectedRoutes;
   const { APP_BASE } = RouteNames.publicRoutes;
   const { t } = useTranslation();
@@ -93,6 +95,12 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={OFFERS} component={Offers} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_VISITS} component={ComingSoon} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={NOTIFICATIONS} component={Notifications} isAuthenticated={isAuthenticated} />
+        <PrivateRoute
+          exact
+          path={OFFERS_LISTED_PROPERTY}
+          component={ListedPropertyOffers}
+          isAuthenticated={isAuthenticated}
+        />
         <PrivateRoute
           exact
           path={VALUE_ADDED_SERVICES}

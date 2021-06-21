@@ -104,6 +104,7 @@ const saleListingExpectationData = (
 const PreferenceDetails: FC<IProps> = (props: IProps) => {
   const {
     property: { isLeaseListing, leaseTerm, saleTerm, currencySymbol, projectName },
+    containerStyles,
   } = props;
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
@@ -167,7 +168,9 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
 
   return (
     <>
-      <View style={[styles.container, isMobile && styles.containerMobile, isTab && styles.containerTab]}>
+      <View
+        style={[styles.container, isMobile && styles.containerMobile, isTab && styles.containerTab, containerStyles]}
+      >
         <Label textType="semiBold" type="large" style={styles.tintColor}>
           {`${t('offers:yourExpectationFor')} ${projectName}`}
         </Label>
