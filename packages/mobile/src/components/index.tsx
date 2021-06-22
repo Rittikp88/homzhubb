@@ -29,7 +29,6 @@ export { PropertyMapCard } from '@homzhub/mobile/src/components/molecules/Proper
 export { GoogleSearchBar } from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 export { SearchResults } from '@homzhub/mobile/src/components/molecules/SearchResults';
 export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
-export { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
 export { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 
 // Organisms

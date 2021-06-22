@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
+import { TouchableOpacity, StyleSheet, ViewStyle, StyleProp, FlatList } from 'react-native';
 import { isArray } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
@@ -25,15 +25,16 @@ export class TimeSlotGroup extends React.PureComponent<ITimeSlotProps> {
   public render(): React.ReactElement {
     const { data, containerStyle = {} } = this.props;
     return (
-      <View style={[styles.container, containerStyle]}>
-        {data.map((item: ISlotItem) => {
-          return this.renderItem(item);
-        })}
-      </View>
+      <FlatList
+        data={data}
+        style={containerStyle}
+        numColumns={2}
+        renderItem={({ item, index }): React.ReactElement => this.renderItem(item, index)}
+      />
     );
   }
 
-  public renderItem = (item: ISlotItem): React.ReactElement => {
+  public renderItem = (item: ISlotItem, index: number): React.ReactElement => {
     const { selectedItem, onItemSelect, fontType = 'regular', buttonItemStyle = {}, selectedDate = '' } = this.props;
     const isDisabled = DateUtils.isPastTime(item.from, selectedDate);
     let isSelected;
@@ -50,6 +51,7 @@ export class TimeSlotGroup extends React.PureComponent<ITimeSlotProps> {
       isSelected && styles.selectedContainerStyle,
       isDisabled && styles.disabledStyle,
       buttonItemStyle,
+      index % 2 !== 0 && styles.separator,
     ]);
 
     const onItemPress = (): void => onItemSelect(item.id);
@@ -79,11 +81,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   item: {
+    flex: 1,
     flexDirection: 'row',
     paddingHorizontal: 20,
     alignItems: 'center',
-    width: 160,
-    marginRight: 18,
+    justifyContent: 'center',
     marginVertical: 10,
     paddingVertical: 6,
     borderRadius: 4,
@@ -103,5 +105,8 @@ const styles = StyleSheet.create({
   },
   disabledStyle: {
     backgroundColor: theme.colors.darkTint10,
+  },
+  separator: {
+    marginLeft: 16,
   },
 });

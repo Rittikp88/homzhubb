@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { TimeSlotGroup } from '@homzhub/mobile/src/components/molecules/TimeSlotGroup';
+import { TimeSlotGroup } from '@homzhub/common/src/components/molecules/TimeSlotGroup';
 import { TimeSlot } from '@homzhub/common/src/constants/ContactFormData';
 
 let props: any;

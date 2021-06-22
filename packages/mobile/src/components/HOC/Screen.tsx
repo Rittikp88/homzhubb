@@ -1,12 +1,13 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView, View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 import Animated, { AnimationService } from '@homzhub/mobile/src/services/AnimationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PageHeader, IPageHeaderProps, TITLE_HEIGHT } from '@homzhub/mobile/src/components/atoms/PageHeader';
 import { Header, IHeaderProps } from '@homzhub/mobile/src/components/molecules/Header';
+import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 
 const { createAnimatedComponent, setAnimatedValue, interpolateAnimation } = AnimationService;
 const AnimatedKeyboardAwareScrollView = createAnimatedComponent(KeyboardAwareScrollView);
@@ -35,6 +36,7 @@ export const Screen = (props: IProps): React.ReactElement => {
     containerStyle = {},
     contentContainerStyle = {},
   } = props;
+  const navigation = useNavigation();
 
   // Values for Header Animations
   let opacity;
@@ -46,7 +48,7 @@ export const Screen = (props: IProps): React.ReactElement => {
   }
 
   return (
-    <>
+    <HandleBack onBack={headerProps?.onIconPress} navigation={navigation}>
       <Header {...headerProps} title={headerProps?.title ?? pageHeaderProps?.contentTitle} opacity={opacity} />
       <SafeAreaView style={[styles.container, { backgroundColor }]}>
         {scrollEnabled ? (
@@ -67,7 +69,7 @@ export const Screen = (props: IProps): React.ReactElement => {
         )}
       </SafeAreaView>
       <Loader visible={isLoading} />
-    </>
+    </HandleBack>
   );
 };
 

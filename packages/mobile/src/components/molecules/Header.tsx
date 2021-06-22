@@ -34,7 +34,6 @@ const Header = (props: IHeaderProps): React.ReactElement => {
     opacity = 1,
     onIconPress,
     onIconRightPress,
-    onIconRightPress: onRightTextPress,
     textRight,
   } = props;
 
@@ -65,7 +64,7 @@ const Header = (props: IHeaderProps): React.ReactElement => {
           <Icon name={iconRight} size={22} color={textColor} style={styles.itemRight} onPress={onIconRightPress} />
         )}
         {!iconRight && textRight && (
-          <AnimatedTouchableOpacity style={[styles.itemRight, { opacity }]} onPress={onRightTextPress}>
+          <AnimatedTouchableOpacity style={[styles.itemRight, { opacity }]} onPress={onIconRightPress}>
             <Animated.Text numberOfLines={1} style={styles.textRight}>
               {textRight}
             </Animated.Text>
