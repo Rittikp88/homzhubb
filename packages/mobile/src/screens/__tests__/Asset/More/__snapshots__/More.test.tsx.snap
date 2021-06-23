@@ -102,7 +102,7 @@ exports[`Financials Screen should render snapshot 1`] = `
         <Icon
           allowFontScaling={false}
           color="#78B7FA"
-          name="head-phone"
+          name="service"
           size={22}
           style={
             Object {
@@ -242,7 +242,7 @@ exports[`Financials Screen should render snapshot 1`] = `
         <Icon
           allowFontScaling={false}
           color="#78B7FA"
-          name="mail"
+          name="chat"
           size={22}
           style={
             Object {

@@ -123,7 +123,11 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   public render(): React.ReactNode {
     const { searchValue, isLoading, header } = this.state;
-    const { t, navigation } = this.props;
+    const {
+      t,
+      navigation,
+      route: { params },
+    } = this.props;
     return (
       <UserScreen
         title={header}
@@ -132,18 +136,19 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         loading={isLoading}
       >
         <View style={styles.container}>
-          <UploadBox
-            icon={icons.document}
-            header={t('uploadDocument')}
-            subHeader={t('uploadDocHelperText')}
-            containerStyle={styles.uploadBox}
-            onPress={this.onCapture}
-          />
+          {!params.isFromTenancies && (
+            <UploadBox
+              icon={icons.document}
+              header={t('uploadDocument')}
+              subHeader={t('uploadDocHelperText')}
+              containerStyle={styles.uploadBox}
+              onPress={this.onCapture}
+            />
+          )}
           <SearchBar
             placeholder={t('assetMore:searchByDoc')}
             value={searchValue}
             updateValue={this.onSearch}
-            containerStyle={styles.searchBar}
             testID="searchBar"
           />
           {this.renderDocumentList()}
@@ -266,10 +271,13 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   };
 
   private renderMenu = (id: number, isDeleteAllowed: boolean): React.ReactElement => {
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     const { showDeleteSheet } = this.state;
 
-    const formattedData: IMenu[] = DocumentOptions.map((item) => {
+    let formattedData: IMenu[] = DocumentOptions.map((item) => {
       return {
         label: t(item.label),
         value: item.value,
@@ -277,6 +285,15 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         isExtraDataAllowed: isDeleteAllowed,
       };
     });
+
+    if (params.isFromTenancies) {
+      formattedData = [
+        {
+          label: t('common:download'),
+          value: DocumentOperations.DOWNLOAD,
+        },
+      ];
+    }
 
     return (
       <Menu
@@ -601,9 +618,7 @@ const styles = StyleSheet.create({
   },
   uploadBox: {
     paddingVertical: 16,
-  },
-  searchBar: {
-    marginTop: 16,
+    marginBottom: 16,
   },
   divider: {
     borderColor: theme.colors.darkTint10,

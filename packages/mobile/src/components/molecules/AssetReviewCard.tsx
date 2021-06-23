@@ -324,7 +324,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
         {!isUnderReview && !!reply && !replyMode && renderReplyComment()}
         {!hideButtons && isUnderReview && (
           <View style={styles.underReview}>
-            <Icon name={icons.flag} size={12} color={theme.colors.alert} />
+            <Icon name={icons.flag} size={12} color={theme.colors.danger} />
             <Label type="regular" style={styles.underReviewText}>
               {t('underReviewMessage')}
             </Label>
@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   underReviewText: {
-    color: theme.colors.alert,
+    color: theme.colors.danger,
     marginStart: 6,
   },
   cardDivider: {

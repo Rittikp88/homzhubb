@@ -40,7 +40,7 @@ class PropertyDetail extends Component<Props, IDetailState> {
       <>
         <CollapsibleSection title={t('property:address')} isDividerRequired isCollapsibleRequired={isCollapsible}>
           <Label type="large" textType="regular" style={styles.description}>
-            {detail.address}
+            {detail?.address}
           </Label>
         </CollapsibleSection>
         <CollapsibleSection title={t('description')} isDividerRequired isCollapsibleRequired={isCollapsible}>

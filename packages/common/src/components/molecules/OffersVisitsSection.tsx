@@ -8,23 +8,8 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { OffersVisitsType } from '@homzhub/common/src/constants/Offers';
-
-const Data = [
-  {
-    type: OffersVisitsType.offers,
-    title: 'common:offers',
-    icon: icons.offers,
-    sections: ['totalOffers', 'activeOffers', 'pendingOffers'],
-    colors: [theme.colors.darkTint3, theme.colors.green, theme.colors.error],
-  },
-  {
-    type: OffersVisitsType.visits,
-    title: 'assetMore:propertyVisits',
-    icon: icons.visit,
-    sections: ['upcomingVisits', 'missedVisits', 'completedVisits'],
-  },
-];
+import { OffersVisitsType, OfferVisitData } from '@homzhub/common/src/constants/Offers';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
   isDetailView?: boolean;
@@ -34,13 +19,12 @@ interface IProps {
     [OffersVisitsType.offers]: number[];
     [OffersVisitsType.visits]: number[];
   };
+  renderImage?: (key: Tabs) => React.ReactElement;
 }
 
 const OffersVisitsSection = (props: IProps): React.ReactElement => {
-  const { values, propertyDetailTab, onNav } = props;
+  const { values, propertyDetailTab, onNav, renderImage } = props;
   const { t } = useTranslation();
-  // Todo (Praharsh) : Check with web team if Offers come before Visits.
-  const data = PlatformUtils.isWeb() ? Data : [...Data].reverse();
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   return (
@@ -52,13 +36,13 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
           : PlatformUtils.isWeb() && isTablet && !isMobile && styles.containerTablet,
       ]}
     >
-      {data.map((item) => {
+      {OfferVisitData.map((item) => {
         const onPress = (): void => onNav && onNav(item.type);
         return (
           <TouchableOpacity key={item.type} onPress={onPress}>
             <Divider containerStyles={styles.divider} />
             <View style={styles.contentContainer}>
-              <Icon name={item.icon} size={22} color={theme.colors.darkTint2} />
+              {renderImage ? renderImage(item.key) : <Icon name={item.icon} size={22} color={theme.colors.darkTint2} />}
               <View style={styles.textContainer}>
                 <View style={styles.header}>
                   <Label type="large" textType="regular" style={styles.title}>

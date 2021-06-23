@@ -330,6 +330,9 @@ export interface ICommonNavProps {
   shouldReload?: boolean;
   screenTitle?: string;
   propertyId?: number;
+  saleListingId?: number;
+  leaseListingId?: number;
+  leaseTransaction?: number;
 }
 
 export interface IVisitNavParam extends ICommonNavProps {
@@ -345,11 +348,6 @@ export interface IChatScreen extends ICommonNavProps {
 
 export interface IDetailNavParam extends ICommonNavProps {
   property: Asset;
-}
-
-export interface IReviewNavParam extends ICommonNavProps {
-  saleListingId: number | null;
-  leaseListingId: number | null;
 }
 
 export interface IPropertyImageParam {

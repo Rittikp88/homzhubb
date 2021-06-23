@@ -20,6 +20,7 @@ import { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeasePro
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { EditTenantDetails } from '@homzhub/mobile/src/components/molecules/EditTenantDetails';
+import { PropertyTabs } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyTabs';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
@@ -127,12 +128,12 @@ export class AssetCard extends Component<Props, IState> {
         count: notifications?.count,
       },
       {
-        iconName: icons.headPhone,
+        iconName: icons.serviceRequest,
         onPress: (): void => handlePropertyView(Tabs.TICKETS),
         count: serviceTickets?.count,
       },
       {
-        iconName: icons.mail,
+        iconName: icons.chat,
         onPress: (): void => handlePropertyView(Tabs.MESSAGES),
         count: messages?.count,
       },
@@ -377,6 +378,8 @@ export class AssetCard extends Component<Props, IState> {
           <OffersVisitsSection
             isDetailView={isDetailView}
             onNav={onNavPress}
+            // @ts-ignore
+            renderImage={(key): React.ReactElement => PropertyTabs[key]}
             values={{
               [OffersVisitsType.offers]: [totalOffers, activeOffers, pendingOffers],
               [OffersVisitsType.visits]: [upcomingVisits, missedVisits, completedVisits],

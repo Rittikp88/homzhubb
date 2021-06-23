@@ -15,7 +15,7 @@ import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/As
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IReviewNavParam } from '@homzhub/mobile/src/navigation/interfaces';
+import { ICommonNavProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 const AssetReviews = (): React.ReactElement => {
   const { goBack } = useNavigation();
@@ -24,7 +24,7 @@ const AssetReviews = (): React.ReactElement => {
   const [reviews, setReviews] = useState<AssetReview[]>([]);
   const [reportCategories, setReportCategories] = useState<Unit[]>([]);
   const [reviewSummary, setReviewSummary] = useState<AssetReview | null>(null);
-  const { saleListingId, leaseListingId, screenTitle } = params as IReviewNavParam;
+  const { saleListingId, leaseListingId, screenTitle } = params as ICommonNavProps;
 
   useEffect(() => {
     // Make APIs here

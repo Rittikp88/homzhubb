@@ -35,6 +35,9 @@ export enum Tabs {
   HIGH = 'High',
   MEDIUM = 'Medium',
   LOW = 'Low',
+  ALERT = 'Alert',
+  REQUESTS = 'Requests',
+  CHAT = 'Chat',
 }
 
 // enum END
@@ -44,6 +47,7 @@ export interface IRoutes {
   title: string;
   color?: string;
   icon?: string;
+  count?: number;
 }
 
 // Property Detail Screen Tabs START
@@ -61,16 +65,23 @@ export const tabName = [
   Tabs.DETAILS,
 ];
 
+export const TenantRoutes: IRoutes[] = [
+  { key: Tabs.ALERT, title: Tabs.ALERT, icon: icons.alert, color: theme.colors.redTint4 },
+  { key: Tabs.REQUESTS, title: Tabs.REQUESTS, icon: icons.serviceRequest, color: theme.colors.redTint5 },
+  { key: Tabs.CHAT, title: Tabs.CHAT, icon: icons.chat, color: theme.colors.lightGreen },
+  { key: Tabs.DOCUMENTS, title: Tabs.DOCUMENTS, icon: icons.documents, color: theme.colors.gray16 },
+  { key: Tabs.DETAILS, title: Tabs.DETAILS, icon: icons.detail, color: theme.colors.blueTint1 },
+];
+
 export const Routes: IRoutes[] = [
-  { key: Tabs.TICKETS, title: Tabs.TICKETS, icon: icons.headset },
-  { key: Tabs.OFFERS, title: Tabs.OFFERS, icon: icons.offers },
-  { key: Tabs.REVIEWS, title: Tabs.REVIEWS, icon: icons.reviews },
-  { key: Tabs.SITE_VISITS, title: Tabs.SITE_VISITS, icon: icons.visit },
-  { key: Tabs.FINANCIALS, title: Tabs.FINANCIALS, icon: icons.financials },
-  { key: Tabs.MESSAGES, title: Tabs.MESSAGES, icon: icons.mail },
-  { key: Tabs.DOCUMENTS, title: Tabs.DOCUMENTS, icon: icons.documents },
-  { key: Tabs.TENANT_HISTORY, title: Tabs.TENANT_HISTORY, icon: icons.history },
-  { key: Tabs.DETAILS, title: Tabs.DETAILS, icon: icons.detail },
+  { key: Tabs.ALERT, title: Tabs.ALERT, icon: icons.alert, color: theme.colors.redTint4 },
+  { key: Tabs.REQUESTS, title: Tabs.REQUESTS, icon: icons.serviceRequest, color: theme.colors.redTint5 },
+  { key: Tabs.CHAT, title: Tabs.CHAT, icon: icons.chat, color: theme.colors.lightGreen },
+  { key: Tabs.REVIEWS, title: Tabs.REVIEWS, icon: icons.reviews, color: theme.colors.yellowTint3 },
+  { key: Tabs.FINANCIALS, title: Tabs.FINANCIALS, icon: icons.financials, color: theme.colors.greenTint4 },
+  { key: Tabs.DOCUMENTS, title: Tabs.DOCUMENTS, icon: icons.documents, color: theme.colors.gray16 },
+  { key: Tabs.TENANT_HISTORY, title: Tabs.TENANT_HISTORY, icon: icons.history, color: theme.colors.blueTint2 },
+  { key: Tabs.DETAILS, title: Tabs.DETAILS, icon: icons.detail, color: theme.colors.blueTint1 },
 ];
 
 // (WEB)

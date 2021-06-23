@@ -69,7 +69,12 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       route: { params },
     } = this.props;
     const { scrollEnabled, notifications, searchText } = this.state;
-    const title = params && params.isFromDashboard ? t('dashboard') : t('assetMore:more');
+    const getTitle = (): string => {
+      if (params) {
+        return params.isFromDashboard ? t('dashboard') : params.screenTitle ?? t('assetMore:more');
+      }
+      return t('assetMore:more');
+    };
 
     const markAsReadIcon = (): React.ReactElement => {
       const isDisabled = notifications?.unreadCount === 0;
@@ -83,7 +88,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     return (
       <UserScreen
         isOuterScrollEnabled={scrollEnabled}
-        title={title}
+        title={getTitle()}
         onBackPress={this.handleIconPress}
         pageTitle={t('notification')}
         rightNode={!searchText ? markAsReadIcon() : undefined}
@@ -94,8 +99,12 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
   }
 
   public renderNotifications = (): React.ReactElement => {
-    const { t } = this.props;
+    const {
+      t,
+      route: { params },
+    } = this.props;
     const { notifications, searchText } = this.state;
+    const showSearch = !params || (params && !params.isFromPortfolio);
     let containerStyle = {
       height: 800,
     };
@@ -106,12 +115,14 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     }
     return (
       <View style={[styles.searchBarContainer, containerStyle]}>
-        <SearchBar
-          placeholder={t('searchByKeyword')}
-          value={searchText}
-          updateValue={this.onUpdateSearchText}
-          containerStyle={styles.searchbar}
-        />
+        {showSearch && (
+          <SearchBar
+            placeholder={t('searchByKeyword')}
+            value={searchText}
+            updateValue={this.onUpdateSearchText}
+            containerStyle={styles.searchbar}
+          />
+        )}
         {notifications?.results && notifications?.results.length === 0 && <EmptyState />}
         {notifications?.results && notifications?.results.length > 0 && (
           <NotificationBox
@@ -126,7 +137,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     );
   };
 
-  // Todo : Refactor this.
+  // TODO:(Shikha) - Refactor Notification navigation logic.
   public onNotificationClicked = async (data: NotificationModel): Promise<void> => {
     const { notifications } = this.state;
     const { navigation, setFilter, setCurrentTicket, setCurrentOfferPayload, setCurrentAsset } = this.props;
@@ -240,7 +251,8 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
         },
       });
     } else if (type === NotificationType.VALUE_ADDED_SERVICE) {
-      navigation.navigate(ScreensKeys.ServicesDashboard);
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.Service);
     } else if (type === NotificationType.ASSET_DOCUMENT) {
       navigation.navigate(ScreensKeys.DocumentScreen, { isFromDashboard: true, propertyId: assetId });
     }
@@ -279,7 +291,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       try {
         const latestCreatedAt = notifications.results[0].createdAt;
         await DashboardRepository.markAllNotificationsRead(latestCreatedAt);
-        this.getAssetNotifications(true);
+        await this.getAssetNotifications(true);
         AlertHelper.success({ message: t('assetDashboard:allNotificationsAreRead') });
       } catch (e) {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -289,11 +301,29 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
   public getAssetNotifications = async (updateAll?: boolean): Promise<void> => {
     const { searchText, limit, offset, notifications } = this.state;
-    const requestPayload = {
+    const {
+      route: { params },
+    } = this.props;
+    let requestPayload = {
       limit,
       offset,
-      ...(searchText.length > 0 ? { q: searchText } : {}),
+      ...(!params && searchText.length > 0 ? { q: searchText } : {}),
     };
+
+    if (params) {
+      const { saleListingId, leaseListingId, leaseTransaction, propertyId } = params;
+      const isTransaction = leaseTransaction && leaseTransaction > 0;
+      const isAsset = !isTransaction && !leaseListingId && !saleListingId;
+
+      requestPayload = {
+        ...requestPayload,
+        ...(isTransaction && { lease_transaction_id: leaseTransaction }),
+        ...(!isTransaction && leaseListingId && { lease_listing_id: leaseListingId }),
+        ...(!isTransaction && saleListingId && { sale_listing_id: saleListingId }),
+        ...(isAsset && { asset_id: propertyId }),
+      };
+    }
+
     try {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
       if (updateAll || searchText) {

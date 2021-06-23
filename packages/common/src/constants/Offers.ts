@@ -1,3 +1,7 @@
+import { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
+
 export enum MadeSort {
   NEWEST = 'NEWEST',
   LOW_HIGH = 'LOW_HIGH',
@@ -44,3 +48,21 @@ export enum OffersVisitsType {
   offers = 'Offers',
   visits = 'Visits',
 }
+
+export const OfferVisitData = [
+  {
+    type: OffersVisitsType.offers,
+    title: 'common:offers',
+    icon: icons.offers,
+    key: Tabs.OFFERS,
+    sections: ['totalOffers', 'activeOffers', 'pendingOffers'],
+    colors: [theme.colors.darkTint3, theme.colors.green, theme.colors.error],
+  },
+  {
+    type: OffersVisitsType.visits,
+    title: 'assetMore:propertyVisits',
+    icon: icons.visit,
+    key: Tabs.SITE_VISITS,
+    sections: ['upcomingVisits', 'missedVisits', 'completedVisits'],
+  },
+];

@@ -1,6 +1,6 @@
 // @ts-noCheck
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
@@ -215,6 +215,7 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.ServicesForSelectedAsset,
     ScreensKeys.Messages,
     ScreensKeys.AddPropertyImage,
+    ScreensKeys.AssetNotifications,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
 };

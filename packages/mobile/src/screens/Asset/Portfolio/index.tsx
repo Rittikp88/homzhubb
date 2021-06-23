@@ -258,7 +258,14 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
           });
           navigation.navigate(ScreensKeys.ChatScreen, param);
           break;
-
+        case Tabs.NOTIFICATIONS:
+          navigation.navigate(ScreensKeys.AssetNotifications, {
+            ...param,
+            leaseListingId: assetStatusInfo?.leaseListingId ?? 0,
+            saleListingId: assetStatusInfo?.saleListingId ?? 0,
+            leaseTransaction: assetStatusInfo?.leaseTransaction.id,
+          });
+          break;
         default:
           navigation.navigate(ScreensKeys.PropertyDetailScreen);
       }

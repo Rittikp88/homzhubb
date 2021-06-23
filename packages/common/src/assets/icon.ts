@@ -188,6 +188,8 @@ export const icons = {
   image: 'image',
   pdfFile: 'pdf-file',
   tickWithCircle: 'tick-with-circle',
+  chat: 'chat',
+  serviceRequest: 'service',
 
   // COMMUTE
   train: 'train',

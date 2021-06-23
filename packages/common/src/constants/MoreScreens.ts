@@ -51,7 +51,7 @@ export const MORE_SCREENS: IMoreScreens = {
     {
       id: 2,
       title: `${translationKey}:tickets`,
-      icon: icons.headPhone,
+      icon: icons.serviceRequest,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.TICKETS,
@@ -67,7 +67,7 @@ export const MORE_SCREENS: IMoreScreens = {
     {
       id: 4,
       title: `${translationKey}:messages`,
-      icon: icons.mail,
+      icon: icons.chat,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.MESSAGES,

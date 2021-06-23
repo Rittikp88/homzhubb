@@ -1,3 +1,4 @@
+// TODO: (Shikha) - Sort colors
 // Add all colors here, try to add as per hex order
 const namedColors = {
   white: '#FFFFFF',
@@ -21,7 +22,6 @@ const namedColors = {
   disabledPreference: '#B3BBC3',
   disabledSearch: '#80C1FC',
   danger: '#D60D31',
-  alert: '#D60D31',
   orange: '#FB6E07',
   notificationGreen: '#13AB46',
   notificationRed: '#E93F33',
@@ -65,6 +65,8 @@ const tintColors = {
   darkTint12: '#E0E0E0',
 
   // blue
+  blueTint1: '#3991DF',
+  blueTint2: '#695AC7',
   blueTint3: '#D3A6F0',
   blueTint4: '#3E4FC2',
   blueTint5: '#2F2685',
@@ -75,8 +77,10 @@ const tintColors = {
   blueTint10: '#E5F3FE',
   blueTint11: '#E6F3FE',
   blueTint12: '#0084F8',
+  blueTint13: '#54A7F0',
 
   // green
+  greenTint4: '#AAC506',
   greenTint5: '#95E258',
   greenTint6: '#006A0A',
   greenTint7: '#73ce64',
@@ -86,10 +90,13 @@ const tintColors = {
   redTint1: '#EE7979',
   redTint2: '#FF9D91',
   redTint3: '#F66351',
+  redTint4: '#FF1F00',
+  redTint5: '#FB6E07',
 
   // yellow
   yellowTint1: '#FCD980',
   yellowTint2: '#FDB113',
+  yellowTint3: '#D9BB2C',
 };
 
 // Theme based color scheme
@@ -167,6 +174,8 @@ const grayShades = {
   gray12: '#FBFBFC',
   gray13: '#D3D6D8',
   gray14: '#F1F2F4',
+  gray15: '#697888',
+  gray16: '#788796',
 };
 
 const chartColors = {

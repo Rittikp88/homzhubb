@@ -139,7 +139,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
       case Tabs.LOW:
         return this.renderContent(TicketPriority.LOW);
       default:
-        return <EmptyState icon={icons.headPhone} />;
+        return <EmptyState icon={icons.serviceRequest} />;
     }
   };
 

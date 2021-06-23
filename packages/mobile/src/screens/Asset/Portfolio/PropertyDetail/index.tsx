@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -19,18 +19,21 @@ import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
+import TabCard from '@homzhub/common/src/components/molecules/TabCard';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
-import NotificationTab from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/NotificationTab';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { PropertyTabs } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyTabs';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import {
@@ -43,10 +46,7 @@ import {
 import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { Routes, Tabs, IRoutes } from '@homzhub/common/src/constants/Tabs';
-import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
-import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
-import { IFilter } from '@homzhub/common/src/domain/models/Search';
+import { Routes, Tabs, TenantRoutes } from '@homzhub/common/src/constants/Tabs';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { ICurrentOffer, IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
@@ -154,7 +154,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     } = this.props;
     const { propertyData, isLoading, isFromTenancies } = this.state;
 
-    const { assetStatusInfo, id } = propertyData;
+    const { assetStatusInfo } = propertyData;
     const isOccupied = assetStatusInfo?.tag.label === Filters.OCCUPIED;
     const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false, isOccupied);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
@@ -189,7 +189,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
                 onResend={this.onResendInvite}
               />
               {this.renderTabView()}
-              {!isFromTenancies && <NotificationTab propertyId={id} assetStatusInfo={assetStatusInfo} />}
             </>
           ) : (
             <EmptyState title={t('common:noDataAvailable')} icon={icons.portfolio} />
@@ -238,25 +237,48 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private renderTabView = (): React.ReactElement | null => {
-    const { isFromTenancies } = this.state;
+    const { isFromTenancies, propertyData } = this.state;
 
-    if (isFromTenancies) {
+    if (!propertyData) {
       return null;
     }
 
+    const routes = isFromTenancies ? TenantRoutes : Routes;
+
+    const data = routes.map((item) => {
+      if (item.key === Tabs.ALERT) {
+        item = { ...item, count: propertyData.notifications.count };
+      }
+      if (item.key === Tabs.REQUESTS) {
+        item = { ...item, count: propertyData.serviceTickets.count };
+      }
+      if (item.key === Tabs.CHAT) {
+        item = { ...item, count: propertyData.messages.count };
+      }
+      return item;
+    });
+
     return (
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tabView}>
-        {Routes.map((route: IRoutes, index) => {
-          return (
-            <TouchableOpacity key={index} style={styles.tabItem} onPress={(): void => this.handleTabAction(route.key)}>
-              <Icon name={route.icon || ''} color={theme.colors.darkTint3} size={26} />
-              <Text type="small" style={styles.label}>
-                {route.title}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+      <>
+        <FlatList
+          data={data}
+          numColumns={3}
+          renderItem={({ item, index }): React.ReactElement => {
+            return (
+              <TabCard
+                title={item.title}
+                icon={item.icon}
+                iconColor={item.color}
+                badge={item.count}
+                // @ts-ignore
+                image={PropertyTabs[item.key]}
+                containerStyle={styles.tabView}
+                onPressCard={(): void => this.handleTabAction(item.key)}
+              />
+            );
+          }}
+        />
+      </>
     );
   };
 
@@ -412,7 +434,15 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       propertyId: id,
     };
     switch (key) {
-      case Tabs.TICKETS:
+      case Tabs.ALERT:
+        navigation.navigate(ScreensKeys.AssetNotifications, {
+          ...param,
+          leaseListingId: assetStatusInfo?.leaseListingId ?? 0,
+          saleListingId: assetStatusInfo?.saleListingId ?? 0,
+          leaseTransaction: assetStatusInfo?.leaseTransaction.id,
+        });
+        break;
+      case Tabs.REQUESTS:
         navigation.navigate(ScreensKeys.ServiceTicketScreen, param);
         break;
       case Tabs.OFFERS:
@@ -421,8 +451,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.REVIEWS:
         navigation.navigate(ScreensKeys.AssetReviewScreen, {
           ...param,
-          leaseListingId: assetStatusInfo?.leaseListingId ?? null,
-          saleListingId: assetStatusInfo?.saleListingId ?? null,
+          leaseListingId: assetStatusInfo?.leaseListingId ?? 0,
+          saleListingId: assetStatusInfo?.saleListingId ?? 0,
         });
         break;
       case Tabs.SITE_VISITS:
@@ -431,7 +461,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case Tabs.FINANCIALS:
         navigation.navigate(ScreensKeys.AssetFinancialScreen, param);
         break;
-      case Tabs.MESSAGES:
+      case Tabs.CHAT:
         navigation.navigate(ScreensKeys.ChatScreen, param);
         break;
       case Tabs.DOCUMENTS:
@@ -577,13 +607,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setAssetId,
-    setSelectedPlan,
-    getAssetById,
-    setEditPropertyFlow,
-    toggleEditPropertyFlowBottomSheet,
-  } = RecordAssetActions;
+  const { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } =
+    RecordAssetActions;
   const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;
@@ -621,20 +646,11 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 0,
   },
-  label: {
-    textAlign: 'center',
-    color: theme.colors.darkTint3,
-  },
   background: {
     backgroundColor: theme.colors.white,
   },
   tabView: {
-    backgroundColor: theme.colors.white,
-    paddingVertical: 20,
-  },
-  tabItem: {
-    marginHorizontal: 16,
-    alignItems: 'center',
+    marginHorizontal: 6,
   },
   deleteButtonContainer: {
     borderColor: theme.colors.error,

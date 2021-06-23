@@ -53,7 +53,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         count: notification,
       },
       {
-        icon: icons.headPhone,
+        icon: icons.serviceRequest,
         color: theme.colors.orange,
         title: t('assetMore:tickets'),
         onPress: onPressServiceTickets,

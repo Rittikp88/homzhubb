@@ -62,13 +62,12 @@ import {
   ScreensKeys,
   IChatScreen,
   IDetailNavParam,
-  IReviewNavParam,
 } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type CommonParamList = {
   [ScreensKeys.ComingSoonScreen]: IComingSoon;
   [ScreensKeys.PropertyDetailScreen]: undefined | IPropertyDetailProps;
-  [ScreensKeys.AssetNotifications]: undefined | { isFromDashboard: boolean };
+  [ScreensKeys.AssetNotifications]: undefined | ICommonNavProps;
   [ScreensKeys.PropertyVisits]: IVisitNavParam;
   [ScreensKeys.ServiceTicketScreen]: undefined | ICommonNavProps;
   [ScreensKeys.MarketTrends]: undefined | { isFromDashboard: boolean };
@@ -101,7 +100,7 @@ export type CommonParamList = {
   [ScreensKeys.AssetPlanSelection]: undefined | IPlanSelectionParam;
   [ScreensKeys.LandingScreen]: undefined;
   [ScreensKeys.OfferDetail]: undefined | ICommonNavProps;
-  [ScreensKeys.AssetReviewScreen]: IReviewNavParam;
+  [ScreensKeys.AssetReviewScreen]: ICommonNavProps;
   [ScreensKeys.AssetFinancialScreen]: ICommonNavProps;
   [ScreensKeys.DocumentScreen]: ICommonNavProps;
   [ScreensKeys.TenantHistoryScreen]: ICommonNavProps;
