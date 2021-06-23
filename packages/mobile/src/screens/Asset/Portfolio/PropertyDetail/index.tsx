@@ -549,7 +549,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
 
     list = [
       { label: t('property:editProperty'), value: MenuItems.EDIT_PROPERTY },
-      { label: t('property:deleteProperty'), value: MenuItems.DELETE_PROPERTY, isExtraData: true },
+      {
+        label: t('property:deleteProperty'),
+        value: MenuItems.DELETE_PROPERTY,
+        isExtraData: true,
+        isExtraDataAllowed: true,
+      },
     ];
 
     if (isListingCreated) {
@@ -607,8 +612,13 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } =
-    RecordAssetActions;
+  const {
+    setAssetId,
+    setSelectedPlan,
+    getAssetById,
+    setEditPropertyFlow,
+    toggleEditPropertyFlowBottomSheet,
+  } = RecordAssetActions;
   const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;
@@ -654,6 +664,7 @@ const styles = StyleSheet.create({
   },
   deleteButtonContainer: {
     borderColor: theme.colors.error,
+    backgroundColor: theme.colors.error,
   },
   deleteButtonText: {
     color: theme.colors.white,
