@@ -177,7 +177,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
 
   private renderEmptyComponent = (): ReactElement => {
     const { t } = this.props;
-    return <EmptyState title={t('serviceTickets:noTickets')} icon={icons.headPhone} />;
+    return <EmptyState title={t('serviceTickets:noTickets')} icon={icons.serviceRequest} />;
   };
 
   // HANDLERS START

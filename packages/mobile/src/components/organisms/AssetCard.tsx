@@ -324,7 +324,7 @@ export class AssetCard extends Component<Props, IState> {
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
     const onNavPress = (type: OffersVisitsType): void =>
-      OfferHelper.handleOfferVisitAction(type, formattedProjectName, id);
+      OfferHelper.handleOfferVisitAction({ type, name: formattedProjectName, id, leaseListingId, saleListingId });
     return (
       <>
         {!!userData.fullName && (

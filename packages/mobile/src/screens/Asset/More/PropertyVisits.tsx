@@ -22,6 +22,7 @@ import { Tabs } from '@homzhub/common/src/constants/Tabs';
 interface IDispatchProps {
   getAssetVisit: (payload: IAssetVisitPayload) => void;
   setVisitType: (payload: Tabs) => void;
+  clearVisits: () => void;
 }
 
 interface IScreenState {
@@ -142,8 +143,9 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
   };
 
   private handleBack = (): void => {
-    const { navigation } = this.props;
+    const { navigation, clearVisits } = this.props;
     navigation.goBack();
+    clearVisits();
   };
 
   private handleCalendarPress = (): void => {
@@ -203,7 +205,7 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
     response.forEach((item) => {
       const results = item.results as VisitAssetDetail[];
       results.forEach((asset: VisitAssetDetail) => {
-        propertiesByCountry.push({ label: asset.projectName, value: asset.id });
+        propertiesByCountry.push({ label: asset.projectName, value: asset.id.toString() });
       });
     });
 
@@ -215,11 +217,12 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getAssetVisit, setVisitType } = AssetActions;
+  const { getAssetVisit, setVisitType, clearVisits } = AssetActions;
   return bindActionCreators(
     {
       getAssetVisit,
       setVisitType,
+      clearVisits,
     },
     dispatch
   );

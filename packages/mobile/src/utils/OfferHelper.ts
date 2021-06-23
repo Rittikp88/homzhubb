@@ -1,8 +1,19 @@
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { OffersVisitsType } from '@homzhub/common/src/constants/Offers';
+import { ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+
+interface IVisitAction {
+  type: OffersVisitsType;
+  name: string;
+  id: number;
+  leaseListingId: number | null;
+  saleListingId: number | null;
+}
 
 class OfferHelper {
   public handleOfferActions = (action: OfferAction): void => {
@@ -27,10 +38,20 @@ class OfferHelper {
     }
   };
 
-  public handleOfferVisitAction = (type: OffersVisitsType, name: string, id: number): void => {
+  public handleOfferVisitAction = (props: IVisitAction): void => {
+    const store = StoreProviderService.getStore();
     const {
       navigation: { navigate },
     } = NavigationService;
+
+    const { type, name, id, leaseListingId, saleListingId } = props;
+
+    store.dispatch(
+      OfferActions.setCurrentOfferPayload({
+        type: leaseListingId ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+        listingId: leaseListingId || saleListingId || 0,
+      })
+    );
 
     const param = {
       isFromPortfolio: true,
