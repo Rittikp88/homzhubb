@@ -33,6 +33,7 @@ export enum renderPopUpTypes {
   tenancy = 'TENANT',
   offer = 'OFFER',
   confirm = 'CONFIRM',
+  editOffer = 'EDIT_OFFER',
 }
 
 interface IStateProps {

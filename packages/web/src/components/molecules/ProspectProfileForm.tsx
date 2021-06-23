@@ -82,26 +82,25 @@ class ProspectProfileForm extends Component<Props, IScreenState> {
           companyName: userDetails?.workInfo?.companyName ?? '',
         },
       });
-      // TODO - enable it when edit form is picked up
-      //   const prospectsData = await OffersRepository.getProspectsInfo();
-      //   const {
-      //     user: { workInfo },
-      //     occupants,
-      //     tenantType,
-      //   } = prospectsData;
-      //   if (params?.editData) {
-      //     this.setState({
-      //       offerForm: {
-      //         jobType: workInfo.jobType.id,
-      //         occupants: String(occupants),
-      //         companyName: workInfo.companyName,
-      //         workEmail: workInfo.workEmail ?? '',
-      //         tenantType: tenantType.id,
-      //       },
-      //       userType: tenantType.id,
-      //     });
-      //   }
-      //   this.setState({ loading: false });
+      const prospectsData = await OffersRepository.getProspectsInfo();
+      const {
+        user: { workInfo },
+        occupants,
+        tenantType,
+      } = prospectsData;
+      const { editData } = this.props;
+      if (editData) {
+        this.setState({
+          offerForm: {
+            jobType: workInfo.jobType.id,
+            occupants: String(occupants),
+            companyName: workInfo.companyName,
+            workEmail: workInfo.workEmail ?? '',
+            tenantType: tenantType.id,
+          },
+          userType: tenantType.id,
+        });
+      }
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }

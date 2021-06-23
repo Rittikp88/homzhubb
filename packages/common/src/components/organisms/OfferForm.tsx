@@ -52,6 +52,7 @@ interface IProps {
   onSuccess: () => void;
   offersLeft: number;
   isMobileWeb?: boolean;
+  onEditProfile: () => void;
 }
 
 interface IReduxProps {
@@ -206,7 +207,7 @@ class OfferForm extends React.Component<Props, IScreenState> {
   };
 
   private renderForm = (): React.ReactElement | null => {
-    const { t, isRentFlow, offersLeft, currentOffer, asset, isMobileWeb = false } = this.props;
+    const { t, isRentFlow, offersLeft, currentOffer, asset, isMobileWeb = false, onEditProfile } = this.props;
     const { formData, loading } = this.state;
     const { renderFormHeader, renderBottomFields } = this;
     if (!formData) return null;
@@ -383,10 +384,10 @@ class OfferForm extends React.Component<Props, IScreenState> {
                         containerStyle={styles.submitButton}
                       />
                       <Button
-                        disabled
                         type="secondary"
                         title={t('moreProfile:editProfile')}
                         containerStyle={[styles.cancelButton, isMobileWeb && styles.cancelButtonMobile]}
+                        onPress={onEditProfile}
                       />
                     </View>
                   )}

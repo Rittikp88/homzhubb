@@ -19,6 +19,7 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ProspectProfileForm from '@homzhub/web/src/components/molecules/ProspectProfileForm';
 import OfferForm from '@homzhub/common/src/components/organisms/OfferForm';
+import { renderPopUpTypes } from '@homzhub/web/src/screens/propertyDetails/components/PropertyCardDetails';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -41,7 +42,11 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const [count, setCount] = useState<number>(0);
   const isRentFlow = asset?.isLeaseListing;
+  const isEditData = propertyLeaseType === renderPopUpTypes.editOffer;
   const { t } = useTranslation();
+  const onEditProfile = (): void => {
+    changePopUpStatus(renderPopUpTypes.editOffer);
+  };
 
   useEffect(() => {
     let param: IOfferManagementParam;
@@ -87,7 +92,9 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
       <>
         <View style={styles.header}>
           <Typography size="small" fontWeight="regular" style={styles.text}>
-            {propertyLeaseType === 'TENANT' ? t('offers:prospectProfile') : t('offers:submitOffer')}
+            {propertyLeaseType === 'TENANT' || propertyLeaseType === renderPopUpTypes.editOffer
+              ? t('offers:prospectProfile')
+              : t('offers:submitOffer')}
           </Typography>
           <Button
             icon={icons.close}
@@ -99,10 +106,10 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
           />
         </View>
         <Divider containerStyles={styles.bottomMargin} />
-        {propertyLeaseType === 'TENANT' ? (
+        {propertyLeaseType === 'TENANT' || propertyLeaseType === renderPopUpTypes.editOffer ? (
           <ProspectProfileForm
             userDetails={userData}
-            editData={false}
+            editData={isEditData}
             isTablet={isTablet}
             isMobile={isMobile}
             onClosePopover={onClosePopover}
@@ -121,6 +128,7 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
               onSuccess={onSuccess}
               offersLeft={count}
               isMobileWeb={isMobile}
+              onEditProfile={onEditProfile}
             />
           </View>
         )}
