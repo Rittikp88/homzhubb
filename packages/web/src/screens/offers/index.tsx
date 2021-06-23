@@ -17,10 +17,10 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import ComingSoon from '@homzhub/web/src/screens/comingSoon';
 import OffersOverview from '@homzhub/web/src/screens/offers/components/OffersOverview';
 import PropertyDataCard from '@homzhub/web/src/screens/offers/components/PropertyDataCard';
 import OffersDropdown, { OffersDropdownType } from '@homzhub/web/src/screens/offers/components/OffersDropDown';
+import OffersMade from '@homzhub/web/src/screens/offers/components/OffersMade';
 import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
@@ -66,12 +66,10 @@ const Offers: FC<IProps> = (props: IProps) => {
   const history = useHistory();
 
   const title = offerType === 'Offer Received' ? t('offers:noOfferReceived') : t('offers:noOfferMade');
-
-  const filters = {}; // maintain state :Shagun
   useEffect(() => {
     getOfferDetails();
     getOfferFilters();
-  }, []);
+  }, [offerType]);
 
   const getOfferDetails = async (): Promise<void> => {
     try {
@@ -91,7 +89,9 @@ const Offers: FC<IProps> = (props: IProps) => {
 
   const getOfferFilters = async (): Promise<void> => {
     try {
-      const response: OfferFilter = await OffersRepository.getOfferFilters(OfferFilterType.RECEIVED);
+      const response: OfferFilter = await OffersRepository.getOfferFilters(
+        offerType === OfferType.OFFER_RECEIVED ? OfferFilterType.RECEIVED : OfferFilterType.CREATED
+      );
       setOfferFilters(response);
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
@@ -109,12 +109,9 @@ const Offers: FC<IProps> = (props: IProps) => {
     };
     const payload = {
       type: offerType === OfferType.OFFER_RECEIVED ? NegotiationOfferType.RECEIVED : NegotiationOfferType.CREATED,
-      ...(offerType === OfferType.OFFER_RECEIVED && { params: filters }),
-      // ...(offerType === OfferType.OFFER_MADE && { //TODO: for offers made :Shagun
       params: {
         ...dynamicFilters,
       },
-      // }),
     };
     try {
       propertyListingDatas = await OffersRepository.getOffers(payload);
@@ -127,11 +124,7 @@ const Offers: FC<IProps> = (props: IProps) => {
         });
       });
 
-      if (offerType === OfferType.OFFER_MADE) {
-        // TODO: handle offer made :Shagun
-      } else {
-        setPropertyListingData(propertyListingDatas);
-      }
+      setPropertyListingData(propertyListingDatas);
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error, statusCode: e.details.statusCode });
@@ -198,6 +191,9 @@ const Offers: FC<IProps> = (props: IProps) => {
       });
     }
   };
+  const onPressMessages = (): void => {
+    // TODO : handle message flow : Shagun
+  };
 
   const renderPropertyOffer = (item: Asset, index: number): React.ReactElement => {
     const isCardExpanded = index === 0;
@@ -215,13 +211,19 @@ const Offers: FC<IProps> = (props: IProps) => {
         listingId: leaseTerm.id,
       };
     }
-    return (
-      <PropertyDataCard
-        property={item}
-        isCardExpanded={isCardExpanded}
-        onViewOffer={(): void => viewOffers(payload, id, offerCount)}
-      />
-    ); // tODO: handle iffers made flow by switch - Shagun
+    switch (offerType) {
+      case OfferType.OFFER_RECEIVED:
+        return (
+          <PropertyDataCard
+            property={item}
+            isCardExpanded={isCardExpanded}
+            onViewOffer={(): void => viewOffers(payload, id, offerCount)}
+          />
+        );
+      case OfferType.OFFER_MADE:
+      default:
+        return <OffersMade property={item} onPressMessages={onPressMessages} />;
+    }
   };
   return (
     <View style={[styles.container, isTablet && styles.containerTab]}>
@@ -260,21 +262,15 @@ const Offers: FC<IProps> = (props: IProps) => {
         />
       </View>
       {propertyListingData && propertyListingData.length > 0 ? (
-        OfferType.OFFER_MADE !== offerType ? (
-          <>
-            {propertyListingData.map((property: Asset, index: number) => {
-              return (
-                <View key={index} style={styles.marginTop}>
-                  {renderPropertyOffer(property, index)}
-                </View>
-              );
-            })}
-          </>
-        ) : (
-          <View style={styles.commingSoon}>
-            <ComingSoon />
-          </View>
-        )
+        <>
+          {propertyListingData.map((property: Asset, index: number) => {
+            return (
+              <View key={index} style={styles.marginTop}>
+                {renderPropertyOffer(property, index)}
+              </View>
+            );
+          })}
+        </>
       ) : (
         <EmptyState title={title} containerStyle={styles.emptyView} />
       )}

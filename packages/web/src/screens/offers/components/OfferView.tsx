@@ -67,6 +67,7 @@ const OfferView: FC = () => {
               })
             );
           };
+
           if (!isMobile) {
             return (
               <OffersCard

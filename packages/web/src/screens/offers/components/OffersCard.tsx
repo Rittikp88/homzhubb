@@ -251,7 +251,7 @@ class OffersCard extends Component<Props, IOwnState> {
             iconSize={16}
             titleStyle={buttonData.textStyle}
             iconStyle={PlatformUtils.isWeb() && styles.iconContainerWeb}
-            containerStyle={[buttonData.container, PlatformUtils.isWeb() && styles.containerWeb]}
+            containerStyle={[buttonData.container, styles.containerWeb]}
             disabled
           />
         )}
@@ -273,7 +273,7 @@ class OffersCard extends Component<Props, IOwnState> {
                 textType="label"
                 textSize="large"
                 iconColor={iconColor}
-                containerStyle={[container, styles.buttonContainer]}
+                containerStyle={[container, styles.buttonContainer, item === OfferAction.CANCEL && styles.cancelOffer]}
                 titleStyle={textStyle}
                 onPress={onAction}
                 iconStyle={styles.iconButton}
@@ -500,6 +500,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '47%',
     height: 44,
+  },
+  cancelOffer: {
+    marginTop: 40,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   actionSection: {
     width: '25%',
