@@ -2,6 +2,7 @@ import { Linking } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
@@ -20,15 +21,7 @@ export interface IRedirectionDetails {
   shouldRedirect: boolean;
 }
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyCX0TTAKXeT2wmxblaZeMOumS6VYI9t8C0',
-  projectId: 'homzhub-deeplinking',
-  appId: '1:894249713165:android:e57126d6061e41cb12df44',
-  databaseURL: 'https://homzhub-deeplinking.firebaseio.com/',
-  messagingSenderId: '894249713165',
-  authDomain: 'homzhub-deeplinking.firebaseapp.com',
-  storageBucket: 'homzhub-deeplinking.appspot.com',
-};
+const firebaseConfig = ConfigHelper.getFirebaseConfig();
 
 class LinkingService {
   public firebaseInit = async (): Promise<void> => {

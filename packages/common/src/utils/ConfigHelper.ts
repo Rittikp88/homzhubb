@@ -6,6 +6,16 @@ export enum AppModes {
   RELEASE = 'RELEASE',
 }
 
+export interface IAppFirebaseConfig {
+  apiKey: string;
+  projectId: string;
+  appId: string;
+  databaseURL: string;
+  messagingSenderId: string;
+  authDomain: string;
+  storageBucket: string;
+}
+
 // For WEB
 const {
   REACT_APP_API_BASE_URL = '',
@@ -37,6 +47,14 @@ const {
   REACT_NATIVE_APP_MIXPANEL_KEY,
   REACT_NATIVE_APP_APPLE_STORE_URL,
   REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL,
+  // FIREBASE
+  REACT_NATIVE_FIREBASE_API_KEY,
+  REACT_NATIVE_FIREBASE_PROJECT_ID,
+  REACT_NATIVE_FIREBASE_APP_ID,
+  REACT_NATIVE_FIREBASE_DATABASE_URL,
+  REACT_NATIVE_FIREBASE_MESSAGING_SENDER_ID,
+  REACT_NATIVE_FIREBASE_AUTH_DOMAIN,
+  REACT_NATIVE_FIREBASE_STORAGE_BUCKET,
 } = Config;
 
 class ConfigHelper {
@@ -55,6 +73,15 @@ class ConfigHelper {
   private readonly appleStoreUrl: string | undefined;
   private readonly googlePlayStoreUrl: string | undefined;
   private readonly facebookPixelId: string | undefined;
+
+  // FIREBASE - mobile only
+  private readonly mobile_firebase_apiKey!: string;
+  private readonly mobile_firebase_projectId!: string;
+  private readonly mobile_firebase_appId!: string;
+  private readonly mobile_firebase_databaseUrl!: string;
+  private readonly mobile_firebase_messagingSenderId!: string;
+  private readonly mobile_firebase_authDomain!: string;
+  private readonly mobile_firebase_storageBucket!: string;
 
   constructor() {
     this.baseUrl = REACT_APP_API_BASE_URL;
@@ -85,6 +112,15 @@ class ConfigHelper {
       this.mixpanelKey = REACT_NATIVE_APP_MIXPANEL_KEY;
       this.appleStoreUrl = REACT_NATIVE_APP_APPLE_STORE_URL;
       this.googlePlayStoreUrl = REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL;
+
+      // FIREBASE
+      this.mobile_firebase_apiKey = REACT_NATIVE_FIREBASE_API_KEY;
+      this.mobile_firebase_projectId = REACT_NATIVE_FIREBASE_PROJECT_ID;
+      this.mobile_firebase_appId = REACT_NATIVE_FIREBASE_APP_ID;
+      this.mobile_firebase_databaseUrl = REACT_NATIVE_FIREBASE_DATABASE_URL;
+      this.mobile_firebase_messagingSenderId = REACT_NATIVE_FIREBASE_MESSAGING_SENDER_ID;
+      this.mobile_firebase_authDomain = REACT_NATIVE_FIREBASE_AUTH_DOMAIN;
+      this.mobile_firebase_storageBucket = REACT_NATIVE_FIREBASE_STORAGE_BUCKET;
     }
   }
 
@@ -117,6 +153,16 @@ class ConfigHelper {
   public getGooglePlayStoreUrl = (): string => this.googlePlayStoreUrl || '';
 
   public getFacebookPixelId = (): string => this.facebookPixelId || '';
+
+  public getFirebaseConfig = (): IAppFirebaseConfig => ({
+    apiKey: this.mobile_firebase_apiKey,
+    projectId: this.mobile_firebase_projectId,
+    appId: this.mobile_firebase_appId,
+    databaseURL: this.mobile_firebase_databaseUrl,
+    messagingSenderId: this.mobile_firebase_messagingSenderId,
+    authDomain: this.mobile_firebase_authDomain,
+    storageBucket: this.mobile_firebase_storageBucket,
+  });
 }
 
 const configHelper = new ConfigHelper();
