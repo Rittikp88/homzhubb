@@ -2,8 +2,11 @@ import React, { FC, useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -13,7 +16,12 @@ import { Offer } from '@homzhub/common/src/domain/models/Offer';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { OfferSort } from '@homzhub/common/src/constants/Offers';
-import { INegotiationParam, ListingType, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  ICounterParam,
+  INegotiationParam,
+  ListingType,
+  NegotiationType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IFilters {
   filter_by: string;
@@ -28,6 +36,8 @@ const OfferView: FC = () => {
   const compareData = useSelector(OfferSelectors.getOfferCompareData);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [pastOffers, setPastOffers] = useState<Offer[]>([]);
+
   const filters: IFilters = { filter_by: '', sort_by: OfferSort.NEWEST };
 
   useEffect(() => {
@@ -53,6 +63,15 @@ const OfferView: FC = () => {
     }
   };
 
+  const handlePastOffer = async (payload: ICounterParam): Promise<void> => {
+    try {
+      const response = await OffersRepository.getCounterOffer(payload);
+      setPastOffers(response);
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    }
+  };
+
   return (
     <View>
       {offers.length > 0 && listingDetail ? (
@@ -72,10 +91,12 @@ const OfferView: FC = () => {
             return (
               <OffersCard
                 key={index}
+                pastOffer={pastOffers}
                 offer={offer}
                 compareData={compareData}
                 asset={listingDetail}
                 isDetailView
+                onMoreInfo={handlePastOffer}
                 onPressMessages={onPressMessageIcon}
               />
             );
@@ -83,10 +104,12 @@ const OfferView: FC = () => {
           return (
             <OfferCard
               key={index}
+              pastOffer={pastOffers}
               offer={offer}
               compareData={compareData}
               asset={listingDetail}
               isDetailView
+              onMoreInfo={handlePastOffer}
               onPressMessages={onPressMessageIcon}
             />
           );

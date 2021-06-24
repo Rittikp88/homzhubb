@@ -44,7 +44,6 @@ const OfferMade = (props: IProps): React.ReactElement => {
         incrementPercentage: Number(leaseTerm.annualRentIncrementPercentage),
       };
     }
-
     return {
       price: saleTerm ? Number(saleTerm.expectedPrice) : 0,
       bookingAmount: saleTerm ? Number(saleTerm.expectedBookingAmount) : 0,

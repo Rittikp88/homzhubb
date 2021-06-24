@@ -181,8 +181,10 @@ const Offers: FC<IProps> = (props: IProps) => {
         setCurrentOfferPayload(payload);
       }
       // @ts-ignore
+      const listingId = `?listing_id=${assetId}`;
+
       NavigationService.navigate(history, {
-        path: RouteNames.protectedRoutes.OFFERS_LISTED_PROPERTY,
+        path: `${RouteNames.protectedRoutes.OFFERS_LISTED_PROPERTY}${listingId}`,
         params: {
           offerCountData,
           offerType,

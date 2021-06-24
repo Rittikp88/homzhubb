@@ -18,7 +18,7 @@ import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer, OfferAction, Status } from '@homzhub/common/src/domain/models/Offer';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { ICounterParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICounterParam, NegotiationType } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IProps {
@@ -50,8 +50,23 @@ class OffersCard extends Component<Props, IOwnState> {
   };
 
   public render(): React.ReactElement {
-    const { offer, containerStyle } = this.props;
-    return <View style={[styles.container, containerStyle]}>{this.renderCardContent(offer, false)}</View>;
+    const { offer, containerStyle, pastOffer } = this.props;
+    const { hasMore } = this.state;
+
+    return (
+      <View style={[styles.container, containerStyle]}>
+        {this.renderCardContent(offer, false)}
+        {hasMore &&
+          pastOffer &&
+          pastOffer.length > 0 &&
+          pastOffer.map((item, index) => (
+            <>
+              {this.renderCardContent(item, true)}
+              {index < pastOffer.length && <Divider />}
+            </>
+          ))}
+      </View>
+    );
   }
 
   private renderCardContent = (offer: Offer, isMoreInfo: boolean): React.ReactElement => {
@@ -68,22 +83,34 @@ class OffersCard extends Component<Props, IOwnState> {
       user,
       counterOffersCount,
     } = offer;
-    const { t, isFromAccept = false, asset, isTablet, isDetailView = true } = this.props;
+    const { t, isFromAccept = false, asset, isTablet, isDetailView = true, compareData } = this.props;
     const isOfferValid = validCount > 6;
     const isOfferExpired = validCount < 0;
     const currency = asset && asset.country ? asset.country.currencies[0].currencySymbol : 'INR';
 
     // For highlighting active offer
     const isHighlighted = hasMore && !isMoreInfo;
+    const offerValues = OfferUtils.getOfferValues(offer, compareData, currency, isMoreInfo);
 
     return (
       <View style={[styles.cardContainer, isHighlighted && styles.highlighted]}>
-        <View style={[isTablet && styles.detailsCard, !isTablet && styles.detailsCardDeskTop]}>
+        <View
+          style={[
+            isTablet && styles.detailsCard,
+            !isTablet && styles.detailsCardDeskTop,
+            isMoreInfo && styles.cardAlignment,
+          ]}
+        >
           <View style={styles.offerCards}>
             <TouchableOpacity>
               <Avatar fullName={user.name} designation={StringUtils.toTitleCase(role)} image={user.profilePicture} />
             </TouchableOpacity>
             <View>
+              {isMoreInfo && (
+                <Label type="regular" style={styles.date}>
+                  {t('createdDate', { date: DateUtils.getDisplayDate(createdAt, DateFormats.DoMMM_YYYY) })}
+                </Label>
+              )}
               {isFromAccept && asset ? (
                 <PropertyAddressCountry
                   isIcon
@@ -111,7 +138,21 @@ class OffersCard extends Component<Props, IOwnState> {
               )}
             </View>
           </View>
-          <View style={styles.actionButtons}>
+          <View style={[styles.actionButton, styles.flexRow, styles.spacing]}>
+            {offerValues.map((item, index) => {
+              return (
+                <TextWithIcon
+                  key={index}
+                  icon={!isMoreInfo ? item.icon : ''}
+                  iconColor={item.iconColor}
+                  text={`${item.key}: `}
+                  value={item.value}
+                  variant="label"
+                  textSize="large"
+                  containerStyle={[styles.textContainer, { marginRight: 10 }]}
+                />
+              );
+            })}
             {price < 1 && (
               <View style={styles.flexRow}>
                 <TextWithIcon
@@ -134,7 +175,7 @@ class OffersCard extends Component<Props, IOwnState> {
           </View>
           <View style={styles.headerIconsContainer}>
             <View>
-              {isDetailView && counterOffersCount > 0 && (
+              {!isMoreInfo && isDetailView && counterOffersCount > 0 && (
                 <Button
                   iconSize={20}
                   type="primary"
@@ -143,20 +184,25 @@ class OffersCard extends Component<Props, IOwnState> {
                   containerStyle={styles.infoButton}
                   titleStyle={styles.infoTitle}
                   iconColor={theme.colors.primaryColor}
+                  onPress={this.onInfoToggle}
                 />
               )}
             </View>
-            <Label type="regular" style={styles.date}>
-              {t('createdDate', { date: DateUtils.getDisplayDate(createdAt, DateFormats.DoMMM_YYYY) })}
-            </Label>
+            {!isMoreInfo && (
+              <Label type="regular" style={styles.date}>
+                {t('createdDate', { date: DateUtils.getDisplayDate(createdAt, DateFormats.DoMMM_YYYY) })}
+              </Label>
+            )}
           </View>
         </View>
 
-        <Divider containerStyles={styles.divider} />
-        <View style={[styles.actionSection, isTablet && styles.actionSectionTab]}>
-          {!isMoreInfo && this.renderOfferHeader(currency)}
-          {!isMoreInfo && !isFromAccept && this.renderActionView()}
-        </View>
+        {!isMoreInfo && <Divider containerStyles={styles.divider} />}
+        {!isMoreInfo && (
+          <View style={[styles.actionSection, isTablet && styles.actionSectionTab]}>
+            {this.renderOfferHeader(currency)}
+            {!isFromAccept && this.renderActionView()}
+          </View>
+        )}
       </View>
     );
   };
@@ -335,6 +381,20 @@ class OffersCard extends Component<Props, IOwnState> {
     );
   };
 
+  private onInfoToggle = (): void => {
+    const { hasMore } = this.state;
+    const { onMoreInfo, offer, asset } = this.props;
+    this.setState({ hasMore: !hasMore }, () => {
+      const { hasMore: more } = this.state;
+      if (onMoreInfo && asset && more) {
+        onMoreInfo({
+          negotiationId: offer.id,
+          negotiationType: asset.leaseTerm ? NegotiationType.LEASE_NEGOTIATIONS : NegotiationType.SALE_NEGOTIATIONS,
+        });
+      }
+    });
+  };
+
   private handleOfferCompare = (id: number): void => {
     const { onSelectOffer } = this.props;
     if (onSelectOffer) {
@@ -423,6 +483,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     flex: 0.45,
   },
+
   titleStyle: {
     marginHorizontal: 6,
   },
@@ -536,4 +597,9 @@ const styles = StyleSheet.create({
   offerCards: { flexDirection: 'row', justifyContent: 'space-between' },
   iconButton: { position: 'absolute', justifyContent: 'center', left: 15, top: 14 },
   actionButtons: { marginVertical: 32, flexDirection: 'row', flexWrap: 'wrap' },
+  cardAlignment: { width: '100%' },
+  textAlignment: {
+    paddingRight: 12,
+  },
+  spacing: { marginTop: 32 },
 });
