@@ -7,6 +7,7 @@ import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import DetailsTab from '@homzhub/web/src/screens/propertyDetailOwner/Components/DetailsTab';
+import OfferView from '@homzhub/web/src/screens/offers/components/OfferView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IRoutes, Tabs, PropertyDetailOwner } from '@homzhub/common/src/constants/Tabs';
@@ -35,6 +36,8 @@ const TabSections = (propsData: IProps): React.ReactElement => {
             assetHighlights={highlights}
           />
         );
+      case Tabs.OFFERS:
+        return <OfferView />;
       default:
         return (
           <View style={styles.comingSoonContent}>

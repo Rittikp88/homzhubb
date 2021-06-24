@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -10,6 +10,7 @@ import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import PropertyCard from '@homzhub/web/src/screens/propertyDetailOwner/Components/PropertyCard';
@@ -24,9 +25,11 @@ import {
   IPropertyDetailPayload,
   IClosureReasonPayload,
   IListingParam,
+  ListingType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { ICurrentOffer } from '@homzhub/common//src/modules/offers/interfaces';
 
 interface IDispatchProps {
   clearAsset: () => void;
@@ -57,7 +60,7 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
     state: { isFromTenancies, asset_id, assetType, listing_id },
   } = location;
   const popupRef = useRef<PopupActions>(null);
-
+  const dispatch = useDispatch();
   const [propertyData, setPropertyData] = useState<Asset | null>(null);
   useEffect(() => {
     if (!asset_id) {
@@ -71,6 +74,12 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
     try {
       PortfolioRepository.getPropertyDetail(payload).then((response) => {
         setPropertyData(response);
+        const offerPayload: ICurrentOffer = {
+          type: assetType === DetailType.LEASE_LISTING ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
+          listingId: listing_id,
+        };
+        dispatch(AssetActions.getAsset({ propertyTermId: listing_id }));
+        dispatch(OfferActions.setCurrentOfferPayload(offerPayload));
       });
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
