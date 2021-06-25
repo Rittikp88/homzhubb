@@ -30,6 +30,7 @@ import { OfferFilter } from '@homzhub/common/src/domain/models/OfferFilter';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { NegotiationOfferType, OfferFilterType, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { MadeSort, offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
 
 // TODO -- saved property metrics integration :Shagun
 export enum OfferType {
@@ -61,7 +62,9 @@ const Offers: FC<IProps> = (props: IProps) => {
     type: '',
     asset_id: Number(),
     filter_by: '',
+    sort_by: MadeSort.NEWEST,
   });
+
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -106,6 +109,7 @@ const Offers: FC<IProps> = (props: IProps) => {
       ...(selectedFilters.type.length && { type: selectedFilters.type }),
       ...(selectedFilters.asset_id && { asset_id: selectedFilters.asset_id }),
       ...(selectedFilters.filter_by && { filter_by: selectedFilters.filter_by }),
+      ...(selectedFilters.sort_by && { sort_by: selectedFilters.sort_by }),
     };
     const payload = {
       type: offerType === OfferType.OFFER_RECEIVED ? NegotiationOfferType.RECEIVED : NegotiationOfferType.CREATED,
@@ -142,7 +146,13 @@ const Offers: FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     getPropertyListData();
-  }, [selectedFilters.countary_id, selectedFilters.type, selectedFilters.asset_id, selectedFilters.filter_by]);
+  }, [
+    selectedFilters.countary_id,
+    selectedFilters.type,
+    selectedFilters.asset_id,
+    selectedFilters.filter_by,
+    selectedFilters.sort_by,
+  ]);
 
   const onMetricsClicked = (name: string): void => {
     setOfferType(name as OfferType);
@@ -243,26 +253,44 @@ const Offers: FC<IProps> = (props: IProps) => {
           </View>
         </View>
       )}
-      <View style={[styles.filtersContainer, isMobile && styles.filtersContainerMobile]}>
-        <OffersDropdown
-          filterData={offerFilters.countryDropdownData}
-          defaultTitle={t('assetPortfolio:selectCountry')}
-          onSelectFilter={onSelectFilter}
-          offerType={OffersDropdownType.Country}
-        />
-        <OffersDropdown
-          filterData={offerFilters.listingDropdownData}
-          defaultTitle={t('offers:selectType')}
-          onSelectFilter={onSelectFilter}
-          offerType={OffersDropdownType.Listing}
-        />
-        <OffersDropdown
-          filterData={offerFilters.assetsDropdownData}
-          defaultTitle={t('offers:selectProperty')}
-          onSelectFilter={onSelectFilter}
-          offerType={OffersDropdownType.Assets}
-        />
-      </View>
+      {offerType === OfferType.OFFER_RECEIVED && (
+        <View style={[styles.filtersContainer, isMobile && styles.filtersContainerMobile]}>
+          <OffersDropdown    //TODO: Replace this with map function- Shagun
+            filterData={offerFilters.countryDropdownData}
+            defaultTitle={t('assetPortfolio:selectCountry')}
+            onSelectFilter={onSelectFilter}
+            offerType={OffersDropdownType.Country}
+          />
+          <OffersDropdown
+            filterData={offerFilters.listingDropdownData}
+            defaultTitle={t('offers:selectType')}
+            onSelectFilter={onSelectFilter}
+            offerType={OffersDropdownType.Listing}
+          />
+          <OffersDropdown
+            filterData={offerFilters.assetsDropdownData}
+            defaultTitle={t('offers:selectProperty')}
+            onSelectFilter={onSelectFilter}
+            offerType={OffersDropdownType.Assets}
+          />
+        </View>
+      )}
+      {offerType === OfferType.OFFER_MADE && (
+        <View style={[styles.filtersMadeContainer, isMobile && styles.filtersContainerMobile]}>
+          <OffersDropdown     //TODO: Replace this with map function - Shagun
+            filterData={offerMadeSortBy}
+            defaultTitle={t('offers:sort')}
+            onSelectFilter={onSelectFilter}
+            offerType={OffersDropdownType.Sort}
+          />
+          <OffersDropdown
+            filterData={offerFilters.filterDropdownData}
+            defaultTitle={t('offers:filterBy')}
+            onSelectFilter={onSelectFilter}
+            offerType={OffersDropdownType.Filter}
+          />
+        </View>
+      )}
       {propertyListingData && propertyListingData.length > 0 ? (
         <>
           {propertyListingData.map((property: Asset, index: number) => {
@@ -337,5 +365,9 @@ const styles = StyleSheet.create({
   },
   commingSoon: {
     marginTop: 24,
+  },
+  filtersMadeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });

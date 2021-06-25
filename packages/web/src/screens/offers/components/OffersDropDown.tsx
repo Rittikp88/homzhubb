@@ -12,6 +12,7 @@ export enum OffersDropdownType {
   Listing = 'type',
   Assets = 'asset_id',
   Filter = 'filter_by',
+  Sort = 'sort_by',
 }
 
 interface IOffersFilterProps {

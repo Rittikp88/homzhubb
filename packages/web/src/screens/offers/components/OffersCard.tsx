@@ -52,7 +52,6 @@ class OffersCard extends Component<Props, IOwnState> {
   public render(): React.ReactElement {
     const { offer, containerStyle, pastOffer } = this.props;
     const { hasMore } = this.state;
-
     return (
       <View style={[styles.container, containerStyle]}>
         {this.renderCardContent(offer, false)}
@@ -514,6 +513,7 @@ const styles = StyleSheet.create({
   rejectionButton: {
     backgroundColor: theme.colors.transparent,
     flex: 0,
+    top: 10,
   },
   rejectionTitle: {
     color: theme.colors.primaryColor,

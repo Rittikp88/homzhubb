@@ -27,7 +27,10 @@ interface IFilters {
   filter_by: string;
   sort_by: string;
 }
-const OfferView: FC = () => {
+interface IProps {
+  selectedFilters?: IFilters;
+}
+const OfferView: FC<IProps> = (props: IProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.offers);
   const negotiations = useSelector(OfferSelectors.getNegotiations);
@@ -37,15 +40,13 @@ const OfferView: FC = () => {
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const [offers, setOffers] = useState<Offer[]>([]);
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
-
-  const filters: IFilters = { filter_by: '', sort_by: OfferSort.NEWEST };
+  const { selectedFilters = { filter_by: '', sort_by: OfferSort.NEWEST } } = props;
+  useEffect(() => {
+    getData(selectedFilters?.filter_by);
+  }, [selectedFilters]);
 
   useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    setOffers(OfferUtils.getSortedOffer(filters.sort_by, negotiations));
+    setOffers(OfferUtils.getSortedOffer(selectedFilters.sort_by, negotiations));
   }, [negotiations]);
 
   const getData = (filter_by?: string): void => {
@@ -86,7 +87,6 @@ const OfferView: FC = () => {
               })
             );
           };
-
           if (!isMobile) {
             return (
               <OffersCard
