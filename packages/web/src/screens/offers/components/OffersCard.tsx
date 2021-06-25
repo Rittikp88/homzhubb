@@ -36,6 +36,7 @@ interface IProps {
   selectedOffers?: number[];
   containerStyle?: StyleProp<ViewStyle>;
   onPressMessages: () => void;
+  onViewReasonWeb: (action: OfferAction) => void;
 }
 
 interface IOwnState {
@@ -265,6 +266,7 @@ class OffersCard extends Component<Props, IOwnState> {
       onPressAction,
       onCreateLease,
       isTablet,
+      onViewReasonWeb,
     } = this.props;
     const buttonData = OfferUtils.getButtonStatus(status);
     const isOfferExpired = validCount < 0;
@@ -340,6 +342,7 @@ class OffersCard extends Component<Props, IOwnState> {
             title={t(status === Status.CANCELLED ? 'seeCancelReason' : 'seeRejectReason')}
             containerStyle={styles.rejectionButton}
             titleStyle={styles.rejectionTitle}
+            onPress={(): void => onViewReasonWeb(OfferAction.REASON)}
           />
         )}
         {canCreateLease && status === Status.ACCEPTED && (

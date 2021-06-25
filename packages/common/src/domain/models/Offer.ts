@@ -18,6 +18,7 @@ export enum OfferAction {
   REJECT = 'REJECT',
   CANCEL = 'CANCEL',
   COUNTER = 'COUNTER',
+  REASON = 'REASON',
 }
 
 export enum OfferFormKeys {

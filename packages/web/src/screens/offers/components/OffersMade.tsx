@@ -82,7 +82,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
           asset={property}
           isDetailView
           onPressMessages={onPressMessageIcon}
-          isOfferDashboard1
+          isOfferDashboard
           pastOffer={pastOffers}
           onMoreInfo={handlePastOffer}
         />
