@@ -60,7 +60,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
         count: serviceTickets,
       },
       {
-        icon: icons.mail,
+        icon: icons.chat,
         color: theme.colors.blue,
         title: t('moreSettings:messagesText'),
         onPress: onPressMessages,

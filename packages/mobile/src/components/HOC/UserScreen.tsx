@@ -31,6 +31,7 @@ interface IUserScreenProps {
   contentContainerStyle?: ViewStyle;
   headerStyle?: ViewStyle;
   subTitle?: string;
+  isBarVisible?: boolean;
 }
 
 // Constants for Gradient background
@@ -59,6 +60,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     contentContainerStyle,
     headerStyle,
     subTitle,
+    isBarVisible = false,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -100,7 +102,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.bar} />
+        {isBarVisible && <View style={styles.bar} />}
       </>
     );
   }, [title, onProfilePress, userProfile?.fullName, userProfile?.profilePicture, headerColor]);
