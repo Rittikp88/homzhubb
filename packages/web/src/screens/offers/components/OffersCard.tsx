@@ -4,7 +4,6 @@ import { WithTranslation, withTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OfferUtils } from '@homzhub/common/src/utils/OfferUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -282,7 +281,7 @@ class OffersCard extends Component<Props, IOwnState> {
           icon={icon}
           iconColor={iconColor}
           iconSize={16}
-          iconStyle={PlatformUtils.isWeb() && styles.containerWeb}
+          iconStyle={styles.containerWeb}
           disabled
         />
       );
@@ -297,7 +296,7 @@ class OffersCard extends Component<Props, IOwnState> {
             iconColor={buttonData.iconColor}
             iconSize={16}
             titleStyle={buttonData.textStyle}
-            iconStyle={PlatformUtils.isWeb() && styles.iconContainerWeb}
+            iconStyle={styles.iconContainerWeb}
             containerStyle={[buttonData.container, styles.containerWeb]}
             disabled
           />

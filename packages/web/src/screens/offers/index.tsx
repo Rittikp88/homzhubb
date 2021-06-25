@@ -255,7 +255,7 @@ const Offers: FC<IProps> = (props: IProps) => {
       )}
       {offerType === OfferType.OFFER_RECEIVED && (
         <View style={[styles.filtersContainer, isMobile && styles.filtersContainerMobile]}>
-          <OffersDropdown    //TODO: Replace this with map function- Shagun
+          <OffersDropdown // TODO: Replace this with map function- Shagun
             filterData={offerFilters.countryDropdownData}
             defaultTitle={t('assetPortfolio:selectCountry')}
             onSelectFilter={onSelectFilter}
@@ -277,7 +277,7 @@ const Offers: FC<IProps> = (props: IProps) => {
       )}
       {offerType === OfferType.OFFER_MADE && (
         <View style={[styles.filtersMadeContainer, isMobile && styles.filtersContainerMobile]}>
-          <OffersDropdown     //TODO: Replace this with map function - Shagun
+          <OffersDropdown // TODO: Replace this with map function - Shagun
             filterData={offerMadeSortBy}
             defaultTitle={t('offers:sort')}
             onSelectFilter={onSelectFilter}

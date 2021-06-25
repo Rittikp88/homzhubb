@@ -36,7 +36,7 @@ interface IProps {
   onSelectOffer?: (count: number) => void;
   selectedOffers?: number[];
   containerStyle?: StyleProp<ViewStyle>;
-  onPressMessages: () => void;
+  onPressMessages?: () => void;
   onViewReasonWeb?: (action: OfferAction) => void;
 }
 
@@ -47,7 +47,6 @@ interface IOwnState {
 }
 
 type Props = IProps & WithTranslation;
-
 class OfferCard extends Component<Props, IOwnState> {
   public state = {
     hasMore: false,

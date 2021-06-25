@@ -9,15 +9,24 @@ import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Offer, Status } from '@homzhub/common/src/domain/models/Offer';
 
 interface IProps {
-  offer: Offer;
+  offer?: Offer;
 }
 
 const OfferReasonView: React.FC<IProps> = (props: IProps) => {
-  const {
-    offer: { statusUpdatedAt, statusUpdatedBy, statusChangeComment, statusChangeReason, status, statusUpdatedByRole },
-  } = props;
-  const isCancelled = status === Status.CANCELLED;
   const { t } = useTranslation();
+  const { offer } = props;
+  if (!offer) {
+    return null;
+  }
+  const {
+    statusUpdatedAt,
+    statusUpdatedBy,
+    statusChangeComment,
+    statusChangeReason,
+    status,
+    statusUpdatedByRole,
+  } = offer;
+  const isCancelled = status === Status.CANCELLED;
   return (
     <View style={styles.cardContainer}>
       <Label type="large">{t(isCancelled ? 'offers:offerCancelledOn' : 'offers:offerRejectOn')}</Label>

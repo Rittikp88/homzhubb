@@ -101,6 +101,10 @@ const OfferView: FC<IProps> = (props: IProps) => {
       })
     );
   };
+  const handleOfferAction = (value: OfferAction): void => {
+    setOfferActionType(value);
+  };
+
   const handlePastOffer = async (payload: ICounterParam): Promise<void> => {
     try {
       const response = await OffersRepository.getCounterOffer(payload);
@@ -143,7 +147,14 @@ const OfferView: FC<IProps> = (props: IProps) => {
             onMoreInfo={handlePastOffer}
           />
         ))}
-      <OfferActionsPopover offerActionType={offerActionType} popupRef={popupRef} offer={currentOffer} />
+      <OfferActionsPopover
+        offerActionType={offerActionType}
+        popupRef={popupRef}
+        offer={currentOffer}
+        compareData={compareData}
+        asset={listingDetail}
+        handleOfferAction={handleOfferAction}
+      />
     </View>
   );
 };

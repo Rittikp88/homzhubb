@@ -19,6 +19,7 @@ export enum OfferAction {
   CANCEL = 'CANCEL',
   COUNTER = 'COUNTER',
   REASON = 'REASON',
+  CONFIRMARION = 'CONFIRMATION',
 }
 
 export enum OfferFormKeys {

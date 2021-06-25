@@ -85,7 +85,7 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
           {`${t('common:offers')} (${location.state.count})`}
         </Typography>
         <View style={[styles.filtersContainer, isMobile && styles.filtersContainerMobile]}>
-          <OffersDropdown  //TODO: Replace this with map function- Shagun
+          <OffersDropdown // TODO: Replace this with map function- Shagun
             filterData={offerMadeSortBy}
             defaultTitle={t('offers:sort')}
             onSelectFilter={onSelectFilter}

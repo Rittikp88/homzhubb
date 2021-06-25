@@ -10,26 +10,38 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import RejectOfferForm from '@homzhub/common/src/components/organisms/RejectOfferForm';
+import AcceptOfferPopOver from '@homzhub/web/src/screens/offers/components/AcceptOfferPopOver';
 import OfferReasonView from '@homzhub/web/src/screens/offers/components/OfferReasonView';
+import WithdrawOffer from '@homzhub/web/src/screens/offers/components/WithdrawOffer';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import AcceptOffer from '@homzhub/web/src/screens/offers/components/AcceptOffer';
+import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IProps {
   popupRef: React.RefObject<PopupActions>;
   offerActionType: OfferAction | null;
-  offer: Offer;
+  offer?: Offer;
+  asset?: Asset;
+  compareData?: IOfferCompare;
+  handleOfferAction: (value: OfferAction) => void;
 }
 
 const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
-  const { popupRef, offerActionType, offer } = props;
+  const { popupRef, offerActionType, offer, compareData = {}, handleOfferAction } = props;
   const renderActionsPopover = (): React.ReactNode => {
     switch (offerActionType) {
       case OfferAction.ACCEPT:
-        return <View />;
+        return <AcceptOffer handleOfferAction={handleOfferAction} compareData={compareData} />;
       case OfferAction.REJECT:
         return <RejectOfferForm onClosePopover={onClosePopover} />;
       case OfferAction.REASON:
         return <OfferReasonView offer={offer} />;
+      case OfferAction.CANCEL:
+        return <WithdrawOffer onClosePopover={onClosePopover} />;
+      case OfferAction.CONFIRMARION:
+        return <AcceptOfferPopOver onClosePopover={onClosePopover} />;
       default:
         return <View />;
     }
@@ -53,6 +65,24 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
       title: t('offers:rejectionReason'),
       styles: {
         height: '425px',
+      },
+    },
+    [OfferAction.CANCEL.toString()]: {
+      title: t('offers:cancelOffer'),
+      styles: {
+        height: '620px',
+      },
+    },
+    [OfferAction.ACCEPT.toString()]: {
+      title: t('offers:acceptOffer'),
+      styles: {
+        height: '620px',
+      },
+    },
+    [OfferAction.CONFIRMARION.toString()]: {
+      title: '',
+      styles: {
+        height: '620px',
       },
     },
   };
