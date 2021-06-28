@@ -41,6 +41,7 @@ interface IDispatchProps {
   setInitialState: () => void;
   getProperties: () => void;
   setInitialMiscellaneous: () => void;
+  setInitialFilters: () => void;
 }
 
 interface IAssetFiltersState {
@@ -613,7 +614,8 @@ export class AssetFilters extends React.PureComponent<Props, IAssetFiltersState>
   };
 
   public onToggleTransactionType = (value: number): void => {
-    const { setFilter } = this.props;
+    const { setFilter, setInitialFilters } = this.props;
+    setInitialFilters();
     setFilter({ asset_transaction_type: value });
   };
 
@@ -725,13 +727,14 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { setFilter, setInitialState, getProperties, setInitialMiscellaneous } = SearchActions;
+  const { setFilter, setInitialState, getProperties, setInitialMiscellaneous, setInitialFilters } = SearchActions;
   return bindActionCreators(
     {
       setFilter,
       setInitialState,
       getProperties,
       setInitialMiscellaneous,
+      setInitialFilters,
     },
     dispatch
   );
@@ -758,7 +761,6 @@ const styles = StyleSheet.create({
   },
   header: {
     margin: theme.layout.screenPadding,
-    marginTop: 30,
     flexDirection: 'row',
     paddingVertical: 10,
     justifyContent: 'space-between',

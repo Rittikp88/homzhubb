@@ -292,6 +292,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       getProperties,
       priceRange,
       getFilterDetails,
+      setInitialFilters,
     } = this.props;
     let currencySymbol = '';
     let areaRange = { min: 0, max: 10 };
@@ -312,7 +313,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     currencySymbol = country?.currencies[0].currencySymbol ?? currency[0].currency_symbol;
 
     const updateFilter = (type: string, value: number | number[]): void => {
-      setFilter({ [type]: value });
+      setFilter({ [type]: value, offset: 0 });
       if (type === 'min_price' || type === 'max_price' || type === 'min_area' || type === 'max_area') {
         setTimeout(() => {
           getProperties();
@@ -321,6 +322,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
         getProperties();
         if (type === 'asset_group') {
           getFilterDetails({ asset_group: value as number });
+          setInitialFilters();
         }
       }
     };
@@ -340,6 +342,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       case OnScreenFilters.PRICE:
         return (
           <Range
+            // @ts-ignore
             dropdownData={currencyData}
             selectedUnit={currency_code}
             isPriceRange
@@ -590,6 +593,9 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
 
   private onSuggestionPress = (place: GooglePlaceData): void => {
     const { setFilter, getProperties } = this.props;
+    setFilter({
+      offset: 0,
+    });
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
         this.setSearchedPropertyCurrency(placeDetail);
