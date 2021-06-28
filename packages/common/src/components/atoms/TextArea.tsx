@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { StyleProp, StyleSheet, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -20,6 +20,7 @@ interface IProps {
 }
 
 export const TextArea = (props: IProps): React.ReactElement => {
+  const [autoheight, setAutoHeight] = useState<string | number | undefined>(undefined);
   const ref: React.RefObject<TextInput> = useRef(null);
   const {
     label,
@@ -42,8 +43,16 @@ export const TextArea = (props: IProps): React.ReactElement => {
     }
   };
 
-  const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
+  const textAreaStyleProp = StyleSheet.flatten(textAreaStyle);
+  const inputContainerStyleProp = StyleSheet.flatten(inputContainerStyle);
+  const textAreaStylePropHeight = textAreaStyleProp?.height || inputContainerStyleProp?.height || undefined;
+  useLayoutEffect(() => {
+    if (textAreaStylePropHeight) {
+      setAutoHeight(textAreaStylePropHeight);
+    }
+  }, []);
 
+  const wordCount = value.length === 0 ? wordCountLimit : wordCountLimit - value.length;
   return (
     <View style={containerStyle}>
       <View style={styles.labelView}>
@@ -56,14 +65,19 @@ export const TextArea = (props: IProps): React.ReactElement => {
           </Label>
         )}
       </View>
-      <TouchableOpacity style={[styles.textAreaContainer, textAreaStyle]} onPress={onPressBox} activeOpacity={1}>
+      <TouchableOpacity
+        style={[styles.textAreaContainer, textAreaStyle, autoheight !== undefined && { height: autoheight }]}
+        onPress={onPressBox}
+        activeOpacity={1}
+      >
         <TextInput
           ref={ref}
           autoCorrect={false}
-          style={[styles.textArea, inputContainerStyle]}
+          style={[styles.textArea, inputContainerStyle, autoheight !== undefined && { height: autoheight }]}
           placeholder={placeholder}
           maxLength={250}
           multiline
+          numberOfLines={4}
           value={value}
           onChangeText={onMessageChange}
         />
@@ -91,6 +105,7 @@ const styles = StyleSheet.create({
   textArea: {
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
+    height: 150,
   },
   helpText: {
     paddingVertical: 6,
