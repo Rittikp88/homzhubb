@@ -384,7 +384,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
         onPress: handleAddFinancialRecord,
       },
       {
-        icon: icons.headPhone,
+        icon: icons.serviceRequest,
         label: t('assetDashboard:serviceTicket'),
         onPress: handleAddServiceTicket,
       },

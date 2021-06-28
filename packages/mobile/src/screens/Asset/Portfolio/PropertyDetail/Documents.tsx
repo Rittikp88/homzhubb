@@ -415,6 +415,13 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       /* Upload those which are lesser than 5mb only */
       const validDocuments = documents.filter((document) => document.size <= 5000000);
 
+      /* If no file is of size lesser than 5mb, stop uploading */
+      if (validDocuments.length === 0) {
+        AlertHelper.error({ message: t('common:docExceedsMaxSize', { size: '5mb' }) });
+        return;
+      }
+
+      /* If some files are valid, upload only them and reject the rest invalid docs with an error message */
       if (!isEqual(documents, validDocuments)) {
         AlertHelper.error({ message: t('common:someFilesWereNotUploaded', { size: '5 mb' }) });
       }
