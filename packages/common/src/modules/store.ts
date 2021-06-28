@@ -1,6 +1,7 @@
 import { applyMiddleware, createStore, Store } from 'redux';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from '@redux-saga/core';
+import { composeWithDevTools } from 'redux-devtools-extension'; // Only for Development Environment
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import rootReducer from '@homzhub/common/src/modules/reducers';
@@ -21,7 +22,12 @@ export const configureStore = (): Store<IState> => {
   middleware.push(sagaMiddleware);
 
   // store setup
-  const store: Store = createStore(rootReducer, applyMiddleware(...middleware));
+  let store: Store;
+  if (ConfigHelper.getAppMode() === AppModes.DEBUG) {
+    store = createStore(rootReducer, composeWithDevTools(applyMiddleware(...middleware)));
+  } else {
+    store = createStore(rootReducer, applyMiddleware(...middleware));
+  }
 
   // Kick off root saga
   sagaMiddleware.run(rootSaga);

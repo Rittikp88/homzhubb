@@ -229,8 +229,8 @@ class AssetService {
       ...(bath_count && bath_count > 0 && { bath_count }),
       ...(room_count && room_count.length > 0 && room_count[0] > 0 && { room_count }),
       asset_type,
-      ...(user_location_latitude && { user_location_latitude: latValue }),
-      ...(user_location_longitude && { user_location_longitude: lngValue }),
+      user_location_latitude: latValue || null,
+      user_location_longitude: lngValue || null,
       asset_transaction_type: asset_transaction_type === 0 ? 'RENT' : 'BUY',
       miscellaneous_search_criteria,
     };

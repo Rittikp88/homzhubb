@@ -117,8 +117,8 @@ export interface ISearchHistoryPayload {
   search_latitude?: number;
   search_longitude?: number;
   asset_transaction_type?: string;
-  user_location_latitude?: number;
-  user_location_longitude?: number;
+  user_location_latitude?: number | null;
+  user_location_longitude?: number | null;
   miscellaneous_search_criteria?: {
     property_age?: IUnit;
     search_radius?: IUnit;
