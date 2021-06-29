@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     top: 12,
     left: 12,
     paddingBottom: 12,
+    width: '93%',
   },
   heading: {
     marginTop: 25,

@@ -390,6 +390,7 @@ const styles = StyleSheet.create({
   },
   filtersContainerMobile: {
     overflow: 'scroll',
+    top: 10,
   },
   commingSoon: {
     marginTop: 24,

@@ -319,7 +319,12 @@ class OffersCard extends Component<Props, IOwnState> {
                 textType="label"
                 textSize="large"
                 iconColor={iconColor}
-                containerStyle={[container, styles.buttonContainer, item === OfferAction.CANCEL && styles.cancelOffer]}
+                containerStyle={[
+                  container,
+                  styles.buttonContainer,
+                  item === OfferAction.CANCEL && styles.cancelOffer,
+                  isTablet && styles.containerTablet,
+                ]}
                 titleStyle={textStyle}
                 onPress={onAction}
                 iconStyle={styles.iconButton}
@@ -565,7 +570,7 @@ const styles = StyleSheet.create({
     height: 44,
   },
   cancelOffer: {
-    marginTop: 40,
+    marginTop: 5,
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -586,7 +591,7 @@ const styles = StyleSheet.create({
   containerWeb: {
     justifyContent: 'center',
     alignItems: 'center',
-    top: 32,
+    top: 10,
   },
   containerTab: {
     top: '33%',
@@ -594,7 +599,6 @@ const styles = StyleSheet.create({
   iconContainerWeb: {
     position: 'absolute',
     left: 15,
-    top: 12,
   },
   offerCards: { flexDirection: 'row', justifyContent: 'space-between' },
   iconButton: { position: 'absolute', justifyContent: 'center', left: 15, top: 14 },
@@ -604,4 +608,7 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   spacing: { marginTop: 32 },
+  containerTablet: {
+    marginTop: 30,
+  },
 });
