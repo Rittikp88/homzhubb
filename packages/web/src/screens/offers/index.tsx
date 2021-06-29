@@ -304,7 +304,12 @@ const Offers: FC<IProps> = (props: IProps) => {
         </View>
       )}
       {offerType === OfferType.OFFER_MADE && (
+      
         <View style={[styles.filtersMadeContainer, isMobile && styles.filtersContainerMobile]}>
+         <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
+        {`${t('common:offers')} (${offerCountData.offerMade})`}
+      </Typography>
+      <View style={[styles.rowStyle, styles.heading]}>
           <OffersDropdown // TODO: Replace this with map function - Shagun
             filterData={offerMadeSortBy}
             defaultTitle={t('offers:sort')}
@@ -317,6 +322,7 @@ const Offers: FC<IProps> = (props: IProps) => {
             onSelectFilter={onSelectFilter}
             offerType={OffersDropdownType.Filter}
           />
+          </View>
         </View>
       )}
       {propertyListingData && propertyListingData.length > 0 ? (
@@ -397,6 +403,14 @@ const styles = StyleSheet.create({
   },
   filtersMadeContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
   },
+  heading: {
+    marginTop: 25, 
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  rowStyle:{
+    flexDirection: 'row',
+  }
 });

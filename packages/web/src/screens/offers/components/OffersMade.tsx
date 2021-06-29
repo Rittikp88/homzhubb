@@ -106,9 +106,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
       <View style={styles.background}>
         <PropertyOfferDetails property={property} isExpanded containerStyles={styles.innerContainer} />
       </View>
-      <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
-        {`${t('common:offers')} (${1})`}
-      </Typography>
+  
       {!isMobile && offer && (
         <OffersCard
           offer={offer}
