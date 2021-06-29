@@ -26,29 +26,25 @@ interface IProps {
   asset?: Asset;
   compareData?: IOfferCompare;
   handleOfferAction: (value: OfferAction) => void;
+  onCloseModal: () => void;
 }
 
 const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
-  const { popupRef, offerActionType, offer, compareData = {}, handleOfferAction } = props;
+  const { popupRef, offerActionType, offer, compareData = {}, handleOfferAction, onCloseModal } = props;
   const renderActionsPopover = (): React.ReactNode => {
     switch (offerActionType) {
       case OfferAction.ACCEPT:
         return <AcceptOffer handleOfferAction={handleOfferAction} compareData={compareData} />;
       case OfferAction.REJECT:
-        return <RejectOfferForm onClosePopover={onClosePopover} />;
+        return <RejectOfferForm onClosePopover={onCloseModal} />;
       case OfferAction.REASON:
         return <OfferReasonView offer={offer} />;
       case OfferAction.CANCEL:
-        return <WithdrawOffer onClosePopover={onClosePopover} />;
+        return <WithdrawOffer onClosePopover={onCloseModal} />;
       case OfferAction.CONFIRMARION:
-        return <AcceptOfferPopOver onClosePopover={onClosePopover} />;
+        return <AcceptOfferPopOver onClosePopover={onCloseModal} />;
       default:
         return <View />;
-    }
-  };
-  const onClosePopover = (): void => {
-    if (popupRef && popupRef.current) {
-      popupRef.current.close();
     }
   };
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
@@ -99,7 +95,7 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
             type="text"
             iconSize={20}
             iconColor={theme.colors.darkTint7}
-            onPress={onClosePopover}
+            onPress={onCloseModal}
             containerStyle={styles.closeButton}
           />
         </View>
@@ -126,7 +122,7 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
         children: undefined,
         modal: true,
         position: 'center center',
-        onClose: onClosePopover,
+        onClose: onCloseModal,
       }}
       forwardedRef={popupRef}
     />

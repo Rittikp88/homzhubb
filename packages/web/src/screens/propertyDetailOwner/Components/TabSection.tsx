@@ -10,6 +10,7 @@ import DetailsTab from '@homzhub/web/src/screens/propertyDetailOwner/Components/
 import OfferView from '@homzhub/web/src/screens/offers/components/OfferView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { OfferSort } from '@homzhub/common/src/constants/Offers';
 import { IRoutes, Tabs, PropertyDetailOwner } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
@@ -23,6 +24,8 @@ const TabSections = (propsData: IProps): React.ReactElement => {
   const {
     assetDetails: { description, features, leaseTerm, saleTerm, amenityGroup, highlights },
   } = propsData;
+  const selectedFilters = { filter_by: '', sort_by: OfferSort.NEWEST };
+
   const renderTabScene = (route: IRoutes): React.ReactElement | null => {
     switch (route.key) {
       case Tabs.DETAILS:
@@ -37,7 +40,7 @@ const TabSections = (propsData: IProps): React.ReactElement => {
           />
         );
       case Tabs.OFFERS:
-        return <OfferView />;
+        return <OfferView selectedFilters={selectedFilters} />;
       default:
         return (
           <View style={styles.comingSoonContent}>

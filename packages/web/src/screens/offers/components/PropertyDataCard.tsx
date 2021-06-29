@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: theme.colors.white,
-    minHeight: 242,
+    minHeight: 278,
     marginTop: 16,
   },
   tabContainer: {

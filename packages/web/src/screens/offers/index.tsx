@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
+import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -45,18 +46,42 @@ interface IDispatchProps {
 interface IStateProps {
   assetCount: number;
 }
+interface IRouteProps {
+  offerType: string;
+}
+interface IHistory {
+  history: History<IRouteProps>;
+}
 
-type IProps = IDispatchProps & IStateProps;
+type IProps = IDispatchProps & IStateProps & IHistory;
 
 const Offers: FC<IProps> = (props: IProps) => {
   const [offerReceivedInfoRead, setOfferRecievedInfoRead] = useState(false);
   const [offerMadeInfoRead, setOfferMadeInfoRead] = useState(false);
-  const [offerType, setOfferType] = useState(OfferType.OFFER_RECEIVED);
+  const history = useHistory();
+  const { location } = history;
+  const { state } = location;
+
+  const getInitialOfferType = (): OfferType => {
+    const { assetCount } = props;
+
+    // @ts-ignore
+    if (state === undefined) return OfferType.OFFER_RECEIVED;
+    // @ts-ignore
+    if (state.offerType)
+      // @ts-ignore
+      return state.isReceivedFlow ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE;
+    return assetCount > 0 ? OfferType.OFFER_RECEIVED : OfferType.OFFER_MADE;
+  };
+  const [offerType, setOfferType] = useState(getInitialOfferType());
   const [offerCountData, setOfferCountData] = useState<OfferManagement>();
   const [propertyListingData, setPropertyListingData] = useState<Asset[]>([]);
   const [offerFilters, setOfferFilters] = useState(new OfferFilter());
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.LAPTOP);
+  const [close, setClose] = useState(false);
+
+  // const { history } = props;
   const [selectedFilters, setSelectedFilters] = useState({
     countary_id: Number(),
     type: '',
@@ -66,13 +91,12 @@ const Offers: FC<IProps> = (props: IProps) => {
   });
 
   const { t } = useTranslation();
-  const history = useHistory();
 
   const title = offerType === 'Offer Received' ? t('offers:noOfferReceived') : t('offers:noOfferMade');
   useEffect(() => {
     getOfferDetails();
     getOfferFilters();
-  }, [offerType]);
+  }, [offerType, close]);
 
   const getOfferDetails = async (): Promise<void> => {
     try {
@@ -207,6 +231,10 @@ const Offers: FC<IProps> = (props: IProps) => {
     // TODO : handle message flow : Shagun
   };
 
+  const handleClose = (): void => {
+    setClose(!close);
+  };
+
   const renderPropertyOffer = (item: Asset, index: number): React.ReactElement => {
     const isCardExpanded = index === 0;
     const { offerCount } = item;
@@ -234,7 +262,7 @@ const Offers: FC<IProps> = (props: IProps) => {
         );
       case OfferType.OFFER_MADE:
       default:
-        return <OffersMade property={item} onPressMessages={onPressMessages} />;
+        return <OffersMade property={item} onPressMessages={onPressMessages} handleClose={handleClose} />;
     }
   };
   return (

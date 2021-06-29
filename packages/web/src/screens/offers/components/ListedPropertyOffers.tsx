@@ -9,11 +9,14 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub//common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import OffersDropdown, { OffersDropdownType } from '@homzhub/web/src/screens/offers/components/OffersDropDown';
 import OffersOverview from '@homzhub/web/src/screens/offers/components/OffersOverview';
+import { OfferType } from '@homzhub/web/src/screens/offers';
 import OfferView from '@homzhub/web/src/screens/offers/components/OfferView';
 import PreferenceDetails from '@homzhub/web/src/screens/offers/components/PreferenceDetails';
 import PropertyOfferDetails from '@homzhub/web/src/screens/offers/components/PropertyOfferDetails';
@@ -41,6 +44,7 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const listingDetail = useSelector(OfferSelectors.getListingDetail);
   const [offerFilters, setOfferFilters] = useState(new OfferFilter());
+  const [offerType, setOfferType] = useState(OfferType.OFFER_RECEIVED);
 
   const [selectedFilters, setSelectedFilters] = useState({
     filter_by: '',
@@ -51,9 +55,16 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
       dispatch(OfferActions.getListingDetail(offerPayload));
     }
     getFilters();
-  }, []);
+  }, [offerType]);
   const onMetricsClicked = (name: string): void => {
     // TODO : Set offer type(handle toggle) - shagun
+    setOfferType(name as OfferType);
+    NavigationService.navigate(history, {
+      path: RouteNames.protectedRoutes.OFFERS,
+      params: {
+        offerType,
+      },
+    });
   };
   const getFilters = async (): Promise<void> => {
     try {

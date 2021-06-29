@@ -47,6 +47,12 @@ const OfferView: FC<IProps> = (props: IProps) => {
   const popupRef = createRef<PopupActions>();
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
   const { selectedFilters = { filter_by: '', sort_by: OfferSort.NEWEST } } = props;
+  const [close, setClose] = useState(false);
+
+  useEffect(() => {
+    getData(selectedFilters?.filter_by);
+  }, [selectedFilters, close]);
+
   const getData = (filter_by?: string): void => {
     if (offerPayload) {
       const payload: INegotiationParam = {
@@ -57,14 +63,9 @@ const OfferView: FC<IProps> = (props: IProps) => {
             ? NegotiationType.LEASE_NEGOTIATIONS
             : NegotiationType.SALE_NEGOTIATIONS,
       };
-
       dispatch(OfferActions.getNegotiations({ param: payload, filter_by }));
     }
   };
-
-  useEffect(() => {
-    getData(selectedFilters?.filter_by);
-  }, [selectedFilters]);
 
   useEffect(() => {
     setOffers(OfferUtils.getSortedOffer(selectedFilters.sort_by, negotiations));
@@ -103,6 +104,13 @@ const OfferView: FC<IProps> = (props: IProps) => {
   };
   const handleOfferAction = (value: OfferAction): void => {
     setOfferActionType(value);
+  };
+
+  const onCloseModal = (): void => {
+    if (popupRef && popupRef.current) {
+      setClose(!close);
+      popupRef.current.close();
+    }
   };
 
   const handlePastOffer = async (payload: ICounterParam): Promise<void> => {
@@ -154,6 +162,7 @@ const OfferView: FC<IProps> = (props: IProps) => {
         compareData={compareData}
         asset={listingDetail}
         handleOfferAction={handleOfferAction}
+        onCloseModal={onCloseModal}
       />
     </View>
   );

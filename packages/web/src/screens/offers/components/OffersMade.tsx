@@ -23,12 +23,14 @@ import { ICounterParam, ListingType } from '@homzhub/common/src/domain/repositor
 interface IProps {
   property: Asset;
   onPressMessages: () => void;
+  handleClose: () => void;
 }
 const OffersMade: FC<IProps> = (props: IProps) => {
   const {
     property,
     property: { leaseNegotiation, saleNegotiation, leaseTerm, saleTerm },
     onPressMessages,
+    handleClose,
   } = props;
   const offer = leaseNegotiation || saleNegotiation;
   const dispatch = useDispatch();
@@ -38,6 +40,12 @@ const OffersMade: FC<IProps> = (props: IProps) => {
   const popupRef = createRef<PopupActions>();
   const [offerActionType, setOfferActionType] = useState<OfferAction | null>(null);
   const [currentOffer, setCurrentOffer] = useState<Offer>(new Offer());
+  const onCloseModal = (): void => {
+    if (popupRef && popupRef.current) {
+      handleClose();
+      popupRef.current.close();
+    }
+  };
 
   const compareData = (): IOfferCompare => {
     if (leaseTerm) {
@@ -92,6 +100,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
     setOfferActionType(value);
   };
   // TODO: Integration with dynamic offers value - shagun
+
   return (
     <View>
       <View style={styles.background}>
@@ -135,6 +144,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
         asset={property}
         compareData={compareData()}
         handleOfferAction={handleOfferAction}
+        onCloseModal={onCloseModal}
       />
     </View>
   );
