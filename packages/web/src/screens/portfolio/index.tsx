@@ -64,6 +64,7 @@ interface IDispatchProps {
   setCurrentAsset: (payload: ISetAssetPayload) => void;
   setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
+  setCurrentFilter: (filter: Filters) => void;
 }
 interface ILocalState {
   filters: AssetFilter;
@@ -194,7 +195,9 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const { assetType } = this.state;
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
-    const isEmpty = !data || data.length <= 0;
+    const filteredPortfolioData =
+      currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.label === currentFilter);
+    const isEmpty = !filteredPortfolioData || filteredPortfolioData.length <= 0;
     return (
       <View style={styles.container}>
         <View style={styles.headingView}>
@@ -205,7 +208,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
         {isEmpty ? (
           <EmptyState title={title} icon={icons.home} containerStyle={styles.emptyView} />
         ) : (
-          data?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
+          filteredPortfolioData?.map((property, index) => this.renderList(property, index, DataType.PROPERTIES))
         )}
       </View>
     );
@@ -299,8 +302,8 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   };
 
   private getStatus = (filter: string): void => {
-    const { getPropertyDetails } = this.props;
-    getPropertyDetails({ status: filter, onCallback: this.onPropertiesCallback });
+    const { setCurrentFilter } = this.props;
+    setCurrentFilter(filter.replace('_', ' ') as Filters);
   };
 
   private getScreenData = async (): Promise<void> => {
@@ -315,8 +318,8 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   };
 
   private getPortfolioProperty = (): void => {
-    const { getPropertyDetails, currentFilter } = this.props;
-    getPropertyDetails({ status: currentFilter, onCallback: this.onPropertiesCallback });
+    const { getPropertyDetails } = this.props;
+    getPropertyDetails({ onCallback: this.onPropertiesCallback });
   };
 
   private getAssetFilters = async (): Promise<void> => {
@@ -346,7 +349,7 @@ const mapStateToProps = (state: IState): IStateProps => {
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getPropertyDetails, setCurrentAsset, getTenanciesDetails } = PortfolioActions;
+  const { getPropertyDetails, setCurrentAsset, getTenanciesDetails, setCurrentFilter } = PortfolioActions;
   const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
   return bindActionCreators(
     {
@@ -355,6 +358,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setCurrentAsset,
       setAssetId,
       setEditPropertyFlow,
+      setCurrentFilter,
     },
     dispatch
   );
