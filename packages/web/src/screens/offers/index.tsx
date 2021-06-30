@@ -81,7 +81,6 @@ const Offers: FC<IProps> = (props: IProps) => {
   const isTablet = useDown(deviceBreakpoint.LAPTOP);
   const [close, setClose] = useState(false);
 
-  // const { history } = props;
   const [selectedFilters, setSelectedFilters] = useState({
     countary_id: Number(),
     type: '',
@@ -304,24 +303,23 @@ const Offers: FC<IProps> = (props: IProps) => {
         </View>
       )}
       {offerType === OfferType.OFFER_MADE && (
-      
         <View style={[styles.filtersMadeContainer, isMobile && styles.filtersContainerMobile]}>
-         <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
-        {`${t('common:offers')} (${offerCountData.offerMade})`}
-      </Typography>
-      <View style={[styles.rowStyle, styles.heading]}>
-          <OffersDropdown // TODO: Replace this with map function - Shagun
-            filterData={offerMadeSortBy}
-            defaultTitle={t('offers:sort')}
-            onSelectFilter={onSelectFilter}
-            offerType={OffersDropdownType.Sort}
-          />
-          <OffersDropdown
-            filterData={offerFilters.filterDropdownData}
-            defaultTitle={t('offers:filterBy')}
-            onSelectFilter={onSelectFilter}
-            offerType={OffersDropdownType.Filter}
-          />
+          <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
+            {`${t('common:offers')} (${offerCountData.offerMade})`}
+          </Typography>
+          <View style={[styles.rowStyle, styles.heading]}>
+            <OffersDropdown // TODO: Replace this with map function - Shagun
+              filterData={offerMadeSortBy}
+              defaultTitle={t('offers:sort')}
+              onSelectFilter={onSelectFilter}
+              offerType={OffersDropdownType.Sort}
+            />
+            <OffersDropdown
+              filterData={offerFilters.filterDropdownData}
+              defaultTitle={t('offers:filterBy')}
+              onSelectFilter={onSelectFilter}
+              offerType={OffersDropdownType.Filter}
+            />
           </View>
         </View>
       )}
@@ -406,11 +404,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   heading: {
-    marginTop: 25, 
-    justifyContent:'center',
-    alignItems:'center'
+    marginTop: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  rowStyle:{
+  rowStyle: {
     flexDirection: 'row',
-  }
+  },
 });

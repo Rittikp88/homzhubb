@@ -1,6 +1,5 @@
 import React, { FC, useState, createRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -9,7 +8,6 @@ import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
 import { OffersCard } from '@homzhub/web/src/screens/offers/components/OffersCard';
 import OfferActionsPopover from '@homzhub/web/src/screens/offers/components/OfferActionsPopover';
@@ -34,7 +32,6 @@ const OffersMade: FC<IProps> = (props: IProps) => {
   } = props;
   const offer = leaseNegotiation || saleNegotiation;
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const popupRef = createRef<PopupActions>();
@@ -42,8 +39,8 @@ const OffersMade: FC<IProps> = (props: IProps) => {
   const [currentOffer, setCurrentOffer] = useState<Offer>(new Offer());
   const onCloseModal = (): void => {
     if (popupRef && popupRef.current) {
-      handleClose();
       popupRef.current.close();
+      handleClose();
     }
   };
 
@@ -99,14 +96,13 @@ const OffersMade: FC<IProps> = (props: IProps) => {
   const handleOfferAction = (value: OfferAction): void => {
     setOfferActionType(value);
   };
-  // TODO: Integration with dynamic offers value - shagun
 
   return (
     <View>
       <View style={styles.background}>
         <PropertyOfferDetails property={property} isExpanded containerStyles={styles.innerContainer} />
       </View>
-  
+
       {!isMobile && offer && (
         <OffersCard
           offer={offer}
@@ -161,5 +157,6 @@ const styles = StyleSheet.create({
   },
   background: {
     backgroundColor: theme.colors.white,
+    marginBottom: 24,
   },
 });

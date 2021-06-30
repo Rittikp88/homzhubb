@@ -209,7 +209,7 @@ class OfferUtils {
           container: {
             backgroundColor: theme.colors.grayOpacity,
             flexDirection: 'row-reverse',
-            flex: 0,
+            flex: !PlatformUtils.isWeb() ? 0 : undefined,
           },
           textStyle: {
             color: theme.colors.darkTint3,
