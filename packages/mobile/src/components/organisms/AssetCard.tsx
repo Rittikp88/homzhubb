@@ -398,7 +398,8 @@ export class AssetCard extends Component<Props, IState> {
                 { backgroundColor: action.color },
                 action.label === ActionType.CANCEL && styles.cancelButton,
               ]}
-              title={action.label}
+              // Todo (Praharsh) : Hardcoded for now. Update once BE sends the updated text
+              title={action.label === ActionType.TERMINATE ? 'SEND NOTICE' : action.label}
               titleStyle={[styles.buttonTitle, action.label === ActionType.CANCEL && styles.cancelTitle]}
               onPress={this.onPressAction}
             />

@@ -212,7 +212,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
-    const servicesHeader = [t('assetMore:premiumPaidServices'), t('assetMore:optional')];
+    const servicesHeader = [t('assetMore:premiumServices'), t('assetMore:optional')];
     const hasServices = valueAddedServices.length > 0;
 
     const toggleActionSheet = (): void => this.setState({ isActionSheetToggled: !isActionSheetToggled });

@@ -417,7 +417,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
       /* If no file is of size lesser than 5mb, stop uploading */
       if (validDocuments.length === 0) {
-        AlertHelper.error({ message: t('common:docExceedsMaxSize', { size: '5mb' }) });
+        AlertHelper.error({ message: t('common:docsExceedMaxSize', { size: '5mb' }) });
         return;
       }
 

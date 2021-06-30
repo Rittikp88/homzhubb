@@ -291,7 +291,9 @@
     "maxDocumentUploads": "You can upload a maximum of {{count}} documents",
     "someFilesWereNotUploaded": "Some files were not uploaded because they were greater than {{size}}",
     "activities": "Activities",
-    "score": "Score"
+    "score": "Score",
+    "sendNotice": "Send Notice",
+    "marketPlace": "Marketplace"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -933,6 +935,7 @@
     "newLaunches": "New Launches",
     "valueAddedServices": "Value Added Services",
     "premiumPaidServices": "Premium Paid Services",
+    "premiumServices": "Premium Services",
     "optional": "(Optional)",
     "savedProperties": "Saved Properties",
     "propertyVisits": "Property Visits",

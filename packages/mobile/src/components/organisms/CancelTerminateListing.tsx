@@ -113,7 +113,7 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
                   formProps={formProps}
                   disabled={!isButtonEnable}
                   type="primary"
-                  title={isTerminate ? t('common:terminate') : t('property:deleteListing')}
+                  title={isTerminate ? t('common:sendNotice') : t('property:deleteListing')}
                 />
               </>
             );

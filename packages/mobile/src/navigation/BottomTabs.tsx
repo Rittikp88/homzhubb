@@ -136,7 +136,7 @@ export const BottomTabs = (): React.ReactElement => {
         })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: t('property:services'),
+          tabBarLabel: t('common:marketPlace'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return focused ? (
               <Icon name={icons.settingFilled} color={color} size={26} />

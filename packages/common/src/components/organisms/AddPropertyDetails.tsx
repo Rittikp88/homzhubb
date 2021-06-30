@@ -158,6 +158,7 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
             maxLength={400}
             inputType="default"
             formProps={formProps}
+            multiline
           />
         </>
       </AssetListingSection>
