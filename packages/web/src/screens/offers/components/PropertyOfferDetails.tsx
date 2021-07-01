@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
@@ -29,7 +29,7 @@ type IPropertyOfferDetails = IProps & IStateProps;
 const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDetails) => {
   const isTab = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-
+  const isIPadPro = useIsIpadPro();
   const { property, filters, isExpanded, containerStyles } = props;
   const {
     projectName,
@@ -79,6 +79,7 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
           containerStyle={[
             styles.imgPlaceHolder,
             isTab && styles.imgPlaceHolderTab,
+            isIPadPro && !isTab && styles.imagContainerIPadPro,
             isMobile && styles.mobImageContainer,
           ]}
         />
@@ -91,7 +92,12 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
       <TouchableOpacity>
         {mediaType === 'IMAGE' && (
           <View
-            style={[styles.imageContainer, isTab && styles.tabImageContainer, isMobile && styles.mobImageContainer]}
+            style={[
+              styles.imageContainer,
+              isTab && styles.tabImageContainer,
+              isMobile && styles.mobImageContainer,
+              isIPadPro && !isTab && styles.imagContainerIPadPro,
+            ]}
           >
             <Image
               source={{
@@ -109,7 +115,14 @@ const PropertyOfferDetais: FC<IPropertyOfferDetails> = (props: IPropertyOfferDet
   return (
     <View style={[styles.containerAlign, isMobile && styles.containerMobile, containerStyles]}>
       {isExpanded && renderAttachmentView(property.attachments)}
-      <View style={[styles.details, isTab && styles.detailsTab, isMobile && styles.detailMobile]}>
+      <View
+        style={[
+          styles.details,
+          isTab && styles.detailsTab,
+          isMobile && styles.detailMobile,
+          isIPadPro && !isTab && styles.detailsIPadPro,
+        ]}
+      >
         {isExpanded && (
           <ShieldGroup
             propertyType={property.assetType.name}
@@ -163,6 +176,9 @@ const styles = StyleSheet.create({
     width: 220,
     height: 153,
   },
+  imagContainerIPadPro: {
+    width: 200,
+  },
   detailViewImage: {
     borderRadius: 4,
     height: '100%',
@@ -193,6 +209,9 @@ const styles = StyleSheet.create({
   details: { marginHorizontal: 12, width: 296 },
   detailsTab: {
     width: '52.5%',
+  },
+  detailsIPadPro: {
+    width: 220,
   },
   detailMobile: {
     marginHorizontal: 0,

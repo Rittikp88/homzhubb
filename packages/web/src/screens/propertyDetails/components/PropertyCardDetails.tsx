@@ -88,6 +88,7 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       contacts: { fullName, profilePicture },
       country: { currencies },
       assetGroup: { code, name },
+      isAssetOwner,
     } = assetDetails;
 
     const propertyType = assetType ? assetDetails.assetType.name : '';
@@ -178,25 +179,27 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
             <View style={styles.avatar}>
               <Avatar fullName={fullName} imageSize={50} image={profilePicture} designation={t('property:Owner')} />
             </View>
-            <Divider />
-            <View style={styles.footer}>
-              <View style={(isMobile || isTablet || isIpadPro) && styles.enquireContainer}>
-                <Button type="primary" containerStyle={styles.enquire} onPress={triggerPopUp}>
-                  <Icon name={icons.offers} size={24} color={theme.colors.primaryColor} />
-                  <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleEnquire}>
-                    {t('assetMore:makeAnOfferText')}
-                  </Typography>
-                </Button>
+            {!isAssetOwner && <Divider />}
+            {!isAssetOwner && (
+              <View style={styles.footer}>
+                <View style={(isMobile || isTablet || isIpadPro) && styles.enquireContainer}>
+                  <Button type="primary" containerStyle={styles.enquire} onPress={triggerPopUp}>
+                    <Icon name={icons.offers} size={24} color={theme.colors.primaryColor} />
+                    <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleEnquire}>
+                      {t('assetMore:makeAnOfferText')}
+                    </Typography>
+                  </Button>
+                </View>
+                <View style={(isMobile || isTablet || isIpadPro) && styles.scheduleContainer}>
+                  <Button type="primary" containerStyle={[styles.enquire, styles.schedule]} disabled>
+                    <Icon name={icons.timer} size={22} color={theme.colors.white} />
+                    <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleSchedule}>
+                      {t('propertySearch:scheduleVisit')}
+                    </Typography>
+                  </Button>
+                </View>
               </View>
-              <View style={(isMobile || isTablet || isIpadPro) && styles.scheduleContainer}>
-                <Button type="primary" containerStyle={[styles.enquire, styles.schedule]} disabled>
-                  <Icon name={icons.timer} size={22} color={theme.colors.white} />
-                  <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleSchedule}>
-                    {t('propertySearch:scheduleVisit')}
-                  </Typography>
-                </Button>
-              </View>
-            </View>
+            )}
           </View>
         </View>
         <View style={styles.dividerContainer}>
@@ -288,7 +291,7 @@ const propertyDetailStyle = (
     },
     container: {
       backgroundColor: theme.colors.white,
-      height: !isMobile ? 482 : 'fit-content',
+      height: 'fit-content',
       flexDirection: isMobile ? 'column' : 'row',
     },
     gallery: {

@@ -112,42 +112,44 @@ const GalleryView: FC<IProps> = (props: IProps) => {
         </View>
       </TouchableOpacity>
 
-      <View style={styles.bottomView}>
-        {attachments.map((item: Attachment, index: number) => {
-          if (!isTablet ? (isIPadPro ? index < 3 : index < 4) : index < 2) {
-            return (
-              <TouchableOpacity onPress={(): void => selectedImage(item, index)}>
-                <View
-                  style={[
-                    (!isTablet ? (isIPadPro ? index < 2 : index < 3) : index < 1) && styles.imageSpacing,
-                    styles.imageContainer,
-                    isTablet && styles.imageContainerTab,
-                    isIPadPro && styles.imageIPadPro,
-                  ]}
-                >
-                  <Image
-                    style={[styles.image, selected[index] && styles.selectedImage]}
-                    source={{
-                      uri: item.link,
-                    }}
-                  />
-                </View>
-
-                {(!isTablet ? (isIPadPro ? index === 2 : index === 3) : index === 1) && (
-                  <View style={styles.thumbnailContainer}>
-                    <TouchableOpacity onPress={viewfullScreen}>
-                      <Text type="regular" textType="semiBold" style={styles.numberOfImages}>
-                        + {moreImages}
-                      </Text>
-                    </TouchableOpacity>
+      {attachments.length > 1 && (
+        <View style={styles.bottomView}>
+          {attachments.map((item: Attachment, index: number) => {
+            if (!isTablet ? (isIPadPro ? index < 3 : index < 4) : index < 2) {
+              return (
+                <TouchableOpacity onPress={(): void => selectedImage(item, index)}>
+                  <View
+                    style={[
+                      (!isTablet ? (isIPadPro ? index < 2 : index < 3) : index < 1) && styles.imageSpacing,
+                      styles.imageContainer,
+                      isTablet && styles.imageContainerTab,
+                      isIPadPro && styles.imageIPadPro,
+                    ]}
+                  >
+                    <Image
+                      style={[styles.image, selected[index] && styles.selectedImage]}
+                      source={{
+                        uri: item.link,
+                      }}
+                    />
                   </View>
-                )}
-              </TouchableOpacity>
-            );
-          }
-          return null;
-        })}
-      </View>
+
+                  {(!isTablet ? (isIPadPro ? index === 2 : index === 3) : index === 1) && (
+                    <View style={styles.thumbnailContainer}>
+                      <TouchableOpacity onPress={viewfullScreen}>
+                        <Text type="regular" textType="semiBold" style={styles.numberOfImages}>
+                          + {moreImages}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </TouchableOpacity>
+              );
+            }
+            return null;
+          })}
+        </View>
+      )}
       <Popover
         content={renderPopOverContent}
         popupProps={{

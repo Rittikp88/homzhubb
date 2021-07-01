@@ -3,7 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useIsIpadPro, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -109,7 +109,7 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const isTab = useOnly(deviceBreakpoint.TABLET);
-
+  const isIPadPro = useIsIpadPro();
   const expectationData = isLeaseListing
     ? leaseListingExpectationData(leaseTerm, currencySymbol, t)
     : saleListingExpectationData(saleTerm, currencySymbol, t);
@@ -127,7 +127,7 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
             <Label textType="regular" type="small" style={[styles.tintColor, styles.topMargin]}>
               {item.title}
             </Label>
-            <View style={styles.preferenceView}>
+            <View style={[styles.preferenceView, isMobile && styles.preferenceViewMobile]}>
               {!!preferences.length &&
                 preferences.map((preference, valueIndex) => {
                   return (
@@ -138,7 +138,11 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
                       variant="label"
                       textSize="large"
                       iconColor={theme.colors.green}
-                      containerStyle={styles.preferenceContent}
+                      containerStyle={[
+                        styles.preferenceContent,
+                        isIPadPro && !isTab && styles.preferenceContentIPadPro,
+                        isMobile && styles.preferenceContentMobile,
+                      ]}
                     />
                   );
                 })}
@@ -151,7 +155,7 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
           key={index}
           style={[
             styles.expectedItem,
-            isTab && styles.expectedItemTab,
+            (isTab || isIPadPro) && styles.expectedItemTab,
             isMobile && styles.expectedItemMob,
             (!isMobile ? (isTab ? index === 5 : index === 3) : (index + 1) % 2 === 0) && styles.separator,
           ]}
@@ -169,7 +173,13 @@ const PreferenceDetails: FC<IProps> = (props: IProps) => {
   return (
     <>
       <View
-        style={[styles.container, isMobile && styles.containerMobile, isTab && styles.containerTab, containerStyles]}
+        style={[
+          styles.container,
+          isMobile && styles.containerMobile,
+          isTab && styles.containerTab,
+          containerStyles,
+          isIPadPro && !isTab && styles.containerIPadPro,
+        ]}
       >
         <Label textType="semiBold" type="large" style={styles.tintColor}>
           {`${t('offers:yourExpectationFor')} ${projectName}`}
@@ -186,6 +196,9 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 14,
     width: 540,
+  },
+  containerIPadPro: {
+    width: 347,
   },
 
   containerMobile: {
@@ -263,5 +276,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
     marginEnd: 14,
   },
+  preferenceContentIPadPro: {
+    marginEnd: 4,
+  },
+  preferenceContentMobile: {
+    marginEnd: 10,
+    paddingBottom: 6,
+  },
   expectedData: { flexDirection: 'row', flexWrap: 'wrap' },
+  preferenceViewMobile: {
+    width: '288px',
+  },
 });

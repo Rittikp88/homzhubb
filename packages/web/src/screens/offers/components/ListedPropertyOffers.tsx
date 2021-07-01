@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub//common/src/utils/ErrorUtils';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useIsIpadPro } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub//common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
@@ -45,7 +45,7 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
   const listingDetail = useSelector(OfferSelectors.getListingDetail);
   const [offerFilters, setOfferFilters] = useState(new OfferFilter());
   const [offerType, setOfferType] = useState(OfferType.OFFER_RECEIVED);
-
+  const isIPadPro = useIsIpadPro();
   const [selectedFilters, setSelectedFilters] = useState({
     filter_by: '',
     sort_by: MadeSort.NEWEST,
@@ -112,7 +112,13 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
       </View>
       {listingDetail && (
         <View style={[styles.cardDetails, isTablet && styles.cardAlignment]}>
-          <View style={[styles.background, isTablet && styles.detailCard]}>
+          <View
+            style={[
+              styles.background,
+              isTablet && styles.detailCard,
+              isIPadPro && !isTablet && styles.detailsCardIPadPro,
+            ]}
+          >
             <PropertyOfferDetails property={listingDetail} isExpanded containerStyles={styles.innerContainer} />
           </View>
           {isMobile && <Divider />}
@@ -121,6 +127,7 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
               styles.background,
               !isTablet && styles.card,
               isTablet && !isMobile && styles.detailCard,
+              isIPadPro && !isTablet && styles.detailsPreferenceCardIPadPro,
               isMobile && styles.detailCardMobile,
             ]}
           >
@@ -182,6 +189,12 @@ const styles = StyleSheet.create({
   detailCardMobile: {
     top: 0,
     width: '100%',
+  },
+  detailsCardIPadPro: {
+    width: '53%',
+  },
+  detailsPreferenceCardIPadPro: {
+    width: '45%',
   },
   offerViewAlignment: {
     marginTop: 40,

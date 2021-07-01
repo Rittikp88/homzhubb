@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useIsIpadPro, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
@@ -78,9 +78,9 @@ const Offers: FC<IProps> = (props: IProps) => {
   const [propertyListingData, setPropertyListingData] = useState<Asset[]>([]);
   const [offerFilters, setOfferFilters] = useState(new OfferFilter());
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-  const isTablet = useDown(deviceBreakpoint.LAPTOP);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
   const [close, setClose] = useState(false);
-
+  const isIPadPro = useIsIpadPro();
   const [selectedFilters, setSelectedFilters] = useState({
     countary_id: Number(),
     type: '',
@@ -265,12 +265,17 @@ const Offers: FC<IProps> = (props: IProps) => {
     }
   };
   return (
-    <View style={[styles.container, isTablet && styles.containerTab]}>
+    <View
+      style={[
+        !isTablet ? (isIPadPro ? styles.containerIPadPro : styles.container) : styles.containerTab,
+        isMobile && styles.containerTab,
+      ]}
+    >
       <OffersOverview onMetricsClicked={onMetricsClicked} offerCountData={offerCountData} isActive={offerType} />
       {!isInfoRead && propertyListingData && propertyListingData.length > 0 && (
         <View style={styles.infoContainer}>
           <View style={styles.infoSubContainer}>
-            <View style={[styles.iconTextContainer, isTablet && styles.iconTextContainerMobile]}>
+            <View style={[styles.iconTextContainer, (isTablet || isMobile) && styles.iconTextContainerMobile]}>
               <Icon name={icons.circularFilledInfo} size={15} color={theme.colors.darkTint4} />
               <Typography variant="label" size="large" style={styles.infoText}>
                 {infoText}
@@ -303,7 +308,7 @@ const Offers: FC<IProps> = (props: IProps) => {
         </View>
       )}
       {offerType === OfferType.OFFER_MADE && (
-        <View style={[styles.filtersMadeContainer, isMobile && styles.filtersContainerMobile]}>
+        <View style={[styles.offerHeading, isMobile && styles.filtersContainerMobile]}>
           <Typography variant="text" size="small" fontWeight="semiBold" style={styles.heading}>
             {`${t('common:offers')} (${offerCountData.offerMade})`}
           </Typography>
@@ -367,6 +372,9 @@ const styles = StyleSheet.create({
   containerTab: {
     width: '100%',
   },
+  containerIPadPro: {
+    width: '91%',
+  },
   infoContainer: {
     backgroundColor: theme.colors.white,
     top: 12,
@@ -410,5 +418,10 @@ const styles = StyleSheet.create({
   },
   rowStyle: {
     flexDirection: 'row',
+  },
+  offerHeading: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

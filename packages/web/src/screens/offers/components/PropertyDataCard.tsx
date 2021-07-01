@@ -27,7 +27,7 @@ const PropertyDataCard: FC<IProps> = (props: IProps) => {
       <View style={[styles.container, isTablet && !isMobile && styles.tabContainer, isMobile && styles.mobContainer]}>
         {!isMobile && (
           <View style={styles.innerContainer}>
-            <View style={!isTablet && styles.rowStyle}>
+            <View style={[!isTablet && styles.rowStyle, styles.marginBottom, isTablet && styles.marginBottomTab]}>
               <PropertyOfferDetails property={property} isExpanded />
               <Divider containerStyles={{ marginBottom: 14 }} />
               <PreferenceDetails property={property} colunm={4} />
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: theme.colors.white,
-    minHeight: 278,
     marginTop: 16,
   },
   tabContainer: {
@@ -64,6 +63,12 @@ const styles = StyleSheet.create({
   mobContainer: {
     minHeight: 114,
   },
+  marginBottom: {
+    marginBottom: 50,
+  },
+  marginBottomTab: {
+    marginBottom: 30,
+  },
   button: {
     width: '100%',
     backgroundColor: theme.colors.reminderBackground,
@@ -71,12 +76,11 @@ const styles = StyleSheet.create({
   innerContainer: {
     marginHorizontal: 20,
     marginVertical: 16,
-    height: '210px',
   },
   buttonText: {
     color: theme.colors.active,
   },
-  buttonContainer: { bottom: 0, width: '100%' },
+  buttonContainer: { bottom: 0, width: '100%', position: 'absolute' },
   rowStyle: {
     flexDirection: 'row',
   },

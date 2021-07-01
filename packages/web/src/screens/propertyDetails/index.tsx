@@ -47,6 +47,8 @@ const PropertyDetails: FC<Props> = (props: Props) => {
     getAsset(payload);
     scrollToTop();
   }, [listingId]);
+
+
   return (
     <View style={styles.container}>
       <PropertyCardDetails assetDetails={assetDetails} propertyTermId={listingId} />
