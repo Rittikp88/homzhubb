@@ -30,7 +30,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
   const render = (): ReactElement => {
     return (
       <UserScreen
-        title={t('property:services')}
+        title={t('assetMore:premiumServices')}
         pageTitle={t('premiumPaidServices')}
         onBackPress={navigation.goBack}
         loading={loading}

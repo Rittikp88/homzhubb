@@ -662,7 +662,7 @@
     "confirmCancellation": "Are you sure want to cancel the listing?",
     "onFloorValidation": "This can't be more than total floor count",
     "noPropertyAdded": "You haven't added any property yet. Click here to add your first property.",
-    "noServiceAdded": "You haven’t purchased any value-added service.",
+    "noServiceAdded": "You haven’t purchased any premium services. Please click on Buy New Service button to get started.",
     "buyNewService": "Buy New Service",
     "openServices": "Open Services",
     "totalServices": "Total Services",
