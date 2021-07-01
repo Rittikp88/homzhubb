@@ -110,7 +110,7 @@ const ServicesDashboard = (): React.ReactElement => {
   return (
     <>
       <UserScreen
-        title={t('assetMore:premiumServices')}
+        title={t('common:marketPlace')}
         backgroundColor={userAsset.length > 0 ? theme.colors.background : theme.colors.white}
         loading={userService}
       >
