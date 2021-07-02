@@ -29,19 +29,21 @@ interface IProps {
 const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
   const dispatch = useDispatch();
-  const [transactionType, setTransactionType] = useState(0);
-  const [assetGroup, setAssetGroup] = useState(1);
-  const [comment, setComment] = useState('');
-  const [assetType, setAssetType] = useState<number[]>([]);
-  const [bedCount, setBedCount] = useState<number[]>([-1]);
-  const [price, setPriceRange] = useState({ min: 0, max: 0 });
-  const [moveInDate, setMoveInDate] = useState(DateUtils.getDisplayDate(new Date().toISOString(), 'MMM DD, YYYY'));
-
   const filterData = useSelector(SearchSelector.getFilterDetail);
   const filters = useSelector(SearchSelector.getFilters);
   const priceRange = useSelector(SearchSelector.getPriceRange);
   const localities = useSelector(SearchSelector.getLocalities);
   const countryData = useSelector(CommonSelectors.getCountryList);
+
+  const [transactionType, setTransactionType] = useState(filters.asset_transaction_type);
+  const [assetGroup, setAssetGroup] = useState(filters.asset_group ?? 1);
+  const [comment, setComment] = useState('');
+  const [assetType, setAssetType] = useState<number[]>(filters.asset_type ?? []);
+  const [bedCount, setBedCount] = useState<number[]>(
+    filters.room_count && filters.room_count.length > 0 ? filters.room_count : [-1]
+  );
+  const [price, setPriceRange] = useState({ min: filters.min_price ?? 0, max: filters.max_price ?? 0 });
+  const [moveInDate, setMoveInDate] = useState(DateUtils.getDisplayDate(new Date().toISOString(), 'MMM DD, YYYY'));
 
   const transactionData = [
     { title: t('rent'), value: 0 },
@@ -153,8 +155,8 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
         range={priceRange}
         title={t('budget')}
         currencySymbol={currencySymbol}
-        minChangedValue={0}
-        maxChangedValue={priceRange.max}
+        minChangedValue={price.min}
+        maxChangedValue={price.max ?? priceRange.max}
         onChangeSlide={updateFilter}
       />
       <FormCalendar

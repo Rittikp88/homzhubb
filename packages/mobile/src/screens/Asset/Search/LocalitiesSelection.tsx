@@ -16,6 +16,7 @@ import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSear
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { GooglePlaceData, GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { ILocationParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const LocalitiesSelection = (): React.ReactElement => {
   const { t } = useTranslation();
@@ -23,7 +24,9 @@ const LocalitiesSelection = (): React.ReactElement => {
   const { goBack } = useNavigation();
 
   const [searchString, setSearchString] = useState('');
+  const [isLocationPress, setLocationPress] = useState(false);
   const [suggestions, setSuggestions] = useState<GooglePlaceData[]>([]);
+  const [localities, setLocalities] = useState<ILocationParam[]>([]);
 
   useEffect(() => {
     getAutoSuggestion();
@@ -39,6 +42,11 @@ const LocalitiesSelection = (): React.ReactElement => {
       });
   }, 500);
 
+  const onAdd = (): void => {
+    dispatch(SearchActions.setLocalities(localities));
+    goBack();
+  };
+
   const onGetCurrentPositionSuccess = (data: GeolocationResponse): void => {
     const {
       coords: { latitude, longitude },
@@ -46,15 +54,14 @@ const LocalitiesSelection = (): React.ReactElement => {
     GooglePlacesService.getLocationData({ lng: longitude, lat: latitude }).then((locData) => {
       const { formatted_address } = locData;
       const { primaryAddress, secondaryAddress } = GooglePlacesService.getSplitAddress(formatted_address);
-      dispatch(
-        SearchActions.setLocalities([
-          {
-            latitude,
-            longitude,
-            name: `${primaryAddress} ${secondaryAddress}`,
-          },
-        ])
-      );
+      setLocationPress(true);
+      setLocalities([
+        {
+          latitude,
+          longitude,
+          name: `${primaryAddress} ${secondaryAddress}`,
+        },
+      ]);
       setSearchString(`${primaryAddress} ${secondaryAddress}`);
     });
   };
@@ -62,15 +69,14 @@ const LocalitiesSelection = (): React.ReactElement => {
   const onSuggestionPress = (place: GooglePlaceData): void => {
     GooglePlacesService.getPlaceDetail(place.place_id)
       .then((placeDetail: GooglePlaceDetail) => {
-        dispatch(
-          SearchActions.setLocalities([
-            {
-              latitude: placeDetail.geometry.location.lat,
-              longitude: placeDetail.geometry.location.lng,
-              name: place.description,
-            },
-          ])
-        );
+        setLocationPress(true);
+        setLocalities([
+          {
+            latitude: placeDetail.geometry.location.lat,
+            longitude: placeDetail.geometry.location.lng,
+            name: place.description,
+          },
+        ]);
         setSearchString(place.description);
       })
       .catch((e) => {
@@ -104,10 +110,11 @@ const LocalitiesSelection = (): React.ReactElement => {
         value={searchString}
         isCancelVisible={false}
         containerStyle={styles.searchBarContainer}
+        onFocusChange={(): void => setLocationPress(false)}
       />
       <CurrentLocation onGetCurrentPositionSuccess={onGetCurrentPositionSuccess} />
-      {renderSearchResults()}
-      <Button type="primary" title={t('addLocation')} containerStyle={styles.buttonContainer} onPress={goBack} />
+      {!isLocationPress && renderSearchResults()}
+      <Button type="primary" title={t('addLocation')} containerStyle={styles.buttonContainer} onPress={onAdd} />
     </Screen>
   );
 };
