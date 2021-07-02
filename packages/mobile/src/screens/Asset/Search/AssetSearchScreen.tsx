@@ -262,7 +262,12 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
         <Label type="large" textType="regular" style={styles.helperText}>
           {t('noResultHelper')}
         </Label>
-        <Button type="primary" title={t('searchAgain')} containerStyle={styles.button} onPress={this.toggleSearchBar} />
+        <Button
+          type="primary"
+          title={t('shareRequirement')}
+          containerStyle={styles.button}
+          onPress={this.shareRequirement}
+        />
         <Label type="large" textType="semiBold" style={styles.resetFilters} onPress={this.resetFilterAndProperties}>
           {t('resetFilters')}
         </Label>
@@ -419,13 +424,13 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
       return null;
     }
     const {
-      filters: { sortDropDownData, defaultSort },
+      filters: { sortDropDownData },
     } = filterData;
 
     return (
       <BottomSheetListView
         data={sortDropDownData}
-        selectedValue={sort_by ?? defaultSort}
+        selectedValue={sort_by}
         listTitle={t('common:sort')}
         isBottomSheetVisible={isSortVisible}
         onCloseDropDown={this.handleCloseSort}
@@ -624,6 +629,11 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     this.handleCloseSort();
   };
 
+  public shareRequirement = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.SearchRequirement);
+  };
+
   public toggleSearchBar = (): void => {
     const { isSearchBarFocused } = this.state;
     this.setState({ isSearchBarFocused: !isSearchBarFocused });
@@ -732,14 +742,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setFilter,
-    getFilterDetails,
-    getProperties,
-    setInitialFilters,
-    setInitialState,
-    getPropertiesListView,
-  } = SearchActions;
+  const { setFilter, getFilterDetails, getProperties, setInitialFilters, setInitialState, getPropertiesListView } =
+    SearchActions;
   const { setChangeStack } = UserActions;
   return bindActionCreators(
     {

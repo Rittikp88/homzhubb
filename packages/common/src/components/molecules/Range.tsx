@@ -14,10 +14,11 @@ interface IRange {
 }
 
 interface IProps {
-  dropdownData: PickerItemProps[];
+  dropdownData?: PickerItemProps[];
   selectedUnit?: string | number;
   isPriceRange?: boolean;
   range: IRange;
+  title?: string;
   currencySymbol?: string;
   minChangedValue: number;
   maxChangedValue: number;
@@ -42,6 +43,7 @@ export const Range = (props: IProps): React.ReactElement => {
     selectedUnit,
     onDropdownValueChange,
     sliderLength,
+    title,
   } = props;
   const { t } = useTranslation();
   const [minRange, setMinRange] = useState(0);
@@ -60,7 +62,7 @@ export const Range = (props: IProps): React.ReactElement => {
   };
   const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(dropdownValue.toString(), value);
   const currentCarpetAreaUnit =
-    dropdownData.filter((obj: PickerItemProps) => obj.value === selectedUnit)[0]?.label ?? '';
+    dropdownData?.filter((obj: PickerItemProps) => obj.value === selectedUnit)[0]?.label ?? '';
   const getAreaValue = (value: number): string => `${value.toLocaleString()} ${currentCarpetAreaUnit}`;
 
   const maxChanged = isPriceRange
@@ -95,7 +97,7 @@ export const Range = (props: IProps): React.ReactElement => {
     <View style={[styles.container, containerStyle]}>
       <View style={styles.rangeRow}>
         <Text type="small" textType="semiBold" style={styles.priceRange}>
-          {isPriceRange ? t('priceRange') : t('propertySearch:carpetArea')}
+          {title || (isPriceRange ? t('priceRange') : t('propertySearch:carpetArea'))}
         </Text>
         {ShowInMvpRelease && (
           <Dropdown

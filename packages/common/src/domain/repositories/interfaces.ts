@@ -1013,3 +1013,22 @@ export interface IUnitListingPayload {
   unitId: number;
   leaseTerms: ILeaseTermParams;
 }
+
+export interface ILocationParam {
+  latitude: number;
+  longitude: number;
+  name: string;
+}
+
+export interface ISearchRequirementPayload {
+  min_budget: number;
+  max_budget: number;
+  asset_types: number[];
+  search_txn_type: string;
+  preferred_location: ILocationParam[];
+  bhk: number[];
+  available_from_date: string | null;
+  user_location_latitude?: number | null;
+  user_location_longitude?: number | null;
+  comments?: string;
+}

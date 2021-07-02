@@ -292,6 +292,7 @@
     "someFilesWereNotUploaded": "Some files were not uploaded because they were greater than {{size}}",
     "activities": "Activities",
     "score": "Score",
+    "addLocation": "Add location",
     "sendNotice": "Send Notice",
     "marketPlace": "Marketplace"
   },
@@ -762,7 +763,14 @@
     "filterCount": "{{intialCount}}-{{resultLength}} of {{count}} results ",
     "enquire": "Enquire",
     "scheduleVisit": "Schedule a visit",
-    "filterByRating": "Filter by overall rating"
+    "filterByRating": "Filter by overall rating",
+    "shareRequirement": "Share Requirements",
+    "requirementForm": "Requirement Form",
+    "saveDetails": "Save details",
+    "moveInDate": "Expected Move-In  date",
+    "budget": "Budget",
+    "bhk": "BHK",
+    "localities": "Localities"
   },
   "assetDescription": {
     "reviewsRatings": "Reviews and ratings",

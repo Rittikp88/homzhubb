@@ -4,8 +4,9 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IAssetSearch, AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { FilterDetail, IFilterDetails } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
-import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { ILocationParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILatLng } from '@homzhub/common/src/modules/search/interface';
 
 const actionTypePrefix = 'Search/';
 
@@ -27,8 +28,11 @@ export const SearchActionTypes = {
     INITIAL_STATE: `${actionTypePrefix}SET_INITIAL_STATE`,
     INITIAL_MISCELLANEOUS: `${actionTypePrefix}SET_INITIAL_MISCELLANEOUS`,
     SEARCH_LATLNG: `${actionTypePrefix}SET_SEARCH_LATLNG`,
+    LOCALITIES: `${actionTypePrefix}LOCALITIES`,
+    UPDATE_LOCALITIES: `${actionTypePrefix}UPDATE_LOCALITIES`,
   },
   CLEAR_PROPERTIES: `${actionTypePrefix}CLEAR_PROPERTIES`,
+  CLEAR_LOCALITIES: `${actionTypePrefix}CLEAR_LOCALITIES`,
 };
 
 const getFilterDetails = (payload: IFilter): IFluxStandardAction<IFilter> => {
@@ -129,7 +133,35 @@ const clearProperties = (): IFluxStandardAction => {
   };
 };
 
-export type SearchPayloadTypes = string | number | IAssetSearch | IFilter | IFilterDetails | ILatLng | undefined;
+const setLocalities = (payload: ILocationParam[]): IFluxStandardAction<ILocationParam[]> => {
+  return {
+    type: SearchActionTypes.SET.LOCALITIES,
+    payload,
+  };
+};
+
+const removeLocality = (payload: string): IFluxStandardAction<string> => {
+  return {
+    type: SearchActionTypes.SET.UPDATE_LOCALITIES,
+    payload,
+  };
+};
+
+const clearLocalities = (): IFluxStandardAction => {
+  return {
+    type: SearchActionTypes.CLEAR_LOCALITIES,
+  };
+};
+
+export type SearchPayloadTypes =
+  | string
+  | number
+  | IAssetSearch
+  | IFilter
+  | IFilterDetails
+  | ILatLng
+  | undefined
+  | ILocationParam;
 
 export const SearchActions = {
   getFilterDetails,
@@ -147,4 +179,7 @@ export const SearchActions = {
   setInitialMiscellaneous,
   setSearchLatLng,
   clearProperties,
+  setLocalities,
+  removeLocality,
+  clearLocalities,
 };

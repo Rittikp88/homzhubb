@@ -7,6 +7,8 @@ import { AssetReviews } from '@homzhub/mobile/src/screens/Asset/Search/AssetRevi
 import ContactForm from '@homzhub/mobile/src/screens/Asset/Search/ContactForm';
 import AssetFilters from '@homzhub/mobile/src/screens/Asset/Search/AssetFilters';
 import AssetSearchScreen from '@homzhub/mobile/src/screens/Asset/Search/AssetSearchScreen';
+import LocalitiesSelection from '@homzhub/mobile/src/screens/Asset/Search/LocalitiesSelection';
+import SearchRequirement from '@homzhub/mobile/src/screens/Asset/Search/SearchRequirement';
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ScreensKeys, IContactProps, NestedNavigatorParams } from '@homzhub/mobile/src/navigation/interfaces';
@@ -19,6 +21,8 @@ export type SearchStackParamList = {
   [ScreensKeys.ContactForm]: IContactProps;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
   [ScreensKeys.AssetReviews]: IGetListingReviews;
+  [ScreensKeys.SearchRequirement]: undefined;
+  [ScreensKeys.LocalitiesSelection]: undefined;
 } & CommonParamList;
 
 const SearchStackNavigator = createStackNavigator<SearchStackParamList>();
@@ -39,6 +43,8 @@ export const SearchStack = (): React.ReactElement => {
       <SearchStackNavigator.Screen name={ScreensKeys.PropertyFilters} component={AssetFilters} />
       <SearchStackNavigator.Screen name={ScreensKeys.ContactForm} component={ContactForm} />
       <SearchStackNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
+      <SearchStackNavigator.Screen name={ScreensKeys.SearchRequirement} component={SearchRequirement} />
+      <SearchStackNavigator.Screen name={ScreensKeys.LocalitiesSelection} component={LocalitiesSelection} />
       {commonScreen}
     </SearchStackNavigator.Navigator>
   );

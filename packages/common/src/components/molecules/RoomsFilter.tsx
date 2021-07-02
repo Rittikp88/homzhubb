@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextStyle, View } from 'react-native';
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { remove } from 'lodash';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -10,13 +10,16 @@ import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionP
 
 interface IProps {
   bedCount: number[];
-  bathroomCount: number[];
+  bedTitle?: string;
+  bathroomCount?: number[];
   onSelection: (type: string, value: number | number[]) => void;
   textStyle?: StyleProp<TextStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
+  isBathRequired?: boolean;
 }
 
 export const RoomsFilter = (props: IProps): React.ReactElement => {
-  const { bedCount, bathroomCount, onSelection, textStyle } = props;
+  const { bedCount, bathroomCount, onSelection, textStyle, isBathRequired = true, bedTitle, containerStyle } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertySearch);
 
@@ -51,9 +54,9 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
   const onUpdateBathroomCount = (value: number): void => bubbleSelectedValue('bath_count', value);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Text type="small" textType="semiBold" style={[styles.textStyle, textStyle]}>
-        {t('beds')}
+        {bedTitle || t('beds')}
       </Text>
       <SelectionPicker
         data={translateData(BEDROOM_FILTER)}
@@ -61,15 +64,19 @@ export const RoomsFilter = (props: IProps): React.ReactElement => {
         onValueChange={onUpdateBedroomCount}
         testID="bedPicker"
       />
-      <Text type="small" textType="semiBold" style={[styles.textStyle, styles.pickerMargin]}>
-        {t('baths')}
-      </Text>
-      <SelectionPicker
-        data={translateData(BATHROOM_FILTER)}
-        selectedItem={bathroomCount}
-        onValueChange={onUpdateBathroomCount}
-        testID="bathPicker"
-      />
+      {bathroomCount && isBathRequired && (
+        <>
+          <Text type="small" textType="semiBold" style={[styles.textStyle, styles.pickerMargin]}>
+            {t('baths')}
+          </Text>
+          <SelectionPicker
+            data={translateData(BATHROOM_FILTER)}
+            selectedItem={bathroomCount}
+            onValueChange={onUpdateBathroomCount}
+            testID="bathPicker"
+          />
+        </>
+      )}
     </View>
   );
 };

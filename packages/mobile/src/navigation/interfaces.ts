@@ -101,6 +101,8 @@ export enum ScreensKeys {
   ContactSignup = 'ContactSignup',
   ContactForm = 'ContactForm',
   BookVisit = 'BookVisit',
+  SearchRequirement = 'SearchRequirement',
+  LocalitiesSelection = 'LocalitiesSelection',
 
   // Common Screens
   ComingSoonScreen = 'ComingSoonScreen',

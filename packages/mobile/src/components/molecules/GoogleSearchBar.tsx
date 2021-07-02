@@ -17,6 +17,7 @@ interface IProps {
   cancelButtonStyle?: StyleProp<ViewStyle>;
   cancelTextStyle?: StyleProp<TextStyle>;
   testID?: string;
+  isCancelVisible?: boolean;
 }
 
 interface IState {
@@ -108,11 +109,11 @@ export class GoogleSearchBar extends React.PureComponent<Props, IState> {
   };
 
   private onFocus = (): void => {
-    const { onFocusChange } = this.props;
+    const { onFocusChange, isCancelVisible } = this.props;
     if (onFocusChange) {
       onFocusChange(true);
     }
-    this.setState({ showCancel: true });
+    this.setState({ showCancel: isCancelVisible ?? true });
   };
 
   private onBlur = (): void => {

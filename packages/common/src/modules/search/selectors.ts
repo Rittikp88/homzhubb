@@ -7,6 +7,7 @@ import { ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter, ITransactionRange } from '@homzhub/common/src/domain/models/Search';
 import { ITransactionType } from '@homzhub/common/src/domain/models/Transaction';
+import { ILocationParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
 
 const getFilterDetail = (state: IState): FilterDetail | null => {
@@ -115,6 +116,11 @@ const getSearchAddress = (state: IState): string => {
 const getSearchLoaders = (state: IState): ISearchState['loaders'] => {
   return state.search.loaders;
 };
+
+const getLocalities = (state: IState): ILocationParam[] => {
+  return state.search.localities;
+};
+
 export const SearchSelector = {
   getProperties,
   getFilterDetail,
@@ -126,4 +132,5 @@ export const SearchSelector = {
   getSearchAddress,
   getLocationLatLong,
   getSearchLoaders,
+  getLocalities,
 };

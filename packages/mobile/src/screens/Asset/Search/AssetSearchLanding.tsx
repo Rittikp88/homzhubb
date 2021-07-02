@@ -188,6 +188,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
           onValueChange={this.onChangeFlow}
         />
         <Range
+          //  @ts-ignore
           dropdownData={currencyData}
           isPriceRange
           selectedUnit={currency_code}
@@ -300,7 +301,7 @@ export class AssetSearchLanding extends React.PureComponent<Props, ILandingState
 
   private onShowProperties = (): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.BottomTabs);
+    navigation.navigate(ScreensKeys.Search);
   };
 
   // eslint-disable-next-line react/sort-comp

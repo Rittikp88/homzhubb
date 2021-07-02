@@ -6,6 +6,7 @@ import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { IFilterDetails } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { ILocationParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export const initialSearchState: ISearchState = {
   filter: {
@@ -54,6 +55,7 @@ export const initialSearchState: ISearchState = {
   searchBar: {
     latLng: { lat: 0, lng: 0 },
   },
+  localities: [],
   error: {
     search: '',
   },
@@ -151,6 +153,15 @@ export const searchReducer = (
       return {
         ...state,
         ['properties']: initialSearchState.properties,
+      };
+    case SearchActionTypes.SET.LOCALITIES:
+      return { ...state, ['localities']: [...state.localities, ...(action.payload as ILocationParam[])] };
+    case SearchActionTypes.SET.UPDATE_LOCALITIES:
+      return { ...state, ['localities']: state.localities.filter((item) => item.name !== action.payload) };
+    case SearchActionTypes.CLEAR_LOCALITIES:
+      return {
+        ...state,
+        ['localities']: initialSearchState.localities,
       };
     default:
       return state;
