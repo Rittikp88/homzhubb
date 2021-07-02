@@ -28,9 +28,10 @@ import { pageTitles } from '@homzhub/web/src/components/molecules/NavigationInfo
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 
-const humanize = (str: string): string => {
+const humanize = (str: string, state: any): string => {
+  const { params } = { ...state, params: state?.params || null };
   const splicedStr = str.split('/');
-  const page = splicedStr[splicedStr.length - 1];
+  const page = params ? splicedStr[splicedStr.length - 2] : splicedStr[splicedStr.length - 1];
   if (pageTitles[page]) return pageTitles[page];
   return page.replace('/', '').replace(/^[a-z]/, (m) => m.toUpperCase());
 };
@@ -232,12 +233,11 @@ const GoBackActionButton: FC = () => {
 export const NavigationInfo: FC = () => {
   const location = useLocation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname);
-
   const breakWords = (data: string): string => {
     const res = data.split('&').join(' & ');
     return res;
   };
+  const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname, location.state);
   const renderNavInfo = (): React.ReactElement => {
     const { protectedRoutes } = RouteNames;
     switch (location.pathname) {

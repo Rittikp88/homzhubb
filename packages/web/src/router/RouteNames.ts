@@ -33,7 +33,7 @@ export const RouteNames = {
     PROPERTY_SELECTED: '/dashboard/portfolio/propertySelected',
     SAVED_PROPERTIES: '/dashboard/savedProperties',
     OFFERS: '/dashboard/offers',
-    OFFERS_LISTED_PROPERTY: '/dashboard/offer',
+    OFFERS_LISTED_PROPERTY: '/dashboard/offers/:listingId',
     // WRITE YOUR routes here accordingly
     NOTIFICATIONS: '/dashboard/notifications',
     TICKETS: '',

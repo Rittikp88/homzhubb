@@ -61,7 +61,7 @@ const Offers: FC<IProps> = (props: IProps) => {
   const history = useHistory();
   const { location } = history;
   const { state } = location;
-
+  const { setCurrentOfferPayload } = props;
   const getInitialOfferType = (): OfferType => {
     const { assetCount } = props;
 
@@ -200,7 +200,6 @@ const Offers: FC<IProps> = (props: IProps) => {
 
   const viewOffers = (payload: ICurrentOffer | null, assetId: number, offerCount: number | null): void => {
     const count = offerCount;
-    const { setCurrentOfferPayload } = props;
     const isValidListing = payload && payload.listingId > 0;
     if (!isValidListing) {
       AlertHelper.error({ message: t('property:listingNotValid') });
@@ -214,14 +213,16 @@ const Offers: FC<IProps> = (props: IProps) => {
         setCurrentOfferPayload(payload);
       }
       // @ts-ignore
-      const listingId = `?listing_id=${assetId}`;
-
       NavigationService.navigate(history, {
-        path: `${RouteNames.protectedRoutes.OFFERS_LISTED_PROPERTY}${listingId}`,
+        path: RouteNames.protectedRoutes.OFFERS_LISTED_PROPERTY.replace(':listingId', `${assetId}`),
         params: {
           offerCountData,
           offerType,
           count,
+          listingPayload: { ...payload },
+          params: {
+            listingId: assetId,
+          },
         },
       });
     }

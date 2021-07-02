@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub//common/src/utils/ErrorUtils';
@@ -24,19 +25,30 @@ import { OfferFilter } from '@homzhub/common/src/domain/models/OfferFilter';
 import { OfferManagement } from '@homzhub/common/src/domain/models/OfferManagement';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { MadeSort, offerMadeSortBy } from '@homzhub/common/src/constants/Offers';
-import { OfferFilterType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ListingType, NegotiationType, OfferFilterType } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICurrentOffer } from '@homzhub/common/src/modules/offers/interfaces';
+
+interface IDispatchProps {
+  setCurrentOfferPayload: (payload: ICurrentOffer) => void;
+}
 
 interface IRouteProps {
   offerCountData: OfferManagement;
   offerType: string;
   count: number | null;
+  listingPayload: ICurrentOffer;
 }
 interface IProps {
   history: History<IRouteProps>;
 }
-const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
-  const { history } = props;
+
+type Props = IProps & IDispatchProps;
+const ListedPropertyOffers: FC<Props> = (props: Props) => {
+  const { history, setCurrentOfferPayload } = props;
   const { location } = history;
+  const {
+    state: { listingPayload },
+  } = { ...location, state: location.state || {} };
   const dispatch = useDispatch();
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -53,6 +65,20 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
   useEffect(() => {
     if (offerPayload) {
       dispatch(OfferActions.getListingDetail(offerPayload));
+    } else if (listingPayload?.listingId) {
+      dispatch(OfferActions.getListingDetail(listingPayload));
+      setCurrentOfferPayload(listingPayload);
+      const negotiationsPayload = {
+        param: {
+          listingType: listingPayload.type,
+          listingId: listingPayload.listingId,
+          negotiationType:
+            listingPayload.type === ListingType.LEASE_LISTING
+              ? NegotiationType.LEASE_NEGOTIATIONS
+              : NegotiationType.SALE_NEGOTIATIONS,
+        },
+      };
+      dispatch(OfferActions.getNegotiations(negotiationsPayload));
     }
     getFilters();
   }, [offerType]);
@@ -144,7 +170,18 @@ const ListedPropertyOffers: FC<IProps> = (props: IProps) => {
     </View>
   );
 };
-export default ListedPropertyOffers;
+
+export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentOfferPayload } = OfferActions;
+  return bindActionCreators(
+    {
+      setCurrentOfferPayload,
+    },
+    dispatch
+  );
+};
+export default connect(null, mapDispatchToProps)(ListedPropertyOffers);
+
 const styles = StyleSheet.create({
   container: {
     width: '93%',

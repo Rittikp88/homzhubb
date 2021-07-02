@@ -20,6 +20,12 @@ const Breadcrumbs = ({ breadcrumbs }) => {
     const res = children.split('&').join(' & ');
     return res;
   };
+  const { location } = breadcrumbs[0];
+  const { params } = { ...location.state, params: location.state?.params || null };
+
+  if (params) {
+    breadcrumbs.splice(-1);
+  }
 
   return (
     <View style={styles.breadCrumbsContainer}>
