@@ -1,14 +1,17 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { RouteComponentProps, useHistory, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
-import { EmailVerificationActions, IEmailVerification } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import Settings from '@homzhub/web/src/screens/settings';
 import ContinuePopup from '@homzhub/web/src/components/molecules/ContinuePopup';
 import ProfileContainer from '@homzhub/web/src/screens/profile/components/ProfileContainer';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { EmailVerificationActions, IEmailVerification } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IDynamicLinkProps {
   verificationId: string;
@@ -25,7 +28,7 @@ const Profile: FC<IProps> = (props: IProps) => {
   const location = useLocation<IDynamicLinkProps>();
   const history = useHistory<IDynamicLinkProps>();
   const { verificationId } = location.state || '';
-
+  const { goBackClicked, setGoBackClicked } = useContext(AppLayoutContext);
   const [verifyEmailProps, setVerifyEmailProps] = useState({ isModalOpen: false, isApiError: false });
   useEffect(() => {
     if (verificationId) {
@@ -33,6 +36,21 @@ const Profile: FC<IProps> = (props: IProps) => {
     }
     return (): void => clearRouterState();
   }, []);
+
+  useEffect(() => {
+    if (goBackClicked) {
+      customBackPress();
+      setGoBackClicked(false);
+    }
+  }, [goBackClicked]);
+
+  const customBackPress = (): void => {
+    if (verificationId) {
+      NavigationService.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    } else {
+      NavigationService.goBack();
+    }
+  };
 
   const toVerifyEmail = async (): Promise<void> => {
     const payload: IEmailVerification = {

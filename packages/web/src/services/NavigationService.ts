@@ -48,8 +48,8 @@ class NavigationService<T extends History> {
     navigationProps.push(path, params);
   }
 
-  public goBack(navigationProps: T): void {
-    navigationProps.goBack();
+  public goBack(): void {
+    this.appHistory.goBack();
   }
 
   public openNewTab<S = LocationState>(options: INavigationOptions<S>): void {

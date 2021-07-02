@@ -180,7 +180,7 @@ const DashBoardActionsGrp: FC = () => {
   );
 };
 
-const GoBackAction: FC = () => {
+const GoBackCustomAction: FC = () => {
   const { t } = useTranslation();
   const styles = goBackActionStyles;
   const { setGoBackClicked } = useContext(AppLayoutContext);
@@ -229,7 +229,6 @@ const GoBackActionButton: FC = () => {
   );
 };
 
-// todo: replace dummy data with actual data
 export const NavigationInfo: FC = () => {
   const location = useLocation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -242,9 +241,9 @@ export const NavigationInfo: FC = () => {
     const { protectedRoutes } = RouteNames;
     switch (location.pathname) {
       case protectedRoutes.SELECT_SERVICES:
-        return <GoBackAction />;
+        return <GoBackCustomAction />;
       case protectedRoutes.ADD_PROPERTY:
-        return <GoBackAction />;
+        return <GoBackCustomAction />;
       case protectedRoutes.DASHBOARD:
         return <DashBoardActionsGrp />;
       case protectedRoutes.PORTFOLIO:
