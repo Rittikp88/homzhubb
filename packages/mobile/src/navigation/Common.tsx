@@ -38,6 +38,7 @@ import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
+import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
@@ -109,6 +110,7 @@ export type CommonParamList = {
   [ScreensKeys.SavedPropertiesScreen]: undefined | ICommonNavProps;
   [ScreensKeys.PropertyOfferList]: undefined | ICommonNavProps;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam & ICommonNavProps;
+  [ScreensKeys.ReferEarn]: undefined | ICommonNavProps;
 };
 
 /**
@@ -161,6 +163,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.SavedPropertiesScreen} component={SavedProperties} />
       <Stack.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
       <Stack.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
+      <Stack.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
     </>
   );
 };

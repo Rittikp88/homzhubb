@@ -212,6 +212,7 @@ class NotificationService {
       if (notifType === NotificationTypes.Campaign) return ScreensKeys.DashboardLandingScreen;
       if (notifType === NotificationTypes.ValueAddedService) return ScreensKeys.ServicesDashboard;
       if (notifType === NotificationTypes.AssetDocuments) return ScreensKeys.DocumentScreen;
+      if (notifType === NotificationTypes.ReferAndEarn) return ScreensKeys.ReferEarn;
       return (
         (notifScreen
           ? notificationSubScreenMap[screen as NotificationScreens] || ScreensKeys.ChatScreen
@@ -230,6 +231,7 @@ class NotificationService {
       switch (notifType) {
         case NotificationTypes.AssetDocuments:
         case NotificationTypes.Campaign:
+        case NotificationTypes.ReferAndEarn:
           return ScreensKeys.Dashboard;
         default:
           return ScreensKeys.More;
@@ -322,6 +324,13 @@ class NotificationService {
       case NotificationTypes.AssetDocuments:
         if (currentScreen === ScreensKeys.DocumentScreen) {
           NavigationService.setParams(params);
+          return;
+        }
+        NavigationService.notificationNavigation(screenName, params, navigationTab);
+        break;
+      case NotificationTypes.ReferAndEarn:
+        if (currentScreen === ScreensKeys.ReferEarn) {
+          NavigationService.setParams({ shouldReload: true });
           return;
         }
         NavigationService.notificationNavigation(screenName, params, navigationTab);

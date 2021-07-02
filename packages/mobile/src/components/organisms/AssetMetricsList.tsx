@@ -76,7 +76,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
 
   const onGoBack = (): void => {
     goBack();
-    if (params) {
+    if (params && params?.isFromNavigation) {
       setParams({ isFromNavigation: false });
     }
   };

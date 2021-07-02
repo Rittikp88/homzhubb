@@ -255,6 +255,8 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       navigation.navigate(ScreensKeys.Service);
     } else if (type === NotificationType.ASSET_DOCUMENT) {
       navigation.navigate(ScreensKeys.DocumentScreen, { isFromDashboard: true, propertyId: assetId });
+    } else if (type === NotificationType.REFER_AND_EARN) {
+      navigation.navigate(ScreensKeys.ReferEarn);
     }
   };
 

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import Clipboard from '@react-native-community/clipboard';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
@@ -33,20 +34,36 @@ const ReferEarn = (): React.ReactElement => {
   const [totalInvite, setTotalInvite] = useState('');
   const url = useRef('');
   const [loading, setLoading] = useState(false);
+  const { params } = useRoute();
+  const { setParams } = useNavigation();
+
+  const getCoinsCount = useCallback(async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const res = await UserRepository.getCoinManagement();
+      setTotalInvite(res.invites.totalAccepted.toString());
+      setManagementData([
+        { name: t('coinBalance'), count: res.coins.coinsBalance, colorCode: theme.colors.greenTint8 },
+        { name: t('coinsEarned'), count: res.coins.coinsEarned, colorCode: theme.colors.yellowTint2 },
+      ]);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  }, []);
 
   useEffect(() => {
-    UserRepository.getCoinManagement()
-      .then((res) => {
-        setTotalInvite(res.invites.totalAccepted.toString());
-        setManagementData([
-          { name: t('coinBalance'), count: res.coins.coinsBalance, colorCode: theme.colors.greenTint8 },
-          { name: t('coinsEarned'), count: res.coins.coinsEarned, colorCode: theme.colors.yellowTint2 },
-        ]);
-      })
-      .catch((e) => {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-      });
+    getCoinsCount().then();
   }, []);
+
+  // Reload the component when foreground push notification related to Refer&Earn-Coins is clicked
+  useEffect(() => {
+    if (params && params?.shouldReload) {
+      setParams({ shouldReload: false });
+      getCoinsCount().then();
+    }
+  }, [params]);
 
   useEffect(() => {
     setLoading(true);
