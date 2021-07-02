@@ -7,6 +7,7 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import FilterRating from '@homzhub/web/src/components/organisms/ReviewRatings/FilterRating';
 import PillarRatings from '@homzhub/web/src/components/organisms/ReviewRatings/PillarRatings';
@@ -53,25 +54,46 @@ const ReviewRatings: FC<IProps> = (props: IProps) => {
   };
   return (
     <>
-      {isTablet && pieData && (
+      {isTablet && (
         <View style={styles.carouselHeader}>
-          <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.heading}>
+          <Typography
+            variant="text"
+            size="regular"
+            fontWeight="semiBold"
+            style={[styles.heading, !pieData?.length && styles.emptyStateHeading]}
+          >
             {t('common:popularWith')}
           </Typography>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <PillarRatings pieData={pieData} />
-          </ScrollView>
+
+          <View style={[!pieData?.length && styles.emptyContainer]}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              {pieData?.length ? (
+                <PillarRatings pieData={pieData} />
+              ) : (
+                <EmptyState title={t('common:noDataAvailable')} />
+              )}
+            </ScrollView>
+          </View>
         </View>
       )}
       <View style={styles.container}>
         {!isMobile && (
           <View style={styles.seperator}>
-            {pieData && !isTablet && (
+            {!isTablet && (
               <View>
-                <Typography variant="text" size="regular" fontWeight="semiBold" style={styles.heading}>
+                <Typography
+                  variant="text"
+                  size="regular"
+                  fontWeight="semiBold"
+                  style={[styles.heading, !pieData?.length && styles.emptyStateHeading]}
+                >
                   {t('common:popularWith')}
                 </Typography>
-                <PillarRatings pieData={pieData} />
+                {pieData?.length ? (
+                  <PillarRatings pieData={pieData} />
+                ) : (
+                  <EmptyState title={t('common:noDataAvailable')} />
+                )}
               </View>
             )}
             {nonFiltered.length > 0 && !isMobile && (
@@ -89,14 +111,17 @@ const ReviewRatings: FC<IProps> = (props: IProps) => {
           <Typography variant="text" size="regular" fontWeight="semiBold">
             {t('reviews')}
           </Typography>
-          {reviews.length &&
+          {reviews.length ? (
             reviews.map((review) => {
               return (
                 <View style={styles.cardReview} key={review.id}>
                   <ReviewCards reviewData={review} />
                 </View>
               );
-            })}
+            })
+          ) : (
+            <EmptyState title={t('property:noReview')} />
+          )}
         </View>
       </View>
     </>
@@ -113,8 +138,7 @@ const styles = StyleSheet.create({
   },
   seperator: {
     width: '38%',
-    left: '3%',
-    top: 24,
+    padding: 20,
   },
 
   cardReview: {
@@ -128,8 +152,14 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     padding: 20,
   },
+  emptyContainer: {
+    alignItems: 'center',
+  },
   heading: {
     marginBottom: 35,
+  },
+  emptyStateHeading: {
+    marginBottom: 0,
   },
 });
 
