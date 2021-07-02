@@ -3,8 +3,11 @@ import { View, StyleSheet, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -52,10 +55,14 @@ type Props = IProp & IStateProps & WithTranslation & IWithMediaQuery;
 
 export class PropertyCardDetails extends React.PureComponent<Props, IStateData> {
   public state = {
-    propertyLeaseType: '',
+    propertyLeaseType: renderPopUpTypes.tenancy,
   };
 
   public popupRef = createRef<PopupActions>();
+
+  public componentDidMount = (): void => {
+    this.getProspectProfile();
+  };
 
   public render = (): React.ReactNode => {
     const {
@@ -130,13 +137,11 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       if (this.popupRef && this.popupRef.current) {
         this.popupRef.current.open();
       }
-      this.setState({ propertyLeaseType: leaseTerm ? renderPopUpTypes.tenancy : renderPopUpTypes.offer });
     };
 
     const changePopUpStatus = (datum: string): void => {
       this.setState({ propertyLeaseType: datum });
     };
-
     return (
       <>
         <View style={styles.container}>
@@ -239,7 +244,19 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       </>
     );
   };
+
+  private getProspectProfile = async (): Promise<void> => {
+    try {
+      const prospectsData = await OffersRepository.getProspectsInfo();
+      if (prospectsData.id) {
+        this.setState({ propertyLeaseType: renderPopUpTypes.offer });
+      }
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    }
+  };
 }
+
 const propertyCardDetails = withMediaQuery<Props>(PropertyCardDetails);
 
 const mapStateToProps = (state: IState): IStateProps => {

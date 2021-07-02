@@ -106,7 +106,7 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
           />
         </View>
         <Divider containerStyles={styles.bottomMargin} />
-        {propertyLeaseType === 'TENANT' || propertyLeaseType === renderPopUpTypes.editOffer ? (
+        {propertyLeaseType === renderPopUpTypes.tenancy || propertyLeaseType === renderPopUpTypes.editOffer ? (
           <ProspectProfileForm
             userDetails={userData}
             editData={isEditData}
