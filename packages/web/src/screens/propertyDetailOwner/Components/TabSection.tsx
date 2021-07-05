@@ -18,7 +18,7 @@ interface IProps {
   propertyTermId: number;
 }
 
-const TabSections = (propsData: IProps): React.ReactElement => {
+const TabSection = (propsData: IProps): React.ReactElement => {
   const [currentIndex, setcurrentIndex] = useState(0);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const {
@@ -58,7 +58,7 @@ const TabSections = (propsData: IProps): React.ReactElement => {
     <View style={styles.container}>
       <TabView
         lazy
-        swipeEnabled={false}
+        swipeEnabled
         renderScene={({ route }): React.ReactElement | null => renderTabScene(route)}
         onIndexChange={handleIndexChange}
         renderTabBar={(props): React.ReactElement => {
@@ -142,4 +142,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TabSections;
+export default TabSection;

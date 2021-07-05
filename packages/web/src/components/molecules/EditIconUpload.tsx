@@ -52,16 +52,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    top: '55%',
-    left: '55%',
+    top: '60%',
+    left: '54%',
   },
   editViewTablet: {
-    top: '53%',
-    left: '53%',
+    top: '55%',
+    left: '52%',
   },
   editViewMobile: {
-    top: '56%',
-    left: '56%',
+    top: '60%',
+    left: '54%',
   },
 });
 

@@ -27,7 +27,7 @@ import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import LatestUpdates from '@homzhub/web/src/screens/dashboard/components/VacantProperties/LatestUpdates';
-import TabSections from '@homzhub/web/src/screens/propertyDetailOwner/Components/TabSection';
+import TabSection from '@homzhub/web/src/screens/propertyDetailOwner/Components/TabSection';
 import { ActionType } from '@homzhub/common/src/domain/models/AssetStatusInfo';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -149,7 +149,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
           </View>
         </View>
         <View style={styles.dividerContainer}>
-          <TabSections assetDetails={assetDetails} propertyTermId={propertyTermId} />
+          <TabSection assetDetails={assetDetails} propertyTermId={propertyTermId} />
         </View>
       </>
     );

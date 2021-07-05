@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
-import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -11,7 +10,6 @@ import Amenitites from '@homzhub/web/src/screens/propertyDetails/components/Amen
 import Description from '@homzhub/web/src/screens/propertyDetails/components/Description';
 import Neighbourhood from '@homzhub/web/src/screens/propertyDetails/components/Neighbourhood';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IRoutes, Tabs, PropertyDetailRoutes } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
@@ -19,13 +17,12 @@ interface IProps {
   propertyTermId: number;
 }
 
-const TabSections = (propsData: IProps): React.ReactElement => {
+const TabSection = (propsData: IProps): React.ReactElement => {
   const [currentIndex, setcurrentIndex] = useState(0);
   const {
     assetDetails: { description, features, leaseTerm, saleTerm, amenityGroup, highlights },
     propertyTermId,
   } = propsData;
-  const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const renderTabScene = (route: IRoutes): React.ReactElement | null => {
     switch (route.key) {
       case Tabs.DESCRIPTION:
@@ -49,7 +46,7 @@ const TabSections = (propsData: IProps): React.ReactElement => {
     <View style={styles.container}>
       <TabView
         lazy
-        swipeEnabled={false}
+        swipeEnabled
         renderScene={({ route }): React.ReactElement | null => renderTabScene(route)}
         onIndexChange={handleIndexChange}
         renderTabBar={(props): React.ReactElement => {
@@ -62,30 +59,31 @@ const TabSections = (propsData: IProps): React.ReactElement => {
           return (
             <TabBar
               {...props}
-              scrollEnabled
               style={styles.backgroundWhite}
-              indicatorStyle={styles.backgroundBlue}
-              tabStyle={[styles.tabBarWidth, isMobile && styles.tabBarMobile]}
-              renderIcon={({ route }): React.ReactElement => {
+              indicatorStyle={styles.backgroundWhite}
+              renderTabBarItem={({ route, onPress }): React.ReactElement => {
                 const isSelected = currentRoute.key === route.key;
                 return (
-                  <Icon name={route.icon} color={isSelected ? theme.colors.blue : theme.colors.darkTint3} size={22} />
-                );
-              }}
-              renderLabel={({ route }): React.ReactElement => {
-                const isSelected = currentRoute.key === route.key;
-                return (
-                  <Text
-                    type="small"
-                    style={[
-                      styles.label,
-                      isSelected && {
-                        color: theme.colors.blue,
-                      },
-                    ]}
-                  >
-                    {route.title}
-                  </Text>
+                  <TouchableOpacity onPress={onPress}>
+                    <View style={[styles.tabBar, isSelected && styles.selectedTabBar]}>
+                      <Icon
+                        name={route.icon}
+                        color={isSelected ? theme.colors.blue : theme.colors.darkTint3}
+                        size={22}
+                      />
+                      <Text
+                        type="small"
+                        style={[
+                          styles.label,
+                          isSelected && {
+                            color: theme.colors.blue,
+                          },
+                        ]}
+                      >
+                        {route.title}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 );
               }}
             />
@@ -108,18 +106,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: theme.colors.darkTint3,
   },
-  tabBarWidth: {
-    width: 240,
+  tabBar: {
+    width: 180,
+    height: 65,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  tabBarMobile: {
-    width: 200,
-  },
-  backgroundBlue: {
-    backgroundColor: theme.colors.blue,
+  selectedTabBar: {
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.blue,
   },
   backgroundWhite: {
     backgroundColor: theme.colors.white,
+    paddingTop: 20,
   },
 });
 
-export default TabSections;
+export default TabSection;

@@ -26,7 +26,7 @@ import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { ShieldGroup } from '@homzhub/web/src/components/molecules/ShieldGroupHeader';
 import TenancyFormPopover from '@homzhub/web/src/screens/propertyDetails/components/TenancyFormPopover';
-import TabSections from '@homzhub/web/src/screens/propertyDetails/components/tabSection';
+import TabSection from '@homzhub/web/src/screens/propertyDetails/components/TabSection';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFilter, IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
@@ -208,7 +208,7 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
           </View>
         </View>
         <View style={styles.dividerContainer}>
-          <TabSections assetDetails={assetDetails} propertyTermId={propertyTermId} />
+          <TabSection assetDetails={assetDetails} propertyTermId={propertyTermId} />
         </View>
         <TenancyFormPopover
           userData={userProfile}
