@@ -14,6 +14,7 @@ interface IProps {
   data: Attachment[];
   fullScreen?: boolean;
   favouriteIcon?: boolean;
+  isAssetOwner?: boolean;
 }
 const defaultResponsive = {
   desktop: {
@@ -27,7 +28,7 @@ const defaultResponsive = {
 };
 
 export const AssetDetailsImageCarousel: FC<IProps> = (props: IProps) => {
-  const { data, fullScreen = true, favouriteIcon = true } = props;
+  const { data, fullScreen = true, favouriteIcon = true, isAssetOwner } = props;
   const [showPopover, setShowPopover] = useState(false);
   const [active, setActive] = useState(0);
   const currentSlide: Attachment = data[active];
@@ -59,7 +60,14 @@ export const AssetDetailsImageCarousel: FC<IProps> = (props: IProps) => {
     focusOnSelect: false,
     infinite: true,
     renderButtonGroupOutside: true,
-    customButtonGroup: <CarouselButtons activeSlide={activeSlideHandle} data={data} favouriteIcon={favouriteIcon} />,
+    customButtonGroup: (
+      <CarouselButtons
+        activeSlide={activeSlideHandle}
+        data={data}
+        favouriteIcon={favouriteIcon}
+        isAssetOwner={isAssetOwner}
+      />
+    ),
     responsive: defaultResponsive,
     showDots: false,
   };
@@ -74,9 +82,11 @@ export const AssetDetailsImageCarousel: FC<IProps> = (props: IProps) => {
     return data.map((currentImage: Attachment, index: number) => {
       return (
         <>
-          <View>
-            <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
-          </View>
+          {!isAssetOwner && (
+            <View>
+              <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
+            </View>
+          )}
 
           <View style={styles.fullimage}>
             <Image
@@ -139,10 +149,11 @@ interface ICarouselButtons {
   activeSlide: (currentImage: number) => void;
   data: Attachment[];
   favouriteIcon?: boolean;
+  isAssetOwner?: boolean;
 }
 type Props = ICarouselButtons & ButtonGroupProps;
 const CarouselButtons = (props: Props): React.ReactElement => {
-  const { next, previous, data, activeSlide, favouriteIcon = true } = props;
+  const { next, previous, data, activeSlide, favouriteIcon = true, isAssetOwner } = props;
   const [currentImage, setCurrentImage] = useState(0);
   useEffect(() => {
     activeSlide(currentImage);
@@ -182,7 +193,7 @@ const CarouselButtons = (props: Props): React.ReactElement => {
         }}
         onBtnClick={updateCarouselIndex}
       />
-      {favouriteIcon && (
+      {favouriteIcon && !isAssetOwner && (
         <Icon name={icons.heartOutline} size={20} style={styles.favouriteIcon} color={theme.colors.white} />
       )}
     </>

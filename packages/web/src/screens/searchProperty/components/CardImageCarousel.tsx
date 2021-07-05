@@ -139,13 +139,15 @@ const CardImageCarousel: FC<IProps> = ({
           ))
         )}
       </MultiCarousel>
-      <TouchableOpacity style={styles.favouriteIcon} onPress={handleFavourite}>
-        <Icon
-          name={isFavourite ? icons.filledHeart : icons.heartOutline}
-          size={20}
-          color={isFavourite ? theme.colors.favourite : getOutLineColor()}
-        />
-      </TouchableOpacity>
+      {!assetData?.isAssetOwner && (
+        <TouchableOpacity style={styles.favouriteIcon} onPress={handleFavourite}>
+          <Icon
+            name={isFavourite ? icons.filledHeart : icons.heartOutline}
+            size={20}
+            color={isFavourite ? theme.colors.favourite : getOutLineColor()}
+          />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -13,6 +13,7 @@ import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import PropertyCard from '@homzhub/web/src/screens/propertyDetailOwner/Components/PropertyCard';
 import ConfirmationContent from '@homzhub/web/src/components/atoms/ConfirmationContent';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
@@ -28,8 +29,9 @@ import {
   ListingType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { ICurrentOffer } from '@homzhub/common//src/modules/offers/interfaces';
+import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 
 interface IDispatchProps {
   clearAsset: () => void;
@@ -78,9 +80,16 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
           type: assetType === DetailType.LEASE_LISTING ? ListingType.LEASE_LISTING : ListingType.SALE_LISTING,
           listingId: listing_id,
         };
-        dispatch(AssetActions.getAsset({ propertyTermId: listing_id }));
+        if (assetType === DetailType.LEASE_LISTING || assetType === DetailType.SALE_LISTING) {
+          const data: IGetAssetPayload = {
+            propertyTermId: listing_id,
+          };
+          dispatch(SearchActions.setFilter({ asset_transaction_type: assetType === DetailType.LEASE_LISTING ? 0 : 1 }));
+          dispatch(AssetActions.getAsset(data));
+        }
         dispatch(OfferActions.setCurrentOfferPayload(offerPayload));
       });
+      scrollToTop();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
@@ -117,6 +126,11 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
       }
       handleActions(propertyData, payload, param);
     }
+  };
+  const scrollToTop = (): void => {
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
   };
   const handleActions = (asset: Asset, payload: IClosureReasonPayload, param?: IListingParam): void => {
     const { setAssetId } = props;

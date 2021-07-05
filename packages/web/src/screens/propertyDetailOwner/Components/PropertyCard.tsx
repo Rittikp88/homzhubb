@@ -92,7 +92,6 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
       true
     );
     const styles = propertyDetailStyle(isMobile, isTablet);
-
     return (
       <>
         <View style={styles.container}>
@@ -103,7 +102,9 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
             {!isMobile && assetDetails?.attachments.length > 0 && (
               <GalleryView attachments={assetDetails?.attachments ?? []} />
             )}
-            {isMobile && <AssetDetailsImageCarousel data={assetDetails.attachments} />}
+            {isMobile && (
+              <AssetDetailsImageCarousel data={assetDetails.attachments} isAssetOwner={assetDetails?.isAssetOwner} />
+            )}
           </View>
           <View style={styles.cardDetails}>
             <View style={styles.subContainer}>
