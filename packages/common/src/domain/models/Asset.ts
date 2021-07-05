@@ -17,6 +17,7 @@ import { SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
 import { IService, Service } from '@homzhub/common/src/domain/models/Service';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
@@ -780,5 +781,23 @@ export class Asset {
 
   get valueAddedServices(): Service[] {
     return this._valueAddedServices;
+  }
+
+  get isPropertyUnderReview(): boolean {
+    if (this.assetStatusInfo) {
+      const {
+        status,
+        tag: { label },
+        leaseListingId,
+        saleListingId,
+      } = this.assetStatusInfo;
+      const isUnderReview =
+        Boolean(leaseListingId || saleListingId) &&
+        [`${Filters.FOR__RENT}`, `${Filters.FOR__SALE}`].includes(label) &&
+        status === 'DRAFT' &&
+        this.isVerificationDocumentUploaded;
+      return isUnderReview;
+    }
+    return false;
   }
 }

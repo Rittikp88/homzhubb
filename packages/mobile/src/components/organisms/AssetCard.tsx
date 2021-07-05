@@ -20,6 +20,7 @@ import { LeaseProgress } from '@homzhub/mobile/src/components/molecules/LeasePro
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { EditTenantDetails } from '@homzhub/mobile/src/components/molecules/EditTenantDetails';
+import { PropertyReviewCard } from '@homzhub/common/src/components/molecules/PropertyReviewCard';
 import { PropertyTabs } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyTabs';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
@@ -317,6 +318,7 @@ export class AssetCard extends Component<Props, IState> {
       formattedProjectName,
       id,
       listingOffers: { totalOffers, activeOffers, pendingOffers },
+      isPropertyUnderReview,
     } = assetData;
     const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
@@ -374,6 +376,7 @@ export class AssetCard extends Component<Props, IState> {
             onPress={this.onCompleteDetails}
           />
         )}
+        {isPropertyUnderReview && <PropertyReviewCard containerStyle={styles.reviewCard} />}
         {isListed && (
           <OffersVisitsSection
             isDetailView={isDetailView}
@@ -618,6 +621,9 @@ const styles = StyleSheet.create({
   },
   ownerView: {
     alignItems: 'center',
+    marginTop: 10,
+  },
+  reviewCard: {
     marginTop: 10,
   },
 });
