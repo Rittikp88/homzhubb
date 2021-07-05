@@ -430,7 +430,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     return (
       <BottomSheetListView
         data={sortDropDownData}
-        selectedValue={sort_by}
+        selectedValue={sort_by ?? ''}
         listTitle={t('common:sort')}
         isBottomSheetVisible={isSortVisible}
         onCloseDropDown={this.handleCloseSort}
@@ -629,9 +629,22 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     this.handleCloseSort();
   };
 
-  public shareRequirement = (): void => {
+  private onPostRequirement = (isFromAuth: boolean): void => {
     const { navigation } = this.props;
-    navigation.navigate(ScreensKeys.SearchRequirement);
+    navigation.navigate(ScreensKeys.SearchRequirement, { isFromAuth });
+  };
+
+  private shareRequirement = (): void => {
+    const { navigation, isLoggedIn, setChangeStack } = this.props;
+    if (!isLoggedIn) {
+      setChangeStack(false);
+      navigation.navigate(ScreensKeys.AuthStack, {
+        screen: ScreensKeys.SignUp,
+        params: { onCallback: (): void => this.onPostRequirement(true) },
+      });
+    } else {
+      this.onPostRequirement(false);
+    }
   };
 
   public toggleSearchBar = (): void => {
@@ -742,14 +755,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setFilter,
-    getFilterDetails,
-    getProperties,
-    setInitialFilters,
-    setInitialState,
-    getPropertiesListView,
-  } = SearchActions;
+  const { setFilter, getFilterDetails, getProperties, setInitialFilters, setInitialState, getPropertiesListView } =
+    SearchActions;
   const { setChangeStack } = UserActions;
   return bindActionCreators(
     {

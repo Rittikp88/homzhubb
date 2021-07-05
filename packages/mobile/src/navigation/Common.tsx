@@ -37,6 +37,8 @@ import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUser
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
+import LocalitiesSelection from '@homzhub/mobile/src/screens/Asset/Search/LocalitiesSelection';
+import SearchRequirement from '@homzhub/mobile/src/screens/Asset/Search/SearchRequirement';
 import ResetPassword from '@homzhub/mobile/src/screens/Auth/ResetPassword';
 import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
@@ -96,7 +98,7 @@ export type CommonParamList = {
   [ScreensKeys.SuccessResetPassword]: undefined | IForgotPasswordProps;
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.ResetPassword]: IResetPasswordProps;
-  [ScreensKeys.SupportScreen]: { isFromDashboard?: boolean };
+  [ScreensKeys.SupportScreen]: { isFromDashboard?: boolean; categoryId?: number };
   [ScreensKeys.ChatScreen]: IChatScreen;
   [ScreensKeys.AssetPlanSelection]: undefined | IPlanSelectionParam;
   [ScreensKeys.LandingScreen]: undefined;
@@ -111,6 +113,8 @@ export type CommonParamList = {
   [ScreensKeys.PropertyOfferList]: undefined | ICommonNavProps;
   [ScreensKeys.GroupChatInfo]: IGetMessageParam & ICommonNavProps;
   [ScreensKeys.ReferEarn]: undefined | ICommonNavProps;
+  [ScreensKeys.SearchRequirement]: { isFromAuth: boolean };
+  [ScreensKeys.LocalitiesSelection]: undefined;
 };
 
 /**
@@ -164,6 +168,8 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.PropertyOfferList} component={PropertyOfferList} />
       <Stack.Screen name={ScreensKeys.GroupChatInfo} component={GroupChatInfo} />
       <Stack.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
+      <Stack.Screen name={ScreensKeys.SearchRequirement} component={SearchRequirement} />
+      <Stack.Screen name={ScreensKeys.LocalitiesSelection} component={LocalitiesSelection} />
     </>
   );
 };

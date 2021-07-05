@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
+import { useRoute } from '@react-navigation/native';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Check from '@homzhub/common/src/assets/images/check.svg';
@@ -18,6 +19,7 @@ const SearchRequirement = (): React.ReactElement => {
   const [showBottomSheet, setShowBottomSheet] = useState<boolean>(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const { params } = useRoute();
   const { navigate, goBack } = useNavigation();
 
   const navigateToLocalities = (): void => {
@@ -29,7 +31,12 @@ const SearchRequirement = (): React.ReactElement => {
   const onBack = (): void => {
     dispatch(SearchActions.clearLocalities());
     setShowBottomSheet(false);
-    goBack();
+    // @ts-ignore
+    if (params?.isFromAuth) {
+      navigate(ScreensKeys.PropertySearchScreen);
+    } else {
+      goBack();
+    }
   };
 
   const SuccessBottomSheet = (): React.ReactElement => {

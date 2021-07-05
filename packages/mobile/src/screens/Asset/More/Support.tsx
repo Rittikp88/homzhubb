@@ -75,6 +75,18 @@ export class Support extends Component<Props, IScreenState> {
   };
 
   public componentDidMount = async (): Promise<void> => {
+    const {
+      route: { params },
+    } = this.props;
+    const { formData } = this.state;
+    if (params && params.categoryId) {
+      this.setState({
+        formData: {
+          ...formData,
+          category: params.categoryId,
+        },
+      });
+    }
     await this.getCategories();
     await this.getContact();
     await this.getCaseLogs();
@@ -109,8 +121,9 @@ export class Support extends Component<Props, IScreenState> {
   private renderContent = (): React.ReactElement | null => {
     const { t } = this.props;
     const { contact, currentTab, caseLogs } = this.state;
-    const count = caseLogs.filter((item: CaseLog) => item.status.toLowerCase().includes(Status.open.toLowerCase()))
-      .length;
+    const count = caseLogs.filter((item: CaseLog) =>
+      item.status.toLowerCase().includes(Status.open.toLowerCase())
+    ).length;
     if (isEmpty(contact)) {
       return null;
     }
