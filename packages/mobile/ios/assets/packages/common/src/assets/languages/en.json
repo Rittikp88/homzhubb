@@ -282,7 +282,7 @@
     "rename": "Rename",
     "download": "Download",
     "options": "Options",
-    "docExceedsMaxSize": "Please upload a document smaller than {{size}}",
+    "docsExceedMaxSize": "Please upload documents smaller than {{size}}",
     "hours": "hours",
     "hour": "hour",
     "expired": "Expired",
@@ -291,7 +291,10 @@
     "maxDocumentUploads": "You can upload a maximum of {{count}} documents",
     "someFilesWereNotUploaded": "Some files were not uploaded because they were greater than {{size}}",
     "activities": "Activities",
-    "score": "Score"
+    "score": "Score",
+    "addLocation": "Add location",
+    "sendNotice": "Send Notice",
+    "marketPlace": "Marketplace"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -660,7 +663,7 @@
     "confirmCancellation": "Are you sure want to cancel the listing?",
     "onFloorValidation": "This can't be more than total floor count",
     "noPropertyAdded": "You haven't added any property yet. Click here to add your first property.",
-    "noServiceAdded": "You haven’t purchased any value-added service.",
+    "noServiceAdded": "You haven’t purchased any premium services. Please click on Buy New Service button to get started.",
     "buyNewService": "Buy New Service",
     "openServices": "Open Services",
     "totalServices": "Total Services",
@@ -760,7 +763,16 @@
     "filterCount": "{{intialCount}}-{{resultLength}} of {{count}} results ",
     "enquire": "Enquire",
     "scheduleVisit": "Schedule a visit",
-    "filterByRating": "Filter by overall rating"
+    "filterByRating": "Filter by overall rating",
+    "shareRequirement": "Post Requirements",
+    "requirementForm": "Requirement Form",
+    "saveDetails": "Save details",
+    "moveInDate": "Expected Move-In  date",
+    "budget": "Budget",
+    "bhk": "BHK",
+    "localities": "Localities",
+    "requirementsSaved": "Requirements Saved",
+    "requirementsText" : "Your requirements are shared with Homzhub. Our team will reach out to you soon with possible options."
   },
   "assetDescription": {
     "reviewsRatings": "Reviews and ratings",
@@ -933,6 +945,7 @@
     "newLaunches": "New Launches",
     "valueAddedServices": "Value Added Services",
     "premiumPaidServices": "Premium Paid Services",
+    "premiumServices": "Premium Services",
     "optional": "(Optional)",
     "savedProperties": "Saved Properties",
     "propertyVisits": "Property Visits",

@@ -299,17 +299,7 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         buttonProps={{
           title: t('property:addProperty'),
           type: 'secondary',
-          onPress: (): void => {
-            NavigationService.navigation.navigate(ScreensKeys.BottomTabs, {
-              screen: ScreensKeys.Search,
-              params: {
-                screen: ScreensKeys.PropertyPostStack,
-                params: {
-                  screen: ScreensKeys.AssetLocationSearch,
-                },
-              },
-            });
-          },
+          onPress: this.onAddProperty,
         }}
       />
     );
@@ -331,6 +321,13 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     this.setState((prevState: IScreeState) => {
       return { clearCount: prevState.clearCount + 1 };
     });
+  };
+
+  private onAddProperty = (): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
+    AnalyticsService.track(EventType.AddPropertyInitiation);
   };
 
   private setSelectedCategory = (value: string, props?: FormikProps<FormikValues>): void => {
