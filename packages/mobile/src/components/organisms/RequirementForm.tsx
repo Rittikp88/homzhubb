@@ -73,7 +73,7 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
       min_budget: price.min,
       max_budget: price.max,
       asset_types: assetType,
-      search_txn_type: transactionType === 0 ? 'RENT' : 'SELL',
+      search_txn_type: transactionType === 0 ? 'RENT' : 'BUY',
       preferred_location: localities,
       bhk: isEqual(bedCount, [-1]) ? [] : bedCount,
       available_from_date: DateUtils.getUtcFormatted(moveInDate, 'MMM DD, YYYY'),
@@ -174,7 +174,13 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
         wordCountLimit={500}
         containerStyle={styles.verticalStyle}
       />
-      <Button type="primary" title={t('saveDetails')} containerStyle={styles.saveButton} onPress={onSaveDetails} />
+      <Button
+        type="primary"
+        title={t('saveDetails')}
+        disabled={assetType.length < 1}
+        containerStyle={styles.saveButton}
+        onPress={onSaveDetails}
+      />
     </View>
   );
 };
