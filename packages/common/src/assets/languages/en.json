@@ -683,7 +683,8 @@
     "cannotDeleteDocument": "You cannot delete this document",
     "siteVisits": "Site Visits",
     "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
-    "vacantPropertyMsg": "Your property is vacant, choose what you want to do next"
+    "vacantPropertyMsg": "Your property is vacant, choose what you want to do next",
+    "addImage": "Add Image"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

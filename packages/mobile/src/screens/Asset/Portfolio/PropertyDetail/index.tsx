@@ -57,6 +57,7 @@ enum MenuItems {
   DELETE_PROPERTY = 'DELETE_PROPERTY',
   MANAGE_TENANT = 'MANAGE_TENANT',
   EDIT_LEASE = 'EDIT_LEASE',
+  ADD_IMAGE = 'ADD_IMAGE',
 }
 
 interface IStateProps {
@@ -209,6 +210,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         optionTitle={t('property:propertyOption')}
         extraNode={this.renderConfirmationView()}
         isExtraNode={isDeleteProperty}
+        sheetHeight={300}
       />
     );
   };
@@ -414,6 +416,11 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           });
         }
         break;
+      case MenuItems.ADD_IMAGE:
+        navigation.navigate(ScreensKeys.AddPropertyImage, {
+          assetId: propertyData.id,
+        });
+        break;
       default:
         FunctionUtils.noop();
     }
@@ -539,10 +546,13 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       return [];
     }
 
+    const addImage = { label: t('property:addImage'), value: MenuItems.ADD_IMAGE };
+
     if (isOccupied) {
       list = [
         { label: t('property:editLease'), value: MenuItems.EDIT_LEASE },
         { label: t('property:manageTenants'), value: MenuItems.MANAGE_TENANT },
+        addImage,
       ];
       return list;
     }
@@ -555,6 +565,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         isExtraData: true,
         isExtraDataAllowed: true,
       },
+      addImage,
     ];
 
     if (isListingCreated) {
@@ -612,13 +623,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setAssetId,
-    setSelectedPlan,
-    getAssetById,
-    setEditPropertyFlow,
-    toggleEditPropertyFlowBottomSheet,
-  } = RecordAssetActions;
+  const { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } =
+    RecordAssetActions;
   const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;

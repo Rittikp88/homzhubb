@@ -4,10 +4,9 @@ import { CommonParamList, getCommonScreen } from '@homzhub/mobile/src/navigation
 import { SearchStack } from '@homzhub/mobile/src/navigation/SearchStack';
 import Settings from '@homzhub/mobile/src/screens/Asset/More/Settings';
 import { KYCDocuments } from '@homzhub/mobile/src/screens/Asset/More/KYCDocuments';
-import AddPropertyImage from '@homzhub/mobile/src/screens/Asset/More/Services/AddPropertyImage';
 import SubscriptionPayment from '@homzhub/mobile/src/screens/Asset/More/SubscriptionPayment';
 import More from '@homzhub/mobile/src/screens/Asset/More';
-import { IPropertyImageParam, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type MoreStackNavigatorParamList = {
   [ScreensKeys.MoreScreen]: undefined;
@@ -15,7 +14,6 @@ export type MoreStackNavigatorParamList = {
   [ScreensKeys.KYC]: undefined;
   [ScreensKeys.AddServiceTicket]: undefined;
   [ScreensKeys.SubscriptionPayment]: undefined;
-  [ScreensKeys.AddPropertyImage]: IPropertyImageParam;
   [ScreensKeys.Search]: undefined;
 } & CommonParamList;
 
@@ -34,7 +32,6 @@ export const MoreStack = (): React.ReactElement => {
       <MoreStackNavigator.Screen name={ScreensKeys.SettingsScreen} component={Settings} />
       <MoreStackNavigator.Screen name={ScreensKeys.KYC} component={KYCDocuments} />
       <MoreStackNavigator.Screen name={ScreensKeys.SubscriptionPayment} component={SubscriptionPayment} />
-      <MoreStackNavigator.Screen name={ScreensKeys.AddPropertyImage} component={AddPropertyImage} />
       <MoreStackNavigator.Screen name={ScreensKeys.Search} component={SearchStack} />
       {commonScreen}
     </MoreStackNavigator.Navigator>

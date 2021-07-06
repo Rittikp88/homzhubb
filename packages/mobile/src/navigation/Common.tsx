@@ -36,6 +36,7 @@ import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePasswor
 import UpdateUserProfile from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
 import ForgotPassword from '@homzhub/mobile/src/screens/Auth/ForgotPassword';
 import Otp from '@homzhub/mobile/src/screens/Auth/Otp';
+import AddPropertyImage from '@homzhub/mobile/src/screens/Asset/More/Services/AddPropertyImage';
 import PropertyOfferList from '@homzhub/mobile/src/screens/Asset/More/Offers/PropertyOfferList';
 import LocalitiesSelection from '@homzhub/mobile/src/screens/Asset/Search/LocalitiesSelection';
 import SearchRequirement from '@homzhub/mobile/src/screens/Asset/Search/SearchRequirement';
@@ -65,6 +66,7 @@ import {
   ScreensKeys,
   IChatScreen,
   IDetailNavParam,
+  IPropertyImageParam,
 } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type CommonParamList = {
@@ -115,6 +117,7 @@ export type CommonParamList = {
   [ScreensKeys.ReferEarn]: undefined | ICommonNavProps;
   [ScreensKeys.SearchRequirement]: { isFromAuth: boolean };
   [ScreensKeys.LocalitiesSelection]: undefined;
+  [ScreensKeys.AddPropertyImage]: IPropertyImageParam;
 };
 
 /**
@@ -170,6 +173,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.ReferEarn} component={ReferEarn} />
       <Stack.Screen name={ScreensKeys.SearchRequirement} component={SearchRequirement} />
       <Stack.Screen name={ScreensKeys.LocalitiesSelection} component={LocalitiesSelection} />
+      <Stack.Screen name={ScreensKeys.AddPropertyImage} component={AddPropertyImage} />
     </>
   );
 };
