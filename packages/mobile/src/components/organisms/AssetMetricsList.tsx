@@ -76,6 +76,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
 
   const onGoBack = (): void => {
     goBack();
+    // @ts-ignore
     if (params && params?.isFromNavigation) {
       setParams({ isFromNavigation: false });
     }
@@ -142,7 +143,7 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
         </View>
         {onPlusIconClicked && (
           <TouchableOpacity onPress={bubblePlusIcon} style={styles.plusIconContainer}>
-            <Icon name={icons.plus} size={32} color={theme.colors.primaryColor} testID="icnPlus" />
+            <Icon name={icons.circularPlus} size={32} color={theme.colors.primaryColor} testID="icnPlus" />
           </TouchableOpacity>
         )}
       </View>
