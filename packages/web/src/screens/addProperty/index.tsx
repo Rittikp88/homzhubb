@@ -1,10 +1,9 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Script from 'react-load-script';
-import { useHistory } from 'react-router-dom';
+import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
@@ -28,6 +27,12 @@ import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 interface IComponentMap {
   component: AddPropertyStack;
 }
+interface IRouteProps {
+  currentScreen: number;
+}
+interface IProps {
+  history: History<IRouteProps>;
+}
 
 export enum AddPropertyStack {
   AddPropertyLocationScreen,
@@ -35,8 +40,9 @@ export enum AddPropertyStack {
   AddPropertyViewScreen,
 }
 
-const AddProperty: FC = () => {
-  const history = useHistory();
+const AddProperty: FC<IProps> = (props: IProps) => {
+  const { history } = props;
+  const { location } = history;
   const dispatch = useDispatch();
   const assetId = useSelector(RecordAssetSelectors.getCurrentAssetId);
   const selectedImages = useSelector(RecordAssetSelectors.getSelectedImages);
@@ -46,7 +52,8 @@ const AddProperty: FC = () => {
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
-  const [currentScreen, setCurrentScreen] = useState(AddPropertyStack.AddPropertyLocationScreen);
+  const current = location ? location.state.currentScreen : AddPropertyStack.AddPropertyLocationScreen;
+  const [currentScreen, setCurrentScreen] = useState(current);
   const [projectName, setProjectName] = useState<string | null>(null);
   useEffect(() => {
     if (goBackClicked) {
@@ -128,6 +135,9 @@ const AddProperty: FC = () => {
   const onNavigateToPlanSelection = (): void => {
     NavigationService.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING, params: { ...compProps } });
   };
+  const onNavigateToDetail = (): void => {
+    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.ADD_LISTING });
+  };
   const renderScreen = (comp: AddPropertyStack): React.ReactElement => {
     const { AddPropertyLocationScreen, PropertyDetailsMapScreen, AddPropertyViewScreen } = AddPropertyStack;
     switch (comp) {
@@ -140,7 +150,7 @@ const AddProperty: FC = () => {
               onUploadImage={onImageSelection}
               onEditPress={handleEditSelection}
               onNavigateToPlanSelection={onNavigateToPlanSelection}
-              onNavigateToDetail={FunctionUtils.noop}
+              onNavigateToDetail={onNavigateToDetail}
             />
           </View>
         );

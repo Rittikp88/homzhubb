@@ -15,6 +15,7 @@ import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 import MarketTrendsCarousel from '@homzhub/web/src/screens/dashboard/components/MarketTrendsCarousel';
 import PropertyUpdates from '@homzhub/web/src/screens/dashboard/components/PropertyUpdates';
 import PropertyOverview from '@homzhub/web/src/screens/dashboard/components/PropertyOverview';
@@ -48,6 +49,7 @@ const Dashboard: FC = () => {
       path: RouteNames.protectedRoutes.PROPERTY_VIEW,
       params: {
         previousScreen: ScreensKeys.Dashboard,
+        currentScreen: AddPropertyStack.AddPropertyViewScreen,
       },
     });
   };

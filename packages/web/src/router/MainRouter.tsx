@@ -29,7 +29,7 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
 const HelpAndSupport = lazy(() => import('@homzhub/web/src/screens/helpAndSupport'));
-const PropertyView = lazy(() => import('@homzhub/common/src/components/organisms/AddPropertyView'));
+const PropertyView = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
 
 interface IDispatchProps {
   getUserProfile: () => void;

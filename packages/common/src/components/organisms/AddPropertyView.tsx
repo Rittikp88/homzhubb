@@ -333,8 +333,9 @@ class AddPropertyView extends Component<Props, IScreenState> {
 
       if (isEditPropertyFlow) {
         resetState();
-        onNavigateToDetail();
         setEditPropertyFlow(false);
+        onNavigateToDetail();
+
         return;
       }
       onNavigateToPlanSelection();

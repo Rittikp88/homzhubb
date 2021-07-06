@@ -11,7 +11,7 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
-import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+import { RouteNames, ScreensKeys } from '@homzhub/web/src/router/RouteNames';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
@@ -23,6 +23,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import CancelTerminateListing from '@homzhub/web/src/components/molecules/CancelTerminateListing';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
 import PortfolioFilter from '@homzhub/web/src/screens/portfolio/components/PortfolioFilter';
@@ -259,7 +260,8 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_VIEW,
       params: {
-        previousScreen: 'Dashboard',
+        previousScreen: ScreensKeys.Dashboard,
+        currentScreen: AddPropertyStack.AddPropertyViewScreen,
       },
     });
   };

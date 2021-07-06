@@ -57,8 +57,8 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public render(): React.ReactNode {
-    const { t, containerStyle, onUploadImage, isMobile } = this.props;
-    const { isBottomSheetVisible } = this.state;
+    const { t, containerStyle, onUploadImage, isMobile, selectedImages } = this.props;
+    const { isBottomSheetVisible, videoUrl } = this.state;
     const header = t('property:uploadImagesTxtWeb');
     const popOverContentStyle = {
       width: '80%',
@@ -95,6 +95,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
             title={t('common:continue')}
             containerStyle={isMobile ? styles.buttonStyleMobile : styles.buttonStyle}
             onPress={this.postAttachmentsForProperty}
+            disabled={!videoUrl && !selectedImages.length}
           />
         </View>
         <Popover
