@@ -17,6 +17,7 @@ interface IProps<T> {
   containerStyles?: StyleProp<ViewStyle>;
   testID?: string;
   primary?: boolean;
+  isDisabled?: boolean;
 }
 
 interface IOwnState {
@@ -38,7 +39,7 @@ export class SelectionPicker<T> extends React.PureComponent<IProps<T>, IOwnState
   }
 
   public renderItem = (item: ISelectionPicker<T>, index: number): React.ReactElement => {
-    const { onValueChange, data, selectedItem, itemWidth, primary = true } = this.props;
+    const { onValueChange, data, selectedItem, itemWidth, primary = true, isDisabled = false } = this.props;
     const { tabWidth } = this.state;
 
     const selected = selectedItem.includes(item.value);
@@ -58,6 +59,7 @@ export class SelectionPicker<T> extends React.PureComponent<IProps<T>, IOwnState
       <TouchableOpacity
         key={`${item.value}`}
         onPress={onPress}
+        disabled={isDisabled}
         style={[
           primary && styles.itemContainer,
           { backgroundColor },
@@ -65,6 +67,7 @@ export class SelectionPicker<T> extends React.PureComponent<IProps<T>, IOwnState
           primary && isLastIndex && styles.lastItem,
           !primary && styles.itemContainerSecondary,
           !primary && selected && isLastIndex && styles.lastItemSecondary,
+          isDisabled && styles.disableStyle,
         ]}
         testID="to"
       >
@@ -144,5 +147,8 @@ const styles = StyleSheet.create({
   },
   lastItemSecondary: {
     backgroundColor: theme.colors.active,
+  },
+  disableStyle: {
+    opacity: 0.5,
   },
 });

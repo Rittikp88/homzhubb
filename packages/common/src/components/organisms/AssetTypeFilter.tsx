@@ -17,13 +17,14 @@ interface IProps {
   asset_group: number;
   asset_type: number[];
   updateAssetFilter: (type: string, value: number | number[]) => void;
+  isDisabled?: boolean;
 }
 
 type Props = WithTranslation & IProps;
 
 export class AssetTypeFilter extends React.PureComponent<Props> {
   public render = (): React.ReactNode => {
-    const { t, asset_group } = this.props;
+    const { t, asset_group, isDisabled = false } = this.props;
     return (
       <View>
         <Text type="small" textType="semiBold" style={styles.title}>
@@ -34,6 +35,7 @@ export class AssetTypeFilter extends React.PureComponent<Props> {
           selectedItem={[asset_group]}
           onValueChange={this.onAssetGroupListChanged}
           testID="assetGroupSelection"
+          isDisabled={isDisabled}
           containerStyles={PlatformUtils.isWeb() && styles.containerStyle}
         />
         <CheckboxGroup
@@ -43,6 +45,7 @@ export class AssetTypeFilter extends React.PureComponent<Props> {
           containerStyle={styles.checkboxGroupContainer}
           testID="assetGroupCheck"
           numOfColumns={2}
+          isDisabled={isDisabled}
         />
       </View>
     );

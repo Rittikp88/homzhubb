@@ -26,6 +26,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   onDropdownValueChange?: (value: string | number) => void;
   sliderLength?: number;
+  isRangeUpdate?: boolean;
 }
 
 const ShowInMvpRelease = false;
@@ -44,22 +45,31 @@ export const Range = (props: IProps): React.ReactElement => {
     onDropdownValueChange,
     sliderLength,
     title,
+    isRangeUpdate,
   } = props;
   const { t } = useTranslation();
   const [minRange, setMinRange] = useState(0);
   const [maxRange, setMaxRange] = useState(0);
   const [dropdownValue, setValue] = useState<string | number>('');
+
   useEffect(() => {
     if (selectedUnit) {
       setValue(selectedUnit);
     }
   }, [selectedUnit]);
+
+  useEffect(() => {
+    setMinRange(0);
+    setMaxRange(0);
+  }, [isRangeUpdate]);
+
   const onUnitChange = (value: string | number): void => {
     setValue(value as string);
     if (onDropdownValueChange) {
       onDropdownValueChange(value);
     }
   };
+
   const getCurrencyValue = (value: number): string => CurrencyUtils.getCurrency(dropdownValue.toString(), value);
   const currentCarpetAreaUnit =
     dropdownData?.filter((obj: PickerItemProps) => obj.value === selectedUnit)[0]?.label ?? '';

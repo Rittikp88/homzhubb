@@ -17,6 +17,7 @@ import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions'
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -49,6 +50,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { DashboardNavigatorParamList } from '@homzhub/mobile/src/navigation/DashboardStack';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -65,11 +67,13 @@ interface IDispatchProps {
   setInitialState: () => void;
   getTenanciesDetails: () => void;
   getFilterDetails: (payload: IFilter) => void;
+  setFilter: (payload: IFilter) => void;
 }
 
 interface IReduxStateProps {
   assets: Asset[];
   filters: IFilter;
+  defaultCurrency: Currency;
 }
 
 type libraryProps = NavigationScreenProps<DashboardNavigatorParamList, ScreensKeys.DashboardLandingScreen>;
@@ -354,7 +358,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   private closeBottomSheet = (): void => this.setState({ showBottomSheet: false });
 
   private formatBottomSheetData = (): IFormattedBottomSheetData[] => {
-    const { t, navigation, assets, getFilterDetails, filters } = this.props;
+    const { t, navigation, assets, getFilterDetails, filters, setFilter, defaultCurrency } = this.props;
     const iconSize = 38;
 
     const handleAddProperty = (): void => {
@@ -388,6 +392,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
     const handleCustomSearch = (): void => {
       getFilterDetails({ asset_group: filters.asset_group });
+      setFilter({ currency_code: defaultCurrency.currencyCode });
       navigation.navigate(ScreensKeys.SearchRequirement, { isFromAuth: false });
     };
 
@@ -474,7 +479,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setAddPropertyFlow } = UserActions;
   const { setAssetId, setSelectedPlan } = RecordAssetActions;
   const { getAssetVisit } = AssetActions;
-  const { getFilterDetails } = SearchActions;
+  const { getFilterDetails, setFilter } = SearchActions;
   return bindActionCreators(
     {
       setCurrentFilter,
@@ -486,6 +491,7 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       getAssetVisit,
       getTenanciesDetails,
       getFilterDetails,
+      setFilter,
     },
     dispatch
   );
@@ -494,9 +500,11 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
 const mapStateToProps = (state: IState): IReduxStateProps => {
   const { getUserAssets } = UserSelector;
   const { getFilters } = SearchSelector;
+  const { getDefaultCurrency } = CommonSelectors;
   return {
     assets: getUserAssets(state),
     filters: getFilters(state),
+    defaultCurrency: getDefaultCurrency(state),
   };
 };
 

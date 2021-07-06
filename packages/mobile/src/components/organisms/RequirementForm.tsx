@@ -18,6 +18,7 @@ import { RoomsFilter } from '@homzhub/common/src/components/molecules/RoomsFilte
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import LocalityCard from '@homzhub/mobile/src/components/molecules/LocalityCard';
 import AssetTypeFilter from '@homzhub/common/src/components/organisms/AssetTypeFilter';
+import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { ISearchRequirementPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -35,13 +36,18 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
   const localities = useSelector(SearchSelector.getLocalities);
   const countryData = useSelector(CommonSelectors.getCountryList);
 
+  // TODO: (Shikha) Remove after commercial integration
+  const [filterDetails, setFilterDetails] = useState<FilterDetail>();
+  // REMOVE END
+
   const [transactionType, setTransactionType] = useState(filters.asset_transaction_type);
-  const [assetGroup, setAssetGroup] = useState(filters.asset_group ?? 1);
+  const [assetGroup, setAssetGroup] = useState(1);
   const [comment, setComment] = useState('');
   const [assetType, setAssetType] = useState<number[]>(filters.asset_type ?? []);
   const [bedCount, setBedCount] = useState<number[]>(
     filters.room_count && filters.room_count.length > 0 ? filters.room_count : [-1]
   );
+  const [isRangeUpdate, setRangeUpdate] = useState(false);
   const [price, setPriceRange] = useState({ min: filters.min_price ?? 0, max: filters.max_price ?? 0 });
   const [moveInDate, setMoveInDate] = useState(DateUtils.getDisplayDate(new Date().toISOString(), 'MMM DD, YYYY'));
 
@@ -55,6 +61,16 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
   const currencySymbol = country?.currencies[0].currencySymbol ?? filterData?.currency[0].currency_symbol;
 
   useEffect(() => {
+    // TODO: (Shikha) Remove after commercial integration
+    SearchRepository.getFilterDetails({ asset_group: 1 })
+      .then((res) => {
+        setFilterDetails(res);
+      })
+      .catch((err) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
+      });
+    // REMOVE END
+
     if (filters.search_address) {
       dispatch(
         SearchActions.setLocalities([
@@ -67,6 +83,10 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
       );
     }
   }, []);
+
+  useEffect(() => {
+    setPriceRange({ min: -1, max: -1 });
+  }, [filters]);
 
   const onSaveDetails = async (): Promise<void> => {
     const payload: ISearchRequirementPayload = {
@@ -116,6 +136,12 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
     setMoveInDate(DateUtils.getDisplayDate(day, 'MMM DD, YYYY'));
   };
 
+  const onUpdateTransaction = (value: number): void => {
+    dispatch(SearchActions.setFilter({ asset_transaction_type: value, max_price: -1, min_price: -1 }));
+    setRangeUpdate(!isRangeUpdate);
+    setTransactionType(value);
+  };
+
   return (
     <View style={styles.verticalStyle}>
       <LocalityCard />
@@ -129,15 +155,16 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
       )}
       <SelectionPicker
         data={transactionData}
-        selectedItem={[transactionType]}
-        onValueChange={setTransactionType}
+        selectedItem={[transactionType || 0]}
+        onValueChange={onUpdateTransaction}
         containerStyles={styles.verticalStyle}
       />
-      {filterData && (
+      {filterDetails && ( // TODO: (Shikha) Use filterData after commercial integration
         <AssetTypeFilter
-          filterData={filterData}
+          filterData={filterDetails}
           asset_group={assetGroup}
           asset_type={assetType}
+          isDisabled // TODO: (Shikha) Remove while commercial flow
           updateAssetFilter={updateFilter}
         />
       )}
@@ -156,8 +183,9 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
         title={t('budget')}
         currencySymbol={currencySymbol}
         minChangedValue={price.min}
-        maxChangedValue={price.max ?? priceRange.max}
+        maxChangedValue={price.max}
         onChangeSlide={updateFilter}
+        isRangeUpdate={isRangeUpdate}
       />
       <FormCalendar
         label={t('moveInDate')}
