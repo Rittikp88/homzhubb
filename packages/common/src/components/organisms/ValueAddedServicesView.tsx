@@ -195,5 +195,5 @@ const styles = StyleSheet.create({
     left: '60%',
     width: 256,
   },
-  background: { backgroundColor: theme.colors.white, height: 200, justifyContent: 'center' },
+  background: { backgroundColor: theme.colors.white, height: 240, justifyContent: 'center' },
 });

@@ -3,11 +3,14 @@ import { View, StyleSheet, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -46,19 +49,25 @@ interface IStateProps {
 interface IProp {
   assetDetails: Asset | null;
   propertyTermId: number;
+  history: History;
 }
 interface IStateData {
   propertyLeaseType: string;
+  hasCreatedOffer: boolean;
 }
 
 type Props = IProp & IStateProps & WithTranslation & IWithMediaQuery;
 
 export class PropertyCardDetails extends React.PureComponent<Props, IStateData> {
-  public state = {
-    propertyLeaseType: renderPopUpTypes.tenancy,
-  };
-
   public popupRef = createRef<PopupActions>();
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      propertyLeaseType: renderPopUpTypes.tenancy,
+      hasCreatedOffer: this.hasCreatedOffersValue(),
+    };
+  }
 
   public componentDidMount = (): void => {
     this.getProspectProfile();
@@ -74,6 +83,7 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       isIpadPro,
       t,
       propertyTermId,
+      history,
     } = this.props;
     if (!assetDetails) {
       return null;
@@ -97,7 +107,6 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       assetGroup: { code, name },
       isAssetOwner,
     } = assetDetails;
-
     const propertyType = assetType ? assetDetails.assetType.name : '';
     const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
       name,
@@ -115,12 +124,14 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       true
     );
     const styles = propertyDetailStyle(isMobile, isTablet);
-    const { propertyLeaseType } = this.state;
+    const { propertyLeaseType, hasCreatedOffer } = this.state;
+
     const popupDetails = {
       title: t('offers:offerSucessHeader'),
       subTitle: t('offers:offerSucessSubHeader'),
     };
 
+    const backgroundColor = hasCreatedOffer ? theme.colors.reviewCardOpacity : theme.colors.blueOpacity;
     let currencyData = currencies[0];
 
     if (leaseTerm && leaseTerm.currency) {
@@ -138,10 +149,27 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
         this.popupRef.current.open();
       }
     };
-
+    const handleMakeAnOffer = (): void => {
+      if (hasCreatedOffer) {
+        NavigationService.navigate(history, {
+          path: RouteNames.protectedRoutes.OFFERS,
+          params: {
+            isReceivedFlow: false,
+          },
+        });
+      } else {
+        triggerPopUp();
+      }
+    };
     const changePopUpStatus = (datum: string): void => {
       this.setState({ propertyLeaseType: datum });
     };
+    const refreshPage = (): void => {
+      this.setState({ hasCreatedOffer: true }, () => {
+        this.getProspectProfile();
+      });
+    };
+
     return (
       <>
         <View style={styles.container}>
@@ -188,10 +216,23 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
             {!isAssetOwner && (
               <View style={styles.footer}>
                 <View style={(isMobile || isTablet || isIpadPro) && styles.enquireContainer}>
-                  <Button type="primary" containerStyle={styles.enquire} onPress={triggerPopUp}>
-                    <Icon name={icons.offers} size={24} color={theme.colors.primaryColor} />
-                    <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleEnquire}>
-                      {t('assetMore:makeAnOfferText')}
+                  <Button
+                    type="primary"
+                    containerStyle={[styles.enquire, { backgroundColor }]}
+                    onPress={handleMakeAnOffer}
+                  >
+                    <Icon
+                      name={icons.offers}
+                      size={24}
+                      color={hasCreatedOffer ? theme.colors.green : theme.colors.blue}
+                    />
+                    <Typography
+                      size="small"
+                      variant="text"
+                      fontWeight="semiBold"
+                      style={[styles.textStyleEnquire, hasCreatedOffer && styles.seeOffers]}
+                    >
+                      {t(hasCreatedOffer ? 'assetMore:seeOfferText' : 'assetMore:makeAnOfferText')}
                     </Typography>
                   </Button>
                 </View>
@@ -218,7 +259,9 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
           changePopUpStatus={changePopUpStatus}
           asset={assetDetails}
         />
-        {propertyLeaseType === renderPopUpTypes.confirm && <ConfirmationPopup {...popupDetails} />}
+        {propertyLeaseType === renderPopUpTypes.confirm && (
+          <ConfirmationPopup {...popupDetails} refreshPage={refreshPage} />
+        )}
       </>
     );
   };
@@ -243,6 +286,11 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
         })}
       </>
     );
+  };
+
+  private hasCreatedOffersValue = (): boolean => {
+    const { assetDetails } = this.props;
+    return Boolean(assetDetails?.leaseNegotiation) || Boolean(assetDetails?.saleNegotiation);
   };
 
   private getProspectProfile = async (): Promise<void> => {
@@ -292,6 +340,7 @@ interface IPropertyDetailStyles {
   placeholder: ViewStyle;
   scheduleContainer: ViewStyle;
   enquireContainer: ViewStyle;
+  seeOffers: ViewStyle;
 }
 const propertyDetailStyle = (
   isMobile?: boolean,
@@ -376,6 +425,9 @@ const propertyDetailStyle = (
     textStyleEnquire: {
       color: theme.colors.primaryColor,
       marginStart: '5%',
+    },
+    seeOffers: {
+      color: theme.colors.green,
     },
     textStyleSchedule: {
       color: theme.colors.white,

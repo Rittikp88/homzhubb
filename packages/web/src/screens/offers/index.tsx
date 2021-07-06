@@ -64,7 +64,6 @@ const Offers: FC<IProps> = (props: IProps) => {
   const { setCurrentOfferPayload } = props;
   const getInitialOfferType = (): OfferType => {
     const { assetCount } = props;
-
     // @ts-ignore
     if (state === undefined) return OfferType.OFFER_RECEIVED;
     // @ts-ignore

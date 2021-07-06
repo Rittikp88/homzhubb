@@ -50,7 +50,7 @@ const PropertyDetails: FC<Props> = (props: Props) => {
 
   return (
     <View style={styles.container}>
-      <PropertyCardDetails assetDetails={assetDetails} propertyTermId={listingId} />
+      <PropertyCardDetails assetDetails={assetDetails} propertyTermId={listingId} history={history} />
       <View style={[styles.detail, isTablet && styles.detailTab, isMobile && styles.detailMobile]}>
         <SimilarProperties isMobile={isMobile} isTablet={isTablet} propertyTermId={listingId} isLease={isLease} />
       </View>

@@ -20,12 +20,13 @@ interface IProps {
   iconColor?: string;
   isSvg?: string;
   updateData?: () => void;
+  refreshPage?: () => void;
 }
 
 type Props = IContinuePopupProps & IProps;
 
 const ConfirmationPopup: React.FC<Props> = (props: Props) => {
-  const { title, subTitle, buttonTitle } = props;
+  const { title, subTitle, buttonTitle, refreshPage } = props;
   const popupRef = useRef<PopupActions>(null);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
@@ -42,6 +43,9 @@ const ConfirmationPopup: React.FC<Props> = (props: Props) => {
   };
 
   const handlePress = (): void => {
+    if (refreshPage) {
+      refreshPage();
+    }
     handlePopupClose();
   };
   const renderPopupCard = (): React.ReactElement => {

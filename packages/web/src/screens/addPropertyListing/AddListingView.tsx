@@ -324,15 +324,17 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
         const { isDesktop } = this.props;
         return (
           <View style={styles.service}>
-            <ValueAddedServicesView
-              isDesktop={isDesktop}
-              propertyId={assetDetails.id}
-              lastVisitedStep={assetDetails.lastVisitedStepSerialized}
-              valueAddedServices={valueAddedServices}
-              setValueAddedServices={setValueAddedServices}
-              typeOfPlan={selectedPlan}
-              handleNextStep={this.handleNextStep}
-            />
+            <View style={styles.servicesAlignment}>
+              <ValueAddedServicesView
+                isDesktop={isDesktop}
+                propertyId={assetDetails.id}
+                lastVisitedStep={assetDetails.lastVisitedStepSerialized}
+                valueAddedServices={valueAddedServices}
+                setValueAddedServices={setValueAddedServices}
+                typeOfPlan={selectedPlan}
+                handleNextStep={this.handleNextStep}
+              />
+            </View>
             <PropertyPayment
               propertyId={assetDetails.id}
               lastVisitedStep={assetDetails.lastVisitedStepSerialized}
@@ -655,4 +657,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  servicesAlignment: { width: '73%' },
 });
