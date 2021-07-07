@@ -13,6 +13,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
+import DuesContainer from '@homzhub/mobile/src/components/organisms/DuesContainer';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -84,6 +85,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
           onCountryChange={this.onCountryChange}
         />
         <FinanceOverview selectedProperty={selectedProperty} selectedCountry={selectedCountry} />
+        <DuesContainer toggleLoading={this.toggleLoading} />
         <TransactionCardsContainer
           selectedProperty={selectedProperty}
           selectedCountry={selectedCountry}

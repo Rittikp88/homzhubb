@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 // @ts-ignore
 import RazorpayCheckout from 'react-native-razorpay';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -36,6 +36,7 @@ interface IRazorPayError {
 interface IProps extends IButtonProps {
   initiatePayment: () => Promise<Payment>;
   paymentApi: (paymentSuccessData: IPaymentParams) => void;
+  outerContainerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IOwnState {
@@ -49,9 +50,10 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
 
   public render = (): React.ReactElement => {
     const { loading } = this.state;
+    const { outerContainerStyle = {} } = this.props;
     return (
       <>
-        <Button {...this.props} onPress={this.onPress} containerStyle={styles.button} />
+        <Button {...this.props} onPress={this.onPress} containerStyle={[styles.button, outerContainerStyle]} />
         <Loader visible={loading} />
       </>
     );

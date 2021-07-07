@@ -6,14 +6,13 @@ import { AttachmentService } from '@homzhub/common/src/services/AttachmentServic
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import TransactionCard from '@homzhub/mobile/src/components/molecules/TransactionCard';
+import SectionContainer from '@homzhub/common/src/components/organisms/SectionContainer';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -62,37 +61,38 @@ export class TransactionCardsContainer extends React.PureComponent<IProps, IOwnS
     const { transactionsData, expandedItem } = this.state;
 
     return (
-      <View style={styles.container}>
-        <OnFocusCallback isAsync callback={this.onFocus} />
-        <View style={styles.transactionHeader}>
-          <Icon style={styles.chequeIconStyle} name={icons.cheque} size={22} />
-          <Text type="small" textType="semiBold">
-            {t('transactions')}
-          </Text>
-        </View>
-        <Divider />
-        {transactionsData.length <= 0 ? (
-          <EmptyState />
-        ) : (
-          <ScrollView
-            ref={this.scrollRef}
-            onScroll={this.onScroll}
-            onTouchStart={
-              transactionsData.length > 4 && shouldEnableOuterScroll
-                ? (): void => shouldEnableOuterScroll(false)
-                : undefined
-            }
-            onMomentumScrollEnd={this.controlScroll}
-            onScrollEndDrag={this.controlScroll}
-            scrollEventThrottle={1500}
-            // Increase container's height if any item is expanded to fit things in.
-            style={expandedItem === -1 ? styles.contentContainer : styles.contentContainerExpanded}
-          >
-            {transactionsData.map(this.renderTransactionCard)}
-          </ScrollView>
-        )}
+      <>
+        <SectionContainer
+          containerStyle={styles.container}
+          sectionTitle={t('transactions')}
+          sectionIcon={icons.cheque}
+          callback={this.onFocus}
+          isAsync
+        >
+          {transactionsData.length <= 0 ? (
+            <EmptyState />
+          ) : (
+            <ScrollView
+              ref={this.scrollRef}
+              onScroll={this.onScroll}
+              onTouchStart={
+                transactionsData.length > 4 && shouldEnableOuterScroll
+                  ? (): void => shouldEnableOuterScroll(false)
+                  : undefined
+              }
+              onMomentumScrollEnd={this.controlScroll}
+              onScrollEndDrag={this.controlScroll}
+              scrollEventThrottle={1500}
+              // Increase container's height if any item is expanded to fit things in.
+              style={expandedItem === -1 ? styles.contentContainer : styles.contentContainerExpanded}
+            >
+              {transactionsData.map(this.renderTransactionCard)}
+            </ScrollView>
+          )}
+        </SectionContainer>
+
         {this.renderBottomSheet()}
-      </View>
+      </>
     );
   }
 
@@ -270,19 +270,11 @@ const styles = StyleSheet.create({
     marginTop: 16,
     backgroundColor: theme.colors.white,
   },
-  transactionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-  },
   contentContainer: {
     maxHeight: 400,
   },
   contentContainerExpanded: {
     maxHeight: theme.viewport.height / 1.7,
-  },
-  chequeIconStyle: {
-    marginEnd: 12,
   },
   buttonContainer: {
     flexDirection: 'row',

@@ -216,10 +216,10 @@ export class Asset {
   @JsonProperty('is_managed', Boolean, true)
   private _isManaged = false;
 
-  @JsonProperty('latitude', Number)
+  @JsonProperty('latitude', Number, true)
   private _latitude = 0;
 
-  @JsonProperty('longitude', Number)
+  @JsonProperty('longitude', Number, true)
   private _longitude = 0;
 
   @JsonProperty('carpet_area_unit', CarpetArea, true)
@@ -234,10 +234,10 @@ export class Asset {
   @JsonProperty('description', String, true)
   private _description = '';
 
-  @JsonProperty('floor_number', Number)
+  @JsonProperty('floor_number', Number, true)
   private _floorNumber = 0;
 
-  @JsonProperty('total_floors', Number)
+  @JsonProperty('total_floors', Number, true)
   private _totalFloors = 0;
 
   @JsonProperty('construction_year', Number, true)
@@ -777,6 +777,10 @@ export class Asset {
 
   get formattedProjectName(): string {
     return `${this.unitNumber},${this.blockNumber && ` ${this.blockNumber},`} ${this.projectName}`;
+  }
+
+  get formattedAddressWithCity(): string {
+    return `${this.unitNumber},${this.blockNumber && ` ${this.blockNumber},`} ${this.city}`;
   }
 
   get valueAddedServices(): Service[] {

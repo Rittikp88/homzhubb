@@ -3,6 +3,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
+import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IAddGeneralLedgerPayload,
@@ -16,6 +17,7 @@ const ENDPOINTS = {
   getLedgerCategories: 'v1/general-ledger-categories/',
   genLedgers: 'v1/general-ledgers/',
   ledger: (id: number): string => `v1/general-ledgers/${id}/`,
+  getDues: (): string => '/v1/user-invoices/dues',
 };
 
 class LedgerRepository {
@@ -58,6 +60,11 @@ class LedgerRepository {
 
   public deleteLedger = async (ledgerId: number): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.ledger(ledgerId));
+  };
+
+  public getDues = async (): Promise<Dues> => {
+    const response = await this.apiClient.get(ENDPOINTS.getDues());
+    return ObjectMapper.deserialize(Dues, response);
   };
 }
 
