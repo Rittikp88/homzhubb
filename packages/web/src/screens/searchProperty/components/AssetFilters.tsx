@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PopupActions, PopupPosition, PopupProps } from 'reactjs-popup/dist/types';
 import { History } from 'history';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -356,10 +355,6 @@ class AssetFilters extends React.PureComponent<Props, ILandingState> {
 
     setFilter({ [type]: value });
     getProperties();
-  };
-
-  private displayError = (e: Error): void => {
-    AlertHelper.error({ message: e.message });
   };
 }
 

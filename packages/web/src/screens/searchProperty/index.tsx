@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -17,7 +19,6 @@ import { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOp
 import AssetFilters from '@homzhub/web/src/screens/searchProperty/components/AssetFilters';
 import PropertiesView from '@homzhub/web/src/screens/searchProperty/components/PropertiesView';
 import { SortByFilter } from '@homzhub/web/src/screens/searchProperty/components/SortByFilter';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { FilterDetail } from '@homzhub/common/src/domain/models/FilterDetail';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
@@ -40,9 +41,7 @@ interface IDispatchProps {
   setInitialMiscellaneous: () => void;
   setInitialFilters: () => void;
 }
-interface IProps {
-  property: Asset[];
-}
+
 type SearchPropertyProps = IStateProps & IDispatchProps;
 const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null => {
   const [isListView, setIsListView] = useState(false);
@@ -52,11 +51,10 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
     setFilter,
     filters,
     clearProperties,
-    // setInitialState, // TODO - Revisit Later
     filterData,
     getFilterDetails,
     loader,
-    // setInitialFilters, // TODO - Revisit Later
+    setInitialFilters,
   } = props;
 
   const toggleGridView = (): void => {
@@ -98,16 +96,22 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
       getFilterDetails({ asset_group: filters.asset_group });
     }
     return (): void => {
-      // Revisit Later
-      // setInitialState();
-      // setInitialFilters();
+      setFilter({
+        search_latitude: 0,
+        search_longitude: 0,
+        search_address: '',
+      });
     };
   }, []);
 
   const clearForm = (): void => {
     const { setInitialMiscellaneous } = props;
+    const { search_longitude, search_latitude } = filters;
     setInitialMiscellaneous();
+    setInitialFilters();
     getPropertiesListView();
+    const locationParams = `?search_latitude=${search_latitude}&search_longitude=${search_longitude}`;
+    NavigationService.navigate(history, { path: `${RouteNames.protectedRoutes.SEARCH_PROPERTY}${locationParams}` });
   };
 
   const fetchMoreData = (value: number): void | null => {

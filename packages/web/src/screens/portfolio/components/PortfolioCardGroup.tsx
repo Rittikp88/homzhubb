@@ -204,8 +204,7 @@ export class AssetCard extends Component<Props> {
     } = assetData;
 
     const userData: User = user;
-    const isOccupied = isInviteAccepted;
-    const isListed = leaseListingId || saleListingId;
+    const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted, assetData);
     const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
     const isTakeActions = label === Filters.VACANT;
@@ -271,7 +270,7 @@ export class AssetCard extends Component<Props> {
               />
             </View>
           )}
-          {isListed && isOccupied && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
+          {isListed && (
             <View style={[styles.latestUpdates, isTablet && styles.latestUpdatesMobile]}>
               <LatestUpdates
                 propertyVisitsData={assetData.listingVisits}
