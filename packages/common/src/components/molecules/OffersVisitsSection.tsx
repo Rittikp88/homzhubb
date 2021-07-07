@@ -43,7 +43,7 @@ const OffersVisitsSection = (props: IProps): React.ReactElement => {
             <Divider containerStyles={styles.divider} />
             <View style={styles.contentContainer}>
               {renderImage ? renderImage(item.key) : <Icon name={item.icon} size={22} color={theme.colors.darkTint2} />}
-              <View style={styles.textContainer}>
+              <View style={[styles.textContainer, isTablet && !propertyDetailTab && styles.textContainerTab]}>
                 <View style={styles.header}>
                   <Label type="large" textType="regular" style={styles.title}>
                     {t(item.title)}
@@ -96,6 +96,9 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginStart: 12,
+  },
+  textContainerTab: {
+    width: 260,
   },
   subSectionContainer: {
     flexDirection: 'row',

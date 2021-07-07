@@ -110,7 +110,7 @@ export class AssetCard extends Component<Props> {
             <>{this.renderAttachmentView(attachments)}</>
 
             <View style={[styles.topView, isMobile && styles.topViewMobile]}>
-              <View style={styles.topLeftView}>
+              <View style={[styles.topLeftView, isMobile && styles.topLeftViewMobile]}>
                 <View style={styles.subContainer}>
                   <Badge
                     title={assetStatusInfo?.tag.label ?? ''}
@@ -215,9 +215,7 @@ export class AssetCard extends Component<Props> {
       <>
         <Divider containerStyles={[styles.divider, isTablet && styles.dividerTablet]} />
 
-        <View
-          style={[styles.topRightView, isTablet && styles.topRightViewTablet, isMobile && styles.topRightViewMobile]}
-        >
+        <View style={[styles.topRightView, isTablet && styles.topRightViewTablet]}>
           {!isVacant && (
             <>
               <Avatar
@@ -306,7 +304,7 @@ export class AssetCard extends Component<Props> {
             <View>
               {assetCreation.percentage < 100 && (
                 <View style={isOnlyTablet && styles.completeButtonContainer}>
-                  <View>
+                  <View style={isOnlyTablet && styles.completeButtonTab}>
                     <Text type="small" style={styles.title} textType="semiBold">
                       {t('assetPortfolio:detailsCompletionText')}
                     </Text>
@@ -367,7 +365,11 @@ export class AssetCard extends Component<Props> {
                     textType="label"
                     textSize="regular"
                     fontType="semiBold"
-                    containerStyle={[styles.buttonContainer, isOnlyTablet && styles.buttonContainerTablet]}
+                    containerStyle={[
+                      styles.buttonContainer,
+                      isOnlyTablet && styles.buttonContainerTablet,
+                      isOnlyTablet && styles.buttonTab,
+                    ]}
                     title={action.label}
                     titleStyle={[styles.buttonTitle, { color: action.color }]}
                     onPress={this.onPressAction}
@@ -462,6 +464,10 @@ const styles = StyleSheet.create({
     marginBottom: 2,
     flexDirection: 'row',
   },
+  buttonTab: {
+    marginHorizontal: 0,
+    width: '48%',
+  },
   subContainer: { flexDirection: 'row', flexWrap: 'wrap' },
   topView: {
     flexDirection: 'row',
@@ -474,6 +480,9 @@ const styles = StyleSheet.create({
     marginLeft: '10px',
     width: 'fit-content',
     maxWidth: '100%',
+  },
+  topLeftViewMobile: {
+    marginLeft: 0,
   },
   topRightView: {
     flexDirection: 'column',
@@ -583,7 +592,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   buttonContainer: {
-    width: 310,
+    width: '100%',
     padding: 6,
     textAlign: 'center',
     backgroundColor: theme.colors.greenLightOpacity,
@@ -606,6 +615,7 @@ const styles = StyleSheet.create({
     borderLeftWidth: 2,
     borderTopWidth: 0,
     marginHorizontal: 12,
+    width: '48%',
   },
   buttonFlexContainer: {
     width: 140,
@@ -626,10 +636,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 'auto',
     alignSelf: 'flex-end',
-    marginRight: 40,
   },
   topRightViewTablet: {
     width: '100%',
+    marginLeft: 0,
   },
   progressBarTablet: {
     flex: 0.8,
@@ -642,7 +652,7 @@ const styles = StyleSheet.create({
   },
   completeButton: {
     flex: 1,
-    width: 310,
+    width: '100%',
     borderRadius: 2,
     marginTop: 24,
     backgroundColor: theme.colors.greenLightOpacity,
@@ -663,9 +673,6 @@ const styles = StyleSheet.create({
   dividerTablet: {
     marginTop: 20,
   },
-  topRightViewMobile: {
-    marginLeft: 12,
-  },
   rentViewContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -678,8 +685,11 @@ const styles = StyleSheet.create({
   completeButtonContainer: {
     flexDirection: 'row',
   },
+  completeButtonTab: {
+    width: '48%',
+  },
   latestUpdatesMobile: {
-    marginRight: 36,
+    marginRight: 0,
   },
   labelStyle: {
     marginLeft: 24,
