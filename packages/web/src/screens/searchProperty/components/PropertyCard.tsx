@@ -76,7 +76,7 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
     const trackData = AnalyticsHelper.getPropertyTrackData(investmentData);
     AnalyticsService.track(EventType.SearchPropertyOpen, trackData);
     NavigationService.navigate(history, {
-      path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
+      path: RouteNames.protectedRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
       params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0, isLease: !!leaseTerm },
     });
   };

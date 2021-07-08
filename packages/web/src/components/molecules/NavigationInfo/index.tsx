@@ -27,6 +27,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { pageTitles } from '@homzhub/web/src/components/molecules/NavigationInfo/constants';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
+import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 const humanize = (str: string, state: any): string => {
   const { params } = { ...state, params: state?.params || null };
@@ -110,7 +111,12 @@ const DashBoardActionsGrp: FC = () => {
     if (option.label === 'Add Property') {
       AnalyticsService.track(EventType.AddPropertyInitiation);
     }
-    NavigationService.navigate(history, { path: option.route });
+    NavigationService.navigate(history, {
+      path: option.route,
+      params: {
+        currentScreen: AddPropertyStack.AddPropertyLocationScreen,
+      },
+    });
   };
   const onCurrencyOptionSelect = (option: ICurrencyOption): void => {
     setSelectedCurrency(option);
@@ -204,7 +210,12 @@ const AddPropertyAction: FC = () => {
   const history = useHistory();
   const onAddProperty = (): void => {
     AnalyticsService.track(EventType.AddPropertyInitiation);
-    NavigationService.navigate(history, { path: RouteNames.protectedRoutes.PORTFOLIO_ADD_PROPERTY });
+    NavigationService.navigate(history, {
+      path: RouteNames.protectedRoutes.PORTFOLIO_ADD_PROPERTY,
+      params: {
+        currentScreen: AddPropertyStack.AddPropertyLocationScreen,
+      },
+    });
   };
   return (
     <Button type="secondary" containerStyle={[styles.button, styles.addBtn]} onPress={onAddProperty}>

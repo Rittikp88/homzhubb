@@ -224,7 +224,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const handleViewProperty = (data: ISetAssetPayload, key?: Tabs): void => {
       const { setCurrentAsset } = this.props;
       setCurrentAsset(data);
-      this.navigateToDetailView({ ...data, dataType: type }, key);
+      this.navigateToDetailView({ ...data, dataType: type }, item.projectName, key);
     };
     return (
       <View>
@@ -287,12 +287,12 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     // TODO: handle terminate
   };
 
-  private navigateToDetailView = (data: ISetAssetPayload, key?: Tabs): void => {
+  private navigateToDetailView = (data: ISetAssetPayload, projectName: string, key?: Tabs): void => {
     const { history, setCurrentAsset } = this.props;
     setCurrentAsset(data);
     const { asset_id, assetType, listing_id } = data;
     NavigationService.navigate(history, {
-      path: RouteNames.protectedRoutes.PROPERTY_SELECTED,
+      path: RouteNames.protectedRoutes.PROPERTY_SELECTED.replace(':propertyName', `${projectName}`),
       params: {
         isFromTenancies: data.dataType === DataType.TENANCIES,
         ...(key && { tabKey: key }),

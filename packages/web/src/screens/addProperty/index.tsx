@@ -52,8 +52,7 @@ const AddProperty: FC<IProps> = (props: IProps) => {
   const [latLng, setLatLng] = useState({ lat: 0, lng: 0 } as ILatLng);
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
-  const current = location ? location.state.currentScreen : AddPropertyStack.AddPropertyLocationScreen;
-  const [currentScreen, setCurrentScreen] = useState(current);
+  const [currentScreens, setCurrentScreens] = useState(location.state.currentScreen);
   const [projectName, setProjectName] = useState<string | null>(null);
   useEffect(() => {
     if (goBackClicked) {
@@ -63,15 +62,15 @@ const AddProperty: FC<IProps> = (props: IProps) => {
   }, [goBackClicked]);
 
   const navigateScreen = (comp: AddPropertyStack): void => {
-    setCurrentScreen(comp);
+    setCurrentScreens(comp);
   };
   const goBack = (): void => {
-    if (currentScreen === 0) {
+    if (currentScreens === 0) {
       navigateToDashboard();
     }
-    if (currentScreen !== AddPropertyStack.AddPropertyLocationScreen) {
-      const activeIndex = compArray.findIndex((value) => value.component === currentScreen);
-      setCurrentScreen(compArray[activeIndex - 1].component);
+    if (currentScreens !== AddPropertyStack.AddPropertyLocationScreen) {
+      const activeIndex = compArray.findIndex((value) => value.component === currentScreens);
+      setCurrentScreens(compArray[activeIndex - 1].component);
     }
   };
 
@@ -79,7 +78,7 @@ const AddProperty: FC<IProps> = (props: IProps) => {
     NavigationService.navigate(history, { path: RouteNames.protectedRoutes.DASHBOARD });
   };
   const handleEditSelection = (): void => {
-    setCurrentScreen(AddPropertyStack.PropertyDetailsMapScreen);
+    setCurrentScreens(AddPropertyStack.PropertyDetailsMapScreen);
   };
 
   const onImageSelection = async (files?: File[]): Promise<void> => {
@@ -187,7 +186,7 @@ const AddProperty: FC<IProps> = (props: IProps) => {
           url={`https://maps.googleapis.com/maps/api/js?key=${ConfigHelper.getPlacesApiKey()}&libraries=places`}
           onLoad={(): void => setHasScriptLoaded(true)}
         />
-        {renderScreen(currentScreen)}
+        {renderScreen(currentScreens)}
       </View>
     </AddPropertyContext.Provider>
   );
