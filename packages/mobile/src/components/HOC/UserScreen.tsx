@@ -7,6 +7,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import AddIcon from '@homzhub/common/src/assets/images/circularPlus.svg';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
@@ -32,6 +33,7 @@ interface IUserScreenProps {
   headerStyle?: ViewStyle;
   subTitle?: string;
   isBarVisible?: boolean;
+  onPlusIconClicked?: () => void;
 }
 
 // Constants for Gradient background
@@ -61,6 +63,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     headerStyle,
     subTitle,
     isBarVisible = false,
+    onPlusIconClicked,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -157,6 +160,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
         {scrollEnabled ? (
           <KeyboardAwareScrollView
             bounces={false}
+            // @ts-ignore
             contentContainerStyle={[styles.contentContainerStyle, contentContainerStyle]}
             showsVerticalScrollIndicator={false}
             scrollEnabled={isOuterScrollEnabled}
@@ -167,6 +171,11 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
           </KeyboardAwareScrollView>
         ) : (
           children
+        )}
+        {onPlusIconClicked && (
+          <TouchableOpacity onPress={onPlusIconClicked} style={styles.addIcon}>
+            <AddIcon />
+          </TouchableOpacity>
         )}
       </View>
       <Loader visible={loading} />
@@ -231,5 +240,10 @@ const styles = StyleSheet.create({
   },
   subTitle: {
     color: theme.colors.darkTint5,
+  },
+  addIcon: {
+    position: 'absolute',
+    bottom: 10,
+    right: 0,
   },
 });

@@ -17,7 +17,7 @@ const ENDPOINTS = {
   getLedgerCategories: 'v1/general-ledger-categories/',
   genLedgers: 'v1/general-ledgers/',
   ledger: (id: number): string => `v1/general-ledgers/${id}/`,
-  getDues: (): string => '/v1/user-invoices/dues',
+  getDues: (): string => '/v1/user-invoices/dues/',
 };
 
 class LedgerRepository {

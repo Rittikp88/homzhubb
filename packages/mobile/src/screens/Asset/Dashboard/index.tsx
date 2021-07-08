@@ -132,7 +132,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
     return (
       <>
-        <UserScreen loading={isLoading} isGradient title={t('dashboard')}>
+        <UserScreen loading={isLoading} isGradient title={t('dashboard')} onPlusIconClicked={this.openBottomSheet}>
           {this.renderAssetMetricsAndUpdates()}
           {pendingProperties.length > 0 && (
             <PendingPropertyListCard
@@ -165,7 +165,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           data={metrics?.metricValues?.miscellaneous ?? []}
           subscription={metrics?.metricValues?.userServicePlan?.label}
           onMetricsClicked={this.handleMetricsNavigation}
-          onPlusIconClicked={this.openBottomSheet}
           subTitleText={metrics?.isTenant ? t('assetPortfolio:tenancies') : t('common:properties')}
         />
         <AssetSummary

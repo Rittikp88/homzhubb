@@ -119,13 +119,17 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     } = this.props;
     const { metrics, assetType } = this.state;
     return (
-      <UserScreen isGradient loading={loaders.tenancies || loaders.properties} title={t('portfolio')}>
+      <UserScreen
+        isGradient
+        loading={loaders.tenancies || loaders.properties}
+        title={t('portfolio')}
+        onPlusIconClicked={this.handleAddProperty}
+      >
         <AssetMetricsList
           showBackIcon={params?.isFromNavigation ?? false}
           title={`${metrics?.assetMetrics?.assets?.count ?? 0}`}
           data={metrics?.assetMetrics?.assetGroups ?? []}
           subscription={metrics?.userServicePlan?.label}
-          onPlusIconClicked={this.handleAddProperty}
           onMetricsClicked={this.onMetricsClicked}
           selectedAssetType={assetType}
           numOfElements={2}

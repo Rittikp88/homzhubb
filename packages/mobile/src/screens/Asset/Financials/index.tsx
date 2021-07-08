@@ -67,14 +67,19 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     const { scrollEnabled, selectedProperty, selectedCountry, isLoading } = this.state;
 
     return (
-      <UserScreen loading={isLoading} isGradient isOuterScrollEnabled={scrollEnabled} title={t('financial')}>
+      <UserScreen
+        loading={isLoading}
+        isGradient
+        isOuterScrollEnabled={scrollEnabled}
+        title={t('financial')}
+        onPlusIconClicked={this.onPlusIconPress}
+      >
         <AssetMetricsList
           title={t('assetFinancial:summary')}
           numOfElements={2}
           showBackIcon={params?.isFromNavigation ?? false}
           isSubTextRequired={false}
           data={this.getHeaderData()}
-          onPlusIconClicked={this.onPlusIconPress}
         />
         <PropertyByCountryDropdown
           selectedProperty={selectedProperty}
