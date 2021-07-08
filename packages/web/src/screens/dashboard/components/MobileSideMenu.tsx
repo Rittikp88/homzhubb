@@ -41,7 +41,7 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
     },
     {
       id: 2,
-      text: t('assetPortfolio:portfolio'),
+      text: t('common:properties'),
       icon: icons.portfolio,
       url: RouteNames.protectedRoutes.PORTFOLIO,
     },
