@@ -269,7 +269,7 @@ class AddListingView extends React.PureComponent<Props, IOwnState> {
             <View style={[styles.verification]}>
               <Text type="small" textType="semiBold">
                 {title === 'Service & Payment' || title === 'Services' || title === 'Payment'
-                  ? [t('assetMore:premiumPaidServices'), ' ', t('assetMore:optional')]
+                  ? [t('assetMore:premiumServices'), ' ', t('assetMore:optional')]
                   : title}
               </Text>
               <Text type="small" textType="semiBold" style={styles.skip} onPress={this.handleSkip}>

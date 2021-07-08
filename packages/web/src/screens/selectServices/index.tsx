@@ -80,10 +80,10 @@ const SelectServices = (): ReactElement => {
   const { t, i18n, ready: tReady } = useTranslation();
 
   // Constants
-  const desktopRoute = [{ key: RouteKeys.SERVICE_PAYMENT, title: t('assetMore:premiumPaidServices') }];
+  const desktopRoute = [{ key: RouteKeys.SERVICE_PAYMENT, title: t('assetMore:premiumServices') }];
   const mobileTabpRoutes = [
-    { key: RouteKeys.Services, title: t('assetMore:premiumPaidServices') },
-    { key: RouteKeys.Payment, title: t('assetMore:premiumPaidServices') },
+    { key: RouteKeys.Services, title: t('assetMore:premiumServices') },
+    { key: RouteKeys.Payment, title: t('assetMore:premiumServices') },
   ];
   const Routes: IRoutes[] = isDesktop ? desktopRoute : mobileTabpRoutes;
   const Steps = isDesktop ? [RouteKeys.SERVICE_PAYMENT] : [RouteKeys.Services, RouteKeys.Payment];
