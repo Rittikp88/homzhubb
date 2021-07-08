@@ -103,20 +103,31 @@ export const AssetDetailsImageCarousel: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.cardImageCrousel}>
-        <MultiCarousel passedProps={carouselProps}>
-          {data.map((item) => (
-            <TouchableOpacity onPress={handleShowPopover} key={item.id}>
-              <View>
-                <Image
-                  style={[styles.image]}
-                  source={{
-                    uri: item.link,
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-          ))}
-        </MultiCarousel>
+        {data.length === 1 ? (
+          <View>
+            <Image
+              style={[styles.image]}
+              source={{
+                uri: data[0].link,
+              }}
+            />
+          </View>
+        ) : (
+          <MultiCarousel passedProps={carouselProps}>
+            {data.map((item) => (
+              <TouchableOpacity onPress={handleShowPopover} key={item.id}>
+                <View>
+                  <Image
+                    style={[styles.image]}
+                    source={{
+                      uri: item.link,
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+            ))}
+          </MultiCarousel>
+        )}
       </View>
       <Popover
         content={renderPopOverContent}

@@ -120,25 +120,38 @@ const CardImageCarousel: FC<IProps> = ({
     return theme.colors.white;
   };
 
+  if (imagesArray === undefined) {
+    return null;
+  }
   return (
     <View style={cardImageCarouselStyle}>
-      <MultiCarousel passedProps={carouselProps}>
-        {imagesArray && imagesArray.length === 0 ? (
-          <ImagePlaceholder height={isListView ? 230 : 210} />
+      {imagesArray.length !== 0 ? (
+        imagesArray.length === 1 ? (
+          <View>
+            <Image
+              style={[styles.image, cardImageStyle]}
+              source={{
+                uri: imagesArray[0].link,
+              }}
+            />
+          </View>
         ) : (
-          imagesArray &&
-          imagesArray.map((item) => (
-            <View key={item.id}>
-              <Image
-                style={[styles.image, cardImageStyle]}
-                source={{
-                  uri: item.link,
-                }}
-              />
-            </View>
-          ))
-        )}
-      </MultiCarousel>
+          <MultiCarousel passedProps={carouselProps}>
+            {imagesArray.map((item) => (
+              <View key={item.id}>
+                <Image
+                  style={[styles.image, cardImageStyle]}
+                  source={{
+                    uri: item.link,
+                  }}
+                />
+              </View>
+            ))}
+          </MultiCarousel>
+        )
+      ) : (
+        <ImagePlaceholder height={isListView ? 230 : 210} />
+      )}
       {!assetData?.isAssetOwner && (
         <TouchableOpacity style={styles.favouriteIcon} onPress={handleFavourite}>
           <Icon

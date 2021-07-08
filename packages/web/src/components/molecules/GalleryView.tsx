@@ -66,7 +66,19 @@ const GalleryView: FC<IProps> = (props: IProps) => {
       showDots: false,
       children: undefined,
     };
-
+    if (data.length === 1) {
+      return (
+        <View>
+          <Image
+            style={styles.imageCarousel}
+            source={{
+              uri: data[0].link,
+            }}
+            resizeMode="contain"
+          />
+        </View>
+      );
+    }
     return (
       <MultiCarousel forwardRef={carouselRef} passedProps={carouselProps}>
         {renderPropertyImages()}
