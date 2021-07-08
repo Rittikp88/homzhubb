@@ -4,6 +4,7 @@ import { StyleProp, StyleSheet, TouchableHighlight, View, ViewStyle } from 'reac
 import { MessageComponentProps } from 'react-native-flash-message';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -18,8 +19,28 @@ interface IMessage {
   onPress: () => void;
 }
 
+interface IState {
+  scrollHeight: number | string;
+}
+
 type IProps = MessageComponentProps & WithTranslation;
-class Toast extends React.PureComponent<IProps> {
+class Toast extends React.PureComponent<IProps, IState> {
+  public constructor(props: IProps) {
+    super(props);
+    this.state = {
+      scrollHeight: '',
+    };
+  }
+
+  public componentDidMount = (): void => {
+    this.updateDimensions();
+    window.addEventListener('scroll', this.updateDimensions);
+  };
+
+  public componentWillUnmount = (): void => {
+    window.removeEventListener('scroll', this.updateDimensions);
+  };
+
   public render = (): React.ReactNode => {
     const {
       t,
@@ -27,7 +48,6 @@ class Toast extends React.PureComponent<IProps> {
     } = this.props;
 
     const icon = type === 'danger' ? icons.circularCrossFilled : icons.circularCheckFilled;
-
     return (
       <View style={this.getContainerStyle()}>
         <View style={styles.iconMessageContainer}>
@@ -69,11 +89,21 @@ class Toast extends React.PureComponent<IProps> {
     AlertHelper.dismiss();
   };
 
+  private updateDimensions = (): void => {
+    this.setState({ scrollHeight: window.pageYOffset }); // window.scrollY or window.pageYOffset both can be used
+  };
+
   private getContainerStyle = (): StyleProp<ViewStyle> => {
+    const isWeb = PlatformUtils.isWeb();
+    const { scrollHeight } = this.state;
     const {
       message: { backgroundColor },
     } = this.props;
-    return StyleSheet.flatten([styles.container, { backgroundColor }]);
+    return StyleSheet.flatten([
+      styles.container,
+      { backgroundColor },
+      isWeb && styles.containerWeb && { top: scrollHeight },
+    ]);
   };
 }
 
@@ -89,6 +119,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     marginBottom: theme.layout.toastMargin,
+  },
+  containerWeb: {
+    position: 'absolute',
   },
   buttonContainer: {
     borderRadius: 4,

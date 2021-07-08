@@ -48,7 +48,6 @@ export interface IProps {
 
 export const Dropdown = (props: IProps): React.ReactElement => {
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
-  const [updatedValue, setUpdatedValue] = useState<IPopupOptions>();
   const {
     value,
     data,
@@ -72,8 +71,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   } = props;
 
   const valueChange = (changedValue: IPopupOptions): void => {
-    const selectedValue = changedValue.value === placeholder ? '' : changedValue.value;
-    setUpdatedValue(changedValue);
+    const selectedValue = changedValue.value && changedValue.value === placeholder ? '' : changedValue.value;
     if (onDonePress && selectedValue) {
       onDonePress(selectedValue);
       closeDropdown();
@@ -83,9 +81,8 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   const openDropdown = (): void => setDropdownVisible(true);
   const closeDropdown = (): void => setDropdownVisible(false);
   const selectedItem = data.find((d: PickerItemProps) => d.value === value);
-  const label = updatedValue ? updatedValue.label : selectedItem?.label;
+  const label = selectedItem?.label;
   const placeholderColor = !label ? styles.placeholderColor : {};
-
   const disabledStyles = StyleSheet.flatten([disable && styles.disabled]);
 
   if (isOutline) {

@@ -26,7 +26,7 @@ export const RouteNames = {
     PORTFOLIO: '/dashboard/portfolio',
     ADD_PROPERTY: '/dashboard/addProperty',
     PORTFOLIO_ADD_PROPERTY: '/dashboard/portfolio/addProperty',
-    ADD_LISTING: '/dashboard/addListing',
+    ADD_LISTING: '/dashboard/nextActions',
     PROPERTY_DETAIL: '/dashboard/propertyDetail',
     SEARCH_PROPERTY: '/dashboard/searchProperty',
     PROPERTY_VIEW: '/dashboard/propertyView',

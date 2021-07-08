@@ -5,6 +5,7 @@ export const pageTitles: tpageTitles = {
   selectProperty: 'Value Added Services',
   selectServices: 'Value Added Services',
   propertyView: 'Property View',
+  nextActions: 'Next Actions',
 };
 
 export const routesConfig = [
@@ -23,5 +24,9 @@ export const routesConfig = [
   {
     path: '/dashboard/propertyView',
     breadcrumb: 'Property View',
+  },
+  {
+    path: '/dashboard/nextActions',
+    breadcrumb: 'Next Actions',
   },
 ];

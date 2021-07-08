@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Text as RNText, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { FormikProps, FormikValues } from 'formik';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { FontWeightType, Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { Dropdown } from '@homzhub/common/src/components/atoms/Dropdown';
@@ -79,7 +80,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
     if (textType === 'label') {
       TextField = Label;
     }
-
+    const isWeb = PlatformUtils.isWeb();
     return (
       <WithFieldError error={error}>
         <TextField type={textSize} textType={fontType} style={labelStyles}>
@@ -97,7 +98,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
           placeholder={placeholder}
           iconSize={16}
           iconColor={theme.colors.darkTint7}
-          containerStyle={StyleSheet.flatten([dropdownContainerStyle, errorStyle])}
+          containerStyle={StyleSheet.flatten([dropdownContainerStyle, errorStyle, isWeb && styles.containerWeb])}
           numColumns={numColumns}
         />
       </WithFieldError>
@@ -110,5 +111,8 @@ const styles = StyleSheet.create({
     color: theme.colors.error,
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  containerWeb: {
+    justifyContent: 'space-between',
   },
 });

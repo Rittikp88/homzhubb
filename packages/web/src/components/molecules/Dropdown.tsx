@@ -1,16 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, LayoutChangeEvent } from 'react-native';
+import { View, LayoutChangeEvent, PickerItemProps } from 'react-native';
 import { PopupProps, PopupActions } from 'reactjs-popup/dist/types';
 
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 
-interface IProps {
-  label: string;
-  value: string;
-}
 export interface IDropdownProps {
-  data: IProps[];
+  data: PickerItemProps[];
   valueChange: (changedValue: IPopupOptions) => void;
   dropdownVisible: boolean;
   content: React.ReactElement;
