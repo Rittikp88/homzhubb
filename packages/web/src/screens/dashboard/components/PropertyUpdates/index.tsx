@@ -73,7 +73,7 @@ const propertyUpdatesData = (
     url: RouteNames.protectedRoutes.NOTIFICATIONS,
   },
   {
-    icon: icons.ticket,
+    icon: icons.serviceRequest,
     iconColor: theme.colors.orange,
     title: 'assetDashboard:tickets',
     // TODO - remove condition once ticket story is picked up.

@@ -2,8 +2,8 @@ type tpageTitles = {
   [key: string]: string;
 };
 export const pageTitles: tpageTitles = {
-  selectProperty: 'Value Added Services',
-  selectServices: 'Value Added Services',
+  selectProperty: 'Market Place',
+  selectServices: 'Market Place',
   propertyView: 'Property View',
   searchProperty: 'Search Property',
   propertyVisits: 'Property Visits',
@@ -14,15 +14,15 @@ export const pageTitles: tpageTitles = {
 
 export const routesConfig = [
   {
-    path: '/dashboard/valueAddedService/selectServices',
+    path: '/dashboard/marketPlace/selectServices',
     breadcrumb: 'Select Services',
   },
   {
-    path: '/dashboard/valueAddedService',
-    breadcrumb: 'Value Added Services',
+    path: '/dashboard/marketPlace',
+    breadcrumb: 'Market Place',
   },
   {
-    path: '/dashboard/valueAddedService/selectProperty',
+    path: '/dashboard/marketPlace/selectProperty',
     breadcrumb: 'Select Property',
   },
   {

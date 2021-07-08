@@ -74,6 +74,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
   };
   const onPressAction = (action: OfferAction, offers: Offer): void => {
     dispatch(OfferActions.setCurrentOffer(offers));
+    dispatch(OfferActions.getListingDetailSuccess(property));
     setOfferActionType(action);
     if (popupRef && popupRef.current) {
       popupRef.current.open();

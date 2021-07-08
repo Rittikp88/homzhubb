@@ -1018,7 +1018,8 @@
     "debitOn": "Debited on",
     "referEarn": "Refer and Earn",
     "coinBalance": "Coin Balance",
-    "coinsEarned": "Coins Earned"
+    "coinsEarned": "Coins Earned",
+    "marketPlace": "Market Place"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

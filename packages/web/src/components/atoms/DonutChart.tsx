@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactApexCharts from 'react-apexcharts';
 import _ from 'lodash';
+import { FinanceUtils } from '@homzhub/common/src/utils/FinanceUtil';
 import { ObjectUtils } from '@homzhub/common/src/utils/ObjectUtils';
-import { theme } from '@homzhub/common/src/styles/theme';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 
 interface IProps {
@@ -57,10 +57,9 @@ class DonutChart extends React.PureComponent<IProps, IState> {
       if (ledgers.length > 1) {
         amount = ledgersByCategory[categoryId].reduce((acc: number, ledger: GeneralLedgers) => acc + ledger.amount, 0);
       }
-
       series.push(amount);
       labels.push(category);
-      colors.push(theme.randomHex());
+      colors.push(FinanceUtils.getGraphColor(category));
     });
     this.setState({ series, colors, labels });
   };

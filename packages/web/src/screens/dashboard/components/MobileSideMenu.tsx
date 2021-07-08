@@ -71,7 +71,7 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
     },
     {
       id: 7,
-      text: t('assetMore:valueAddedServices'),
+      text: t('assetMore:marketPlace'),
       icon: icons.settingOutline,
       url: RouteNames.protectedRoutes.VALUE_ADDED_SERVICES,
     },

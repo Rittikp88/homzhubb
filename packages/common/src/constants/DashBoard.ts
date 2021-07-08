@@ -31,13 +31,12 @@ export enum sideMenuItems {
   offers = 'common:offers',
   newLaunches = 'newLaunches',
   marketTrends = 'marketTrends',
-  valueAddedServices = 'valueAddedServices',
+  valueAddedServices = 'marketPlace',
   settings = 'settings',
   manageSubscription = 'common:manageSubscription',
   paymentMethods = 'paymentMethods',
   logout = 'logout',
 }
-
 export interface IMenuItemList {
   id: number;
   name: string;
