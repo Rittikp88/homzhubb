@@ -387,6 +387,12 @@ class DateUtils {
   public getDateDifference = (date: string, unit?: unitOfTime.Diff): number => {
     return moment().diff(moment(date), unit || 'hours');
   };
+
+  public ascendingDateSort = (arr: Array<any>, keyToCheck: string): Array<any> =>
+    [...arr].sort((a, b) => moment(a[keyToCheck]).valueOf() - moment(b[keyToCheck]).valueOf());
+
+  public descendingDateSort = (arr: Array<any>, keyToCheck: string): Array<any> =>
+    [...arr].sort((a, b) => moment(b[keyToCheck]).valueOf() - moment(a).valueOf());
 }
 
 const dateUtils = new DateUtils();

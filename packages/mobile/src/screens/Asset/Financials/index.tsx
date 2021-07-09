@@ -8,6 +8,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
@@ -34,6 +35,7 @@ interface IOwnState {
 
 interface IStateProps {
   assets: Asset[];
+  duesLoader: boolean;
 }
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
 type Props = WithTranslation & libraryProps & IStateProps;
@@ -63,12 +65,13 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       route: { params },
+      duesLoader,
     } = this.props;
     const { scrollEnabled, selectedProperty, selectedCountry, isLoading } = this.state;
 
     return (
       <UserScreen
-        loading={isLoading}
+        loading={isLoading || duesLoader}
         isGradient
         isOuterScrollEnabled={scrollEnabled}
         title={t('financial')}
@@ -206,8 +209,10 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserAssets } = UserSelector;
+  const { getduesLoader } = FinancialSelectors;
   return {
     assets: getUserAssets(state),
+    duesLoader: getduesLoader(state),
   };
 };
 

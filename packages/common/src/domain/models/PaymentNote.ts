@@ -6,7 +6,7 @@ export class PaymentNote extends PaymentPreFill {
   @JsonProperty('description', String)
   private _description = '';
 
-  @JsonProperty('user_invoice_no', String)
+  @JsonProperty('user_invoice_no', String, true)
   private _userInvoiceNo = '';
 
   get description(): string {

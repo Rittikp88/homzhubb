@@ -1,7 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { groupBy, cloneDeep } from 'lodash';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { Message, IMessageKeyValue, IMessages } from '@homzhub/common/src/domain/models/Message';
+import { IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
 
 class ReducerUtils {
   public formatMessages = (data: Message[], prevObj: IMessages | null, isNew?: boolean): IMessageKeyValue => {
@@ -33,6 +36,23 @@ class ReducerUtils {
     const index = attachments.findIndex((item) => item.filename === key);
     attachments.splice(index, 1);
     return attachments;
+  };
+
+  public formatFinancialTransactions = (
+    initialState: IFinancialTransaction | null,
+    payload: IPaginationPayload<IFinancialTransaction>
+  ): IFinancialTransaction => {
+    const { data, isReset } = payload;
+    const newData =
+      isReset || !initialState
+        ? payload.data
+        : ({
+          ...initialState,
+          count: data.count,
+          links: data.links,
+          results: [...initialState.results, ...data.results],
+        } as IFinancialTransaction);
+    return newData;
   };
 }
 

@@ -1,14 +1,36 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
-import { Links } from '@homzhub/common/src/domain/models/PaginationLinks';
-import { Property } from '@homzhub/common/src/domain/models/Property';
+import { ILedgerCategory, LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
+import { ILinks, Links } from '@homzhub/common/src/domain/models/PaginationLinks';
+import { IProperty, Property } from '@homzhub/common/src/domain/models/Property';
 
 export enum FormType {
   Income = 1,
   Expense = 2,
+}
+
+export interface IFinancialRecord {
+  id: number;
+  entry_type: string;
+  category: ILedgerCategory;
+  amount: number;
+  transaction_date: string;
+  label: string;
+  notes: string;
+  payer_name: string;
+  receiver_name: string;
+  asset: IProperty | null;
+  currency: ICurrency;
+  attachments: IAttachment[];
+  is_system_generated: boolean;
+}
+
+export interface IFinancialTransaction {
+  count: number;
+  results: IFinancialRecord[];
+  links: ILinks | null;
 }
 
 @JsonObject('FinancialRecords')
@@ -138,5 +160,9 @@ export class FinancialTransactions {
 
   get results(): FinancialRecords[] | [] {
     return this._results;
+  }
+
+  get links(): Links | null {
+    return this._links;
   }
 }

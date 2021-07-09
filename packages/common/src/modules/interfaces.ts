@@ -1,6 +1,7 @@
 import { CallEffect, PutEffect, SelectEffect } from '@redux-saga/core/effects';
 import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
+import { IFinancialState } from '@homzhub/common/src/modules/financials/interfaces';
 import { IOfferState } from '@homzhub/common/src/modules/offers/interfaces';
 import { IPortfolioState } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
@@ -27,6 +28,12 @@ export interface IState {
   ticket: ITicketState;
   offer: IOfferState;
   user: IUserState;
+  financials: IFinancialState;
+}
+
+export interface IPaginationPayload<T> {
+  data: T;
+  isReset?: boolean;
 }
 
 export type GeneratorEffects = SelectEffect | PutEffect | CallEffect;

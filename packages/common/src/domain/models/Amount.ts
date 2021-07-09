@@ -1,6 +1,11 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
+
+export interface IAmount {
+  amount: number;
+  currency: ICurrency;
+}
 
 @JsonObject('Amount')
 export class Amount {

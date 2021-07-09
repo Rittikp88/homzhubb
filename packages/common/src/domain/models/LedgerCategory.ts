@@ -1,5 +1,11 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export interface ILedgerCategory {
+  id: number;
+  entry_type: string;
+  name: string;
+}
+
 @JsonObject('LedgerCategory')
 export class LedgerCategory {
   @JsonProperty('id', Number)

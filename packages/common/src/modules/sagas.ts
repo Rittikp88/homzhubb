@@ -2,6 +2,7 @@
 import { all } from 'redux-saga/effects';
 import { watchAsset } from '@homzhub/common/src/modules/asset/saga';
 import { watchCommonActions } from '@homzhub/common/src/modules/common/saga';
+import { watchFinancials } from '@homzhub/common/src/modules/financials/saga';
 import { watchOffer } from '@homzhub/common/src/modules/offers/saga';
 import { watchPortfolio } from '@homzhub/common/src/modules/portfolio/saga';
 import { watchRecordAsset } from '@homzhub/common/src/modules/recordAsset/saga';
@@ -19,5 +20,6 @@ export default function* rootSaga(): any {
     watchTicket(),
     watchOffer(),
     watchCommonActions(),
+    watchFinancials(),
   ]);
 }

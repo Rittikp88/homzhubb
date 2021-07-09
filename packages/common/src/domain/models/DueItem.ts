@@ -1,9 +1,17 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { PaymentTransaction } from '@homzhub/common/src/domain/models/PaymentTransaction';
 
+export interface IDueItem {
+  id: number;
+  invoice_no: string;
+  invoice_title: string;
+  total_price: number;
+  currency: ICurrency;
+  asset: IAsset;
+}
 @JsonObject('DueItem')
 export class DueItem {
   @JsonProperty('id', Number)
@@ -26,6 +34,9 @@ export class DueItem {
 
   @JsonProperty('payment_transaction', PaymentTransaction)
   private _paymentTransaction = new PaymentTransaction();
+
+  @JsonProperty('created_at', String)
+  private _createdAt = '';
 
   get id(): number {
     return this._id;
@@ -57,5 +68,9 @@ export class DueItem {
 
   get totalDue(): string {
     return `${this.currency.currencySymbol}${CurrencyUtils.getCurrency(this.currency.currencyCode, this.totalPrice)}`;
+  }
+
+  get createdAt(): string {
+    return this._createdAt;
   }
 }

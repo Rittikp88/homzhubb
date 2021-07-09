@@ -120,6 +120,11 @@ export enum PurchaseTypes {
   APPLE_PURCHASE = 'APPLE_PURCHASE',
 }
 
+export enum DuePaymentActions {
+  PAYMENT_CAPTURED = 'PAYMENT_CAPTURED',
+  PAYMENT_CANCELLED = 'PAYMENT_CANCELLED',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -1031,4 +1036,9 @@ export interface ISearchRequirementPayload {
   user_location_latitude?: number | null;
   user_location_longitude?: number | null;
   comments?: string;
+}
+
+export interface IDuePaymentParams {
+  action: DuePaymentActions;
+  payload: IPaymentParams;
 }

@@ -61,8 +61,6 @@ const DueCard = (props: IProps): React.ReactElement => {
           initiatePayment={onInitPayment}
           outerContainerStyle={styles.paymentButton}
           paymentApi={onOrderPlaced}
-          // Todo (Praharsh) : Enable after API is integrated
-          disabled
         />
       </View>
     </View>

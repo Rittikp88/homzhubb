@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { assetReducer } from '@homzhub/common/src/modules/asset/reducer';
 import { commonReducer } from '@homzhub/common/src/modules/common/reducer';
+import { financialsReducer } from '@homzhub/common/src/modules/financials/reducer';
 import { offerReducer } from '@homzhub/common/src/modules/offers/reducer';
 import { portfolioReducer } from '@homzhub/common/src/modules/portfolio/reducer';
 import { recordAssetReducer } from '@homzhub/common/src/modules/recordAsset/reducer';
@@ -11,10 +12,11 @@ import { userReducer } from '@homzhub/common/src/modules/user/reducer';
 export default combineReducers({
   asset: assetReducer,
   common: commonReducer,
+  financials: financialsReducer,
+  offer: offerReducer,
+  portfolio: portfolioReducer,
+  recordAsset: recordAssetReducer,
   search: searchReducer,
   ticket: ticketReducer,
   user: userReducer,
-  portfolio: portfolioReducer,
-  recordAsset: recordAssetReducer,
-  offer: offerReducer,
 });

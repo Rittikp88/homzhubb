@@ -1,19 +1,26 @@
-import React, { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+import React, { useCallback } from 'react';
 import { StyleSheet, FlatList } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import DueCard from '@homzhub/common/src/components/molecules/DueCard';
 import SectionContainer from '@homzhub/common/src/components/organisms/SectionContainer';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
-import { Dues } from '@homzhub/common/src/domain/models/Dues';
-import { IPaymentParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  DuePaymentActions,
+  IDuePaymentParams,
+  IPaymentParams,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   toggleLoading: (loading: boolean) => void;
@@ -21,48 +28,79 @@ interface IProps {
 
 const DuesContainer = (props: IProps): React.ReactElement | null => {
   const { toggleLoading } = props;
-  const { t } = useTranslation();
-  const [dues, setDues] = useState(new Dues());
 
-  const getAllDues = async (): Promise<void> => {
-    try {
-      toggleLoading(true);
-      const duesData = await LedgerRepository.getDues();
-      setDues(duesData);
-      toggleLoading(false);
-    } catch (e) {
-      toggleLoading(false);
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-    }
-  };
+  // HOOKS START
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const dues = useSelector(FinancialSelectors.getDues);
+  // HOOKS END
 
   // Todo (Praharsh) : Try moving to onFocusCallback
   useFocusEffect(
     useCallback(() => {
-      getAllDues().then();
+      dispatch(FinancialActions.getDues());
     }, [])
   );
 
   const keyExtractor = (item: DueItem): string => item.id.toString();
 
   const renderItem = ({ item }: { item: DueItem }): React.ReactElement | null => {
-    // Todo (Praharsh) : Handle API here
-    const onPressItem = (): Promise<Payment> => {
-      return Promise.resolve(new Payment());
+    const onPressPayNow = (): Promise<Payment> => {
+      return PaymentRepository.initiateDuePayment(item.id);
     };
-    return (
-      <DueCard due={item} onInitPayment={onPressItem} onOrderPlaced={(paymentParams: IPaymentParams): void => {}} />
-    );
+
+    const onOrderPlaced = async (paymentParams: IPaymentParams): Promise<void> => {
+      const getBody = (): IDuePaymentParams => {
+        // Payment successful
+        if (paymentParams.razorpay_payment_id) {
+          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
+          return {
+            action: DuePaymentActions.PAYMENT_CAPTURED,
+            payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
+          };
+        }
+        // Payment cancelled
+        const { razorpay_order_id } = paymentParams;
+        return {
+          action: DuePaymentActions.PAYMENT_CANCELLED,
+          payload: { razorpay_order_id },
+        };
+      };
+
+      try {
+        toggleLoading(true);
+        await PaymentRepository.processDuePayment(getBody());
+        if (paymentParams.razorpay_payment_id) {
+          dispatch(FinancialActions.getDues());
+          dispatch(
+            FinancialActions.getTransactions({
+              offset: 0,
+              limit: 10,
+            })
+          );
+        }
+        toggleLoading(false);
+      } catch (e) {
+        toggleLoading(false);
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+      }
+    };
+
+    return <DueCard due={item} onInitPayment={onPressPayNow} onOrderPlaced={onOrderPlaced} />;
   };
 
   const ItemSeparator = (): React.ReactElement => <Divider containerStyles={styles.divider} />;
 
-  if (!dues.dueItems.length) return null;
+  if (!dues || (dues && !dues.dueItems.length)) return null;
 
   const {
     total: { formattedAmount },
     dueItems,
   } = dues;
+
+  // Sort array in desc order based on 'created_at'
+  const sortedDuesDesc = DateUtils.descendingDateSort(dueItems, 'createdAt');
+
   return (
     <SectionContainer
       containerStyle={styles.container}
@@ -72,8 +110,8 @@ const DuesContainer = (props: IProps): React.ReactElement | null => {
       rightTextColor={theme.colors.error}
     >
       <FlatList
-        // NOTE (Praharsh) : Slicing 5 items for now as said by Vedant.
-        data={dueItems.length > 5 ? dueItems.slice(0, 5) : dueItems}
+        // NOTE (Praharsh) : Slicing 5 items for now.
+        data={sortedDuesDesc.slice(0, 5)}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ItemSeparatorComponent={ItemSeparator}

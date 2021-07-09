@@ -1,5 +1,9 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export interface IProperty {
+  id: number;
+  project_name: string;
+}
 @JsonObject('Property')
 export class Property {
   @JsonProperty('id', Number)
