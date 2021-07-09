@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { isEqual } from 'lodash';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { withMediaQuery, IWithMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -9,6 +11,8 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -25,10 +29,13 @@ import { Payment } from '@homzhub/common/src/domain/models/Payment';
 import { ValueAddedService, ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import {
+  DuePaymentActions,
   IOrderSummaryPayload,
   IPaymentParams,
   IUpdateAssetParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IFinancialState, IProcessPaymentPayload } from '@homzhub/common/src/modules/financials/interfaces';
 
 interface IPaymentProps {
   valueAddedServices: ValueAddedService[];
@@ -47,7 +54,15 @@ interface IPaymentState {
   isLoading: boolean;
 }
 
-type Props = IPaymentProps & WithTranslation & IWithMediaQuery;
+interface IStateProps {
+  financialLoaders: IFinancialState['loaders'];
+}
+
+interface IDispatchProps {
+  processPayment: (payload: IProcessPaymentPayload) => void;
+}
+
+type Props = IPaymentProps & WithTranslation & IWithMediaQuery & IStateProps & IDispatchProps;
 
 class PropertyPayment extends Component<Props, IPaymentState> {
   public state = {
@@ -68,7 +83,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
     }
 
     if (goBackToService && valueAddedServices.filter((service) => service.value).length === 0) {
-      this.getOrderSummary();
+      await this.getOrderSummary();
       goBackToService();
       return;
     }
@@ -78,7 +93,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
 
   public render(): React.ReactNode {
     const { isCoinApplied, orderSummary, isPromoFailed, isLoading } = this.state;
-    const { t, isTablet } = this.props;
+    const { t, isTablet, financialLoaders } = this.props;
 
     if (PlatformUtils.isWeb() && orderSummary.amountPayable < 1) {
       return this.renderServices(true);
@@ -124,7 +139,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
             {t('property:securePayment')}
           </Label>
         </View>
-        <Loader visible={isLoading} />
+        <Loader visible={isLoading || financialLoaders.payment} />
       </View>
     );
   }
@@ -200,34 +215,47 @@ class PropertyPayment extends Component<Props, IPaymentState> {
     });
   };
 
-  private paymentApi = async (paymentParams: IPaymentParams): Promise<void> => {
-    const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId } = this.props;
-    this.setState({ isLoading: true });
+  private paymentApi = (paymentParams: IPaymentParams): void => {
+    const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId, processPayment } = this.props;
+    let payload;
 
-    try {
-      await PaymentRepository.valueAddedServicesPayment(paymentParams);
-
-      if (paymentParams.razorpay_order_id) {
-        if (lastVisitedStep && typeOfPlan) {
-          const updateAssetPayload: IUpdateAssetParams = {
-            last_visited_step: {
-              ...lastVisitedStep,
-              listing: {
-                ...lastVisitedStep.listing,
-                type: typeOfPlan,
-                is_payment_done: true,
-              },
-            },
-          };
-          await AssetRepository.updateAsset(propertyId, updateAssetPayload);
-        }
-        handleNextStep();
-      }
-      this.setState({ isLoading: false });
-    } catch (e) {
-      this.setState({ isLoading: false });
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    if (paymentParams.razorpay_payment_id) {
+      const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
+      payload = {
+        action: DuePaymentActions.PAYMENT_CAPTURED,
+        payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
+      };
+    } else {
+      // Payment cancelled
+      const { razorpay_order_id } = paymentParams;
+      payload = {
+        action: DuePaymentActions.PAYMENT_CANCELLED,
+        payload: { razorpay_order_id },
+      };
     }
+
+    const finalPayload: IProcessPaymentPayload = {
+      data: payload,
+      onCallback: async (status) => {
+        if (status && paymentParams.razorpay_order_id) {
+          if (lastVisitedStep && typeOfPlan) {
+            const updateAssetPayload: IUpdateAssetParams = {
+              last_visited_step: {
+                ...lastVisitedStep,
+                listing: {
+                  ...lastVisitedStep.listing,
+                  type: typeOfPlan,
+                  is_payment_done: true,
+                },
+              },
+            };
+            await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+          }
+          handleNextStep();
+        }
+      },
+    };
+    processPayment(finalPayload);
   };
 
   private applyPromo = async (code: string): Promise<void> => {
@@ -284,7 +312,19 @@ class PropertyPayment extends Component<Props, IPaymentState> {
   };
 }
 
-const HOC = withTranslation()(PropertyPayment);
+const mapStateToProps = (state: IState): IStateProps => {
+  const { getFinancialLoaders } = FinancialSelectors;
+  return {
+    financialLoaders: getFinancialLoaders(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { processPayment } = FinancialActions;
+  return bindActionCreators({ processPayment }, dispatch);
+};
+
+const HOC = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(PropertyPayment));
 const propertyPayment = withMediaQuery<any>(HOC);
 export { propertyPayment as PropertyPayment };
 

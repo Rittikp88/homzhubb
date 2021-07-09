@@ -33,12 +33,16 @@ class Toast extends React.PureComponent<IProps, IState> {
   }
 
   public componentDidMount = (): void => {
-    this.updateDimensions();
-    window.addEventListener('scroll', this.updateDimensions);
+    if (PlatformUtils.isWeb()) {
+      this.updateDimensions();
+      window.addEventListener('scroll', this.updateDimensions);
+    }
   };
 
   public componentWillUnmount = (): void => {
-    window.removeEventListener('scroll', this.updateDimensions);
+    if (PlatformUtils.isWeb()) {
+      window.removeEventListener('scroll', this.updateDimensions);
+    }
   };
 
   public render = (): React.ReactNode => {
@@ -65,7 +69,7 @@ class Toast extends React.PureComponent<IProps, IState> {
         </View>
         {(type === 'danger' || 'info') && (
           <TouchableHighlight
-            testID="tohighPress"
+            testID="toHighPress"
             style={styles.buttonContainer}
             onPress={this.onOKPress}
             underlayColor={theme.colors.highPriority}
@@ -90,7 +94,10 @@ class Toast extends React.PureComponent<IProps, IState> {
   };
 
   private updateDimensions = (): void => {
-    this.setState({ scrollHeight: window.pageYOffset }); // window.scrollY or window.pageYOffset both can be used
+    /**
+     * window.scrollY or window.pageYOffset both can be used
+     */
+    this.setState({ scrollHeight: window.pageYOffset });
   };
 
   private getContainerStyle = (): StyleProp<ViewStyle> => {

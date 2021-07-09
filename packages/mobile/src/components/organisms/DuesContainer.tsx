@@ -3,9 +3,7 @@ import { StyleSheet, FlatList } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
@@ -16,19 +14,10 @@ import DueCard from '@homzhub/common/src/components/molecules/DueCard';
 import SectionContainer from '@homzhub/common/src/components/organisms/SectionContainer';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
-import {
-  DuePaymentActions,
-  IDuePaymentParams,
-  IPaymentParams,
-} from '@homzhub/common/src/domain/repositories/interfaces';
+import { DuePaymentActions, IPaymentParams, IPaymentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IProcessPaymentPayload } from '@homzhub/common/src/modules/financials/interfaces';
 
-interface IProps {
-  toggleLoading: (loading: boolean) => void;
-}
-
-const DuesContainer = (props: IProps): React.ReactElement | null => {
-  const { toggleLoading } = props;
-
+const DuesContainer = (): React.ReactElement | null => {
   // HOOKS START
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -42,35 +31,32 @@ const DuesContainer = (props: IProps): React.ReactElement | null => {
     }, [])
   );
 
-  const keyExtractor = (item: DueItem): string => item.id.toString();
+  const onPressPayNow = (id: number): Promise<Payment> => {
+    return PaymentRepository.initiateDuePayment(id);
+  };
 
-  const renderItem = ({ item }: { item: DueItem }): React.ReactElement | null => {
-    const onPressPayNow = (): Promise<Payment> => {
-      return PaymentRepository.initiateDuePayment(item.id);
+  const onOrderPlaced = (paymentParams: IPaymentParams): void => {
+    const getBody = (): IPaymentPayload => {
+      // Payment successful
+      if (paymentParams.razorpay_payment_id) {
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
+        return {
+          action: DuePaymentActions.PAYMENT_CAPTURED,
+          payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
+        };
+      }
+      // Payment cancelled
+      const { razorpay_order_id } = paymentParams;
+      return {
+        action: DuePaymentActions.PAYMENT_CANCELLED,
+        payload: { razorpay_order_id },
+      };
     };
 
-    const onOrderPlaced = async (paymentParams: IPaymentParams): Promise<void> => {
-      const getBody = (): IDuePaymentParams => {
-        // Payment successful
-        if (paymentParams.razorpay_payment_id) {
-          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
-          return {
-            action: DuePaymentActions.PAYMENT_CAPTURED,
-            payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
-          };
-        }
-        // Payment cancelled
-        const { razorpay_order_id } = paymentParams;
-        return {
-          action: DuePaymentActions.PAYMENT_CANCELLED,
-          payload: { razorpay_order_id },
-        };
-      };
-
-      try {
-        toggleLoading(true);
-        await PaymentRepository.processDuePayment(getBody());
-        if (paymentParams.razorpay_payment_id) {
+    const payload: IProcessPaymentPayload = {
+      data: getBody(),
+      onCallback: (status) => {
+        if (status && paymentParams.razorpay_payment_id) {
           dispatch(FinancialActions.getDues());
           dispatch(
             FinancialActions.getTransactions({
@@ -79,14 +65,22 @@ const DuesContainer = (props: IProps): React.ReactElement | null => {
             })
           );
         }
-        toggleLoading(false);
-      } catch (e) {
-        toggleLoading(false);
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
-      }
+      },
     };
 
-    return <DueCard due={item} onInitPayment={onPressPayNow} onOrderPlaced={onOrderPlaced} />;
+    dispatch(FinancialActions.processPayment(payload));
+  };
+
+  const keyExtractor = (item: DueItem): string => item.id.toString();
+
+  const renderItem = ({ item }: { item: DueItem }): React.ReactElement | null => {
+    return (
+      <DueCard
+        due={item}
+        onInitPayment={(): Promise<Payment> => onPressPayNow(item.id)}
+        onOrderPlaced={onOrderPlaced}
+      />
+    );
   };
 
   const ItemSeparator = (): React.ReactElement => <Divider containerStyles={styles.divider} />;

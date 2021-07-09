@@ -54,6 +54,7 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
     const { outerContainerStyle = {} } = this.props;
     return (
       <>
+        {/* @ts-ignore */}
         <Button {...this.props} onPress={this.onPress} containerStyle={[styles.button, outerContainerStyle]} />
         <Loader visible={loading} />
       </>
@@ -109,8 +110,13 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
           user_invoice_id,
           razorpay_order_id: order_id,
         });
-        if (this.getErrorResponse(error.code) === PaymentFailureResponse.PAYMENT_CANCELLED && error.error) {
-          AlertHelper.error({ message: error.error.description });
+
+        if (this.getErrorResponse(error.code) === PaymentFailureResponse.PAYMENT_CANCELLED) {
+          if (error.error) {
+            AlertHelper.error({ message: error.error.description });
+          } else {
+            AlertHelper.error({ message: error.description });
+          }
         } else {
           AlertHelper.error({ message: JSON.parse(error.description).description });
         }
@@ -119,7 +125,7 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
 
   // eslint-disable-next-line consistent-return
   private getErrorResponse = (errorCode: number): PaymentFailureResponse | undefined => {
-    if ((PlatformUtils.isAndroid && errorCode === 0) || (PlatformUtils.isIOS && errorCode === 2)) {
+    if ((PlatformUtils.isAndroid() && errorCode === 0) || (PlatformUtils.isIOS() && errorCode === 2)) {
       return PaymentFailureResponse.PAYMENT_CANCELLED;
     }
   };

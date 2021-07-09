@@ -3,7 +3,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
-  IDuePaymentParams,
+  IPaymentPayload,
   IOrderSummaryPayload,
   IPaymentParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -11,8 +11,8 @@ import {
 const ENDPOINTS = {
   valueAddedServices: 'v1/value-added-services/payment/',
   valueAddedServicesPayment: 'v1/value-added-services/payment-response/',
-  initiateDuePayment: (invoiceId: number): string => `v1/invoices/${invoiceId}/payment-transactions/razorpay-orders/`,
-  processDuePayment: 'v1/invoices/payment-transactions/razorpay-payments/',
+  initiateDuePayment: (invoiceId: number): string => `v1/invoices/${invoiceId}/razorpay-orders/`,
+  processPayment: 'v1/invoices/razorpay-payments/',
 };
 
 class PaymentRepository {
@@ -36,8 +36,8 @@ class PaymentRepository {
     return ObjectMapper.deserialize(Payment, response);
   };
 
-  public processDuePayment = async (data: IDuePaymentParams): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.processDuePayment, data);
+  public processPayment = async (data: IPaymentPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.processPayment, data);
   };
 }
 

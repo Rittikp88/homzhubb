@@ -11,6 +11,7 @@ export const initialFinancialsState: IFinancialState = {
   loaders: {
     transactions: false,
     dues: false,
+    payment: false,
   },
 };
 
@@ -34,16 +35,17 @@ export const financialsReducer = (
 
     case FinancialActionTypes.GET.TRANSACTIONS_FAILURE:
       return { ...state, ['loaders']: { ...state.loaders, ['transactions']: false } };
-
     case FinancialActionTypes.GET.DUES:
       return { ...state, ['loaders']: { ...state.loaders, ['dues']: true } };
-
     case FinancialActionTypes.GET.DUES_SUCCESS:
       return { ...state, ['dues']: action.payload as IDues, ['loaders']: { ...state.loaders, ['dues']: false } };
-
     case FinancialActionTypes.GET.DUES_FAILURE:
       return { ...state, ['loaders']: { ...state.loaders, ['dues']: false } };
-
+    case FinancialActionTypes.POST.PAYMENT:
+      return { ...state, ['loaders']: { ...state.loaders, ['payment']: true } };
+    case FinancialActionTypes.POST.PAYMENT_SUCCESS:
+    case FinancialActionTypes.POST.PAYMENT_FAILURE:
+      return { ...state, ['loaders']: { ...state.loaders, ['payment']: false } };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;
 

@@ -44,11 +44,12 @@ const PaymentGateway = (props: IProps): React.ReactElement => {
     document.body.appendChild(script);
   }, []);
 
-  const onPaymentClose = (payment_transaction_id: number, user_invoice_id: number): void => {
+  const onPaymentClose = (payment_transaction_id: number, user_invoice_id: number, order_id: string): void => {
     paymentApi({
       error_code: PaymentFailureResponse.PAYMENT_CANCELLED,
       payment_transaction_id,
       user_invoice_id,
+      razorpay_order_id: order_id,
     });
   };
 
@@ -75,7 +76,7 @@ const PaymentGateway = (props: IProps): React.ReactElement => {
         order_id,
         handler: paymentApi,
         modal: {
-          ondismiss: (): void => onPaymentClose(payment_transaction_id, user_invoice_id),
+          ondismiss: (): void => onPaymentClose(payment_transaction_id, user_invoice_id, order_id),
         },
         prefill: ObjectMapper.serialize(prefill),
         notes: ObjectMapper.serialize(notes),

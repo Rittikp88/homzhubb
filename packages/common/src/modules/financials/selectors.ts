@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IFinancialState } from '@homzhub/common/src/modules/financials/interfaces';
 
 const getTransactions = (state: IState): FinancialTransactions | null => {
   const {
@@ -35,13 +36,8 @@ const getDues = (state: IState): Dues | null => {
   return ObjectMapper.deserialize(Dues, dues);
 };
 
-const getduesLoader = (state: IState): boolean => {
-  const {
-    financials: {
-      loaders: { dues },
-    },
-  } = state;
-  return dues;
+const getFinancialLoaders = (state: IState): IFinancialState['loaders'] => {
+  return state.financials.loaders;
 };
 
 export const FinancialSelectors = {
@@ -49,5 +45,5 @@ export const FinancialSelectors = {
   getTransactions,
   getTransactionRecords,
   getTransactionsCount,
-  getduesLoader,
+  getFinancialLoaders,
 };

@@ -1038,7 +1038,7 @@ export interface ISearchRequirementPayload {
   comments?: string;
 }
 
-export interface IDuePaymentParams {
+export interface IPaymentPayload {
   action: DuePaymentActions;
   payload: IPaymentParams;
 }

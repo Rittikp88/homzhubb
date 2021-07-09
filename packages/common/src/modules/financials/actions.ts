@@ -3,6 +3,7 @@ import { Dues, IDues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialTransactions, IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IFluxStandardAction, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IProcessPaymentPayload } from '@homzhub/common/src/modules/financials/interfaces';
 
 const actionTypePrefix = 'Financials/';
 
@@ -16,6 +17,11 @@ export const FinancialActionTypes = {
     DUES: `${actionTypePrefix}DUES`,
     DUES_SUCCESS: `${actionTypePrefix}DUES_SUCCESS`,
     DUES_FAILURE: `${actionTypePrefix}DUES_FAILURE`,
+  },
+  POST: {
+    PAYMENT: `${actionTypePrefix}PAYMENT`,
+    PAYMENT_SUCCESS: `${actionTypePrefix}PAYMENT_SUCCESS`,
+    PAYMENT_FAILURE: `${actionTypePrefix}PAYMENT_FAILURE`,
   },
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
 };
@@ -49,11 +55,24 @@ const getDuesFailure = (): IFluxStandardAction => ({
   type: FinancialActionTypes.GET.DUES_FAILURE,
 });
 
+const processPayment = (payload: IProcessPaymentPayload): IFluxStandardAction<IProcessPaymentPayload> => ({
+  type: FinancialActionTypes.POST.PAYMENT,
+  payload,
+});
+
+const paymentSuccess = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.POST.PAYMENT_SUCCESS,
+});
+
+const paymentFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.POST.PAYMENT_FAILURE,
+});
+
 const clearFinancials = (): IFluxStandardAction => ({
   type: FinancialActionTypes.GET.DUES_FAILURE,
 });
 
-export type FinancialActionPayloadTypes = IPaginationPayload<FinancialTransactions> | IDues;
+export type FinancialActionPayloadTypes = IPaginationPayload<FinancialTransactions> | IDues | IProcessPaymentPayload;
 
 export const FinancialActions = {
   getTransactions,
@@ -62,5 +81,8 @@ export const FinancialActions = {
   getDues,
   getDuesFailure,
   getDuesSuccess,
+  processPayment,
+  paymentSuccess,
+  paymentFailure,
   clearFinancials,
 };

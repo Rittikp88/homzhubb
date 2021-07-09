@@ -24,6 +24,7 @@ import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/Fin
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IFinancialState } from '@homzhub/common/src/modules/financials/interfaces';
 
 interface IOwnState {
   ledgerData: GeneralLedgers[];
@@ -35,7 +36,7 @@ interface IOwnState {
 
 interface IStateProps {
   assets: Asset[];
-  duesLoader: boolean;
+  financialLoaders: IFinancialState['loaders'];
 }
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
 type Props = WithTranslation & libraryProps & IStateProps;
@@ -65,13 +66,15 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       route: { params },
-      duesLoader,
+      financialLoaders: { dues, payment },
     } = this.props;
     const { scrollEnabled, selectedProperty, selectedCountry, isLoading } = this.state;
 
+    const loading = isLoading || dues || payment;
+
     return (
       <UserScreen
-        loading={isLoading || duesLoader}
+        loading={loading}
         isGradient
         isOuterScrollEnabled={scrollEnabled}
         title={t('financial')}
@@ -93,7 +96,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
           onCountryChange={this.onCountryChange}
         />
         <FinanceOverview selectedProperty={selectedProperty} selectedCountry={selectedCountry} />
-        <DuesContainer toggleLoading={this.toggleLoading} />
+        <DuesContainer />
         <TransactionCardsContainer
           selectedProperty={selectedProperty}
           selectedCountry={selectedCountry}
@@ -209,10 +212,10 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserAssets } = UserSelector;
-  const { getduesLoader } = FinancialSelectors;
+  const { getFinancialLoaders } = FinancialSelectors;
   return {
     assets: getUserAssets(state),
-    duesLoader: getduesLoader(state),
+    financialLoaders: getFinancialLoaders(state),
   };
 };
 
