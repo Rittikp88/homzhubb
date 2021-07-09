@@ -57,7 +57,7 @@ exports[`Toast should match snapshot for type danger 1`] = `
         "borderRadius": 4,
       }
     }
-    testID="tohighPress"
+    testID="toHighPress"
     underlayColor="#FF8576"
   >
     <Label
@@ -134,7 +134,7 @@ exports[`Toast should match snapshot for type success 1`] = `
         "borderRadius": 4,
       }
     }
-    testID="tohighPress"
+    testID="toHighPress"
     underlayColor="#FF8576"
   >
     <Label

@@ -1,46 +1,409 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TransactionCardsContainer should match snapshot 1`] = `
-<View
-  style={
-    Object {
-      "backgroundColor": "#FFFFFF",
-      "marginTop": 16,
-    }
-  }
->
-  <OnFocusCallback
+<Fragment>
+  <SectionContainer
     callback={[Function]}
-    isAsync={true}
-  />
-  <View
-    style={
+    containerStyle={
       Object {
-        "alignItems": "center",
-        "flexDirection": "row",
-        "padding": 16,
+        "backgroundColor": "#FFFFFF",
+        "marginTop": 16,
       }
     }
+    sectionIcon="cheque"
+    sectionTitle="transactions"
   >
-    <Icon
-      allowFontScaling={false}
-      name="cheque"
-      size={22}
+    <ScrollView
+      onMomentumScrollEnd={[Function]}
+      onScroll={[Function]}
+      onScrollEndDrag={[Function]}
+      scrollEventThrottle={1500}
       style={
         Object {
-          "marginEnd": 12,
+          "maxHeight": 400,
         }
       }
-    />
-    <Text
-      textType="semiBold"
-      type="small"
     >
-      transactions
-    </Text>
-  </View>
-  <Divider />
-  <EmptyState />
+      <withI18nextTranslation(TransactionCard)
+        handleDownload={[Function]}
+        isExpanded={false}
+        key="1-0"
+        onCardPress={[Function]}
+        onPressDelete={[Function]}
+        onPressEdit={[Function]}
+        transaction={
+          FinancialRecords {
+            "_amount": 27000,
+            "_asset": Property {
+              "_id": 1,
+              "_projectName": "akn",
+            },
+            "_attachments": Array [],
+            "_category": LedgerCategory {
+              "_entryType": "",
+              "_id": 1,
+              "_name": "Maintanence",
+            },
+            "_currency": Currency {
+              "_currencyCode": "AUD",
+              "_currencyName": "AUD",
+              "_currencySymbol": "$",
+            },
+            "_entryType": "CREDIT",
+            "_id": 1,
+            "_isSystemGenerated": false,
+            "_label": "Rent",
+            "_notes": "Jahn Doe",
+            "_payerName": "Foobar",
+            "_receiverName": "JohnDoe",
+            "_transactionDate": "2020-06-20",
+          }
+        }
+      />
+      <withI18nextTranslation(TransactionCard)
+        handleDownload={[Function]}
+        isExpanded={false}
+        key="2-1"
+        onCardPress={[Function]}
+        onPressDelete={[Function]}
+        onPressEdit={[Function]}
+        transaction={
+          FinancialRecords {
+            "_amount": 27000,
+            "_asset": Property {
+              "_id": 1,
+              "_projectName": "Godrej Prime",
+            },
+            "_attachments": Array [
+              Attachment {
+                "_attachmentLink": "",
+                "_fileName": "Foobar.jpg",
+                "_id": 1,
+                "_isCoverImage": false,
+                "_label": "",
+                "_link": "",
+                "_mediaAttributes": MediaAttributes {
+                  "_duration": "",
+                  "_thumbnail": "",
+                  "_thumbnailBest": "",
+                  "_thumbnailHD": "",
+                  "_thumbnailSD": "",
+                  "_title": "",
+                  "_videoId": "",
+                },
+                "_mediaType": "IMAGE",
+                "_name": "",
+                "_presignedReferenceKey": "",
+              },
+            ],
+            "_category": LedgerCategory {
+              "_entryType": "",
+              "_id": 1,
+              "_name": "Rental Income",
+            },
+            "_currency": Currency {
+              "_currencyCode": "AUD",
+              "_currencyName": "AUD",
+              "_currencySymbol": "$",
+            },
+            "_entryType": "DEBIT",
+            "_id": 2,
+            "_isSystemGenerated": false,
+            "_label": "Rent",
+            "_notes": "Jahn Doe",
+            "_payerName": "Foobar",
+            "_receiverName": "JohnDoe",
+            "_transactionDate": "2020-06-20",
+          }
+        }
+      />
+      <withI18nextTranslation(TransactionCard)
+        handleDownload={[Function]}
+        isExpanded={false}
+        key="3-2"
+        onCardPress={[Function]}
+        onPressDelete={[Function]}
+        onPressEdit={[Function]}
+        transaction={
+          FinancialRecords {
+            "_amount": 27000,
+            "_asset": Property {
+              "_id": 1,
+              "_projectName": "Godrej Prime",
+            },
+            "_attachments": Array [
+              Attachment {
+                "_attachmentLink": "",
+                "_fileName": "Foobar.jpg",
+                "_id": 1,
+                "_isCoverImage": false,
+                "_label": "",
+                "_link": "",
+                "_mediaAttributes": MediaAttributes {
+                  "_duration": "",
+                  "_thumbnail": "",
+                  "_thumbnailBest": "",
+                  "_thumbnailHD": "",
+                  "_thumbnailSD": "",
+                  "_title": "",
+                  "_videoId": "",
+                },
+                "_mediaType": "IMAGE",
+                "_name": "",
+                "_presignedReferenceKey": "",
+              },
+            ],
+            "_category": LedgerCategory {
+              "_entryType": "",
+              "_id": 1,
+              "_name": "Utility bills",
+            },
+            "_currency": Currency {
+              "_currencyCode": "AUD",
+              "_currencyName": "AUD",
+              "_currencySymbol": "$",
+            },
+            "_entryType": "CREDIT",
+            "_id": 3,
+            "_isSystemGenerated": false,
+            "_label": "Rent",
+            "_notes": "Jahn Doe",
+            "_payerName": "Foobar",
+            "_receiverName": "JohnDoe",
+            "_transactionDate": "2020-06-20",
+          }
+        }
+      />
+      <withI18nextTranslation(TransactionCard)
+        handleDownload={[Function]}
+        isExpanded={false}
+        key="4-3"
+        onCardPress={[Function]}
+        onPressDelete={[Function]}
+        onPressEdit={[Function]}
+        transaction={
+          FinancialRecords {
+            "_amount": 27000,
+            "_asset": Property {
+              "_id": 1,
+              "_projectName": "Godrej Prime",
+            },
+            "_attachments": Array [
+              Attachment {
+                "_attachmentLink": "",
+                "_fileName": "Foobar.jpg",
+                "_id": 1,
+                "_isCoverImage": false,
+                "_label": "",
+                "_link": "",
+                "_mediaAttributes": MediaAttributes {
+                  "_duration": "",
+                  "_thumbnail": "",
+                  "_thumbnailBest": "",
+                  "_thumbnailHD": "",
+                  "_thumbnailSD": "",
+                  "_title": "",
+                  "_videoId": "",
+                },
+                "_mediaType": "IMAGE",
+                "_name": "",
+                "_presignedReferenceKey": "",
+              },
+            ],
+            "_category": LedgerCategory {
+              "_entryType": "",
+              "_id": 1,
+              "_name": "Utility bills",
+            },
+            "_currency": Currency {
+              "_currencyCode": "AUD",
+              "_currencyName": "AUD",
+              "_currencySymbol": "$",
+            },
+            "_entryType": "DEBIT",
+            "_id": 4,
+            "_isSystemGenerated": false,
+            "_label": "Rent",
+            "_notes": "Jahn Doe",
+            "_payerName": "Foobar",
+            "_receiverName": "JohnDoe",
+            "_transactionDate": "2020-06-20",
+          }
+        }
+      />
+      <withI18nextTranslation(TransactionCard)
+        handleDownload={[Function]}
+        isExpanded={false}
+        key="5-4"
+        onCardPress={[Function]}
+        onPressDelete={[Function]}
+        onPressEdit={[Function]}
+        transaction={
+          FinancialRecords {
+            "_amount": 27000,
+            "_asset": Property {
+              "_id": 1,
+              "_projectName": "Godrej Prime",
+            },
+            "_attachments": Array [
+              Attachment {
+                "_attachmentLink": "",
+                "_fileName": "Foobar.jpg",
+                "_id": 1,
+                "_isCoverImage": false,
+                "_label": "",
+                "_link": "",
+                "_mediaAttributes": MediaAttributes {
+                  "_duration": "",
+                  "_thumbnail": "",
+                  "_thumbnailBest": "",
+                  "_thumbnailHD": "",
+                  "_thumbnailSD": "",
+                  "_title": "",
+                  "_videoId": "",
+                },
+                "_mediaType": "IMAGE",
+                "_name": "",
+                "_presignedReferenceKey": "",
+              },
+            ],
+            "_category": LedgerCategory {
+              "_entryType": "",
+              "_id": 1,
+              "_name": "Utility bills",
+            },
+            "_currency": Currency {
+              "_currencyCode": "AUD",
+              "_currencyName": "AUD",
+              "_currencySymbol": "$",
+            },
+            "_entryType": "CREDIT",
+            "_id": 5,
+            "_isSystemGenerated": false,
+            "_label": "Rent",
+            "_notes": "Jahn Doe",
+            "_payerName": "Foobar",
+            "_receiverName": "JohnDoe",
+            "_transactionDate": "2020-06-20",
+          }
+        }
+      />
+      <withI18nextTranslation(TransactionCard)
+        handleDownload={[Function]}
+        isExpanded={false}
+        key="6-5"
+        onCardPress={[Function]}
+        onPressDelete={[Function]}
+        onPressEdit={[Function]}
+        transaction={
+          FinancialRecords {
+            "_amount": 27000,
+            "_asset": Property {
+              "_id": 1,
+              "_projectName": "Godrej Prime",
+            },
+            "_attachments": Array [
+              Attachment {
+                "_attachmentLink": "",
+                "_fileName": "Foobar.jpg",
+                "_id": 1,
+                "_isCoverImage": false,
+                "_label": "",
+                "_link": "",
+                "_mediaAttributes": MediaAttributes {
+                  "_duration": "",
+                  "_thumbnail": "",
+                  "_thumbnailBest": "",
+                  "_thumbnailHD": "",
+                  "_thumbnailSD": "",
+                  "_title": "",
+                  "_videoId": "",
+                },
+                "_mediaType": "IMAGE",
+                "_name": "",
+                "_presignedReferenceKey": "",
+              },
+            ],
+            "_category": LedgerCategory {
+              "_entryType": "",
+              "_id": 1,
+              "_name": "Utility bills",
+            },
+            "_currency": Currency {
+              "_currencyCode": "AUD",
+              "_currencyName": "AUD",
+              "_currencySymbol": "$",
+            },
+            "_entryType": "DEBIT",
+            "_id": 6,
+            "_isSystemGenerated": false,
+            "_label": "Rent",
+            "_notes": "Jahn Doe",
+            "_payerName": "Foobar",
+            "_receiverName": "JohnDoe",
+            "_transactionDate": "2020-06-20",
+          }
+        }
+      />
+      <withI18nextTranslation(TransactionCard)
+        handleDownload={[Function]}
+        isExpanded={false}
+        key="7-6"
+        onCardPress={[Function]}
+        onPressDelete={[Function]}
+        onPressEdit={[Function]}
+        transaction={
+          FinancialRecords {
+            "_amount": 27000,
+            "_asset": Property {
+              "_id": 1,
+              "_projectName": "Godrej Prime",
+            },
+            "_attachments": Array [
+              Attachment {
+                "_attachmentLink": "",
+                "_fileName": "Foobar.jpg",
+                "_id": 1,
+                "_isCoverImage": false,
+                "_label": "",
+                "_link": "",
+                "_mediaAttributes": MediaAttributes {
+                  "_duration": "",
+                  "_thumbnail": "",
+                  "_thumbnailBest": "",
+                  "_thumbnailHD": "",
+                  "_thumbnailSD": "",
+                  "_title": "",
+                  "_videoId": "",
+                },
+                "_mediaType": "IMAGE",
+                "_name": "",
+                "_presignedReferenceKey": "",
+              },
+            ],
+            "_category": LedgerCategory {
+              "_entryType": "",
+              "_id": 1,
+              "_name": "Utility bills",
+            },
+            "_currency": Currency {
+              "_currencyCode": "AUD",
+              "_currencyName": "AUD",
+              "_currencySymbol": "$",
+            },
+            "_entryType": "CREDIT",
+            "_id": 7,
+            "_isSystemGenerated": false,
+            "_label": "Rent",
+            "_notes": "Jahn Doe",
+            "_payerName": "Foobar",
+            "_receiverName": "JohnDoe",
+            "_transactionDate": "2020-06-20",
+          }
+        }
+      />
+    </ScrollView>
+  </SectionContainer>
   <BottomSheet
     headerTitle="common:confirm"
     onCloseSheet={[Function]}
@@ -110,5 +473,5 @@ exports[`TransactionCardsContainer should match snapshot 1`] = `
       </View>
     </View>
   </BottomSheet>
-</View>
+</Fragment>
 `;

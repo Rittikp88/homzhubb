@@ -37,6 +37,7 @@ exports[`Text Area should match snapshot 1`] = `
           "padding": 5,
         },
         undefined,
+        false,
       ]
     }
   >
@@ -45,15 +46,18 @@ exports[`Text Area should match snapshot 1`] = `
       autoCorrect={false}
       maxLength={250}
       multiline={true}
+      numberOfLines={4}
       placeholder="placeholder"
       rejectResponderTermination={true}
       style={
         Array [
           Object {
+            "height": 150,
             "justifyContent": "flex-start",
             "textAlignVertical": "top",
           },
           Object {},
+          false,
         ]
       }
       underlineColorAndroid="transparent"
@@ -116,6 +120,7 @@ exports[`Text Area should match snapshot for optional 1`] = `
           "padding": 5,
         },
         undefined,
+        false,
       ]
     }
   >
@@ -124,15 +129,18 @@ exports[`Text Area should match snapshot for optional 1`] = `
       autoCorrect={false}
       maxLength={250}
       multiline={true}
+      numberOfLines={4}
       placeholder="placeholder"
       rejectResponderTermination={true}
       style={
         Array [
           Object {
+            "height": 150,
             "justifyContent": "flex-start",
             "textAlignVertical": "top",
           },
           Object {},
+          false,
         ]
       }
       underlineColorAndroid="transparent"

@@ -24,7 +24,6 @@ exports[`Asset filter should render snapshot 1`] = `
           "flexDirection": "row",
           "justifyContent": "space-between",
           "margin": 16,
-          "marginTop": 30,
           "paddingVertical": 10,
         }
       }
@@ -278,7 +277,7 @@ exports[`Asset filter should render snapshot 1`] = `
           label="expectedMoveInDate"
           name="expected_move_in_date"
           placeHolder="selectMoveInDate"
-          selectedValue="2021-06-30"
+          selectedValue="2021-07-31"
           textSize="small"
           textType="text"
         />

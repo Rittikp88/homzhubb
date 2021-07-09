@@ -16,6 +16,7 @@ exports[`SelectionPicker should match snapshot 1`] = `
   }
 >
   <ForwardRef
+    disabled={false}
     key="0"
     onPress={[Function]}
     style={
@@ -40,6 +41,7 @@ exports[`SelectionPicker should match snapshot 1`] = `
           "borderTopStartRadius": 4,
           "borderTopWidth": 1.5,
         },
+        false,
         false,
         false,
         false,
@@ -77,6 +79,7 @@ exports[`SelectionPicker should match snapshot 1`] = `
     />
   </ForwardRef>
   <ForwardRef
+    disabled={false}
     key="1"
     onPress={[Function]}
     style={
@@ -102,6 +105,7 @@ exports[`SelectionPicker should match snapshot 1`] = `
           "borderTopEndRadius": 4,
           "borderTopWidth": 1.5,
         },
+        false,
         false,
         false,
       ]
@@ -147,6 +151,7 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
   }
 >
   <ForwardRef
+    disabled={false}
     key="0"
     onPress={[Function]}
     style={
@@ -171,6 +176,7 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
           "borderTopStartRadius": 4,
           "borderTopWidth": 1.5,
         },
+        false,
         false,
         false,
         false,
@@ -208,6 +214,7 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
     />
   </ForwardRef>
   <ForwardRef
+    disabled={false}
     key="1"
     onPress={[Function]}
     style={
@@ -233,6 +240,7 @@ exports[`SelectionPicker should match snapshot for optional width 1`] = `
           "borderTopEndRadius": 4,
           "borderTopWidth": 1.5,
         },
+        false,
         false,
         false,
       ]

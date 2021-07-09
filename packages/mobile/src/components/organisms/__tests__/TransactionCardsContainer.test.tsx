@@ -13,6 +13,7 @@ const desierilizedTransactions = ObjectMapper.deserialize(FinancialTransactions,
 describe('TransactionCardsContainer', () => {
   const createTestProps = (testProps: any): object => ({
     transactionsData: desierilizedTransactions.results,
+    getTransactions: jest.fn(),
     ...testProps,
   });
 

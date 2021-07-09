@@ -3,11 +3,14 @@
 exports[`RoomsFilter should match snapshot 1`] = `
 <View
   style={
-    Object {
-      "flex": 0,
-      "paddingHorizontal": 2,
-      "paddingTop": 0,
-    }
+    Array [
+      Object {
+        "flex": 0,
+        "paddingHorizontal": 2,
+        "paddingTop": 0,
+      },
+      undefined,
+    ]
   }
 >
   <Text
