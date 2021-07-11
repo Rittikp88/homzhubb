@@ -49,6 +49,7 @@ class GeolocationService {
           const country = deviceLocation.address_components.find((address) => address.types.includes('country'));
           deviceCountry = country?.short_name ?? deviceCountry;
 
+          store.dispatch(CommonActions.setDeviceCountry(deviceCountry));
           const { lngValue, latValue } = this.getFormattedCords(lat, lng);
           store.dispatch(
             SearchActions.setFilter({
@@ -67,7 +68,9 @@ class GeolocationService {
             );
           }
         },
-        (error: GeolocationError) => {}
+        (error: GeolocationError) => {
+          store.dispatch(CommonActions.setDeviceCountry(deviceCountry));
+        }
       );
     } else {
       const state = store.getState();
@@ -86,9 +89,9 @@ class GeolocationService {
           })
         );
       }
-    }
 
-    store.dispatch(CommonActions.setDeviceCountry(deviceCountry));
+      store.dispatch(CommonActions.setDeviceCountry(deviceCountry));
+    }
   };
 
   public getFormattedCords = (lat: number, lng: number): ICords => {

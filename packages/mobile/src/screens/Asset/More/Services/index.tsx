@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
@@ -45,11 +45,12 @@ const ServicesDashboard = (): React.ReactElement => {
 
   useFocusEffect(
     useCallback(() => {
+      getManagementData();
       dispatch(UserActions.getUserServices());
     }, [])
   );
 
-  useEffect(() => {
+  const getManagementData = (): void => {
     ServiceRepository.getServiceManagementTab()
       .then((res) => {
         const { valueAddedService } = res;
@@ -69,7 +70,7 @@ const ServicesDashboard = (): React.ReactElement => {
         setOpenServiceCount(valueAddedService.open.count);
       })
       .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
-  }, []);
+  };
 
   const onSelectMenu = (value: string): void => {
     ServiceHelper.handleServiceActions(value, currentAsset, attachments);
