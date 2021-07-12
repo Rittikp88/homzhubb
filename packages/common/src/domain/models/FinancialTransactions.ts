@@ -62,7 +62,7 @@ export class FinancialRecords {
   @JsonProperty('receiver_name', String)
   private _receiverName = '';
 
-  @JsonProperty('asset', Property)
+  @JsonProperty('asset', Property, true)
   private _asset: Property | null = null;
 
   @JsonProperty('currency', Currency)

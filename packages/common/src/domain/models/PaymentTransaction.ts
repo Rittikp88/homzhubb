@@ -9,7 +9,7 @@ export class PaymentTransaction {
   private _expectedAmount = -1;
 
   @JsonProperty('paid_amount', Number)
-  private _paidAmount = -1;
+  private _paidAmount = null;
 
   @JsonProperty('balance_amount', Number)
   private _balanceAmount = -1;
@@ -22,7 +22,7 @@ export class PaymentTransaction {
     return this._expectedAmount;
   }
 
-  get paid_amount(): number {
+  get paid_amount(): number | null {
     return this._paidAmount;
   }
 

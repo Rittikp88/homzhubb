@@ -257,6 +257,11 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       navigation.navigate(ScreensKeys.DocumentScreen, { isFromDashboard: true, propertyId: assetId });
     } else if (type === NotificationType.REFER_AND_EARN) {
       navigation.navigate(ScreensKeys.ReferEarn);
+    } else if (type === NotificationType.DUE) {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.Financials,
+      });
     }
   };
 

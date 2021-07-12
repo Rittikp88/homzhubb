@@ -14,6 +14,7 @@ export enum NotificationType {
   VALUE_ADDED_SERVICE = 'VALUE_ADDED_SERVICE',
   ASSET_DOCUMENT = 'ASSET_DOCUMENT',
   REFER_AND_EARN = 'REFER_AND_EARN',
+  DUE = 'DUE',
 }
 
 @JsonObject('DeeplinkMetaData')

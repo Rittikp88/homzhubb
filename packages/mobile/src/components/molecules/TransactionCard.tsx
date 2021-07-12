@@ -37,6 +37,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
     const {
       isExpanded,
       transaction: {
+        asset,
         transactionDate,
         category,
         label,
@@ -96,13 +97,16 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
             <Label maxLength={textLength} type="large" textType="bold" numberOfLines={1}>
               {label}
             </Label>
-            <Label maxLength={textLength} type="large" numberOfLines={1}>
-              {assetName}
-            </Label>
+            {asset && (
+              <Label maxLength={textLength} type="large" numberOfLines={1}>
+                {assetName}
+              </Label>
+            )}
           </View>
           <View style={styles.commonAlignStyle}>
             <PricePerUnit
               textSizeType="small"
+              // @ts-ignore
               textStyle={textStyle}
               currency={currency}
               prefixText={pricePrefixText}

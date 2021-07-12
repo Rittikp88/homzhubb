@@ -178,7 +178,6 @@ class NavigationService {
             break;
         }
         break;
-
       case DynamicLinkTypes.Asset:
         store.dispatch(
           PortfolioActions.setCurrentAsset({
@@ -189,6 +188,12 @@ class NavigationService {
         );
         this.navigateTo(ScreensKeys.Portfolio, {
           screen: ScreensKeys.PropertyDetailScreen,
+          initial: false,
+        });
+        break;
+      case DynamicLinkTypes.Due:
+        this.navigateTo(ScreensKeys.BottomTabs, {
+          screen: ScreensKeys.Financials,
           initial: false,
         });
         break;

@@ -144,7 +144,8 @@ class NotificationService {
     });
     // Handle Notification when App is quit / App is not opened.
     // eslint-disable-next-line max-len
-    const remoteMessage: FirebaseMessagingTypes.RemoteMessage | null = await this.messageObject.getInitialNotification();
+    const remoteMessage: FirebaseMessagingTypes.RemoteMessage | null =
+      await this.messageObject.getInitialNotification();
     if (remoteMessage && remoteMessage.data) {
       this.redirectOnNotification(remoteMessage.data);
     }
@@ -213,6 +214,8 @@ class NotificationService {
       if (notifType === NotificationTypes.ValueAddedService) return ScreensKeys.ServicesDashboard;
       if (notifType === NotificationTypes.AssetDocuments) return ScreensKeys.DocumentScreen;
       if (notifType === NotificationTypes.ReferAndEarn) return ScreensKeys.ReferEarn;
+      if (notifType === NotificationTypes.Due) return ScreensKeys.FinancialsLandingScreen;
+
       return (
         (notifScreen
           ? notificationSubScreenMap[screen as NotificationScreens] || ScreensKeys.ChatScreen
@@ -233,6 +236,8 @@ class NotificationService {
         case NotificationTypes.Campaign:
         case NotificationTypes.ReferAndEarn:
           return ScreensKeys.Dashboard;
+        case NotificationTypes.Due:
+          return ScreensKeys.Financials;
         default:
           return ScreensKeys.More;
       }
@@ -333,6 +338,9 @@ class NotificationService {
           NavigationService.setParams({ shouldReload: true });
           return;
         }
+        NavigationService.notificationNavigation(screenName, params, navigationTab);
+        break;
+      case NotificationTypes.Due:
         NavigationService.notificationNavigation(screenName, params, navigationTab);
         break;
       default:

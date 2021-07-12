@@ -11,6 +11,7 @@ export enum DynamicLinkTypes {
   ServiceTicket = 'SERVICE_TICKET',
   Offer = 'OFFER',
   Asset = 'ASSET',
+  Due = 'DUE',
 }
 
 export enum RouteTypes {
@@ -56,6 +57,7 @@ export enum NotificationTypes {
   ValueAddedService = 'VALUE_ADDED_SERVICE',
   AssetDocuments = 'ASSET_DOCUMENT',
   ReferAndEarn = 'REFER_AND_EARN',
+  Due = 'DUE',
 }
 
 /**

@@ -108,6 +108,7 @@ const DuesContainer = (): React.ReactElement | null => {
         data={sortedDuesDesc.slice(0, 5)}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        scrollEnabled={false}
         ItemSeparatorComponent={ItemSeparator}
       />
     </SectionContainer>
