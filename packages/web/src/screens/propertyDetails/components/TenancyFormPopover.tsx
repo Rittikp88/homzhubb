@@ -29,7 +29,6 @@ import { IOfferManagementParam } from '@homzhub/common/src/domain/repositories/i
 interface IProps {
   popupRef: React.RefObject<PopupActions>;
   asset: Asset;
-  isOpen: boolean;
   userData: UserProfileModel;
   propertyLeaseType: string;
   changePopUpStatus: (datum: string) => void;

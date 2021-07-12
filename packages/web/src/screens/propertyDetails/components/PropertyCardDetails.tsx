@@ -253,7 +253,6 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
         </View>
         <TenancyFormPopover
           userData={userProfile}
-          isOpen
           propertyLeaseType={propertyLeaseType}
           popupRef={this.popupRef}
           changePopUpStatus={changePopUpStatus}

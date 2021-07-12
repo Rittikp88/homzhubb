@@ -31,7 +31,7 @@ interface IProps {
 
 const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
   const { popupRef, offerActionType, offer, compareData = {}, handleOfferAction, onCloseModal } = props;
-  const renderActionsPopover = (): React.ReactNode => {
+  const renderActionsPopover = (): React.ReactNode | null => {
     switch (offerActionType) {
       case OfferAction.ACCEPT:
         return <AcceptOffer handleOfferAction={handleOfferAction} compareData={compareData} />;
@@ -44,7 +44,7 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
       case OfferAction.CONFIRMARION:
         return <AcceptOfferPopOver onClosePopover={onCloseModal} />;
       default:
-        return <View />;
+        return null;
     }
   };
   const isMobile = useOnly(deviceBreakpoint.MOBILE);

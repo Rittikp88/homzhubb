@@ -1,17 +1,22 @@
-import React, { FC, useState, createRef } from 'react';
+import React, { FC, useState, createRef, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
+import ConfirmationPopup from '@homzhub/web/src/components/molecules/ConfirmationPopup';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
+import TenancyFormPopover from '@homzhub/web/src/screens/propertyDetails/components/TenancyFormPopover';
 import { OffersCard } from '@homzhub/web/src/screens/offers/components/OffersCard';
 import OfferActionsPopover from '@homzhub/web/src/screens/offers/components/OfferActionsPopover';
 import PropertyOfferDetails from '@homzhub/web/src/screens/offers/components/PropertyOfferDetails';
+import { renderPopUpTypes as tenancyPopupTypes } from '@homzhub/web/src/screens/propertyDetails/components/PropertyCardDetails';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -22,6 +27,7 @@ interface IProps {
   property: Asset;
   onPressMessages: () => void;
   handleClose: () => void;
+  refreshOffersData: () => void;
 }
 const OffersMade: FC<IProps> = (props: IProps) => {
   const {
@@ -29,14 +35,39 @@ const OffersMade: FC<IProps> = (props: IProps) => {
     property: { leaseNegotiation, saleNegotiation, leaseTerm, saleTerm },
     onPressMessages,
     handleClose,
+    refreshOffersData,
   } = props;
+  const { t } = useTranslation();
   const offer = leaseNegotiation || saleNegotiation;
   const dispatch = useDispatch();
   const [pastOffers, setPastOffers] = useState<Offer[]>([]);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const popupRef = createRef<PopupActions>();
+  const popupRefCounter = createRef<PopupActions>();
   const [offerActionType, setOfferActionType] = useState<OfferAction | null>(null);
   const [currentOffer, setCurrentOffer] = useState<Offer>(new Offer());
+  const userData = useSelector(UserSelector.getUserProfile);
+  const [propertyLeaseType, setPropertyLeaseType] = useState<string>(tenancyPopupTypes.tenancy);
+
+  const getProspectProfile = async (): Promise<void> => {
+    try {
+      const prospectsData = await OffersRepository.getProspectsInfo();
+      if (prospectsData.id) {
+        setPropertyLeaseType(tenancyPopupTypes.offer);
+      }
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    }
+  };
+
+  useEffect(() => {
+    getProspectProfile();
+  }, []);
+
+  const changePopUpStatus = (tenancyPopoverType: string): void => {
+    setPropertyLeaseType(tenancyPopoverType);
+  };
+
   const onCloseModal = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
@@ -76,7 +107,11 @@ const OffersMade: FC<IProps> = (props: IProps) => {
     dispatch(OfferActions.setCurrentOffer(offers));
     dispatch(OfferActions.getListingDetailSuccess(property));
     setOfferActionType(action);
-    if (popupRef && popupRef.current) {
+    if (action === OfferAction.COUNTER) {
+      if (popupRefCounter && popupRefCounter.current) {
+        popupRefCounter.current.open();
+      }
+    } else if (popupRef && popupRef.current) {
       popupRef.current.open();
     }
   };
@@ -96,6 +131,11 @@ const OffersMade: FC<IProps> = (props: IProps) => {
 
   const handleOfferAction = (value: OfferAction): void => {
     setOfferActionType(value);
+  };
+
+  const popupDetails = {
+    title: t('offers:offerSucessHeader'),
+    subTitle: t('offers:offerSucessSubHeader'),
   };
 
   return (
@@ -131,6 +171,16 @@ const OffersMade: FC<IProps> = (props: IProps) => {
           onPressAction={(action: OfferAction): void => onPressAction(action, offer)}
           onViewReasonWeb={(action: OfferAction): void => onViewReasonWeb(action, offer)}
         />
+      )}
+      <TenancyFormPopover
+        userData={userData}
+        propertyLeaseType={propertyLeaseType}
+        popupRef={popupRefCounter}
+        changePopUpStatus={changePopUpStatus}
+        asset={property}
+      />
+      {propertyLeaseType === tenancyPopupTypes.confirm && (
+        <ConfirmationPopup {...popupDetails} refreshPage={refreshOffersData} />
       )}
       <OfferActionsPopover
         offerActionType={offerActionType}

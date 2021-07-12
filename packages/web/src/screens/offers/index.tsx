@@ -176,6 +176,29 @@ const Offers: FC<IProps> = (props: IProps) => {
     selectedFilters.sort_by,
   ]);
 
+  const refreshOffersData = async (): Promise<void> => {
+    let currencies: string[] = [];
+    const payload = {
+      type: offerType === OfferType.OFFER_RECEIVED ? NegotiationOfferType.RECEIVED : NegotiationOfferType.CREATED,
+    };
+    try {
+      const propertyListingDatas = await OffersRepository.getOffers(payload);
+      // For hiding sorting during multiple currencies
+      propertyListingDatas.forEach((item) => {
+        item.country.currencies.forEach((currency) => {
+          if (!currencies.includes(currency.currencyCode)) {
+            currencies = [...currencies, currency.currencyCode];
+          }
+        });
+      });
+
+      setPropertyListingData(propertyListingDatas);
+    } catch (e) {
+      const error = ErrorUtils.getErrorMessage(e.details);
+      AlertHelper.error({ message: error, statusCode: e.details.statusCode });
+    }
+  };
+
   const onMetricsClicked = (name: string): void => {
     setOfferType(name as OfferType);
   };
@@ -206,7 +229,7 @@ const Offers: FC<IProps> = (props: IProps) => {
     }
 
     if (offerType === OfferType.OFFER_MADE) {
-      // TODO : Handle offers made scenarioa - Shagun
+      // TODO : Handle offers made scenario - Shagun
     } else {
       if (payload) {
         setCurrentOfferPayload(payload);
@@ -261,7 +284,14 @@ const Offers: FC<IProps> = (props: IProps) => {
         );
       case OfferType.OFFER_MADE:
       default:
-        return <OffersMade property={item} onPressMessages={onPressMessages} handleClose={handleClose} />;
+        return (
+          <OffersMade
+            property={item}
+            onPressMessages={onPressMessages}
+            handleClose={handleClose}
+            refreshOffersData={refreshOffersData}
+          />
+        );
     }
   };
   return (
