@@ -60,7 +60,7 @@ export interface IAsset {
   is_subleased: boolean;
   is_managed?: boolean;
   unit_number: string;
-  posted_on: string;
+  posted_on?: string;
   description: string;
   block_number: string;
   postal_code: string;
@@ -92,6 +92,7 @@ export interface IAsset {
   lease_negotiation?: IOffer | null;
   sale_negotiation?: IOffer | null;
   value_added_services?: IService[];
+  listed_on?: string;
 }
 
 export interface IData {
@@ -404,6 +405,9 @@ export class Asset {
 
   @JsonProperty('value_added_services', [Service], true)
   private _valueAddedServices = [];
+
+  @JsonProperty('listed_on', String, true)
+  private _listedOn = '';
 
   get investmentStatus(): string {
     return this._investmentStatus;
@@ -803,5 +807,9 @@ export class Asset {
       return isUnderReview;
     }
     return false;
+  }
+
+  get listedOn(): string {
+    return this._listedOn;
   }
 }

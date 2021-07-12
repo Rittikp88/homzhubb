@@ -103,12 +103,12 @@ class PropertyUtils {
       // 0 - RENT and 1 - BUY
       case 0:
         return [
-          { label: 'Posted on', value: postedOnDisplayDate },
+          { label: 'Listed On', value: postedOnDisplayDate },
           { label: 'Available from', value: availableFromDisplayDate },
         ];
       case 1:
         return [
-          { label: 'Posted on', value: postedOnDisplayDate },
+          { label: 'Listed On', value: postedOnDisplayDate },
           { label: 'Possession', value: availableFromDisplayDate },
           // TODO: Uncomment once Tenanted Flow iss ready
           // { label: 'Tenanted till', value: tenantedTillDisplayDate ?? '-' },

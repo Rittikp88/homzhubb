@@ -406,7 +406,6 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       assetType,
       leaseTerm,
       saleTerm,
-      postedOn,
       address,
       projectName,
       unitNumber,
@@ -414,6 +413,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       country: { currencies },
       verifications: { description },
       assetGroup: { code, name },
+      listedOn,
     } = assetDetails;
     const propertyType = assetType ? assetDetails.assetType.name : '';
 
@@ -428,7 +428,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
       name,
-      postedOn,
+      listedOn,
       (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? '',
       asset_transaction_type || 0,
       saleTerm
