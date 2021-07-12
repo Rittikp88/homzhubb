@@ -23,8 +23,6 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IOwnProps extends WithTranslation {
-  selectedCountry?: number;
-  selectedProperty?: number;
   shouldEnableOuterScroll?: (enable: boolean) => void;
   isFromPortfolio?: boolean;
   onEditRecord: (id: number) => void;
@@ -34,10 +32,13 @@ interface IOwnProps extends WithTranslation {
 interface IReduxState {
   transactionsData: FinancialRecords[];
   transactionsCount: number;
+  selectedProperty: number;
+  selectedCountry: number;
 }
 
 interface IDispatchProps {
   getTransactions: (payload: ITransactionParams) => void;
+  getLedgerMetrics: () => void;
 }
 
 type Props = IOwnProps & IReduxState & IDispatchProps;
@@ -173,7 +174,7 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
   };
 
   private onConfirmDelete = async (): Promise<void> => {
-    const { toggleLoading, t } = this.props;
+    const { toggleLoading, t, getLedgerMetrics } = this.props;
     const { currentTransactionId } = this.state;
     if (currentTransactionId > -1) {
       try {
@@ -182,6 +183,7 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
         this.getGeneralLedgers(true);
         this.setState({ expandedItem: -1 });
         toggleLoading(false);
+        getLedgerMetrics();
         this.closeBottomSheet();
         AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
       } catch (e) {
@@ -268,16 +270,18 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
 }
 
 const mapStateToProps = (state: IState): IReduxState => {
-  const { getTransactionRecords, getTransactionsCount } = FinancialSelectors;
+  const { getTransactionRecords, getTransactionsCount, getSelectedCountry, getSelectedProperty } = FinancialSelectors;
   return {
     transactionsData: getTransactionRecords(state),
     transactionsCount: getTransactionsCount(state),
+    selectedCountry: getSelectedCountry(state),
+    selectedProperty: getSelectedProperty(state),
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTransactions } = FinancialActions;
-  return bindActionCreators({ getTransactions }, dispatch);
+  const { getTransactions, getLedgerMetrics } = FinancialActions;
+  return bindActionCreators({ getTransactions, getLedgerMetrics }, dispatch);
 };
 
 export default connect(

@@ -3,6 +3,7 @@ import { StyleSheet, FlatList } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
@@ -35,45 +36,49 @@ const DuesContainer = (): React.ReactElement | null => {
     return PaymentRepository.initiateDuePayment(id);
   };
 
-  const onOrderPlaced = (paymentParams: IPaymentParams): void => {
-    const getBody = (): IPaymentPayload => {
-      // Payment successful
-      if (paymentParams.razorpay_payment_id) {
-        const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
-        return {
-          action: DuePaymentActions.PAYMENT_CAPTURED,
-          payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
-        };
-      }
-      // Payment cancelled
-      const { razorpay_order_id } = paymentParams;
-      return {
-        action: DuePaymentActions.PAYMENT_CANCELLED,
-        payload: { razorpay_order_id },
-      };
-    };
-
-    const payload: IProcessPaymentPayload = {
-      data: getBody(),
-      onCallback: (status) => {
-        if (status && paymentParams.razorpay_payment_id) {
-          dispatch(FinancialActions.getDues());
-          dispatch(
-            FinancialActions.getTransactions({
-              offset: 0,
-              limit: 10,
-            })
-          );
-        }
-      },
-    };
-
-    dispatch(FinancialActions.processPayment(payload));
-  };
-
   const keyExtractor = (item: DueItem): string => item.id.toString();
 
   const renderItem = ({ item }: { item: DueItem }): React.ReactElement | null => {
+    const onOrderPlaced = (paymentParams: IPaymentParams): void => {
+      const getBody = (): IPaymentPayload => {
+        // Payment successful
+        if (paymentParams.razorpay_payment_id) {
+          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
+          return {
+            action: DuePaymentActions.PAYMENT_CAPTURED,
+            payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
+          };
+        }
+        // Payment cancelled
+        const { razorpay_order_id } = paymentParams;
+        return {
+          action: DuePaymentActions.PAYMENT_CANCELLED,
+          payload: { razorpay_order_id },
+        };
+      };
+
+      const payload: IProcessPaymentPayload = {
+        data: getBody(),
+        onCallback: (status) => {
+          if (status && paymentParams.razorpay_payment_id) {
+            dispatch(FinancialActions.resetLedgerFilters());
+            dispatch(FinancialActions.getLedgerMetrics());
+            dispatch(FinancialActions.getLedgers());
+            dispatch(FinancialActions.getDues());
+            dispatch(
+              FinancialActions.getTransactions({
+                offset: 0,
+                limit: 10,
+              })
+            );
+            AlertHelper.success({ message: t('assetFinancial:paidSuccessfully', { amount: `${item.totalDue}` }) });
+          }
+        },
+      };
+
+      dispatch(FinancialActions.processPayment(payload));
+    };
+
     return (
       <DueCard
         due={item}

@@ -2,9 +2,11 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { bindActionCreators, Dispatch } from 'redux';
 import { FinanceUtils } from '@homzhub/common/src/utils/FinanceUtil';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -15,57 +17,54 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { DonutGraph } from '@homzhub/mobile/src/components/atoms/DonutGraph';
 import { DoubleBarGraph } from '@homzhub/mobile/src/components/atoms/DoubleBarGraph';
 import { GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 enum TabKeys {
   expenses = 1,
   cashFlow = 2,
 }
 
-interface IOwnProps {
-  selectedProperty?: number;
-  selectedCountry?: number;
-}
-
 interface IOwnState {
   currentTab: TabKeys;
-  selectedTimeRange: DateFilter;
-  data: GeneralLedgers[];
 }
 
 interface IStateProps {
   financialYear: { startDate: string; endDate: string; startMonthIndex: number; endMonthIndex: number };
+  selectedProperty: number;
+  selectedCountry: number;
+  selectedTimeRange: DateFilter;
+  ledgerData: GeneralLedgers[];
 }
 
-type Props = IStateProps & IOwnProps & WithTranslation;
+interface IDispatchProps {
+  setTimeRange: (range: number) => void;
+  getLedgers: () => void;
+}
+
+type Props = IStateProps & IDispatchProps & WithTranslation;
 
 export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   public state = {
     currentTab: TabKeys.expenses,
-    selectedTimeRange: DateFilter.thisYear,
-    data: [],
-  };
-
-  public componentDidMount = (): void => {
-    this.getLedgersData().then();
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
-    const { selectedCountry: oldCountry, selectedProperty: oldProperty } = prevProps;
-    const { selectedProperty, selectedCountry } = this.props;
-    if (selectedProperty !== oldProperty || selectedCountry !== oldCountry) {
-      this.getLedgersData().then();
+    const { selectedCountry: oldCountry, selectedProperty: oldProperty, selectedTimeRange: prevTimeRange } = prevProps;
+    const { selectedProperty, selectedCountry, selectedTimeRange } = this.props;
+    if (selectedProperty !== oldProperty || selectedCountry !== oldCountry || selectedTimeRange !== prevTimeRange) {
+      this.getLedgersData();
     }
   };
 
   public render = (): React.ReactNode => {
-    const { t, financialYear } = this.props;
-    const { currentTab, selectedTimeRange, data } = this.state;
+    const { t, financialYear, selectedTimeRange } = this.props;
+    const { currentTab } = this.state;
+    const { ledgerData } = this.props;
     return (
       <View style={styles.container}>
-        <OnFocusCallback isAsync callback={this.getLedgersData} />
+        <OnFocusCallback callback={this.getLedgersData} />
         <Text type="small" textType="semiBold" style={styles.title}>
           {t('overallPerformance')}
         </Text>
@@ -97,9 +96,9 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
           />
         </View>
         {currentTab === TabKeys.expenses ? (
-          <DonutGraph data={LedgerUtils.filterByType(LedgerTypes.debit, data)} />
+          <DonutGraph data={LedgerUtils.filterByType(LedgerTypes.debit, ledgerData)} />
         ) : (
-          <DoubleBarGraph data={FinanceUtils.getBarGraphData({ selectedTimeRange, financialYear }, data)} />
+          <DoubleBarGraph data={FinanceUtils.getBarGraphData({ selectedTimeRange, financialYear }, ledgerData)} />
         )}
       </View>
     );
@@ -107,47 +106,49 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
 
   private onTabChange = (tabId: TabKeys): void => {
     this.setState({ currentTab: tabId }, () => {
-      this.getLedgersData().then();
+      this.getLedgersData();
     });
   };
 
-  private onTimeRangeChange = (selectedTimeRange: number): void => {
-    this.setState({ selectedTimeRange }, () => {
-      this.getLedgersData().then();
-    });
+  private onTimeRangeChange = (newTimeRange: number): void => {
+    const { setTimeRange, selectedTimeRange } = this.props;
+    if (newTimeRange === selectedTimeRange) return;
+    setTimeRange(newTimeRange);
   };
 
-  private getLedgersData = async (): Promise<void> => {
-    const { selectedCountry, selectedProperty, financialYear } = this.props;
-    const { selectedTimeRange } = this.state;
-
-    await FinanceUtils.getGeneralLedgers(
-      {
-        selectedTimeRange,
-        financialYear,
-        selectedCountry,
-        selectedProperty,
-      },
-      (response: GeneralLedgers[]) => {
-        this.setState({ data: response });
-      },
-      (errorMsg: string) => {
-        AlertHelper.error({ message: errorMsg });
-      }
-    ).then();
+  private getLedgersData = (): void => {
+    const { getLedgers } = this.props;
+    getLedgers();
   };
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserFinancialYear } = UserSelector;
+  const { getSelectedCountry, getSelectedProperty, getSelectedTimeRange, getLedgerData } = FinancialSelectors;
   return {
     financialYear: getUserFinancialYear(state),
+    selectedProperty: getSelectedProperty(state),
+    selectedCountry: getSelectedCountry(state),
+    selectedTimeRange: getSelectedTimeRange(state),
+    ledgerData: getLedgerData(state),
   };
 };
 
-export default connect<IStateProps, {}, {}, IState>(mapStateToProps)(
-  withTranslation(LocaleConstants.namespacesKey.assetDashboard)(FinanceOverview)
-);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setTimeRange, getLedgers } = FinancialActions;
+  return bindActionCreators(
+    {
+      setTimeRange,
+      getLedgers,
+    },
+    dispatch
+  );
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.assetDashboard)(FinanceOverview));
 
 const styles = StyleSheet.create({
   container: {

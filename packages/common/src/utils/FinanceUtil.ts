@@ -27,14 +27,16 @@ export interface IGraphProps {
   type: DateRangeType;
 }
 
+export interface IFinancialYear {
+  startDate: string;
+  endDate: string;
+  startMonthIndex: number;
+  endMonthIndex: number;
+}
+
 export interface IGeneralLedgersParams {
   selectedTimeRange: DateFilter;
-  financialYear: {
-    startDate: string;
-    endDate: string;
-    startMonthIndex: number;
-    endMonthIndex: number;
-  };
+  financialYear: IFinancialYear;
   selectedCountry?: number | undefined;
   selectedProperty?: number | undefined;
 }

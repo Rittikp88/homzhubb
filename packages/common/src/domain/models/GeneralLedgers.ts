@@ -23,6 +23,14 @@ export interface IGeneralLedgerGraphData {
   svg: { fill: string };
 }
 
+export interface IGeneralLedgers {
+  entry_type: string;
+  category: string;
+  category_id: number;
+  transaction_date_label: string;
+  amount: number;
+}
+
 @JsonObject('GeneralLedgers')
 export class GeneralLedgers {
   @JsonProperty('entry_type', String)

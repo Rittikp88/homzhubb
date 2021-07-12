@@ -19,11 +19,4 @@ describe.skip('FinanceOverview', () => {
     // @ts-ignore
     expect(wrapper.instance().state.currentTab).toBe(2);
   });
-
-  it('should update the state', () => {
-    // @ts-ignore
-    wrapper.find('[testID="drpTimeRange"]').prop('onDonePress')('Annually');
-    // @ts-ignore
-    expect(wrapper.instance().state.selectedTimeRange).toBe('Annually');
-  });
 });

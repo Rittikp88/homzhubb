@@ -1,35 +1,31 @@
 import React from 'react';
 import { PickerItemProps } from 'react-native';
 import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
-import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import DuesContainer from '@homzhub/mobile/src/components/organisms/DuesContainer';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { Country } from '@homzhub/common/src/domain/models/Country';
-import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/FinancialStack';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Country } from '@homzhub/common/src/domain/models/Country';
+import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IFinancialState } from '@homzhub/common/src/modules/financials/interfaces';
+import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
 
 interface IOwnState {
-  ledgerData: GeneralLedgers[];
-  selectedProperty: number;
-  selectedCountry: number;
   isLoading: boolean;
   scrollEnabled: boolean;
 }
@@ -37,28 +33,38 @@ interface IOwnState {
 interface IStateProps {
   assets: Asset[];
   financialLoaders: IFinancialState['loaders'];
+  ledgerData: GeneralLedgers[];
+  selectedProperty: number;
+  selectedCountry: number;
+  ledgerMetrics: ILedgerMetrics;
 }
+
+interface IDispatchProps {
+  getLedgers: () => void;
+  setCurrentCountry: (country: number) => void;
+  setCurrentProperty: (property: number) => void;
+  setTimeRange: (range: number) => void;
+  getLedgerMetrics: () => void;
+  resetLedgerFilters: () => void;
+}
+
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
-type Props = WithTranslation & libraryProps & IStateProps;
+type Props = WithTranslation & libraryProps & IStateProps & IDispatchProps;
 
 export class Financials extends React.PureComponent<Props, IOwnState> {
   private onFocusSubscription: any;
 
   public state = {
-    ledgerData: [],
     isLoading: false,
     scrollEnabled: true,
-    selectedProperty: 0,
-    selectedCountry: 0,
   };
 
   public componentDidMount(): void {
-    const { navigation } = this.props;
+    const { navigation, getLedgerMetrics, resetLedgerFilters } = this.props;
 
     this.onFocusSubscription = navigation.addListener('focus', (): void => {
-      this.setState({ selectedProperty: 0, selectedCountry: 0 }, () => {
-        this.getGeneralLedgersPref().then();
-      });
+      resetLedgerFilters();
+      getLedgerMetrics();
     });
   }
 
@@ -67,8 +73,10 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       t,
       route: { params },
       financialLoaders: { dues, payment },
+      selectedCountry,
+      selectedProperty,
     } = this.props;
-    const { scrollEnabled, selectedProperty, selectedCountry, isLoading } = this.state;
+    const { scrollEnabled, isLoading } = this.state;
 
     const loading = isLoading || dues || payment;
 
@@ -95,11 +103,9 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
           onPropertyChange={this.onPropertyChange}
           onCountryChange={this.onCountryChange}
         />
-        <FinanceOverview selectedProperty={selectedProperty} selectedCountry={selectedCountry} />
+        <FinanceOverview />
         <DuesContainer />
         <TransactionCardsContainer
-          selectedProperty={selectedProperty}
-          selectedCountry={selectedCountry}
           shouldEnableOuterScroll={this.toggleScroll}
           onEditRecord={this.onPressEdit}
           toggleLoading={this.toggleLoading}
@@ -109,19 +115,19 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   private onPropertyChange = (propertyId: number): void => {
-    const { selectedProperty } = this.state;
+    const { selectedProperty, setCurrentProperty } = this.props;
     if (selectedProperty === propertyId) {
       return;
     }
-    this.setState({ selectedProperty: propertyId });
+    setCurrentProperty(propertyId);
   };
 
   private onCountryChange = (countryId: number): void => {
-    const { selectedCountry } = this.state;
+    const { selectedCountry, setCurrentCountry } = this.props;
     if (selectedCountry === countryId) {
       return;
     }
-    this.setState({ selectedCountry: countryId });
+    setCurrentCountry(countryId);
   };
 
   private onPlusIconPress = (): void => {
@@ -155,38 +161,26 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   private getHeaderData = (): IMetricsData[] => {
-    const { t } = this.props;
-    const { ledgerData } = this.state;
+    const {
+      t,
+      ledgerMetrics: { income, expense },
+    } = this.props;
     const currentYear = DateUtils.getCurrentYear();
 
     return [
       {
         name: t('assetFinancial:income', { year: currentYear }),
-        count: `${LedgerUtils.totalByType(LedgerTypes.credit, ledgerData)}`,
+        count: income,
         isCurrency: true,
         colorCode: theme.colors.incomeGreen,
       },
       {
         name: t('assetFinancial:expense', { year: currentYear }),
-        count: `${LedgerUtils.totalByType(LedgerTypes.debit, ledgerData)}`,
+        count: expense,
         isCurrency: true,
         colorCode: theme.colors.yellowTint2,
       },
     ];
-  };
-
-  private getGeneralLedgersPref = async (): Promise<void> => {
-    try {
-      const response: GeneralLedgers[] = await LedgerRepository.getLedgerPerformances({
-        transaction_date__gte: DateUtils.getCurrentYearStartDate(),
-        transaction_date__lte: DateUtils.getCurrentYearLastDate(),
-        transaction_date_group_by: DataGroupBy.year,
-      });
-
-      this.setState({ ledgerData: response });
-    } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-    }
   };
 
   private getCountryList = (): Country[] => {
@@ -198,8 +192,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   private getPropertyList = (): PickerItemProps[] => {
-    const { assets } = this.props;
-    const { selectedCountry } = this.state;
+    const { assets, selectedCountry } = this.props;
 
     return (selectedCountry === 0 ? assets : assets.filter((asset) => selectedCountry === asset.country.id)).map(
       (asset) => ({
@@ -212,14 +205,47 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserAssets } = UserSelector;
-  const { getFinancialLoaders } = FinancialSelectors;
+  const {
+    getFinancialLoaders,
+    getLedgerData,
+    getSelectedCountry,
+    getSelectedProperty,
+    getLedgerMetrics,
+  } = FinancialSelectors;
   return {
     assets: getUserAssets(state),
     financialLoaders: getFinancialLoaders(state),
+    ledgerData: getLedgerData(state),
+    selectedProperty: getSelectedProperty(state),
+    selectedCountry: getSelectedCountry(state),
+    ledgerMetrics: getLedgerMetrics(state),
   };
 };
 
-const connectedComponent = connect(mapStateToProps)(
-  withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials)
-);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const {
+    getLedgers,
+    setCurrentCountry,
+    setCurrentProperty,
+    setTimeRange,
+    getLedgerMetrics,
+    resetLedgerFilters,
+  } = FinancialActions;
+  return bindActionCreators(
+    {
+      getLedgers,
+      setCurrentCountry,
+      setCurrentProperty,
+      setTimeRange,
+      getLedgerMetrics,
+      resetLedgerFilters,
+    },
+    dispatch
+  );
+};
+
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.assetFinancial)(Financials));
 export default connectedComponent;

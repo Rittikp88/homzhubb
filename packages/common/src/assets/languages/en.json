@@ -935,7 +935,8 @@
     "allProperties": "All properties",
     "deleteRecordConfirmation": "Are you sure you want to delete this record?",
     "systemGeneratedText": "System-generated records cannot be edited",
-    "addFinancials": "Add Financials"
+    "addFinancials": "Add Financials",
+    "paidSuccessfully": "Payment of {{amount}} successfully completed"
   },
   "assetMore": {
     "more": "More",
@@ -967,7 +968,7 @@
     "copiedCode": "Referral code copied to the clipboard",
     "clickCopy": "Click below to copy the code",
     "copyUrl": "Copy URL",
-    "shareHomzhub": "Hi, I am using Homzhub Digital Property Manager to rent and manage my investment properties, tenants, communications, documents, maintenance issues and much more on my Homzhub app. Try Homzhub",
+    "shareHomzhub": "Hi!!\nHomzhub is a property management company that specializes in helping property owners to manage their properties with full transparency and visibility through their app and a professional team(in select cities). They can help you find a tenant and manage your property too. \n\n I would recommend you to download the app, and sign-up with \"{{code}}\" referral code for extra benefits. \n\n You can download and sign up using this link - {{url}}",
     "appleStore": "Apple AppStore",
     "googlePlayStore": "Google Playstore",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
