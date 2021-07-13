@@ -29,8 +29,8 @@ export class DueItem {
   @JsonProperty('currency', Currency)
   private _currency = new Currency();
 
-  @JsonProperty('asset', Asset)
-  private _asset = new Asset();
+  @JsonProperty('asset', Asset, true)
+  private _asset = null;
 
   @JsonProperty('payment_transaction', PaymentTransaction)
   private _paymentTransaction = new PaymentTransaction();
@@ -58,7 +58,7 @@ export class DueItem {
     return this._currency;
   }
 
-  get asset(): Asset {
+  get asset(): Asset | null {
     return this._asset;
   }
 

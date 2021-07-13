@@ -17,36 +17,29 @@ interface IProps {
 
 const DueCard = (props: IProps): React.ReactElement => {
   const { due, onInitPayment, onOrderPlaced } = props;
-  const {
-    id,
-    invoiceTitle,
-    asset: {
-      projectName,
-      formattedAddressWithCity,
-      country: { flag },
-    },
-    totalDue,
-  } = due;
+  const { id, invoiceTitle, asset, totalDue } = due;
 
   const { t } = useTranslation();
 
   return (
     <View key={id} style={styles.container}>
-      <PropertyAddressCountry
-        primaryAddress={projectName}
-        primaryAddressTextStyles={{
-          variant: 'text',
-          size: 'small',
-        }}
-        subAddressTextStyles={{
-          variant: 'label',
-          size: 'large',
-        }}
-        countryFlag={flag}
-        showAddress
-        subAddress={formattedAddressWithCity}
-      />
-      <View style={styles.contentContainer}>
+      {asset && (
+        <PropertyAddressCountry
+          primaryAddress={asset.projectName}
+          primaryAddressTextStyles={{
+            variant: 'text',
+            size: 'small',
+          }}
+          subAddressTextStyles={{
+            variant: 'label',
+            size: 'large',
+          }}
+          countryFlag={asset.country.flag}
+          showAddress
+          subAddress={asset.formattedAddressWithCity}
+        />
+      )}
+      <View style={[styles.contentContainer, asset && styles.marginTop]}>
         <View style={styles.dueDetailsContainer}>
           <Label type="large" style={styles.dueText}>
             {invoiceTitle}
@@ -87,6 +80,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  marginTop: {
     marginTop: 16,
   },
   dueDetailsContainer: {

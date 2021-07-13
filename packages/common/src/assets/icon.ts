@@ -190,6 +190,7 @@ export const icons = {
   tickWithCircle: 'tick-with-circle',
   chat: 'chat',
   serviceRequest: 'service',
+  marketPlace: 'market-place',
 
   // COMMUTE
   train: 'train',

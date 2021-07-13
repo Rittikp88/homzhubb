@@ -14,7 +14,7 @@ interface IProps extends TextProps {
   maxLength?: number;
 }
 
-const fontFamilies = {
+export const fontFamilies = {
   english: {
     light: 'OpenSans-Light',
     regular: 'OpenSans-Regular',

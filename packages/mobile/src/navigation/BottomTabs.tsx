@@ -74,7 +74,7 @@ export const BottomTabs = (): React.ReactElement => {
         })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: t('assetDashboard:dashboard'),
+          tabBarLabel: t('landing:home'),
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
             return focused ? <Focused /> : <Unfocused />;
           },
@@ -139,9 +139,9 @@ export const BottomTabs = (): React.ReactElement => {
           tabBarLabel: t('common:marketPlace'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return focused ? (
-              <Icon name={icons.settingFilled} color={color} size={26} />
+              <Icon name={icons.marketPlace} color={color} size={26} />
             ) : (
-              <Icon name={icons.settingOutline} color={color} size={22} />
+              <Icon name={icons.marketPlace} color={color} size={22} />
             );
           },
         })}

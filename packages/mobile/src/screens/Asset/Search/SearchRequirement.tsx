@@ -63,7 +63,8 @@ const SearchRequirement = (): React.ReactElement => {
       backgroundColor={theme.colors.white}
       headerProps={{
         type: 'secondary',
-        title: t('propertySearch:requirementForm'),
+        title: t('propertySearch:shareRequirement'),
+        subTitle: t('propertySearch:shareRequirementsSubHeader'),
         icon: icons.close,
         onIconPress: onBack,
       }}

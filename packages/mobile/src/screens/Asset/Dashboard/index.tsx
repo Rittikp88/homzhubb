@@ -33,7 +33,7 @@ import {
   AssetSummary,
   FullScreenAssetDetailsCarousel,
 } from '@homzhub/mobile/src/components';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
@@ -202,9 +202,9 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
           <TouchableOpacity style={styles.bottomSheetItemContainer()} onPress={onPressItem}>
             {icon}
             {/* @ts-ignore */}
-            <Text type="small" textType="regular" style={styles.itemLabel()}>
+            <Label type="large" textType="semiBold" style={styles.itemLabel()}>
               {label}
-            </Text>
+            </Label>
           </TouchableOpacity>
         </>
       );

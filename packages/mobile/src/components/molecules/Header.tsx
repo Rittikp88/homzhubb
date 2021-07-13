@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, { AnimatedNode } from '@homzhub/mobile/src/services/AnimationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { fontFamilies } from '@homzhub/common/src/components/atoms/Text';
 import { StatusBar, IStatusBarProps } from '@homzhub/mobile/src/components/atoms/StatusBar';
 
 export interface IHeaderProps {
@@ -10,6 +11,7 @@ export interface IHeaderProps {
   icon?: string;
   iconRight?: string;
   title?: string;
+  subTitle?: string;
   barVisible?: boolean;
   children?: React.ReactNode;
   statusBarProps?: IStatusBarProps;
@@ -35,6 +37,7 @@ const Header = (props: IHeaderProps): React.ReactElement => {
     onIconPress,
     onIconRightPress,
     textRight,
+    subTitle,
   } = props;
 
   const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
@@ -55,22 +58,29 @@ const Header = (props: IHeaderProps): React.ReactElement => {
         barStyle={statusBarType as 'light-content' | 'dark-content'}
         {...statusBarProps}
       />
-      <View style={[styles.container, { backgroundColor }]} testID={testID}>
-        <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
-        <Animated.Text numberOfLines={1} style={[styles.title, { color: textColor, opacity }]}>
-          {title ?? ''}
-        </Animated.Text>
-        {iconRight && (
-          <Icon name={iconRight} size={22} color={textColor} style={styles.itemRight} onPress={onIconRightPress} />
+      <>
+        <View style={[styles.container, { backgroundColor }]} testID={testID}>
+          <Icon name={icon} size={22} color={textColor} style={styles.icon} onPress={onIconPress} />
+          <Animated.Text numberOfLines={1} style={[styles.title, { color: textColor, opacity }]}>
+            {title ?? ''}
+          </Animated.Text>
+          {iconRight && (
+            <Icon name={iconRight} size={22} color={textColor} style={styles.itemRight} onPress={onIconRightPress} />
+          )}
+          {!iconRight && textRight && (
+            <AnimatedTouchableOpacity style={[styles.itemRight, { opacity }]} onPress={onIconRightPress}>
+              <Animated.Text numberOfLines={1} style={styles.textRight}>
+                {textRight}
+              </Animated.Text>
+            </AnimatedTouchableOpacity>
+          )}
+        </View>
+        {subTitle && (
+          <Animated.Text numberOfLines={1} style={[styles.subTitle, { opacity }]}>
+            {subTitle}
+          </Animated.Text>
         )}
-        {!iconRight && textRight && (
-          <AnimatedTouchableOpacity style={[styles.itemRight, { opacity }]} onPress={onIconRightPress}>
-            <Animated.Text numberOfLines={1} style={styles.textRight}>
-              {textRight}
-            </Animated.Text>
-          </AnimatedTouchableOpacity>
-        )}
-      </View>
+      </>
       {children}
       {barVisible && <View style={styles.bar} />}
       <Animated.View style={[styles.animatedDivider, { opacity }]} />
@@ -99,6 +109,13 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
     width: 300,
+  },
+  subTitle: {
+    fontFamily: fontFamilies.english.regular,
+    fontSize: 12,
+    textAlign: 'center',
+    transform: [{ translateY: -10 }],
+    color: theme.colors.darkTint5,
   },
   icon: {
     position: 'absolute',
