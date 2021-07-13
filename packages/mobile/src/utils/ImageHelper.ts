@@ -80,6 +80,9 @@ class ImageHelper {
         AlertHelper.error({ message: e.message });
       }
     } catch (e) {
+      if (toggleLoader) {
+        toggleLoader(false);
+      }
       if (e.code !== 'E_PICKER_CANCELLED') {
         AlertHelper.error({ message: e.message });
       }

@@ -47,6 +47,7 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
   const [bedCount, setBedCount] = useState<number[]>(
     filters.room_count && filters.room_count.length > 0 ? filters.room_count : [-1]
   );
+
   const [isRangeUpdate, setRangeUpdate] = useState(false);
   const [price, setPriceRange] = useState({ min: filters.min_price ?? 0, max: filters.max_price ?? 0 });
   const [moveInDate, setMoveInDate] = useState(DateUtils.getDisplayDate(new Date().toISOString(), 'MMM DD, YYYY'));
@@ -85,7 +86,9 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
   }, []);
 
   useEffect(() => {
-    setPriceRange({ min: -1, max: -1 });
+    if (isRangeUpdate) {
+      setPriceRange({ min: -1, max: -1 });
+    }
   }, [filters]);
 
   const onSaveDetails = async (): Promise<void> => {

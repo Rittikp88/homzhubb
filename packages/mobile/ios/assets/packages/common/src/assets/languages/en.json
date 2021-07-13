@@ -294,7 +294,10 @@
     "score": "Score",
     "addLocation": "Add location",
     "sendNotice": "Send Notice",
-    "marketPlace": "Marketplace"
+    "marketPlace": "Marketplace",
+    "askHelp": "Ask help",
+    "bugReport": "Bug Report",
+    "quickActions": "Quick Actions"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -680,7 +683,8 @@
     "cannotDeleteDocument": "You cannot delete this document",
     "siteVisits": "Site Visits",
     "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
-    "vacantPropertyMsg": "Your property is vacant, choose what you want to do next"
+    "vacantPropertyMsg": "Your property is vacant, choose what you want to do next",
+    "addImage": "Add Image"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -772,7 +776,7 @@
     "bhk": "BHK",
     "localities": "Localities",
     "requirementsSaved": "Requirements Saved",
-    "requirementsText" : "Your requirements are shared with Homzhub. Our team will reach out to you soon with possible options."
+    "requirementsText": "Your requirements are shared with Homzhub. Our team will reach out to you soon with possible options."
   },
   "assetDescription": {
     "reviewsRatings": "Reviews and ratings",
@@ -930,7 +934,9 @@
     "addProperty": "Please add a property before adding a financial record",
     "allProperties": "All properties",
     "deleteRecordConfirmation": "Are you sure you want to delete this record?",
-    "systemGeneratedText": "System-generated records cannot be edited"
+    "systemGeneratedText": "System-generated records cannot be edited",
+    "addFinancials": "Add Financials",
+    "paidSuccessfully": "Payment of {{amount}} successfully completed"
   },
   "assetMore": {
     "more": "More",
@@ -962,7 +968,7 @@
     "copiedCode": "Referral code copied to the clipboard",
     "clickCopy": "Click below to copy the code",
     "copyUrl": "Copy URL",
-    "shareHomzhub": "Hi, I am using Homzhub Digital Property Manager to rent and manage my investment properties, tenants, communications, documents, maintenance issues and much more on my Homzhub app. Try Homzhub",
+    "shareHomzhub": "Hi!!\nHomzhub is a property management company that specializes in helping property owners to manage their properties with full transparency and visibility through their app and a professional team(in select cities). They can help you find a tenant and manage your property too. \n\n I would recommend you to download the app, and sign-up with \"{{code}}\" referral code for extra benefits. \n\n You can download and sign up using this link - {{url}}",
     "appleStore": "Apple AppStore",
     "googlePlayStore": "Google Playstore",
     "shareHomzhubSubject": "Invitation to Homzhub for managing your properties",
@@ -1013,7 +1019,8 @@
     "debitOn": "Debited on",
     "referEarn": "Refer and Earn",
     "coinBalance": "Coin Balance",
-    "coinsEarned": "Coins Earned"
+    "coinsEarned": "Coins Earned",
+    "marketPlace": "Market Place"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
@@ -1279,7 +1286,7 @@
     "sendAMessage": "Send a Message",
     "textWithTwoOffersLeft": "When you submit this proposal, you will have 1 offer remaining.",
     "textWithOneOfferLeft": "When you submit this proposal, you'll have 0 offer remaining. You won’t be able to make any new offers.",
-    "textWithZeroOffersLeft": "You have no offers remaining, cancel previous offer to make a new offer.",
+    "textWithZeroOffersLeft": "You have no offers remaining, withdraw previous offer to make a new offer.",
     "ownerInfoText": "When you submit this offer, the prospect can directly accept it without requiring your confirmation.",
     "termsFirstPart": "I understand and acknowledge that Homzhub's ",
     "termsLink": "data privacy policy ",
@@ -1306,9 +1313,9 @@
     "offerSucessSubHeader": "We will notify you when the {{role}} replies",
     "offerRejected": "Offer Rejected",
     "offerAccepted": "Offer Accepted",
-    "offerCancelled": "Offer Cancelled",
+    "offerCancelled": "Offer Withdrawn",
     "offerExpired": "Offer Expired",
-    "cancelOffer": "Cancel Offer",
+    "cancelOffer": "Withdraw Offer",
     "sort": "Sort by",
     "filterBy": "Filter by",
     "offerDetails": "Offer Details",
@@ -1324,21 +1331,21 @@
     "noOfferReceived": "No Offer Received",
     "noOfferMade": "No Offer Made",
     "offerRejectOn": "This offer was rejected on:",
-    "offerCancelledOn": "This offer was cancelled on:",
+    "offerCancelledOn": "This offer was withdrawn on:",
     "rejectReasonLabel": "Reject Reason:",
-    "cancelReasonLabel": "Cancellation Reason:",
+    "cancelReasonLabel": "Withdrawl Reason:",
     "additionalComment": "Additional Comments:",
     "offerAcceptedSuccess": "Offer Accepted Successfully",
     "offerRejectedSuccess": "Offer Rejected Successfully",
     "rejectionReason": "Reason for Rejection",
-    "reasonForCancellation": "Reason for Cancellation",
+    "reasonForCancellation": "Reason for Withdrawl",
     "seeRejectReason": "See Reject Reason",
     "noOfferFound": "No offer Found",
     "createLease": "Create lease",
     "withdrawOffer": "Withdraw offer",
-    "cancellationReason": "Cancellation reason",
+    "cancellationReason": "Withdrawl reason",
     "offerCancellationSucess": "Offer Cancelled Successfully",
-    "seeCancelReason": "See Cancellation Reason",
+    "seeCancelReason": "See Withdrawl Reason",
     "offerMadeInfo": "These are the offers made by you for property listings on homzhub.",
     "prospectProfileCreateSuccess": "Prospect Profile created successfully",
     "prospectProfileEditSuccess": "Prospect Profile edited successfully",
