@@ -269,15 +269,14 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     const { notifications } = this.state;
     if (notifications.results && notifications.results.length !== notifications.count) {
       this.setState({ offset: notifications.results.length }, () => {
-        this.getAssetNotifications().then();
+        this.getAssetNotifications(true).then();
       });
     }
   };
 
   public onUpdateSearchText = (value: string): void => {
-    const { notifications } = this.state;
-    const offset = value.length > 0 ? 0 : notifications.results.length;
-    this.setState({ searchText: value, limit: 50, offset }, () => {
+    // Set offset to 0 everytime user searches for a string
+    this.setState({ searchText: value, limit: 50, offset: 0 }, () => {
       this.getAssetNotifications().then();
     });
   };
@@ -298,7 +297,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       try {
         const latestCreatedAt = notifications.results[0].createdAt;
         await DashboardRepository.markAllNotificationsRead(latestCreatedAt);
-        await this.getAssetNotifications(true);
+        await this.getAssetNotifications();
         AlertHelper.success({ message: t('assetDashboard:allNotificationsAreRead') });
       } catch (e) {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -306,7 +305,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     }
   };
 
-  public getAssetNotifications = async (updateAll?: boolean): Promise<void> => {
+  public getAssetNotifications = async (loadMore = false): Promise<void> => {
     const { searchText, limit, offset, notifications } = this.state;
     const {
       route: { params },
@@ -314,10 +313,10 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
     let requestPayload = {
       limit,
       offset,
-      ...(!params && searchText.length > 0 ? { q: searchText } : {}),
+      ...((!params || (params && !params.isFromPortfolio)) && searchText.length > 0 ? { q: searchText } : {}),
     };
 
-    if (params) {
+    if (params && !params.isFromDashboard) {
       const { saleListingId, leaseListingId, leaseTransaction, propertyId } = params;
       const isTransaction = leaseTransaction && leaseTransaction > 0;
       const isAsset = !isTransaction && !leaseListingId && !saleListingId;
@@ -333,13 +332,13 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
 
     try {
       const response = await DashboardRepository.getAssetNotifications(requestPayload);
-      if (updateAll || searchText) {
+      if (loadMore) {
         this.setState({
-          notifications: response,
+          notifications: NotificationService.transformNotificationsData(response, notifications),
         });
       } else {
         this.setState({
-          notifications: NotificationService.transformNotificationsData(response, notifications),
+          notifications: response,
         });
       }
     } catch (e) {

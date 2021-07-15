@@ -317,6 +317,11 @@ class NotificationService {
         break;
       case NotificationTypes.Campaign:
         if (!image_link || (image_link && image_link.length <= 0)) {
+          NavigationService.notificationNavigation(
+            ScreensKeys.AssetNotifications,
+            { isFromDashboard: true },
+            ScreensKeys.Dashboard
+          );
           return;
         }
         if (currentScreen === ScreensKeys.DashboardLandingScreen) {

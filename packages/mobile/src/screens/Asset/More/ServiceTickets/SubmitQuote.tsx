@@ -169,7 +169,8 @@ const SubmitQuote = (): ReactElement => {
   // HANDLERS
 
   const filterData = quotes.filter((item) => !item.price || !item.document);
-  const isDisabled = filterData.length === quotes.length;
+  const haveQuotesWithoutDoc = quotes.find((item) => item.price && !item.document);
+  const isDisabled = haveQuotesWithoutDoc || filterData.length === quotes.length;
 
   return (
     <UserScreen

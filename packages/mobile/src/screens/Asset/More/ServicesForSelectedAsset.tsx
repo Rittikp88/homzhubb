@@ -63,6 +63,10 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
   const [isStepDone, setStepPositionArr] = useState<boolean[]>([false, false]);
   const [tabViewHeights, setIsStepDone] = useState<number[]>([height, height]);
 
+  useEffect(() => {
+    setStepPositionArr([currentIndex === 1, false]);
+  }, [currentIndex]);
+
   // Redux
   const dispatch = useDispatch();
   const valueAddedServices = useSelector(RecordAssetSelectors.getValueAddedServices);
@@ -227,7 +231,6 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
       setCurrentIndex(currentIndex - 1);
     }
   };
-
   const handleNextStep = (): void => {
     if (currentIndex < Routes.length) {
       setCurrentIndex(currentIndex + 1);

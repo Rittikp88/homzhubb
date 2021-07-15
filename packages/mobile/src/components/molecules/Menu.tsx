@@ -74,7 +74,10 @@ const Menu = (props: IProps): React.ReactElement => {
           setExtraData(false);
         }}
       >
-        <>{isExtraData ? extraNode : data.map((item, index) => renderMenuItem(item, index))}</>
+        <>
+          {data.map((item, index) => renderMenuItem(item, index))}
+          {isExtraData && extraNode}
+        </>
       </BottomSheet>
     </>
   );
