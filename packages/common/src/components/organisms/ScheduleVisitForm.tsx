@@ -272,15 +272,14 @@ class ScheduleVisitForm extends Component<Props, IVisitState> {
 
   private getUpcomingVisits = async (): Promise<void> => {
     const { visitType, leaseId, saleId } = this.state;
-    const { setLoading } = this.props;
-
+    const { setLoading, leaseListingId, saleListingId } = this.props;
     setLoading(true);
 
     const payload: IUpcomingVisitPayload = {
       visit_type: visitType[0],
       start_date__gte: DateUtils.getCurrentDate24Format(),
-      lease_listing_id: leaseId,
-      sale_listing_id: saleId,
+      lease_listing_id: leaseListingId ?? leaseId,
+      sale_listing_id: saleListingId ?? saleId,
     };
 
     try {

@@ -13,11 +13,12 @@ interface IUploadImage {
   assetId: number;
   selectedImages: AssetGallery[];
   toggleLoader?: (value?: boolean) => void;
+  onCallback?: (value: boolean) => void;
 }
 
 class ImageHelper {
   public handlePhotosUpload = async (props: IUploadImage): Promise<void> => {
-    const { assetId, selectedImages, toggleLoader } = props;
+    const { assetId, selectedImages, toggleLoader, onCallback } = props;
 
     const store = StoreProviderService.getStore();
 
@@ -70,16 +71,25 @@ class ImageHelper {
             selectedImages.concat(ObjectMapper.deserializeArray(AssetGallery, localSelectedImages))
           )
         );
+        if (onCallback) {
+          onCallback(true);
+        }
         if (toggleLoader) {
           toggleLoader(false);
         }
       } catch (e) {
+        if (onCallback) {
+          onCallback(false);
+        }
         if (toggleLoader) {
           toggleLoader(false);
         }
         AlertHelper.error({ message: e.message });
       }
     } catch (e) {
+      if (onCallback) {
+        onCallback(false);
+      }
       if (toggleLoader) {
         toggleLoader(false);
       }

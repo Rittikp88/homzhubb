@@ -24,7 +24,7 @@ type IProps = ICheckboxGroupProps & IWithMediaQuery;
 class CheckboxGroup extends React.PureComponent<IProps, {}> {
   public render = (): React.ReactNode => {
     const { data, containerStyle = {}, isMobile, numOfColumns } = this.props;
-    const styles = checkBoxGrpStyles(isMobile);
+    const styles = checkBoxGrpStyles(isMobile ?? false);
 
     const renderItem = ({ item }: { item: ICheckboxGroupData }): React.ReactElement => {
       const numColumns = numOfColumns || 2;
@@ -53,7 +53,7 @@ class CheckboxGroup extends React.PureComponent<IProps, {}> {
   private renderCheckbox = (item: ICheckboxGroupData): React.ReactElement => {
     const { label, isSelected = false, isDisabled = false } = item;
     const { onToggle, labelStyle = {}, testID, isMobile, containerStyle = {} } = this.props;
-    const styles = checkBoxGrpStyles(isMobile);
+    const styles = checkBoxGrpStyles(isMobile ?? false);
     const onCheckboxToggle = (): void => onToggle(item.id, !isSelected);
 
     return (
@@ -79,17 +79,17 @@ interface ICheckBoxGrpStyle {
   col: ViewStyle;
   disabled: ViewStyle;
   checkboxContainer: ViewStyle;
-  checkboxStyle: ViewStyle;
   checkBoxItem: ViewStyle;
 }
 
-const checkBoxGrpStyles = (isMobile: boolean, numOfColumns?: number): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
+const checkBoxGrpStyles = (isMobile: boolean, numOfColumns= 1): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
   StyleSheet.create({
     checkBoxItem: {
       flex: 1 / numOfColumns,
     },
     container: {
       flexDirection: 'row',
+      width: '100%',
     },
     col: {
       flex: isMobile ? 0.5 : undefined,
@@ -102,10 +102,5 @@ const checkBoxGrpStyles = (isMobile: boolean, numOfColumns?: number): StyleSheet
     checkboxContainer: {
       marginRight: isMobile ? undefined : 40,
       marginVertical: 12,
-    },
-    checkboxStyle: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      width: '100%',
     },
   });

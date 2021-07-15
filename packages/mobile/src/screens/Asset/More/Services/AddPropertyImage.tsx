@@ -35,6 +35,7 @@ const AddPropertyImage = (): React.ReactElement => {
   const asset: Asset | null = useSelector(AssetSelectors.getAssetById);
   const [videoData, setVideoData] = useState({ isVideoToggled: false, videoUrl: '' });
   const [isLoading, setIsLoading] = useState(false);
+  const [isButtonEnable, setButtonEnable] = useState(false);
 
   const param = params as IPropertyImageParam;
 
@@ -51,13 +52,17 @@ const AddPropertyImage = (): React.ReactElement => {
   };
 
   const onUploadImage = (): void => {
-    ImageHelper.handlePhotosUpload({ assetId: param.assetId, selectedImages, toggleLoader }).then();
+    ImageHelper.handlePhotosUpload({ assetId: param.assetId, selectedImages, toggleLoader, onCallback }).then();
   };
 
   const toggleLoader = (value?: boolean): void => {
     if (value !== undefined) {
       setIsLoading(value);
     }
+  };
+
+  const onCallback = (value: boolean): void => {
+    setButtonEnable(value);
   };
 
   const updateImage = (payload: AssetGallery[]): void => {
@@ -104,6 +109,7 @@ const AddPropertyImage = (): React.ReactElement => {
               containerStyle={styles.imageContainer}
               onUpdateVideo={onChangeVideo}
               isAssetImage
+              onUpdateCallback={onCallback}
             />
           </>
         ) : (
@@ -111,7 +117,13 @@ const AddPropertyImage = (): React.ReactElement => {
         )}
       </Screen>
       <WithShadowView isBottomShadow={false}>
-        <Button type="primary" title={t('common:save')} containerStyle={styles.buttonContainer} onPress={onSave} />
+        <Button
+          disabled={!isButtonEnable}
+          type="primary"
+          title={t('common:save')}
+          containerStyle={styles.buttonContainer}
+          onPress={onSave}
+        />
       </WithShadowView>
     </>
   );

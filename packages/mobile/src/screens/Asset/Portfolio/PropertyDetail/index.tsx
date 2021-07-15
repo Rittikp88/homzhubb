@@ -156,13 +156,14 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { propertyData, isLoading, isFromTenancies } = this.state;
 
     const { assetStatusInfo } = propertyData;
-    const isOccupied = assetStatusInfo?.tag.label === Filters.OCCUPIED;
+    const isOccupied =
+      assetStatusInfo?.tag.label === Filters.OCCUPIED || assetStatusInfo?.tag.label === Filters.EXPIRING;
     const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false, isOccupied);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
       this.handleAction(propertyData, payload, param);
 
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
-    const isMenuIconVisible = assetStatusInfo?.tag.label !== Filters.EXPIRING && menuItems.length > 0;
+    const isMenuIconVisible = menuItems.length > 0;
 
     return (
       <View style={styles.flexOne}>
@@ -545,7 +546,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     if (isFromTenancies) {
       return [];
     }
-
     const addImage = { label: t('property:addImage'), value: MenuItems.ADD_IMAGE };
 
     if (isOccupied) {
@@ -623,13 +623,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setAssetId,
-    setSelectedPlan,
-    getAssetById,
-    setEditPropertyFlow,
-    toggleEditPropertyFlowBottomSheet,
-  } = RecordAssetActions;
+  const { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } =
+    RecordAssetActions;
   const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;

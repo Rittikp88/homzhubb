@@ -170,7 +170,6 @@ class PropertySpaces extends React.PureComponent<IProps, IOwnState> {
         />
       );
     });
-
     return spaceFields;
   };
 

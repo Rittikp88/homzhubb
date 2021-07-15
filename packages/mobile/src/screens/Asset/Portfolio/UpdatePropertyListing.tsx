@@ -15,7 +15,9 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import CancelTerminateListing, { IFormData } from '@homzhub/mobile/src/components/organisms/CancelTerminateListing';
+import CancelTerminateListing, {
+  ISubmitPayload,
+} from '@homzhub/mobile/src/components/organisms/CancelTerminateListing';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import {
   ICancelListingPayload,
@@ -200,7 +202,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
     });
   };
 
-  private handleSubmit = (formData: IFormData): void => {
+  private handleSubmit = (formData: ISubmitPayload): void => {
     const {
       t,
       navigation,
@@ -256,7 +258,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
         })
         .catch((err) => {
           this.setState({ isLoading: false });
-          AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail) });
+          AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
         });
     }
   };

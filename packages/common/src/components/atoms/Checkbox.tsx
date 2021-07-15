@@ -38,7 +38,7 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
         color={selected ? theme.colors.primaryColor : theme.colors.disabled}
         style={selected ? iconSelectedStyle : iconStyle}
       />
-      {label && (
+      {!!label && (
         <Label type={labelType} textType="regular" style={[styles.label, labelStyle]}>
           {label}
         </Label>

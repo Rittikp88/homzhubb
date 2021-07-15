@@ -12,16 +12,20 @@ import { FormButton } from '@homzhub/common/src/components/molecules/FormButton'
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 
+export interface ISubmitPayload extends IFormData {
+  isTerminate: boolean;
+  description: string;
+}
+
 export interface IFormData {
   reasonId: number;
   terminationDate: string;
-  description: string;
-  isTerminate: boolean;
-  isTouched: boolean;
 }
 
 interface IScreenState {
   formData: IFormData;
+  description: string;
+  isTouched: boolean;
 }
 
 interface IProps {
@@ -29,7 +33,7 @@ interface IProps {
   leaseEndDate?: string;
   onFormEdit: () => void;
   reasonData: IDropdownOption[];
-  onSubmit: (payload: IFormData) => void;
+  onSubmit: (payload: ISubmitPayload) => void;
 }
 
 type Props = IProps & WithTranslation;
@@ -41,15 +45,14 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
       formData: {
         reasonId: 0,
         terminationDate: '',
-        description: '',
-        isTerminate: props.isTerminate ?? false,
-        isTouched: false,
       },
+      description: '',
+      isTouched: false,
     };
   }
 
   public render(): React.ReactNode {
-    const { formData } = this.state;
+    const { formData, description, isTouched } = this.state;
     const { t, isTerminate = false, onFormEdit, reasonData, leaseEndDate } = this.props;
 
     return (
@@ -62,12 +65,9 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
           {(formProps: FormikProps<FormikValues>): React.ReactNode => {
             const { reasonId, terminationDate } = formProps.values;
             const isButtonEnable = isTerminate ? reasonId > 0 && !!terminationDate : reasonId > 0;
-            const handleDescription = (value: string): void => {
-              formProps.setFieldValue('description', value);
-            };
 
-            if (!formProps.values.isTouched && formProps.dirty) {
-              formProps.setFieldValue('isTouched', true);
+            if (!isTouched && formProps.dirty) {
+              this.setState({ isTouched: true });
               onFormEdit();
             }
 
@@ -96,12 +96,12 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
                   />
                 )}
                 <TextArea
-                  value={formProps.values.description}
+                  value={description}
                   placeholder={t('common:typeDescriptionHere')}
                   label={t('assetDescription:description')}
                   wordCountLimit={500}
                   containerStyle={styles.textArea}
-                  onMessageChange={handleDescription}
+                  onMessageChange={this.handleDescription}
                 />
                 <Label type="large" style={styles.message}>
                   {t('common:actionNotDone')}
@@ -123,24 +123,26 @@ class CancelTerminateListing extends Component<Props, IScreenState> {
     );
   }
 
+  private handleDescription = (value: string): void => {
+    this.setState({ description: value });
+  };
+
   private formSchema = (): yup.ObjectSchema<IFormData> => {
     const { t } = this.props;
 
     return yup.object().shape({
-      isTerminate: yup.boolean(),
-      isTouched: yup.boolean(),
       terminationDate: yup.string().when('isTerminate', {
         is: true,
         then: yup.string().required(t('moreProfile:fieldRequiredError')),
       }),
       reasonId: yup.number().required(t('moreProfile:fieldRequiredError')),
-      description: yup.string(),
     });
   };
 
   private handleSubmit = (values: IFormData): void => {
-    const { onSubmit } = this.props;
-    onSubmit(values);
+    const { onSubmit, isTerminate } = this.props;
+    const { description } = this.state;
+    onSubmit({ ...values, isTerminate: isTerminate ?? false, description });
   };
 }
 

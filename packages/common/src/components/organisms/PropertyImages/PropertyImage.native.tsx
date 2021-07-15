@@ -32,6 +32,7 @@ interface IProps {
   isButtonVisible?: boolean;
   onUpdateVideo?: (isVideoToggled?: boolean, videoUrl?: string) => void;
   isAssetImage?: boolean;
+  onUpdateCallback?: (value: boolean) => void;
 }
 
 type Props = WithTranslation & IProps;
@@ -240,7 +241,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public deletePropertyImage = async (selectedImage: AssetGallery): Promise<void> => {
-    const { propertyId, selectedImages, setSelectedImages, isAssetImage } = this.props;
+    const { propertyId, selectedImages, setSelectedImages, isAssetImage, onUpdateCallback } = this.props;
     const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
     if (selectedImage.isLocalImage) {
       const localImageIndex = findIndex(selectedImages, (image: AssetGallery) => {
@@ -256,12 +257,21 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       setSelectedImages(clonedSelectedImages);
       return;
     }
-    if (isAssetImage) {
-      await AssetRepository.deleteAssetAttachment(propertyId, selectedImage.attachment);
-    } else {
-      await AssetRepository.deletePropertyImage(selectedImage.attachment);
+    try {
+      if (isAssetImage) {
+        await AssetRepository.deleteAssetAttachment(propertyId, selectedImage.attachment);
+      } else {
+        await AssetRepository.deletePropertyImage(selectedImage.attachment);
+      }
+      if (onUpdateCallback) {
+        onUpdateCallback(true);
+      }
+      await this.getPropertyImagesByPropertyId(propertyId);
+    } catch (e) {
+      if (onUpdateCallback) {
+        onUpdateCallback(false);
+      }
     }
-    await this.getPropertyImagesByPropertyId(propertyId);
   };
 
   public getPropertyImagesByPropertyId = async (propertyId: number): Promise<void> => {
@@ -282,7 +292,7 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
   };
 
   public markAttachmentAsCoverImage = async (selectedImage: AssetGallery): Promise<void> => {
-    const { propertyId, selectedImages, setSelectedImages } = this.props;
+    const { propertyId, selectedImages, setSelectedImages, onUpdateCallback } = this.props;
     const clonedSelectedImages: AssetGallery[] = cloneDeep(selectedImages);
 
     if (!selectedImage.id) {
@@ -300,8 +310,17 @@ class PropertyImages extends React.PureComponent<Props, IPropertyImagesState> {
       });
       return;
     }
-    await AssetRepository.markAttachmentAsCoverImage(propertyId, selectedImage.id);
-    await this.getPropertyImagesByPropertyId(propertyId);
+    try {
+      if (onUpdateCallback) {
+        onUpdateCallback(true);
+      }
+      await AssetRepository.markAttachmentAsCoverImage(propertyId, selectedImage.id);
+      await this.getPropertyImagesByPropertyId(propertyId);
+    } catch (e) {
+      if (onUpdateCallback) {
+        onUpdateCallback(false);
+      }
+    }
   };
 
   public postAttachmentsForProperty = async (): Promise<void> => {
