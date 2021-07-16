@@ -251,9 +251,10 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
       };
       AssetRepository.cancelAssetListing(payload)
         .then(() => {
-          navigation.goBack();
           this.updateAsset().then();
           this.setState({ isLoading: false });
+          // @ts-ignore
+          navigation.navigate(ScreensKeys.PortfolioLandingScreen);
           AlertHelper.success({ message: t('property:listingCancelled') });
         })
         .catch((err) => {
