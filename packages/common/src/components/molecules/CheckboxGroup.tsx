@@ -82,7 +82,7 @@ interface ICheckBoxGrpStyle {
   checkBoxItem: ViewStyle;
 }
 
-const checkBoxGrpStyles = (isMobile: boolean, numOfColumns= 1): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
+const checkBoxGrpStyles = (isMobile: boolean, numOfColumns = 1): StyleSheet.NamedStyles<ICheckBoxGrpStyle> =>
   StyleSheet.create({
     checkBoxItem: {
       flex: 1 / numOfColumns,

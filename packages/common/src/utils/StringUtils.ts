@@ -22,11 +22,28 @@ export class StringUtils {
     return regex.test(email);
   };
 
-  public static splitter = (value: string, delimiter: string): string => {
+  public static splitter = (value: string, delimiter: string, toTitleCase = true): string => {
     const result = value
       .split(delimiter)
-      .map((item: string) => StringUtils.toTitleCase(item))
+      .map((item: string) => (toTitleCase ? StringUtils.toTitleCase(item) : item))
       .join(' ');
     return result;
+  };
+
+  public static wordCount = (value: string): number => {
+    return value.split(' ').length;
+  };
+
+  public static truncateByChars = (value: string, count: number): string => {
+    if (count >= value.length) return value;
+    return `${value.slice(0, count + 1)}...`;
+  };
+
+  public static truncateByWords = (value: string, count: number): string => {
+    if (count >= this.wordCount(value)) return value;
+    return `${value
+      .split(' ')
+      .slice(0, count + 1)
+      .join(' ')}...`;
   };
 }

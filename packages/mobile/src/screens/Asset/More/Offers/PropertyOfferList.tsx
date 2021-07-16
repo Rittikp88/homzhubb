@@ -189,7 +189,8 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
                 isScrollable={isReceivedOffer}
                 dropDownTitle={!isReceivedOffer ? 'Offers' : ''}
                 onDropdown={this.onSelectFromDropdown}
-                containerStyle={[styles.scrollableDropdown, !isReceivedOffer && styles.dropDown]}
+                containerStyle={!isReceivedOffer && styles.dropDown}
+                mainContainerStyle={styles.scrollableDropdownContainer}
               />
             )}
             {propertyListingData && propertyListingData.length > 0 ? (
@@ -510,8 +511,8 @@ const styles = StyleSheet.create({
   textIconSubContainer: {
     flex: 1,
   },
-  scrollableDropdown: {
-    marginBottom: 20,
+  scrollableDropdownContainer: {
+    marginBottom: 16,
   },
   dropDown: {
     width: theme.viewport.width / 3,

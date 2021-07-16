@@ -197,14 +197,8 @@ class OfferCard extends Component<Props, IOwnState> {
     return (
       <View style={styles.headerView}>
         <View style={styles.flexOne}>
-          <TextWithIcon
-            icon={icons.circularFilledInfo}
-            text={offerHeader.key}
-            variant="label"
-            textSize="large"
-            iconColor={theme.colors.darkTint4}
-            textStyle={styles.headerKey}
-          />
+          {/* Todo (Praharsh) : icons.circularFilledInfo has been hidden for now but may be used in future */}
+          <TextWithIcon text={offerHeader.key} variant="label" textSize="large" textStyle={styles.headerKey} />
           <View style={styles.headerIconsContainer}>
             <TextWithIcon
               icon={offerHeader.icon}

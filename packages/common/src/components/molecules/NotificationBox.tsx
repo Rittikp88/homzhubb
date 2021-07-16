@@ -2,6 +2,7 @@ import React from 'react';
 import { FlatList, Image, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
@@ -53,7 +54,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
       <TouchableOpacity style={[styles.container, notificationStyle]} onPress={onBubblePress}>
         {isTitle && (
           <Label type="large" textType="semiBold">
-            {item.title}
+            {PlatformUtils.isWeb() ? item.title : StringUtils.truncateByChars(item.title, 80)}
           </Label>
         )}
         <View style={styles.infoContainer}>
@@ -74,7 +75,7 @@ const NotificationBox = (props: IProps): React.ReactElement => {
               </Label>
             </View>
             <Label type="large" textType="regular" style={styles.descriptionText}>
-              {item.message}
+              {PlatformUtils.isWeb() ? item.message : StringUtils.truncateByChars(item.message, 255)}
             </Label>
           </View>
         </View>
