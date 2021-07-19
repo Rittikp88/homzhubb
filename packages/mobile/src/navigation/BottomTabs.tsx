@@ -9,6 +9,7 @@ import Focused from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.svg';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -112,6 +113,10 @@ export const BottomTabs = (): React.ReactElement => {
           tabPress: (e: any): void => resetStackOnTabPress(e, navigation),
           focus: (e: any): void => {
             resetStackOnTabPress(e, navigation);
+            dispatch(FinancialActions.clearFinancials());
+          },
+          blur: (): void => {
+            dispatch(FinancialActions.clearFinancials());
           },
         })}
         options={{

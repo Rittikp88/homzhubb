@@ -14,6 +14,7 @@ import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/Por
 import { ListingService } from '@homzhub/common/src/services/Property/ListingService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
@@ -80,6 +81,7 @@ interface IDispatchProps {
   getAsset: (payload: IGetAssetPayload) => void;
   setFilter: (payload: IFilter) => void;
   setCompareDetail: (payload: IOfferCompare) => void;
+  setCurrentProperty: (assetId: number) => void;
 }
 
 interface IDetailState {
@@ -428,7 +430,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private handleTabAction = (key: Tabs): void => {
-    const { navigation } = this.props;
+    const { navigation, setCurrentProperty } = this.props;
     const { propertyData, isFromTenancies } = this.state;
     if (isEmpty(propertyData)) {
       return;
@@ -467,6 +469,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         navigation.navigate(ScreensKeys.PropertyVisits, param);
         break;
       case Tabs.FINANCIALS:
+        setCurrentProperty(id);
         navigation.navigate(ScreensKeys.AssetFinancialScreen, param);
         break;
       case Tabs.CHAT:
@@ -634,6 +637,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;
   const { setFilter } = SearchActions;
+  const { setCurrentProperty } = FinancialActions;
   return bindActionCreators(
     {
       setAssetId,
@@ -650,6 +654,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setFilter,
       setCompareDetail,
       clearState,
+      setCurrentProperty,
     },
     dispatch
   );

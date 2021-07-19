@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/core';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
@@ -12,6 +14,7 @@ const AssetFinancial = (): React.ReactElement => {
   const { params } = useRoute();
   const { t } = useTranslation();
   const { navigate, goBack } = useNavigation();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const param = params as ICommonNavProps;
 
@@ -27,11 +30,16 @@ const AssetFinancial = (): React.ReactElement => {
     navigate(ScreensKeys.AddRecordScreen, { assetId: param.propertyId, screenTitle: param.screenTitle });
   };
 
+  const onBackPress = (): void => {
+    dispatch(FinancialActions.clearFinancials());
+    goBack();
+  };
+
   return (
     <UserScreen
       title={param?.screenTitle ?? t('assetPortfolio:portfolio')}
       pageTitle={t('assetFinancial:financial')}
-      onBackPress={goBack}
+      onBackPress={onBackPress}
       loading={loading}
     >
       <View style={styles.container}>

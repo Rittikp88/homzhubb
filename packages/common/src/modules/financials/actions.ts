@@ -85,7 +85,7 @@ const paymentFailure = (): IFluxStandardAction => ({
 });
 
 const clearFinancials = (): IFluxStandardAction => ({
-  type: FinancialActionTypes.GET.DUES_FAILURE,
+  type: FinancialActionTypes.CLEAR_STATE,
 });
 
 const setCurrentProperty = (payload: number): IFluxStandardAction<number> => ({
