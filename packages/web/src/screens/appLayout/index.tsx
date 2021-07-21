@@ -13,7 +13,7 @@ import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
 import MobileSideMenu from '@homzhub/web/src/screens/dashboard/components/MobileSideMenu';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
+import { AppLayoutContext, IFinancialsActions } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 
 interface IProps {
   location: LocationParams;
@@ -62,6 +62,10 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(1);
+  const [financialsActions, setFinancialsActions] = useState<IFinancialsActions>({
+    financialsActionType: null,
+    isOpen: false,
+  });
 
   const onMenuClose = (): void => {
     setIsMenuOpen(false);
@@ -72,7 +76,16 @@ const AppLayout: FC<IProps> = (props: IProps) => {
   };
 
   return (
-    <AppLayoutContext.Provider value={{ goBackClicked, setGoBackClicked, isMenuLoading, setIsMenuLoading }}>
+    <AppLayoutContext.Provider
+      value={{
+        goBackClicked,
+        setGoBackClicked,
+        isMenuLoading,
+        setIsMenuLoading,
+        financialsActions,
+        setFinancialsActions,
+      }}
+    >
       <View style={styles.container}>
         <Navbar history={history} location={location} isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenuOpen} />
         <NavigationInfo />

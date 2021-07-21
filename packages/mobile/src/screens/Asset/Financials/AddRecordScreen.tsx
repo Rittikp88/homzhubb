@@ -4,12 +4,14 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import AddRecordForm from '@homzhub/mobile/src/components/organisms/AddRecordForm';
+import { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
+import AddRecordForm, { IUploadCompProps } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -71,18 +73,31 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 
     return (
       <AddRecordForm
-        assetId={route?.params?.assetId}
         properties={assets}
         clear={clearForm}
         defaultCurrency={currency}
         onFormClear={this.onClearPress}
-        containerStyles={styles.addFormContainer}
         onSubmitFormSuccess={this.onSubmitFormSuccess}
         toggleLoading={this.toggleLoading}
-        isEditFlow={route?.params?.isEditFlow}
         transactionId={route?.params?.transactionId ?? -1}
+        renderUploadBoxComponent={this.renderUploadBoxComponent}
+        onPressLink={this.onPressLink}
+        assetId={route?.params?.assetId}
+        containerStyles={styles.addFormContainer}
+        isEditFlow={route?.params?.isEditFlow}
       />
     );
+  };
+
+  public renderUploadBoxComponent = (
+    renderAttachements: () => React.ReactNode,
+    uploadProps: IUploadCompProps
+  ): ReactElement => {
+    return <UploadBoxComponent {...uploadProps}>{renderAttachements()}</UploadBoxComponent>;
+  };
+
+  public onPressLink = (link: string): void => {
+    LinkingService.canOpenURL(link).then();
   };
 
   private onClearPress = (): void => {

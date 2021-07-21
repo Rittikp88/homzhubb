@@ -32,7 +32,6 @@ export { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGrou
 export { UploadBoxComponent } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 
 // Organisms
-export { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
 export { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export type { IMetricsData } from '@homzhub/mobile/src/components/organisms/AssetMetricsList';
 export { FinanceOverview } from '@homzhub/mobile/src/components/organisms/FinanceOverview';

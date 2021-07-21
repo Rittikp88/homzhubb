@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import ProgressBar from 'react-native-progress/Bar';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { UploadFileType } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IFileUploadProps {

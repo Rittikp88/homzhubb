@@ -12,6 +12,7 @@ import { AnalyticsService } from '@homzhub/common/src/services/Analytics/Analyti
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
@@ -24,8 +25,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
-import { IUploadAttachmentResponse } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
+import { IUploadAttachmentResponse } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import { UploadBoxComponent } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';

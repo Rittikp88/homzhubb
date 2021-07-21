@@ -28,6 +28,7 @@ import { pageTitles } from '@homzhub/web/src/components/molecules/NavigationInfo
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import '@homzhub/web/src/components/molecules/NavigationInfo/NavigationInfo.scss';
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
+import { FinancialsActions } from '@homzhub/web/src/screens/financials/FinancialsPopover';
 
 const humanize = (str: string, state: any): string => {
   const { params } = { ...state, params: state?.params || null };
@@ -227,6 +228,42 @@ const AddPropertyAction: FC = () => {
   );
 };
 
+const FinancialsActionGrp: FC = () => {
+  const { t } = useTranslation();
+  const styles = buttonGrpStyles;
+  const { setFinancialsActions } = useContext(AppLayoutContext);
+  const onPressAction = (actionType: FinancialsActions): void => {
+    setFinancialsActions({
+      financialsActionType: actionType,
+      isOpen: true,
+    });
+  };
+  return (
+    <View style={styles.container}>
+      <Button
+        type="primary"
+        containerStyle={[styles.buttonTertiary]}
+        onPress={(): void => onPressAction(FinancialsActions.AddReminder)}
+        icon={icons.calendar}
+        title={t('assetFinancial:addReminder')}
+        iconColor={theme.colors.white}
+        iconSize={25}
+        textStyle={styles.buttonTextStyle}
+      />
+      <Button
+        type="secondary"
+        containerStyle={[styles.buttonItem, styles.buttonSecondary]}
+        onPress={(): void => onPressAction(FinancialsActions.AddRecord)}
+        icon={icons.docFilled}
+        title={t('assetFinancial:addRecord')}
+        iconColor={theme.colors.primaryColor}
+        iconSize={25}
+        textStyle={styles.buttonTextStyle}
+      />
+    </View>
+  );
+};
+
 const GoBackActionButton: FC = () => {
   const { t } = useTranslation();
   const styles = goBackActionStyles;
@@ -262,6 +299,8 @@ export const NavigationInfo: FC = () => {
         return <AddPropertyAction />;
       case protectedRoutes.PORTFOLIO_ADD_PROPERTY:
         return <GoBackActionButton />;
+      case protectedRoutes.FINANCIALS:
+        return <FinancialsActionGrp />;
       default:
         return <GoBackActionButton />;
     }
@@ -386,5 +425,35 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+});
+
+const buttonGrpStyles = StyleSheet.create({
+  container: {
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  buttonItem: {
+    marginLeft: 10,
+  },
+  buttonSecondary: {
+    borderColor: theme.colors.white,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    width: 'max-content',
+  },
+  buttonTertiary: {
+    borderColor: theme.colors.subHeader,
+    flexDirection: 'row-reverse',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    width: 'max-content',
+    backgroundColor: theme.colors.subHeader,
+  },
+  buttonTextStyle: {
+    marginHorizontal: 10,
   },
 });

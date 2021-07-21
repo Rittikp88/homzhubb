@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import { AddRecordForm } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
+import { AddRecordForm } from '@homzhub/common/src/components/organisms/AddRecordForm';
 
 let props: any;
 let wrapper: ShallowWrapper;

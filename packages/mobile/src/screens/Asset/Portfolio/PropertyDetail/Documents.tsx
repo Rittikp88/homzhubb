@@ -36,7 +36,7 @@ import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { DocumentCard } from '@homzhub/mobile/src/components';
-import { IUploadAttachmentResponse } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
+import { IUploadAttachmentResponse } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';

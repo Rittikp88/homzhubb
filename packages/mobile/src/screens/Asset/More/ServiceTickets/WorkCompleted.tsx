@@ -12,7 +12,7 @@ import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import ProofOfCompletion from '@homzhub/common/src/components/molecules/ProofOfCompletion';
-import { IUploadAttachmentResponse } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
+import { IUploadAttachmentResponse } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';

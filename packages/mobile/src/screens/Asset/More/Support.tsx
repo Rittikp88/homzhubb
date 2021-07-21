@@ -10,6 +10,7 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { icons } from '@homzhub/common/src/assets/icon';
 import Check from '@homzhub/common/src/assets/images/check.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -24,9 +25,8 @@ import { FormButton } from '@homzhub/common/src/components/molecules/FormButton'
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { HeaderCard, UploadBoxComponent } from '@homzhub/mobile/src/components';
-import { IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import CaseLogs from '@homzhub/mobile/src/components/organisms/CaseLogs';
-import { IUploadAttachmentResponse } from '@homzhub/mobile/src/components/organisms/AddRecordForm';
+import { IUploadAttachmentResponse } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { CaseLog, Status } from '@homzhub/common/src/domain/models/CaseLog';
 import { User } from '@homzhub/common/src/domain/models/User';

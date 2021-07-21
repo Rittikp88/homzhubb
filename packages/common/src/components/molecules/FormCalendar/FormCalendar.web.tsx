@@ -47,6 +47,7 @@ interface IFormCalendarProps extends WithTranslation {
   minDate?: string;
   isCurrentDateEnable?: boolean;
   bubbleSelectedDate?: (day: string | number) => void;
+  popupProps?: PopupProps;
 }
 
 interface IFormCalendarState {
@@ -85,8 +86,10 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       minDate,
       isYearView = false,
       isCurrentDateEnable = false,
+      popupProps,
     } = this.props;
     const { width, date } = this.state;
+    const { position } = { ...popupProps, position: popupProps?.position || 'bottom left' };
     const availableDate = (): string => {
       if (selectedValue) {
         return selectedValue;
@@ -95,7 +98,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
     };
 
     const defaultDropDownProps = (width_dropdown: string | number): PopupProps => ({
-      position: 'bottom left',
+      position,
       on: 'click',
       arrow: false,
       contentStyle: { minWidth: width_dropdown, marginTop: '4px' },

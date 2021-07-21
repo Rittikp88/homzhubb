@@ -914,6 +914,7 @@
     "notes": "Notes",
     "notesPlaceholder": "Type your notes here...",
     "addRecord": "Add Record",
+    "addReminder": "Add Reminder",
     "submitRecord": "Submit Record",
     "propertyError": "Please enter your property",
     "detailsError": "Please enter your property details",

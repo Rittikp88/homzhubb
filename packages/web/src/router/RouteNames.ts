@@ -22,7 +22,7 @@ export const RouteNames = {
   protectedRoutes: {
     /* Mention protected route names here */
     DASHBOARD: '/dashboard',
-    FINANCIALS: '/dashboard/financial',
+    FINANCIALS: '/dashboard/financials',
     PORTFOLIO: '/dashboard/portfolio',
     ADD_PROPERTY: '/dashboard/addProperty',
     PORTFOLIO_ADD_PROPERTY: '/dashboard/portfolio/addProperty',

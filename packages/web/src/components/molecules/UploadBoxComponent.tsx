@@ -1,12 +1,10 @@
 import React from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
+import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ArrayUtils } from '@homzhub/common/src/utils/ArrayUtils';
-import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
-import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import FileUpload from '@homzhub/common/src/components/atoms/FileUpload';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 interface IProps {
   icon: string;
@@ -27,30 +25,32 @@ interface IProps {
 }
 
 const UploadBoxComponent = (props: IProps): React.ReactElement => {
-  const { attachments, onDelete, allowedTypes, onCapture, children, ...rest } = props;
+  const { attachments, onDelete, onCapture, children, ...rest } = props;
+  const { t } = useTranslation();
 
-  const captureDocument = async (): Promise<void> => {
-    const pickType = allowedTypes || [DocumentPicker.types.images, DocumentPicker.types.pdf];
+  const captureDocument = (files: File[]): void => {
     try {
-      let documents = await DocumentPicker.pickMultiple({
-        // @ts-ignore
-        type: pickType,
-      });
-      if (ArrayUtils.haveDuplicateObjects(attachments, documents, 'uri')) {
-        documents = attachments;
-        throw new Error(I18nService.t('common:duplicateUpload'));
+      const documentSource: IDocumentSource[] = [];
+      if (files.length) {
+        files.forEach((item) => {
+          const uri = URL.createObjectURL(item);
+
+          documentSource.push({ type: item.type, name: item.name, uri, size: item.size, fileCopyUri: uri });
+        });
       }
-      onCapture(documents);
+      onCapture(documentSource);
     } catch (e) {
-      if (!DocumentPicker.isCancel(e)) {
-        AlertHelper.error({ message: e.message });
-      }
+      AlertHelper.error({ message: e.message });
     }
+  };
+
+  const onDropRejection = (): void => {
+    AlertHelper.error({ message: t('unsupportedFormat') });
   };
 
   return (
     <>
-      <UploadBox {...rest} onPress={captureDocument} />
+      <UploadBox {...rest} webOnDropAccepted={captureDocument} webOnDropRejected={onDropRejection} />
       {children}
       <FileUpload attachments={attachments} onDelete={onDelete} />
     </>

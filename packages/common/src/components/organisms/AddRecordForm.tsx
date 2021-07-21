@@ -8,16 +8,16 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import { UploadBoxComponent, IDocumentSource } from '@homzhub/mobile/src/components/molecules/UploadBoxComponent';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
@@ -55,18 +55,31 @@ export interface IUploadAttachmentResponse {
   link: string;
 }
 
+export interface IUploadCompProps {
+  attachments: IDocumentSource[];
+  icon: string;
+  header: string;
+  subHeader: string;
+  onCapture: (attachments: IDocumentSource[]) => void;
+  onDelete: (uri: string) => void;
+  containerStyle: StyleProp<ViewStyle>;
+}
+
 interface IOwnProps extends WithTranslation {
   properties: Asset[];
-  assetId?: number;
   onSubmitFormSuccess?: () => void;
   clear: number;
   onFormClear: () => void;
-  containerStyles?: StyleProp<ViewStyle>;
-  testID?: string;
   toggleLoading: (isLoading: boolean) => void;
   defaultCurrency: Currency;
-  isEditFlow?: boolean;
   transactionId: number;
+  renderUploadBoxComponent: (renderAttachements: () => React.ReactNode, uploadProps: IUploadCompProps) => ReactElement;
+  onPressLink: (link: string) => void;
+  assetId?: number;
+  containerStyles?: StyleProp<ViewStyle>;
+  isEditFlow?: boolean;
+  isDesktopWeb?: boolean;
+  testID?: string;
 }
 
 interface IFormattedAttachment {
@@ -123,10 +136,25 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 
   public render(): ReactElement {
-    const { containerStyles, t, assetId, isEditFlow } = this.props;
+    const { containerStyles, t, assetId, isEditFlow, renderUploadBoxComponent, isDesktopWeb } = this.props;
     const { selectedFormType, formValues, currencyCode, currencySymbol, attachments } = this.state;
+    const isWeb = PlatformUtils.isWeb();
+    const isDesktop = isDesktopWeb || false;
+    const isAbsoluteWeb = isWeb && isDesktop;
+    const uploadProps = {
+      attachments,
+      icon: icons.document,
+      header: t('common:uploadDocument'),
+      subHeader: t('common:uploadDocHelperText'),
+      onCapture: this.handleUpload,
+      onDelete: this.handleDocumentDelete,
+      containerStyle: styles.uploadBox,
+    };
+    const calendarPropsWeb = {
+      popupProps: { position: 'top center' },
+    };
     return (
-      <View style={containerStyles}>
+      <View style={[containerStyles]}>
         <SelectionPicker
           data={[
             { title: t('income'), value: FormType.Income },
@@ -134,6 +162,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
           ]}
           selectedItem={[selectedFormType]}
           onValueChange={this.onFormTypeChange}
+          containerStyles={[isAbsoluteWeb && styles.selectionPicker]}
         />
         <Formik
           innerRef={this.formRef}
@@ -148,90 +177,98 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
             };
 
             return (
-              <>
-                <FormDropdown
-                  formProps={formProps}
-                  name="property"
-                  options={this.loadPropertyNames()}
-                  placeholder={t('selectProperty')}
-                  onChange={this.onChangeProperty}
-                  isMandatory
-                  label={t('property')}
-                  listHeight={theme.viewport.height * 0.8}
-                  isDisabled={!!assetId}
-                />
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="default"
-                  name="label"
-                  label={t('details')}
-                  placeholder={t('detailsPlaceholder')}
-                  isMandatory
-                />
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="default"
-                  name="tellerName"
-                  label={selectedFormType === FormType.Income ? t('receivedFrom') : t('paidTo')}
-                  placeholder={t('tellerPlaceholder')}
-                />
-                <FormTextInput
-                  formProps={formProps}
-                  inputType="number"
-                  name="amount"
-                  label={t('amount')}
-                  placeholder={t('amountPlaceholder')}
-                  inputPrefixText={currencySymbol}
-                  inputGroupSuffixText={currencyCode}
-                  isMandatory
-                />
-                <FormDropdown
-                  formProps={formProps}
-                  name="category"
-                  label={t('category')}
-                  options={this.loadCategories()}
-                  placeholder={t('categoryPlaceholder')}
-                  isMandatory
-                  onChange={this.onChangeCategory}
-                />
-                <FormCalendar
-                  allowPastDates
-                  formProps={formProps}
-                  name="date"
-                  textType="label"
-                  label={t('addDate')}
-                  calendarTitle={t('addDate')}
-                  placeHolder={t('addDatePlaceholder')}
-                  isMandatory
-                />
-                <TextArea
-                  value={formProps.values.notes}
-                  placeholder={t('notesPlaceholder')}
-                  label={t('notes')}
-                  wordCountLimit={MAX_WORD_COUNT}
-                  containerStyle={styles.inputStyle}
-                  onMessageChange={handleNotes}
-                />
-                <UploadBoxComponent
-                  attachments={attachments}
-                  icon={icons.document}
-                  header={t('common:uploadDocument')}
-                  subHeader={t('common:uploadDocHelperText')}
-                  onCapture={this.handleUpload}
-                  onDelete={this.handleDocumentDelete}
-                  containerStyle={styles.uploadBox}
-                >
-                  {this.renderExistingAttachments()}
-                </UploadBoxComponent>
-                <FormButton
-                  // @ts-ignore
-                  onPress={formProps.handleSubmit}
-                  formProps={formProps}
-                  type="primary"
-                  title={t(isEditFlow ? 'submitRecord' : 'addRecord')}
-                  disabled={!formProps.isValid || formProps.isSubmitting}
-                />
-              </>
+              <View style={[isAbsoluteWeb && styles.formContainer]}>
+                <View style={[isAbsoluteWeb && styles.formColumn]}>
+                  <FormDropdown
+                    formProps={formProps}
+                    name="property"
+                    options={this.loadPropertyNames()}
+                    placeholder={t('selectProperty')}
+                    onChange={this.onChangeProperty}
+                    isMandatory
+                    label={t('property')}
+                    listHeight={theme.viewport.height * 0.8}
+                    isDisabled={!!assetId}
+                  />
+                  <FormTextInput
+                    formProps={formProps}
+                    inputType="default"
+                    name="label"
+                    label={t('details')}
+                    placeholder={t('detailsPlaceholder')}
+                    isMandatory
+                  />
+                  <FormTextInput
+                    formProps={formProps}
+                    inputType="default"
+                    name="tellerName"
+                    label={selectedFormType === FormType.Income ? t('receivedFrom') : t('paidTo')}
+                    placeholder={t('tellerPlaceholder')}
+                  />
+                  <FormTextInput
+                    formProps={formProps}
+                    inputType="number"
+                    name="amount"
+                    label={t('amount')}
+                    placeholder={t('amountPlaceholder')}
+                    inputPrefixText={currencySymbol}
+                    inputGroupSuffixText={currencyCode}
+                    isMandatory
+                  />
+                  <FormDropdown
+                    formProps={formProps}
+                    name="category"
+                    label={t('category')}
+                    options={this.loadCategories()}
+                    placeholder={t('categoryPlaceholder')}
+                    isMandatory
+                    onChange={this.onChangeCategory}
+                  />
+                  {!isWeb ? (
+                    <FormCalendar
+                      allowPastDates
+                      formProps={formProps}
+                      name="date"
+                      textType="label"
+                      label={t('addDate')}
+                      calendarTitle={t('addDate')}
+                      placeHolder={t('addDatePlaceholder')}
+                      isMandatory
+                    />
+                  ) : (
+                    <FormCalendar
+                      allowPastDates
+                      formProps={formProps}
+                      name="date"
+                      textType="label"
+                      label={t('addDate')}
+                      calendarTitle={t('addDate')}
+                      placeHolder={t('addDatePlaceholder')}
+                      isMandatory
+                      {...calendarPropsWeb}
+                    />
+                  )}
+                </View>
+                <View style={[isAbsoluteWeb && styles.formColumn]}>
+                  <TextArea
+                    value={formProps.values.notes}
+                    placeholder={t('notesPlaceholder')}
+                    label={t('notes')}
+                    wordCountLimit={MAX_WORD_COUNT}
+                    containerStyle={[styles.inputStyle, isAbsoluteWeb && styles.inputStyleWeb]}
+                    onMessageChange={handleNotes}
+                  />
+                  {renderUploadBoxComponent(this.renderExistingAttachments, uploadProps)}
+                  <FormButton
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    formProps={formProps}
+                    type="primary"
+                    title={t(isEditFlow ? 'submitRecord' : 'addRecord')}
+                    disabled={!formProps.isValid || formProps.isSubmitting}
+                  />
+                </View>
+              </View>
             );
           }}
         </Formik>
@@ -240,6 +277,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   }
 
   public renderExistingAttachments = (): React.ReactElement => {
+    const { onPressLink } = this.props;
     const { existingAttachments, attachments } = this.state;
     return (
       <>
@@ -257,7 +295,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
           };
 
           const onPress = (): void => {
-            LinkingService.canOpenURL(link).then();
+            onPressLink(link);
           };
 
           return (
@@ -498,8 +536,14 @@ const namespace = LocaleConstants.namespacesKey;
 export default withTranslation([namespace.assetFinancial, namespace.common])(AddRecordForm);
 
 const styles = StyleSheet.create({
+  selectionPicker: {
+    width: '47.5%',
+  },
   inputStyle: {
     marginTop: 20,
+  },
+  inputStyleWeb: {
+    marginTop: 8,
   },
   uploadBox: {
     marginVertical: 20,
@@ -535,5 +579,12 @@ const styles = StyleSheet.create({
   },
   existingFileName: {
     color: theme.colors.primaryColor,
+  },
+  formContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  formColumn: {
+    width: '47.5%',
   },
 });
