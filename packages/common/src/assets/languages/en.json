@@ -297,7 +297,9 @@
     "marketPlace": "Marketplace",
     "askHelp": "Ask help",
     "bugReport": "Bug Report",
-    "quickActions": "Quick Actions"
+    "quickActions": "Quick Actions",
+    "selectYourCountry": "Select your category",
+    "addNow": "Add Now"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -938,7 +940,16 @@
     "deleteRecordConfirmation": "Are you sure you want to delete this record?",
     "systemGeneratedText": "System-generated records cannot be edited",
     "addFinancials": "Add Financials",
-    "paidSuccessfully": "Payment of {{amount}} successfully completed"
+    "paidSuccessfully": "Payment of {{amount}} successfully completed",
+    "addReminders": "Add Reminders",
+    "setReminders": "Set Reminders",
+    "reminderTitle": "Reminder Title",
+    "selectLeaseUnit": "Select your lease unit",
+    "leaseUnit": "Lease Unit",
+    "reminderDate": "Reminder Date",
+    "frequency": "Frequency",
+    "enterEmails": "Enter your Emails here..",
+    "notifyTo": "Notify to"
   },
   "assetMore": {
     "more": "More",

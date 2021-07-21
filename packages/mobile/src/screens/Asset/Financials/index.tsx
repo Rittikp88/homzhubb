@@ -4,18 +4,22 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
+import { SvgProps } from 'react-native-svg';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Accounting from '@homzhub/common/src/assets/images/accounting.svg';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
+import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import DuesContainer from '@homzhub/mobile/src/components/organisms/DuesContainer';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/FinancialStack';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -28,6 +32,7 @@ import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/fin
 interface IOwnState {
   isLoading: boolean;
   scrollEnabled: boolean;
+  showAddSheet: boolean;
 }
 
 interface IStateProps {
@@ -57,6 +62,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   public state = {
     isLoading: false,
     scrollEnabled: true,
+    showAddSheet: false,
   };
 
   public componentDidMount(): void {
@@ -86,7 +92,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         isGradient
         isOuterScrollEnabled={scrollEnabled}
         title={t('financial')}
-        onPlusIconClicked={this.onPlusIconPress}
+        onPlusIconClicked={(): void => this.toggleAddSheet(true)}
       >
         <AssetMetricsList
           title={t('assetFinancial:summary')}
@@ -110,7 +116,22 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
           onEditRecord={this.onPressEdit}
           toggleLoading={this.toggleLoading}
         />
+        {this.renderAddSheet()}
       </UserScreen>
+    );
+  };
+
+  private renderAddSheet = (): React.ReactElement => {
+    const { showAddSheet } = this.state;
+    const data = this.getAddSheetData();
+
+    return (
+      <IconSheet
+        data={data}
+        sheetHeight={250}
+        isVisible={showAddSheet}
+        onCloseSheet={(): void => this.toggleAddSheet(false)}
+      />
     );
   };
 
@@ -130,7 +151,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     setCurrentCountry(countryId);
   };
 
-  private onPlusIconPress = (): void => {
+  private onAddRecord = (): void => {
     const {
       assets,
       t,
@@ -145,6 +166,14 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     navigate(ScreensKeys.AddRecordScreen);
   };
 
+  private onSetReminder = (): void => {
+    const {
+      navigation: { navigate },
+    } = this.props;
+
+    navigate(ScreensKeys.AddReminderScreen);
+  };
+
   private onPressEdit = (id: number): void => {
     const {
       navigation: { navigate },
@@ -152,8 +181,33 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     navigate(ScreensKeys.AddRecordScreen, { isEditFlow: true, transactionId: id });
   };
 
+  private getAddSheetData = (): ISheetData[] => {
+    const { t } = this.props;
+    const iconSize = 40;
+    const ImageHOC = (Image: React.FC<SvgProps>): React.ReactElement => <Image width={iconSize} height={iconSize} />;
+    const IconHOC = (name: string): React.ReactElement => (
+      <Icon name={name} size={iconSize + 3} color={theme.colors.error} />
+    );
+    return [
+      {
+        icon: ImageHOC(Accounting),
+        label: t('assetFinancial:addFinancials'),
+        onPress: this.onAddRecord,
+      },
+      {
+        icon: IconHOC(icons.reminder),
+        label: t('assetFinancial:setReminders'),
+        onPress: this.onSetReminder,
+      },
+    ];
+  };
+
   private toggleScroll = (scrollEnabled: boolean): void => {
     this.setState({ scrollEnabled });
+  };
+
+  private toggleAddSheet = (isVisible: boolean): void => {
+    this.setState({ showAddSheet: isVisible });
   };
 
   private toggleLoading = (loading: boolean): void => {
@@ -194,6 +248,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   private getPropertyList = (): PickerItemProps[] => {
     const { assets, selectedCountry } = this.props;
 
+    // @ts-ignore
     return (selectedCountry === 0 ? assets : assets.filter((asset) => selectedCountry === asset.country.id)).map(
       (asset) => ({
         label: asset.projectName,
@@ -205,13 +260,8 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserAssets } = UserSelector;
-  const {
-    getFinancialLoaders,
-    getLedgerData,
-    getSelectedCountry,
-    getSelectedProperty,
-    getLedgerMetrics,
-  } = FinancialSelectors;
+  const { getFinancialLoaders, getLedgerData, getSelectedCountry, getSelectedProperty, getLedgerMetrics } =
+    FinancialSelectors;
   return {
     assets: getUserAssets(state),
     financialLoaders: getFinancialLoaders(state),
@@ -223,14 +273,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    getLedgers,
-    setCurrentCountry,
-    setCurrentProperty,
-    setTimeRange,
-    getLedgerMetrics,
-    resetLedgerFilters,
-  } = FinancialActions;
+  const { getLedgers, setCurrentCountry, setCurrentProperty, setTimeRange, getLedgerMetrics, resetLedgerFilters } =
+    FinancialActions;
   return bindActionCreators(
     {
       getLedgers,

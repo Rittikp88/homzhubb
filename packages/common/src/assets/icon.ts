@@ -191,6 +191,7 @@ export const icons = {
   chat: 'chat',
   serviceRequest: 'service',
   marketPlace: 'market-place',
+  reminder: 'reminder',
 
   // COMMUTE
   train: 'train',

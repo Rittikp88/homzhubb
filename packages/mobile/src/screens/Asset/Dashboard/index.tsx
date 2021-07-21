@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -20,7 +20,6 @@ import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
-import { theme } from '@homzhub/common/src/styles/theme';
 import AddProperty from '@homzhub/common/src/assets/images/addProperty.svg';
 import Alert from '@homzhub/common/src/assets/images/alert.svg';
 import CustomSearch from '@homzhub/common/src/assets/images/customSearch.svg';
@@ -33,9 +32,8 @@ import {
   AssetSummary,
   FullScreenAssetDetailsCarousel,
 } from '@homzhub/mobile/src/components';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
+import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import LeasePropertyList from '@homzhub/mobile/src/components/organisms/LeasePropertyList';
@@ -84,12 +82,6 @@ interface IDashboardState {
   pendingProperties: Asset[];
   isLoading: boolean;
   showBottomSheet: boolean;
-}
-
-interface IFormattedBottomSheetData {
-  icon: React.ReactElement;
-  label: string;
-  onPress: () => void;
 }
 
 enum MetricType {
@@ -182,50 +174,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   public renderBottomSheet = (): React.ReactElement => {
-    const { t, setInitialState } = this.props;
     const { showBottomSheet } = this.state;
     const data = this.formatBottomSheetData();
 
-    const keyExtractor = (item: IFormattedBottomSheetData, index: number): string => `${item}:${index}`;
-
-    const renderItem = ({ item }: { item: IFormattedBottomSheetData }): React.ReactElement => {
-      const { icon, label, onPress } = item;
-
-      const onPressItem = (): void => {
-        onPress();
-        setInitialState();
-        this.closeBottomSheet();
-      };
-
-      return (
-        <>
-          <TouchableOpacity style={styles.bottomSheetItemContainer()} onPress={onPressItem}>
-            {icon}
-            {/* @ts-ignore */}
-            <Label type="large" textType="semiBold" style={styles.itemLabel()}>
-              {label}
-            </Label>
-          </TouchableOpacity>
-        </>
-      );
-    };
-
-    return (
-      <BottomSheet
-        headerTitle={t('common:quickActions')}
-        visible={showBottomSheet}
-        onCloseSheet={this.closeBottomSheet}
-        sheetHeight={375}
-      >
-        <FlatList
-          data={data}
-          numColumns={3}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-          contentContainerStyle={styles.flatList()}
-        />
-      </BottomSheet>
-    );
+    return <IconSheet data={data} onCloseSheet={this.closeBottomSheet} isVisible={showBottomSheet} numOfColumns={3} />;
   };
 
   public renderFullImageView = (): React.ReactElement | null => {
@@ -354,9 +306,13 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 
   private openBottomSheet = (): void => this.setState({ showBottomSheet: true });
 
-  private closeBottomSheet = (): void => this.setState({ showBottomSheet: false });
+  private closeBottomSheet = (): void => {
+    const { setInitialState } = this.props;
+    setInitialState();
+    this.setState({ showBottomSheet: false });
+  };
 
-  private formatBottomSheetData = (): IFormattedBottomSheetData[] => {
+  private formatBottomSheetData = (): ISheetData[] => {
     const { t, navigation, assets, getFilterDetails, filters, setFilter, defaultCurrency } = this.props;
     const iconSize = 38;
 
@@ -518,21 +474,5 @@ const styles = {
   }),
   evenItem: (): StyleProp<ViewStyle> => ({
     marginEnd: 17,
-  }),
-  bottomSheetItemContainer: (): StyleProp<ViewStyle> => ({
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 16,
-  }),
-  itemLabel: (): StyleProp<TextStyle> => ({
-    marginTop: 10,
-    textAlign: 'center',
-    color: theme.colors.gray15,
-  }),
-  flatList: (): StyleProp<ViewStyle> => ({
-    marginBottom: 30,
-    marginHorizontal: 24,
   }),
 };
