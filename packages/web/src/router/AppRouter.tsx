@@ -16,6 +16,7 @@ import MicroSite from '@homzhub/web/src/screens/microSite';
 import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerification';
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
 import TermsServicesPayment from '@homzhub/web/src/components/staticPages/TermsServicesPayment';
+import TermsPropertyManagement from '@homzhub/web/src/components/staticPages/TermsPropertyManagement';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
 import Error from '@homzhub/web/src/components/staticPages/ErrorGeneric';
@@ -35,6 +36,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
     APP_BASE,
     TERMS_CONDITION,
     TERMS_SERVICES_PAYMENTS,
+    TERMS_PROPERTY_MANAGEMENT,
     PRIVACY_POLICY,
     LOGIN,
     SIGNUP,
@@ -91,6 +93,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
         <Route exact path={TERMS_CONDITION} component={TermsAndCondition} />
         <Route exact path={PRIVACY_POLICY} component={PrivacyPolicy} />
         <Route exact path={TERMS_SERVICES_PAYMENTS} component={TermsServicesPayment} />
+        <Route exact path={TERMS_PROPERTY_MANAGEMENT} component={TermsPropertyManagement} />
         <Route exact path={FAQS} component={FAQ} />
         <Route exact path={MEMBERSHIP_PLANS} component={MembershipPlans} />
         <PrivateRoute path={DASHBOARD} component={AppLayout} isAuthenticated={isAuthenticated} />

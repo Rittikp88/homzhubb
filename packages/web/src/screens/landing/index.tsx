@@ -32,17 +32,8 @@ interface IProps extends RouteComponentProps {
 
 const Landing: FC<IProps> = (props: IProps) => {
   const { isAuthenticated, history, dynamicLinkParams } = props;
-  const [featuredPropertiesRef, setFeaturedPropertiesRef] = useState(null);
-  const [plansRef, setPlansRef] = useState(null);
   const [storeLinksRef, setStoreLinksRef] = useState(null);
   const dispatch = useDispatch();
-
-  const featuredPropertiesSectionRef = (element: any): void => {
-    setFeaturedPropertiesRef(element);
-  };
-  const plansSectionRef = (element: any): void => {
-    setPlansRef(element);
-  };
   const storeLinkSectionRef = (element: any): void => {
     setStoreLinksRef(element);
   };
@@ -64,18 +55,14 @@ const Landing: FC<IProps> = (props: IProps) => {
   return (
     <View style={styles.container}>
       <ExitTriggeredPopup isInitialized={isInitialized} />
-      <LandingNavBar
-        featuredPropertiesRef={featuredPropertiesRef}
-        plansSectionRef={plansRef}
-        storeLinksSectionRef={storeLinksRef}
-      />
+      <LandingNavBar storeLinksSectionRef={storeLinksRef} />
       <HeroSection />
       <LandingFeatures />
       <AppFeatures />
       <PromiseSection />
       <LandingYoutubeSection />
-      <FeaturedProperties scrollRef={featuredPropertiesSectionRef} />
-      <PlansSection scrollRef={plansSectionRef} />
+      <FeaturedProperties />
+      <PlansSection />
       <StoreLinkSection scrollRef={storeLinkSectionRef} />
       <Testimonials />
       <OurServicesSection />

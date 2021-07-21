@@ -10,6 +10,7 @@ export const RouteNames = {
     MOBILE_VERIFICATION: '/mobileVerification',
     TERMS_CONDITION: '/terms&Condition',
     TERMS_SERVICES_PAYMENTS: '/terms-Services&Payments',
+    TERMS_PROPERTY_MANAGEMENT: '/property-management-terms',
     PRIVACY_POLICY: '/privacyPolicy',
     UPLOAD: '/upload',
     MAHARASHTRA_CONNECT: '/maharashtra_connect',

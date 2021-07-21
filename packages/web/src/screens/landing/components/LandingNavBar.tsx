@@ -23,14 +23,10 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
-  featuredPropertiesRef?: any;
-  plansSectionRef?: any;
   storeLinksSectionRef?: any;
   membershipPlan?: boolean;
 }
 interface INavProps {
-  featuredPropertiesRef?: any;
-  plansSectionRef?: any;
   storeLinksSectionRef?: any;
   onMenuClose: () => void;
   openModal?: () => void;
@@ -57,7 +53,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   const { publicRoutes } = RouteNames;
   const { APP_BASE } = publicRoutes;
   const isMenuVisible = compareUrlsWithPathname([APP_BASE], pathname);
-  const { featuredPropertiesRef, plansSectionRef, storeLinksSectionRef, membershipPlan = false } = props;
+  const { storeLinksSectionRef, membershipPlan = false } = props;
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
@@ -114,13 +110,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
                   <NavLogo />
                 </View>
               </TouchableOpacity>
-              {isLaptop && isMenuVisible && !membershipPlan && (
-                <RenderNavItems
-                  featuredPropertiesRef={featuredPropertiesRef}
-                  plansSectionRef={plansSectionRef}
-                  onMenuClose={onMenuClose}
-                />
-              )}
+              {isLaptop && isMenuVisible && !membershipPlan && <RenderNavItems onMenuClose={onMenuClose} />}
             </View>
 
             {isLaptop ? (
@@ -196,8 +186,6 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
       {!isLaptop && (
         <SideBar open={isMenuOpen} onClose={onMenuClose} menuProps={{ right: true }} page="landing">
           <RenderNavItems
-            featuredPropertiesRef={featuredPropertiesRef}
-            plansSectionRef={plansSectionRef}
             storeLinksSectionRef={storeLinksSectionRef}
             onMenuClose={onMenuClose}
             openModal={openModal}
@@ -209,14 +197,7 @@ const LandingNavBar: FC<IProps> = (props: IProps) => {
   );
 };
 const RenderNavItems: FC<INavProps> = (props: INavProps) => {
-  const {
-    featuredPropertiesRef,
-    plansSectionRef,
-    storeLinksSectionRef,
-    onMenuClose,
-    openModal,
-    membershipPlan,
-  } = props;
+  const { storeLinksSectionRef, onMenuClose, openModal, membershipPlan } = props;
   const [isSelected, setIsSelected] = useState(0);
   const [scrollLength, setScrollLength] = useState(0);
   const history = useHistory();
@@ -242,18 +223,6 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
   const isLaptop = useUp(deviceBreakpoint.LAPTOP);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const styles = navItemStyle(isLaptop, false);
-  const navItems = [
-    {
-      text: t('featuredProperties'),
-      url: RouteNames.publicRoutes.APP_BASE,
-      disabled: false,
-    },
-    {
-      text: t('membershipPlans'),
-      url: RouteNames.publicRoutes.APP_BASE,
-      disabled: false,
-    },
-  ];
   const mobileItems = [
     {
       text: t('landing:downloadApp'),
@@ -280,7 +249,7 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
       disabled: false,
     },
   ];
-  let menuItems = isLaptop ? navItems : [...navItems, ...mobileItems, ...login];
+  let menuItems = isLaptop ? [] : [...mobileItems, ...login];
   if (!isMenuVisible) {
     menuItems = !membershipPlan
       ? !isTablet
@@ -290,22 +259,6 @@ const RenderNavItems: FC<INavProps> = (props: INavProps) => {
   }
   const onNavItemPress = (index: number): void => {
     setIsSelected(index);
-    if (menuItems[index].text === t('featuredProperties')) {
-      if (featuredPropertiesRef) {
-        featuredPropertiesRef.measure((x: number, y: number) => {
-          setScrollLength(Math.floor(y));
-          onMenuClose();
-        });
-      }
-    }
-    if (menuItems[index].text === t('membershipPlans')) {
-      if (plansSectionRef) {
-        plansSectionRef.measure((x: number, y: number) => {
-          setScrollLength(Math.floor(y));
-          onMenuClose();
-        });
-      }
-    }
     if (menuItems[index].text === t('microSite:freePropertyHealthCheck')) {
       if (openModal) {
         onMenuClose();
