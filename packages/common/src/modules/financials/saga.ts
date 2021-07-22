@@ -13,10 +13,16 @@ import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selec
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
-import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import { FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ILedgerMetrics, IProcessPaymentPayload } from '@homzhub/common/src/modules/financials/interfaces';
+import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
+import {
+  IAddReminderPayload,
+  ILedgerMetrics,
+  IProcessPaymentPayload,
+} from '@homzhub/common/src/modules/financials/interfaces';
+import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
 export function* getTransactions(action: IFluxStandardAction<ITransactionParams>): VoidGenerator {
   try {
@@ -64,16 +70,16 @@ export function* processPayment(action: IFluxStandardAction<IProcessPaymentPaylo
 // Todo (Praharsh) : Refactor financeUtil logic
 export function* getLedgers(): VoidGenerator {
   try {
-    const selectedTimeRange: number = yield select(FinancialSelectors.getSelectedTimeRange);
-    const financialYear: IFinancialYear = yield select(UserSelector.getUserFinancialYear);
-    const selectedCountry: number = yield select(FinancialSelectors.getSelectedCountry);
-    const selectedProperty: number = yield select(FinancialSelectors.getSelectedProperty);
+    const selectedTimeRange = yield select(FinancialSelectors.getSelectedTimeRange);
+    const financialYear = yield select(UserSelector.getUserFinancialYear);
+    const selectedCountry = yield select(FinancialSelectors.getSelectedCountry);
+    const selectedProperty = yield select(FinancialSelectors.getSelectedProperty);
 
     const params: IGeneralLedgersParams = {
-      selectedTimeRange,
-      selectedCountry,
-      selectedProperty,
-      financialYear,
+      selectedTimeRange: selectedTimeRange as DateFilter,
+      selectedCountry: selectedCountry as number,
+      selectedProperty: selectedProperty as number,
+      financialYear: financialYear as IFinancialYear,
     };
 
     const store = StoreProviderService.getStore();
@@ -113,10 +119,51 @@ export function* getLedgerMetrics() {
   }
 }
 
+export function* getReminderCategories(): VoidGenerator {
+  try {
+    const response = yield call(LedgerRepository.getReminderCategories);
+    yield put(FinancialActions.getReminderCategoriesSuccess(response as Unit[]));
+  } catch (e) {
+    yield put(FinancialActions.getReminderCategoriesFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
+export function* getReminderFrequencies(): VoidGenerator {
+  try {
+    const response = yield call(LedgerRepository.getReminderFrequencies);
+    yield put(FinancialActions.getReminderFrequenciesSuccess(response as Unit[]));
+  } catch (e) {
+    yield put(FinancialActions.getReminderFrequenciesFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
+export function* addReminder(action: IFluxStandardAction<IAddReminderPayload>): VoidGenerator {
+  if (!action.payload) return;
+  const { data, onCallback } = action.payload;
+  try {
+    yield call(LedgerRepository.addReminder, data);
+    yield put(FinancialActions.addReminderSuccess());
+    if (onCallback) {
+      onCallback(true);
+    }
+  } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
+    yield put(FinancialActions.addReminderFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.GET.TRANSACTIONS, getTransactions);
   yield takeLatest(FinancialActionTypes.GET.DUES, getAllDues);
   yield takeLatest(FinancialActionTypes.POST.PAYMENT, processPayment);
   yield takeLatest(FinancialActionTypes.GET.LEDGERS, getLedgers);
   yield takeLatest(FinancialActionTypes.GET.LEDGER_METRICS, getLedgerMetrics);
+  yield takeLatest(FinancialActionTypes.GET.REMINDER_CATEGORIES, getReminderCategories);
+  yield takeLatest(FinancialActionTypes.GET.REMINDER_FREQUENCIES, getReminderFrequencies);
+  yield takeLatest(FinancialActionTypes.POST.REMINDER, addReminder);
 }

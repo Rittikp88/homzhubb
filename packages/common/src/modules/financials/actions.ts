@@ -2,10 +2,15 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Dues, IDues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialTransactions, IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers, IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ILedgerMetrics, IProcessPaymentPayload } from '@homzhub/common/src/modules/financials/interfaces';
+import {
+  IAddReminderPayload,
+  ILedgerMetrics,
+  IProcessPaymentPayload,
+} from '@homzhub/common/src/modules/financials/interfaces';
+import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
 const actionTypePrefix = 'Financials/';
 
@@ -27,6 +32,13 @@ export const FinancialActionTypes = {
     LEDGER_METRICS: `${actionTypePrefix}LEDGER_METRICS`,
     LEDGER_METRICS_SUCCESS: `${actionTypePrefix}LEDGER_METRICS_SUCCESS`,
     LEDGER_METRICS_FAILURE: `${actionTypePrefix}LEDGER_METRICS_FAILURE`,
+    // Reminders
+    REMINDER_CATEGORIES: `${actionTypePrefix}REMINDER_CATEGORIES`,
+    REMINDER_CATEGORIES_SUCCESS: `${actionTypePrefix}REMINDER_CATEGORIES_SUCCESS`,
+    REMINDER_CATEGORIES_FAILURE: `${actionTypePrefix}REMINDER_CATEGORIES_FAILURE`,
+    REMINDER_FREQUENCIES: `${actionTypePrefix}REMINDER_FREQUENCIES`,
+    REMINDER_FREQUENCIES_SUCCESS: `${actionTypePrefix}REMINDER_FREQUENCIES_SUCCESS`,
+    REMINDER_FREQUENCIES_FAILURE: `${actionTypePrefix}REMINDER_FREQUENCIES_FAILURE`,
   },
   SET: {
     SELECTED_PROPERTY: `${actionTypePrefix}SELECTED_PROPERTY`,
@@ -37,6 +49,10 @@ export const FinancialActionTypes = {
     PAYMENT: `${actionTypePrefix}PAYMENT`,
     PAYMENT_SUCCESS: `${actionTypePrefix}PAYMENT_SUCCESS`,
     PAYMENT_FAILURE: `${actionTypePrefix}PAYMENT_FAILURE`,
+    // Reminders
+    REMINDER: `${actionTypePrefix}REMINDER`,
+    REMINDER_SUCCESS: `${actionTypePrefix}REMINDER_SUCCESS`,
+    REMINDER_FAILURE: `${actionTypePrefix}REMINDER_FAILURE`,
   },
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
   RESET_LEDGER_FILTERS: `${actionTypePrefix}RESET_LEDGER_FILTERS`,
@@ -116,7 +132,7 @@ const getLedgersFailure = (): IFluxStandardAction => ({
   type: FinancialActionTypes.GET.LEDGERS_FAILURE,
 });
 
-const getLedgerMetrics = (): IFluxStandardAction<IGeneralLedgers[]> => ({
+const getLedgerMetrics = (): IFluxStandardAction => ({
   type: FinancialActionTypes.GET.LEDGER_METRICS,
 });
 
@@ -133,6 +149,45 @@ const resetLedgerFilters = (): IFluxStandardAction => ({
   type: FinancialActionTypes.RESET_LEDGER_FILTERS,
 });
 
+const getReminderCategories = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDER_CATEGORIES,
+});
+
+const getReminderCategoriesSuccess = (data: Unit[]): IFluxStandardAction<IUnit[]> => ({
+  type: FinancialActionTypes.GET.REMINDER_CATEGORIES_SUCCESS,
+  payload: ObjectMapper.serializeArray(data),
+});
+
+const getReminderCategoriesFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDER_CATEGORIES_FAILURE,
+});
+
+const getReminderFrequencies = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDER_FREQUENCIES,
+});
+
+const getReminderFrequenciesSuccess = (data: Unit[]): IFluxStandardAction<IUnit[]> => ({
+  type: FinancialActionTypes.GET.REMINDER_FREQUENCIES_SUCCESS,
+  payload: ObjectMapper.serializeArray(data),
+});
+
+const getReminderFrequenciesFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDER_FREQUENCIES_FAILURE,
+});
+
+const addReminder = (payload: IAddReminderPayload): IFluxStandardAction<IAddReminderPayload> => ({
+  type: FinancialActionTypes.POST.REMINDER,
+  payload,
+});
+
+const addReminderSuccess = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.POST.REMINDER_SUCCESS,
+});
+
+const addReminderFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.POST.REMINDER_FAILURE,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -140,7 +195,9 @@ export type FinancialActionPayloadTypes =
   | IGeneralLedgers[]
   | number
   | DateFilter
-  | ILedgerMetrics;
+  | ILedgerMetrics
+  | IUnit[]
+  | IAddReminderPayload;
 
 export const FinancialActions = {
   getTransactions,
@@ -163,4 +220,13 @@ export const FinancialActions = {
   getLedgerMetricsSuccess,
   getLedgerMetricsFailure,
   resetLedgerFilters,
+  getReminderCategories,
+  getReminderCategoriesSuccess,
+  getReminderCategoriesFailure,
+  getReminderFrequencies,
+  getReminderFrequenciesSuccess,
+  getReminderFrequenciesFailure,
+  addReminder,
+  addReminderSuccess,
+  addReminderFailure,
 };

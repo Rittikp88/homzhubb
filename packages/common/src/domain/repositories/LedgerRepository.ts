@@ -1,14 +1,16 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
-import { Dues } from '@homzhub/common/src/domain/models/Dues';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IAddGeneralLedgerPayload,
   ICreateLedgerResult,
   IGeneralLedgerPayload,
+  IReminderPayload,
   ITransactionParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -17,7 +19,10 @@ const ENDPOINTS = {
   getLedgerCategories: 'v1/general-ledger-categories/',
   genLedgers: 'v1/general-ledgers/',
   ledger: (id: number): string => `v1/general-ledgers/${id}/`,
-  getDues: (): string => '/v1/user-invoices/dues/',
+  getDues: (): string => 'v1/user-invoices/dues/',
+  reminders: 'v1/reminders/',
+  reminderCategories: 'v1/reminders/reminder-categories/',
+  reminderFrequencies: 'v1/reminders/reminder-frequencies/',
 };
 
 class LedgerRepository {
@@ -65,6 +70,20 @@ class LedgerRepository {
   public getDues = async (): Promise<Dues> => {
     const response = await this.apiClient.get(ENDPOINTS.getDues());
     return ObjectMapper.deserialize(Dues, response);
+  };
+
+  public getReminderCategories = async (): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.reminderCategories);
+    return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public getReminderFrequencies = async (): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.reminderFrequencies);
+    return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public addReminder = async (payload: IReminderPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.reminders, payload);
   };
 }
 

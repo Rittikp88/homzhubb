@@ -2,7 +2,7 @@ import moment from 'moment';
 import { DateFormats } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { LabelColor } from '@homzhub/common/src/domain/models/LabelColor';
+import { ILabelColor, LabelColor } from '@homzhub/common/src/domain/models/LabelColor';
 
 @JsonObject('Transaction')
 export class Transaction {
@@ -40,6 +40,15 @@ export class Transaction {
   get status(): string {
     return this._status;
   }
+}
+
+export interface ILeasePeriod {
+  id?: number;
+  lease_start_date: string;
+  lease_end_date: string;
+  total_lease_period: string;
+  remaining_lease_period: string;
+  action: ILabelColor;
 }
 
 @JsonObject('LeasePeriod')

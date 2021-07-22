@@ -1,5 +1,30 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
+import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
+import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
+import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
+import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
+import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
+import { Count } from '@homzhub/common/src/domain/models/Count';
+import { ILeaseTermination, ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
+import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
+import { OnGoingTransaction } from '@homzhub/common/src/domain/models/OnGoingTransaction';
+import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
+import { ICreateSaleTermParams, IUpdateSaleTermParams, SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
+import { TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
+import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
+import {
+  ExistingVerificationDocuments,
+  IPostVerificationDocuments,
+  IYoutubeResponse,
+  VerificationDocumentTypes,
+} from '@homzhub/common/src/domain/models/VerificationDocuments';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IAcceptInvitePayload,
@@ -29,30 +54,6 @@ import {
   IUnitListingPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUpdateDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
-import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
-import { AssetGroup, SpaceType } from '@homzhub/common/src/domain/models/AssetGroup';
-import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
-import { AssetDescriptionDropdownValues } from '@homzhub/common/src/domain/models/AssetDescriptionForm';
-import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
-import { Count } from '@homzhub/common/src/domain/models/Count';
-import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
-import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
-import { DownloadAttachment } from '@homzhub/common/src/domain/models/Attachment';
-import { ILeaseTermination, ILeaseTermParams, LeaseTerm } from '@homzhub/common/src/domain/models/LeaseTerm';
-import { IManageTerm } from '@homzhub/common/src/domain/models/ManageTerm';
-import { ICreateSaleTermParams, IUpdateSaleTermParams, SaleTerm } from '@homzhub/common/src/domain/models/SaleTerm';
-import {
-  ExistingVerificationDocuments,
-  IPostVerificationDocuments,
-  IYoutubeResponse,
-  VerificationDocumentTypes,
-} from '@homzhub/common/src/domain/models/VerificationDocuments';
-import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
-import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
-import { TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
-import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 
 // TODO: Split these across multiple repos
 const ENDPOINTS = {
@@ -125,6 +126,7 @@ const ENDPOINTS = {
   assetAttachmentById: (propertyId: number, attachmentId: number): string =>
     `v1/assets/${propertyId}/attachments/${attachmentId}`,
   inviteTenant: (id: number): string => `v1/lease-tenants/${id}/invites/`,
+  onGoingTransaction: (id: number): string => `v1/assets/${id}/lease-transactions/ongoing`,
 };
 
 class AssetRepository {
@@ -474,6 +476,11 @@ class AssetRepository {
 
   public inviteTenant = async (tenantId: number): Promise<void> => {
     return await this.apiClient.patch(ENDPOINTS.inviteTenant(tenantId));
+  };
+
+  public getOnGoingTransaction = async (assetId: number): Promise<OnGoingTransaction[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.onGoingTransaction(assetId));
+    return ObjectMapper.deserializeArray(OnGoingTransaction, response);
   };
 }
 

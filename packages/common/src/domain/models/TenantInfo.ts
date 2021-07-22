@@ -1,12 +1,23 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { LeasePeriod } from '@homzhub/common/src/domain/models/LeaseTransaction';
-import { User } from '@homzhub/common/src/domain/models/User';
+import { ILeasePeriod, LeasePeriod } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
 
 export interface IList {
   id: number;
   label: string;
   isSelected: boolean;
+}
+
+export interface ITenantInfo {
+  id?: number;
+  is_invite_accepted?: boolean;
+  lease_tenant_id?: number;
+  invite_sent_at?: string;
+  lease_unit_id?: string;
+  lease_transaction?: ILeasePeriod;
+  tenant_user?: IUser;
+  user?: IUser;
 }
 
 @JsonObject('TenantInfo')

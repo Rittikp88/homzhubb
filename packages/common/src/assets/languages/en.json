@@ -950,7 +950,8 @@
     "reminderDate": "Reminder Date",
     "frequency": "Frequency",
     "enterEmails": "Enter your Emails here..",
-    "notifyTo": "Notify to"
+    "notifyTo": "Notify to",
+    "reminderSuccessMsg": "Reminder added successfully "
   },
   "assetMore": {
     "more": "More",

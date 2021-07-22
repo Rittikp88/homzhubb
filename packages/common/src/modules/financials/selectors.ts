@@ -2,9 +2,10 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
 const getTransactions = (state: IState): FinancialTransactions | null => {
   const {
@@ -88,6 +89,22 @@ const getLedgerMetrics = (state: IState): ILedgerMetrics => {
   return ledgerMetrics;
 };
 
+const getReminderCategories = (state: IState): Unit[] => {
+  const {
+    financials: { reminderCategories },
+  } = state;
+  if (!reminderCategories) return [];
+  return ObjectMapper.deserializeArray(Unit, reminderCategories);
+};
+
+const getReminderFrequencies = (state: IState): Unit[] => {
+  const {
+    financials: { reminderFrequencies },
+  } = state;
+  if (!reminderFrequencies) return [];
+  return ObjectMapper.deserializeArray(Unit, reminderFrequencies);
+};
+
 export const FinancialSelectors = {
   getDues,
   getTransactions,
@@ -99,4 +116,6 @@ export const FinancialSelectors = {
   getSelectedProperty,
   getSelectedTimeRange,
   getLedgerMetrics,
+  getReminderCategories,
+  getReminderFrequencies,
 };

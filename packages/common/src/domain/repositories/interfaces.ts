@@ -1042,3 +1042,14 @@ export interface IPaymentPayload {
   action: DuePaymentActions;
   payload: IPaymentParams;
 }
+
+export interface IReminderPayload {
+  title: string;
+  emails?: string[];
+  reminder_category: number;
+  reminder_frequency: number;
+  start_date: string;
+  asset?: number;
+  lease_transaction?: number;
+  description?: string;
+}
