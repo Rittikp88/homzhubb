@@ -122,7 +122,7 @@ class OfferCard extends Component<Props, IOwnState> {
           <PropertyAddressCountry
             isIcon
             primaryAddress={asset.projectName}
-            subAddress={asset.address}
+            subAddress={asset.formattedAddressWithCity}
             countryFlag={asset.country.flag}
             containerStyle={styles.addressView}
           />

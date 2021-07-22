@@ -84,7 +84,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
     } = this.props;
     const { isSheetVisible, isLoading } = this.state;
     const {
-      assetDetail: { projectName, address, country },
+      assetDetail: { projectName, formattedAddressWithCity, country },
     } = params;
     return (
       <>
@@ -97,7 +97,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
           <View style={styles.container}>
             <PropertyAddressCountry
               primaryAddress={projectName}
-              subAddress={address}
+              subAddress={formattedAddressWithCity}
               countryFlag={country.flag}
               containerStyle={styles.address}
             />

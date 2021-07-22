@@ -42,7 +42,7 @@ const PropertyConfirmationView = (props: IProps): React.ReactElement => {
       {propertyData && (
         <PropertyAddressCountry
           primaryAddress={propertyData.projectName}
-          subAddress={propertyData.address}
+          subAddress={propertyData.formattedAddressWithCity}
           countryFlag={propertyData.country?.flag}
         />
       )}

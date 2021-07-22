@@ -260,8 +260,13 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserAssets } = UserSelector;
-  const { getFinancialLoaders, getLedgerData, getSelectedCountry, getSelectedProperty, getLedgerMetrics } =
-    FinancialSelectors;
+  const {
+    getFinancialLoaders,
+    getLedgerData,
+    getSelectedCountry,
+    getSelectedProperty,
+    getLedgerMetrics,
+  } = FinancialSelectors;
   return {
     assets: getUserAssets(state),
     financialLoaders: getFinancialLoaders(state),
@@ -273,8 +278,14 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getLedgers, setCurrentCountry, setCurrentProperty, setTimeRange, getLedgerMetrics, resetLedgerFilters } =
-    FinancialActions;
+  const {
+    getLedgers,
+    setCurrentCountry,
+    setCurrentProperty,
+    setTimeRange,
+    getLedgerMetrics,
+    resetLedgerFilters,
+  } = FinancialActions;
   return bindActionCreators(
     {
       getLedgers,

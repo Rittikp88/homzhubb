@@ -152,7 +152,7 @@ const CancelOffer = (): React.ReactElement => {
         <PropertyAddressCountry
           isIcon
           primaryAddress={listingData.projectName}
-          subAddress={listingData.address}
+          subAddress={listingData.formattedAddressWithCity}
           countryFlag={listingData.country.flag}
           containerStyle={styles.verticalStyle}
         />

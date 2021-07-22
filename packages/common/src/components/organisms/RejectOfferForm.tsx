@@ -158,7 +158,7 @@ const RejectOfferForm: React.FC<IPropsApp | IPropsWeb> = (props: IPropsApp | IPr
       <PropertyAddressCountry
         isIcon
         primaryAddress={listingData.projectName}
-        subAddress={listingData.address}
+        subAddress={listingData.formattedAddressWithCity}
         countryFlag={listingData.country.flag}
         containerStyle={styles.verticalStyle}
       />

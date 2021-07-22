@@ -121,6 +121,12 @@ export class Data {
   @JsonProperty('color_code', String, true)
   private _colorCode = '';
 
+  @JsonProperty('is_miscellaneous_type', Boolean, true)
+  private _isMiscellaneous = false;
+
+  @JsonProperty('field_type', String, true)
+  private _fieldType = '';
+
   get colorCode(): string {
     return this._colorCode;
   }
@@ -143,6 +149,14 @@ export class Data {
 
   get description(): string {
     return this._description;
+  }
+
+  get isMiscellaneous(): boolean {
+    return this._isMiscellaneous;
+  }
+
+  get fieldType(): string {
+    return this._fieldType;
   }
 }
 
@@ -811,5 +825,9 @@ export class Asset {
 
   get listedOn(): string {
     return this._listedOn;
+  }
+
+  get unitAndBlockNums(): string {
+    return `${this.unitNumber}, ${this.blockNumber}`;
   }
 }

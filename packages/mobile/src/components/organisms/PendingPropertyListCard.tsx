@@ -100,16 +100,14 @@ export class PendingPropertyListCard extends Component<Props, IState> {
       spaces,
       assetType: { name },
       projectName,
-      unitNumber,
       carpetArea,
       carpetAreaUnit,
       furnishing,
-      blockNumber,
-      address,
       lastVisitedStep,
       country: { flag },
       verifications: { description },
       listingInfo,
+      formattedAddressWithCity,
     } = item;
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces,
@@ -134,8 +132,7 @@ export class PendingPropertyListCard extends Component<Props, IState> {
         <PropertyAddressCountry
           primaryAddress={projectName}
           countryFlag={flag}
-          showAddress={false}
-          subAddress={address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`}
+          subAddress={formattedAddressWithCity}
           containerStyle={styles.addressStyle}
         />
         {amenitiesData.length > 0 && (

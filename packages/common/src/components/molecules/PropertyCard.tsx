@@ -26,9 +26,6 @@ const PropertyCard = (props: IProps): React.ReactElement => {
       images,
       assetType: { name: assetType },
       projectName,
-      address,
-      unitNumber,
-      blockNumber,
       country: { flag },
       verifications: { description },
       currencyData,
@@ -39,8 +36,7 @@ const PropertyCard = (props: IProps): React.ReactElement => {
       furnishing,
       spaces,
       assetGroup: { code },
-      isAssetOwner,
-      formattedProjectName,
+      formattedAddressWithCity,
     },
     isExpanded,
     containerStyle,
@@ -82,15 +78,19 @@ const PropertyCard = (props: IProps): React.ReactElement => {
         <ShieldGroup propertyType={assetType} text={description} isInfoRequired isShieldVisible={isShieldVisible} />
       )}
       <PropertyAddressCountry
-        primaryAddress={isAssetOwner ? formattedProjectName : projectName}
+        primaryAddress={projectName}
         countryFlag={flag}
-        subAddress={address ?? `${unitNumber} ${blockNumber}`}
+        subAddress={formattedAddressWithCity}
         isIcon={isIcon}
         showAddress={showAddress}
       />
-      {!showAddress && <View style={styles.emptyView} />}
       {isExpanded && isPriceVisible && (
-        <PricePerUnit price={pricePerUnit} currency={currencyData} unit={maintenancePaymentSchedule} />
+        <PricePerUnit
+          price={pricePerUnit}
+          currency={currencyData}
+          unit={maintenancePaymentSchedule}
+          textStyle={styles.emptyView}
+        />
       )}
       {showAmenities && (
         <>
@@ -128,6 +128,6 @@ const styles = StyleSheet.create({
     marginEnd: 16,
   },
   emptyView: {
-    marginVertical: 10,
+    marginTop: 10,
   },
 });

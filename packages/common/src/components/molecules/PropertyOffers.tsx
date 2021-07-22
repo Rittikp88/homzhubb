@@ -165,7 +165,7 @@ class PropertyOffers extends React.PureComponent<Props, IScreenState> {
           </View>
         )}
         <>
-          <PropertyCard showAddress={false} isExpanded={isExpanded} asset={propertyOffer} />
+          <PropertyCard isExpanded={isExpanded} asset={propertyOffer} />
           {this.renderExpectation()}
         </>
       </TouchableOpacity>

@@ -85,16 +85,11 @@ const OfferDetailsCard = (props: IProps): React.ReactElement | null => {
   const {
     id,
     projectName,
-    unitNumber,
-    blockNumber,
-    city,
-    countryIsoCode,
     attachments,
-    state,
+    formattedAddressWithCity,
     country: { flag },
   } = listing;
 
-  const detailedAddress = `${unitNumber} ${blockNumber}, ${city}, ${state}, ${countryIsoCode}`;
   const styles = getStyles();
   const image = (): React.ReactElement => {
     if (attachments.length)
@@ -118,7 +113,7 @@ const OfferDetailsCard = (props: IProps): React.ReactElement | null => {
             <PropertyAddressCountry
               primaryAddress={projectName}
               countryFlag={flag}
-              subAddress={detailedAddress}
+              subAddress={formattedAddressWithCity}
               isIcon
               primaryAddressTextStyles={{
                 size: 'small',

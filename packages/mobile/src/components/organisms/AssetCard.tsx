@@ -86,15 +86,13 @@ export class AssetCard extends Component<Props, IState> {
     const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0, containerStyle } = this.props;
     const {
       id,
-      unitNumber,
-      blockNumber,
       notifications,
       serviceTickets,
       messages,
       attachments,
       assetStatusInfo,
-      address,
-      formattedProjectName,
+      projectName,
+      formattedAddressWithCity,
       country: { flag },
     } = assetData;
     let detailPayload: ISetAssetPayload;
@@ -183,10 +181,9 @@ export class AssetCard extends Component<Props, IState> {
                 />
               )}
               <PropertyAddressCountry
-                primaryAddress={formattedProjectName}
+                primaryAddress={projectName}
                 countryFlag={flag}
-                showAddress={false}
-                subAddress={address ?? `${unitNumber} ${blockNumber}`}
+                subAddress={formattedAddressWithCity}
                 containerStyle={styles.addressStyle}
               />
             </>

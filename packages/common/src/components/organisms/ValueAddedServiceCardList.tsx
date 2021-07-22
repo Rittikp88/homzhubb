@@ -114,10 +114,6 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
                 id,
                 attachments,
                 assetStatusInfo,
-                formattedProjectName,
-                address,
-                unitNumber,
-                blockNumber,
                 spaces,
                 furnishing,
                 carpetArea,
@@ -127,6 +123,8 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
                 assetGroup: { code },
                 assetType: { name: propertyType },
                 country: { flag, id: countryId, iso2Code },
+                formattedAddressWithCity,
+                projectName,
               } = asset;
               const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
                 spaces,
@@ -141,8 +139,8 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
                 navigateToService(
                   id,
                   propertyType,
-                  formattedProjectName,
-                  address,
+                  projectName,
+                  formattedAddressWithCity,
                   flag,
                   { assetGroupId, countryId, city },
                   { title: badgeTitle, color: badgeColor },
@@ -163,9 +161,9 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
                         {propertyType}
                       </Text>
                       <PropertyAddressCountry
-                        primaryAddress={formattedProjectName}
+                        primaryAddress={projectName}
                         countryFlag={flag}
-                        subAddress={address ?? `${unitNumber} ${blockNumber}`}
+                        subAddress={formattedAddressWithCity}
                       />
                       <PropertyAmenities
                         containerStyle={styles.amenities}
