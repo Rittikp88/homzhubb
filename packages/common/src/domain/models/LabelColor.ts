@@ -14,8 +14,12 @@ export class LabelColor {
   @JsonProperty('color', String, true)
   private _color = '';
 
+  // Todo (Praharsh) : Confirm if this field is required else remove
   @JsonProperty('color_code', String, true)
   private _colorCode = '';
+
+  @JsonProperty('code', String, true)
+  private _code = '';
 
   get label(): string {
     return this._label;
@@ -27,5 +31,9 @@ export class LabelColor {
 
   get colorCode(): string {
     return this._colorCode;
+  }
+
+  get code(): string {
+    return this._code;
   }
 }

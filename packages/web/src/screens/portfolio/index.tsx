@@ -197,7 +197,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
     const filteredPortfolioData =
-      currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.label === currentFilter);
+      currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.code === currentFilter);
     const isEmpty = !filteredPortfolioData || filteredPortfolioData.length <= 0;
     return (
       <View style={styles.container}>
@@ -305,7 +305,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
 
   private getStatus = (filter: string): void => {
     const { setCurrentFilter } = this.props;
-    setCurrentFilter(filter.replace('_', ' ') as Filters);
+    setCurrentFilter(filter as Filters);
   };
 
   private getScreenData = async (): Promise<void> => {

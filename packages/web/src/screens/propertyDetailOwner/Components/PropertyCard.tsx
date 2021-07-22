@@ -162,7 +162,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     const {
       assetStatusInfo: {
         action,
-        tag: { label },
+        tag: { code },
         leaseListingId,
         saleListingId,
         leaseTenantInfo: { user, isInviteAccepted },
@@ -175,8 +175,8 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     const isOccupied = isInviteAccepted;
     const isListed = leaseListingId || saleListingId;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
-    const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
-    const isTakeActions = label === Filters.VACANT;
+    const isVacant = code === Filters.VACANT || code === Filters.FOR_RENT || code === Filters.FOR_SALE;
+    const isTakeActions = code === Filters.VACANT;
     const styles = propertyDetailStyle(isMobile, isTablet);
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
 
@@ -242,7 +242,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
               />
             </View>
           )}
-          {isListed && isOccupied && (label === Filters.FOR__RENT || Filters.FOR__SALE) && (
+          {isListed && isOccupied && (code === Filters.FOR_RENT || Filters.FOR_SALE) && (
             <View style={styles.latestUpdates}>
               <LatestUpdates
                 propertyVisitsData={assetDetails.listingVisits}
@@ -251,7 +251,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
               />
             </View>
           )}
-          {action && label !== Filters.VACANT && (
+          {action && code !== Filters.VACANT && (
             <View style={styles.buttonGroup}>
               <Button
                 type="primary"

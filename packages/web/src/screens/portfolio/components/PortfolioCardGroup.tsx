@@ -194,7 +194,7 @@ export class AssetCard extends Component<Props> {
     const {
       assetStatusInfo: {
         action,
-        tag: { label },
+        tag: { code },
         leaseListingId,
         saleListingId,
         leaseTenantInfo: { user, isInviteAccepted },
@@ -204,10 +204,10 @@ export class AssetCard extends Component<Props> {
     } = assetData;
 
     const userData: User = user;
-    const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
+    const isListed = (leaseListingId || saleListingId) && code !== Filters.OCCUPIED;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted, assetData);
-    const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
-    const isTakeActions = label === Filters.VACANT;
+    const isVacant = code === Filters.VACANT || code === Filters.FOR_RENT || code === Filters.FOR_SALE;
+    const isTakeActions = code === Filters.VACANT;
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
 
     return (
@@ -278,7 +278,7 @@ export class AssetCard extends Component<Props> {
               />
             </View>
           )}
-          {action && label !== Filters.VACANT && (
+          {action && code !== Filters.VACANT && (
             <View style={[styles.buttonGroup, isTablet && styles.buttonStyleTablet]}>
               <Button
                 type="primary"

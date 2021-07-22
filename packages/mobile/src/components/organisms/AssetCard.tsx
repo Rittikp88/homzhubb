@@ -305,7 +305,7 @@ export class AssetCard extends Component<Props, IState> {
     const {
       assetStatusInfo: {
         action,
-        tag: { label },
+        tag: { code },
         leaseTenantInfo: { user, isInviteAccepted, inviteSentTime, leaseTenantId },
         leaseListingId,
         saleListingId,
@@ -320,10 +320,10 @@ export class AssetCard extends Component<Props, IState> {
       listingOffers: { totalOffers, activeOffers, pendingOffers },
       isPropertyUnderReview,
     } = assetData;
-    const isListed = (leaseListingId || saleListingId) && label !== Filters.OCCUPIED;
+    const isListed = (leaseListingId || saleListingId) && code !== Filters.OCCUPIED;
     const userData: User = isFromTenancies ? leaseOwnerInfo : user;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted, inviteSentTime);
-    const isVacant = label === Filters.VACANT || label === Filters.FOR__RENT || label === Filters.FOR__SALE;
+    const isVacant = code === Filters.VACANT || code === Filters.FOR_RENT || code === Filters.FOR_SALE;
     const progress = totalSpendPeriod >= 0 ? totalSpendPeriod : assetCreation.percentage / 100;
     const onNavPress = (type: OffersVisitsType): void =>
       OfferHelper.handleOfferVisitAction({ type, name: formattedProjectName, id, leaseListingId, saleListingId });

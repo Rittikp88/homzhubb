@@ -55,6 +55,9 @@ export class Miscellaneous {
   @JsonProperty('color_code', String)
   private _colorCode = '';
 
+  @JsonProperty('code', String, true)
+  private _code = '';
+
   get colorCode(): string {
     return this._colorCode;
   }
@@ -73,6 +76,10 @@ export class Miscellaneous {
 
   get currencySymbol(): string {
     return this._currency_symbol;
+  }
+
+  get code(): string {
+    return this._code;
   }
 }
 

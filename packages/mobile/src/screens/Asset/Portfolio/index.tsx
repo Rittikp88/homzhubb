@@ -167,9 +167,8 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
 
     const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
-    const filterValue = currentFilter.replace('_', ' ');
     const filteredData =
-      currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.label === filterValue);
+      currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.code === currentFilter);
 
     const isEmpty = !filteredData || filteredData.length <= 0;
 

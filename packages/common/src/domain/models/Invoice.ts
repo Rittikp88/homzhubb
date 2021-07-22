@@ -19,7 +19,7 @@ export class Invoice {
   @JsonProperty('invoice_title', String)
   private _invoiceTitle = '';
 
-  @JsonProperty('attachment', Attachment)
+  @JsonProperty('attachment', Attachment, true)
   private _attachment = new Attachment();
 
   get id(): number {

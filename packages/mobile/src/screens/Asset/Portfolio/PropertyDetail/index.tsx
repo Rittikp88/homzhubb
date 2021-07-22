@@ -158,8 +158,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { propertyData, isLoading, isFromTenancies } = this.state;
 
     const { assetStatusInfo } = propertyData;
-    const isOccupied =
-      assetStatusInfo?.tag.label === Filters.OCCUPIED || assetStatusInfo?.tag.label === Filters.EXPIRING;
+    const isOccupied = assetStatusInfo?.tag.code === Filters.OCCUPIED || assetStatusInfo?.tag.code === Filters.EXPIRING;
     const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false, isOccupied);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
       this.handleAction(propertyData, payload, param);

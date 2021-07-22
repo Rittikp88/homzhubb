@@ -795,13 +795,13 @@ export class Asset {
     if (this.assetStatusInfo) {
       const {
         status,
-        tag: { label },
+        tag: { code },
         leaseListingId,
         saleListingId,
       } = this.assetStatusInfo;
       const isUnderReview =
         Boolean(leaseListingId || saleListingId) &&
-        [`${Filters.FOR__RENT}`, `${Filters.FOR__SALE}`].includes(label) &&
+        [`${Filters.FOR_RENT}`, `${Filters.FOR_SALE}`].includes(code) &&
         status === 'DRAFT' &&
         this.isVerificationDocumentUploaded;
       return isUnderReview;

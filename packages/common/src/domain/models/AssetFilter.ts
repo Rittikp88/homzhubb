@@ -10,9 +10,6 @@ export enum Filters {
   VACANT = 'VACANT',
   FOR_SALE = 'FOR_SALE',
   FOR_RENT = 'FOR_RENT',
-  FOR__RENT = 'FOR RENT',
-  FOR__SALE = 'FOR SALE',
-  RENEWAL = 'RENEWAL',
   EXPIRING = 'EXPIRING',
 }
 
@@ -50,7 +47,8 @@ export class AssetFilter {
     return this.status.map((item) => {
       return {
         label: item.title,
-        value: item.label,
+        // Using code here which remains the same.
+        value: item.code,
       };
     });
   }

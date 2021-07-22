@@ -207,7 +207,7 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
       />
       <Button
         type="primary"
-        title={t('saveDetails')}
+        title={t('submitDetails')}
         disabled={assetType.length < 1 || localities.length < 1}
         containerStyle={styles.saveButton}
         onPress={onSaveDetails}
