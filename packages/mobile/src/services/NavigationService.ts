@@ -67,7 +67,7 @@ class NavigationService {
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigateTo(ScreensKeys.BottomTabs, {
-          screen: ScreensKeys.Search,
+          screen: ScreensKeys.More,
           params: {
             screen: ScreensKeys.PropertyAssetDescription,
             initial: false,
@@ -209,16 +209,10 @@ class NavigationService {
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigateTo(ScreensKeys.SearchStack, {
-          screen: ScreensKeys.BottomTabs,
+          screen: ScreensKeys.PropertyAssetDescription,
+          initial: false,
           params: {
-            screen: ScreensKeys.Search,
-            params: {
-              screen: ScreensKeys.PropertyAssetDescription,
-              initial: false,
-              params: {
-                propertyTermId: this.getValueOfParamFromUrl(DynamicLinkParamKeys.PropertyTermId, url) || 0,
-              },
-            },
+            propertyTermId: this.getValueOfParamFromUrl(DynamicLinkParamKeys.PropertyTermId, url) || 0,
           },
         });
         break;
