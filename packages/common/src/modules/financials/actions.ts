@@ -1,4 +1,5 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { Dues, IDues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialTransactions, IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers, IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -39,6 +40,9 @@ export const FinancialActionTypes = {
     REMINDER_FREQUENCIES: `${actionTypePrefix}REMINDER_FREQUENCIES`,
     REMINDER_FREQUENCIES_SUCCESS: `${actionTypePrefix}REMINDER_FREQUENCIES_SUCCESS`,
     REMINDER_FREQUENCIES_FAILURE: `${actionTypePrefix}REMINDER_FREQUENCIES_FAILURE`,
+    REMINDER_ASSETS: `${actionTypePrefix}REMINDER_ASSETS`,
+    REMINDER_ASSETS_SUCCESS: `${actionTypePrefix}REMINDER_ASSETS_SUCCESS`,
+    REMINDER_ASSETS_FAILURE: `${actionTypePrefix}REMINDER_ASSETS_FAILURE`,
   },
   SET: {
     SELECTED_PROPERTY: `${actionTypePrefix}SELECTED_PROPERTY`,
@@ -188,6 +192,19 @@ const addReminderFailure = (): IFluxStandardAction => ({
   type: FinancialActionTypes.POST.REMINDER_FAILURE,
 });
 
+const getReminderAssets = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDER_ASSETS,
+});
+
+const getReminderAssetsSuccess = (data: Asset[]): IFluxStandardAction<IAsset[]> => ({
+  type: FinancialActionTypes.GET.REMINDER_ASSETS_SUCCESS,
+  payload: ObjectMapper.serializeArray(data),
+});
+
+const getReminderAssetsFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDER_ASSETS_FAILURE,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -197,7 +214,8 @@ export type FinancialActionPayloadTypes =
   | DateFilter
   | ILedgerMetrics
   | IUnit[]
-  | IAddReminderPayload;
+  | IAddReminderPayload
+  | IAsset[];
 
 export const FinancialActions = {
   getTransactions,
@@ -229,4 +247,7 @@ export const FinancialActions = {
   addReminder,
   addReminderSuccess,
   addReminderFailure,
+  getReminderAssets,
+  getReminderAssetsSuccess,
+  getReminderAssetsFailure,
 };

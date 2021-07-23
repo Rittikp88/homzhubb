@@ -93,6 +93,7 @@ export interface IAsset {
   sale_negotiation?: IOffer | null;
   value_added_services?: IService[];
   listed_on?: string;
+  is_rented?: boolean;
 }
 
 export interface IData {
@@ -422,6 +423,9 @@ export class Asset {
 
   @JsonProperty('listed_on', String, true)
   private _listedOn = '';
+
+  @JsonProperty('is_rented', Boolean, true)
+  private _isRented = false;
 
   get investmentStatus(): string {
     return this._investmentStatus;
@@ -829,5 +833,9 @@ export class Asset {
 
   get unitAndBlockNums(): string {
     return `${this.unitNumber}, ${this.blockNumber}`;
+  }
+
+  get isRented(): boolean {
+    return this._isRented;
   }
 }

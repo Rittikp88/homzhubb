@@ -11,6 +11,7 @@ import { PaymentRepository } from '@homzhub/common/src/domain/repositories/Payme
 import { FinancialActions, FinancialActionTypes } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
@@ -157,6 +158,16 @@ export function* addReminder(action: IFluxStandardAction<IAddReminderPayload>): 
   }
 }
 
+export function* getReminderAssets(): VoidGenerator {
+  try {
+    const response = yield call(LedgerRepository.getReminderAssets);
+    yield put(FinancialActions.getReminderAssetsSuccess(response as Asset[]));
+  } catch (e) {
+    yield put(FinancialActions.getReminderAssetsFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.GET.TRANSACTIONS, getTransactions);
   yield takeLatest(FinancialActionTypes.GET.DUES, getAllDues);
@@ -166,4 +177,5 @@ export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.GET.REMINDER_CATEGORIES, getReminderCategories);
   yield takeLatest(FinancialActionTypes.GET.REMINDER_FREQUENCIES, getReminderFrequencies);
   yield takeLatest(FinancialActionTypes.POST.REMINDER, addReminder);
+  yield takeLatest(FinancialActionTypes.GET.REMINDER_ASSETS, getReminderAssets);
 }

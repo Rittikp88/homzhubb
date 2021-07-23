@@ -1,4 +1,5 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -105,6 +106,14 @@ const getReminderFrequencies = (state: IState): Unit[] => {
   return ObjectMapper.deserializeArray(Unit, reminderFrequencies);
 };
 
+const getReminderAssets = (state: IState): Asset[] => {
+  const {
+    financials: { reminderAssets },
+  } = state;
+  if (!reminderAssets) return [];
+  return ObjectMapper.deserializeArray(Asset, reminderAssets);
+};
+
 export const FinancialSelectors = {
   getDues,
   getTransactions,
@@ -118,4 +127,5 @@ export const FinancialSelectors = {
   getLedgerMetrics,
   getReminderCategories,
   getReminderFrequencies,
+  getReminderAssets,
 };

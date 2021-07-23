@@ -11,7 +11,6 @@ import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
@@ -51,7 +50,7 @@ const initialData = {
 const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetFinancial);
-  const assets = useSelector(UserSelector.getUserAssets); // TODO: (Shikha) - Update Property API
+  const assets = useSelector(FinancialSelectors.getReminderAssets);
   const categories = useSelector(FinancialSelectors.getReminderCategories);
   const frequencies = useSelector(FinancialSelectors.getReminderFrequencies);
 
@@ -63,11 +62,13 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
   useEffect(() => {
     dispatch(FinancialActions.getReminderCategories());
     dispatch(FinancialActions.getReminderFrequencies());
+    dispatch(FinancialActions.getReminderAssets());
   }, []);
 
   // DROPDOWN LIST FORMATION START
-  const getPropertyList = (): IDropdownOption[] => {
-    return assets.map((property: Asset) => {
+  const getPropertyList = (isRented: boolean): IDropdownOption[] => {
+    const data = isRented ? assets.filter((item) => item.isRented) : assets;
+    return data.map((property: Asset) => {
       return { value: property.id, label: property.formattedProjectName };
     });
   };
@@ -146,7 +147,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
       reminder_category: category,
       reminder_frequency: frequency,
       start_date: new Date(date).toISOString(),
-      ...(userEmails.length > 0 && { emails: userEmails }),
+      emails: userEmails,
       ...(property > 0 && { asset: property }),
       ...(leaseUnit > 0 && { lease_transaction: leaseUnit }),
       ...(!!notes && { description: notes }),
@@ -193,7 +194,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               name="property"
               label={t('property')}
               placeholder={t('offers:selectProperty')}
-              options={getPropertyList()}
+              options={getPropertyList(Number(formProps.values.category) === 1)}
               formProps={formProps}
               onChange={onChangeProperty}
               dropdownContainerStyle={styles.field}

@@ -126,7 +126,7 @@ const ENDPOINTS = {
   assetAttachmentById: (propertyId: number, attachmentId: number): string =>
     `v1/assets/${propertyId}/attachments/${attachmentId}`,
   inviteTenant: (id: number): string => `v1/lease-tenants/${id}/invites/`,
-  onGoingTransaction: (id: number): string => `v1/assets/${id}/lease-transactions/ongoing`,
+  onGoingTransaction: (id: number): string => `v1/assets/${id}/lease-transactions/ongoing/`,
 };
 
 class AssetRepository {

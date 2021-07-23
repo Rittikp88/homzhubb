@@ -1,5 +1,6 @@
-import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -23,6 +24,7 @@ const ENDPOINTS = {
   reminders: 'v1/reminders/',
   reminderCategories: 'v1/reminders/reminder-categories/',
   reminderFrequencies: 'v1/reminders/reminder-frequencies/',
+  reminderAssets: 'v1/reminders/assets/',
 };
 
 class LedgerRepository {
@@ -84,6 +86,11 @@ class LedgerRepository {
 
   public addReminder = async (payload: IReminderPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.reminders, payload);
+  };
+
+  public getReminderAssets = async (): Promise<Asset[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.reminderAssets);
+    return ObjectMapper.deserializeArray(Asset, response);
   };
 }
 

@@ -1,3 +1,4 @@
+import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IDues } from '@homzhub/common/src/domain/models/Dues';
 import { IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -23,12 +24,14 @@ export interface IFinancialState {
   ledgers: ILedgers;
   reminderCategories: IUnit[];
   reminderFrequencies: IUnit[];
+  reminderAssets: IAsset[];
   loaders: {
     transactions: boolean;
     dues: boolean;
     payment: boolean;
     ledgers: boolean;
     reminder: boolean;
+    reminderAsset: boolean;
   };
 }
 

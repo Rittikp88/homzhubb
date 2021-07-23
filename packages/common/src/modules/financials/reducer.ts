@@ -1,12 +1,13 @@
 import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { FinancialActionPayloadTypes, FinancialActionTypes } from '@homzhub/common/src/modules/financials/actions';
-import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
+import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IDues } from '@homzhub/common/src/domain/models/Dues';
 import { IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
 import { IFluxStandardAction, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
+import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
 const defaultLedgerFilters = {
   selectedProperty: 0,
@@ -27,12 +28,14 @@ export const initialFinancialsState: IFinancialState = {
   },
   reminderCategories: [],
   reminderFrequencies: [],
+  reminderAssets: [],
   loaders: {
     transactions: false,
     dues: false,
     payment: false,
     ledgers: false,
     reminder: false,
+    reminderAsset: false,
   },
 };
 
@@ -125,6 +128,22 @@ export const financialsReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['reminder']: false },
+      };
+    case FinancialActionTypes.GET.REMINDER_ASSETS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reminderAsset']: true },
+      };
+    case FinancialActionTypes.GET.REMINDER_ASSETS_SUCCESS:
+      return {
+        ...state,
+        ['reminderAssets']: action.payload as IAsset[],
+        ['loaders']: { ...state.loaders, ['reminderAsset']: false },
+      };
+    case FinancialActionTypes.GET.REMINDER_ASSETS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reminderAsset']: false },
       };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;
