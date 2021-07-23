@@ -19,6 +19,7 @@ import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/
 import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import DuesContainer from '@homzhub/mobile/src/components/organisms/DuesContainer';
+import RemindersContainer from '@homzhub/mobile/src/components/organisms/RemindersContainer';
 import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/FinancialStack';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -86,13 +87,15 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
     const loading = isLoading || dues || payment;
 
+    const toggleAddSheet = (): void => this.toggleAddSheet(true);
+
     return (
       <UserScreen
         loading={loading}
         isGradient
         isOuterScrollEnabled={scrollEnabled}
         title={t('financial')}
-        onPlusIconClicked={(): void => this.toggleAddSheet(true)}
+        onPlusIconClicked={toggleAddSheet}
       >
         <AssetMetricsList
           title={t('assetFinancial:summary')}
@@ -111,6 +114,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         />
         <FinanceOverview />
         <DuesContainer />
+        <RemindersContainer />
         <TransactionCardsContainer
           shouldEnableOuterScroll={this.toggleScroll}
           onEditRecord={this.onPressEdit}

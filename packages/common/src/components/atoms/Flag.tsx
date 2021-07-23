@@ -22,7 +22,7 @@ import Bangladesh from '@homzhub/common/src/assets/flags/bangladesh-flag.svg';
 import Swiss from '@homzhub/common/src/assets/flags/switzerland-flag.svg';
 // SVG Imports END
 
-const FlagHOC = (Flag: React.FC<SvgProps>): React.ReactElement => <Flag width={24} height={24} />;
+export const FlagHOC = (Flag: React.FC<SvgProps>, size = 24): React.ReactElement => <Flag width={size} height={size} />;
 
 export const flags = {
   IN: FlagHOC(India),
@@ -43,4 +43,25 @@ export const flags = {
   BR: FlagHOC(Brazil),
   BD: FlagHOC(Bangladesh),
   CH: FlagHOC(Swiss),
+};
+
+export const flagName: Record<string, React.FC<SvgProps>> = {
+  IN: India,
+  US,
+  AU: Aus,
+  SG: Singapore,
+  AE: UAE,
+  LK: SriLanka,
+  MV: Maldives,
+  PH: Phillippines,
+  MY: Malaysia,
+  KP: NorthKorea,
+  KR: SouthKorea,
+  JP: Japan,
+  CN: China,
+  IR: Iran,
+  RU: Russia,
+  BR: Brazil,
+  BD: Bangladesh,
+  CH: Swiss,
 };

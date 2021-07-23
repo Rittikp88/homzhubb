@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
 import { View, StyleSheet, TouchableOpacity, StyleProp, TextStyle, LayoutChangeEvent } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import DisplayDate from '@homzhub/common/src/components/atoms/DisplayDate';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
@@ -78,14 +78,7 @@ class TransactionCard extends React.PureComponent<IProps, IOwnState> {
       <View onLayout={this.onLayout}>
         <TouchableOpacity onPress={onPress} style={styles.transactionCardContainer}>
           <View style={styles.commonAlignStyle}>
-            <View style={styles.dateStyle}>
-              <Label type="large" textType="bold" style={{ color: theme.colors.darkTint2 }}>
-                {DateUtils.getDisplayDate(transactionDate, DateFormats.DD)}
-              </Label>
-              <Label type="regular" style={{ color: theme.colors.darkTint6 }}>
-                {DateUtils.getDisplayDate(transactionDate, DateFormats.MMM)}
-              </Label>
-            </View>
+            <DisplayDate date={transactionDate} />
           </View>
           <View style={styles.textContainer}>
             <View style={styles.commonAlignStyle}>
@@ -290,16 +283,6 @@ const styles = StyleSheet.create({
   commonAlignStyle: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  dateStyle: {
-    alignItems: 'center',
-    width: 52,
-    height: 60,
-    borderWidth: 1,
-    borderColor: theme.colors.darkTint10,
-    borderRadius: 4,
-    paddingVertical: 12,
-    marginEnd: 12,
   },
   textContainer: {
     flex: 1,

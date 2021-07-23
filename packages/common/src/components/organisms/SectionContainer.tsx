@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
+import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
@@ -10,11 +11,15 @@ interface IProps {
   sectionIcon: string;
   rightText?: string;
   rightTextColor?: string;
+  rightIcon?: string;
+  rightIconColor?: string;
+  rightIconSize?: number;
   children: React.ReactElement;
   containerStyle?: ViewStyle;
   iconSize?: number;
   callback?: any;
   isAsync?: boolean;
+  onPressRightContent?: () => void;
 }
 
 const SectionContainer = (props: IProps): React.ReactElement => {
@@ -28,6 +33,10 @@ const SectionContainer = (props: IProps): React.ReactElement => {
     iconSize = 22,
     callback,
     isAsync,
+    rightIcon,
+    rightIconSize = 22,
+    rightIconColor = theme.colors.primaryColor,
+    onPressRightContent,
   } = props;
   return (
     <View style={[containerStyle && containerStyle]}>
@@ -39,11 +48,14 @@ const SectionContainer = (props: IProps): React.ReactElement => {
             {sectionTitle}
           </Text>
         </View>
-        {rightText && (
-          <Text type="small" textType="semiBold" style={{ ...styles.rightText, color: rightTextColor || undefined }}>
-            {rightText}
-          </Text>
-        )}
+        <TouchableOpacity disabled={!onPressRightContent} onPress={onPressRightContent} style={styles.rightContainer}>
+          {!!rightIcon && <Icon name={rightIcon} size={rightIconSize} color={rightIconColor} style={styles.icon} />}
+          {!!rightText && (
+            <Text type="small" textType="semiBold" style={{ ...styles.rightText, color: rightTextColor || undefined }}>
+              {rightText}
+            </Text>
+          )}
+        </TouchableOpacity>
       </View>
       <Divider />
       {children}
@@ -64,6 +76,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 16,
+  },
+  rightContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   icon: {
     marginEnd: 12,

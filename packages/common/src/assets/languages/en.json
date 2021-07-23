@@ -951,7 +951,9 @@
     "frequency": "Frequency",
     "enterEmails": "Enter your Emails here..",
     "notifyTo": "Notify to",
-    "reminderSuccessMsg": "Reminder added successfully "
+    "reminderSuccessMsg": "Reminder added successfully",
+    "reminders": "Reminders",
+    "addNew" : "Add New"
   },
   "assetMore": {
     "more": "More",
