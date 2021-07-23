@@ -5,6 +5,7 @@ import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
+import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
@@ -86,6 +87,11 @@ class LedgerRepository {
 
   public addReminder = async (payload: IReminderPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.reminders, payload);
+  };
+
+  public getReminders = async (): Promise<Reminder[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.reminders);
+    return ObjectMapper.deserializeArray(Reminder, response);
   };
 
   public getReminderAssets = async (): Promise<Asset[]> => {

@@ -1,10 +1,11 @@
+import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IDues } from '@homzhub/common/src/domain/models/Dues';
 import { IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 import { IPaymentPayload, IReminderPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
+import { IReminder } from '@homzhub/common/src/domain/models/Reminder';
+import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface ILedgerMetrics {
   income: string;
@@ -24,6 +25,7 @@ export interface IFinancialState {
   ledgers: ILedgers;
   reminderCategories: IUnit[];
   reminderFrequencies: IUnit[];
+  reminders: IReminder[];
   reminderAssets: IAsset[];
   loaders: {
     transactions: boolean;

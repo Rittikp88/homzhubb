@@ -109,8 +109,8 @@ const DuesContainer = (): React.ReactElement | null => {
       rightTextColor={theme.colors.error}
     >
       <FlatList
-        // NOTE (Praharsh) : Slicing 5 items for now.
-        data={sortedDuesDesc.slice(0, 5)}
+        // NOTE (Praharsh) : Slicing 3 items for now.
+        data={sortedDuesDesc.slice(0, 3)}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         scrollEnabled={false}

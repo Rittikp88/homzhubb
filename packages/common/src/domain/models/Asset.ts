@@ -361,16 +361,16 @@ export class Asset {
   @JsonProperty('country', Country, true)
   private _country = new Country();
 
-  @JsonProperty('postal_code', String)
+  @JsonProperty('postal_code', String, true)
   private _pinCode = '';
 
-  @JsonProperty('state_name', String)
+  @JsonProperty('state_name', String, true)
   private _state = '';
 
-  @JsonProperty('city_name', String)
+  @JsonProperty('city_name', String, true)
   private _city = '';
 
-  @JsonProperty('country_name', String)
+  @JsonProperty('country_name', String, true)
   private _countryName = '';
 
   @JsonProperty('sale_listing_ids', [Number], true)

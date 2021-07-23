@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import DisplayDate from '@homzhub/common/src/components/atoms/DisplayDate';
 import { FlagHOC, flagName } from '@homzhub/common/src/components/atoms/Flag';
@@ -13,7 +14,7 @@ interface IProps {
 
 const ReminderCard = (props: IProps): React.ReactElement => {
   const {
-    reminder: { startDate, title, description, asset },
+    reminder: { nextReminderDate, title, description, asset },
   } = props;
 
   const countryFlag = (iso2Code: string): React.ReactElement | null =>
@@ -37,8 +38,8 @@ const ReminderCard = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <View style={styles.container}>
-      <DisplayDate date={startDate} containerStyle={styles.dateContainer} />
+    <TouchableOpacity onPress={FunctionUtils.noop} style={styles.container}>
+      <DisplayDate date={nextReminderDate} containerStyle={styles.dateContainer} />
       <View style={styles.flexOne}>
         <AddressView />
         <Label type="large" textType="bold">
@@ -46,7 +47,7 @@ const ReminderCard = (props: IProps): React.ReactElement => {
         </Label>
         <Label type="large">{description}</Label>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

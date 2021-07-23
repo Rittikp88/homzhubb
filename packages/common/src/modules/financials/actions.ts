@@ -3,6 +3,7 @@ import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { Dues, IDues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialTransactions, IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers, IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { IReminder, Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -34,6 +35,9 @@ export const FinancialActionTypes = {
     LEDGER_METRICS_SUCCESS: `${actionTypePrefix}LEDGER_METRICS_SUCCESS`,
     LEDGER_METRICS_FAILURE: `${actionTypePrefix}LEDGER_METRICS_FAILURE`,
     // Reminders
+    REMINDERS: `${actionTypePrefix}REMINDERS`,
+    REMINDERS_SUCCESS: `${actionTypePrefix}REMINDERS_SUCCESS`,
+    REMINDERS_FAILURE: `${actionTypePrefix}REMINDERS_FAILURE`,
     REMINDER_CATEGORIES: `${actionTypePrefix}REMINDER_CATEGORIES`,
     REMINDER_CATEGORIES_SUCCESS: `${actionTypePrefix}REMINDER_CATEGORIES_SUCCESS`,
     REMINDER_CATEGORIES_FAILURE: `${actionTypePrefix}REMINDER_CATEGORIES_FAILURE`,
@@ -192,6 +196,19 @@ const addReminderFailure = (): IFluxStandardAction => ({
   type: FinancialActionTypes.POST.REMINDER_FAILURE,
 });
 
+const getReminders = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDERS,
+});
+
+const getRemindersSuccess = (payload: Reminder[]): IFluxStandardAction<IReminder[]> => ({
+  type: FinancialActionTypes.GET.REMINDERS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getRemindersFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.REMINDERS_FAILURE,
+});
+
 const getReminderAssets = (): IFluxStandardAction => ({
   type: FinancialActionTypes.GET.REMINDER_ASSETS,
 });
@@ -215,6 +232,7 @@ export type FinancialActionPayloadTypes =
   | ILedgerMetrics
   | IUnit[]
   | IAddReminderPayload
+  | IReminder[]
   | IAsset[];
 
 export const FinancialActions = {
@@ -247,6 +265,9 @@ export const FinancialActions = {
   addReminder,
   addReminderSuccess,
   addReminderFailure,
+  getReminders,
+  getRemindersSuccess,
+  getRemindersFailure,
   getReminderAssets,
   getReminderAssetsSuccess,
   getReminderAssetsFailure,

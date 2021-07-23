@@ -1,6 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
-import { ILeasePeriod } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { ILeasePeriod, LeaseTransaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { Unit, IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface IReminder {
@@ -38,12 +38,15 @@ export class Reminder {
   @JsonProperty('asset', Asset)
   private _asset = null;
 
-  // Todo (Praharsh) Change this after verifying with API response
-  // @JsonProperty('lease_transaction', LeaseTransaction, true)
-  // private _leaseTransaction = new LeaseTransaction();
+  // Todo (Praharsh) Confirm this with BE
+  @JsonProperty('lease_transaction', LeaseTransaction, true)
+  private _leaseTransaction = null;
 
   @JsonProperty('start_date', String)
   private _startDate = '';
+
+  @JsonProperty('next_reminder_date', String)
+  private _nextReminderDate = '';
 
   get id(): number {
     return this._id;
@@ -69,15 +72,19 @@ export class Reminder {
     return this._reminderFrequency;
   }
 
-  get asset(): Asset {
+  get asset(): Asset | null {
     return this._asset;
   }
 
-  // get leaseTransaction(): LeaseTransaction {
-  //   return this._leaseTransaction;
-  // }
+  get leaseTransaction(): LeaseTransaction | null {
+    return this._leaseTransaction;
+  }
 
   get startDate(): string {
     return this._startDate;
+  }
+
+  get nextReminderDate(): string {
+    return this._nextReminderDate;
   }
 }

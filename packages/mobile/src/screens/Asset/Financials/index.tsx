@@ -79,13 +79,13 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     const {
       t,
       route: { params },
-      financialLoaders: { dues, payment },
+      financialLoaders: { dues, payment, reminder },
       selectedCountry,
       selectedProperty,
     } = this.props;
     const { scrollEnabled, isLoading } = this.state;
 
-    const loading = isLoading || dues || payment;
+    const loading = isLoading || dues || payment || reminder;
 
     const toggleAddSheet = (): void => this.toggleAddSheet(true);
 

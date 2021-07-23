@@ -3,6 +3,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -106,6 +107,13 @@ const getReminderFrequencies = (state: IState): Unit[] => {
   return ObjectMapper.deserializeArray(Unit, reminderFrequencies);
 };
 
+const getReminders = (state: IState): Reminder[] => {
+  const {
+    financials: { reminders },
+  } = state;
+  return ObjectMapper.deserializeArray(Reminder, reminders);
+};
+
 const getReminderAssets = (state: IState): Asset[] => {
   const {
     financials: { reminderAssets },
@@ -127,5 +135,6 @@ export const FinancialSelectors = {
   getLedgerMetrics,
   getReminderCategories,
   getReminderFrequencies,
+  getReminders,
   getReminderAssets,
 };

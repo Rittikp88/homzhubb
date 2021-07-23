@@ -4,6 +4,7 @@ import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IDues } from '@homzhub/common/src/domain/models/Dues';
 import { IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { IReminder } from '@homzhub/common/src/domain/models/Reminder';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
 import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
 import { IFluxStandardAction, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
@@ -26,6 +27,7 @@ export const initialFinancialsState: IFinancialState = {
       expense: '0',
     },
   },
+  reminders: [],
   reminderCategories: [],
   reminderFrequencies: [],
   reminderAssets: [],
@@ -125,6 +127,22 @@ export const financialsReducer = (
       };
     case FinancialActionTypes.POST.REMINDER_SUCCESS:
     case FinancialActionTypes.POST.REMINDER_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reminder']: false },
+      };
+    case FinancialActionTypes.GET.REMINDERS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reminder']: true },
+      };
+    case FinancialActionTypes.GET.REMINDERS_SUCCESS:
+      return {
+        ...state,
+        ['reminders']: action.payload as IReminder[],
+        ['loaders']: { ...state.loaders, ['reminder']: false },
+      };
+    case FinancialActionTypes.GET.REMINDERS_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['reminder']: false },
