@@ -686,7 +686,8 @@
     "siteVisits": "Site Visits",
     "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
     "vacantPropertyMsg": "Your property is vacant, choose what you want to do next",
-    "addImage": "Add Image"
+    "addImage": "Add Image",
+    "noOccupiedProperty": "You do not have any occupied property. Please invite your tenant."
   },
   "propertySearch": {
     "showProperties": "Show Properties",

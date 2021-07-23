@@ -68,6 +68,10 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
   // DROPDOWN LIST FORMATION START
   const getPropertyList = (isRented: boolean): IDropdownOption[] => {
     const data = isRented ? assets.filter((item) => item.isRented) : assets;
+    if (isRented && data.length < 1) {
+      AlertHelper.error({ message: t('property:noOccupiedProperty') });
+      return [];
+    }
     return data.map((property: Asset) => {
       return { value: property.id, label: property.formattedProjectName };
     });
@@ -172,6 +176,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
       {(formProps): React.ReactNode => {
         const { title, category, frequency } = formProps.values;
         const isEnable = !!title && Number(category) > 0 && Number(frequency) > 0;
+        const isRented = Number(formProps.values.category) === 1;
         return (
           <>
             <FormTextInput
@@ -194,9 +199,10 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               name="property"
               label={t('property')}
               placeholder={t('offers:selectProperty')}
-              options={getPropertyList(Number(formProps.values.category) === 1)}
+              options={getPropertyList(isRented)}
               formProps={formProps}
               onChange={onChangeProperty}
+              isDisabled={getPropertyList(isRented).length < 1}
               dropdownContainerStyle={styles.field}
             />
             {Number(formProps.values.category) === 1 && ( // For RENT category only
@@ -207,6 +213,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
                 options={getUnitList()}
                 formProps={formProps}
                 onChange={onchangeUnit}
+                isDisabled={getUnitList().length < 1}
                 dropdownContainerStyle={styles.field}
               />
             )}
@@ -255,7 +262,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint10,
   },
   button: {
-    flex: 0.4,
     marginBottom: 16,
   },
 });

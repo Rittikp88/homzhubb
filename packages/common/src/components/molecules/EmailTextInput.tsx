@@ -6,6 +6,7 @@ import {
   TextInputKeyPressEventData,
   View,
   StyleSheet,
+  TextInputFocusEventData,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -33,6 +34,17 @@ const EmailTextInput = ({ data, onSetEmails }: IProps): React.ReactElement => {
 
     if (text.includes(',')) return;
     setValue(text);
+  };
+
+  const handleBlur = (event: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+    const { text } = event.nativeEvent;
+
+    if (text) {
+      const updated: string[] = [...emails, text];
+      setEmails(updated);
+      onSetEmails(updated);
+      setValue('');
+    }
   };
 
   const handleRemove = (email: string): void => {
@@ -78,11 +90,12 @@ const EmailTextInput = ({ data, onSetEmails }: IProps): React.ReactElement => {
         )}
         {emails.length < 10 && (
           <TextInput
-            placeholder={t('assetFinancial:enterEmails')}
-            onChange={handleChange}
-            autoFocus={emails.length > 0}
             value={value}
+            onBlur={handleBlur}
+            onChange={handleChange}
             onKeyPress={handleKeyPress}
+            autoFocus={emails.length > 0}
+            placeholder={t('assetFinancial:enterEmails')}
           />
         )}
       </View>
