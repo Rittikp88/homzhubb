@@ -9,6 +9,7 @@ import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/se
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { CommonActions as StoreCommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
+import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import {
   DynamicLinkParamKeys,
   DynamicLinkTypes,
@@ -66,6 +67,12 @@ class NavigationService {
 
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
+        store.dispatch(
+          SearchActions.setFilter({
+            asset_transaction_type:
+              Number(this.getValueOfParamFromUrl(DynamicLinkParamKeys.AssetTransactionType, url)) || 0,
+          })
+        );
         this.navigateTo(ScreensKeys.BottomTabs, {
           screen: ScreensKeys.More,
           params: {

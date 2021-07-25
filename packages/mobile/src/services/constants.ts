@@ -37,6 +37,7 @@ export enum DynamicLinkParamKeys {
   LeaseUnitId = 'lease_unit_id',
   MessageGroupId = 'message_group_id',
   MessageGroupName = 'message_group_name',
+  AssetTransactionType = 'asset_transaction_type',
 }
 
 export enum NotificationScreens {

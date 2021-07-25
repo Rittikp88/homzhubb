@@ -893,7 +893,8 @@
     "rentButton": "RENT",
     "sellButton": "SELL",
     "manageButton": "MANAGE",
-    "tenantHistory": "Tenant History"
+    "tenantHistory": "Tenant History",
+    "shareListing": "Share Listing"
   },
   "assetFinancial": {
     "financial": "Financials",

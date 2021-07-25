@@ -64,7 +64,7 @@ import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { DynamicLinkTypes, DynamicLinkParamKeys, RouteTypes } from '@homzhub/mobile/src/services/constants';
+import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 import {
   IAssetVisitPayload,
   ISendNotificationPayload,
@@ -826,13 +826,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       route: {
         params: { propertyTermId },
       },
+      filters: { asset_transaction_type },
     } = this.props;
-    const { RouteType, PropertyTermId } = DynamicLinkParamKeys;
-    const url = LinkingService.buildShortLink(
+    const { RouteType, PropertyTermId, AssetTransactionType } = DynamicLinkParamKeys;
+    return LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
-      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${propertyTermId}`
+      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${propertyTermId}&${AssetTransactionType}=${asset_transaction_type}`
     );
-    return url;
   };
 
   private setSharingMessage = async (): Promise<void> => {

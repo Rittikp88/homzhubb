@@ -46,6 +46,7 @@ const RemindersContainer = (): React.ReactElement | null => {
         data={sortedReminders}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        scrollEnabled={false}
         ItemSeparatorComponent={itemSeparator}
       />
     </SectionContainer>

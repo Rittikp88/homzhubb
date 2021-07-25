@@ -11,7 +11,9 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { ListingService } from '@homzhub/common/src/services/Property/ListingService';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
@@ -29,6 +31,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
+import { SocialMediaShare } from '@homzhub/common/src/components/molecules/SocialMediaShare';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { PropertyTabs } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyTabs';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -39,6 +42,7 @@ import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import {
   ClosureReasonType,
+  DetailType,
   IClosureReasonPayload,
   IListingParam,
   IPropertyDetailPayload,
@@ -51,6 +55,7 @@ import { Routes, Tabs, TenantRoutes } from '@homzhub/common/src/constants/Tabs';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { ICurrentOffer, IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
+import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 enum MenuItems {
   EDIT_LISTING = 'EDIT_LISTING',
@@ -59,6 +64,7 @@ enum MenuItems {
   MANAGE_TENANT = 'MANAGE_TENANT',
   EDIT_LEASE = 'EDIT_LEASE',
   ADD_IMAGE = 'ADD_IMAGE',
+  SHARE_LISTING = 'SHARE_LISTING',
 }
 
 interface IStateProps {
@@ -92,6 +98,8 @@ interface IDetailState {
   isLoading: boolean;
   isDeleteProperty: boolean;
   isFromTenancies: boolean | null;
+  isShare: boolean;
+  sharingMessage: string;
 }
 
 type libraryProps = NavigationScreenProps<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
@@ -112,7 +120,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       attachments: [],
       isLoading: false,
       isDeleteProperty: false,
+      isShare: false,
       isFromTenancies: params?.isFromTenancies ?? null,
+      sharingMessage: I18nService.t('common:homzhub'),
     };
   }
 
@@ -120,7 +130,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { navigation } = this.props;
 
     this.focusListener = navigation.addListener('focus', () => {
-      this.getAssetDetail().then();
+      this.getAssetDetail().then(() => {
+        this.setSharingMessage().then();
+      });
     });
   };
 
@@ -162,7 +174,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false, isOccupied);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
       this.handleAction(propertyData, payload, param);
-
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
     const isMenuIconVisible = menuItems.length > 0;
 
@@ -176,7 +187,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           headerStyle={styles.background}
           loading={isLoading}
           onBackPress={this.handleIconPress}
-          rightNode={isMenuIconVisible ? this.renderRightNode(menuItems) : undefined}
+          rightNode={
+            isMenuIconVisible ? this.renderRightNode(menuItems, assetStatusInfo?.isListingPresent ?? false) : undefined
+          }
           keyboardShouldPersistTaps
         >
           {!isEmpty(propertyData) ? (
@@ -202,17 +215,18 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     );
   };
 
-  private renderRightNode = (menuItems: IMenu[]): React.ReactElement => {
+  private renderRightNode = (menuItems: IMenu[], isListingCreated: boolean): React.ReactElement => {
     const { t } = this.props;
-    const { isDeleteProperty } = this.state;
+    const { isDeleteProperty, isShare } = this.state;
+
     return (
       <Menu
         data={menuItems}
         onSelect={this.onSelectMenuItem}
         optionTitle={t('property:propertyOption')}
-        extraNode={this.renderConfirmationView()}
-        isExtraNode={isDeleteProperty}
-        sheetHeight={300}
+        extraNode={isShare ? this.renderShareView() : this.renderConfirmationView()}
+        isExtraNode={isShare || isDeleteProperty}
+        sheetHeight={isListingCreated ? 350 : 300}
       />
     );
   };
@@ -237,6 +251,21 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           secondaryTitleStyle={styles.deleteButtonText}
         />
       </BottomSheet>
+    );
+  };
+
+  private renderShareView = (): React.ReactElement => {
+    const { t } = this.props;
+    const { propertyData, isShare, sharingMessage } = this.state;
+    const sharingLink = propertyData?.attachments?.length ? propertyData?.attachments[0].link : undefined;
+    return (
+      <SocialMediaShare
+        visible={isShare}
+        headerTitle={t('assetDescription:shareProperty')}
+        sharingMessage={sharingMessage}
+        sharingUrl={sharingLink}
+        onCloseSharing={(): void => this.onToggleSharing(false)}
+      />
     );
   };
 
@@ -402,6 +431,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       case MenuItems.DELETE_PROPERTY:
         this.setState({
           isDeleteProperty: true,
+          isShare: false,
         });
         break;
       case MenuItems.MANAGE_TENANT:
@@ -423,9 +453,37 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           assetId: propertyData.id,
         });
         break;
+      case MenuItems.SHARE_LISTING:
+        this.onToggleSharing(true);
+        break;
       default:
         FunctionUtils.noop();
     }
+  };
+
+  private onToggleSharing = (isVisible: boolean): void => {
+    this.setState({
+      isShare: isVisible,
+    });
+  };
+
+  private setSharingMessage = async (): Promise<void> => {
+    const url = await this.getDynamicUrl();
+    const sharingMessage = I18nService.t('common:shareMessage', { url });
+    this.setState({ sharingMessage });
+  };
+
+  private getDynamicUrl = async (): Promise<string> => {
+    const {
+      assetPayload: { listing_id, assetType },
+    } = this.props;
+    const { RouteType, PropertyTermId, AssetTransactionType } = DynamicLinkParamKeys;
+    return LinkingService.buildShortLink(
+      DynamicLinkTypes.AssetDescription,
+      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${listing_id}&${AssetTransactionType}=${
+        assetType === DetailType.LEASE_LISTING ? 0 : 1
+      }`
+    );
   };
 
   private handleTabAction = (key: Tabs): void => {
@@ -572,6 +630,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
 
     if (isListingCreated) {
       list.splice(1, 0, { label: t('property:editListing'), value: MenuItems.EDIT_LISTING });
+      list.push({
+        label: t('shareListing'),
+        value: MenuItems.SHARE_LISTING,
+        isExtraData: true,
+        isExtraDataAllowed: true,
+      });
     }
 
     return list;
@@ -625,13 +689,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setAssetId,
-    setSelectedPlan,
-    getAssetById,
-    setEditPropertyFlow,
-    toggleEditPropertyFlowBottomSheet,
-  } = RecordAssetActions;
+  const { setAssetId, setSelectedPlan, getAssetById, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } =
+    RecordAssetActions;
   const { clearAsset, getAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;
