@@ -1,14 +1,12 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import PlatformPlanSection from '@homzhub/web/src/screens/landing/components/PlansSection/PlatformPlanSection';
 import ServicePlansSection from '@homzhub/web/src/screens/landing/components/PlansSection/ServicePlansSection';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -19,14 +17,7 @@ interface IProps {
 const PlansSection: FC<IProps> = (props: IProps) => {
   const { scrollRef } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
-  const [isServicePlans, setIsServicePlans] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(0);
   const history = useHistory();
-
-  const onTabChange = (argSelectedTab: number): void => {
-    setSelectedTab(argSelectedTab);
-    setIsServicePlans(!isServicePlans);
-  };
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const onlyTablet = useOnly(deviceBreakpoint.TABLET);
   const navigateToMembershipPlans = (): void => {
@@ -54,25 +45,10 @@ const PlansSection: FC<IProps> = (props: IProps) => {
           {t('plansSectionHeader')}
         </Typography>
       </View>
-
-      <View style={styles.selectionPicker}>
-        <SelectionPicker
-          data={[
-            { title: t('landing:platformPlans'), value: 0 },
-            { title: t('landing:servicePlans'), value: 1 },
-          ]}
-          selectedItem={[selectedTab]}
-          onValueChange={onTabChange}
-          itemWidth={isMobile ? 140 : 175}
-          containerStyles={styles.pickerContainer}
-          primary={false}
-        />
-      </View>
-
       <Typography variant="text" size="regular" fontWeight="regular" style={styles.plansHeaderTitle}>
-        {isServicePlans ? t('landing:servicePlansHeader') : t('landing:platformPlansHeader')}
+        <Trans components={{ italic: <i /> }}>{t('landing:servicePlansHeader')}</Trans>
       </Typography>
-      {isServicePlans ? <ServicePlansSection /> : <PlatformPlanSection />}
+      <ServicePlansSection />
       <Typography
         variant="text"
         size="small"
@@ -100,7 +76,7 @@ const styles = StyleSheet.create({
   },
   plansTextContainer: {
     alignItems: 'center',
-    paddingVertical: 60,
+    paddingVertical: 30,
   },
   toggleContainerStyle: {
     backgroundColor: theme.colors.white,
@@ -121,9 +97,6 @@ const styles = StyleSheet.create({
     marginBottom: 50,
     paddingHorizontal: 24,
     color: theme.colors.darkTint3,
-  },
-  pickerContainer: {
-    height: 54,
   },
   selectionPicker: { justifyContent: 'center', alignItems: 'center', marginBottom: 50 },
   featureComparison: {

@@ -10,7 +10,6 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import AppFeatures from '@homzhub/web/src/screens/landing/components/AppFeatures';
-import FeaturedProperties from '@homzhub/web/src/screens/landing/components/FeaturedProperties';
 import FooterWithSocialMedia from '@homzhub/web/src/screens/landing/components/FooterWithSocialMedia';
 import HeroSection from '@homzhub/web/src/screens/landing/components/HeroSection';
 import LandingFeatures from '@homzhub/web/src/screens/landing/components/LandingFeatures';
@@ -61,7 +60,6 @@ const Landing: FC<IProps> = (props: IProps) => {
       <AppFeatures />
       <PromiseSection />
       <LandingYoutubeSection />
-      <FeaturedProperties />
       <PlansSection />
       <StoreLinkSection scrollRef={storeLinkSectionRef} />
       <Testimonials />
