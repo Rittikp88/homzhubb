@@ -13,6 +13,7 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { UploadBoxComponent } from '@homzhub/web/src/components/molecules/UploadBoxComponent';
 import AddRecordForm, { IUploadCompProps } from '@homzhub/common/src/components/organisms/AddRecordForm';
+import ReminderForm from '@homzhub/common/src/components/organisms/ReminderForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -71,7 +72,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
   const renderActionsPopover = (): React.ReactNode | null => {
     switch (financialsActionType) {
       case FinancialsActions.AddReminder:
-        return <div>Add Reminder</div>;
+        return <ReminderForm onSubmit={onCloseModal} />;
       case FinancialsActions.AddRecord:
         return (
           <AddRecordForm
@@ -99,12 +100,14 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
       title: t('assetFinancial:addReminder'),
       styles: {
         height: '500px',
+        width: isDesktop ? '480px' : isTablet ? '480px' : '90%',
       },
     },
     [FinancialsActions.AddRecord.toString()]: {
       title: t('assetFinancial:addRecords'),
       styles: {
         height: '480px',
+        width: isDesktop ? '75%' : isTablet ? '60%' : '90%',
       },
     },
   };
@@ -139,7 +142,6 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
         contentStyle: {
           ...financialPopoverType?.styles,
           maxHeight: '100%',
-          width: isDesktop ? '75%' : isTablet ? '60%' : '90%',
           borderRadius: 8,
         },
         children: undefined,

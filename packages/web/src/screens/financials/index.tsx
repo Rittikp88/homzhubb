@@ -1,4 +1,4 @@
-import React, { FC, createRef, useState, useContext, useEffect } from 'react';
+import React, { FC, useRef, useState, useContext, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
@@ -34,7 +34,7 @@ const Financials: FC<IProps> = (props: IProps) => {
     }
     dispatch(UserActions.getAssets());
   }, [isOpen]);
-  const popupRef = createRef<PopupActions>();
+  const popupRef = useRef<PopupActions>(null);
   const onOpenModal = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.open();
