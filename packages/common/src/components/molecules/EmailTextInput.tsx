@@ -51,7 +51,6 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError }: IProps): React.Rea
 
   const onEndEditing = (event: NativeSyntheticEvent<TextInputFocusEventData>): void => {
     const { text } = event.nativeEvent;
-
     if (text) {
       onUpdate(text);
     } else {
@@ -61,12 +60,17 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError }: IProps): React.Rea
 
   const onUpdate = (text: string): void => {
     if (FormUtils.validateEmail(text)) {
-      const updated: string[] = [...emails, text];
-      setEmails(updated);
-      onSetEmails(updated);
-      setValue('');
-      setError('');
-      setEmailError(false);
+      if (!emails.includes(text)) {
+        const updated: string[] = [...emails, text];
+        setEmails(updated);
+        onSetEmails(updated);
+        setValue('');
+        setError('');
+        setEmailError(false);
+      } else {
+        setEmailError(true);
+        setError('auth:duplicateEmail');
+      }
     } else {
       setEmailError(true);
       setError('landing:emailValidations');
