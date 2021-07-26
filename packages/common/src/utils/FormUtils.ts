@@ -58,6 +58,10 @@ class FormUtils {
 
     return Object.values(updatedValue).every((value) => !!value);
   };
+
+  public validateEmail = (email: string): boolean => {
+    return this.emailRegex.test(String(email).toLowerCase());
+  };
 }
 
 const formUtils = new FormUtils();

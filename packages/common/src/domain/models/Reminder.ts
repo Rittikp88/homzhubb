@@ -1,6 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
-import { ILeasePeriod, LeaseTransaction } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { Unit, IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface IReminder {
@@ -11,7 +10,6 @@ export interface IReminder {
   reminder_category: IUnit;
   reminder_frequency: IUnit;
   asset: IAsset;
-  lease_transaction: ILeasePeriod;
   start_date: string;
 }
 
@@ -37,10 +35,6 @@ export class Reminder {
 
   @JsonProperty('asset', Asset)
   private _asset = null;
-
-  // Todo (Praharsh) Confirm this with BE
-  @JsonProperty('lease_transaction', LeaseTransaction, true)
-  private _leaseTransaction = null;
 
   @JsonProperty('start_date', String)
   private _startDate = '';
@@ -74,10 +68,6 @@ export class Reminder {
 
   get asset(): Asset | null {
     return this._asset;
-  }
-
-  get leaseTransaction(): LeaseTransaction | null {
-    return this._leaseTransaction;
   }
 
   get startDate(): string {

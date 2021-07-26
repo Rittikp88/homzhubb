@@ -15,6 +15,7 @@ const AddReminderScreen = (): React.ReactElement => {
     <Screen
       backgroundColor={theme.colors.white}
       isLoading={loaders.reminder}
+      keyboardShouldPersistTaps
       headerProps={{ title: t('assetFinancial:addReminders'), type: 'secondary', onIconPress: goBack }}
     >
       <ReminderForm onSubmit={goBack} />

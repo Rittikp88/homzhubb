@@ -170,8 +170,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { propertyData, isLoading, isFromTenancies } = this.state;
 
     const { assetStatusInfo } = propertyData;
+    const isListingApproved = (assetStatusInfo?.status === 'APPROVED' && assetStatusInfo?.isListingPresent) ?? false;
     const isOccupied = assetStatusInfo?.tag.code === Filters.OCCUPIED || assetStatusInfo?.tag.code === Filters.EXPIRING;
-    const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false, isOccupied);
+    const menuItems = this.getMenuList(assetStatusInfo?.isListingPresent ?? false, isOccupied, isListingApproved);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void =>
       this.handleAction(propertyData, payload, param);
     const title = params && params.isFromDashboard ? t('assetDashboard:dashboard') : t('portfolio');
@@ -187,9 +188,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
           headerStyle={styles.background}
           loading={isLoading}
           onBackPress={this.handleIconPress}
-          rightNode={
-            isMenuIconVisible ? this.renderRightNode(menuItems, assetStatusInfo?.isListingPresent ?? false) : undefined
-          }
+          rightNode={isMenuIconVisible ? this.renderRightNode(menuItems, isListingApproved) : undefined}
           keyboardShouldPersistTaps
         >
           {!isEmpty(propertyData) ? (
@@ -215,7 +214,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     );
   };
 
-  private renderRightNode = (menuItems: IMenu[], isListingCreated: boolean): React.ReactElement => {
+  private renderRightNode = (menuItems: IMenu[], isListingApproved: boolean): React.ReactElement => {
     const { t } = this.props;
     const { isDeleteProperty, isShare } = this.state;
 
@@ -226,7 +225,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         optionTitle={t('property:propertyOption')}
         extraNode={isShare ? this.renderShareView() : this.renderConfirmationView()}
         isExtraNode={isShare || isDeleteProperty}
-        sheetHeight={isListingCreated ? 350 : 300}
+        sheetHeight={isListingApproved ? 350 : 300}
       />
     );
   };
@@ -599,7 +598,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     }
   };
 
-  private getMenuList = (isListingCreated: boolean, isOccupied: boolean): IMenu[] => {
+  private getMenuList = (isListingCreated: boolean, isOccupied: boolean, isListingApproved: boolean): IMenu[] => {
     const { t } = this.props;
     const { isFromTenancies } = this.state;
     let list;
@@ -630,6 +629,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
 
     if (isListingCreated) {
       list.splice(1, 0, { label: t('property:editListing'), value: MenuItems.EDIT_LISTING });
+    }
+
+    if (isListingApproved) {
       list.push({
         label: t('shareListing'),
         value: MenuItems.SHARE_LISTING,

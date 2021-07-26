@@ -58,6 +58,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
   const [unitList, setUnitList] = useState<OnGoingTransaction[]>([]);
   const [userEmails, setUserEmails] = useState<string[]>([]);
   const [notes, setNotes] = useState<string>('');
+  const [isEmailError, setEmailError] = useState(false);
 
   useEffect(() => {
     dispatch(FinancialActions.getReminderCategories());
@@ -175,7 +176,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
     <Formik initialValues={{ ...formData }} onSubmit={handleSubmit} validate={FormUtils.validate(formSchema)}>
       {(formProps): React.ReactNode => {
         const { title, category, frequency } = formProps.values;
-        const isEnable = !!title && Number(category) > 0 && Number(frequency) > 0;
+        const isEnable = !!title && Number(category) > 0 && Number(frequency) > 0 && !isEmailError;
         const isRented = Number(formProps.values.category) === 1;
         return (
           <>
@@ -226,7 +227,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               formProps={formProps}
               dropdownContainerStyle={styles.field}
             />
-            <EmailTextInput data={userEmails} onSetEmails={setUserEmails} />
+            <EmailTextInput data={userEmails} onSetEmails={setUserEmails} setEmailError={setEmailError} />
             <TextArea
               value={notes}
               placeholder={t('notesPlaceholder')}

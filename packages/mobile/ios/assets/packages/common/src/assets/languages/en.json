@@ -297,7 +297,9 @@
     "marketPlace": "Marketplace",
     "askHelp": "Ask help",
     "bugReport": "Bug Report",
-    "quickActions": "Quick Actions"
+    "quickActions": "Quick Actions",
+    "selectYourCountry": "Select your category",
+    "addNow": "Add Now"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -684,7 +686,8 @@
     "siteVisits": "Site Visits",
     "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
     "vacantPropertyMsg": "Your property is vacant, choose what you want to do next",
-    "addImage": "Add Image"
+    "addImage": "Add Image",
+    "noOccupiedProperty": "You do not have any occupied property. Please invite your tenant."
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -772,6 +775,7 @@
     "shareRequirementsSubHeader" : "Share requirements for customised search",
     "requirementForm": "Requirement Form",
     "saveDetails": "Save details",
+    "submitDetails" : "Submit details",
     "moveInDate": "Expected Move-In  date",
     "budget": "Budget",
     "bhk": "BHK",
@@ -889,7 +893,8 @@
     "rentButton": "RENT",
     "sellButton": "SELL",
     "manageButton": "MANAGE",
-    "tenantHistory": "Tenant History"
+    "tenantHistory": "Tenant History",
+    "shareListing": "Share Listing"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -914,6 +919,7 @@
     "notes": "Notes",
     "notesPlaceholder": "Type your notes here...",
     "addRecord": "Add Record",
+    "addReminder": "Add Reminder",
     "submitRecord": "Submit Record",
     "propertyError": "Please enter your property",
     "detailsError": "Please enter your property details",
@@ -937,7 +943,19 @@
     "deleteRecordConfirmation": "Are you sure you want to delete this record?",
     "systemGeneratedText": "System-generated records cannot be edited",
     "addFinancials": "Add Financials",
-    "paidSuccessfully": "Payment of {{amount}} successfully completed"
+    "paidSuccessfully": "Payment of {{amount}} successfully completed",
+    "addReminders": "Add Reminders",
+    "setReminders": "Set Reminders",
+    "reminderTitle": "Reminder Title",
+    "selectLeaseUnit": "Select your lease unit",
+    "leaseUnit": "Lease Unit",
+    "reminderDate": "Reminder Date",
+    "frequency": "Frequency",
+    "enterEmails": "Enter your Emails here..",
+    "notifyTo": "Notify to",
+    "reminderSuccessMsg": "Reminder added successfully",
+    "reminders": "Reminders",
+    "addNew" : "Add New"
   },
   "assetMore": {
     "more": "More",
@@ -1116,7 +1134,7 @@
     "home": "Home",
     "watchVideo": "Watch Video",
     "findNextProperty": "Peace of mind with Homzhub",
-    "freeApp": "Homzhub app is completely free for now.",
+    "freeApp": "FREE app to manage tenants.",
     "featuredProperties": "Featured Properties",
     "pricing": "Pricing",
     "homeOwner": "Home Owner",
@@ -1140,7 +1158,7 @@
     "introToHomzhub": "Introduction to Homzhub",
     "platformPlans": "Platform Plans",
     "servicePlans": "Service Plans",
-    "storeLinkDescription": "You heard it right. Download Homzhub app to start managing your property or to find a new property to rent.",
+    "storeLinkDescription": "Download Homzhub app and bring tenant conversations, financials and property documents for easy access in one place.",
     "youtubeDescription": "Learn how Homzhub helps non-resident home owners lease, manage, buy and sell their properties from wherever they are.",
     "freeForYou": "Homzhub App completely free for you",
     "startYourInvestment": "Start your Investment",
