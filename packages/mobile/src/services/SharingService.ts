@@ -93,9 +93,15 @@ class SharingService {
             }),
             hashtag: 'homzhub',
           };
+
           await ShareDialog.show(shareLinkContent);
           return;
         }
+        if (social === Share.Social.WHATSAPP) {
+          await Linking.openURL(`${appUrl}text=${message}`);
+          return;
+        }
+
         await Share.shareSingle({ ...options, social });
         return;
       }
