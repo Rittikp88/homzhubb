@@ -10,6 +10,7 @@ import { PropertyVisualsEstimates } from '@homzhub/web/src/screens/dashboard/com
 import DuesCard from '@homzhub/web/src/screens/financials/DuesCard';
 import Transactions from '@homzhub/web/src/screens/financials/Transactions';
 import FinancialsPopover, { FinancialsActions } from '@homzhub/web/src/screens/financials/FinancialsPopover';
+import ReminderList from '@homzhub/web/src/screens/financials/Reminders/ReminderList';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -54,6 +55,7 @@ const Financials: FC<IProps> = (props: IProps) => {
       <PropertyVisualsEstimates />
       <DuesCard />
       <Transactions />
+      <ReminderList />
       <FinancialsPopover
         popupRef={popupRef}
         onCloseModal={onCloseModal}

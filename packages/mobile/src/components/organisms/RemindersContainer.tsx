@@ -43,7 +43,7 @@ const RemindersContainer = (): React.ReactElement | null => {
       containerStyle={styles.container}
     >
       <FlatList
-        data={sortedReminders}
+        data={sortedReminders.slice(0, 3)}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         scrollEnabled={false}

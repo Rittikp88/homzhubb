@@ -2,9 +2,11 @@ import React, { ReactElement, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -36,6 +38,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
   // eslint-disable-next-line
   const [isLoading, setIsLoading] = useState(false);
   const [clearForm, setClearForm] = useState(0);
+  const dispatch = useDispatch();
   const transactionId = -1;
   const isEditFlow = false;
   const { popupRef, onCloseModal, financialsActionType, currency, assets } = props;
@@ -69,10 +72,15 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
     });
   };
 
+  const onSubmitReminder = (): void => {
+    onCloseModal();
+    dispatch(FinancialActions.getReminders());
+  };
+
   const renderActionsPopover = (): React.ReactNode | null => {
     switch (financialsActionType) {
       case FinancialsActions.AddReminder:
-        return <ReminderForm onSubmit={onCloseModal} />;
+        return <ReminderForm onSubmit={onSubmitReminder} />;
       case FinancialsActions.AddRecord:
         return (
           <AddRecordForm

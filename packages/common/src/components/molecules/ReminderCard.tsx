@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import DisplayDate from '@homzhub/common/src/components/atoms/DisplayDate';
@@ -10,11 +10,13 @@ import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 
 interface IProps {
   reminder: Reminder;
+  cardContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const ReminderCard = (props: IProps): React.ReactElement => {
   const {
     reminder: { nextReminderDate, title, description, asset },
+    cardContainerStyle,
   } = props;
 
   const countryFlag = (iso2Code: string): React.ReactElement | null =>
@@ -38,7 +40,7 @@ const ReminderCard = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <TouchableOpacity onPress={FunctionUtils.noop} style={styles.container}>
+    <TouchableOpacity onPress={FunctionUtils.noop} style={[styles.container, cardContainerStyle && cardContainerStyle]}>
       <DisplayDate date={nextReminderDate} containerStyle={styles.dateContainer} />
       <View style={styles.flexOne}>
         <AddressView />
