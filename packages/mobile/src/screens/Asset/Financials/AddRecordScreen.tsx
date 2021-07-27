@@ -47,7 +47,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
           title={title}
           pageTitle={t('addRecords')}
           loading={isLoading}
-          rightNode={this.renderRightNode()}
+          rightNode={route?.params?.isFromDues ? undefined : this.renderRightNode()}
           onBackPress={this.goBack}
         >
           <View style={styles.content}>{this.renderAddRecordForm()}</View>
@@ -70,6 +70,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
   private renderAddRecordForm = (): ReactElement => {
     const { clearForm } = this.state;
     const { currency, assets, route } = this.props;
+    const isFromDues = Boolean(route?.params?.isFromDues);
 
     return (
       <AddRecordForm
@@ -85,6 +86,7 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
         assetId={route?.params?.assetId}
         containerStyles={styles.addFormContainer}
         isEditFlow={route?.params?.isEditFlow}
+        isFromDues={isFromDues}
       />
     );
   };
@@ -107,9 +109,13 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 
   private onSubmitFormSuccess = (): void => {
     const { t, route } = this.props;
-    AlertHelper.success({
-      message: t(route?.params?.isEditFlow ? 'editedSuccessfullyMessage' : 'addedSuccessfullyMessage'),
-    });
+    if (route?.params?.isFromDues) {
+      AlertHelper.success({ message: t('assetFinancial:dueMarkedAsPaid') });
+    } else {
+      AlertHelper.success({
+        message: t(route?.params?.isEditFlow ? 'editedSuccessfullyMessage' : 'addedSuccessfullyMessage'),
+      });
+    }
     this.goBack();
   };
 

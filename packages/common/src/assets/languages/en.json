@@ -773,10 +773,10 @@
     "scheduleVisit": "Schedule a visit",
     "filterByRating": "Filter by overall rating",
     "shareRequirement": "Share Requirements",
-    "shareRequirementsSubHeader" : "Share requirements for customised search",
+    "shareRequirementsSubHeader": "Share requirements for customised search",
     "requirementForm": "Requirement Form",
     "saveDetails": "Save details",
-    "submitDetails" : "Submit details",
+    "submitDetails": "Submit details",
     "moveInDate": "Expected Move-In  date",
     "budget": "Budget",
     "bhk": "BHK",
@@ -956,8 +956,12 @@
     "notifyTo": "Notify to",
     "reminderSuccessMsg": "Reminder added successfully",
     "reminders": "Reminders",
-    "addNew" : "Add New",
-    "alreadyPaid": "Already Paid"
+    "addNew": "Add New",
+    "alreadyPaid": "Already Paid",
+    "modeOfPayment": "Mode of Payment",
+    "fromBank": "From Bank",
+    "referenceNumber": "Reference Number",
+    "dueMarkedAsPaid": "Your due has been marked as paid successfully"
   },
   "assetMore": {
     "more": "More",

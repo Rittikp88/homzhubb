@@ -38,6 +38,9 @@ export class DueItem {
   @JsonProperty('created_at', String)
   private _createdAt = '';
 
+  @JsonProperty('due_date', String)
+  private _dueDate = '';
+
   get id(): number {
     return this._id;
   }
@@ -72,5 +75,9 @@ export class DueItem {
 
   get createdAt(): string {
     return this._createdAt;
+  }
+
+  get dueDate(): string {
+    return this._dueDate;
   }
 }

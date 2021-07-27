@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import ProgressBar from 'react-native-progress/Bar';
@@ -38,8 +38,8 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
           const onPress = (): void => onDelete(uri);
 
           return (
-            <>
-              <View key={index} style={styles.fullContainer}>
+            <Fragment key={index.toString()}>
+              <View style={styles.fullContainer}>
                 <View style={styles.fileIconView}>
                   <Icon name={fileIcon} size={40} color={theme.colors.lowPriority} style={styles.fileIcon} />
                 </View>
@@ -85,7 +85,7 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
                 </View>
               </View>
               <RenderDivider />
-            </>
+            </Fragment>
           );
         })}
       </>

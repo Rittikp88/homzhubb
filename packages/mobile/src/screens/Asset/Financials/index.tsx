@@ -52,6 +52,7 @@ interface IDispatchProps {
   setTimeRange: (range: number) => void;
   getLedgerMetrics: () => void;
   resetLedgerFilters: () => void;
+  setCurrentDueId: (dueId: number) => void;
 }
 
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -67,11 +68,12 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   public componentDidMount(): void {
-    const { navigation, getLedgerMetrics, resetLedgerFilters } = this.props;
+    const { navigation, getLedgerMetrics, resetLedgerFilters, setCurrentDueId } = this.props;
 
     this.onFocusSubscription = navigation.addListener('focus', (): void => {
       resetLedgerFilters();
       getLedgerMetrics();
+      setCurrentDueId(-1);
     });
   }
 
@@ -289,6 +291,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     setTimeRange,
     getLedgerMetrics,
     resetLedgerFilters,
+    setCurrentDueId,
   } = FinancialActions;
   return bindActionCreators(
     {
@@ -298,6 +301,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setTimeRange,
       getLedgerMetrics,
       resetLedgerFilters,
+      setCurrentDueId,
     },
     dispatch
   );

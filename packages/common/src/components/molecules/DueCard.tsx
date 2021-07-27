@@ -14,7 +14,7 @@ interface IProps {
   due: DueItem;
   onInitPayment: () => Promise<Payment>;
   onOrderPlaced: (paymentOptions: IPaymentParams) => void;
-  onPressClose?: () => void;
+  onPressClose?: (dueId?: number) => void;
 }
 
 const DueCard = (props: IProps): React.ReactElement => {
@@ -22,6 +22,12 @@ const DueCard = (props: IProps): React.ReactElement => {
   const { id, invoiceTitle, asset, totalDue } = due;
 
   const { t } = useTranslation();
+
+  const onPressCrossIcon = (): void => {
+    if (onPressClose) {
+      onPressClose(due.id);
+    }
+  };
 
   return (
     <View key={id} style={styles.container}>
@@ -44,7 +50,7 @@ const DueCard = (props: IProps): React.ReactElement => {
           />
         )}
         {onPressClose && (
-          <TouchableOpacity onPress={onPressClose}>
+          <TouchableOpacity onPress={onPressCrossIcon}>
             <Cross />
           </TouchableOpacity>
         )}

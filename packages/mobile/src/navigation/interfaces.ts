@@ -245,6 +245,7 @@ export interface IAddRecordProps {
   screenTitle?: string;
   isEditFlow?: boolean;
   transactionId?: number;
+  isFromDues?: boolean;
 }
 
 // Webview

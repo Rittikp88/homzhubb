@@ -19,6 +19,7 @@ const defaultLedgerFilters = {
 export const initialFinancialsState: IFinancialState = {
   transactions: null,
   dues: null,
+  currentDueId: -1,
   ledgers: {
     ...defaultLedgerFilters,
     ledgerData: [],
@@ -162,6 +163,11 @@ export const financialsReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['reminderAsset']: false },
+      };
+    case FinancialActionTypes.SET.CURRENT_DUE_ID:
+      return {
+        ...state,
+        ['currentDueId']: action.payload as number,
       };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;

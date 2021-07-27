@@ -416,6 +416,10 @@ export interface IAddGeneralLedgerPayload {
   notes?: string | null;
   attachments: number[] | null;
   currency: string;
+  mode_of_payment?: number;
+  from_bank?: string;
+  payment_reference_number?: string;
+  invoice?: number;
 }
 
 export interface ICreateLedgerResult {

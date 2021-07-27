@@ -26,6 +26,7 @@ const ENDPOINTS = {
   reminderCategories: 'v1/reminders/reminder-categories/',
   reminderFrequencies: 'v1/reminders/reminder-frequencies/',
   reminderAssets: 'v1/reminders/assets/',
+  offlinePaymentModes: 'v1/list-of-values/offline-modes-of-payment/',
 };
 
 class LedgerRepository {
@@ -97,6 +98,11 @@ class LedgerRepository {
   public getReminderAssets = async (): Promise<Asset[]> => {
     const response = await this.apiClient.get(ENDPOINTS.reminderAssets);
     return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  public getOfflinePaymentModes = async (): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.offlinePaymentModes);
+    return ObjectMapper.deserializeArray(Unit, response);
   };
 }
 

@@ -393,6 +393,8 @@ class DateUtils {
 
   public descendingDateSort = (arr: Array<any>, keyToCheck: string): Array<any> =>
     [...arr].sort((a, b) => moment(b[keyToCheck]).valueOf() - moment(a).valueOf());
+
+  public isSameOrAfter = (date1: string, date2 = moment()): boolean => moment(date1).isSameOrAfter(date2);
 }
 
 const dateUtils = new DateUtils();

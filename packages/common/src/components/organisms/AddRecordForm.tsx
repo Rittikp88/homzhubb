@@ -1,10 +1,12 @@
 import React, { ReactElement } from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
@@ -12,6 +14,8 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -25,11 +29,14 @@ import { FormTextInput } from '@homzhub/common/src/components/molecules/FormText
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment, UploadFileType } from '@homzhub/common/src/domain/models/Attachment';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 import { FormType } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IFormData {
   property: number;
@@ -39,8 +46,12 @@ interface IFormData {
   category: number;
   date: string;
   notes?: string;
+  paidTo?: string;
+  paymentModeUsed?: string;
+  fromBank?: string;
+  referenceNum?: string;
 }
-interface IState {
+interface ILocalState {
   ledgerCategories: LedgerCategory[];
   selectedFormType: FormType;
   formValues: IFormData;
@@ -48,6 +59,7 @@ interface IState {
   currencyCode: string;
   currencySymbol: string;
   existingAttachments: IFormattedAttachment[];
+  offlinePaymentModes: Unit[];
 }
 
 export interface IUploadAttachmentResponse {
@@ -65,7 +77,15 @@ export interface IUploadCompProps {
   containerStyle: StyleProp<ViewStyle>;
 }
 
-interface IOwnProps extends WithTranslation {
+interface IStateToProps {
+  currentDue: DueItem | null;
+}
+
+interface IDispatchProps {
+  setCurrentDueId: (dueId: number) => void;
+}
+
+interface IOwnProps extends WithTranslation, IStateToProps, IDispatchProps {
   properties: Asset[];
   onSubmitFormSuccess?: () => void;
   clear: number;
@@ -80,6 +100,7 @@ interface IOwnProps extends WithTranslation {
   isEditFlow?: boolean;
   isDesktopWeb?: boolean;
   testID?: string;
+  isFromDues?: boolean;
 }
 
 interface IFormattedAttachment {
@@ -90,34 +111,36 @@ interface IFormattedAttachment {
 
 const MAX_WORD_COUNT = 200;
 
-export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
+export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
   public formRef: React.RefObject<any> = React.createRef();
 
   public constructor(props: IOwnProps) {
     super(props);
-    const {
-      defaultCurrency: { currencySymbol, currencyCode },
-    } = props;
+    const { isFromDues, currentDue, defaultCurrency } = props;
+    const { currencySymbol, currencyCode } = isFromDues && currentDue ? currentDue?.currency : defaultCurrency;
     this.state = {
-      selectedFormType: FormType.Income,
+      selectedFormType: isFromDues ? FormType.Expense : FormType.Income,
       attachments: [],
       currencyCode,
       currencySymbol,
       ledgerCategories: [],
       formValues: this.getInitialValues(),
       existingAttachments: [],
+      offlinePaymentModes: [],
     };
   }
 
   public async componentDidMount(): Promise<void> {
-    const { toggleLoading, assetId, isEditFlow } = this.props;
-
+    const { toggleLoading, assetId, isEditFlow, isFromDues } = this.props;
     if (isEditFlow) {
       this.fetchExistingLedgerDetails();
     }
 
     if (assetId) {
       this.onChangeProperty(`${assetId}`);
+    }
+    if (isFromDues) {
+      this.fetchOfflinePaymentModes().then();
     }
     toggleLoading(true);
     const categories = await LedgerRepository.getLedgerCategories();
@@ -136,8 +159,16 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 
   public render(): ReactElement {
-    const { containerStyles, t, assetId, isEditFlow, renderUploadBoxComponent, isDesktopWeb } = this.props;
-    const { selectedFormType, formValues, currencyCode, currencySymbol, attachments } = this.state;
+    const {
+      containerStyles,
+      t,
+      assetId,
+      isEditFlow,
+      renderUploadBoxComponent,
+      isDesktopWeb,
+      isFromDues = false,
+    } = this.props;
+    const { selectedFormType, formValues, currencyCode, currencySymbol, attachments, offlinePaymentModes } = this.state;
     const isWeb = PlatformUtils.isWeb();
     const isDesktop = isDesktopWeb || false;
     const isAbsoluteWeb = isWeb && isDesktop;
@@ -163,6 +194,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
           selectedItem={[selectedFormType]}
           onValueChange={this.onFormTypeChange}
           containerStyles={[isAbsoluteWeb && styles.selectionPicker]}
+          isDisabled={isFromDues}
         />
         <Formik
           innerRef={this.formRef}
@@ -188,7 +220,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                     isMandatory
                     label={t('property')}
                     listHeight={theme.viewport.height * 0.8}
-                    isDisabled={!!assetId}
+                    isDisabled={!!assetId || isFromDues}
                   />
                   <FormTextInput
                     formProps={formProps}
@@ -197,6 +229,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                     label={t('details')}
                     placeholder={t('detailsPlaceholder')}
                     isMandatory
+                    editable={!isFromDues}
                   />
                   <FormTextInput
                     formProps={formProps}
@@ -214,6 +247,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                     inputPrefixText={currencySymbol}
                     inputGroupSuffixText={currencyCode}
                     isMandatory
+                    editable={!isFromDues}
                   />
                   <FormDropdown
                     formProps={formProps}
@@ -234,6 +268,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                       calendarTitle={t('addDate')}
                       placeHolder={t('addDatePlaceholder')}
                       isMandatory
+                      {...(isFromDues && { maxDate: DateUtils.getCurrentDate() })}
                     />
                   ) : (
                     <FormCalendar
@@ -247,6 +282,31 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
                       isMandatory
                       {...calendarPropsWeb}
                     />
+                  )}
+                  {isFromDues && (
+                    <>
+                      <FormDropdown
+                        formProps={formProps}
+                        name="paymentModeUsed"
+                        options={LedgerUtils.formattedPaymentModes(offlinePaymentModes)}
+                        placeholder={t('categoryPlaceholder')}
+                        label={t('assetFinancial:modeOfPayment')}
+                        isMandatory
+                        onChange={this.onChangePaymentMode}
+                      />
+                      <FormTextInput
+                        formProps={formProps}
+                        inputType="default"
+                        name="fromBank"
+                        label={t('assetFinancial:fromBank')}
+                      />
+                      <FormTextInput
+                        formProps={formProps}
+                        inputType="default"
+                        name="referenceNum"
+                        label={t('assetFinancial:referenceNumber')}
+                      />
+                    </>
                   )}
                 </View>
                 <View style={[isAbsoluteWeb && styles.formColumn]}>
@@ -361,6 +421,13 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     }
   };
 
+  private onChangePaymentMode = (value: string, formikProps?: FormikProps<FormikValues>): void => {
+    if (formikProps) {
+      const { setFieldValue } = formikProps;
+      setFieldValue('paymentModeUsed', value);
+    }
+  };
+
   private fetchExistingLedgerDetails = async (): Promise<void> => {
     const { transactionId, toggleLoading } = this.props;
     try {
@@ -417,6 +484,15 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     );
   };
 
+  private fetchOfflinePaymentModes = async (): Promise<void> => {
+    try {
+      const modes = await LedgerRepository.getOfflinePaymentModes();
+      this.setState({ offlinePaymentModes: modes });
+    } catch (e) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    }
+  };
+
   private formSchema = (): yup.ObjectSchema<IFormData> => {
     const { t } = this.props;
 
@@ -428,11 +504,33 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       category: yup.number().required(t('categoryError')).moreThan(0, t('categoryError')),
       date: yup.string().required(t('dateError')),
       notes: yup.string().optional(),
+      paymentModeUsed: yup.string(),
+      fromBank: yup.string().optional(),
+      referenceNum: yup.string().optional(),
     });
   };
 
   private getInitialValues = (): IFormData => {
-    const { assetId } = this.props;
+    const { assetId, isFromDues, currentDue, t } = this.props;
+    if (currentDue && isFromDues) {
+      const { asset, invoiceTitle, totalPrice, dueDate } = currentDue;
+      const getDefaultDate = (): string => {
+        const isDueDateSameOrAfterToday = DateUtils.isSameOrAfter(dueDate);
+        return isDueDateSameOrAfterToday
+          ? DateUtils.getCurrentDate()
+          : DateUtils.getUtcDisplayDate(dueDate, DateFormats.YYYYMMDD);
+      };
+      return {
+        property: asset?.id ?? -1,
+        label: invoiceTitle,
+        tellerName: t('common:homzhub'),
+        amount: `${totalPrice}`,
+        category: 10,
+        date: getDefaultDate(),
+        notes: '',
+        paymentModeUsed: 'CASH',
+      };
+    }
     return {
       property: assetId ?? -1,
       label: '',
@@ -451,7 +549,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
     });
 
   private handleUpload = (attachments: IDocumentSource[]): void => {
-    this.setState((prevState: IState) => {
+    this.setState((prevState: ILocalState) => {
       return { attachments: [...prevState.attachments, ...attachments] };
     });
   };
@@ -472,9 +570,20 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 
   private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
-    const { toggleLoading, isEditFlow, transactionId } = this.props;
-    const { selectedFormType, attachments, currencyCode, existingAttachments } = this.state;
-    const { property, label, tellerName, amount, category, notes, date } = values;
+    const { toggleLoading, isEditFlow, transactionId, currentDue, isFromDues } = this.props;
+    const { selectedFormType, attachments, currencyCode, existingAttachments, offlinePaymentModes } = this.state;
+    const {
+      property,
+      label,
+      tellerName,
+      amount,
+      category,
+      notes,
+      date,
+      fromBank,
+      referenceNum,
+      paymentModeUsed,
+    } = values;
     const existingAttachmentIds = existingAttachments.map((i) => i.id);
     let uploadedAttachmentIds: Array<number> = [];
 
@@ -498,7 +607,16 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
       const tellerInfo =
         selectedFormType === FormType.Income ? { payer_name: tellerName } : { receiver_name: tellerName };
 
-      const payload = {
+      const modeOfPayment = offlinePaymentModes.filter((mode) => mode.code === paymentModeUsed)[0].id;
+
+      const dueFields = {
+        mode_of_payment: modeOfPayment,
+        ...(fromBank && { from_bank: fromBank }),
+        ...(referenceNum && { payment_reference_number: referenceNum }),
+        ...(currentDue && { invoice: currentDue.id }),
+      };
+
+      let payload = {
         asset: Number(property),
         entry_type: selectedFormType === FormType.Income ? LedgerTypes.credit : LedgerTypes.debit,
         label,
@@ -510,6 +628,10 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
         attachments: [...existingAttachmentIds, ...uploadedAttachmentIds],
         currency: currencyCode,
       };
+
+      if (isFromDues) {
+        payload = { ...payload, ...dueFields };
+      }
       if (isEditFlow && transactionId !== -1) {
         await LedgerRepository.updateGeneralLedgers(payload, transactionId);
       } else {
@@ -532,8 +654,27 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, IState> {
   };
 }
 
+const mapStateToProps = (state: IState): IStateToProps => {
+  return {
+    currentDue: FinancialSelectors.getCurrentDue(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setCurrentDueId } = FinancialActions;
+  return bindActionCreators(
+    {
+      setCurrentDueId,
+    },
+    dispatch
+  );
+};
+
 const namespace = LocaleConstants.namespacesKey;
-export default withTranslation([namespace.assetFinancial, namespace.common])(AddRecordForm);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withTranslation([namespace.assetFinancial, namespace.common])(AddRecordForm));
 
 const styles = StyleSheet.create({
   selectionPicker: {

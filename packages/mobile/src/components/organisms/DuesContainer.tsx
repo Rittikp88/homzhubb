@@ -85,12 +85,19 @@ const DuesContainer = (): React.ReactElement | null => {
       dispatch(FinancialActions.processPayment(payload));
     };
 
+    const onPressClose = (dueId?: number): void => {
+      if (dueId) {
+        dispatch(FinancialActions.setCurrentDueId(dueId));
+      }
+      setSheetVisibility(true);
+    };
+
     return (
       <DueCard
         due={item}
         onInitPayment={(): Promise<Payment> => onPressPayNow(item.id)}
         onOrderPlaced={onOrderPlaced}
-        onPressClose={(): void => setSheetVisibility(true)}
+        onPressClose={onPressClose}
       />
     );
   };
@@ -98,7 +105,7 @@ const DuesContainer = (): React.ReactElement | null => {
   const ItemSeparator = (): React.ReactElement => <Divider containerStyles={styles.divider} />;
 
   const handleAlreadyPaid = (): void => {
-    // TODO: (Praharsh) handle already paid navigation
+    navigate(ScreensKeys.AddRecordScreen, { isFromDues: true });
   };
 
   const onSetReminder = (): void => {
@@ -135,6 +142,10 @@ const DuesContainer = (): React.ReactElement | null => {
   // Sort array in desc order based on 'created_at'
   const sortedDuesDesc = DateUtils.descendingDateSort(dueItems, 'createdAt');
 
+  const onCloseSheet = (): void => {
+    setSheetVisibility(false);
+  };
+
   return (
     <>
       <SectionContainer
@@ -152,12 +163,7 @@ const DuesContainer = (): React.ReactElement | null => {
           ItemSeparatorComponent={ItemSeparator}
         />
       </SectionContainer>
-      <IconSheet
-        isVisible={isSheetVisible}
-        data={getSheetData()}
-        sheetHeight={250}
-        onCloseSheet={(): void => setSheetVisibility(false)}
-      />
+      <IconSheet isVisible={isSheetVisible} data={getSheetData()} sheetHeight={250} onCloseSheet={onCloseSheet} />
     </>
   );
 };
