@@ -956,7 +956,8 @@
     "notifyTo": "Notify to",
     "reminderSuccessMsg": "Reminder added successfully",
     "reminders": "Reminders",
-    "addNew" : "Add New"
+    "addNew" : "Add New",
+    "alreadyPaid": "Already Paid"
   },
   "assetMore": {
     "more": "More",

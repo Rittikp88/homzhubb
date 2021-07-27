@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Cross from '@homzhub/common/src/assets/images/circularCross.svg';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
@@ -13,32 +14,42 @@ interface IProps {
   due: DueItem;
   onInitPayment: () => Promise<Payment>;
   onOrderPlaced: (paymentOptions: IPaymentParams) => void;
+  onPressClose?: () => void;
 }
 
 const DueCard = (props: IProps): React.ReactElement => {
-  const { due, onInitPayment, onOrderPlaced } = props;
+  const { due, onInitPayment, onOrderPlaced, onPressClose } = props;
   const { id, invoiceTitle, asset, totalDue } = due;
 
   const { t } = useTranslation();
 
   return (
     <View key={id} style={styles.container}>
-      {asset && (
-        <PropertyAddressCountry
-          primaryAddress={asset.projectName}
-          primaryAddressTextStyles={{
-            variant: 'text',
-            size: 'small',
-          }}
-          subAddressTextStyles={{
-            variant: 'label',
-            size: 'large',
-          }}
-          countryFlag={asset.country.flag}
-          showAddress
-          subAddress={asset.formattedAddressWithCity}
-        />
-      )}
+      <View style={[styles.contentContainer, !asset && styles.rowReverse]}>
+        {asset && ( // TODO: (Show service detail if asset is not there and remove row reverse style)
+          <PropertyAddressCountry
+            primaryAddress={asset.projectName}
+            primaryAddressTextStyles={{
+              variant: 'text',
+              size: 'small',
+            }}
+            subAddressTextStyles={{
+              variant: 'label',
+              size: 'large',
+            }}
+            containerStyle={styles.flexOne}
+            countryFlag={asset.country.flag}
+            showAddress
+            subAddress={asset.formattedAddressWithCity}
+          />
+        )}
+        {onPressClose && (
+          <TouchableOpacity onPress={onPressClose}>
+            <Cross />
+          </TouchableOpacity>
+        )}
+      </View>
+
       <View style={[styles.contentContainer, asset && styles.marginTop]}>
         <View style={styles.dueDetailsContainer}>
           <Label type="large" style={styles.dueText}>
@@ -89,5 +100,11 @@ const styles = StyleSheet.create({
   },
   dueText: {
     marginBottom: 2,
+  },
+  flexOne: {
+    flex: 1,
+  },
+  rowReverse: {
+    flexDirection: 'row-reverse',
   },
 });

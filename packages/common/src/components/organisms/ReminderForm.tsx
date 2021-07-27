@@ -154,7 +154,7 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
       start_date: new Date(date).toISOString(),
       emails: userEmails,
       ...(property > 0 && { asset: property }),
-      ...(leaseUnit > 0 && { lease_transaction: leaseUnit }),
+      ...(category === 1 && leaseUnit > 0 && { lease_transaction: leaseUnit }),
       ...(!!notes && { description: notes }),
     };
     const finalPayload: IAddReminderPayload = {
