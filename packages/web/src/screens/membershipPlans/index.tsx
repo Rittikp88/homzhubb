@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import { useDown, useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -14,7 +14,7 @@ import OurServicesSection from '@homzhub/web/src/screens/landing/components/OurS
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const MembershipPlans: FC = () => {
-  const [isPlatformPlan, setIsPlatformPlan] = useState(true);
+  const [isPlatformPlan, setIsPlatformPlan] = useState(false);
   const [selectedTab, setSelectedTab] = useState(0);
   const { t } = useTranslation();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -46,8 +46,8 @@ const MembershipPlans: FC = () => {
       <View style={styles.button}>
         <SelectionPicker
           data={[
-            { title: t('landing:platformPlans'), value: 0 },
-            { title: t('landing:servicePlans'), value: 1 },
+            { title: t('landing:servicePlans'), value: 0 },
+            { title: t('landing:platformPlans'), value: 1 },
           ]}
           selectedItem={[selectedTab]}
           onValueChange={onTabChange}
@@ -57,7 +57,11 @@ const MembershipPlans: FC = () => {
         />
         {!isMobile && (
           <Typography fontWeight="regular" variant="text" size="small" style={styles.subText}>
-            {isPlatformPlan ? t('landing:platformPlansHeader') : t('landing:servicePlansHeader')}
+            {isPlatformPlan ? (
+              t('landing:platformPlansHeader')
+            ) : (
+              <Trans components={{ italic: <i /> }}>{t('landing:servicePlansHeader')}</Trans>
+            )}
           </Typography>
         )}
       </View>

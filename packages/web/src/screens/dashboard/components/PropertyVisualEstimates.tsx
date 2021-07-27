@@ -157,7 +157,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
           <>
             <View style={styles.donutChart}>
               <Typography variant="label" size="large" fontWeight="bold">
-                {t('assetDashboard:costBreakdown')}
+                {t('assetDashboard:incomeText')}
               </Typography>
               <DonutChart
                 data={LedgerUtils.filterByType(LedgerTypes.debit, ledgerData)}
@@ -167,7 +167,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
             {isMobile && <Divider containerStyles={styles.dividerStyles} />}
             <View style={styles.columnChart}>
               <Typography variant="label" size="large" fontWeight="bold">
-                {t('assetDashboard:cashFlow')}
+                {t('assetDashboard:expenses')}
               </Typography>
               <ColumnChart data={columnGraphData} currencySymbol={currencySymbol} />
             </View>

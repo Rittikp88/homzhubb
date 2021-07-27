@@ -200,7 +200,7 @@ export { HOC as SignUpForm };
 
 const styles = StyleSheet.create({
   submitStyle: {
-    flex: 0,
+    flex: 1,
     marginVertical: 4,
   },
   referralInputStyle: {

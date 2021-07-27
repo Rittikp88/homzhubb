@@ -237,7 +237,7 @@ export { HOC as LoginForm };
 
 const styles = StyleSheet.create({
   submitStyle: {
-    flex: 0,
+    flex: 1,
     marginTop: 30,
   },
   forgotButtonStyle: {
