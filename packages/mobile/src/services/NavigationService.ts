@@ -216,10 +216,13 @@ class NavigationService {
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigateTo(ScreensKeys.SearchStack, {
-          screen: ScreensKeys.PropertyAssetDescription,
-          initial: false,
+          screen: ScreensKeys.Search,
           params: {
-            propertyTermId: this.getValueOfParamFromUrl(DynamicLinkParamKeys.PropertyTermId, url) || 0,
+            screen: ScreensKeys.PropertyAssetDescription,
+            initial: false,
+            params: {
+              propertyTermId: this.getValueOfParamFromUrl(DynamicLinkParamKeys.PropertyTermId, url) || 0,
+            },
           },
         });
         break;

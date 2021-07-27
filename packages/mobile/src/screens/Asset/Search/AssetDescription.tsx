@@ -660,6 +660,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (!assetDetails) return;
     const { leaseTerm, saleTerm } = assetDetails;
 
+    // @ts-ignore
     navigation.navigate(ScreensKeys.AssetReviews, {
       ...(leaseTerm && { lease_listing: leaseTerm.id }),
       ...(saleTerm && { sale_listing: saleTerm.id }),

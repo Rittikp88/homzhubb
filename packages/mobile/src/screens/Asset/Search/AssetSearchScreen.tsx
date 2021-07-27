@@ -704,7 +704,7 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
   };
 
   public navigateToAssetDetails = (asset: Asset): void => {
-    const { navigation } = this.props;
+    const { navigation, isLoggedIn } = this.props;
     const { leaseTerm, saleTerm, id } = asset;
 
     // For Analytics
@@ -712,10 +712,26 @@ export class AssetSearchScreen extends PureComponent<Props, IPropertySearchScree
     AnalyticsService.track(EventType.SearchPropertyOpen, trackData);
 
     // For Navigation
-    navigation.navigate(ScreensKeys.PropertyAssetDescription, {
-      propertyTermId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0,
-      propertyId: id,
-    });
+    const navParams = {
+      screen: ScreensKeys.PropertyAssetDescription,
+      params: {
+        propertyTermId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0,
+        propertyId: id,
+      },
+    };
+    if (isLoggedIn) {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.More,
+        params: navParams,
+      });
+    } else {
+      // @ts-ignore
+      navigation.navigate(ScreensKeys.SearchStack, {
+        screen: ScreensKeys.Search,
+        params: navParams,
+      });
+    }
   };
 
   private setSearchedPropertyCurrency = (placeDetail: GooglePlaceDetail): void => {
@@ -755,14 +771,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setFilter,
-    getFilterDetails,
-    getProperties,
-    setInitialFilters,
-    setInitialState,
-    getPropertiesListView,
-  } = SearchActions;
+  const { setFilter, getFilterDetails, getProperties, setInitialFilters, setInitialState, getPropertiesListView } =
+    SearchActions;
   const { setChangeStack } = UserActions;
   return bindActionCreators(
     {
