@@ -110,6 +110,10 @@ class LedgerRepository {
     const response = await this.apiClient.get(ENDPOINTS.reminderById(id));
     return ObjectMapper.deserialize(Reminder, response);
   };
+
+  public deleteReminderById = async (id: number): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.reminderById(id));
+  };
 }
 
 const ledgerRepository = new LedgerRepository();

@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { View, StyleSheet, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { StyleSheet, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -11,10 +11,8 @@ import { FinancialActions } from '@homzhub/common/src/modules/financials/actions
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
-import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import TransactionCard from '@homzhub/mobile/src/components/molecules/TransactionCard';
 import SectionContainer from '@homzhub/common/src/components/organisms/SectionContainer';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
@@ -116,34 +114,12 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
     const { t } = this.props;
     const onPressDelete = (): Promise<void> => this.onConfirmDelete().then();
     return (
-      <BottomSheet
-        visible={showBottomSheet}
-        headerTitle={t('common:confirm')}
-        sheetHeight={theme.viewport.height / 3}
+      <ConfirmationSheet
+        isVisible={showBottomSheet}
+        message={t('assetFinancial:deleteRecordConfirmation')}
         onCloseSheet={this.closeBottomSheet}
-      >
-        <View style={styles.bottomSheet}>
-          <Text type="small" style={styles.message}>
-            {t('assetFinancial:deleteRecordConfirmation')}
-          </Text>
-          <View style={styles.buttonContainer}>
-            <Button
-              type="secondary"
-              title={t('common:cancel')}
-              onPress={this.closeBottomSheet}
-              titleStyle={styles.buttonTitle}
-              containerStyle={styles.editButton}
-            />
-            <Button
-              type="primary"
-              title={t('common:delete')}
-              titleStyle={styles.buttonTitle}
-              onPress={onPressDelete}
-              containerStyle={styles.deleteButton}
-            />
-          </View>
-        </View>
-      </BottomSheet>
+        onPressDelete={onPressDelete}
+      />
     );
   };
 
@@ -299,29 +275,5 @@ const styles = StyleSheet.create({
   },
   contentContainerExpanded: {
     maxHeight: theme.viewport.height / 1.7,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    marginTop: 12,
-  },
-  editButton: {
-    marginLeft: 10,
-    flexDirection: 'row-reverse',
-    height: 50,
-  },
-  deleteButton: {
-    flexDirection: 'row-reverse',
-    height: 50,
-    backgroundColor: theme.colors.error,
-  },
-  buttonTitle: {
-    marginHorizontal: 4,
-  },
-  bottomSheet: {
-    paddingHorizontal: theme.layout.screenPadding,
-  },
-  message: {
-    textAlign: 'center',
-    marginVertical: 10,
   },
 });

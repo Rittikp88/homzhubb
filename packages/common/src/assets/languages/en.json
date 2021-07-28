@@ -682,7 +682,7 @@
     "imageUploaded": "Successfully Image uploaded",
     "resendInvite": "Resend Invite",
     "deleteDocument": "Delete Document",
-    "deleteConfirmation": "Are you sure you want to delete {{name}}",
+    "deleteConfirmation": "Are you sure you want to delete {{name}} ?",
     "cannotDeleteDocument": "You cannot delete this document",
     "siteVisits": "Site Visits",
     "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
@@ -961,7 +961,9 @@
     "modeOfPayment": "Mode of Payment",
     "fromBank": "From Bank",
     "referenceNumber": "Reference Number",
-    "dueMarkedAsPaid": "Your due has been marked as paid successfully"
+    "dueMarkedAsPaid": "Your due has been marked as paid successfully",
+    "reminderDeleteMsg": "Reminder deleted Successfully",
+    "thisReminder": "this reminder"
   },
   "assetMore": {
     "more": "More",
