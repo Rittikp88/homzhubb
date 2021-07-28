@@ -119,7 +119,8 @@ export const BottomTabs = (): React.ReactElement => {
             dispatch(FinancialActions.clearFinancials());
           },
         })}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetFinancial:financial'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return focused ? (
@@ -128,7 +129,7 @@ export const BottomTabs = (): React.ReactElement => {
               <Icon name={icons.barChartOutline} color={color} size={22} />
             );
           },
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreensKeys.Service}
@@ -186,6 +187,7 @@ export const BottomTabs = (): React.ReactElement => {
  */
 const getTabBarVisibility = (route: any): boolean => {
   const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
+
   const notAllowedRoutes = [
     ScreensKeys.PropertyAssetDescription,
     ScreensKeys.AssetReviews,
@@ -221,6 +223,8 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.Messages,
     ScreensKeys.AddPropertyImage,
     ScreensKeys.AssetNotifications,
+    ScreensKeys.ReminderScreen,
+    ScreensKeys.AddReminderScreen,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
 };

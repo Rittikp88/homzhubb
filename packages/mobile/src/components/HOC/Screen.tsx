@@ -1,8 +1,9 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView, View, StyleProp, StyleSheet, ViewStyle } from 'react-native';
+import { SafeAreaView, View, StyleProp, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Animated, { AnimationService } from '@homzhub/mobile/src/services/AnimationService';
+import AddIcon from '@homzhub/common/src/assets/images/circularPlus.svg';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { PageHeader, IPageHeaderProps, TITLE_HEIGHT } from '@homzhub/mobile/src/components/atoms/PageHeader';
@@ -22,6 +23,7 @@ interface IProps {
   pageHeaderProps?: IPageHeaderProps;
   containerStyle?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
+  onPlusIconClicked?: () => void;
 }
 
 export const Screen = (props: IProps): React.ReactElement => {
@@ -35,6 +37,7 @@ export const Screen = (props: IProps): React.ReactElement => {
     backgroundColor,
     containerStyle = {},
     contentContainerStyle = {},
+    onPlusIconClicked,
   } = props;
   const navigation = useNavigation();
 
@@ -68,6 +71,11 @@ export const Screen = (props: IProps): React.ReactElement => {
           </View>
         )}
       </SafeAreaView>
+      {onPlusIconClicked && (
+        <TouchableOpacity onPress={onPlusIconClicked} style={styles.addIcon}>
+          <AddIcon />
+        </TouchableOpacity>
+      )}
       <Loader visible={isLoading} />
     </HandleBack>
   );
@@ -80,5 +88,10 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     paddingHorizontal: theme.layout.screenPadding,
+  },
+  addIcon: {
+    position: 'absolute',
+    bottom: 40,
+    right: 20,
   },
 });

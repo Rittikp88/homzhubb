@@ -4,7 +4,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { OnFocusCallback } from '@homzhub/common/src/components/atoms/OnFocusCallback';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   sectionTitle: string;
@@ -20,6 +20,8 @@ interface IProps {
   callback?: any;
   isAsync?: boolean;
   onPressRightContent?: () => void;
+  rightTextType?: TextFieldType;
+  rightTextSize?: TextSizeType;
 }
 
 const SectionContainer = (props: IProps): React.ReactElement => {
@@ -37,7 +39,14 @@ const SectionContainer = (props: IProps): React.ReactElement => {
     rightIconSize = 22,
     rightIconColor = theme.colors.primaryColor,
     onPressRightContent,
+    rightTextType,
+    rightTextSize = 'small',
   } = props;
+  let TextField = Text;
+
+  if (rightTextType === 'label') {
+    TextField = Label;
+  }
   return (
     <View style={[containerStyle && containerStyle]}>
       {callback && <OnFocusCallback isAsync={Boolean(isAsync)} callback={callback} />}
@@ -51,9 +60,13 @@ const SectionContainer = (props: IProps): React.ReactElement => {
         <TouchableOpacity disabled={!onPressRightContent} onPress={onPressRightContent} style={styles.rightContainer}>
           {!!rightIcon && <Icon name={rightIcon} size={rightIconSize} color={rightIconColor} style={styles.icon} />}
           {!!rightText && (
-            <Text type="small" textType="semiBold" style={{ ...styles.rightText, color: rightTextColor || undefined }}>
+            <TextField
+              type={rightTextSize}
+              textType="semiBold"
+              style={{ ...styles.rightText, color: rightTextColor || undefined }}
+            >
               {rightText}
-            </Text>
+            </TextField>
           )}
         </TouchableOpacity>
       </View>

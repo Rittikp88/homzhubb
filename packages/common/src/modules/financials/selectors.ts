@@ -1,3 +1,4 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
@@ -112,7 +113,9 @@ const getReminders = (state: IState): Reminder[] => {
   const {
     financials: { reminders },
   } = state;
-  return ObjectMapper.deserializeArray(Reminder, reminders);
+  if (!reminders || reminders.length < 1) return [];
+  const deserializedData = ObjectMapper.deserializeArray(Reminder, reminders);
+  return DateUtils.ascendingDateSort(deserializedData, 'nextReminderDate');
 };
 
 const getReminderAssets = (state: IState): Asset[] => {

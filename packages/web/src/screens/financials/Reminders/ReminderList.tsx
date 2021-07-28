@@ -1,8 +1,7 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, FlatList, LayoutChangeEvent, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
@@ -32,9 +31,6 @@ const ReminderList = (): React.ReactElement | null => {
 
   if (!reminders.length) return null;
 
-  // Sort array in ascending order based on 'next_reminder_date' to show upcoming at first
-  const sortedReminders = DateUtils.ascendingDateSort(reminders, 'nextReminderDate');
-
   const onLayout = (event: LayoutChangeEvent): void => {
     if (isDesktop) {
       const clientWidth = event.nativeEvent.layout.width / 2;
@@ -53,7 +49,7 @@ const ReminderList = (): React.ReactElement | null => {
       <FlatList
         key={isDesktop ? 'Reminder-List-Col-2' : 'Reminder-List-Col-1'}
         numColumns={isDesktop ? 2 : 1}
-        data={sortedReminders}
+        data={reminders}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         scrollEnabled={false}
