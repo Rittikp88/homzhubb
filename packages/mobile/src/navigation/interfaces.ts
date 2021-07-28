@@ -82,6 +82,7 @@ export enum ScreensKeys {
   AddRecordScreen = 'AddRecordScreen',
   AddReminderScreen = 'AddReminderScreen',
   ReminderScreen = 'ReminderScreen',
+  DuesScreen = 'DuesScreen',
 
   // PropertyPostStack
   AssetLocationSearch = 'AssetLocationSearch',

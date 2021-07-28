@@ -33,12 +33,10 @@ const RemindersContainer = (): React.ReactElement | null => {
     <SectionContainer
       sectionTitle={t('assetFinancial:reminders')}
       sectionIcon={icons.reminder}
-      rightText={reminders.length > 3 ? t('landing:viewAllTitle') : undefined}
-      rightTextSize="large"
-      rightTextType="label"
-      rightTextColor={theme.colors.primaryColor}
       containerStyle={styles.container}
       onPressRightContent={onViewAll}
+      rightIcon={reminders.length > 3 ? icons.list : undefined}
+      rightIconColor={theme.colors.dark}
     >
       <ReminderList list={reminders.slice(0, 3)} />
     </SectionContainer>

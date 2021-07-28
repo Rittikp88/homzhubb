@@ -225,6 +225,7 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.AssetNotifications,
     ScreensKeys.ReminderScreen,
     ScreensKeys.AddReminderScreen,
+    ScreensKeys.DuesScreen,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
 };

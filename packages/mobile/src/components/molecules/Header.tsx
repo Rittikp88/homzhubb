@@ -20,6 +20,7 @@ export interface IHeaderProps {
   onIconRightPress?: () => void;
   testID?: string;
   textRight?: string;
+  textRightColor?: string;
 }
 const BOTTOM_PADDING = 12;
 
@@ -38,6 +39,7 @@ const Header = (props: IHeaderProps): React.ReactElement => {
     onIconRightPress,
     textRight,
     subTitle,
+    textRightColor,
   } = props;
 
   const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
@@ -69,7 +71,7 @@ const Header = (props: IHeaderProps): React.ReactElement => {
           )}
           {!iconRight && textRight && (
             <AnimatedTouchableOpacity style={[styles.itemRight, { opacity }]} onPress={onIconRightPress}>
-              <Animated.Text numberOfLines={1} style={styles.textRight}>
+              <Animated.Text numberOfLines={1} style={[styles.textRight, { color: textRightColor }]}>
                 {textRight}
               </Animated.Text>
             </AnimatedTouchableOpacity>

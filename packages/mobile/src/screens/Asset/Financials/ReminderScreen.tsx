@@ -15,6 +15,7 @@ const ReminderScreen = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { goBack, navigate } = useNavigation();
   const reminders = useSelector(FinancialSelectors.getReminders);
+  const { reminder: remindersLoader } = useSelector(FinancialSelectors.getFinancialLoaders);
 
   useFocusEffect(
     useCallback(() => {
@@ -33,6 +34,7 @@ const ReminderScreen = (): React.ReactElement => {
       headerProps={{ title: t('assetFinancial:reminders'), type: 'secondary', onIconPress: goBack }}
       onPlusIconClicked={onPlusIconClicked}
       containerStyle={styles.container}
+      isLoading={remindersLoader}
     >
       <ReminderList list={reminders} />
     </Screen>

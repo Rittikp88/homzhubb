@@ -1,5 +1,6 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { Amount } from '@homzhub/common/src/domain/models/Amount';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
@@ -7,9 +8,9 @@ import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/dom
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
 const getTransactions = (state: IState): FinancialTransactions | null => {
   const {
@@ -41,6 +42,22 @@ const getDues = (state: IState): Dues | null => {
   } = state;
   if (!dues) return null;
   return ObjectMapper.deserialize(Dues, dues);
+};
+
+const getDueItems = (state: IState): DueItem[] => {
+  const {
+    financials: { dues },
+  } = state;
+  if (!dues) return [];
+  const deserialisedData = ObjectMapper.deserializeArray(DueItem, dues.line_items);
+  return DateUtils.descendingDateSort(deserialisedData, 'createdAt');
+};
+
+const getTotalDueAmount = (state: IState): Amount => {
+  const {
+    financials: { dues },
+  } = state;
+  return ObjectMapper.deserialize(Amount, dues?.total);
 };
 
 const getFinancialLoaders = (state: IState): IFinancialState['loaders'] => {
@@ -145,6 +162,8 @@ const getCurrentReminderId = (state: IState): number => {
 
 export const FinancialSelectors = {
   getDues,
+  getDueItems,
+  getTotalDueAmount,
   getTransactions,
   getTransactionRecords,
   getTransactionsCount,
