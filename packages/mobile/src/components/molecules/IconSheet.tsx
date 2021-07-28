@@ -17,11 +17,19 @@ interface IOwnProps {
   isVisible?: boolean;
   numOfColumns?: number;
   sheetHeight?: number;
+  headerTitle?: string;
 }
 
 const IconSheet = (props: IOwnProps): React.ReactElement => {
-  const { data, isVisible = false, onCloseSheet, numOfColumns = 2, sheetHeight = 375 } = props;
   const { t } = useTranslation();
+  const {
+    data,
+    isVisible = false,
+    onCloseSheet,
+    numOfColumns = 2,
+    sheetHeight = 375,
+    headerTitle = t('common:quickActions'),
+  } = props;
 
   const keyExtractor = (item: ISheetData, index: number): string => `${item}:${index}`;
 
@@ -47,12 +55,7 @@ const IconSheet = (props: IOwnProps): React.ReactElement => {
   };
 
   return (
-    <BottomSheet
-      headerTitle={t('common:quickActions')}
-      visible={isVisible}
-      onCloseSheet={onCloseSheet}
-      sheetHeight={sheetHeight}
-    >
+    <BottomSheet headerTitle={headerTitle} visible={isVisible} onCloseSheet={onCloseSheet} sheetHeight={sheetHeight}>
       <FlatList
         data={data}
         numColumns={numOfColumns}

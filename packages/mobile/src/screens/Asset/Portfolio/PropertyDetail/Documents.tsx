@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { FlatList, Share, StyleSheet, View } from 'react-native';
+import { FlatList, Share, StyleSheet, View, TouchableOpacity } from 'react-native';
 import DocumentPicker, { DocumentPickerResponse } from 'react-native-document-picker';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -23,7 +23,7 @@ import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/select
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -31,7 +31,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import IconSheet from '@homzhub/mobile/src/components/molecules/IconSheet';
 import { SearchBar } from '@homzhub/common/src/components/molecules/SearchBar';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
@@ -41,7 +41,6 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
-import { DocumentOperations, DocumentOptions } from '@homzhub/common/src/constants/Documents';
 
 interface IStateProps {
   currentAssetId: number;
@@ -60,9 +59,10 @@ interface IDocumentState {
   isLoading: boolean;
   header: string;
   selectedDocumentId: number;
-  showBottomSheet: boolean;
+  showRenameBottomSheet: boolean;
   formValues: FormikValues;
   showDeleteSheet: boolean;
+  showIconSheet: boolean;
 }
 
 type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.DocumentScreen>;
@@ -94,11 +94,12 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       isLoading: false,
       header: params?.screenTitle ?? t('assetPortfolio:portfolio'),
       selectedDocumentId: -1,
-      showBottomSheet: false,
+      showRenameBottomSheet: false,
       showDeleteSheet: false,
       formValues: {
         fileName: '',
       },
+      showIconSheet: false,
     };
   }
 
@@ -152,7 +153,9 @@ export class Documents extends PureComponent<Props, IDocumentState> {
             testID="searchBar"
           />
           {this.renderDocumentList()}
+          {this.renderIconSheet()}
           {this.renderRenameBottomSheet()}
+          {this.renderDeleteConfirmation()}
         </View>
       </UserScreen>
     );
@@ -178,8 +181,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   private renderRenameBottomSheet = (): React.ReactElement | null => {
     const { t } = this.props;
-    const { showBottomSheet, formValues, selectedDocumentId, isLoading } = this.state;
-
+    const { showRenameBottomSheet, formValues, selectedDocumentId, isLoading } = this.state;
     if (selectedDocumentId === -1) return null;
 
     const BottomSheetContent = (): React.ReactElement => {
@@ -235,9 +237,9 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
     return (
       <BottomSheet
-        visible={showBottomSheet}
+        visible={showRenameBottomSheet}
         headerTitle={t('common:rename')}
-        onCloseSheet={this.onCloseBottomSheet}
+        onCloseSheet={this.onCloseRenameBottomSheet}
         sheetHeight={theme.viewport.height / 2.7}
       >
         <BottomSheetContent />
@@ -247,8 +249,14 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   private renderDocumentCard = (item: AssetDocument): React.ReactElement => {
     const { user, t } = this.props;
-    const isDeleteAllowed = !item.isSystemGenerated && item.user?.id === user?.id;
-    const rightNode = (): React.ReactElement => this.renderMenu(item.id, isDeleteAllowed);
+
+    const openIconSheet = (): void => this.onOpenIconSheet(item.id);
+
+    const renderRightNode = (): React.ReactElement => (
+      <TouchableOpacity key={item.id.toString()} onPress={openIconSheet}>
+        <Icon name={icons.verticalDots} color={theme.colors.primaryColor} size={18} />
+      </TouchableOpacity>
+    );
 
     const handleOpenDocument = async (): Promise<void> => {
       const result = await LinkingService.canOpenURL(item.attachment.link);
@@ -264,46 +272,48 @@ export class Documents extends PureComponent<Props, IDocumentState> {
         testID="documentCard"
         showIcons={false}
         leftIcon={icons.doc}
-        renderRightNode={rightNode}
+        renderRightNode={renderRightNode}
         handleOpenDocument={handleOpenDocument}
       />
     );
   };
 
-  private renderMenu = (id: number, isDeleteAllowed: boolean): React.ReactElement => {
-    const {
-      t,
-      route: { params },
-    } = this.props;
-    const { showDeleteSheet } = this.state;
-
-    let formattedData: IMenu[] = DocumentOptions.map((item) => {
-      return {
-        label: t(item.label),
-        value: item.value,
-        isExtraData: item.isExtraData,
-        isExtraDataAllowed: isDeleteAllowed,
-      };
-    });
-
-    if (params.isFromTenancies) {
-      formattedData = [
-        {
-          label: t('common:download'),
-          value: DocumentOperations.DOWNLOAD,
-        },
-      ];
-    }
-
+  private renderIconSheet = (): React.ReactElement => {
+    const { t } = this.props;
+    const { showIconSheet } = this.state;
+    const getIcon = (name: string): React.ReactElement => (
+      <Icon name={name} size={20} color={theme.colors.primaryColor} />
+    );
+    const iconData = [
+      {
+        icon: getIcon(icons.noteBookOutlined),
+        label: t('common:rename'),
+        onPress: this.onSelectRename,
+      },
+      {
+        icon: getIcon(icons.shareFilled),
+        label: t('common:share'),
+        onPress: this.onSelectShare,
+      },
+      {
+        icon: getIcon(icons.download),
+        label: t('common:download'),
+        onPress: this.onSelectDownload,
+      },
+      {
+        icon: getIcon(icons.trash),
+        label: t('common:delete'),
+        onPress: this.onPressDelete,
+      },
+    ];
     return (
-      <Menu
-        data={formattedData}
-        optionTitle={t('assetMore:documentOptions')}
-        sheetHeight={theme.viewport.height / 2.7}
-        onPressIcon={(): void => this.onClickIcon(id)}
-        isExtraNode={showDeleteSheet}
-        onSelect={(value): Promise<void> => this.onSelectMenu(value, isDeleteAllowed)}
-        extraNode={this.renderDeleteConfirmation()}
+      <IconSheet
+        data={iconData}
+        isVisible={showIconSheet}
+        onCloseSheet={this.onCloseIconSheet}
+        numOfColumns={4}
+        sheetHeight={theme.viewport.height / 3}
+        headerTitle={t('assetMore:documentOptions')}
       />
     );
   };
@@ -347,34 +357,6 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     return `${item.id}-${index}`;
   };
 
-  private onSelectMenu = async (value: string, isDeleteAllowed: boolean): Promise<void> => {
-    const { t } = this.props;
-    switch (value) {
-      case DocumentOperations.RENAME:
-        this.onSelectRename();
-        break;
-      case DocumentOperations.SHARE:
-        await this.onSelectShare();
-        break;
-      case DocumentOperations.DOWNLOAD:
-        await this.onSelectDownload();
-        break;
-      case DocumentOperations.DELETE:
-        if (isDeleteAllowed) {
-          this.onPressDelete();
-        } else {
-          AlertHelper.error({ message: t('property:cannotDeleteSystemDocuments') });
-        }
-        break;
-      default:
-        break;
-    }
-  };
-
-  private onClickIcon = (id: number): void => {
-    this.setState({ selectedDocumentId: id });
-  };
-
   private onSearch = (value: string): void => {
     const { documents } = this.props;
     this.setState({ searchValue: value }, () => {
@@ -392,7 +374,15 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   };
 
   private onPressDelete = (): void => {
-    this.setState({ showDeleteSheet: true });
+    const { user, t } = this.props;
+    const { selectedDocumentId, documents } = this.state;
+    const selectedDocument = documents.filter((i) => i.id === selectedDocumentId)[0];
+    const isDeleteAllowed = !selectedDocument.isSystemGenerated && selectedDocument.user?.id === user?.id;
+    if (isDeleteAllowed) {
+      this.setState({ showDeleteSheet: true });
+    } else {
+      AlertHelper.error({ message: t('property:cannotDeleteSystemDocuments') });
+    }
   };
 
   private onCloseDeleteSheet = (): void => {
@@ -438,17 +428,17 @@ export class Documents extends PureComponent<Props, IDocumentState> {
     const { selectedDocumentId } = this.state;
     const { fileName } = values;
     try {
-      this.setState({ isLoading: true });
+      this.setState({ isLoading: true, showRenameBottomSheet: false });
       await AssetRepository.renameAssetDocument({
         assetId: currentAssetId,
         assetDocumentId: selectedDocumentId,
         fileName,
       });
       AlertHelper.success({ message: t('assetFinancial:renamedSuccessfullyMessage') });
-      this.setState({ isLoading: false, showBottomSheet: false });
+      this.setState({ isLoading: false });
       this.getDocuments();
     } catch (e) {
-      this.setState({ isLoading: false, showBottomSheet: false });
+      this.setState({ isLoading: false });
       AlertHelper.error({ message: e.utils });
     }
   };
@@ -469,18 +459,20 @@ export class Documents extends PureComponent<Props, IDocumentState> {
   private onSelectDownload = async (): Promise<void> => {
     const { documents, selectedDocumentId } = this.state;
     const { presignedReferenceKey: key, fileName } = documents.filter((i) => i.id === selectedDocumentId)[0].attachment;
+    this.setState({ isLoading: true });
     await AttachmentService.downloadAttachment(key, fileName);
+    this.setState({ isLoading: false });
   };
 
   private onSelectDelete = async (): Promise<void> => {
     const { selectedDocumentId } = this.state;
     const { currentAssetId, t } = this.props;
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true, showDeleteSheet: false });
     try {
       await AssetRepository.deleteAssetDocument(currentAssetId, selectedDocumentId);
       this.getDocuments();
       AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
-      this.setState({ isLoading: false, showDeleteSheet: false });
+      this.setState({ isLoading: false });
     } catch (e) {
       this.setState({ isLoading: false });
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -497,16 +489,29 @@ export class Documents extends PureComponent<Props, IDocumentState> {
       .toString();
 
     this.setState({
-      showBottomSheet: true,
+      showRenameBottomSheet: true,
       formValues: {
         fileName: currentFileName,
       },
     });
   };
 
-  private onCloseBottomSheet = (): void => {
+  private onCloseRenameBottomSheet = (): void => {
     this.setState({
-      showBottomSheet: false,
+      showRenameBottomSheet: false,
+    });
+  };
+
+  private onOpenIconSheet = (selectedDocumentId: number): void => {
+    this.setState({
+      showIconSheet: true,
+      selectedDocumentId,
+    });
+  };
+
+  private onCloseIconSheet = (): void => {
+    this.setState({
+      showIconSheet: false,
     });
   };
 
