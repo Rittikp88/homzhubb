@@ -19,7 +19,7 @@ export class Reminder {
   private _id = 0;
 
   @JsonProperty('title', String)
-  private _title = 0;
+  private _title = '';
 
   @JsonProperty('description', String, true)
   private _description = '';
@@ -42,11 +42,19 @@ export class Reminder {
   @JsonProperty('next_reminder_date', String)
   private _nextReminderDate = '';
 
+  /*
+   * 28-July-2021
+   * Used Unit as a type because only Id is returning from BE.
+   * If needed update lease_transaction model
+   */
+  @JsonProperty('lease_transaction', Unit)
+  private _leaseTransaction = new Unit();
+
   get id(): number {
     return this._id;
   }
 
-  get title(): number {
+  get title(): string {
     return this._title;
   }
 
@@ -76,5 +84,9 @@ export class Reminder {
 
   get nextReminderDate(): string {
     return this._nextReminderDate;
+  }
+
+  get leaseTransaction(): Unit {
+    return this._leaseTransaction;
   }
 }

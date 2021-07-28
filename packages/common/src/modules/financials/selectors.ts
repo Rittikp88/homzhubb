@@ -136,6 +136,13 @@ const getCurrentDue = (state: IState): DueItem | null => {
   return null;
 };
 
+const getCurrentReminderId = (state: IState): number => {
+  const {
+    financials: { currentReminderId },
+  } = state;
+  return currentReminderId;
+};
+
 export const FinancialSelectors = {
   getDues,
   getTransactions,
@@ -152,4 +159,5 @@ export const FinancialSelectors = {
   getReminders,
   getReminderAssets,
   getCurrentDue,
+  getCurrentReminderId,
 };

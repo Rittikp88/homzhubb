@@ -20,6 +20,7 @@ export const initialFinancialsState: IFinancialState = {
   transactions: null,
   dues: null,
   currentDueId: -1,
+  currentReminderId: -1,
   ledgers: {
     ...defaultLedgerFilters,
     ledgerData: [],
@@ -168,6 +169,11 @@ export const financialsReducer = (
       return {
         ...state,
         ['currentDueId']: action.payload as number,
+      };
+    case FinancialActionTypes.SET.CURRENT_REMINDER_ID:
+      return {
+        ...state,
+        ['currentReminderId']: action.payload as number,
       };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;

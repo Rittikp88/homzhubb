@@ -358,3 +358,7 @@ export interface IDetailNavParam extends ICommonNavProps {
 export interface IPropertyImageParam {
   assetId: number;
 }
+
+export interface IAddReminder {
+  isEdit: boolean;
+}

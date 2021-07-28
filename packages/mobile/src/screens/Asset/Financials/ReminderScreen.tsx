@@ -19,6 +19,7 @@ const ReminderScreen = (): React.ReactElement => {
   useFocusEffect(
     useCallback(() => {
       dispatch(FinancialActions.getReminders());
+      dispatch(FinancialActions.setCurrentReminderId(-1));
     }, [])
   );
 

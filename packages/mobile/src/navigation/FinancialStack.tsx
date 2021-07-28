@@ -4,12 +4,12 @@ import { CommonParamList, getCommonScreen } from '@homzhub/mobile/src/navigation
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import AddReminderScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddReminderScreen';
 import ReminderScreen from '@homzhub/mobile/src/screens/Asset/Financials/ReminderScreen';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IAddReminder, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type FinancialsNavigatorParamList = {
   [ScreensKeys.FinancialsLandingScreen]: undefined | { isFromNavigation: boolean };
   [ScreensKeys.AddReminderScreen]: undefined;
-  [ScreensKeys.ReminderScreen]: undefined;
+  [ScreensKeys.ReminderScreen]: undefined | IAddReminder;
 } & CommonParamList;
 
 const FinancialsNavigator = createStackNavigator<FinancialsNavigatorParamList>();

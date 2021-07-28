@@ -9,6 +9,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -27,6 +28,8 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IOwnProp {
   onSubmit: () => void;
+  isEdit?: boolean;
+  setLoading?: (isLoading: boolean) => void;
 }
 
 interface IFormData {
@@ -47,14 +50,15 @@ const initialData = {
   date: DateUtils.getNextDate(1),
 };
 
-const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
+const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetFinancial);
   const assets = useSelector(FinancialSelectors.getReminderAssets);
   const categories = useSelector(FinancialSelectors.getReminderCategories);
   const frequencies = useSelector(FinancialSelectors.getReminderFrequencies);
+  const selectedReminderId = useSelector(FinancialSelectors.getCurrentReminderId);
 
-  const [formData] = useState<IFormData>(initialData);
+  const [formData, setFormData] = useState<IFormData>(initialData);
   const [unitList, setUnitList] = useState<OnGoingTransaction[]>([]);
   const [userEmails, setUserEmails] = useState<string[]>([]);
   const [notes, setNotes] = useState<string>('');
@@ -64,7 +68,47 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
     dispatch(FinancialActions.getReminderCategories());
     dispatch(FinancialActions.getReminderFrequencies());
     dispatch(FinancialActions.getReminderAssets());
+    if (isEdit && selectedReminderId > 0) {
+      getInitialState();
+    }
   }, []);
+
+  useEffect(() => {
+    if (formData.property > 0) {
+      onChangeProperty(formData.property.toString()).then();
+    }
+  }, [formData.property]);
+
+  const getInitialState = (): void => {
+    if (setLoading) {
+      setLoading(true);
+    }
+    LedgerRepository.getReminderById(selectedReminderId)
+      .then((res) => {
+        if (setLoading) {
+          setLoading(false);
+        }
+        if (res) {
+          setFormData({
+            ...formData,
+            title: res.title,
+            category: res.reminderCategory.id,
+            frequency: res.reminderFrequency.id,
+            ...(res.asset && { property: res.asset.id }),
+            ...(res.leaseTransaction && { leaseUnit: res.leaseTransaction.id }),
+          });
+
+          setUserEmails(res.emails);
+          setNotes(res.description);
+        }
+      })
+      .catch((e) => {
+        if (setLoading) {
+          setLoading(false);
+        }
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+      });
+  };
 
   // DROPDOWN LIST FORMATION START
   const getPropertyList = (isRented: boolean): IDropdownOption[] => {
@@ -173,7 +217,12 @@ const ReminderForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
   };
 
   return (
-    <Formik initialValues={{ ...formData }} onSubmit={handleSubmit} validate={FormUtils.validate(formSchema)}>
+    <Formik
+      initialValues={{ ...formData }}
+      onSubmit={handleSubmit}
+      validate={FormUtils.validate(formSchema)}
+      enableReinitialize
+    >
       {(formProps): React.ReactNode => {
         const { title, category, frequency } = formProps.values;
         const isEnable = !!title && Number(category) > 0 && Number(frequency) > 0 && !isEmailError;

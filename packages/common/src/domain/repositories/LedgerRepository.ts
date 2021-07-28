@@ -27,6 +27,7 @@ const ENDPOINTS = {
   reminderFrequencies: 'v1/reminders/reminder-frequencies/',
   reminderAssets: 'v1/reminders/assets/',
   offlinePaymentModes: 'v1/list-of-values/offline-modes-of-payment/',
+  reminderById: (id: number): string => `v1/reminders/${id}/`,
 };
 
 class LedgerRepository {
@@ -103,6 +104,11 @@ class LedgerRepository {
   public getOfflinePaymentModes = async (): Promise<Unit[]> => {
     const response = await this.apiClient.get(ENDPOINTS.offlinePaymentModes);
     return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public getReminderById = async (id: number): Promise<Reminder> => {
+    const response = await this.apiClient.get(ENDPOINTS.reminderById(id));
+    return ObjectMapper.deserialize(Reminder, response);
   };
 }
 

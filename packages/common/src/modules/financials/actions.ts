@@ -53,6 +53,7 @@ export const FinancialActionTypes = {
     SELECTED_COUNTRY: `${actionTypePrefix}SELECTED_COUNTRY`,
     SELECTED_TIME_RANGE: `${actionTypePrefix}SELECTED_TIME_RANGE`,
     CURRENT_DUE_ID: `${actionTypePrefix}CURRENT_DUE_ID`,
+    CURRENT_REMINDER_ID: `${actionTypePrefix}CURRENT_REMINDER_ID`,
   },
   POST: {
     PAYMENT: `${actionTypePrefix}PAYMENT`,
@@ -228,6 +229,11 @@ const setCurrentDueId = (dueId: number): IFluxStandardAction<number> => ({
   payload: dueId,
 });
 
+const setCurrentReminderId = (id: number): IFluxStandardAction<number> => ({
+  type: FinancialActionTypes.SET.CURRENT_REMINDER_ID,
+  payload: id,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -278,4 +284,5 @@ export const FinancialActions = {
   getReminderAssetsSuccess,
   getReminderAssetsFailure,
   setCurrentDueId,
+  setCurrentReminderId,
 };

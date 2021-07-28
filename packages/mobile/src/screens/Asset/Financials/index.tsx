@@ -53,6 +53,7 @@ interface IDispatchProps {
   getLedgerMetrics: () => void;
   resetLedgerFilters: () => void;
   setCurrentDueId: (dueId: number) => void;
+  setCurrentReminderId: (id: number) => void;
 }
 
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -68,12 +69,13 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   public componentDidMount(): void {
-    const { navigation, getLedgerMetrics, resetLedgerFilters, setCurrentDueId } = this.props;
+    const { navigation, getLedgerMetrics, resetLedgerFilters, setCurrentDueId, setCurrentReminderId } = this.props;
 
     this.onFocusSubscription = navigation.addListener('focus', (): void => {
       resetLedgerFilters();
       getLedgerMetrics();
       setCurrentDueId(-1);
+      setCurrentReminderId(-1);
     });
   }
 
@@ -292,6 +294,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     getLedgerMetrics,
     resetLedgerFilters,
     setCurrentDueId,
+    setCurrentReminderId,
   } = FinancialActions;
   return bindActionCreators(
     {
@@ -302,6 +305,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       getLedgerMetrics,
       resetLedgerFilters,
       setCurrentDueId,
+      setCurrentReminderId,
     },
     dispatch
   );

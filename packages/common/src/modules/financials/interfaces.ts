@@ -23,6 +23,7 @@ export interface IFinancialState {
   transactions: null | IFinancialTransaction;
   dues: IDues | null;
   currentDueId: number;
+  currentReminderId: number;
   ledgers: ILedgers;
   reminderCategories: IUnit[];
   reminderFrequencies: IUnit[];
