@@ -93,6 +93,7 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
             testID="drpTimeRange"
             isOutline
             containerStyle={styles.dropdownStyle}
+            hasDynamicWidth
           />
         </View>
         {currentTab === TabKeys.expenses ? (

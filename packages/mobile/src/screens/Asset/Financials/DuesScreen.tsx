@@ -14,7 +14,6 @@ const DuesScreen = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { goBack } = useNavigation();
   const dueItems = useSelector(FinancialSelectors.getDueItems);
-  const { formattedAmount: totalDueAmount } = useSelector(FinancialSelectors.getTotalDueAmount);
   const { dues: dueLoading } = useSelector(FinancialSelectors.getFinancialLoaders);
 
   useFocusEffect(
@@ -31,8 +30,6 @@ const DuesScreen = (): React.ReactElement => {
         title: t('assetDashboard:dues'),
         type: 'secondary',
         onIconPress: goBack,
-        textRight: totalDueAmount,
-        textRightColor: theme.colors.error,
       }}
       containerStyle={styles.container}
       isLoading={dueLoading}

@@ -45,6 +45,7 @@ export interface IProps {
   isOutline?: boolean;
   backgroundColor?: string;
   dropdownIndex?: number;
+  hasDynamicWidth?: boolean;
 }
 export const Dropdown = (props: IProps): React.ReactElement => {
   const [dropdownVisible, setDropdownVisible] = useState<boolean>(false);
@@ -67,6 +68,7 @@ export const Dropdown = (props: IProps): React.ReactElement => {
     isOutline = false,
     backgroundColor,
     dropdownIndex = -1,
+    hasDynamicWidth = false,
   } = props;
 
   let {
@@ -88,7 +90,8 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   const openDropdown = (): void => setDropdownVisible(true);
   const closeDropdown = (): void => setDropdownVisible(false);
   const selectedItem = data.find((d: PickerItemProps) => d.value === value);
-  const label = selectedItem?.label;
+  // @ts-ignore   (Todo : Praharsh : resolve this using a custom type/interface)
+  const label = selectedItem?.displayValueAfterSelection ?? selectedItem?.label;
   const placeholderColor = !label ? styles.placeholderColor : {};
   const disabledStyles = StyleSheet.flatten([disable && styles.disabled]);
   if (isOutline) {
@@ -112,7 +115,15 @@ export const Dropdown = (props: IProps): React.ReactElement => {
 
   return (
     <View pointerEvents={disable ? 'none' : 'auto'} style={[disabledStyles, parentContainerStyle]}>
-      <TouchableOpacity onPress={openDropdown} style={[styles.container, containerStyle]}>
+      <TouchableOpacity
+        onPress={openDropdown}
+        style={[
+          styles.container,
+          containerStyle,
+          // @ts-ignore
+          hasDynamicWidth && { width: selectedItem?.displayValueAfterSelection ? 100 : 140 },
+        ]}
+      >
         {showImage || !!image ? (
           image === 'globe' ? (
             <Icon name={icons.earthFilled} size={22} color={theme.colors.active} />

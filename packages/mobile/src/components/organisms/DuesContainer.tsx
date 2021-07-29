@@ -23,7 +23,7 @@ const DuesContainer = (): React.ReactElement | null => {
   useFocusEffect(
     useCallback(() => {
       dispatch(FinancialActions.getDues());
-    }, [dispatch])
+    }, [])
   );
 
   if (!dueItems.length) return null;

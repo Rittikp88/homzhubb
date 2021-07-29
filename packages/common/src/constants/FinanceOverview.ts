@@ -18,6 +18,7 @@ export interface IDropdownObject {
   startDate: string;
   endDate: string;
   dataGroupBy: DataGroupBy;
+  displayValueAfterSelection?: string;
 }
 
 export enum DateRangeType {
@@ -45,6 +46,7 @@ export const FINANCIAL_DROPDOWN_DATA = {
     startDate: DateUtils.getCurrentMonthStartDate(),
     endDate: DateUtils.getCurrentMonthLastDate(),
     dataGroupBy: DataGroupBy.week,
+    displayValueAfterSelection: `${translationKey}:mtd`,
   },
   [DateFilter.lastMonth]: {
     label: `${translationKey}:lastMonth`,
@@ -59,6 +61,7 @@ export const FINANCIAL_DROPDOWN_DATA = {
     startDate: DateUtils.getCurrentYearStartDate(),
     endDate: DateUtils.getCurrentDate(),
     dataGroupBy: DataGroupBy.month,
+    displayValueAfterSelection: `${translationKey}:ytd`,
   },
   [DateFilter.thisFinancialYear]: {
     label: `${translationKey}:thisFinancialYear`,
@@ -66,6 +69,7 @@ export const FINANCIAL_DROPDOWN_DATA = {
     startDate: '',
     endDate: '',
     dataGroupBy: DataGroupBy.month,
+    displayValueAfterSelection: `${translationKey}:cfy`,
   },
   [DateFilter.lastYear]: {
     label: `${translationKey}:lastYear`,

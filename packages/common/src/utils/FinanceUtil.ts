@@ -104,6 +104,9 @@ class FinanceUtils {
       return {
         ...currentData,
         label: t(currentData.label),
+        ...(currentData?.displayValueAfterSelection && {
+          displayValueAfterSelection: t(currentData.displayValueAfterSelection),
+        }),
       };
     });
   };
