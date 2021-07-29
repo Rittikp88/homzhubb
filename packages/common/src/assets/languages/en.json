@@ -302,7 +302,11 @@
     "bugReport": "Bug Report",
     "quickActions": "Quick Actions",
     "selectYourCountry": "Select your category",
-    "addNow": "Add Now"
+    "addNow": "Add Now",
+    "updateNow": "Update Now",
+    "doLater": "I’ll do it later",
+    "timeToUpdate": "Time to update",
+    "underMaintenance": "Under Maintenance"
   },
   "auth": {
     "verifyNumber": "Verify your number",

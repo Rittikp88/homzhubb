@@ -40,6 +40,7 @@
     "@react-native-community/slider": "^3.0.0",
     "@react-native-community/viewpager": "^4.1.6",
     "@react-native-firebase/app": "10.8.1",
+    "@react-native-firebase/remote-config": "^12.3.0",
     "@react-native-firebase/dynamic-links": "^7.5.11",
     "@react-native-firebase/messaging": "^10.5.1",
     "@react-navigation/bottom-tabs": "^5.4.2",

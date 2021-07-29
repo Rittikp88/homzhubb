@@ -15,6 +15,7 @@ export interface IBottomSheetProps {
   onCloseSheet?: () => void;
   sheetHeight?: number;
   isCloseOnDrag?: boolean;
+  isAlwaysVisible?: boolean;
   sheetContainerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -30,6 +31,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
     headerTitle = '',
     renderHeader = true,
     isCloseOnDrag = true,
+    isAlwaysVisible = false,
   } = props;
 
   useEffect(() => {
@@ -57,7 +59,9 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
   const header = (): React.ReactElement => {
     return (
       <View style={styles.bottomSheetHeader}>
-        <Icon name={icons.close} size={22} color={theme.colors.darkTint3} onPress={onCloseBottomSheet} />
+        {!isAlwaysVisible && (
+          <Icon name={icons.close} size={22} color={theme.colors.darkTint3} onPress={onCloseBottomSheet} />
+        )}
         <Label type="large" textType="semiBold" style={styles.headerTitle}>
           {headerTitle}
         </Label>

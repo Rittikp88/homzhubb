@@ -192,7 +192,7 @@ class MessagePreview extends Component<Props, IScreenState> {
 
   private scrollToBottom = (): void => {
     setTimeout(() => {
-      this.scrollRef.current?.scrollToEnd({ animated: true });
+      this.scrollRef.current?.scrollToEnd({ animated: false });
     }, 100);
   };
 }

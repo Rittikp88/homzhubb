@@ -55,9 +55,4 @@ const styles = StyleSheet.create({
     marginTop: 16,
     backgroundColor: theme.colors.white,
   },
-  divider: {
-    borderWidth: 1,
-    borderColor: theme.colors.background,
-    marginHorizontal: 16,
-  },
 });

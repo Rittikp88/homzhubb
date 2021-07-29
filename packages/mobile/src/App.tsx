@@ -14,8 +14,9 @@ import { configureStore } from '@homzhub/common/src/modules/store';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { RootNavigator } from '@homzhub/mobile/src/navigation/RootNavigator';
-import { Toast } from '@homzhub/common/src/components/molecules/Toast';
 import ErrorBoundary from '@homzhub/mobile/src/components/HOC/ErrorBoundary';
+import { Toast } from '@homzhub/common/src/components/molecules/Toast';
+import AppUpdate from '@homzhub/mobile/src/components/organisms/AppUpdate';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 
 interface IState {
@@ -53,6 +54,7 @@ export default class App extends React.PureComponent<{}, IState> {
         <Provider store={store}>
           <RootNavigator booting={booting} />
           <FlashMessage position="bottom" MessageComponent={this.renderToast} />
+          <AppUpdate />
         </Provider>
       </ErrorBoundary>
     );
