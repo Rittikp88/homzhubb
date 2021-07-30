@@ -306,7 +306,8 @@
     "updateNow": "Update Now",
     "doLater": "I’ll do it later",
     "timeToUpdate": "Time to update",
-    "underMaintenance": "Under Maintenance"
+    "underMaintenance": "Under Maintenance",
+    "others" : "Others",
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -428,6 +429,7 @@
     "unit": "Unit {{unitNo}}",
     "blockNo": "Block No.",
     "address": "Address",
+    "pinCode" : "Pin Code",
     "pincode": "Pincode",
     "city": "City",
     "state": "State",
@@ -441,11 +443,13 @@
     "locationDetails": "Location Details",
     "headerTitle": "Details",
     "propertyType": "Property type",
+    "propertySubtype" : "Property Sub-type",
     "spaceAvailable": "Space available",
     "areaUnit": "Area unit",
     "enterCarpetArea": "Enter carpet area",
     "selectAreaUnit": "Select Area Unit",
     "leaseDetails": "Lease Details",
+    "saleDetails" : "Sale Details",
     "entire": "Entire",
     "shared": "Shared",
     "propertyImages": "Property Images",
@@ -902,7 +906,9 @@
     "sellButton": "SELL",
     "manageButton": "MANAGE",
     "tenantHistory": "Tenant History",
-    "shareListing": "Share Listing"
+    "shareListing": "Share Listing",
+    "propertyAddress": "Property Address",
+    "propertyDescription" : "Property Description"
   },
   "assetFinancial": {
     "financial": "Financials",

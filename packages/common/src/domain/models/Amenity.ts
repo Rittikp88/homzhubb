@@ -2,6 +2,12 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 
+export enum AssetAmenityType {
+  GENERAL = 'General',
+  SPORTS = 'Sports',
+  ECO_FRIENDLY = 'Eco-friendly',
+}
+
 export interface IAmenity {
   id: number;
   name: string;
@@ -17,6 +23,9 @@ export class Amenity {
   @JsonProperty('name', String)
   private _name = '';
 
+  @JsonProperty('category', Unit, true)
+  private _category = new Unit();
+
   @JsonProperty('attachment', Attachment)
   private _attachment = new Attachment();
 
@@ -26,6 +35,10 @@ export class Amenity {
 
   get name(): string {
     return this._name;
+  }
+
+  get category(): Unit {
+    return this._category;
   }
 
   get attachment(): Attachment {

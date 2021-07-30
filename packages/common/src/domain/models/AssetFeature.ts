@@ -1,3 +1,4 @@
+import { Any } from 'json2typescript';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
 export interface IAssetFeature {
@@ -14,7 +15,8 @@ export class AssetFeature {
   @JsonProperty('locale_key', String)
   private _localeKey = '';
 
-  @JsonProperty('value', String)
+  // Todo (Praharsh) : Replace Any with String after BE fixes it.
+  @JsonProperty('value', Any)
   private _value = '';
 
   get name(): string {

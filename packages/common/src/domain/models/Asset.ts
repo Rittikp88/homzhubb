@@ -1,5 +1,6 @@
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { JsonObject, JsonProperty, ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
-import { Amenity, AmenityGroup, IAmenity } from '@homzhub/common/src/domain/models/Amenity';
+import { Amenity, AmenityGroup, AssetAmenityType, IAmenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
 import { AssetFeature, IAssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { AssetHighlight, IAssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
@@ -94,12 +95,20 @@ export interface IAsset {
   value_added_services?: IService[];
   listed_on?: string;
   is_rented?: boolean;
+  property_description: IAssetFeature[];
+  lease_details?: IAssetFeature[];
+  sale_details?: IAssetFeature[];
 }
 
 export interface IData {
   id: number;
   name: string;
   count?: number;
+}
+
+export interface IDetailData {
+  label: string;
+  value: string;
 }
 
 @JsonObject('Data')
@@ -270,6 +279,15 @@ export class Asset {
 
   @JsonProperty('features', [AssetFeature], true)
   private _features: AssetFeature[] = [];
+
+  @JsonProperty('property_description', [AssetFeature], true)
+  private _propertyDescription: AssetFeature[] = [];
+
+  @JsonProperty('lease_details', [AssetFeature], true)
+  private _leaseDetails: AssetFeature[] = [];
+
+  @JsonProperty('sale_details', [AssetFeature], true)
+  private _saleDetails: AssetFeature[] = [];
 
   @JsonProperty('spaces', [Data], true)
   private _spaces: Data[] = [];
@@ -506,6 +524,18 @@ export class Asset {
 
   get features(): AssetFeature[] {
     return this._features;
+  }
+
+  get propertyDescription(): AssetFeature[] {
+    return this._propertyDescription;
+  }
+
+  get leaseDetails(): AssetFeature[] {
+    return this._leaseDetails;
+  }
+
+  get saleDetails(): AssetFeature[] {
+    return this._saleDetails;
   }
 
   get spaces(): Data[] {
@@ -837,5 +867,40 @@ export class Asset {
 
   get isRented(): boolean {
     return this._isRented;
+  }
+
+  get generalAmenities(): Amenity[] {
+    return this._amenities.filter((item) => item.category.name === AssetAmenityType.GENERAL);
+  }
+
+  get sportsAmenities(): Amenity[] {
+    return this._amenities.filter((item) => item.category.name === AssetAmenityType.SPORTS);
+  }
+
+  get ecoFriendlyAmenities(): Amenity[] {
+    return this._amenities.filter((item) => item.category.name === AssetAmenityType.ECO_FRIENDLY);
+  }
+
+  get addressDetails(): IDetailData[] {
+    const { t } = I18nService;
+    const showValue = (value: string): string => (value.length > 0 ? value : 'N/A');
+    return [
+      {
+        label: t('property:pinCode'),
+        value: showValue(this._pinCode),
+      },
+      {
+        label: t('property:city'),
+        value: showValue(this._city),
+      },
+      {
+        label: t('property:state'),
+        value: showValue(this._state),
+      },
+      {
+        label: t('property:country'),
+        value: showValue(this._countryName),
+      },
+    ];
   }
 }

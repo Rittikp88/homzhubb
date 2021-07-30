@@ -602,19 +602,22 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
         uploadedAttachmentIds = data.map((i: IUploadAttachmentResponse) => i.id);
       }
 
+      let dueFields = {};
+
       formActions.setSubmitting(true);
 
       const tellerInfo =
         selectedFormType === FormType.Income ? { payer_name: tellerName } : { receiver_name: tellerName };
 
-      const modeOfPayment = offlinePaymentModes.filter((mode) => mode.code === paymentModeUsed)[0].id;
-
-      const dueFields = {
-        mode_of_payment: modeOfPayment,
-        ...(fromBank && { from_bank: fromBank }),
-        ...(referenceNum && { payment_reference_number: referenceNum }),
-        ...(currentDue && { invoice: currentDue.id }),
-      };
+      if (isFromDues) {
+        const modeOfPayment = offlinePaymentModes.filter((mode) => mode.code === paymentModeUsed)[0].id;
+        dueFields = {
+          mode_of_payment: modeOfPayment,
+          ...(fromBank && { from_bank: fromBank }),
+          ...(referenceNum && { payment_reference_number: referenceNum }),
+          ...(currentDue && { invoice: currentDue.id }),
+        };
+      }
 
       let payload = {
         asset: Number(property),
@@ -646,7 +649,6 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
       }
     } catch (e) {
       toggleLoading(false);
-
       formActions.setSubmitting(false);
       formActions.resetForm({});
       AlertHelper.error({ message: e.message });

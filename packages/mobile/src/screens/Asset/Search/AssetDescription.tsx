@@ -280,7 +280,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
           </Animated.View>
           <View style={styles.screen}>
             {this.renderHeaderSection()}
-            <PropertyDetail detail={assetDetails} />
+            <PropertyDetail detail={assetDetails} isFromPortfolio={false} />
             {this.renderMapSection()}
             {!isPreview && this.renderContactDetails(false)}
             <Divider />

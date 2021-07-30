@@ -54,7 +54,6 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { Routes, Tabs, TenantRoutes } from '@homzhub/common/src/constants/Tabs';
 import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 import { ICurrentOffer, IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
-import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 enum MenuItems {
@@ -84,7 +83,6 @@ interface IDispatchProps {
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
   setCurrentChatDetail: (payload: IChatPayload) => void;
   setCurrentOfferPayload: (payload: ICurrentOffer) => void;
-  getAsset: (payload: IGetAssetPayload) => void;
   setFilter: (payload: IFilter) => void;
   setCompareDetail: (payload: IOfferCompare) => void;
   setCurrentProperty: (assetId: number) => void;
@@ -550,7 +548,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
       assetPayload: { asset_id, assetType, listing_id },
       setCurrentChatDetail,
       setCurrentOfferPayload,
-      getAsset,
       setFilter,
     } = this.props;
 
@@ -588,7 +585,6 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
               listingId: info.leaseListingId || info.saleListingId || 0,
             });
             setFilter({ asset_transaction_type: info.leaseListingId && info.leaseListingId > 0 ? 0 : 1 });
-            getAsset({ propertyTermId: info.leaseListingId || info.saleListingId || 0 });
           }
         }
       );
@@ -698,7 +694,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     setEditPropertyFlow,
     toggleEditPropertyFlowBottomSheet,
   } = RecordAssetActions;
-  const { clearAsset, getAsset } = AssetActions;
+  const { clearAsset } = AssetActions;
   const { clearChatDetail, clearMessages, setCurrentChatDetail } = CommonActions;
   const { setCurrentOfferPayload, setCompareDetail, clearState } = OfferActions;
   const { setFilter } = SearchActions;
@@ -715,7 +711,6 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       clearMessages,
       setCurrentChatDetail,
       setCurrentOfferPayload,
-      getAsset,
       setFilter,
       setCompareDetail,
       clearState,

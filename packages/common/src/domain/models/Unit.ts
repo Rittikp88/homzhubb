@@ -2,13 +2,14 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 
 export interface IUnit {
   id: number;
-  order: number;
+  order?: number;
   name?: string;
   label: string;
   title?: string;
   code?: string;
   value?: string;
   description?: string;
+  fieldType?: string;
 }
 
 @JsonObject('Unit')
@@ -39,6 +40,9 @@ export class Unit {
 
   @JsonProperty('description', String, true)
   private _description = '';
+
+  @JsonProperty('field_type', String, true)
+  private _fieldType = '';
 
   get id(): number {
     return this._id;
@@ -74,5 +78,9 @@ export class Unit {
 
   get description(): string {
     return this._description;
+  }
+
+  get fieldType(): string {
+    return this._fieldType;
   }
 }

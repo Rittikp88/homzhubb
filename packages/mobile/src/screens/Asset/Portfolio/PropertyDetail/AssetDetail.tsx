@@ -27,7 +27,7 @@ const AssetDetail = (): React.ReactElement => {
       onBackPress={goBack}
     >
       <View style={styles.container}>
-        <PropertyDetail detail={detail} isCollapsible={false} />
+        <PropertyDetail detail={detail} isCollapsible={false} isFromPortfolio />
       </View>
     </UserScreen>
   );

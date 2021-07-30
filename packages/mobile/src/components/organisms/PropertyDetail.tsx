@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -8,7 +9,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { CollapsibleSection } from '@homzhub/mobile/src/components/molecules/CollapsibleSection';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, IDetailData } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
@@ -17,6 +18,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps {
   detail?: Asset | null;
   isCollapsible?: boolean;
+  isFromPortfolio: boolean;
 }
 
 interface IDetailState {
@@ -35,27 +37,123 @@ class PropertyDetail extends Component<Props, IDetailState> {
   };
 
   public render(): React.ReactElement {
-    const { t, isCollapsible = true, detail } = this.props;
+    const { t, isCollapsible = true, detail, isFromPortfolio = false } = this.props;
     return (
       <>
-        <CollapsibleSection title={t('property:address')} isDividerRequired isCollapsibleRequired={isCollapsible}>
+        <CollapsibleSection
+          title={isFromPortfolio ? t('assetPortfolio:propertyAddress') : t('property:address')}
+          isDividerRequired
+          isCollapsibleRequired={isCollapsible}
+          titleStyle={isFromPortfolio ? styles.title : undefined}
+        >
           <Label type="large" textType="regular" style={styles.description}>
             {detail?.address}
           </Label>
+          {isFromPortfolio && this.renderPropertyAddress()}
         </CollapsibleSection>
-        <CollapsibleSection title={t('description')} isDividerRequired isCollapsibleRequired={isCollapsible}>
-          {this.renderAssetDescription()}
-        </CollapsibleSection>
-        <CollapsibleSection title={t('factsFeatures')} isDividerRequired isCollapsibleRequired={isCollapsible}>
-          {this.renderFactsAndFeatures()}
-        </CollapsibleSection>
+
+        {isFromPortfolio && (
+          <>
+            <CollapsibleSection
+              title={t('assetPortfolio:propertyDetails')}
+              isDividerRequired
+              isCollapsibleRequired={isCollapsible}
+              titleStyle={isFromPortfolio ? styles.title : undefined}
+            >
+              {this.renderPropertyDetails()}
+            </CollapsibleSection>
+            <CollapsibleSection
+              title={t('assetPortfolio:propertyDescription')}
+              isDividerRequired
+              isCollapsibleRequired={isCollapsible}
+              titleStyle={isFromPortfolio ? styles.title : undefined}
+            >
+              {this.renderPropertyDescription()}
+            </CollapsibleSection>
+          </>
+        )}
+
+        {!isFromPortfolio && (
+          <CollapsibleSection
+            title={t('description')}
+            isDividerRequired
+            isCollapsibleRequired={isCollapsible}
+            titleStyle={isFromPortfolio ? styles.title : undefined}
+          >
+            {this.renderAssetDescription()}
+          </CollapsibleSection>
+        )}
+        {!isFromPortfolio && (
+          <CollapsibleSection
+            title={t('factsFeatures')}
+            isDividerRequired
+            isCollapsibleRequired={isCollapsible}
+            titleStyle={isFromPortfolio ? styles.title : undefined}
+          >
+            {this.renderFactsAndFeatures()}
+          </CollapsibleSection>
+        )}
         {this.renderAmenities()}
-        <CollapsibleSection title={t('highlights')} isDividerRequired isCollapsibleRequired={isCollapsible}>
+        <CollapsibleSection
+          title={t('highlights')}
+          isDividerRequired
+          isCollapsibleRequired={isCollapsible}
+          titleStyle={isFromPortfolio ? styles.title : undefined}
+        >
           {this.renderAssetHighlights()}
         </CollapsibleSection>
+
+        {isFromPortfolio && Boolean(detail?.leaseDetails && detail.leaseDetails.length > 0) && (
+          <CollapsibleSection
+            title={t('property:leaseDetails')}
+            isCollapsibleRequired={isCollapsible}
+            titleStyle={isFromPortfolio ? styles.title : undefined}
+          >
+            {this.renderLeaseDetails()}
+          </CollapsibleSection>
+        )}
+
+        {isFromPortfolio && Boolean(detail?.saleDetails && detail.saleDetails.length > 0) && (
+          <CollapsibleSection
+            title={t('property:saleDetails')}
+            isCollapsibleRequired={isCollapsible}
+            titleStyle={isFromPortfolio ? styles.title : undefined}
+          >
+            {this.renderSaleDetails()}
+          </CollapsibleSection>
+        )}
       </>
     );
   }
+
+  private renderPropertyAddress = (): React.ReactElement | null => {
+    const { t, detail } = this.props;
+    if (!detail) return null;
+
+    return (
+      <FlatList
+        numColumns={2}
+        contentContainerStyle={styles.listContainer}
+        data={detail.addressDetails}
+        keyExtractor={(item: IDetailData, index: number): string => `${item.label}[${index}]`}
+        ListEmptyComponent={(): React.ReactElement => (
+          <Label type="large" textType="regular" style={styles.description}>
+            {t('noInformation')}
+          </Label>
+        )}
+        renderItem={({ item }: { item: IDetailData }): React.ReactElement => (
+          <View style={styles.featureItem}>
+            <Label type="large" textType="regular" style={styles.featureTitle}>
+              {item.label}
+            </Label>
+            <Label type="large" textType="semiBold">
+              {item.value}
+            </Label>
+          </View>
+        )}
+      />
+    );
+  };
 
   private renderAssetDescription = (): React.ReactElement => {
     const { t, detail } = this.props;
@@ -111,6 +209,166 @@ class PropertyDetail extends Component<Props, IDetailState> {
     );
   };
 
+  private renderLeaseDetails = (): React.ReactElement | null => {
+    const { t, detail } = this.props;
+    if (!detail) return null;
+
+    return (
+      <>
+        <Label type="large" textType="regular" style={styles.topMargin}>
+          {t('assetPortfolio:propertyDescription')}
+        </Label>
+        <Label type="large" textType="semiBold">
+          {detail.address}
+        </Label>
+
+        <FlatList
+          numColumns={2}
+          contentContainerStyle={styles.listContainer}
+          data={detail.leaseDetails}
+          keyExtractor={(item: AssetFeature, index: number): string => `${item.name}[${index}]`}
+          renderItem={({ item }: { item: AssetFeature }): React.ReactElement => (
+            <View style={styles.featureItem}>
+              <Label type="large" textType="regular" style={styles.featureTitle}>
+                {item.name}
+              </Label>
+              <Label type="large" textType="semiBold">
+                {['lease_started_from', 'available_from'].includes(item.localeKey)
+                  ? DateUtils.getDisplayDate(item.value, DateFormats.DD_MM_YYYY)
+                  : item.value}
+              </Label>
+            </View>
+          )}
+        />
+      </>
+    );
+  };
+
+  private renderSaleDetails = (): React.ReactElement | null => {
+    const { t, detail } = this.props;
+    if (!detail) return null;
+
+    return (
+      <>
+        <Label type="large" textType="regular" style={styles.topMargin}>
+          {t('assetPortfolio:propertyDescription')}
+        </Label>
+        <Label type="large" textType="semiBold">
+          {detail.address}
+        </Label>
+
+        <FlatList
+          numColumns={2}
+          contentContainerStyle={styles.listContainer}
+          data={detail.saleDetails}
+          keyExtractor={(item: AssetFeature, index: number): string => `${item.name}[${index}]`}
+          renderItem={({ item }: { item: AssetFeature }): React.ReactElement => (
+            <View style={styles.featureItem}>
+              <Label type="large" textType="regular" style={styles.featureTitle}>
+                {item.name}
+              </Label>
+              <Label type="large" textType="semiBold">
+                {['available_from'].includes(item.localeKey)
+                  ? DateUtils.getDisplayDate(item.value, DateFormats.DD_MM_YYYY)
+                  : item.value}
+              </Label>
+            </View>
+          )}
+        />
+      </>
+    );
+  };
+
+  private renderPropertyDetails = (): React.ReactElement | null => {
+    const { t, detail } = this.props;
+    if (!detail) return null;
+
+    const nonMiscSpaces = detail.spaces
+      .filter((space) => !space.isMiscellaneous)
+      .map((item) => ({
+        // Todo (Praharsh) : Remove after BE does this.
+        label: item.count > 1 && ['Bedroom', 'Bathroom'].includes(item.name) ? `${item.name}(s)` : item.name,
+        value: `${item.count}`,
+      }));
+
+    const miscSpaces = detail.spaces.filter((space) => space.isMiscellaneous);
+    const miscData = [
+      {
+        label: t('common:others'),
+        value: miscSpaces.map((item) => item.name).join(','),
+      },
+    ];
+    const typeData = [
+      {
+        label: t('property:propertyType'),
+        value: detail.assetGroup.name,
+      },
+      {
+        label: t('property:propertySubtype'),
+        value: detail.assetType.name,
+      },
+    ];
+
+    const data = [...typeData, ...nonMiscSpaces, ...(miscSpaces.length > 0 ? [...miscData] : [])];
+
+    return (
+      <FlatList
+        numColumns={2}
+        contentContainerStyle={styles.listContainer}
+        data={data}
+        keyExtractor={(item: IDetailData, index: number): string => `${item.label}[${index}]`}
+        ListEmptyComponent={(): React.ReactElement => (
+          <Label type="large" textType="regular" style={styles.description}>
+            {t('noInformation')}
+          </Label>
+        )}
+        renderItem={({ item }: { item: IDetailData }): React.ReactElement => (
+          <View style={styles.featureItem}>
+            <Label type="large" textType="regular" style={styles.featureTitle}>
+              {item.label}
+            </Label>
+            <Label type="large" textType="semiBold">
+              {item.value}
+            </Label>
+          </View>
+        )}
+      />
+    );
+  };
+
+  private renderPropertyDescription = (): React.ReactElement | null => {
+    const { t, detail } = this.props;
+    if (!detail) return null;
+
+    const data = detail.propertyDescription;
+
+    return (
+      <FlatList
+        numColumns={2}
+        contentContainerStyle={styles.listContainer}
+        data={data}
+        keyExtractor={(item: AssetFeature, index: number): string => `${item.localeKey}[${index}]`}
+        ListEmptyComponent={(): React.ReactElement => (
+          <Label type="large" textType="regular" style={styles.description}>
+            {t('noInformation')}
+          </Label>
+        )}
+        renderItem={({ item }: { item: AssetFeature }): React.ReactElement => {
+          return (
+            <View style={styles.featureItem}>
+              <Label type="large" textType="regular" style={styles.featureTitle}>
+                {item.name}
+              </Label>
+              <Label type="large" textType="semiBold">
+                {item.value.length ? item.value : 'N/A'}
+              </Label>
+            </View>
+          );
+        }}
+      />
+    );
+  };
+
   private renderFactsAndFeatures = (): React.ReactElement => {
     const { t, detail } = this.props;
     return (
@@ -139,7 +397,7 @@ class PropertyDetail extends Component<Props, IDetailState> {
   };
 
   private renderAmenities = (): React.ReactElement => {
-    const { t, detail } = this.props;
+    const { t, detail, isFromPortfolio = false } = this.props;
     const { amenitiesShowAll } = this.state;
     const length = detail?.amenityGroup?.amenities.length ?? 0;
     let data = detail?.amenityGroup?.amenities ?? [];
@@ -154,7 +412,7 @@ class PropertyDetail extends Component<Props, IDetailState> {
 
     return (
       <View style={styles.sectionContainer}>
-        <Text type="small" textType="semiBold" style={styles.textColor}>
+        <Text type="small" textType="semiBold" style={isFromPortfolio ? styles.textColorTint1 : styles.textColorTint4}>
           {t('amenities')}
         </Text>
         {length < 1 ? (
@@ -272,7 +530,10 @@ const styles = StyleSheet.create({
     marginTop: 4,
     textAlign: 'center',
   },
-  textColor: {
+  textColorTint1: {
+    color: theme.colors.darkTint1,
+  },
+  textColorTint4: {
     color: theme.colors.darkTint4,
   },
   sectionContainer: {
@@ -281,5 +542,12 @@ const styles = StyleSheet.create({
   divider: {
     marginTop: 24,
     borderColor: theme.colors.darkTint10,
+  },
+  topMargin: {
+    marginTop: 12,
+    marginBottom: 4,
+  },
+  title: {
+    color: theme.colors.darkTint1,
   },
 });
