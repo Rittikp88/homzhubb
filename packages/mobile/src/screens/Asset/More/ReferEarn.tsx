@@ -59,6 +59,7 @@ const ReferEarn = (): React.ReactElement => {
 
   // Reload the component when foreground push notification related to Refer&Earn-Coins is clicked
   useEffect(() => {
+    // @ts-ignore
     if (params && params?.shouldReload) {
       setParams({ shouldReload: false });
       getCoinsCount().then();

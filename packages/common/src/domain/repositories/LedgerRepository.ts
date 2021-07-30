@@ -114,6 +114,10 @@ class LedgerRepository {
   public deleteReminderById = async (id: number): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.reminderById(id));
   };
+
+  public updateReminder = async (id: number, payload: IReminderPayload): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.reminderById(id), payload);
+  };
 }
 
 const ledgerRepository = new LedgerRepository();

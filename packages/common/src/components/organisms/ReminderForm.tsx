@@ -23,7 +23,7 @@ import EmailTextInput from '@homzhub/common/src/components/molecules/EmailTextIn
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OnGoingTransaction } from '@homzhub/common/src/domain/models/OnGoingTransaction';
 import { IReminderPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IAddReminderPayload } from '@homzhub/common/src/modules/financials/interfaces';
+import { IAddReminderPayload, IUpdateReminderPayload } from '@homzhub/common/src/modules/financials/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IOwnProp {
@@ -94,6 +94,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
             title: res.title,
             category: res.reminderCategory.id,
             frequency: res.reminderFrequency.id,
+            date: DateUtils.getDisplayDate(res.startDate, 'YYYY-MM-DD'),
             ...(res.asset && { property: res.asset.id }),
             ...(res.leaseTransaction && { leaseUnit: res.leaseTransaction.id }),
           });
@@ -197,21 +198,25 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
       reminder_frequency: frequency,
       start_date: new Date(date).toISOString(),
       emails: userEmails,
-      ...(property > 0 && { asset: property }),
+      ...(!isEdit && property > 0 && { asset: property }),
       ...(category === 1 && leaseUnit > 0 && { lease_transaction: leaseUnit }),
       ...(!!notes && { description: notes }),
     };
-    const finalPayload: IAddReminderPayload = {
+    const finalPayload = {
+      ...(isEdit && { id: selectedReminderId }),
       data: reminderPayload,
       onCallback: handleReminderCallback,
     };
-
-    dispatch(FinancialActions.addReminder(finalPayload));
+    if (isEdit) {
+      dispatch(FinancialActions.updateReminder(finalPayload as IUpdateReminderPayload));
+    } else {
+      dispatch(FinancialActions.addReminder(finalPayload as IAddReminderPayload));
+    }
   };
 
   const handleReminderCallback = (status: boolean): void => {
     if (status) {
-      AlertHelper.success({ message: t('reminderSuccessMsg') });
+      AlertHelper.success({ message: t(isEdit ? 'reminderUpdateMsg' : 'reminderSuccessMsg') });
       onSubmit();
     }
   };
@@ -243,6 +248,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
               options={getCategoryList()}
               formProps={formProps}
               listHeight={250}
+              isDisabled={isEdit}
               dropdownContainerStyle={styles.field}
             />
             <FormDropdown
@@ -252,7 +258,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
               options={getPropertyList(isRented)}
               formProps={formProps}
               onChange={onChangeProperty}
-              isDisabled={getPropertyList(isRented).length < 1}
+              isDisabled={getPropertyList(isRented).length < 1 || isEdit}
               dropdownContainerStyle={styles.field}
             />
             {Number(formProps.values.category) === 1 && ( // For RENT category only
@@ -267,7 +273,14 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
                 dropdownContainerStyle={styles.field}
               />
             )}
-            <FormCalendar formProps={formProps} name="date" textType="label" label={t('reminderDate')} />
+            <FormCalendar
+              formProps={formProps}
+              name="date"
+              textType="label"
+              minDate={formProps.values.date}
+              label={t('reminderDate')}
+              isCurrentDateEnable={false}
+            />
             <FormDropdown
               name="frequency"
               label={t('frequency')}

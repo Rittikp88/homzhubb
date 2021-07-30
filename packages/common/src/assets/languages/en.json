@@ -976,7 +976,9 @@
     "referenceNumber": "Reference Number",
     "dueMarkedAsPaid": "Your due has been marked as paid successfully",
     "reminderDeleteMsg": "Reminder deleted Successfully",
-    "thisReminder": "this reminder"
+    "thisReminder": "this reminder",
+    "reminderUpdateMsg": "Reminder updated successfully",
+    "editReminder": "Edit Reminder"
   },
   "assetMore": {
     "more": "More",

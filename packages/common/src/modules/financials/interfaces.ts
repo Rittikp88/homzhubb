@@ -48,3 +48,9 @@ export interface IAddReminderPayload {
   data: IReminderPayload;
   onCallback?: (status: boolean) => void;
 }
+
+export interface IUpdateReminderPayload {
+  id: number;
+  data: IReminderPayload;
+  onCallback?: (status: boolean) => void;
+}

@@ -48,7 +48,7 @@ const AddReminderScreen = (): React.ReactElement => {
         isLoading={loaders.reminder || isLoading}
         keyboardShouldPersistTaps
         headerProps={{
-          title: t('assetFinancial:addReminders'),
+          title: param?.isEdit ? t('assetFinancial:editReminder') : t('assetFinancial:addReminders'),
           type: 'secondary',
           onIconPress: goBack,
           ...(param?.isEdit && { iconRight: icons.trash }),

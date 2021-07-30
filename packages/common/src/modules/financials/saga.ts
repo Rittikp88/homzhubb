@@ -23,6 +23,7 @@ import {
   IAddReminderPayload,
   ILedgerMetrics,
   IProcessPaymentPayload,
+  IUpdateReminderPayload,
 } from '@homzhub/common/src/modules/financials/interfaces';
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
@@ -179,6 +180,24 @@ export function* getReminderAssets(): VoidGenerator {
   }
 }
 
+export function* updateReminder(action: IFluxStandardAction<IUpdateReminderPayload>): VoidGenerator {
+  if (!action.payload) return;
+  const { data, onCallback, id } = action.payload;
+  try {
+    yield call(LedgerRepository.updateReminder, id, data);
+    yield put(FinancialActions.updateReminderSuccess());
+    if (onCallback) {
+      onCallback(true);
+    }
+  } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
+    yield put(FinancialActions.updateReminderFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.GET.TRANSACTIONS, getTransactions);
   yield takeLatest(FinancialActionTypes.GET.DUES, getAllDues);
@@ -190,4 +209,5 @@ export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.POST.REMINDER, addReminder);
   yield takeLatest(FinancialActionTypes.GET.REMINDERS, getReminders);
   yield takeLatest(FinancialActionTypes.GET.REMINDER_ASSETS, getReminderAssets);
+  yield takeLatest(FinancialActionTypes.POST.UPDATE_REMINDER, updateReminder);
 }

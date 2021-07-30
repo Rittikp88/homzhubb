@@ -123,12 +123,15 @@ export const financialsReducer = (
         ['reminderFrequencies']: action.payload as IUnit[],
       };
     case FinancialActionTypes.POST.REMINDER:
+    case FinancialActionTypes.POST.UPDATE_REMINDER:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['reminder']: true },
       };
     case FinancialActionTypes.POST.REMINDER_SUCCESS:
     case FinancialActionTypes.POST.REMINDER_FAILURE:
+    case FinancialActionTypes.POST.UPDATE_REMINDER_SUCCESS:
+    case FinancialActionTypes.POST.UPDATE_REMINDER_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['reminder']: false },
