@@ -115,15 +115,15 @@ class FinanceUtils {
     return [
       {
         key: 1,
-        title: BarGraphLegends.expense,
-        value: sum(debit),
-        svg: { fill: theme.colors.expense },
-      },
-      {
-        key: 1,
         title: BarGraphLegends.income,
         value: sum(credit),
         svg: { fill: theme.colors.income },
+      },
+      {
+        key: 2,
+        title: BarGraphLegends.expense,
+        value: sum(debit),
+        svg: { fill: theme.colors.expense },
       },
     ];
   };

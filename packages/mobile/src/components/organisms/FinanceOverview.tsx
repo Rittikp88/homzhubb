@@ -47,7 +47,7 @@ type Props = IStateProps & IDispatchProps & WithTranslation;
 
 export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
   public state = {
-    currentTab: TabKeys.expenses,
+    currentTab: TabKeys.cashFlow,
   };
 
   public componentDidUpdate = (prevProps: Props): void => {
@@ -70,8 +70,8 @@ export class FinanceOverview extends React.PureComponent<Props, IOwnState> {
         </Text>
         <SelectionPicker
           data={[
-            { title: t('expenses'), value: TabKeys.expenses },
             { title: t('incomeText'), value: TabKeys.cashFlow },
+            { title: t('expenses'), value: TabKeys.expenses },
           ]}
           selectedItem={[currentTab]}
           onValueChange={this.onTabChange}
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
   },
   dateRow: {
     marginTop: 16,
-    marginBottom: 24,
+    marginBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
