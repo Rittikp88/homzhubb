@@ -6,7 +6,7 @@
 import React, { useEffect, useState } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import remoteConfig from '@react-native-firebase/remote-config';
-import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { AppModes, ConfigHelper, ConfigModes } from '@homzhub/common/src/utils/ConfigHelper';
 import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { Logger } from '@homzhub/common/src/utils/Logger';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -70,10 +70,9 @@ const AppUpdate = (): React.ReactElement => {
             minimum_version: '',
           })
           .then(() => remoteConfig().fetchAndActivate()) // Fetch config and Activate
-          .then((isActivated) => {
-            if (!isActivated) return;
-
+          .then(() => {
             const config = remoteConfig().getAll(); // Get All config list
+
             if (config) {
               const formattedData = Object.entries(config).map((item) => {
                 const [key, entry] = item as any;
@@ -94,7 +93,8 @@ const AppUpdate = (): React.ReactElement => {
 
   useEffect(() => {
     const updatedData = { ...configValues };
-    const appMode = ConfigHelper.getAppMode().toLowerCase();
+    const configMode = ConfigHelper.getConfigMode();
+    const appMode = (configMode === ConfigModes.PROD ? AppModes.RELEASE : AppModes.DEBUG).toLowerCase();
 
     // Structuring config and maintaining local state to handle UI
     configData.forEach((item) => {
@@ -121,15 +121,15 @@ const AppUpdate = (): React.ReactElement => {
   };
 
   const { isForceUpdate, messages, isUnderMaintenance, isUpdateAvailable } = configValues;
-
+  const isAlwaysVisible = isForceUpdate || isUnderMaintenance;
   return (
     <BottomSheet
       visible={isSheetVisible}
       isShadowView
       headerTitle={isUpdateAvailable ? I18nService.t('common:timeToUpdate') : I18nService.t('common:underMaintenance')}
-      sheetHeight={400}
-      isCloseOnDrag={!isForceUpdate}
-      isAlwaysVisible={isForceUpdate || isUnderMaintenance}
+      sheetHeight={isUpdateAvailable ? 420 : 300}
+      isCloseOnDrag={!isAlwaysVisible}
+      isAlwaysVisible={isAlwaysVisible}
       onCloseSheet={(): void => setVisibility(false)}
     >
       <View style={styles.container}>
@@ -137,13 +137,15 @@ const AppUpdate = (): React.ReactElement => {
         <Label type="large" style={styles.message}>
           {isUpdateAvailable ? messages?.update : messages?.maintenance}
         </Label>
-        <Button
-          type="primary"
-          title={I18nService.t('common:updateNow')}
-          containerStyle={styles.updateButton}
-          onPress={onUpdateNow}
-        />
-        {(!isForceUpdate || !isUnderMaintenance) && (
+        {!isUnderMaintenance && (
+          <Button
+            type="primary"
+            title={I18nService.t('common:updateNow')}
+            containerStyle={styles.updateButton}
+            onPress={onUpdateNow}
+          />
+        )}
+        {!isAlwaysVisible && (
           <Button
             type="secondaryOutline"
             title={I18nService.t('common:doLater')}

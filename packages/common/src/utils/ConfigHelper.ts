@@ -6,6 +6,12 @@ export enum AppModes {
   RELEASE = 'RELEASE',
 }
 
+export enum ConfigModes {
+  DEV = 'DEV',
+  STAGE = 'STAGE',
+  PROD = 'PROD',
+}
+
 export interface IAppFirebaseConfig {
   apiKey: string;
   projectId: string;
@@ -47,6 +53,7 @@ const {
   REACT_NATIVE_APP_MIXPANEL_KEY,
   REACT_NATIVE_APP_APPLE_STORE_URL,
   REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL,
+  REACT_NATIVE_CONFIG_MODE = ConfigModes.DEV,
   // FIREBASE
   REACT_NATIVE_FIREBASE_API_KEY,
   REACT_NATIVE_FIREBASE_PROJECT_ID,
@@ -73,6 +80,7 @@ class ConfigHelper {
   private readonly appleStoreUrl: string | undefined;
   private readonly googlePlayStoreUrl: string | undefined;
   private readonly facebookPixelId: string | undefined;
+  private readonly configMode!: ConfigModes;
 
   // FIREBASE - mobile only
   private readonly mobile_firebase_apiKey!: string;
@@ -112,6 +120,7 @@ class ConfigHelper {
       this.mixpanelKey = REACT_NATIVE_APP_MIXPANEL_KEY;
       this.appleStoreUrl = REACT_NATIVE_APP_APPLE_STORE_URL;
       this.googlePlayStoreUrl = REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL;
+      this.configMode = REACT_NATIVE_CONFIG_MODE as ConfigModes;
 
       // FIREBASE
       this.mobile_firebase_apiKey = REACT_NATIVE_FIREBASE_API_KEY;
@@ -153,6 +162,8 @@ class ConfigHelper {
   public getGooglePlayStoreUrl = (): string => this.googlePlayStoreUrl || '';
 
   public getFacebookPixelId = (): string => this.facebookPixelId || '';
+
+  public getConfigMode = (): ConfigModes => this.configMode;
 
   public getFirebaseConfig = (): IAppFirebaseConfig => ({
     apiKey: this.mobile_firebase_apiKey,
