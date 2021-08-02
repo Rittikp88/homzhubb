@@ -50,6 +50,9 @@ export class Reminder {
   @JsonProperty('lease_transaction', Unit)
   private _leaseTransaction = new Unit();
 
+  @JsonProperty('can_edit', Boolean)
+  private _canEdit = false;
+
   get id(): number {
     return this._id;
   }
@@ -88,5 +91,9 @@ export class Reminder {
 
   get leaseTransaction(): Unit {
     return this._leaseTransaction;
+  }
+
+  get canEdit(): boolean {
+    return this._canEdit;
   }
 }

@@ -37,7 +37,7 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
   };
 
   const onSetReminder = (): void => {
-    navigate(ScreensKeys.AddReminderScreen);
+    navigate(ScreensKeys.AddReminderScreen, { isFromDues: true });
   };
 
   const getSheetData = (): ISheetData[] => {

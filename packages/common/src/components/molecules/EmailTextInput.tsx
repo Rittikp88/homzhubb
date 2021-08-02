@@ -5,7 +5,7 @@ import {
   TextInputChangeEventData,
   View,
   StyleSheet,
-  TextInputFocusEventData,
+  TextInputEndEditingEventData,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
@@ -18,9 +18,10 @@ interface IProps {
   data?: string[];
   onSetEmails: (emails: string[]) => void;
   setEmailError: (isError: boolean) => void;
+  isDisabled?: boolean;
 }
 
-const EmailTextInput = ({ data, onSetEmails, setEmailError }: IProps): React.ReactElement => {
+const EmailTextInput = ({ data, onSetEmails, setEmailError, isDisabled = false }: IProps): React.ReactElement => {
   const [emails, setEmails] = useState<string[]>([]);
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
@@ -49,7 +50,7 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError }: IProps): React.Rea
     setValue(text);
   };
 
-  const onEndEditing = (event: NativeSyntheticEvent<TextInputFocusEventData>): void => {
+  const onEndEditing = (event: NativeSyntheticEvent<TextInputEndEditingEventData>): void => {
     const { text } = event.nativeEvent;
     if (text) {
       onUpdate(text);
@@ -78,6 +79,7 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError }: IProps): React.Rea
   };
 
   const handleRemove = (email: string): void => {
+    if (isDisabled) return;
     setEmails(emails.filter((item) => item !== email));
     setError('');
   };
@@ -99,7 +101,7 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError }: IProps): React.Rea
                   <Icon
                     name={icons.circularCrossFilled}
                     size={16}
-                    color={theme.colors.darkTint4}
+                    color={isDisabled ? theme.colors.disabled : theme.colors.darkTint4}
                     onPress={(): void => handleRemove(item)}
                   />
                 </View>
@@ -112,6 +114,8 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError }: IProps): React.Rea
               onChange={handleChange}
               autoFocus={emails.length > 0}
               onEndEditing={onEndEditing}
+              editable={!isDisabled}
+              style={isDisabled && styles.disabled}
               placeholder={t('assetFinancial:enterEmails')}
             />
           )}
@@ -161,5 +165,8 @@ const styles = StyleSheet.create({
   itemLabel: {
     color: theme.colors.darkTint4,
     marginRight: 6,
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });

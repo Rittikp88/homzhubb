@@ -55,7 +55,12 @@ const AddReminderScreen = (): React.ReactElement => {
           ...(param?.isEdit && { onIconRightPress: (): void => onPressIcon(true) }),
         }}
       >
-        <ReminderForm onSubmit={goBack} isEdit={param?.isEdit ?? false} setLoading={setLoading} />
+        <ReminderForm
+          onSubmit={goBack}
+          isEdit={param?.isEdit ?? false}
+          isFromDues={param?.isFromDues ?? false}
+          setLoading={setLoading}
+        />
       </Screen>
       <ConfirmationSheet
         isVisible={isSheetVisible}

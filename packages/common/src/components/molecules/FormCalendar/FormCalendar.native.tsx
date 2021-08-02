@@ -29,6 +29,7 @@ interface IFormCalendarProps extends WithTranslation {
   fontType?: FontWeightType;
   maxDate?: string;
   minDate?: string;
+  isDisabled?: boolean;
   isCurrentDateEnable?: boolean;
   bubbleSelectedDate?: (day: string) => void;
 }
@@ -64,6 +65,7 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
       minDate,
       isYearView = false,
       isCurrentDateEnable = false,
+      isDisabled = false,
       calendarTitle,
     } = this.props;
     const { isCalendarVisible } = this.state;
@@ -91,8 +93,9 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
 
         <TouchableOpacity
           testID="toCalenderInput"
-          style={[styles.dateView, dateContainerStyle]}
+          style={[styles.dateView, dateContainerStyle, isDisabled && styles.disabled]}
           onPress={this.onCalendarOpen}
+          disabled={isDisabled}
         >
           <View style={styles.dateLeft}>
             {!isYearView && <Icon name={icons.calendar} color={iconColor || theme.colors.darkTint5} size={18} />}
@@ -129,7 +132,10 @@ class FormCalendar extends Component<IFormCalendarProps, IFormCalendarState> {
   }
 
   private onDateSelected = (day: string): void => {
-    const { name, formProps, bubbleSelectedDate } = this.props;
+    const { name, formProps, bubbleSelectedDate, isDisabled } = this.props;
+    if (isDisabled) {
+      return;
+    }
     this.setState({ isCalendarVisible: false });
     if (bubbleSelectedDate) {
       bubbleSelectedDate(day);
@@ -173,6 +179,9 @@ const styles = StyleSheet.create({
     color: theme.colors.error,
     fontSize: 12,
     fontWeight: 'bold',
+  },
+  disabled: {
+    opacity: 0.5,
   },
 });
 const HOC = withTranslation()(FormCalendar);

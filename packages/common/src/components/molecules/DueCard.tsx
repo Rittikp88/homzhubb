@@ -111,6 +111,7 @@ const DueCard = (props: IProps): React.ReactElement => {
           initiatePayment={onInitPayment}
           outerContainerStyle={[styles.paymentButton, isOverDue && styles.redBackground]}
           paymentApi={onOrderPlaced}
+          textStyle={styles.buttonText}
         />
       </View>
     </View>
@@ -173,5 +174,8 @@ const styles = StyleSheet.create({
   },
   redBackground: {
     backgroundColor: theme.colors.error,
+  },
+  buttonText: {
+    marginVertical: 0,
   },
 });

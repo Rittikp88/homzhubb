@@ -17,6 +17,7 @@ interface IProps {
   wordCountLimit?: number;
   inputContainerStyle?: StyleProp<ViewStyle>;
   labelType?: TextSizeType;
+  isDisabled?: boolean;
 }
 
 export const TextArea = (props: IProps): React.ReactElement => {
@@ -34,10 +35,14 @@ export const TextArea = (props: IProps): React.ReactElement => {
     textAreaStyle,
     isCountRequired = true,
     labelType = 'large',
+    isDisabled = false,
   } = props;
   const { t } = useTranslation();
 
+  console.log(isDisabled)
+
   const onPressBox = (): void => {
+    if (isDisabled) return;
     if (ref.current) {
       ref.current.focus();
     }
@@ -66,9 +71,15 @@ export const TextArea = (props: IProps): React.ReactElement => {
         )}
       </View>
       <TouchableOpacity
-        style={[styles.textAreaContainer, textAreaStyle, autoheight !== undefined && { height: autoheight }]}
+        style={[
+          styles.textAreaContainer,
+          textAreaStyle,
+          autoheight !== undefined && { height: autoheight },
+          isDisabled && styles.disabled,
+        ]}
         onPress={onPressBox}
         activeOpacity={1}
+        disabled={isDisabled}
       >
         <TextInput
           ref={ref}
@@ -118,4 +129,7 @@ const styles = StyleSheet.create({
   labelHelper: {
     color: theme.colors.darkTint3,
   },
+  disabled: {
+    opacity: 0.5
+  }
 });

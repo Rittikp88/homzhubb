@@ -361,5 +361,6 @@ export interface IPropertyImageParam {
 }
 
 export interface IAddReminder {
-  isEdit: boolean;
+  isEdit?: boolean;
+  isFromDues?: boolean;
 }

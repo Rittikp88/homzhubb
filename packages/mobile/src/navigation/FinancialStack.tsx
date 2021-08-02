@@ -8,8 +8,8 @@ import { IAddReminder, ScreensKeys } from '@homzhub/mobile/src/navigation/interf
 
 export type FinancialsNavigatorParamList = {
   [ScreensKeys.FinancialsLandingScreen]: undefined | { isFromNavigation: boolean };
-  [ScreensKeys.AddReminderScreen]: undefined;
-  [ScreensKeys.ReminderScreen]: undefined | IAddReminder;
+  [ScreensKeys.AddReminderScreen]: undefined | IAddReminder;
+  [ScreensKeys.ReminderScreen]: undefined;
 } & CommonParamList;
 
 const FinancialsNavigator = createStackNavigator<FinancialsNavigatorParamList>();

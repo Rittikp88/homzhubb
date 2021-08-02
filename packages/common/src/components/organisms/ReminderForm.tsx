@@ -29,6 +29,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IOwnProp {
   onSubmit: () => void;
   isEdit?: boolean;
+  isFromDues?: boolean;
   setLoading?: (isLoading: boolean) => void;
 }
 
@@ -50,19 +51,21 @@ const initialData = {
   date: DateUtils.getNextDate(1),
 };
 
-const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactElement => {
+const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false }: IOwnProp): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetFinancial);
   const assets = useSelector(FinancialSelectors.getReminderAssets);
   const categories = useSelector(FinancialSelectors.getReminderCategories);
   const frequencies = useSelector(FinancialSelectors.getReminderFrequencies);
   const selectedReminderId = useSelector(FinancialSelectors.getCurrentReminderId);
+  const selectedDue = useSelector(FinancialSelectors.getCurrentDue);
 
   const [formData, setFormData] = useState<IFormData>(initialData);
   const [unitList, setUnitList] = useState<OnGoingTransaction[]>([]);
   const [userEmails, setUserEmails] = useState<string[]>([]);
   const [notes, setNotes] = useState<string>('');
   const [isEmailError, setEmailError] = useState(false);
+  const [canEdit, setCanEdit] = useState(true);
 
   useEffect(() => {
     dispatch(FinancialActions.getReminderCategories());
@@ -71,6 +74,9 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
     if (isEdit && selectedReminderId > 0) {
       getInitialState();
     }
+    if (isFromDues) {
+      getDueState();
+    }
   }, []);
 
   useEffect(() => {
@@ -78,6 +84,19 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
       onChangeProperty(formData.property.toString()).then();
     }
   }, [formData.property]);
+
+  const getDueState = (): void => {
+    // TODO: (Shikha) - Handle RENT case once BE done
+    if (selectedDue) {
+      setFormData({
+        ...formData,
+        title: selectedDue.invoiceTitle,
+        category: 2,
+        date: DateUtils.getDisplayDate(selectedDue.dueDate, 'YYYY-MM-DD'),
+        ...(selectedDue.asset && { property: selectedDue.asset.id }),
+      });
+    }
+  };
 
   const getInitialState = (): void => {
     if (setLoading) {
@@ -101,6 +120,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
 
           setUserEmails(res.emails);
           setNotes(res.description);
+          setCanEdit(res.canEdit);
         }
       })
       .catch((e) => {
@@ -240,6 +260,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
               name="title"
               label={t('serviceTickets:title')}
               placeholder={t('reminderTitle')}
+              editable={canEdit}
             />
             <FormDropdown
               name="category"
@@ -248,7 +269,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
               options={getCategoryList()}
               formProps={formProps}
               listHeight={250}
-              isDisabled={isEdit}
+              isDisabled={isEdit || !canEdit}
               dropdownContainerStyle={styles.field}
             />
             <FormDropdown
@@ -258,7 +279,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
               options={getPropertyList(isRented)}
               formProps={formProps}
               onChange={onChangeProperty}
-              isDisabled={getPropertyList(isRented).length < 1 || isEdit}
+              isDisabled={getPropertyList(isRented).length < 1 || isEdit || !canEdit}
               dropdownContainerStyle={styles.field}
             />
             {Number(formProps.values.category) === 1 && ( // For RENT category only
@@ -269,7 +290,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
                 options={getUnitList()}
                 formProps={formProps}
                 onChange={onchangeUnit}
-                isDisabled={getUnitList().length < 1}
+                isDisabled={getUnitList().length < 1 || !canEdit}
                 dropdownContainerStyle={styles.field}
               />
             )}
@@ -280,6 +301,7 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
               minDate={formProps.values.date}
               label={t('reminderDate')}
               isCurrentDateEnable={false}
+              isDisabled={!canEdit}
             />
             <FormDropdown
               name="frequency"
@@ -288,14 +310,21 @@ const ReminderForm = ({ onSubmit, isEdit, setLoading }: IOwnProp): React.ReactEl
               options={getFrequencyList()}
               formProps={formProps}
               dropdownContainerStyle={styles.field}
+              isDisabled={!canEdit}
             />
-            <EmailTextInput data={userEmails} onSetEmails={setUserEmails} setEmailError={setEmailError} />
+            <EmailTextInput
+              data={userEmails}
+              onSetEmails={setUserEmails}
+              setEmailError={setEmailError}
+              isDisabled={!canEdit}
+            />
             <TextArea
               value={notes}
               placeholder={t('notesPlaceholder')}
               label={t('notes')}
               helpText={t('common:optional')}
               onMessageChange={setNotes}
+              isDisabled={canEdit}
             />
             <Divider containerStyles={styles.divider} />
             <FormButton
