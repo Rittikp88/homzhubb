@@ -10,8 +10,15 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { flags } from '@homzhub/common/src/components/atoms/Flag';
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
+import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 
-const Dues = (): React.ReactElement => {
+interface IProps {
+  dueItem: DueItem;
+}
+
+const DuesCard = (props: IProps): React.ReactElement => {
+  const { dueItem } = props;
+  const { invoiceTitle, totalDue } = dueItem;
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const styles = duesCardStyle(isMobile);
@@ -41,10 +48,10 @@ const Dues = (): React.ReactElement => {
         <View style={styles.actions}>
           <View style={styles.charges}>
             <Text type="small" textType="semiBold" style={styles.text}>
-              {t('assetFinancial:plumbingFees')}
+              {invoiceTitle}
             </Text>
             <Text type="small" textType="semiBold" style={styles.amount}>
-              $1900
+              {totalDue}
             </Text>
           </View>
           <Button
@@ -52,6 +59,7 @@ const Dues = (): React.ReactElement => {
             type="primary"
             containerStyle={styles.button}
             titleStyle={styles.buttonTitle}
+            disabled
           />
         </View>
       </View>
@@ -109,4 +117,4 @@ const duesCardStyle = (isMobile: boolean): StyleSheet.NamedStyles<IAddRecrdsItem
     },
   });
 
-export default Dues;
+export default DuesCard;

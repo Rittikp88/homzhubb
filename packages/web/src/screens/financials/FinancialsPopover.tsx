@@ -96,6 +96,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
             containerStyles={styles.addFormContainer}
             isEditFlow={isEditFlow}
             isDesktopWeb={isDesktop}
+            isFromDues={false}
           />
         );
       default:

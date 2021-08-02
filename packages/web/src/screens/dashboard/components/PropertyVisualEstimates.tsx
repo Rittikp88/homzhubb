@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FinanceUtils } from '@homzhub/common/src/utils/FinanceUtil';
 import { LedgerUtils } from '@homzhub/common/src/utils/LedgerUtils';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -68,7 +70,10 @@ const getPropertyList = (t: TFunction, assets: Asset[], selectedCountry: number)
   return [{ label: t('assetFinancial:allProperties'), icon: icons.stackFilled, value: 0 }, ...properties];
 };
 
-const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactElement => {
+const PropertyVisualsEstimates = ({
+  selectedCountry,
+  selectedProperty: selectedPropertyProp,
+}: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const dateFilterOptions = FinanceUtils.renderFilterOptions(t);
   const defaultFilterOption = dateFilterOptions.find((d: IDropdownOption) => d.value === DateFilter.thisMonth);
@@ -78,7 +83,9 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
   const propertyOptions = getPropertyList(t, assets, selectedCountry ?? 0);
   const popupRef = useRef<PopupActions>(null);
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const [selectedProperty, setSelectedProperty] = useState(propertyOptions[0]);
+  const initialProperty =
+    propertyOptions.filter((property) => property.value === selectedPropertyProp)[0] || propertyOptions[0];
+  const [selectedProperty, setSelectedProperty] = useState(initialProperty);
   const [selectedDateFilter, setSelectedDateFilter] = useState(defaultFilterOption);
   const [ledgerData, setLedgerData] = useState<GeneralLedgers[]>([]);
   const styles = propertyVisualEstimatesStyle(isMobile);
@@ -89,6 +96,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
         selectedTimeRange: dateFilter,
         financialYear,
         selectedProperty: selectedProperty.value,
+        selectedCountry,
       },
       (data) => {
         setLedgerData(data);
@@ -97,7 +105,12 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
         // todo: handle failure case here
       }
     ).then();
-  }, [dateFilter, financialYear, selectedProperty]);
+  }, [dateFilter, financialYear, selectedProperty, selectedCountry]);
+  useEffect(() => {
+    if (selectedPropertyProp) {
+      setSelectedProperty(propertyOptions.filter((property) => property.value === selectedPropertyProp)[0]);
+    }
+  }, [selectedPropertyProp]);
   const columnGraphData = FinanceUtils.getBarGraphData({ selectedTimeRange: dateFilter, financialYear }, ledgerData);
   const closePopup = (): void => {
     if (popupRef && popupRef.current) {
@@ -112,23 +125,25 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
     closePopup();
     setSelectedDateFilter(selectedOption);
   };
-
+  const isDropDownVisible = !(RouteNames.protectedRoutes.FINANCIALS === NavigationService.appHistory.location.pathname);
   return (
     <View style={styles.chartsContainer}>
       <View style={styles.header}>
-        <Popover
-          forwardedRef={popupRef}
-          content={<PopupMenuOptions options={propertyOptions} onMenuOptionPress={onPropertyOptionPress} />}
-          popupProps={popupProps}
-        >
-          <TouchableOpacity activeOpacity={1} style={styles.chooseProperty}>
-            <Icon name={icons.portfolio} size={18} color={theme.colors.darkTint4} />
-            <Typography variant="label" size="regular" style={styles.optionLabel}>
-              {selectedProperty.label}
-            </Typography>
-            <Icon name={icons.downArrow} size={18} color={theme.colors.darkTint4} style={styles.dropdownIcon} />
-          </TouchableOpacity>
-        </Popover>
+        {isDropDownVisible && (
+          <Popover
+            forwardedRef={popupRef}
+            content={<PopupMenuOptions options={propertyOptions} onMenuOptionPress={onPropertyOptionPress} />}
+            popupProps={popupProps}
+          >
+            <TouchableOpacity activeOpacity={1} style={styles.chooseProperty}>
+              <Icon name={icons.portfolio} size={18} color={theme.colors.darkTint4} />
+              <Typography variant="label" size="regular" style={styles.optionLabel}>
+                {selectedProperty.label}
+              </Typography>
+              <Icon name={icons.downArrow} size={18} color={theme.colors.darkTint4} style={styles.dropdownIcon} />
+            </TouchableOpacity>
+          </Popover>
+        )}
         <View style={styles.columnChartOption}>
           <View style={styles.monthInfo}>
             <Icon name={icons.calendar} size={18} color={theme.colors.darkTint4} style={styles.dropdownIcon} />
@@ -157,7 +172,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
           <>
             <View style={styles.donutChart}>
               <Typography variant="label" size="large" fontWeight="bold">
-                {t('assetDashboard:incomeText')}
+                {t('assetDashboard:expenses')}
               </Typography>
               <DonutChart
                 data={LedgerUtils.filterByType(LedgerTypes.debit, ledgerData)}
@@ -167,7 +182,7 @@ const PropertyVisualsEstimates = ({ selectedCountry }: IProps): React.ReactEleme
             {isMobile && <Divider containerStyles={styles.dividerStyles} />}
             <View style={styles.columnChart}>
               <Typography variant="label" size="large" fontWeight="bold">
-                {t('assetDashboard:expenses')}
+                {t('assetDashboard:incomeText')}
               </Typography>
               <ColumnChart data={columnGraphData} currencySymbol={currencySymbol} />
             </View>

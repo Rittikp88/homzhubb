@@ -13,6 +13,8 @@ interface IProps {
   onPropertyChange: (value: number) => void;
   onCountryChange: (value: number) => void;
   containerStyle?: StyleProp<ViewStyle>;
+  countryContainerStyle?: StyleProp<ViewStyle>;
+  propertyContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => {
@@ -24,6 +26,8 @@ const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => 
     onPropertyChange,
     onCountryChange,
     containerStyle,
+    countryContainerStyle,
+    propertyContainerStyle,
   } = props;
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { t } = useTranslation();
@@ -60,7 +64,8 @@ const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => 
         image={selectedCountry !== 0 ? countryList[selectedIndex].flag : 'globe'}
         onDonePress={handleCountrySelection}
         imageStyle={styles.image}
-        containerStyle={styles.imageDropdown}
+        containerStyle={[styles.imageDropdown, countryContainerStyle]}
+        parentContainerStyle={[countryContainerStyle]}
       />
       <Dropdown
         data={[{ label: t('assetFinancial:allProperties'), value: 0 }, ...propertyList]}
@@ -68,7 +73,7 @@ const PropertyByCountryDropdown = (props: IProps): React.ReactElement | null => 
         // @ts-ignore
         onDonePress={onPropertyChange}
         containerStyle={styles.labelDropdown}
-        parentContainerStyle={styles.labelParent}
+        parentContainerStyle={[styles.labelParent, propertyContainerStyle]}
         textStyle={styles.text}
         fontWeight="semiBold"
       />

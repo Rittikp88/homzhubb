@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ViewStyle, TouchableOpacity, StyleProp } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -22,6 +22,7 @@ interface IProps {
   onPressRightContent?: () => void;
   rightTextType?: TextFieldType;
   rightTextSize?: TextSizeType;
+  headerContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const SectionContainer = (props: IProps): React.ReactElement => {
@@ -41,6 +42,7 @@ const SectionContainer = (props: IProps): React.ReactElement => {
     onPressRightContent,
     rightTextType,
     rightTextSize = 'small',
+    headerContainerStyle,
   } = props;
   let TextField = Text;
 
@@ -50,7 +52,7 @@ const SectionContainer = (props: IProps): React.ReactElement => {
   return (
     <View style={[containerStyle && containerStyle]}>
       {callback && <OnFocusCallback isAsync={Boolean(isAsync)} callback={callback} />}
-      <View style={styles.headerHolder}>
+      <View style={[styles.headerHolder, headerContainerStyle]}>
         <View style={styles.header}>
           <Icon style={styles.icon} name={sectionIcon} size={iconSize} />
           <Text type="small" textType="semiBold">

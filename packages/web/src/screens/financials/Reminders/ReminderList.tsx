@@ -45,6 +45,7 @@ const ReminderList = (): React.ReactElement | null => {
       sectionTitle={t('assetFinancial:reminders')}
       sectionIcon={icons.reminder}
       containerStyle={styles.container}
+      headerContainerStyle={styles.headerContainerStyle}
     >
       <FlatList
         key={isDesktop ? 'Reminder-List-Col-2' : 'Reminder-List-Col-1'}
@@ -76,5 +77,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     padding: '1%',
     marginHorizontal: 8,
+  },
+  headerContainerStyle: {
+    paddingVertical: 20,
   },
 });

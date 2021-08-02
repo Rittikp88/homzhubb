@@ -57,7 +57,10 @@ const getTotalDueAmount = (state: IState): Amount => {
   const {
     financials: { dues },
   } = state;
-  return ObjectMapper.deserialize(Amount, dues?.total);
+  if (dues?.total) {
+    return ObjectMapper.deserialize(Amount, dues?.total);
+  }
+  return new Amount();
 };
 
 const getFinancialLoaders = (state: IState): IFinancialState['loaders'] => {

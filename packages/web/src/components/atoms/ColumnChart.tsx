@@ -68,7 +68,7 @@ class ColumnChart extends React.PureComponent<IProps, IOwnState> {
           show: false,
         },
       },
-      colors: [theme.colors.expense, theme.colors.income],
+      colors: [theme.colors.income, theme.colors.expense],
       plotOptions: {
         bar: {
           horizontal: false,
@@ -116,12 +116,12 @@ class ColumnChart extends React.PureComponent<IProps, IOwnState> {
   public seriesData = (debit: number[], credit: number[]): { data: number[]; name: string }[] => {
     return [
       {
-        name: BarGraphLegends.expense,
-        data: debit,
-      },
-      {
         name: BarGraphLegends.income,
         data: credit,
+      },
+      {
+        name: BarGraphLegends.expense,
+        data: debit,
       },
     ];
   };

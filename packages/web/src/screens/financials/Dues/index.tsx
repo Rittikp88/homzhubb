@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import Dues from '@homzhub/web/src/screens/financials/DuesCard/Dues';
+import DuesCard from '@homzhub/web/src/screens/financials/Dues/DuesCard';
+import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 
-const DuesCard = (): React.ReactElement => {
+const DuesContainer = (): React.ReactElement => {
   const { t } = useTranslation();
-
+  const dispatch = useDispatch();
+  const dueItems: DueItem[] = useSelector(FinancialSelectors.getDueItems);
+  const TOTAL_DUE_AMOUNT = useSelector(FinancialSelectors.getTotalDueAmount);
+  const {
+    amount,
+    currency: { currencySymbol },
+  } = TOTAL_DUE_AMOUNT;
+  useEffect(() => {
+    dispatch(FinancialActions.getDues());
+  }, []);
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -19,14 +33,11 @@ const DuesCard = (): React.ReactElement => {
           </Text>
         </View>
         <Text type="small" textType="semiBold" style={styles.amount}>
-          $100,000
+          {currencySymbol} {amount}
         </Text>
       </View>
       <ScrollView>
-        <Dues />
-        <Dues />
-        <Dues /> <Dues />
-        <Dues />
+        {dueItems.length ? dueItems.map((item) => <DuesCard key={item.id} dueItem={item} />) : <EmptyState />}
       </ScrollView>
     </View>
   );
@@ -54,4 +65,4 @@ const styles = StyleSheet.create({
   },
   text: { marginLeft: 10, color: theme.colors.darkTint1 },
 });
-export default DuesCard;
+export default DuesContainer;

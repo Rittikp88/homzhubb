@@ -4,41 +4,42 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import DisplayDate from '@homzhub/common/src/components/atoms/DisplayDate';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import Accordian from '@homzhub/web/src/components/molecules/Accordian';
+import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 
-const Header: React.FC = () => {
-  const { t } = useTranslation();
+interface IProps {
+  transactionItem: FinancialRecords;
+}
+
+const Header: React.FC<IProps> = (props: IProps) => {
+  const { transactionItem } = props;
+  const { label, amount, currency, assetName, transactionDate } = transactionItem;
+  const { currencySymbol } = currency;
   return (
     <View style={styles.accordianHeader}>
       <View style={styles.leftChild}>
-        <View style={styles.calender}>
-          <Label type="large" textType="semiBold" style={styles.date}>
-            12
-          </Label>
-          <Label type="regular" textType="light" style={styles.month}>
-            Apr
-          </Label>
-        </View>
+        <DisplayDate date={transactionDate} containerStyle={styles.dateContainer} />
         <View>
           <View style={styles.iconContainer}>
             <Label type="regular" textType="regular" style={styles.maintenance}>
-              {t('property:maintenance')}
+              {label}
             </Label>
             <Icon name={icons.attachment} size={18} color={theme.colors.darkTint4} />
           </View>
           <Label type="large" textType="semiBold" style={styles.plumbingFees}>
-            {t('assetFinancial:plumbingFees')}
+            {label}
           </Label>
           <Label type="large" textType="regular" style={styles.plumbingFees}>
-            Godrej Prime
+            {assetName}
           </Label>
         </View>
       </View>
       <View style={styles.rightChild}>
         <Text type="small" textType="semiBold" style={styles.amount}>
-          + $2000
+          {currencySymbol} {amount}
         </Text>
         <Icon style={styles.icon} name={icons.downArrow} size={20} color={theme.colors.darkTint3} />
       </View>
@@ -46,7 +47,14 @@ const Header: React.FC = () => {
   );
 };
 
-const AccordianContent: React.FC = () => {
+const AccordianContent: React.FC<IProps> = (props: IProps) => {
+  const { transactionItem } = props;
+  const { payerName, receiverName, notes } = transactionItem;
+  // const { attachmentDetails } = { TODOS: Lakshit - Remove Post Integration of Transactions List
+  //   ...transactionItem,
+  //   attachmentDetails: transactionItem.attachmentDetails || {},
+  // };
+  // const { name } = { ...attachmentDetails, name: attachmentDetails.name || '' };
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const styles = transactionDetailsStyle(isMobile);
@@ -58,7 +66,7 @@ const AccordianContent: React.FC = () => {
             {t('assetFinancial:paidTo')}
           </Text>
           <Text type="small" textType="regular" style={styles.name}>
-            Rajat Kumar Gupt
+            {payerName}
           </Text>
         </View>
         <View style={styles.detailContainer}>
@@ -67,7 +75,7 @@ const AccordianContent: React.FC = () => {
           </Text>
           <View style={styles.attachment}>
             <Text type="small" textType="regular" style={styles.attachmentText}>
-              Attachment Name
+              {t('common:media')}
             </Text>
             <Icon style={styles.icon} name={icons.download} size={20} color={theme.colors.blue} />
           </View>
@@ -78,19 +86,25 @@ const AccordianContent: React.FC = () => {
           </Text>
 
           <Text type="small" textType="regular" style={styles.note}>
-            Fixed on the right time
+            {notes}
           </Text>
         </View>
       </View>
       <Text type="small" textType="regular" style={styles.occupation}>
-        Owner
+        {receiverName}
       </Text>
     </View>
   );
 };
 
-const TransactionAccordian: React.FC = () => {
-  return <Accordian headerComponent={<Header />} accordianContent={<AccordianContent />} />;
+const TransactionAccordian: React.FC<IProps> = (props: IProps) => {
+  const { transactionItem } = props;
+  return (
+    <Accordian
+      headerComponent={<Header transactionItem={transactionItem} />}
+      accordianContent={<AccordianContent transactionItem={transactionItem} />}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
@@ -103,14 +117,10 @@ const styles = StyleSheet.create({
   leftChild: {
     flexDirection: 'row',
   },
-  calender: {
-    borderWidth: 1,
-    borderColor: theme.colors.darkTint10,
-    borderRadius: 4,
+  dateContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
-    width: 52,
-    marginRight: 12,
   },
   date: {
     color: theme.colors.darkTint2,

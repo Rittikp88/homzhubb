@@ -16,7 +16,7 @@ import { FinancialActions } from '@homzhub/common/src/modules/financials/actions
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
-import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
+import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecules/PropertyByCountryDropdown';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import DuesContainer from '@homzhub/mobile/src/components/organisms/DuesContainer';
 import RemindersContainer from '@homzhub/mobile/src/components/organisms/RemindersContainer';

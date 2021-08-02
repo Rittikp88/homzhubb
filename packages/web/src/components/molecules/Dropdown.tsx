@@ -17,7 +17,7 @@ const DropDown = ({ data, valueChange, dropdownVisible, content }: IDropdownProp
     position: 'bottom right' as 'bottom right',
     on: ['click' as 'click'],
     arrow: false,
-    contentStyle: { minWidth: width, marginTop: '4px', alignItems: 'stretch' },
+    contentStyle: { minWidth: width, marginTop: '4px', alignItems: 'stretch', width },
     closeOnDocumentClick: true,
     children: undefined,
   });

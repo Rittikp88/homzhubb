@@ -9,7 +9,7 @@ import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { PropertyByCountryDropdown } from '@homzhub/mobile/src/components/molecules/PropertyByCountryDropdown';
+import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecules/PropertyByCountryDropdown';
 import SiteVisitTab from '@homzhub/mobile/src/components/organisms/SiteVisitTab';
 import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/SiteVisitCalendarView';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
