@@ -1,21 +1,27 @@
-import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { CurrencyUtils } from '@homzhub/common/src/utils/CurrencyUtils';
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { PaymentTransaction } from '@homzhub/common/src/domain/models/PaymentTransaction';
 
 export interface IDueItem {
   id: number;
+  due_title: string;
   invoice_no: string;
   invoice_title: string;
   total_price: number;
   currency: ICurrency;
   asset: IAsset;
+  can_delete: boolean;
 }
 @JsonObject('DueItem')
 export class DueItem {
   @JsonProperty('id', Number)
   private _id = -1;
+
+  @JsonProperty('due_title', String)
+  private _dueTitle = '';
 
   @JsonProperty('invoice_no', String)
   private _invoiceNo = '';
@@ -41,8 +47,15 @@ export class DueItem {
   @JsonProperty('due_date', String)
   private _dueDate = '';
 
+  @JsonProperty('can_delete', Boolean)
+  private _canDelete = false;
+
   get id(): number {
     return this._id;
+  }
+
+  get dueTitle(): string {
+    return this._dueTitle;
   }
 
   get invoiceNo(): string {
@@ -79,5 +92,13 @@ export class DueItem {
 
   get dueDate(): string {
     return this._dueDate;
+  }
+
+  get isOverDue(): boolean {
+    return DateUtils.isBefore(this._dueDate);
+  }
+
+  get canDelete(): boolean {
+    return this._canDelete;
   }
 }

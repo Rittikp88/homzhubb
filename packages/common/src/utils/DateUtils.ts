@@ -395,6 +395,10 @@ class DateUtils {
     [...arr].sort((a, b) => moment(b[keyToCheck]).valueOf() - moment(a).valueOf());
 
   public isSameOrAfter = (date1: string, date2 = moment()): boolean => moment(date1).isSameOrAfter(date2);
+
+  public isAfter = (date1: string, date2 = moment()): boolean => moment(date1).isAfter(date2);
+
+  public isBefore = (date1: string, date2 = moment()): boolean => moment(date1).isBefore(date2);
 }
 
 const dateUtils = new DateUtils();

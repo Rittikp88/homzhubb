@@ -18,11 +18,12 @@ import TenantHistory from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyD
 import AssetDetail from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/AssetDetail';
 import AssetDescription from '@homzhub/mobile/src/screens/Asset/Search/AssetDescription';
 import BookVisit from '@homzhub/mobile/src/screens/Asset/Search/BookVisit';
-import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
+import DuesScreen from '@homzhub/mobile/src/screens/Asset/Financials/DuesScreen';
 import ApproveQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ApproveQuote';
 import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
+import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
 import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
@@ -118,6 +119,7 @@ export type CommonParamList = {
   [ScreensKeys.SearchRequirement]: { isFromAuth: boolean };
   [ScreensKeys.LocalitiesSelection]: undefined;
   [ScreensKeys.AddPropertyImage]: IPropertyImageParam;
+  [ScreensKeys.DuesScreen]: undefined;
 };
 
 /**
@@ -174,6 +176,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.SearchRequirement} component={SearchRequirement} />
       <Stack.Screen name={ScreensKeys.LocalitiesSelection} component={LocalitiesSelection} />
       <Stack.Screen name={ScreensKeys.AddPropertyImage} component={AddPropertyImage} />
+      <Stack.Screen name={ScreensKeys.DuesScreen} component={DuesScreen} />
     </>
   );
 };

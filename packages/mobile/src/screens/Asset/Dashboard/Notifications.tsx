@@ -256,9 +256,7 @@ export class Notifications extends React.PureComponent<Props, IAssetNotification
       navigation.navigate(ScreensKeys.ReferEarn);
     } else if (type === NotificationType.DUE) {
       // @ts-ignore
-      navigation.navigate(ScreensKeys.BottomTabs, {
-        screen: ScreensKeys.Financials,
-      });
+      navigation.navigate(ScreensKeys.DuesScreen);
     }
   };
 

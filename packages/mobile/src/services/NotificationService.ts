@@ -213,7 +213,7 @@ class NotificationService {
       if (notifType === NotificationTypes.ValueAddedService) return ScreensKeys.ServicesDashboard;
       if (notifType === NotificationTypes.AssetDocuments) return ScreensKeys.DocumentScreen;
       if (notifType === NotificationTypes.ReferAndEarn) return ScreensKeys.ReferEarn;
-      if (notifType === NotificationTypes.Due) return ScreensKeys.FinancialsLandingScreen;
+      if (notifType === NotificationTypes.Due) return ScreensKeys.DuesScreen;
 
       return (
         (notifScreen

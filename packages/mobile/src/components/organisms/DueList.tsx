@@ -11,6 +11,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Accounting from '@homzhub/common/src/assets/images/accounting.svg';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import DueCard from '@homzhub/common/src/components/molecules/DueCard';
 import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
@@ -137,6 +138,7 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
         renderItem={renderItem}
         scrollEnabled={false}
         ItemSeparatorComponent={itemSeparator}
+        ListEmptyComponent={EmptyState}
       />
       <IconSheet isVisible={isSheetVisible} data={getSheetData()} sheetHeight={250} onCloseSheet={onCloseSheet} />
     </>

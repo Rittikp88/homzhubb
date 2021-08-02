@@ -307,7 +307,7 @@
     "doLater": "I’ll do it later",
     "timeToUpdate": "Time to update",
     "underMaintenance": "Under Maintenance",
-    "others" : "Others",
+    "others": "Others"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -429,7 +429,7 @@
     "unit": "Unit {{unitNo}}",
     "blockNo": "Block No.",
     "address": "Address",
-    "pinCode" : "Pin Code",
+    "pinCode": "Pin Code",
     "pincode": "Pincode",
     "city": "City",
     "state": "State",
@@ -443,13 +443,13 @@
     "locationDetails": "Location Details",
     "headerTitle": "Details",
     "propertyType": "Property type",
-    "propertySubtype" : "Property Sub-type",
+    "propertySubtype": "Property Sub-type",
     "spaceAvailable": "Space available",
     "areaUnit": "Area unit",
     "enterCarpetArea": "Enter carpet area",
     "selectAreaUnit": "Select Area Unit",
     "leaseDetails": "Lease Details",
-    "saleDetails" : "Sale Details",
+    "saleDetails": "Sale Details",
     "entire": "Entire",
     "shared": "Shared",
     "propertyImages": "Property Images",
@@ -908,7 +908,7 @@
     "tenantHistory": "Tenant History",
     "shareListing": "Share Listing",
     "propertyAddress": "Property Address",
-    "propertyDescription" : "Property Description"
+    "propertyDescription": "Property Description"
   },
   "assetFinancial": {
     "financial": "Financials",
@@ -977,6 +977,8 @@
     "dueMarkedAsPaid": "Your due has been marked as paid successfully",
     "reminderDeleteMsg": "Reminder deleted Successfully",
     "thisReminder": "this reminder",
+    "overdue": "Overdue",
+    "dueBy": "Due by",
     "reminderUpdateMsg": "Reminder updated successfully",
     "editReminder": "Edit Reminder"
   },
