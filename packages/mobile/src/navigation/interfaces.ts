@@ -127,6 +127,7 @@ export enum ScreensKeys {
   SubscriptionPayment = 'SubscriptionPayment',
   ServicesDashboard = 'ServicesDashboard',
   AddPropertyImage = 'AddPropertyImage',
+  AddBankAccount = 'AddBankAccount',
 
   // Messages
   Messages = 'Messages',

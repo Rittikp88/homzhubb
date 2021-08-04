@@ -21,7 +21,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
+import { FontWeightType, Label, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { TextInputSuffix } from '@homzhub/common/src/components/atoms/TextInputSuffix';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 import { BottomSheetListView } from '@homzhub/mobile/src/components/molecules/BottomSheetListView';
@@ -73,6 +73,8 @@ export interface IFormTextInputProps extends TextInputProps {
   phoneFieldDropdownText?: string;
   webGroupPrefix?: (params: IWebProps) => React.ReactElement;
   secondaryLabel?: React.ReactNode;
+  fontWeightType?: FontWeightType;
+  optionalText?: string;
 }
 
 interface IFormTextInputState {
@@ -129,6 +131,8 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       phoneFieldDropdownText = '',
       webGroupPrefix,
       secondaryLabel,
+      fontWeightType,
+      optionalText,
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
@@ -269,10 +273,17 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
         <WithFieldError error={error} hideError={hideError}>
           <View style={styles.labels}>
             {label && (
-              <Label type="regular" style={labelStyles}>
-                {label}
-                {isMandatory && <Text style={styles.asterix}> *</Text>}
-              </Label>
+              <View style={styles.labelContainer}>
+                <Label type="regular" textType={fontWeightType} style={labelStyles}>
+                  {label}
+                  {isMandatory && <Text style={styles.asterix}> *</Text>}
+                </Label>
+                {!!optionalText && (
+                  <Label type="regular" style={labelStyles}>
+                    {optionalText}
+                  </Label>
+                )}
+              </View>
             )}
             {secondaryLabel && <View style={styles.secondaryLabel}>{secondaryLabel}</View>}
           </View>
@@ -517,5 +528,10 @@ const styles = StyleSheet.create({
   secondaryLabel: {
     marginTop: 16,
     marginBottom: 6,
+  },
+  labelContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

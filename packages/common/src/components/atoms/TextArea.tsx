@@ -39,8 +39,6 @@ export const TextArea = (props: IProps): React.ReactElement => {
   } = props;
   const { t } = useTranslation();
 
-  console.log(isDisabled)
-
   const onPressBox = (): void => {
     if (isDisabled) return;
     if (ref.current) {
@@ -130,6 +128,6 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint3,
   },
   disabled: {
-    opacity: 0.5
-  }
+    opacity: 0.5,
+  },
 });
