@@ -111,7 +111,7 @@ const Financials: FC<IProps> = (props: IProps) => {
       <View style={styles.container}>
         <PropertyVisualsEstimates selectedCountry={selectedCountry} selectedProperty={selectedProperty} />
         <DuesContainer />
-        <Transactions />
+        <Transactions isAddRecord={false} />
         <ReminderList />
         <FinancialsPopover
           popupRef={popupRef}

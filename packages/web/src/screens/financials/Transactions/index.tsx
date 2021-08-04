@@ -8,6 +8,7 @@ import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selec
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import TransactionAccordian from '@homzhub/web/src/screens/financials/Transactions/TransactionAccordian';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
@@ -27,8 +28,8 @@ interface IDispatchProps {
 }
 
 interface IProps {
-  selectedProperty: number;
-  selectedCountry: number;
+  onOpenModal?: () => void;
+  isAddRecord: boolean;
 }
 
 type Props = IReduxState & IDispatchProps & IProps;
@@ -49,14 +50,24 @@ const Transactions = (props: Props): React.ReactElement<Props> => {
     });
   };
   const { t } = useTranslation();
-  const { transactionsData } = props;
+  const { transactionsData, isAddRecord, onOpenModal } = props;
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <Icon name={icons.wallet} size={22} color={theme.colors.darkTint3} />
-        <Text type="small" textType="semiBold" style={styles.text}>
-          {t('assetDashboard:Transaction')}
-        </Text>
+      <View style={styles.headerContainer}>
+        <View style={styles.header}>
+          <Icon name={icons.wallet} size={22} color={theme.colors.darkTint3} />
+          <Text type="small" textType="semiBold" style={styles.text}>
+            {t('assetDashboard:Transaction')}
+          </Text>
+        </View>
+        {isAddRecord && (
+          <Button
+            type="secondary"
+            title={t('assetFinancial:addNewRecord')}
+            containerStyle={styles.addRecordButton}
+            onPress={onOpenModal}
+          />
+        )}
       </View>
       <ScrollView>
         {transactionsData.length ? (
@@ -81,14 +92,24 @@ const styles = StyleSheet.create({
     marginRight: 10,
     color: theme.colors.error,
   },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    margin: 10,
+  },
   header: {
     flexDirection: 'row',
-    margin: 10,
   },
   leftChild: {
     flexDirection: 'row',
   },
   text: { marginLeft: 10, color: theme.colors.darkTint1 },
+  addRecordButton: {
+    flex: 1,
+    borderStyle: 'dashed',
+    maxWidth: 200,
+    marginTop: -10,
+  },
 });
 const mapStateToProps = (state: IState): IReduxState => {
   const { getTransactionRecords, getTransactionsCount, getSelectedCountry, getSelectedProperty } = FinancialSelectors;
