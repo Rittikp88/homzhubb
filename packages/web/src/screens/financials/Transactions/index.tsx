@@ -28,14 +28,15 @@ interface IDispatchProps {
 }
 
 interface IProps {
-  onOpenModal?: () => void;
+  onOpenModal: (isEdit: boolean, transactionId: number) => void;
   isAddRecord: boolean;
+  onDeleteRecord: (currentTransactionId: number) => void;
 }
 
 type Props = IReduxState & IDispatchProps & IProps;
 
 const Transactions = (props: Props): React.ReactElement<Props> => {
-  const { selectedCountry, selectedProperty } = props;
+  const { selectedCountry, selectedProperty, onDeleteRecord } = props;
   useEffect(() => {
     getGeneralLedgers(true);
   }, [selectedCountry, selectedProperty]);
@@ -65,13 +66,20 @@ const Transactions = (props: Props): React.ReactElement<Props> => {
             type="secondary"
             title={t('assetFinancial:addNewRecord')}
             containerStyle={styles.addRecordButton}
-            onPress={onOpenModal}
+            onPress={(): void => onOpenModal(false, -1)}
           />
         )}
       </View>
       <ScrollView>
         {transactionsData.length ? (
-          transactionsData.map((item) => <TransactionAccordian key={item.id} transactionItem={item} />)
+          transactionsData.map((item) => (
+            <TransactionAccordian
+              key={item.id}
+              transactionItem={item}
+              onAddRecord={onOpenModal}
+              onDeleteRecord={onDeleteRecord}
+            />
+          ))
         ) : (
           <EmptyState />
         )}

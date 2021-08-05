@@ -4,17 +4,30 @@ import { useTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import DisplayDate from '@homzhub/common/src/components/atoms/DisplayDate';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import Accordian from '@homzhub/web/src/components/molecules/Accordian';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 
-interface IProps {
+interface IPropsAccordion {
+  transactionItem: FinancialRecords;
+  onAddRecord: (isEdit: boolean, argTransactionId: number) => void;
+  onDeleteRecord: (currentTransactionId: number) => void;
+}
+
+interface IPropsHeader {
   transactionItem: FinancialRecords;
 }
 
-const Header: React.FC<IProps> = (props: IProps) => {
+interface IPropsContent {
+  transactionItem: FinancialRecords;
+  onAddRecord: (isEdit: boolean, argTransactionId: number) => void;
+  onDeleteRecord: (currentTransactionId: number) => void;
+}
+
+const Header: React.FC<IPropsHeader> = (props: IPropsHeader) => {
   const { transactionItem } = props;
   const { label, amount, currency, assetName, transactionDate } = transactionItem;
   const { currencySymbol } = currency;
@@ -47,9 +60,9 @@ const Header: React.FC<IProps> = (props: IProps) => {
   );
 };
 
-const AccordianContent: React.FC<IProps> = (props: IProps) => {
-  const { transactionItem } = props;
-  const { payerName, receiverName, notes } = transactionItem;
+const AccordianContent: React.FC<IPropsContent> = (props: IPropsContent) => {
+  const { transactionItem, onAddRecord, onDeleteRecord } = props;
+  const { payerName, receiverName, notes, id } = transactionItem;
   // const { attachmentDetails } = { TODOS: Lakshit - Remove Post Integration of Transactions List
   //   ...transactionItem,
   //   attachmentDetails: transactionItem.attachmentDetails || {},
@@ -58,51 +71,78 @@ const AccordianContent: React.FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const styles = transactionDetailsStyle(isMobile);
+
   return (
-    <View style={styles.content}>
-      <View style={styles.contentLeftChild}>
-        <View style={styles.detailContainer}>
-          <Text type="small" textType="light" style={styles.detailHeading}>
-            {t('assetFinancial:paidTo')}
-          </Text>
-          <Text type="small" textType="regular" style={styles.name}>
-            {payerName}
-          </Text>
-        </View>
-        <View style={styles.detailContainer}>
-          <Text type="small" textType="light" style={styles.detailHeading}>
-            {t('assetFinancial:invoice')}
-          </Text>
-          <View style={styles.attachment}>
-            <Text type="small" textType="regular" style={styles.attachmentText}>
-              {t('common:media')}
+    <View style={styles.contentContainer}>
+      <View style={styles.content}>
+        <View style={styles.contentLeftChild}>
+          <View style={styles.detailContainer}>
+            <Text type="small" textType="light" style={styles.detailHeading}>
+              {t('assetFinancial:paidTo')}
             </Text>
-            <Icon style={styles.icon} name={icons.download} size={20} color={theme.colors.blue} />
+            <Text type="small" textType="regular" style={styles.name}>
+              {payerName}
+            </Text>
+          </View>
+          <View style={styles.detailContainer}>
+            <Text type="small" textType="light" style={styles.detailHeading}>
+              {t('assetFinancial:invoice')}
+            </Text>
+            <View style={styles.attachment}>
+              <Text type="small" textType="regular" style={styles.attachmentText}>
+                {t('common:media')}
+              </Text>
+              <Icon style={styles.icon} name={icons.download} size={20} color={theme.colors.blue} />
+            </View>
+          </View>
+          <View style={styles.detailContainer}>
+            <Text type="small" textType="light" style={styles.detailHeading}>
+              {t('assetFinancial:notes')}
+            </Text>
+
+            <Text type="small" textType="regular" style={styles.note}>
+              {notes}
+            </Text>
           </View>
         </View>
-        <View style={styles.detailContainer}>
-          <Text type="small" textType="light" style={styles.detailHeading}>
-            {t('assetFinancial:notes')}
-          </Text>
-
-          <Text type="small" textType="regular" style={styles.note}>
-            {notes}
+        <View>
+          <Text type="small" textType="regular" style={styles.occupation}>
+            {receiverName}
           </Text>
         </View>
       </View>
-      <Text type="small" textType="regular" style={styles.occupation}>
-        {receiverName}
-      </Text>
+      <View style={styles.buttonActionsGroup}>
+        <Button
+          type="primary"
+          title={t('common:edit')}
+          icon={icons.noteBookOutlined}
+          iconSize={20}
+          iconColor={theme.colors.white}
+          containerStyle={[styles.buttonActionStyle, styles.editRecordButton]}
+          onPress={(): void => onAddRecord(true, id)}
+        />
+        <Button
+          type="primary"
+          title={t('common:delete')}
+          icon={icons.trash}
+          iconSize={20}
+          iconColor={theme.colors.white}
+          containerStyle={[styles.buttonActionStyle, styles.deleteRecordButton]}
+          onPress={(): void => onDeleteRecord(id)}
+        />
+      </View>
     </View>
   );
 };
 
-const TransactionAccordian: React.FC<IProps> = (props: IProps) => {
-  const { transactionItem } = props;
+const TransactionAccordian: React.FC<IPropsAccordion> = (props: IPropsAccordion) => {
+  const { transactionItem, onAddRecord, onDeleteRecord } = props;
   return (
     <Accordian
       headerComponent={<Header transactionItem={transactionItem} />}
-      accordianContent={<AccordianContent transactionItem={transactionItem} />}
+      accordianContent={
+        <AccordianContent transactionItem={transactionItem} onAddRecord={onAddRecord} onDeleteRecord={onDeleteRecord} />
+      }
     />
   );
 };
@@ -161,10 +201,18 @@ interface ITransactionItemStyle {
   note: ViewStyle;
   occupation: ViewStyle;
   detailContainer: ViewStyle;
+  buttonActionsGroup: ViewStyle;
+  editRecordButton: ViewStyle;
+  deleteRecordButton: ViewStyle;
+  contentContainer: ViewStyle;
+  buttonActionStyle: ViewStyle;
 }
 
 const transactionDetailsStyle = (isMobile: boolean): StyleSheet.NamedStyles<ITransactionItemStyle> =>
   StyleSheet.create<ITransactionItemStyle>({
+    contentContainer: {
+      flexDirection: 'column',
+    },
     content: {
       flexDirection: 'row',
       justifyContent: 'space-between',
@@ -201,6 +249,25 @@ const transactionDetailsStyle = (isMobile: boolean): StyleSheet.NamedStyles<ITra
     occupation: {
       color: theme.colors.darkTint3,
       margin: 20,
+    },
+    buttonActionsGroup: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      paddingBottom: 30,
+      paddingRight: 30,
+    },
+    buttonActionStyle: {
+      flexDirection: 'row-reverse',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: 150,
+      borderRadius: 0,
+    },
+    editRecordButton: {
+      backgroundColor: theme.colors.primaryColor,
+    },
+    deleteRecordButton: {
+      backgroundColor: theme.colors.highPriority,
     },
   });
 export default TransactionAccordian;

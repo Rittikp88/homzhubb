@@ -26,6 +26,10 @@ interface IProps {
   financialsActionType: FinancialsActions | null;
   currency: Currency;
   assets: Asset[];
+  isEditRecord: boolean;
+  setIsEditRecord: (isEdit: boolean) => void;
+  transactionId: number;
+  getGeneralLedgers: (reset: boolean) => void;
 }
 
 export enum FinancialsActions {
@@ -39,9 +43,17 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [clearForm, setClearForm] = useState(0);
   const dispatch = useDispatch();
-  const transactionId = -1;
-  const isEditFlow = false;
-  const { popupRef, onCloseModal, financialsActionType, currency, assets } = props;
+  const {
+    popupRef,
+    onCloseModal,
+    financialsActionType,
+    currency,
+    assets,
+    isEditRecord,
+    setIsEditRecord,
+    transactionId,
+    getGeneralLedgers,
+  } = props;
   const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   const onPressLink = (link: string): void => {
@@ -67,8 +79,10 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
 
   const onSubmitFormSuccess = (): void => {
     onCloseModal();
+    setIsEditRecord(false);
+    getGeneralLedgers(true);
     AlertHelper.success({
-      message: t(isEditFlow ? 'assetFinancial:editedSuccessfullyMessage' : 'assetFinancial:addedSuccessfullyMessage'),
+      message: t(isEditRecord ? 'assetFinancial:editedSuccessfullyMessage' : 'assetFinancial:addedSuccessfullyMessage'),
     });
   };
 
@@ -94,7 +108,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
             renderUploadBoxComponent={renderUploadBoxComponent}
             onPressLink={onPressLink}
             containerStyles={styles.addFormContainer}
-            isEditFlow={isEditFlow}
+            isEditFlow={isEditRecord}
             isDesktopWeb={isDesktop}
             isFromDues={false}
           />

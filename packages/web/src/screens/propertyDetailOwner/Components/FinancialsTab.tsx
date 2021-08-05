@@ -5,7 +5,9 @@ import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
@@ -26,6 +28,7 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 
 interface IDispatchProps {
   getTransactions: (payload: ITransactionParams) => void;
+  getLedgerMetrics: () => void;
 }
 
 type Props = IReduxProps;
@@ -37,21 +40,26 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
   // eslint-disable-next-line
   const [isLoading, setIsLoading] = useState(false);
   const [clearForm, setClearForm] = useState(0);
+  const [isEditRecord, setIsEditRecord] = useState(false);
+  const [transactionId, setTransactionId] = useState(-1);
   const dispatch = useDispatch();
-  const transactionId = -1;
-  const isEditFlow = false;
   const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
   useEffect(() => {
     dispatch(UserActions.getAssets());
   }, []);
-  const onOpenModal = (): void => {
+  const onOpenModal = (isEdit: boolean, argTransactionId = -1): void => {
+    if (isEdit) {
+      setIsEditRecord(isEdit);
+      setTransactionId(argTransactionId);
+    }
     if (popupRef && popupRef.current) {
       popupRef.current.open();
     }
   };
   const onCloseModal = (): void => {
     if (popupRef && popupRef.current) {
+      setIsEditRecord(false);
       popupRef.current.close();
     }
   };
@@ -88,9 +96,10 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
 
   const onSubmitFormSuccess = (): void => {
     onCloseModal();
+    setIsEditRecord(false);
     getGeneralLedgers(true);
     AlertHelper.success({
-      message: t(isEditFlow ? 'assetFinancial:editedSuccessfullyMessage' : 'assetFinancial:addedSuccessfullyMessage'),
+      message: t(isEditRecord ? 'assetFinancial:editedSuccessfullyMessage' : 'assetFinancial:addedSuccessfullyMessage'),
     });
   };
 
@@ -123,7 +132,7 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
             renderUploadBoxComponent={renderUploadBoxComponent}
             onPressLink={onPressLink}
             containerStyles={styles.addFormContainer}
-            isEditFlow={isEditFlow}
+            isEditFlow={isEditRecord}
             isDesktopWeb={isDesktop}
             isFromDues={false}
           />
@@ -131,9 +140,23 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
       </View>
     );
   };
+  const onDeleteRecord = async (currentTransactionId: number): Promise<void> => {
+    const { getLedgerMetrics } = props;
+    if (currentTransactionId > -1) {
+      try {
+        await LedgerRepository.deleteLedger(currentTransactionId);
+        getGeneralLedgers(true);
+        setTransactionId(-1);
+        getLedgerMetrics();
+        AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
+      } catch (e) {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
+    }
+  };
   return (
     <View>
-      <Transactions onOpenModal={onOpenModal} isAddRecord />
+      <Transactions onOpenModal={onOpenModal} isAddRecord onDeleteRecord={onDeleteRecord} />
       <Popover
         content={renderPopoverContent}
         popupProps={{
@@ -193,8 +216,8 @@ const mapStateToProps = (state: IState): any => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTransactions } = FinancialActions;
-  return bindActionCreators({ getTransactions }, dispatch);
+  const { getTransactions, getLedgerMetrics } = FinancialActions;
+  return bindActionCreators({ getTransactions, getLedgerMetrics }, dispatch);
 };
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

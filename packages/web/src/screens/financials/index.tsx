@@ -2,14 +2,19 @@ import React, { FC, useRef, useState, useContext, useEffect } from 'react';
 import { PickerItemProps, StyleSheet, View } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { useTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
 import { bindActionCreators, Dispatch } from 'redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecules/PropertyByCountryDropdown';
 import { PropertyVisualsEstimates } from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
 import DuesContainer from '@homzhub/web/src/screens/financials/Dues';
 import Transactions from '@homzhub/web/src/screens/financials/Transactions';
@@ -18,26 +23,41 @@ import ReminderList from '@homzhub/web/src/screens/financials/Reminders/Reminder
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecules/PropertyByCountryDropdown';
+import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IStateToProps {
   currency: Currency;
   assets: Asset[];
   selectedProperty: number;
   selectedCountry: number;
+  transactionsData: FinancialRecords[];
 }
 
 interface IDispatchProps {
   setCurrentCountry: (country: number) => void;
   setCurrentProperty: (property: number) => void;
+  getTransactions: (payload: ITransactionParams) => void;
+  getLedgerMetrics: () => void;
 }
 
 type IProps = IStateToProps & IDispatchProps;
 
 const Financials: FC<IProps> = (props: IProps) => {
   const dispatch = useDispatch();
-  const { currency, assets, selectedCountry, selectedProperty, setCurrentCountry, setCurrentProperty } = props;
+  const { t } = useTranslation();
+  const [isEditRecord, setIsEditRecord] = useState(false);
+  const [transactionId, setTransactionId] = useState(-1);
+  const {
+    currency,
+    assets,
+    selectedCountry,
+    selectedProperty,
+    setCurrentCountry,
+    setCurrentProperty,
+    getLedgerMetrics,
+  } = props;
   const { financialsActions, setFinancialsActions } = useContext(AppLayoutContext);
   const [financialsActionType, setFinancialsActionType] = useState<FinancialsActions | null>(null);
   const { isOpen } = financialsActions;
@@ -56,6 +76,7 @@ const Financials: FC<IProps> = (props: IProps) => {
   };
   const onCloseModal = (): void => {
     if (popupRef && popupRef.current) {
+      setIsEditRecord(false);
       popupRef.current.close();
       setFinancialsActions({
         financialsActionType: financialsActions.financialsActionType,
@@ -94,6 +115,44 @@ const Financials: FC<IProps> = (props: IProps) => {
     );
   };
 
+  const onAddRecord = (isEdit: boolean, argTransactionId = -1): void => {
+    if (isEdit) {
+      setIsEditRecord(isEdit);
+      setTransactionId(argTransactionId);
+    }
+    setFinancialsActions({
+      financialsActionType: FinancialsActions.AddRecord,
+      isOpen: true,
+    });
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+
+  const getGeneralLedgers = (reset = false): void => {
+    const { getTransactions, transactionsData } = props;
+    getTransactions({
+      offset: reset ? 0 : transactionsData.length,
+      limit: 10,
+      asset_id: undefined,
+      country_id: undefined,
+    });
+  };
+
+  const onDeleteRecord = async (currentTransactionId: number): Promise<void> => {
+    if (currentTransactionId > -1) {
+      try {
+        await LedgerRepository.deleteLedger(currentTransactionId);
+        getGeneralLedgers(true);
+        setTransactionId(-1);
+        getLedgerMetrics();
+        AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
+      } catch (e) {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.containerFilters}>
@@ -111,7 +170,7 @@ const Financials: FC<IProps> = (props: IProps) => {
       <View style={styles.container}>
         <PropertyVisualsEstimates selectedCountry={selectedCountry} selectedProperty={selectedProperty} />
         <DuesContainer />
-        <Transactions isAddRecord={false} />
+        <Transactions isAddRecord={false} onOpenModal={onAddRecord} onDeleteRecord={onDeleteRecord} />
         <ReminderList />
         <FinancialsPopover
           popupRef={popupRef}
@@ -119,6 +178,10 @@ const Financials: FC<IProps> = (props: IProps) => {
           financialsActionType={financialsActionType}
           currency={currency}
           assets={assets}
+          isEditRecord={isEditRecord}
+          setIsEditRecord={setIsEditRecord}
+          transactionId={transactionId}
+          getGeneralLedgers={getGeneralLedgers}
         />
       </View>
     </View>
@@ -132,6 +195,7 @@ const mapStateToProps = (state: IState): IStateToProps => {
     assets: UserSelector.getUserAssets(state),
     selectedProperty: getSelectedProperty(state),
     selectedCountry: getSelectedCountry(state),
+    transactionsData: FinancialSelectors.getTransactionRecords(state),
   };
 };
 
@@ -145,6 +209,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     resetLedgerFilters,
     setCurrentDueId,
     setCurrentReminderId,
+    getTransactions,
   } = FinancialActions;
   return bindActionCreators(
     {
@@ -156,6 +221,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       resetLedgerFilters,
       setCurrentDueId,
       setCurrentReminderId,
+      getTransactions,
     },
     dispatch
   );
