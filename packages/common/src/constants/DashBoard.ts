@@ -20,7 +20,7 @@ export interface IPropertyNotification {
 }
 
 export enum sideMenuItems {
-  dashboard = 'assetDashboard:dashboard',
+  dashboard = 'landing:home',
   financials = 'assetFinancial:financial',
   portfolio = 'common:properties',
   notifications = 'notifications',

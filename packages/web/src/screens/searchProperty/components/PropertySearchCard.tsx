@@ -103,7 +103,7 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
     const {
       location: { pathname },
     } = history;
-    if (pathname === '/dashboard/propertyDetail') {
+    if (pathname === '/home/propertyDetail') {
       if (investmentData) {
         const data = AnalyticsHelper.getPropertyTrackData(investmentData);
         AnalyticsService.track(EventType.ClickSimilarProperty, data);

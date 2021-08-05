@@ -285,7 +285,7 @@ export const NavigationInfo: FC = () => {
     const res = data.split('&').join(' & ');
     return res;
   };
-  const currentScreen = location.pathname === '/' ? 'Home' : humanize(location.pathname, location.state);
+  const currentScreen = location.pathname === '/' ? 'Landing' : humanize(location.pathname, location.state);
   const renderNavInfo = (): React.ReactElement => {
     const { protectedRoutes } = RouteNames;
     switch (location.pathname) {

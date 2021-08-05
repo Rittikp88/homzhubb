@@ -14,47 +14,47 @@ export const pageTitles: tpageTitles = {
 
 export const routesConfig = [
   {
-    path: '/dashboard/marketPlace/selectServices',
+    path: '/home/marketPlace/selectServices',
     breadcrumb: 'Select Services',
   },
   {
-    path: '/dashboard/marketPlace',
+    path: '/home/marketPlace',
     breadcrumb: 'Market Place',
   },
   {
-    path: '/dashboard/marketPlace/selectProperty',
+    path: '/home/marketPlace/selectProperty',
     breadcrumb: 'Select Property',
   },
   {
-    path: '/dashboard/propertyView',
+    path: '/home/propertyView',
     breadcrumb: 'Property View',
   },
   {
-    path: '/dashboard/portfolio/propertySelected',
+    path: '/home/portfolio/propertySelected',
     breadcrumb: 'Property Selected',
   },
   {
-    path: '/dashboard/searchProperty',
+    path: '/home/searchProperty',
     breadcrumb: 'Search Property',
   },
   {
-    path: '/dashboard/propertyDetail',
+    path: '/home/propertyDetail',
     breadcrumb: 'Property Detail',
   },
   {
-    path: '/dashboard/propertyVisits',
+    path: '/home/propertyVisits',
     breadcrumb: 'Property Visits',
   },
   {
-    path: '/dashboard/savedProperties',
+    path: '/home/savedProperties',
     breadcrumb: 'Saved Properties',
   },
   {
-    path: '/dashboard/addProperty',
+    path: '/home/addProperty',
     breadcrumb: 'Add Property',
   },
   {
-    path: '/dashboard/nextActions',
+    path: '/home/nextActions',
     breadcrumb: 'Next Actions',
   },
 ];

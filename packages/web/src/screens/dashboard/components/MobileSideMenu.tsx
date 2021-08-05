@@ -35,7 +35,7 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
   const mobileItems = [
     {
       id: 1,
-      text: t('assetDashboard:dashboard'),
+      text: t('landing:home'),
       icon: icons.dashboard,
       url: RouteNames.protectedRoutes.DASHBOARD,
     },
