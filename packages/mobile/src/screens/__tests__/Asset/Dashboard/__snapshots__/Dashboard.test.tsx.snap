@@ -35,85 +35,63 @@ exports[`Dashboard Screen should render snapshot 1`] = `
       onViewAll={[Function]}
     />
     <AssetAdvertisementBanner />
-    <BottomSheet
-      headerTitle="common:quickActions"
-      onCloseSheet={[Function]}
-      sheetHeight={375}
-      visible={false}
-    >
-      <FlatList
-        contentContainerStyle={
+    <IconSheet
+      data={
+        Array [
           Object {
-            "marginBottom": 30,
-            "marginHorizontal": 24,
-          }
-        }
-        data={
-          Array [
-            Object {
-              "icon": <UNDEFINED
-                height={38}
-                width={38}
-              />,
-              "label": "property:addProperty",
-              "onPress": [Function],
-            },
-            Object {
-              "icon": <UNDEFINED
-                height={38}
-                width={38}
-              />,
-              "label": "assetFinancial:addFinancials",
-              "onPress": [Function],
-            },
-            Object {
-              "icon": <UNDEFINED
-                height={38}
-                width={38}
-              />,
-              "label": "assetDashboard:serviceTicket",
-              "onPress": [Function],
-            },
-            Object {
-              "icon": <UNDEFINED
-                height={38}
-                width={38}
-              />,
-              "label": "propertySearch:shareRequirement",
-              "onPress": [Function],
-            },
-            Object {
-              "icon": <UNDEFINED
-                height={38}
-                width={38}
-              />,
-              "label": "common:askHelp",
-              "onPress": [Function],
-            },
-            Object {
-              "icon": <UNDEFINED
-                height={38}
-                width={38}
-              />,
-              "label": "common:bugReport",
-              "onPress": [Function],
-            },
-          ]
-        }
-        disableVirtualization={false}
-        horizontal={false}
-        initialNumToRender={10}
-        keyExtractor={[Function]}
-        maxToRenderPerBatch={10}
-        numColumns={3}
-        onEndReachedThreshold={2}
-        removeClippedSubviews={false}
-        renderItem={[Function]}
-        scrollEventThrottle={50}
-        updateCellsBatchingPeriod={50}
-        windowSize={21}
-      />
-    </BottomSheet>
+            "icon": <UNDEFINED
+              height={38}
+              width={38}
+            />,
+            "label": "property:addProperty",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": <UNDEFINED
+              height={38}
+              width={38}
+            />,
+            "label": "assetFinancial:addFinancials",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": <UNDEFINED
+              height={38}
+              width={38}
+            />,
+            "label": "assetDashboard:serviceTicket",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": <UNDEFINED
+              height={38}
+              width={38}
+            />,
+            "label": "propertySearch:shareRequirement",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": <UNDEFINED
+              height={38}
+              width={38}
+            />,
+            "label": "common:askHelp",
+            "onPress": [Function],
+          },
+          Object {
+            "icon": <UNDEFINED
+              height={38}
+              width={38}
+            />,
+            "label": "common:bugReport",
+            "onPress": [Function],
+          },
+        ]
+      }
+      isVisible={false}
+      numOfColumns={3}
+      onCloseSheet={[Function]}
+    />
   </Memo(UserScreen)>
 </Fragment>
 `;

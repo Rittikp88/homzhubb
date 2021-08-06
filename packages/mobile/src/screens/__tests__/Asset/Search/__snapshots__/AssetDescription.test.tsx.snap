@@ -362,7 +362,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="regular"
               type="large"
             >
-              Posted on
+              Listed On
             </Label>
             <Label
               style={
@@ -373,7 +373,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
               textType="semiBold"
               type="large"
             >
-              09 Jul 2021
+              06 Aug 2021
             </Label>
           </View>
           <View
@@ -676,6 +676,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             },
           }
         }
+        isFromPortfolio={false}
       />
       <View
         style={

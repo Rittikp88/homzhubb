@@ -42,6 +42,7 @@ User {
     "_jobType": Unit {
       "_code": "",
       "_description": "",
+      "_fieldType": "",
       "_id": -1,
       "_label": "",
       "_name": "",
@@ -98,6 +99,7 @@ User {
     "_jobType": Unit {
       "_code": "",
       "_description": "",
+      "_fieldType": "",
       "_id": -1,
       "_label": "",
       "_name": "",
@@ -172,6 +174,7 @@ User {
     "_jobType": Unit {
       "_code": "",
       "_description": "",
+      "_fieldType": "",
       "_id": -1,
       "_label": "",
       "_name": "",
@@ -236,6 +239,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -274,6 +278,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -312,6 +317,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -350,6 +356,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -388,6 +395,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -426,6 +434,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -473,6 +482,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -511,6 +521,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -549,6 +560,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -587,6 +599,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",
@@ -625,6 +638,7 @@ UserSubscription {
         "_serviceItemCategory": Unit {
           "_code": "",
           "_description": "",
+          "_fieldType": "",
           "_id": -1,
           "_label": "",
           "_name": "",

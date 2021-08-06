@@ -24,6 +24,7 @@ exports[`Dropdown should match snapshot 1`] = `
           "paddingVertical": 6,
         },
         Object {},
+        false,
       ]
     }
   >
@@ -152,6 +153,7 @@ exports[`Dropdown should match snapshot for disabled 1`] = `
           "paddingVertical": 6,
         },
         Object {},
+        false,
       ]
     }
   >
@@ -225,6 +227,7 @@ exports[`Dropdown should match snapshot when data is empty 1`] = `
           "paddingVertical": 6,
         },
         Object {},
+        false,
       ]
     }
   >

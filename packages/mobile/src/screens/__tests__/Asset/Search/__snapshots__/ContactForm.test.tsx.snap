@@ -155,7 +155,7 @@ exports[`Contact Form Screen should render snapshot 1`] = `
     >
       preferredTime
     </Label>
-    <Component
+    <TimeSlotGroup
       data={
         Array [
           Object {

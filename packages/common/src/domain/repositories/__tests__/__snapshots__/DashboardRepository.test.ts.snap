@@ -9,6 +9,7 @@ AssetMetrics {
     },
     "_miscellaneous": Array [
       Miscellaneous {
+        "_code": "",
         "_colorCode": "#C2E4FF",
         "_count": 3,
         "_currency_symbol": "",
@@ -16,6 +17,7 @@ AssetMetrics {
         "_name": "OCCUPIED",
       },
       Miscellaneous {
+        "_code": "",
         "_colorCode": "#C2E4FF",
         "_count": 2,
         "_currency_symbol": "",
@@ -23,6 +25,7 @@ AssetMetrics {
         "_name": "VACANT",
       },
       Miscellaneous {
+        "_code": "",
         "_colorCode": "#C2E4FF",
         "_count": 1,
         "_currency_symbol": "",
@@ -30,6 +33,7 @@ AssetMetrics {
         "_name": "RENEWAL",
       },
       Miscellaneous {
+        "_code": "",
         "_colorCode": "#C2E4FF",
         "_count": 4,
         "_currency_symbol": "",
