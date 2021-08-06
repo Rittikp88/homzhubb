@@ -110,8 +110,8 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
       }
     }
     NavigationService.navigate(history, {
-      path: RouteNames.protectedRoutes.PROPERTY_DETAIL,
-      params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0 },
+      path: RouteNames.protectedRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
+      params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0, isLease: !!leaseTerm },
     });
   };
   return (

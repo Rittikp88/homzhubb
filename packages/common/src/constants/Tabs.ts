@@ -85,7 +85,7 @@ export const Routes: IRoutes[] = [
 ];
 
 // (WEB)
-export const PropertyDetailOwner = [
+export const PropertyDetailOwner: IRoutes[] = [
   { key: Tabs.DETAILS, title: Tabs.DETAILS, icon: icons.detail },
   { key: Tabs.NOTIFICATIONS, title: Tabs.NOTIFICATIONS, icon: icons.alert },
   { key: Tabs.MESSAGES, title: Tabs.MESSAGES, icon: icons.mail },

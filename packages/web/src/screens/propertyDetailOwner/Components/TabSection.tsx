@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { useTranslation } from 'react-i18next';
-import Icon from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import DetailsTab from '@homzhub/web/src/screens/propertyDetailOwner/Components/DetailsTab';
 import FinancialsTab from '@homzhub/web/src/screens/propertyDetailOwner/Components/FinancialsTab';
 import OfferView from '@homzhub/web/src/screens/offers/components/OfferView';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { OfferSort } from '@homzhub/common/src/constants/Offers';
 import { IRoutes, Tabs, PropertyDetailOwner } from '@homzhub/common/src/constants/Tabs';
@@ -23,10 +24,9 @@ const TabSection = (propsData: IProps): React.ReactElement => {
   const [currentIndex, setcurrentIndex] = useState(0);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const {
-    assetDetails: { description, features, leaseTerm, saleTerm, amenityGroup, highlights },
+    assetDetails: { description, features, leaseTerm, saleTerm, amenityGroup, highlights, assetStatusInfo },
   } = propsData;
   const selectedFilters = { filter_by: '', sort_by: OfferSort.NEWEST };
-
   const renderTabScene = (route: IRoutes): React.ReactElement | null => {
     switch (route.key) {
       case Tabs.DETAILS:
@@ -57,6 +57,18 @@ const TabSection = (propsData: IProps): React.ReactElement => {
     setcurrentIndex(index);
   };
 
+  const dynamicRoutes = (): IRoutes[] => {
+    for (let index = 0; index < PropertyDetailOwner.length; index++) {
+      const item = PropertyDetailOwner[index];
+      if (item.key === Tabs.OFFERS) {
+        PropertyDetailOwner.splice(index, 1);
+      }
+    }
+
+    return PropertyDetailOwner;
+  };
+
+  const TabRoutes = assetStatusInfo?.tag.code === Filters.OCCUPIED ? dynamicRoutes() : PropertyDetailOwner;
   return (
     <View style={styles.container}>
       <TabView
@@ -82,7 +94,7 @@ const TabSection = (propsData: IProps): React.ReactElement => {
                   <TouchableOpacity onPress={onPress}>
                     <View style={[styles.tabBar, isSelected && styles.selectedTabBar]}>
                       <Icon
-                        name={route.icon}
+                        name={route?.icon ?? icons.portfolio}
                         color={isSelected ? theme.colors.blue : theme.colors.darkTint3}
                         size={22}
                       />
@@ -106,7 +118,7 @@ const TabSection = (propsData: IProps): React.ReactElement => {
         }}
         navigationState={{
           index: currentIndex,
-          routes: PropertyDetailOwner,
+          routes: TabRoutes,
         }}
       />
     </View>
