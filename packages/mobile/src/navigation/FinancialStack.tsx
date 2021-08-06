@@ -4,12 +4,14 @@ import { CommonParamList, getCommonScreen } from '@homzhub/mobile/src/navigation
 import Financials from '@homzhub/mobile/src/screens/Asset/Financials';
 import AddReminderScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddReminderScreen';
 import ReminderScreen from '@homzhub/mobile/src/screens/Asset/Financials/ReminderScreen';
+import TransactionsScreen from '@homzhub/mobile/src/screens/Asset/Financials/TransactionsScreen';
 import { IAddReminder, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type FinancialsNavigatorParamList = {
   [ScreensKeys.FinancialsLandingScreen]: undefined | { isFromNavigation: boolean };
   [ScreensKeys.AddReminderScreen]: undefined | IAddReminder;
   [ScreensKeys.ReminderScreen]: undefined;
+  [ScreensKeys.TransactionsScreen]: undefined;
 } & CommonParamList;
 
 const FinancialsNavigator = createStackNavigator<FinancialsNavigatorParamList>();
@@ -26,6 +28,7 @@ export const FinancialsStack = (): React.ReactElement => {
       <FinancialsNavigator.Screen name={ScreensKeys.FinancialsLandingScreen} component={Financials} />
       <FinancialsNavigator.Screen name={ScreensKeys.AddReminderScreen} component={AddReminderScreen} />
       <FinancialsNavigator.Screen name={ScreensKeys.ReminderScreen} component={ReminderScreen} />
+      <FinancialsNavigator.Screen name={ScreensKeys.TransactionsScreen} component={TransactionsScreen} />
       {commonScreen}
     </FinancialsNavigator.Navigator>
   );

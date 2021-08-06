@@ -39,7 +39,6 @@ export { LoginForm } from '@homzhub/common/src/components/organisms/LoginForm';
 export { PaymentSuccess } from '@homzhub/mobile/src/components/organisms/PaymentSuccess';
 export { PropertyDuesCardContainer } from '@homzhub/mobile/src/components/organisms/PropertyDuesCardContainer';
 export { AuthenticationGateways } from '@homzhub/mobile/src/components/organisms/AuthenticationGateways';
-export { default as TransactionCardsContainer } from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
 
 // HOC
 export { AnimatedProfileHeader } from '@homzhub/mobile/src/components/HOC/AnimatedProfileHeader';

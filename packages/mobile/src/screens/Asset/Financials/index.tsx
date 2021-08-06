@@ -20,7 +20,7 @@ import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecu
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import DuesContainer from '@homzhub/mobile/src/components/organisms/DuesContainer';
 import RemindersContainer from '@homzhub/mobile/src/components/organisms/RemindersContainer';
-import TransactionCardsContainer from '@homzhub/mobile/src/components/organisms/TransactionCardsContainer';
+import TransactionsContainer from '@homzhub/mobile/src/components/organisms/TransactionsContainer';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/FinancialStack';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -32,7 +32,6 @@ import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/fin
 
 interface IOwnState {
   isLoading: boolean;
-  scrollEnabled: boolean;
   showAddSheet: boolean;
 }
 
@@ -64,7 +63,6 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
   public state = {
     isLoading: false,
-    scrollEnabled: true,
     showAddSheet: false,
   };
 
@@ -87,20 +85,14 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       selectedCountry,
       selectedProperty,
     } = this.props;
-    const { scrollEnabled, isLoading } = this.state;
+    const { isLoading } = this.state;
 
     const loading = isLoading || dues || payment || reminder;
 
     const toggleAddSheet = (): void => this.toggleAddSheet(true);
 
     return (
-      <UserScreen
-        loading={loading}
-        isGradient
-        isOuterScrollEnabled={scrollEnabled}
-        title={t('financial')}
-        onPlusIconClicked={toggleAddSheet}
-      >
+      <UserScreen loading={loading} isGradient title={t('financial')} onPlusIconClicked={toggleAddSheet}>
         <AssetMetricsList
           title={t('assetFinancial:summary')}
           numOfElements={2}
@@ -119,11 +111,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         <FinanceOverview />
         <DuesContainer />
         <RemindersContainer />
-        <TransactionCardsContainer
-          shouldEnableOuterScroll={this.toggleScroll}
-          onEditRecord={this.onPressEdit}
-          toggleLoading={this.toggleLoading}
-        />
+        <TransactionsContainer toggleLoader={this.toggleLoading} isFromPortfolio={false} />
         {this.renderAddSheet()}
       </UserScreen>
     );
@@ -182,13 +170,6 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     navigate(ScreensKeys.AddReminderScreen);
   };
 
-  private onPressEdit = (id: number): void => {
-    const {
-      navigation: { navigate },
-    } = this.props;
-    navigate(ScreensKeys.AddRecordScreen, { isEditFlow: true, transactionId: id });
-  };
-
   private getAddSheetData = (): ISheetData[] => {
     const { t } = this.props;
     const iconSize = 40;
@@ -208,10 +189,6 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         onPress: this.onSetReminder,
       },
     ];
-  };
-
-  private toggleScroll = (scrollEnabled: boolean): void => {
-    this.setState({ scrollEnabled });
   };
 
   private toggleAddSheet = (isVisible: boolean): void => {

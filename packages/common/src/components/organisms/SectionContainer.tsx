@@ -23,6 +23,7 @@ interface IProps {
   rightTextType?: TextFieldType;
   rightTextSize?: TextSizeType;
   headerContainerStyle?: StyleProp<ViewStyle>;
+  showSectionHeader?: boolean;
 }
 
 const SectionContainer = (props: IProps): React.ReactElement => {
@@ -43,12 +44,14 @@ const SectionContainer = (props: IProps): React.ReactElement => {
     rightTextType,
     rightTextSize = 'small',
     headerContainerStyle,
+    showSectionHeader = true,
   } = props;
   let TextField = Text;
 
   if (rightTextType === 'label') {
     TextField = Label;
   }
+  if (!showSectionHeader) return <>{children}</>;
   return (
     <View style={[containerStyle && containerStyle]}>
       {callback && <OnFocusCallback isAsync={Boolean(isAsync)} callback={callback} />}

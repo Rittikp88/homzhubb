@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { StyleSheet, ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { ScrollView, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -9,26 +9,22 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import TransactionCard from '@homzhub/mobile/src/components/molecules/TransactionCard';
-import SectionContainer from '@homzhub/common/src/components/organisms/SectionContainer';
+import withNavigation, { IWithNavigationProps } from '@homzhub/mobile/src/components/HOC/withNavigation';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
-interface IOwnProps extends WithTranslation {
-  shouldEnableOuterScroll?: (enable: boolean) => void;
-  isFromPortfolio?: boolean;
-  onEditRecord: (id: number) => void;
-  toggleLoading: (loading: boolean) => void;
+interface IOwnProps extends WithTranslation, IWithNavigationProps {
+  transactionsList: FinancialRecords[];
+  toggleLoading: (loader: boolean) => void;
 }
 
 interface IReduxState {
-  transactionsData: FinancialRecords[];
   transactionsCount: number;
   selectedProperty: number;
   selectedCountry: number;
@@ -37,6 +33,7 @@ interface IReduxState {
 interface IDispatchProps {
   getTransactions: (payload: ITransactionParams) => void;
   getLedgerMetrics: () => void;
+  getLedgers: () => void;
 }
 
 type Props = IOwnProps & IReduxState & IDispatchProps;
@@ -48,7 +45,8 @@ interface IOwnState {
 }
 
 const PAGE_LIMIT = 10;
-export class TransactionCardsContainer extends React.PureComponent<Props, IOwnState> {
+
+class TransactionsList extends React.PureComponent<Props, IOwnState> {
   private scrollRef = React.createRef<ScrollView>();
 
   public state = {
@@ -57,53 +55,21 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
     currentTransactionId: -1,
   };
 
-  public componentDidMount = (): void => {
-    this.getGeneralLedgers(true);
-  };
-
-  public componentDidUpdate = (prevProps: Props): void => {
-    const { selectedCountry: oldCountry, selectedProperty: oldProperty } = prevProps;
-    const { selectedProperty, selectedCountry } = this.props;
-    if ((selectedProperty && selectedProperty !== oldProperty) || (selectedCountry && selectedCountry !== oldCountry)) {
-      this.getGeneralLedgers(true);
-      this.scrollRef.current?.scrollTo({ y: 0, animated: true });
-    }
-  };
-
   public render(): ReactElement {
-    const { t, shouldEnableOuterScroll, transactionsData } = this.props;
-    const { expandedItem } = this.state;
+    const { transactionsList } = this.props;
+
+    if (!transactionsList.length) return <EmptyState />;
 
     return (
       <>
-        <SectionContainer
-          containerStyle={styles.container}
-          sectionTitle={t('transactions')}
-          sectionIcon={icons.cheque}
-          callback={this.onFocus}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          ref={this.scrollRef}
+          onScroll={this.onScroll}
+          scrollEventThrottle={1500}
         >
-          {transactionsData.length <= 0 ? (
-            <EmptyState />
-          ) : (
-            <ScrollView
-              ref={this.scrollRef}
-              onScroll={this.onScroll}
-              onTouchStart={
-                transactionsData.length > 4 && shouldEnableOuterScroll
-                  ? (): void => shouldEnableOuterScroll(false)
-                  : undefined
-              }
-              onMomentumScrollEnd={this.controlScroll}
-              onScrollEndDrag={this.controlScroll}
-              scrollEventThrottle={1500}
-              // Increase container's height if any item is expanded to fit things in.
-              style={expandedItem === -1 ? styles.contentContainer : styles.contentContainerExpanded}
-            >
-              {transactionsData.map(this.renderTransactionCard)}
-            </ScrollView>
-          )}
-        </SectionContainer>
-
+          {transactionsList.map(this.renderTransactionCard)}
+        </ScrollView>
         {this.renderBottomSheet()}
       </>
     );
@@ -123,13 +89,12 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
     );
   };
 
-  private renderTransactionCard = (item: FinancialRecords, index: number): React.ReactNode => {
+  private renderTransactionCard = (item: FinancialRecords, index: number): React.ReactElement => {
     const { expandedItem } = this.state;
-    const { onEditRecord } = this.props;
     const onCardPress = (height: number): void => this.onCardPress(index, height);
 
     const handleEdit = (): void => {
-      onEditRecord(item.id);
+      this.onPressEdit(item.id);
     };
 
     const handleDelete = (): void => {
@@ -150,7 +115,7 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
   };
 
   private onConfirmDelete = async (): Promise<void> => {
-    const { toggleLoading, t, getLedgerMetrics } = this.props;
+    const { toggleLoading, t, getLedgerMetrics, getLedgers } = this.props;
     const { currentTransactionId } = this.state;
     if (currentTransactionId > -1) {
       try {
@@ -160,6 +125,7 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
         this.setState({ expandedItem: -1 });
         toggleLoading(false);
         getLedgerMetrics();
+        getLedgers();
         this.closeBottomSheet();
         AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
       } catch (e) {
@@ -170,13 +136,20 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
     }
   };
 
+  private onPressEdit = (id: number): void => {
+    const { navigation } = this.props;
+    if (navigation) {
+      navigation.navigate(ScreensKeys.AddRecordScreen, { isEditFlow: true, transactionId: id });
+    }
+  };
+
   private onCardPress = (expandedItem: number, height: number): void => {
     const { expandedItem: prev } = this.state;
-    const { transactionsData } = this.props;
+    const { transactionsList } = this.props;
 
     if (prev === expandedItem) {
       this.setState({ expandedItem: -1 });
-      if (expandedItem > transactionsData.length - 5) {
+      if (expandedItem > transactionsList.length - 5) {
         setTimeout(() => {
           this.scrollRef.current?.scrollToEnd();
         }, 0);
@@ -185,7 +158,7 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
     }
 
     this.setState({ expandedItem }, () => {
-      if (expandedItem > transactionsData.length - 5 && !transactionsData[expandedItem].attachmentDetails.length) {
+      if (expandedItem > transactionsList.length - 5 && !transactionsList[expandedItem].attachmentDetails.length) {
         setTimeout(() => {
           this.scrollRef.current?.scrollToEnd();
         }, 0);
@@ -210,20 +183,9 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
   };
 
   private onEndReachedHandler = (): void => {
-    const { transactionsData, transactionsCount } = this.props;
-    if (transactionsCount === transactionsData.length) return;
+    const { transactionsList, transactionsCount } = this.props;
+    if (transactionsCount === transactionsList.length) return;
     this.getGeneralLedgers();
-  };
-
-  private onFocus = (): void => {
-    this.getGeneralLedgers(true);
-  };
-
-  private controlScroll = (): void => {
-    const { shouldEnableOuterScroll } = this.props;
-    if (shouldEnableOuterScroll) {
-      shouldEnableOuterScroll(true);
-    }
   };
 
   private openBottomSheet = (id: number): void => {
@@ -235,9 +197,9 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
   };
 
   private getGeneralLedgers = (reset = false): void => {
-    const { selectedCountry, selectedProperty, getTransactions, transactionsData } = this.props;
+    const { selectedCountry, selectedProperty, getTransactions, transactionsList } = this.props;
     getTransactions({
-      offset: reset ? 0 : transactionsData.length,
+      offset: reset ? 0 : transactionsList.length,
       limit: PAGE_LIMIT,
       asset_id: selectedProperty || undefined,
       country_id: selectedCountry || undefined,
@@ -246,9 +208,8 @@ export class TransactionCardsContainer extends React.PureComponent<Props, IOwnSt
 }
 
 const mapStateToProps = (state: IState): IReduxState => {
-  const { getTransactionRecords, getTransactionsCount, getSelectedCountry, getSelectedProperty } = FinancialSelectors;
+  const { getTransactionsCount, getSelectedCountry, getSelectedProperty } = FinancialSelectors;
   return {
-    transactionsData: getTransactionRecords(state),
     transactionsCount: getTransactionsCount(state),
     selectedCountry: getSelectedCountry(state),
     selectedProperty: getSelectedProperty(state),
@@ -256,24 +217,11 @@ const mapStateToProps = (state: IState): IReduxState => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTransactions, getLedgerMetrics } = FinancialActions;
-  return bindActionCreators({ getTransactions, getLedgerMetrics }, dispatch);
+  const { getTransactions, getLedgerMetrics, getLedgers } = FinancialActions;
+  return bindActionCreators({ getTransactions, getLedgerMetrics, getLedgers }, dispatch);
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(withTranslation(LocaleConstants.namespacesKey.assetFinancial)(TransactionCardsContainer));
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 16,
-    backgroundColor: theme.colors.white,
-  },
-  contentContainer: {
-    maxHeight: 400,
-  },
-  contentContainerExpanded: {
-    maxHeight: theme.viewport.height / 1.7,
-  },
-});
+)(withTranslation(LocaleConstants.namespacesKey.assetFinancial)(withNavigation(TransactionsList)));
