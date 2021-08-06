@@ -19,9 +19,16 @@ interface IProps {
   onSetEmails: (emails: string[]) => void;
   setEmailError: (isError: boolean) => void;
   isDisabled?: boolean;
+  errorText?: string;
 }
 
-const EmailTextInput = ({ data, onSetEmails, setEmailError, isDisabled = false }: IProps): React.ReactElement => {
+const EmailTextInput = ({
+  data,
+  onSetEmails,
+  setEmailError,
+  isDisabled = false,
+  errorText,
+}: IProps): React.ReactElement => {
   const [emails, setEmails] = useState<string[]>([]);
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
@@ -35,7 +42,6 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError, isDisabled = false }
 
   const handleChange = (event: NativeSyntheticEvent<TextInputChangeEventData>): void => {
     const { text } = event.nativeEvent;
-
     if (text.includes(',')) {
       event.preventDefault();
       const email = value.trim();
@@ -45,6 +51,7 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError, isDisabled = false }
 
       return;
     }
+
     setEmailError(false);
     setError('');
     setValue(text);
@@ -82,15 +89,18 @@ const EmailTextInput = ({ data, onSetEmails, setEmailError, isDisabled = false }
     if (isDisabled) return;
     setEmails(emails.filter((item) => item !== email));
     setError('');
+    setEmailError(false);
   };
+
+  const isError = !!errorText || !!error;
 
   return (
     <View style={styles.container}>
-      <WithFieldError error={t(error)}>
-        <Label type="large" style={[styles.label, !!error && styles.errorLabel]}>
+      <WithFieldError error={t(errorText || error)}>
+        <Label type="large" style={[styles.label, isError && styles.errorLabel]}>
           {t('assetFinancial:notifyTo')}
         </Label>
-        <View style={[styles.itemContainer, !!error && styles.errorContainer]}>
+        <View style={[styles.itemContainer, isError && styles.errorContainer]}>
           {emails.length > 0 && (
             <View style={styles.content}>
               {emails.map((item, index) => (

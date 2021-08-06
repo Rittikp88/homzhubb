@@ -11,8 +11,9 @@ import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selec
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Accounting from '@homzhub/common/src/assets/images/accounting.svg';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
@@ -26,6 +27,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
@@ -53,6 +55,7 @@ interface IDispatchProps {
   resetLedgerFilters: () => void;
   setCurrentDueId: (dueId: number) => void;
   setCurrentReminderId: (id: number) => void;
+  getAssetUsersSuccess: (payload: User[]) => void;
 }
 
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -67,13 +70,21 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   public componentDidMount(): void {
-    const { navigation, getLedgerMetrics, resetLedgerFilters, setCurrentDueId, setCurrentReminderId } = this.props;
+    const {
+      navigation,
+      getLedgerMetrics,
+      resetLedgerFilters,
+      setCurrentDueId,
+      setCurrentReminderId,
+      getAssetUsersSuccess,
+    } = this.props;
 
     this.onFocusSubscription = navigation.addListener('focus', (): void => {
       resetLedgerFilters();
       getLedgerMetrics();
       setCurrentDueId(-1);
       setCurrentReminderId(-1);
+      getAssetUsersSuccess([]);
     });
   }
 
@@ -245,13 +256,8 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
 
 const mapStateToProps = (state: IState): IStateProps => {
   const { getUserAssets } = UserSelector;
-  const {
-    getFinancialLoaders,
-    getLedgerData,
-    getSelectedCountry,
-    getSelectedProperty,
-    getLedgerMetrics,
-  } = FinancialSelectors;
+  const { getFinancialLoaders, getLedgerData, getSelectedCountry, getSelectedProperty, getLedgerMetrics } =
+    FinancialSelectors;
   return {
     assets: getUserAssets(state),
     financialLoaders: getFinancialLoaders(state),
@@ -273,6 +279,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     setCurrentDueId,
     setCurrentReminderId,
   } = FinancialActions;
+  const { getAssetUsersSuccess } = AssetActions;
   return bindActionCreators(
     {
       getLedgers,
@@ -283,6 +290,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       resetLedgerFilters,
       setCurrentDueId,
       setCurrentReminderId,
+      getAssetUsersSuccess,
     },
     dispatch
   );

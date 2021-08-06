@@ -1,8 +1,16 @@
 import moment from 'moment';
 import { DateFormats } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { ILabelColor, LabelColor } from '@homzhub/common/src/domain/models/LabelColor';
+
+export interface ITransaction {
+  label: string;
+  currency_code?: string;
+  currency_symbol?: string;
+  amount: number;
+  status: string;
+}
 
 @JsonObject('Transaction')
 export class Transaction {
@@ -99,6 +107,13 @@ export class LeasePeriod {
     const newPeriod = Number(this.totalLeasePeriod) - Number(this.remainingLeasePeriod);
     return newPeriod / Number(this.totalLeasePeriod);
   }
+}
+
+interface ILeaseTransaction extends ILeasePeriod {
+  currency?: ICurrency;
+  rent: ITransaction;
+  security_deposit: ITransaction;
+  message_group_id: number;
 }
 
 @JsonObject('LeaseTransaction')

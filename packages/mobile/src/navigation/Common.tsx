@@ -31,6 +31,7 @@ import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
 import PropertyDetailScreen from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail';
 import AssetPlanSelection from '@homzhub/mobile/src/screens/Asset/Record/AssetPlanSelection';
+import AddBankAccount from '@homzhub/mobile/src/screens/Asset/More/AddBankAccount';
 import OfferDetail from '@homzhub/mobile/src/screens/Asset/More/Offers/OfferDetail';
 import UserProfile from '@homzhub/mobile/src/screens/Asset/More/UserProfile';
 import UpdatePassword from '@homzhub/mobile/src/screens/Asset/More/UpdatePassword';
@@ -120,6 +121,7 @@ export type CommonParamList = {
   [ScreensKeys.LocalitiesSelection]: undefined;
   [ScreensKeys.AddPropertyImage]: IPropertyImageParam;
   [ScreensKeys.DuesScreen]: undefined;
+  [ScreensKeys.AddBankAccount]: undefined;
 };
 
 /**
@@ -177,6 +179,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.LocalitiesSelection} component={LocalitiesSelection} />
       <Stack.Screen name={ScreensKeys.AddPropertyImage} component={AddPropertyImage} />
       <Stack.Screen name={ScreensKeys.DuesScreen} component={DuesScreen} />
+      <Stack.Screen name={ScreensKeys.AddBankAccount} component={AddBankAccount} />
     </>
   );
 };

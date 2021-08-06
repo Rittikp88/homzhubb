@@ -12,10 +12,10 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import ReminderForm from '@homzhub/common/src/components/organisms/ReminderForm';
-import { IAddReminder } from '@homzhub/mobile/src/navigation/interfaces';
+import { IAddReminder, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const AddReminderScreen = (): React.ReactElement => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const { params } = useRoute();
   const { t } = useTranslation();
   const loaders = useSelector(FinancialSelectors.getFinancialLoaders);
@@ -41,6 +41,10 @@ const AddReminderScreen = (): React.ReactElement => {
     }
   };
 
+  const handleAddAccount = (): void => {
+    navigate(ScreensKeys.AddBankAccount);
+  };
+
   return (
     <>
       <Screen
@@ -60,6 +64,7 @@ const AddReminderScreen = (): React.ReactElement => {
           isEdit={param?.isEdit ?? false}
           isFromDues={param?.isFromDues ?? false}
           setLoading={setLoading}
+          onAddAccount={handleAddAccount}
         />
       </Screen>
       <ConfirmationSheet

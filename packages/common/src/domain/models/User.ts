@@ -1,10 +1,17 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { IWorkInfo, WorkInfo } from '@homzhub/common/src/domain/models/WorkInfo';
 
 export enum UserRole {
   OWNER = 'OWNER',
   TENANT = 'TENANT',
 }
+
+export interface IAssetUser {
+  owners: IDropdownOption[];
+  tenants: IDropdownOption[];
+}
+
 export interface IUser {
   id?: number;
   full_name: string;

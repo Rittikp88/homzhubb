@@ -5,8 +5,6 @@ import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { theme } from '@homzhub/common/src/styles/theme';
-import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
@@ -73,7 +71,6 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               placeholder={t('assetFinancial:enterBeneficiaryName')}
               fontWeightType="semiBold"
             />
-
             <FormTextInput
               formProps={formProps}
               inputType="default"
@@ -82,7 +79,6 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               placeholder={t('assetFinancial:enterBankName')}
               fontWeightType="semiBold"
             />
-
             <FormTextInput
               formProps={formProps}
               inputType="default"
@@ -91,7 +87,6 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               placeholder={t('assetFinancial:ifscCode')}
               fontWeightType="semiBold"
             />
-
             <FormTextInput
               formProps={formProps}
               inputType="default"
@@ -101,7 +96,6 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               fontWeightType="semiBold"
               secureTextEntry
             />
-
             <FormTextInput
               formProps={formProps}
               inputType="default"
@@ -110,7 +104,6 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               placeholder={t('assetFinancial:confirmBankAccountNumber')}
               fontWeightType="semiBold"
             />
-
             <FormTextInput
               formProps={formProps}
               inputType="default"
@@ -120,9 +113,6 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               fontWeightType="semiBold"
               optionalText={t('common:optional')}
             />
-            {/* Todo (Praharsh) : Add another field if Re-enter PAN feature is finalised */}
-            <Divider containerStyles={styles.divider} />
-
             <FormButton
               // @ts-ignore
               onPress={formProps.handleSubmit}
@@ -142,14 +132,7 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
 export default AddBankAccountForm;
 
 const styles = StyleSheet.create({
-  field: {
-    paddingVertical: 12,
-  },
-  divider: {
-    marginVertical: 20,
-    borderColor: theme.colors.darkTint10,
-  },
   button: {
-    marginBottom: 20,
+    marginTop: 50,
   },
 });

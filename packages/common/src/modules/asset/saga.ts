@@ -13,7 +13,11 @@ import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IAssetUserPayload,
+  IAssetVisitPayload,
+  IGetListingReviews,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 
@@ -129,6 +133,17 @@ export function* getAssetById(action: IFluxStandardAction<number>) {
   }
 }
 
+function* getAssetUsers(action: IFluxStandardAction<IAssetUserPayload>) {
+  try {
+    const response = yield call(AssetRepository.getAssetUsers, action.payload as IAssetUserPayload);
+    yield put(AssetActions.getAssetUsersSuccess(response));
+  } catch (err) {
+    const error = ErrorUtils.getErrorMessage(err.details);
+    AlertHelper.error({ message: error, statusCode: err.details.statusCode });
+    yield put(AssetActions.getAssetUsersFailure());
+  }
+}
+
 export function* watchAsset() {
   yield takeEvery(AssetActionTypes.GET.ASSET, getAssetDetails);
   yield takeEvery(AssetActionTypes.GET.REVIEWS, getAssetReviews);
@@ -136,4 +151,5 @@ export function* watchAsset() {
   yield takeLatest(AssetActionTypes.GET.ASSET_VISIT, getAssetVisit);
   yield takeEvery(AssetActionTypes.GET.USER_ACTIVE_ASSETS, getUserActiveAssets);
   yield takeEvery(AssetActionTypes.GET.ASSET_BY_ID, getAssetById);
+  yield takeEvery(AssetActionTypes.GET.ASSET_USERS, getAssetUsers);
 }

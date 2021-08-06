@@ -1,11 +1,10 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { ITenantInfo, TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { ITransactionDetail, TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
 
 interface IOnGoingTransaction {
   id: number;
-  lease_unit: number;
-  lease_tenants: ITenantInfo[];
+  name: string;
+  lease_transaction?: ITransactionDetail;
 }
 
 @JsonObject('OnGoingTransaction')
@@ -13,21 +12,21 @@ export class OnGoingTransaction {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('lease_unit', Unit)
-  private _leaseUnit = new Unit();
+  @JsonProperty('name', String)
+  private _name = '';
 
-  @JsonProperty('lease_tenants', [TenantInfo])
-  private _leaseTenants = [];
+  @JsonProperty('lease_transaction', TransactionDetail, true)
+  private _leaseTransaction = new TransactionDetail();
 
   get id(): number {
     return this._id;
   }
 
-  get leaseUnit(): Unit {
-    return this._leaseUnit;
+  get name(): string {
+    return this._name;
   }
 
-  get leaseTenants(): TenantInfo[] {
-    return this._leaseTenants;
+  get leaseTransaction(): TransactionDetail {
+    return this._leaseTransaction;
   }
 }

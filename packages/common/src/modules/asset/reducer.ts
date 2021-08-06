@@ -4,6 +4,7 @@ import { AssetActionTypes, AssetPayloadTypes } from '@homzhub/common/src/modules
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { IUser } from '@homzhub/common/src/domain/models/User';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export const initialAssetState: IAssetState = {
@@ -20,6 +21,7 @@ export const initialAssetState: IAssetState = {
     visits: false,
     activeAssets: false,
     assetById: false,
+    assetUser: false,
   },
   asset: null,
   reviews: null,
@@ -29,6 +31,7 @@ export const initialAssetState: IAssetState = {
   visitType: Tabs.UPCOMING,
   activeAssets: [],
   assetById: null,
+  assetUsers: [],
 };
 
 export const assetReducer = (
@@ -151,6 +154,22 @@ export const assetReducer = (
       return { ...state, ['visitType']: action.payload as Tabs };
     case AssetActionTypes.CLEAR_VISITS:
       return { ...state, ['visits']: initialAssetState.visits };
+    case AssetActionTypes.GET.ASSET_USERS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['assetUser']: true },
+      };
+    case AssetActionTypes.GET.ASSET_USERS_SUCCESS:
+      return {
+        ...state,
+        ['assetUsers']: action.payload as IUser[],
+        ['loaders']: { ...state.loaders, ['assetUser']: false },
+      };
+    case AssetActionTypes.GET.ASSET_USERS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['assetUser']: false },
+      };
     case AssetActionTypes.CLEAR_ASSET:
       return initialAssetState;
     default:

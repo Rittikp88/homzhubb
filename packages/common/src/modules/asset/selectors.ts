@@ -5,10 +5,11 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetVisit, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
+import { IAssetUser, User } from '@homzhub/common/src/domain/models/User';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
-import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 
 const getAssetReviews = (state: IState): AssetReview | null => {
   const {
@@ -193,6 +194,46 @@ const getAssetLoaders = (state: IState): IAssetState['loaders'] => {
   return state.asset.loaders;
 };
 
+const getAssetUser = (state: IState): IAssetUser | null => {
+  const {
+    asset: { assetUsers },
+  } = state;
+
+  if (assetUsers.length <= 0) return null;
+  const users = ObjectMapper.deserializeArray(User, assetUsers);
+  const owners = users
+    .filter((item) => item.isAssetOwner)
+    .map((item) => {
+      return {
+        label: item.name,
+        value: item.id,
+      };
+    });
+  const tenants = users
+    .filter((item) => !item.isAssetOwner)
+    .map((item) => {
+      return {
+        label: item.name,
+        value: item.id,
+      };
+    });
+
+  return {
+    owners,
+    tenants,
+  };
+};
+
+const getAssetUserEmails = (state: IState): string[] => {
+  const {
+    asset: { assetUsers },
+  } = state;
+
+  if (assetUsers.length <= 0) return [];
+  const users = ObjectMapper.deserializeArray(User, assetUsers);
+  return users.map((item) => item.email);
+};
+
 export const AssetSelectors = {
   getAssetReviews,
   getAsset,
@@ -209,4 +250,6 @@ export const AssetSelectors = {
   isActiveAssetsLoading,
   getAssetLoaders,
   getAssetById,
+  getAssetUser,
+  getAssetUserEmails,
 };

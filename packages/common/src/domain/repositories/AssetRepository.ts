@@ -18,6 +18,7 @@ import { ICreateSaleTermParams, IUpdateSaleTermParams, SaleTerm } from '@homzhub
 import { TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
 import { UpcomingSlot } from '@homzhub/common/src/domain/models/UpcomingSlot';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { User } from '@homzhub/common/src/domain/models/User';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import {
   ExistingVerificationDocuments,
@@ -52,6 +53,7 @@ import {
   IUserDetails,
   IUpdateLeaseTerm,
   IUnitListingPayload,
+  IAssetUserPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IUpdateDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 
@@ -126,7 +128,8 @@ const ENDPOINTS = {
   assetAttachmentById: (propertyId: number, attachmentId: number): string =>
     `v1/assets/${propertyId}/attachments/${attachmentId}`,
   inviteTenant: (id: number): string => `v1/lease-tenants/${id}/invites/`,
-  onGoingTransaction: (id: number): string => `v1/assets/${id}/lease-transactions/ongoing/`,
+  leaseUnits: (id: number): string => `v1/assets/${id}/lease-units/`,
+  assetUser: (id: number): string => `v1/assets/${id}/users/`,
 };
 
 class AssetRepository {
@@ -479,8 +482,18 @@ class AssetRepository {
   };
 
   public getOnGoingTransaction = async (assetId: number): Promise<OnGoingTransaction[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.onGoingTransaction(assetId));
+    const response = await this.apiClient.get(ENDPOINTS.leaseUnits(assetId));
     return ObjectMapper.deserializeArray(OnGoingTransaction, response);
+  };
+
+  public getAssetUsers = async (payload: IAssetUserPayload): Promise<User[]> => {
+    const response = await this.apiClient.get(
+      ENDPOINTS.assetUser(payload.assetId),
+      payload.lease_transaction_id && {
+        lease_transaction: payload.lease_transaction_id,
+      }
+    );
+    return ObjectMapper.deserializeArray(User, response);
   };
 }
 

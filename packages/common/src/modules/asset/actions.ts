@@ -5,7 +5,12 @@ import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetReview, IAssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetVisit, IAssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
-import { IAssetVisitPayload, IGetListingReviews } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import {
+  IAssetUserPayload,
+  IAssetVisitPayload,
+  IGetListingReviews,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 const actionTypePrefix = 'Asset/';
@@ -30,6 +35,9 @@ export const AssetActionTypes = {
     ASSET_BY_ID: `${actionTypePrefix}ASSET_BY_ID`,
     ASSET_BY_ID_SUCCESS: `${actionTypePrefix}ASSET_BY_ID_SUCCESS`,
     ASSET_BY_ID_FAILURE: `${actionTypePrefix}ASSET_BY_ID_FAILURE`,
+    ASSET_USERS: `${actionTypePrefix}ASSET_USERS`,
+    ASSET_USERS_SUCCESS: `${actionTypePrefix}ASSET_USERS_SUCCESS`,
+    ASSET_USERS_FAILURE: `${actionTypePrefix}ASSET_USERS_FAILURE`,
   },
   SET: {
     VISIT_IDS: `${actionTypePrefix}VISIT_IDS`,
@@ -144,7 +152,30 @@ const getAssetByIdFailure = (): IFluxStandardAction => ({
   type: AssetActionTypes.GET.ASSET_BY_ID_FAILURE,
 });
 
-export type AssetPayloadTypes = number | IAssetReview | IAsset | IAssetVisit[] | number[] | Tabs | IAsset[];
+const getAssetUsers = (payload: IAssetUserPayload): IFluxStandardAction<IAssetUserPayload> => ({
+  type: AssetActionTypes.GET.ASSET_USERS,
+  payload,
+});
+
+const getAssetUsersSuccess = (payload: User[]): IFluxStandardAction<IUser[]> => ({
+  type: AssetActionTypes.GET.ASSET_USERS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getAssetUsersFailure = (): IFluxStandardAction => ({
+  type: AssetActionTypes.GET.ASSET_USERS_FAILURE,
+});
+
+export type AssetPayloadTypes =
+  | number
+  | IAssetReview
+  | IAsset
+  | IAssetVisit[]
+  | number[]
+  | Tabs
+  | IAsset[]
+  | IAssetUserPayload
+  | IUser[];
 
 export const AssetActions = {
   clearAsset,
@@ -169,4 +200,7 @@ export const AssetActions = {
   getAssetByIdSuccess,
   getAssetByIdFailure,
   getActiveAssetsFailure,
+  getAssetUsers,
+  getAssetUsersSuccess,
+  getAssetUsersFailure,
 };

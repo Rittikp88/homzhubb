@@ -8,7 +8,7 @@ export interface ITransactionDetail {
   id?: number;
   lease_start_date: string;
   lease_end_date?: string;
-  total_lease_period: string;
+  total_lease_period?: string;
   remaining_lease_period?: string;
   currency: Currency;
   rent: number;
@@ -40,7 +40,7 @@ export class TransactionDetail {
   @JsonProperty('lease_end_date', String, true)
   private _leaseEndDate = '';
 
-  @JsonProperty('total_lease_period', String)
+  @JsonProperty('total_lease_period', String, true)
   private _totalLeasePeriod = '';
 
   @JsonProperty('remaining_lease_period', String, true)
@@ -82,10 +82,10 @@ export class TransactionDetail {
   @JsonProperty('is_terminated', Boolean, true)
   private _isTerminated = false;
 
-  @JsonProperty('maintenance_paid_by', String)
+  @JsonProperty('maintenance_paid_by', String, true)
   private _maintenancePaidBy = '';
 
-  @JsonProperty('utility_paid_by', String)
+  @JsonProperty('utility_paid_by', String, true)
   private _utilityPaidBy = '';
 
   @JsonProperty('maintenance_amount', Number, true)

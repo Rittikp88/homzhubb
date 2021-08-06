@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { Formik } from 'formik';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -10,10 +10,14 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
@@ -28,6 +32,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IOwnProp {
   onSubmit: () => void;
+  onAddAccount?: () => void;
   isEdit?: boolean;
   isFromDues?: boolean;
   setLoading?: (isLoading: boolean) => void;
@@ -40,18 +45,27 @@ interface IFormData {
   date: string;
   category: number;
   leaseUnit: number;
+  rent: string;
+  bankAccount: number;
+  owner: number;
+  tenant: number;
 }
 
-const initialData = {
+const initialData: IFormData = {
   title: '',
   property: 0,
-  category: 0,
+  category: 2,
   leaseUnit: 0,
   frequency: 4, // ONE_TIME id
   date: DateUtils.getNextDate(1),
+  rent: '',
+  bankAccount: 0,
+  owner: 0,
+  tenant: 0,
 };
 
-const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false }: IOwnProp): React.ReactElement => {
+const ReminderForm = (props: IOwnProp): React.ReactElement => {
+  const { onSubmit, isEdit = false, setLoading, isFromDues = false, onAddAccount } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetFinancial);
   const assets = useSelector(FinancialSelectors.getReminderAssets);
@@ -59,11 +73,14 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
   const frequencies = useSelector(FinancialSelectors.getReminderFrequencies);
   const selectedReminderId = useSelector(FinancialSelectors.getCurrentReminderId);
   const selectedDue = useSelector(FinancialSelectors.getCurrentDue);
+  const assetUsers = useSelector(AssetSelectors.getAssetUser);
+  const emails = useSelector(AssetSelectors.getAssetUserEmails);
 
   const [formData, setFormData] = useState<IFormData>(initialData);
   const [unitList, setUnitList] = useState<OnGoingTransaction[]>([]);
   const [userEmails, setUserEmails] = useState<string[]>([]);
   const [notes, setNotes] = useState<string>('');
+  const [emailError, setEmailErrorText] = useState<string>('');
   const [isEmailError, setEmailError] = useState(false);
   const [canEdit, setCanEdit] = useState(true);
 
@@ -81,9 +98,20 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
 
   useEffect(() => {
     if (formData.property > 0) {
-      onChangeProperty(formData.property.toString()).then();
+      onChangeProperty(formData.property.toString(), formData.category).then();
     }
   }, [formData.property]);
+
+  useEffect(() => {
+    if (userEmails.length > 0) {
+      userEmails.forEach((item) => {
+        if (!emails.includes(item)) {
+          setEmailErrorText('property:userNotAssociated');
+          setEmailError(true);
+        }
+      });
+    }
+  }, [assetUsers]);
 
   const getDueState = (): void => {
     // TODO: (Shikha) - Handle RENT case once BE done
@@ -173,8 +201,8 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
     if (unitList.length > 0) {
       return unitList.map((item) => {
         return {
-          label: item.leaseUnit.name,
-          value: item.id,
+          label: item.name,
+          value: item.leaseTransaction.id,
         };
       });
     }
@@ -184,19 +212,43 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
 
   // DROPDOWN LIST FORMATION END
 
-  const onChangeProperty = async (value: string): Promise<void> => {
+  const onChangeProperty = async (value: string, category: number): Promise<void> => {
     try {
       const list = await AssetRepository.getOnGoingTransaction(Number(value));
       setUnitList(list);
+      // Call only for Others category
+      if (category === 2) {
+        dispatch(AssetActions.getAssetUsers({ assetId: Number(value) }));
+      }
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 
-  const onchangeUnit = (value: string): void => {
-    const data = unitList.filter((item) => item.id === Number(value))[0];
-    const users = data.leaseTenants.map((item) => item.tenantUser?.email ?? '').filter((email) => email !== '');
-    setUserEmails(users);
+  const onChangeUnit = (value: string, assetId: number): void => {
+    dispatch(AssetActions.getAssetUsers({ assetId, lease_transaction_id: Number(value) }));
+  };
+
+  const onSetEmails = (value: string[]): void => {
+    if (emails.length > 0) {
+      value.forEach((item) => {
+        if (emails.includes(item)) {
+          setUserEmails([...userEmails, item]);
+        } else {
+          setEmailErrorText('property:userNotAssociated');
+          setEmailError(true);
+        }
+      });
+    } else {
+      setUserEmails(value);
+    }
+  };
+
+  const onSetEmailError = (value: boolean): void => {
+    if (!value && !!emailError) {
+      setEmailErrorText('');
+    }
+    setEmailError(value);
   };
 
   const formSchema = (): yup.ObjectSchema<IFormData> => {
@@ -207,6 +259,10 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
       date: yup.string().required(),
       property: yup.number(),
       leaseUnit: yup.number(),
+      tenant: yup.number(),
+      owner: yup.number(),
+      bankAccount: yup.number(),
+      rent: yup.string(),
     });
   };
 
@@ -241,6 +297,17 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
     }
   };
 
+  const renderRightNode = (): React.ReactElement => {
+    return (
+      <TouchableOpacity style={styles.rightNode} onPress={onAddAccount}>
+        <Icon name={icons.plus} color={theme.colors.primaryColor} size={20} />
+        <Label textType="semiBold" style={styles.rightText}>
+          {t('addNew')}
+        </Label>
+      </TouchableOpacity>
+    );
+  };
+
   return (
     <Formik
       initialValues={{ ...formData }}
@@ -252,6 +319,7 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
         const { title, category, frequency } = formProps.values;
         const isEnable = !!title && Number(category) > 0 && Number(frequency) > 0 && !isEmailError;
         const isRented = Number(formProps.values.category) === 1;
+
         return (
           <>
             <FormTextInput
@@ -278,21 +346,61 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
               placeholder={t('offers:selectProperty')}
               options={getPropertyList(isRented)}
               formProps={formProps}
-              onChange={onChangeProperty}
+              onChange={(value): Promise<void> => onChangeProperty(value, formProps.values.category)}
               isDisabled={getPropertyList(isRented).length < 1 || isEdit || !canEdit}
               dropdownContainerStyle={styles.field}
             />
             {Number(formProps.values.category) === 1 && ( // For RENT category only
-              <FormDropdown
-                name="leaseUnit"
-                label={t('leaseUnit')}
-                placeholder={t('selectLeaseUnit')}
-                options={getUnitList()}
-                formProps={formProps}
-                onChange={onchangeUnit}
-                isDisabled={getUnitList().length < 1 || !canEdit}
-                dropdownContainerStyle={styles.field}
-              />
+              <>
+                <FormDropdown
+                  name="leaseUnit"
+                  label={t('leaseUnit')}
+                  placeholder={t('selectLeaseUnit')}
+                  options={getUnitList()}
+                  formProps={formProps}
+                  onChange={(value): void => onChangeUnit(value, formProps.values.property)}
+                  isDisabled={getUnitList().length < 1 || !canEdit}
+                  dropdownContainerStyle={styles.field}
+                />
+                <FormDropdown
+                  name="owner"
+                  label={t('property:owner')}
+                  placeholder={t('property:selectOwner')}
+                  options={assetUsers?.owners ?? []}
+                  formProps={formProps}
+                  isDisabled={Number(formProps.values.leaseUnit) < 1 || !canEdit}
+                  dropdownContainerStyle={styles.field}
+                  listHeight={300}
+                />
+                <FormDropdown
+                  name="tenant"
+                  label={t('property:tenant')}
+                  placeholder={t('property:selectTenant')}
+                  options={assetUsers?.tenants ?? []}
+                  formProps={formProps}
+                  isDisabled={Number(formProps.values.leaseUnit) < 1 || !canEdit}
+                  dropdownContainerStyle={styles.field}
+                  listHeight={300}
+                />
+                <FormTextInput
+                  formProps={formProps}
+                  inputType="decimal"
+                  name="rent"
+                  label={t('property:rent')}
+                  placeholder={t('property:enterRentAmount')}
+                  editable={canEdit}
+                />
+                <FormDropdown
+                  name="bankAccount"
+                  label={t('bankAccount')}
+                  placeholder={t('selectAccount')}
+                  options={[]}
+                  formProps={formProps}
+                  isDisabled={!canEdit}
+                  dropdownContainerStyle={styles.field}
+                  rightNode={renderRightNode()}
+                />
+              </>
             )}
             <FormCalendar
               formProps={formProps}
@@ -314,9 +422,10 @@ const ReminderForm = ({ onSubmit, isEdit = false, setLoading, isFromDues = false
             />
             <EmailTextInput
               data={userEmails}
-              onSetEmails={setUserEmails}
-              setEmailError={setEmailError}
+              onSetEmails={onSetEmails}
+              setEmailError={onSetEmailError}
               isDisabled={!canEdit}
+              errorText={emailError}
             />
             <TextArea
               value={notes}
@@ -355,5 +464,12 @@ const styles = StyleSheet.create({
   },
   button: {
     marginBottom: 16,
+  },
+  rightNode: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rightText: {
+    color: theme.colors.primaryColor,
   },
 });

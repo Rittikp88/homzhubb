@@ -1057,3 +1057,8 @@ export interface IReminderPayload {
   lease_transaction?: number;
   description?: string;
 }
+
+export interface IAssetUserPayload {
+  assetId: number;
+  lease_transaction_id?: number;
+}
