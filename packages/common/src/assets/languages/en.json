@@ -996,6 +996,9 @@
     "panNumber": "PAN Number",
     "enterPanNumber": "Enter PAN Number",
     "accNumMismatch": "Account Number does not match! Please check and enter again",
+    "ifscFormatError": "Please enter a valid IFSC Code",
+    "panFormatError": "Please enter a valid PAN",
+    "addBankDetailsSuccess": "Bank Details Added Successfully",
     "bankAccount": "Bank Account",
     "selectAccount": "Select account"
   },

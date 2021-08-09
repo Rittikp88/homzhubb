@@ -25,17 +25,19 @@ import {
   IVerifyAuthToken,
   IVerifyAuthTokenResponse,
   IUpdatePlanPayload,
+  IBankAccountPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { CoinsManagement } from '@homzhub/common/src/domain/models/CoinsManagement';
 import { CoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
-import { User } from '@homzhub/common/src/domain/models/User';
-import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
-import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
-import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
+import { PanNumber } from '@homzhub/common/src/domain/models/PanNumber';
 import { SettingsData } from '@homzhub/common/src/domain/models/SettingsData';
 import { SettingsDropdownValues } from '@homzhub/common/src/domain/models/SettingsDropdownValues';
+import { User } from '@homzhub/common/src/domain/models/User';
+import { UserProfile, IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
+import { UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
+import { UserSubscription } from '@homzhub/common/src/domain/models/UserSubscription';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 import { SettingsScreenData } from '@homzhub/common/src/constants/Settings';
 
@@ -69,6 +71,8 @@ const ENDPOINTS = {
   interactions: (userId: number): string => `v1/users/${userId}/interactions/`,
   verifyReferralCode: (code: string): string => `v1/users/referrals/${code}/`,
   verifyWorkEmail: (email: string): string => `v1/users/work-info/emails/${email}/`,
+  bankAccountDetails: (userId: number): string => `v1/users/${userId}/user-bank-info/`,
+  panNumbers: (userId: number): string => `v1/users/${userId}/pan-numbers/`,
 };
 
 class UserRepository {
@@ -227,6 +231,15 @@ class UserRepository {
   public getCoinTransaction = async (): Promise<CoinTransaction[]> => {
     const response = await this.apiClient.get(ENDPOINTS.coinTransaction);
     return ObjectMapper.deserializeArray(CoinTransaction, response);
+  };
+
+  public addBankDetails = async (userId: number, payload: IBankAccountPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.bankAccountDetails(userId), payload);
+  };
+
+  public getPanDetails = async (userId: number): Promise<PanNumber> => {
+    const response = await this.apiClient.get(ENDPOINTS.panNumbers(userId));
+    return ObjectMapper.deserialize(PanNumber, response);
   };
 }
 

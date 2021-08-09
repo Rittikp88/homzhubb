@@ -46,4 +46,14 @@ export class StringUtils {
       .slice(0, count + 1)
       .join(' ')}...`;
   };
+
+  public static isValidIfsc = (ifsc: string): boolean => {
+    const regex = RegExp(FormUtils.isfcRegex, 'g');
+    return regex.test(ifsc);
+  };
+
+  public static isValidPan = (pan: string): boolean => {
+    const regex = RegExp(FormUtils.panRegex, 'g');
+    return regex.test(pan);
+  };
 }

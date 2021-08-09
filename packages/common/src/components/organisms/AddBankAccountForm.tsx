@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { PanNumber } from '@homzhub/common/src/domain/models/PanNumber';
+import { IBankAccountPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 
-interface IOwnProp {
-  onSubmit: () => void;
+interface IOwnProps {
+  onSubmit?: () => void;
+  userId: number;
+  setLoading: (loading: boolean) => void;
 }
-
 interface IBankAccount {
   beneficiaryName: string;
   bankName: string;
@@ -21,23 +28,50 @@ interface IBankAccount {
   panNumber: string;
 }
 
-const initialData: IBankAccount = {
-  beneficiaryName: '',
-  bankName: '',
-  ifscCode: '',
-  bankAccNum: '',
-  confirmBankAccNum: '',
-  panNumber: '',
-};
-
-const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
+const AddBankAccountForm = ({ onSubmit, userId, setLoading }: IOwnProps): React.ReactElement => {
   const { t } = useTranslation();
+  const [panDetail, setPanDetail] = useState(new PanNumber());
+
+  const initialData: IBankAccount = {
+    beneficiaryName: '',
+    bankName: '',
+    ifscCode: '',
+    bankAccNum: '',
+    confirmBankAccNum: '',
+    panNumber: panDetail.panNumber,
+  };
+
+  const fetchPanDetails = async (): Promise<void> => {
+    try {
+      setLoading(true);
+      const response = await UserRepository.getPanDetails(userId);
+      setPanDetail(response);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    }
+  };
+
+  useEffect(() => {
+    fetchPanDetails().then();
+  }, []);
 
   const formSchema = (): yup.ObjectSchema<IBankAccount> => {
     return yup.object().shape({
       beneficiaryName: yup.string().required(t('moreProfile:fieldRequiredError')),
       bankName: yup.string().required(t('moreProfile:fieldRequiredError')),
-      ifscCode: yup.string().required(t('moreProfile:fieldRequiredError')),
+      ifscCode: yup
+        .string()
+        .required(t('moreProfile:fieldRequiredError'))
+        .test({
+          name: 'hasIfscTest',
+          message: t('assetFinancial:ifscFormatError'),
+          test(ifsc: string) {
+            if (ifsc.length > 0) return StringUtils.isValidIfsc(ifsc);
+            return true;
+          },
+        }),
       bankAccNum: yup.string().required(t('moreProfile:fieldRequiredError')),
       confirmBankAccNum: yup.string().test({
         name: 'confirmBankAccNumTest',
@@ -46,17 +80,44 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
         test(confirmBankAccNum: string) {
           // eslint-disable-next-line react/no-this-in-sfc
           const { bankAccNum } = this.parent;
-          return parseInt(confirmBankAccNum, 10) === parseInt(bankAccNum, 10);
+          return confirmBankAccNum === bankAccNum;
         },
       }),
-      panNumber: yup.string(),
+      panNumber: yup.string().test({
+        name: 'hasIfscTest',
+        message: t('assetFinancial:panFormatError'),
+        test(pan: string) {
+          return pan.length > 0 ? StringUtils.isValidPan(pan) : true;
+        },
+      }),
     });
+  };
+
+  const onFormSubmit = async (values: IBankAccount): Promise<void> => {
+    const { beneficiaryName, bankName, bankAccNum, ifscCode, panNumber } = values;
+    try {
+      setLoading(true);
+      const payload = {
+        beneficiary_name: beneficiaryName,
+        bank_name: bankName,
+        account_number: bankAccNum,
+        pan_number: panNumber.length > 0 && panNumber !== panDetail.panNumber ? panNumber : undefined,
+        ifsc_code: ifscCode,
+      } as IBankAccountPayload;
+      await UserRepository.addBankDetails(userId, payload);
+      setLoading(false);
+      AlertHelper.success({ message: t('assetFinancial:addBankDetailsSuccess') });
+      if (onSubmit) onSubmit();
+    } catch (e) {
+      setLoading(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    }
   };
 
   return (
     <Formik
       initialValues={initialData}
-      onSubmit={onSubmit}
+      onSubmit={onFormSubmit}
       validate={FormUtils.validate(formSchema)}
       enableReinitialize
     >
@@ -112,6 +173,7 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
               placeholder={t('assetFinancial:enterPanNumber')}
               fontWeightType="semiBold"
               optionalText={t('common:optional')}
+              editable={panDetail.canEdit}
             />
             <FormButton
               // @ts-ignore
@@ -128,11 +190,9 @@ const AddBankAccountForm = ({ onSubmit }: IOwnProp): React.ReactElement => {
     </Formik>
   );
 };
-
 export default AddBankAccountForm;
-
 const styles = StyleSheet.create({
   button: {
-    marginTop: 50,
+    marginVertical: 30,
   },
 });

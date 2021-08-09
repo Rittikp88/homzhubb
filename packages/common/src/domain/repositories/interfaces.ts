@@ -1058,6 +1058,13 @@ export interface IReminderPayload {
   description?: string;
 }
 
+export interface IBankAccountPayload {
+  beneficiary_name: string;
+  bank_name: string;
+  account_number: string;
+  pan_number?: string;
+  ifsc_code: string;
+}
 export interface IAssetUserPayload {
   assetId: number;
   lease_transaction_id?: number;

@@ -17,6 +17,10 @@ class FormUtils {
 
   public emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
+  public isfcRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+
+  public panRegex = /[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}/;
+
   public validate = (getValidationSchema: any): any => {
     return (values: any[]): any => {
       const validationSchema = getValidationSchema(values);
@@ -61,6 +65,14 @@ class FormUtils {
 
   public validateEmail = (email: string): boolean => {
     return this.emailRegex.test(String(email).toLowerCase());
+  };
+
+  public validateIfsc = (ifsc: string): boolean => {
+    return this.isfcRegex.test(String(ifsc).toLowerCase());
+  };
+
+  public validatePan = (pan: string): boolean => {
+    return this.panRegex.test(String(pan).toLowerCase());
   };
 }
 
