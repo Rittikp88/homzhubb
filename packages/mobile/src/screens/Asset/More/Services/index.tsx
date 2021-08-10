@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/core';
@@ -7,8 +7,10 @@ import { useFocusEffect, useRoute } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ServiceHelper } from '@homzhub/mobile/src/utils/ServiceHelper';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -49,6 +51,10 @@ const ServicesDashboard = (): React.ReactElement => {
       dispatch(UserActions.getUserServices());
     }, [])
   );
+
+  useEffect(() => {
+    AnalyticsService.track(EventType.VASPageVisits);
+  }, []);
 
   const getManagementData = (): void => {
     ServiceRepository.getServiceManagementTab()

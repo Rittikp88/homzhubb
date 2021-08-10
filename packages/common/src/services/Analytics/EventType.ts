@@ -25,6 +25,11 @@ export enum EventType {
   ClosedServiceTicket = 'closed_service_ticket',
   NewOffer = 'new_offer',
   PropertyShortList = 'property_shortlist',
+  VASPageVisits = 'vas_page_visit',
+  ValueAddedType = 'value_added_buy',
+  TenantInviteSent = 'tenant_invite_sent',
+  TenantInviteAccepted = 'tenant_invite_accepted',
+  TenantInviteResent = 'tenant_invite_resent',
   // Errors
   Exception = 'exception',
 }

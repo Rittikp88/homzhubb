@@ -3,6 +3,8 @@ import { View, StyleSheet, LayoutChangeEvent, TouchableOpacity } from 'react-nat
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { TabView } from 'react-native-tab-view';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { MoreStackNavigatorParamList } from '@homzhub/mobile/src/navigation/MoreStack';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -18,6 +20,7 @@ import { ValueAddedServicesView } from '@homzhub/common/src/components/organisms
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { ISelectedValueServices } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { IVASBought } from '@homzhub/common/src/services/Analytics/interfaces';
 
 type IProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ServicesForSelectedAsset>;
 
@@ -251,6 +254,10 @@ export const ServicesForSelectedAsset = (props: IProps): ReactElement => {
   };
 
   const onSuccessFullPayment = (): void => {
+    const trackData: IVASBought = {
+      address,
+    };
+    AnalyticsService.track(EventType.ValueAddedType, trackData);
     // @ts-ignore
     navigation.navigate(ScreensKeys.ServicesDashboard);
   };

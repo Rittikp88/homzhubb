@@ -2,9 +2,11 @@ import { cloneDeep, findIndex } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { Logger } from '@homzhub/common/src/utils/Logger';
+import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
-import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ExistingVerificationDocuments } from '@homzhub/common/src/domain/models/VerificationDocuments';
@@ -181,7 +183,9 @@ class ListingService {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then()
+      .then(() => {
+        AnalyticsService.track(EventType.TenantInviteResent);
+      })
       .catch((e) => Logger.warn(JSON.stringify(e)));
   };
 }

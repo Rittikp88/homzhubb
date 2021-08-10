@@ -32,12 +32,21 @@ class AnalyticsService {
 
   public track = (eventName: EventType, data?: EventDataType): void => {
     const user = StoreProviderService.getUserData();
+    const {
+      search: {
+        filter: { user_location_latitude, user_location_longitude },
+      },
+    } = StoreProviderService.getStore().getState();
     const isDebugMode = ConfigHelper.getAppMode() === AppModes.DEBUG;
     if (isDebugMode && eventName === EventType.Exception) return;
     const properties = {
       token: this.projectToken,
       $event_name: eventName,
       email: user && user.email ? user.email : 'Anonymous',
+      userId: user?.id,
+      user_location_latitude,
+      user_location_longitude,
+      timeStamp: new Date().toISOString(),
       ...data,
     };
 

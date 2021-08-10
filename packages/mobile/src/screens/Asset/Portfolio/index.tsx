@@ -315,6 +315,7 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     } = this.props;
     try {
       await AssetRepository.acceptInvite(params);
+      AnalyticsService.track(EventType.TenantInviteAccepted);
     } catch (error) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
     }

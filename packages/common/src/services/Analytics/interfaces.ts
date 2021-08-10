@@ -96,6 +96,10 @@ export interface IComponentError {
   message: string;
 }
 
+export interface IVASBought {
+  address: string;
+}
+
 export type EventDataType =
   | IAuthenticationEvent
   | IAddPropertyEvent
@@ -109,4 +113,5 @@ export type EventDataType =
   | IAddServiceEvent
   | ICloseTicketEvent
   | IApiClientError
-  | IComponentError;
+  | IComponentError
+  | IVASBought;

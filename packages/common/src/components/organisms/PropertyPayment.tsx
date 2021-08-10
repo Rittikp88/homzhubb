@@ -11,6 +11,8 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
+import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -250,6 +252,9 @@ class PropertyPayment extends Component<Props, IPaymentState> {
               },
             };
             await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+            if (typeOfPlan === TypeOfPlan.MANAGE) {
+              AnalyticsService.track(EventType.TenantInviteSent);
+            }
           }
           handleNextStep();
         }
