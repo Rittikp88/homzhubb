@@ -1,5 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
 import { Unit, IUnit } from '@homzhub/common/src/domain/models/Unit';
 
 export interface IReminder {
@@ -13,6 +14,11 @@ export interface IReminder {
   start_date: string;
   can_edit: boolean;
   can_delete: boolean;
+  amount: number | null;
+  payer_user: number | null;
+  receiver_user: number | null;
+  user_bank_info: number | null;
+  currency: ICurrency | null;
 }
 
 @JsonObject('Reminder')
@@ -57,6 +63,21 @@ export class Reminder {
 
   @JsonProperty('can_delete', Boolean)
   private _canDelete = false;
+
+  @JsonProperty('amount', Number, true)
+  private _amount = null;
+
+  @JsonProperty('payer_user', Unit)
+  private _payerUser = null;
+
+  @JsonProperty('receiver_user', Unit)
+  private _receiverUser = null;
+
+  @JsonProperty('user_bank_info', Unit)
+  private _userBankInfo = null;
+
+  @JsonProperty('currency', Currency)
+  private _currency = null;
 
   get id(): number {
     return this._id;
@@ -104,5 +125,25 @@ export class Reminder {
 
   get canDelete(): boolean {
     return this._canDelete;
+  }
+
+  get amount(): number | null {
+    return this._amount;
+  }
+
+  get payerUser(): Unit | null {
+    return this._payerUser;
+  }
+
+  get receiverUser(): Unit | null {
+    return this._receiverUser;
+  }
+
+  get userBankInfo(): Unit | null {
+    return this._userBankInfo;
+  }
+
+  get currency(): Currency | null {
+    return this._currency;
   }
 }

@@ -1049,13 +1049,18 @@ export interface IPaymentPayload {
 
 export interface IReminderPayload {
   title: string;
-  emails?: string[];
+  start_date: string;
   reminder_category: number;
   reminder_frequency: number;
-  start_date: string;
   asset?: number;
-  lease_transaction?: number;
+  amount?: number;
+  emails?: string[];
+  currency?: string;
+  payer_user?: number;
   description?: string;
+  receiver_user?: number;
+  user_bank_info?: number;
+  lease_transaction?: number;
 }
 
 export interface IBankAccountPayload {

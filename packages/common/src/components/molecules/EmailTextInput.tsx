@@ -35,7 +35,7 @@ const EmailTextInput = ({
   const { t } = useTranslation();
 
   useEffect(() => {
-    if (data && data.length > 0) {
+    if (data) {
       setEmails(data);
     }
   }, [data]);

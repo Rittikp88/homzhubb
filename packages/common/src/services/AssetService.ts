@@ -14,7 +14,7 @@ import { IPropertySearchPayload } from '@homzhub/common/src/domain/repositories/
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 
 // CONSTANTS
-const DEFAULT_SEARCH_RADIUS = 50;
+const DEFAULT_SEARCH_RADIUS = 3;
 const DATE_ADDED = [
   null,
   DateUtils.getDate(1),
