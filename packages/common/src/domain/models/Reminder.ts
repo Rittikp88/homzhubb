@@ -11,6 +11,8 @@ export interface IReminder {
   reminder_frequency: IUnit;
   asset: IAsset;
   start_date: string;
+  can_edit: boolean;
+  can_delete: boolean;
 }
 
 @JsonObject('Reminder')
@@ -52,6 +54,9 @@ export class Reminder {
 
   @JsonProperty('can_edit', Boolean)
   private _canEdit = false;
+
+  @JsonProperty('can_delete', Boolean)
+  private _canDelete = false;
 
   get id(): number {
     return this._id;
@@ -95,5 +100,9 @@ export class Reminder {
 
   get canEdit(): boolean {
     return this._canEdit;
+  }
+
+  get canDelete(): boolean {
+    return this._canDelete;
   }
 }

@@ -307,7 +307,8 @@
     "doLater": "I’ll do it later",
     "timeToUpdate": "Time to update",
     "underMaintenance": "Under Maintenance",
-    "others": "Others"
+    "others": "Others",
+    "featureInIndiaOnly": "Feature available only for India currently"
   },
   "auth": {
     "verifyNumber": "Verify your number",

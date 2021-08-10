@@ -36,6 +36,7 @@ interface IOwnProp {
   isEdit?: boolean;
   isFromDues?: boolean;
   setLoading?: (isLoading: boolean) => void;
+  setShowDeleteIcon?: (showDeleteIcon: boolean) => void;
 }
 
 interface IFormData {
@@ -65,7 +66,7 @@ const initialData: IFormData = {
 };
 
 const ReminderForm = (props: IOwnProp): React.ReactElement => {
-  const { onSubmit, isEdit = false, setLoading, isFromDues = false, onAddAccount } = props;
+  const { onSubmit, isEdit = false, setLoading, isFromDues = false, onAddAccount, setShowDeleteIcon } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetFinancial);
   const assets = useSelector(FinancialSelectors.getReminderAssets);
@@ -149,6 +150,9 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
           setUserEmails(res.emails);
           setNotes(res.description);
           setCanEdit(res.canEdit);
+          if (setShowDeleteIcon) {
+            setShowDeleteIcon(res.canDelete);
+          }
         }
       })
       .catch((e) => {

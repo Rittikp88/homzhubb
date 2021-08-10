@@ -47,6 +47,7 @@ const namedColors = {
   red: '#D42E17',
   purple: '#A4BDFD',
   other: '#CCB6B3',
+  infoBlack: '#455A64',
 };
 
 const tintColors = {

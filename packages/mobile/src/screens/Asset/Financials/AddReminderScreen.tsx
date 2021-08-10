@@ -21,6 +21,7 @@ const AddReminderScreen = (): React.ReactElement => {
   const loaders = useSelector(FinancialSelectors.getFinancialLoaders);
   const [isLoading, setLoading] = useState(false);
   const [isSheetVisible, setSheetVisibility] = useState(false);
+  const [showDeleteIcon, setShowDeleteIcon] = useState(false);
   const selectedReminderId = useSelector(FinancialSelectors.getCurrentReminderId);
 
   const param = params as IAddReminder;
@@ -55,8 +56,7 @@ const AddReminderScreen = (): React.ReactElement => {
           title: param?.isEdit ? t('assetFinancial:editReminder') : t('assetFinancial:addReminders'),
           type: 'secondary',
           onIconPress: goBack,
-          ...(param?.isEdit && { iconRight: icons.trash }),
-          ...(param?.isEdit && { onIconRightPress: (): void => onPressIcon(true) }),
+          ...(showDeleteIcon && { iconRight: icons.trash, onIconRightPress: (): void => onPressIcon(true) }),
         }}
       >
         <ReminderForm
@@ -65,6 +65,7 @@ const AddReminderScreen = (): React.ReactElement => {
           isFromDues={param?.isFromDues ?? false}
           setLoading={setLoading}
           onAddAccount={handleAddAccount}
+          setShowDeleteIcon={setShowDeleteIcon}
         />
       </Screen>
       <ConfirmationSheet
