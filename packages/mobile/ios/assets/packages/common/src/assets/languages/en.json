@@ -699,7 +699,11 @@
     "cannotDeleteSystemDocuments": "System-generated documents cannot be deleted",
     "vacantPropertyMsg": "Your property is vacant, choose what you want to do next",
     "addImage": "Add Image",
-    "noOccupiedProperty": "You do not have any occupied property. Please invite your tenant."
+    "noOccupiedProperty": "You do not have any occupied property. Please invite your tenant.",
+    "userNotAssociated": "This person is not associated with the property",
+    "selectOwner": "Select owner",
+    "selectTenant": "Select Tenant",
+    "enterRentAmount": "Enter Rent amount"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -980,7 +984,20 @@
     "overdue": "Overdue",
     "dueBy": "Due by",
     "reminderUpdateMsg": "Reminder updated successfully",
-    "editReminder": "Edit Reminder"
+    "editReminder": "Edit Reminder",
+    "addBankAccount": "Add Bank Account",
+    "beneficiaryName": "Beneficiary Name",
+    "enterBeneficiaryName": "Enter Beneficiary Name",
+    "bankName": "Bank Name",
+    "enterBankName": "Enter Bank Name",
+    "ifscCode": "IFSC Code",
+    "bankAccountNumber": "Bank Account Number",
+    "confirmBankAccountNumber": "Confirm Bank Account Number",
+    "panNumber": "PAN Number",
+    "enterPanNumber": "Enter PAN Number",
+    "accNumMismatch": "Account Number does not match! Please check and enter again",
+    "bankAccount": "Bank Account",
+    "selectAccount": "Select account"
   },
   "assetMore": {
     "more": "More",

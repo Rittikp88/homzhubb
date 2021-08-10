@@ -12,8 +12,10 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -22,6 +24,7 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalendar';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { TransactionField } from '@homzhub/common/src/components/molecules/TransactionField';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import EmailTextInput from '@homzhub/common/src/components/molecules/EmailTextInput';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -76,6 +79,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   const selectedDue = useSelector(FinancialSelectors.getCurrentDue);
   const assetUsers = useSelector(AssetSelectors.getAssetUser);
   const emails = useSelector(AssetSelectors.getAssetUserEmails);
+  const bankInfo = useSelector(UserSelector.getBankInfo);
 
   const [formData, setFormData] = useState<IFormData>(initialData);
   const [unitList, setUnitList] = useState<OnGoingTransaction[]>([]);
@@ -89,6 +93,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     dispatch(FinancialActions.getReminderCategories());
     dispatch(FinancialActions.getReminderFrequencies());
     dispatch(FinancialActions.getReminderAssets());
+    dispatch(UserActions.getBankInfo());
     if (isEdit && selectedReminderId > 0) {
       getInitialState();
     }
@@ -394,15 +399,13 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
                   placeholder={t('property:enterRentAmount')}
                   editable={canEdit}
                 />
-                <FormDropdown
+                <TransactionField
                   name="bankAccount"
                   label={t('bankAccount')}
                   placeholder={t('selectAccount')}
-                  options={[]}
-                  formProps={formProps}
-                  isDisabled={!canEdit}
-                  dropdownContainerStyle={styles.field}
                   rightNode={renderRightNode()}
+                  formProps={formProps}
+                  options={bankInfo.map((item) => item.bankDetail)}
                 />
               </>
             )}

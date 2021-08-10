@@ -12,13 +12,14 @@ import { ServiceRepository } from '@homzhub/common/src/domain/repositories/Servi
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { User } from '@homzhub/common/src/domain/models/User';
+import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 import {
@@ -27,6 +28,7 @@ import {
   IUpdateUserPreferences,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
 import { AuthenticationType, IAuthenticationEvent } from '@homzhub/common/src/services/Analytics/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
@@ -231,6 +233,17 @@ export function* getUserTransaction() {
   }
 }
 
+export function* getBankInfo() {
+  try {
+    const profile: UserProfile = yield select(UserSelector.getUserProfile);
+    const response = yield call(UserRepository.getUserBankInfo, profile.id);
+    yield put(UserActions.getBankInfoSuccess(response));
+  } catch (e) {
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    yield put(UserActions.getBankInfoFailure());
+  }
+}
+
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
@@ -242,4 +255,5 @@ export function* watchUser() {
   yield takeEvery(UserActionTypes.GET.USER_SUBSCRIPTIONS, getUserSubscriptions);
   yield takeEvery(UserActionTypes.GET.USER_SERVICES, getUserServices);
   yield takeEvery(UserActionTypes.GET.USER_COIN_TRANSACTION, getUserTransaction);
+  yield takeEvery(UserActionTypes.GET.BANK_INFO, getBankInfo);
 }

@@ -2,6 +2,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { BankInfo } from '@homzhub/common/src/domain/models/BankInfo';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { CoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
@@ -216,6 +217,14 @@ const getUserCoinTransaction = (state: IState): CoinTransaction[] => {
   return ObjectMapper.deserializeArray(CoinTransaction, userTransaction);
 };
 
+const getBankInfo = (state: IState): BankInfo[] => {
+  const {
+    user: { bankInfo },
+  } = state;
+  if (!bankInfo) return [];
+  return ObjectMapper.deserializeArray(BankInfo, bankInfo);
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -239,4 +248,5 @@ export const UserSelector = {
   getUserLoaders,
   getUserServices,
   getUserCoinTransaction,
+  getBankInfo,
 };

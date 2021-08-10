@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Text as RNText, StyleProp, StyleSheet, ViewStyle, View } from 'react-native';
+import { Text as RNText, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { FormikProps, FormikValues } from 'formik';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -30,7 +30,6 @@ export interface IFormDropdownProps {
   textType?: TextFieldType;
   textSize?: TextSizeType;
   fontType?: FontWeightType;
-  rightNode?: React.ReactElement;
 }
 
 export class FormDropdown extends PureComponent<IFormDropdownProps> {
@@ -51,7 +50,6 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
       textType = 'label',
       textSize = 'regular',
       fontType = 'regular',
-      rightNode,
     } = this.props;
     const { values, errors, touched, setFieldValue, setFieldTouched } = formProps;
 
@@ -85,14 +83,10 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
     const isWeb = PlatformUtils.isWeb();
     return (
       <WithFieldError error={error}>
-        <View style={styles.rowView}>
-          <TextField type={textSize} textType={fontType} style={labelStyles}>
-            {label}
-            {isMandatory && <RNText style={styles.asterix}> *</RNText>}
-          </TextField>
-          {rightNode}
-        </View>
-
+        <TextField type={textSize} textType={fontType} style={labelStyles}>
+          {label}
+          {isMandatory && <RNText style={styles.asterix}> *</RNText>}
+        </TextField>
         <Dropdown
           // @ts-ignore
           data={options}
@@ -119,10 +113,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   containerWeb: {
-    justifyContent: 'space-between',
-  },
-  rowView: {
-    flexDirection: 'row',
     justifyContent: 'space-between',
   },
 });

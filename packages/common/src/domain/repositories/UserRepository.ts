@@ -29,6 +29,7 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
+import { BankInfo } from '@homzhub/common/src/domain/models/BankInfo';
 import { CoinsManagement } from '@homzhub/common/src/domain/models/CoinsManagement';
 import { CoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { PanNumber } from '@homzhub/common/src/domain/models/PanNumber';
@@ -71,7 +72,7 @@ const ENDPOINTS = {
   interactions: (userId: number): string => `v1/users/${userId}/interactions/`,
   verifyReferralCode: (code: string): string => `v1/users/referrals/${code}/`,
   verifyWorkEmail: (email: string): string => `v1/users/work-info/emails/${email}/`,
-  bankAccountDetails: (userId: number): string => `v1/users/${userId}/user-bank-info/`,
+  bankInfo: (id: number): string => `v1/users/${id}/user-bank-info/`,
   panNumbers: (userId: number): string => `v1/users/${userId}/pan-numbers/`,
 };
 
@@ -233,8 +234,13 @@ class UserRepository {
     return ObjectMapper.deserializeArray(CoinTransaction, response);
   };
 
+  public getUserBankInfo = async (id: number): Promise<BankInfo[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.bankInfo(id));
+    return ObjectMapper.deserializeArray(BankInfo, response);
+  };
+
   public addBankDetails = async (userId: number, payload: IBankAccountPayload): Promise<void> => {
-    return await this.apiClient.post(ENDPOINTS.bankAccountDetails(userId), payload);
+    return await this.apiClient.post(ENDPOINTS.bankInfo(userId), payload);
   };
 
   public getPanDetails = async (userId: number): Promise<PanNumber> => {

@@ -1,5 +1,6 @@
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { IBankInfo } from '@homzhub/common/src/domain/models/BankInfo';
 import { ICoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
@@ -18,6 +19,7 @@ export interface IUserState {
   userSubscriptions: IUserSubscription | null;
   userServices: IAsset[];
   userTransaction: ICoinTransaction[];
+  bankInfo: IBankInfo[];
   error: {
     user: string;
   };
@@ -30,6 +32,7 @@ export interface IUserState {
     whileFavouriteProperties: boolean;
     userService: boolean;
     userTransaction: boolean;
+    bankInfo: boolean;
   };
 }
 

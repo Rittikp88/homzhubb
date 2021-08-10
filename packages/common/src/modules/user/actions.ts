@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { BankInfo, IBankInfo } from '@homzhub/common/src/domain/models/BankInfo';
 import { CoinTransaction, ICoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { IUserProfile, UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences, UserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
@@ -43,6 +44,9 @@ export const UserActionTypes = {
     USER_COIN_TRANSACTION: `${actionTypePrefix}USER_COIN_TRANSACTION`,
     USER_COIN_TRANSACTION_SUCCESS: `${actionTypePrefix}USER_COIN_TRANSACTION_SUCCESS`,
     USER_COIN_TRANSACTION_FAILURE: `${actionTypePrefix}USER_COIN_TRANSACTION_FAILURE`,
+    BANK_INFO: `${actionTypePrefix}BANK_INFO`,
+    BANK_INFO_SUCCESS: `${actionTypePrefix}BANK_INFO_SUCCESS`,
+    BANK_INFO_FAILURE: `${actionTypePrefix}BANK_INFO_FAILURE`,
   },
   SET: {
     CHANGE_STACK: `${actionTypePrefix}CHANGE_STACK`,
@@ -233,6 +237,23 @@ const getUserCoinTransactionFailure = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.USER_COIN_TRANSACTION_FAILURE,
 });
 
+const getBankInfo = (): IFluxStandardAction => {
+  return {
+    type: UserActionTypes.GET.BANK_INFO,
+  };
+};
+
+const getBankInfoSuccess = (payload: BankInfo[]): IFluxStandardAction<IBankInfo[]> => {
+  return {
+    type: UserActionTypes.GET.BANK_INFO_SUCCESS,
+    payload: ObjectMapper.serializeArray(payload),
+  };
+};
+
+const getBankInfoFailure = (): IFluxStandardAction => ({
+  type: UserActionTypes.GET.BANK_INFO_FAILURE,
+});
+
 export type UserPayloadTypes =
   | string
   | boolean
@@ -243,7 +264,8 @@ export type UserPayloadTypes =
   | IUserSubscription
   | IAsset[]
   | IWishlist[]
-  | ICoinTransaction[];
+  | ICoinTransaction[]
+  | IBankInfo[];
 
 export const UserActions = {
   login,
@@ -279,4 +301,7 @@ export const UserActions = {
   getUserCoinTransaction,
   getUserCoinTransactionSuccess,
   getUserCoinTransactionFailure,
+  getBankInfo,
+  getBankInfoSuccess,
+  getBankInfoFailure,
 };

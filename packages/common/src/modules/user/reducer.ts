@@ -1,6 +1,7 @@
 import { IUserTokens } from '@homzhub/common/src/services/storage/StorageService';
 import { UserActionTypes, UserPayloadTypes } from '@homzhub/common/src/modules/user/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { IBankInfo } from '@homzhub/common/src/domain/models/BankInfo';
 import { ICoinTransaction } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { IUserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { IUserPreferences } from '@homzhub/common/src/domain/models/UserPreferences';
@@ -21,6 +22,7 @@ export const initialUserState: IUserState = {
   favouriteProperties: [],
   userServices: [],
   userTransaction: [],
+  bankInfo: [],
   error: {
     user: '',
   },
@@ -33,6 +35,7 @@ export const initialUserState: IUserState = {
     whileFavouriteProperties: false,
     userService: false,
     userTransaction: false,
+    bankInfo: false,
   },
 };
 
@@ -199,6 +202,25 @@ export const userReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['userTransaction']: false },
+      };
+    case UserActionTypes.GET.BANK_INFO:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['bankInfo']: true },
+      };
+    case UserActionTypes.GET.BANK_INFO_SUCCESS:
+      return {
+        ...state,
+        ['bankInfo']: action.payload as IBankInfo[],
+        ['loaders']: {
+          ...state.loaders,
+          ['bankInfo']: false,
+        },
+      };
+    case UserActionTypes.GET.BANK_INFO_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['bankInfo']: false },
       };
     default:
       return state;

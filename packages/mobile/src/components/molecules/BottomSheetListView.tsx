@@ -51,10 +51,13 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
 
   private renderSheetItem = ({ item, index }: { item: PickerItemProps; index: number }): React.ReactElement => {
     const { selectedValue, onSelectItem, testID, numColumns = 1 } = this.props;
+    // @ts-ignore
     const onItemSelect = (): void => onSelectItem(item.value);
     const isCheck: boolean = selectedValue === item.value;
+
     return (
       <ListItem
+        // @ts-ignore
         listItem={item}
         isCheck={isCheck}
         onItemSelect={onItemSelect}

@@ -59,9 +59,9 @@
 		A7D73EC6247FBFF3006F9427 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D73EAB247FBFF3006F9427 /* AIRGMSMarker.m */; };
 		A7D73EC7247FBFF3006F9427 /* AIRGoogleMapCalloutSubview.m in Sources */ = {isa = PBXBuildFile; fileRef = A7D73EAC247FBFF3006F9427 /* AIRGoogleMapCalloutSubview.m */; };
 		A7F4CC3624756BDC0002A4E7 /* libRNGoogleSignin.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F4CC3524756BDC0002A4E7 /* libRNGoogleSignin.a */; };
+		AD5D205F56645BDC95797642 /* libPods-homzhub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */; };
 		B0A20E345E3AB2B81097AB22 /* libPods-homzhub-homzhubTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 400139C0843A029E1314342A /* libPods-homzhub-homzhubTests.a */; };
 		C8E39350344548D8B642F458 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35C9381915564BBDA4C55CC6 /* OpenSans-SemiBold.ttf */; };
-		D0B11F371B00388BA34ACC25 /* libPods-homzhub.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BDFFF1D304D435589FB6D779 /* libPods-homzhub.a */; };
 		E85B38F625EFB76C0041EA51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E85B38F525EFB76C0041EA51 /* LaunchScreen.storyboard */; };
 		F80C4570FE551668E3A45A43 /* libPods-ImageNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC803019C7283DA669CD0715 /* libPods-ImageNotification.a */; };
 		FF2BA86EC8B01A7A4189DFFF /* libPods-homzhub-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB1A424FDA99B0872DE5F2EE /* libPods-homzhub-tvOSTests.a */; };
@@ -245,8 +245,8 @@
 			files = (
 				6B91BB172555912E003B07E0 /* libswiftARKit.tbd in Frameworks */,
 				A7F4CC3624756BDC0002A4E7 /* libRNGoogleSignin.a in Frameworks */,
-				D0B11F371B00388BA34ACC25 /* libPods-homzhub.a in Frameworks */,
 				A70DCBB32623244A00986C8A /* StoreKit.framework in Frameworks */,
+				AD5D205F56645BDC95797642 /* libPods-homzhub.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1232,7 +1232,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development: Harish Taori (KB2425WYJP)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
 				EXCLUDED_ARCHS = "";
@@ -1326,7 +1326,7 @@
 				CODE_SIGN_ENTITLEMENTS = homzhub/homzhub.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Homzhub Pte Ltd (9TKZH83J22)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
@@ -1653,7 +1653,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -1686,7 +1686,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Homzhub Pte Ltd (9TKZH83J22)";
 				CODE_SIGN_STYLE = Manual;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
