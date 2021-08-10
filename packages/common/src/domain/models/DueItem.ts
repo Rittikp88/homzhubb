@@ -14,6 +14,7 @@ export interface IDueItem {
   currency: ICurrency;
   asset: IAsset;
   can_delete: boolean;
+  can_add_reminder: boolean;
 }
 @JsonObject('DueItem')
 export class DueItem {
@@ -49,6 +50,9 @@ export class DueItem {
 
   @JsonProperty('can_delete', Boolean)
   private _canDelete = false;
+
+  @JsonProperty('can_add_reminder', Boolean)
+  private _canAddReminder = false;
 
   get id(): number {
     return this._id;
@@ -100,5 +104,9 @@ export class DueItem {
 
   get canDelete(): boolean {
     return this._canDelete;
+  }
+
+  get canAddReminder(): boolean {
+    return this._canAddReminder;
   }
 }

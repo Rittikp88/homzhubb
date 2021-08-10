@@ -1001,7 +1001,8 @@
     "panFormatError": "Please enter a valid PAN",
     "addBankDetailsSuccess": "Bank Details Added Successfully",
     "bankAccount": "Bank Account",
-    "selectAccount": "Select account"
+    "selectAccount": "Select account",
+    "reminderAlreadySetForDue": "A reminder is already set for this due"
   },
   "assetMore": {
     "more": "More",

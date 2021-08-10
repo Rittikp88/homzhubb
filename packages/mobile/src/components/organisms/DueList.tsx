@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet } from 'react-native';
 import { SvgProps } from 'react-native-svg';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Accounting from '@homzhub/common/src/assets/images/accounting.svg';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -30,6 +31,7 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const [isSheetVisible, setSheetVisibility] = useState(false);
+  const currentDue = useSelector(FinancialSelectors.getCurrentDue);
   // HOOKS END
 
   const handleAlreadyPaid = (): void => {
@@ -37,7 +39,12 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
   };
 
   const onSetReminder = (): void => {
-    navigate(ScreensKeys.AddReminderScreen, { isFromDues: true });
+    if (currentDue && currentDue.canAddReminder) {
+      navigate(ScreensKeys.AddReminderScreen, { isFromDues: true });
+      return;
+    }
+    AlertHelper.error({ message: t('assetFinancial:reminderAlreadySetForDue') });
+    setSheetVisibility(false);
   };
 
   const getSheetData = (): ISheetData[] => {
