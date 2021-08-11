@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -13,12 +14,11 @@ import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 const AddBankAccount = (): React.ReactElement => {
   const { t } = useTranslation();
   const { goBack } = useNavigation();
-  const { params } = useRoute();
   const { id } = useSelector(UserSelector.getUserProfile);
+  const { owner: ownerId } = useSelector(FinancialSelectors.getReminderFormData);
   const [isLoading, setLoading] = useState(false);
 
-  // @ts-ignore
-  const userId = params?.userId ?? id;
+  const userId = ownerId > 0 ? ownerId : id;
 
   return (
     <Screen

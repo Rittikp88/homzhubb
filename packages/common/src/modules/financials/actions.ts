@@ -11,6 +11,7 @@ import {
   IAddReminderPayload,
   ILedgerMetrics,
   IProcessPaymentPayload,
+  IReminderFormData,
   IUpdateReminderPayload,
 } from '@homzhub/common/src/modules/financials/interfaces';
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
@@ -55,6 +56,7 @@ export const FinancialActionTypes = {
     SELECTED_TIME_RANGE: `${actionTypePrefix}SELECTED_TIME_RANGE`,
     CURRENT_DUE_ID: `${actionTypePrefix}CURRENT_DUE_ID`,
     CURRENT_REMINDER_ID: `${actionTypePrefix}CURRENT_REMINDER_ID`,
+    REMINDER_FORM_DATA: `${actionTypePrefix}REMINDER_FORM_DATA`,
   },
   POST: {
     PAYMENT: `${actionTypePrefix}PAYMENT`,
@@ -251,6 +253,11 @@ const updateReminderFailure = (): IFluxStandardAction => ({
   type: FinancialActionTypes.POST.UPDATE_REMINDER_FAILURE,
 });
 
+const setReminderFormData = (payload: IReminderFormData): IFluxStandardAction<IReminderFormData> => ({
+  type: FinancialActionTypes.SET.REMINDER_FORM_DATA,
+  payload,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -263,7 +270,8 @@ export type FinancialActionPayloadTypes =
   | IAddReminderPayload
   | IReminder[]
   | IAsset[]
-  | IUpdateReminderPayload;
+  | IUpdateReminderPayload
+  | IReminderFormData;
 
 export const FinancialActions = {
   getTransactions,
@@ -306,4 +314,5 @@ export const FinancialActions = {
   updateReminder,
   updateReminderSuccess,
   updateReminderFailure,
+  setReminderFormData,
 };

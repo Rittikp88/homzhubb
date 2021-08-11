@@ -369,5 +369,4 @@ export interface IAddReminder {
 
 export interface IAddBankAccount {
   isEdit?: boolean;
-  userId?: number;
 }

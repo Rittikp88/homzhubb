@@ -134,9 +134,13 @@ export function* getAssetById(action: IFluxStandardAction<number>) {
 }
 
 function* getAssetUsers(action: IFluxStandardAction<IAssetUserPayload>) {
+  const { payload } = action;
   try {
-    const response = yield call(AssetRepository.getAssetUsers, action.payload as IAssetUserPayload);
+    const response = yield call(AssetRepository.getAssetUsers, payload as IAssetUserPayload);
     yield put(AssetActions.getAssetUsersSuccess(response));
+    if (payload && payload.onCallback) {
+      payload.onCallback(true);
+    }
   } catch (err) {
     const error = ErrorUtils.getErrorMessage(err.details);
     AlertHelper.error({ message: error, statusCode: err.details.statusCode });

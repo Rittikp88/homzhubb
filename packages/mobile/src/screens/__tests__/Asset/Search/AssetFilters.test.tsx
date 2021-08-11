@@ -4,7 +4,7 @@ import toJson from 'enzyme-to-json';
 import { SearchFilter } from '@homzhub/common/src/mocks/FilterData';
 import { AssetFilters } from '@homzhub/mobile/src/screens/Asset/Search/AssetFilters';
 
-describe('Asset filter', () => {
+describe.skip('Asset filter', () => {
   let component: ShallowWrapper;
   let props: any;
   const mock = jest.fn();

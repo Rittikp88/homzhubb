@@ -1,5 +1,6 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Amount } from '@homzhub/common/src/domain/models/Amount';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
@@ -9,7 +10,7 @@ import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers
 import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
-import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
+import { IFinancialState, ILedgerMetrics, IReminderFormData } from '@homzhub/common/src/modules/financials/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getTransactions = (state: IState): FinancialTransactions | null => {
@@ -121,12 +122,34 @@ const getReminderCategories = (state: IState): Unit[] => {
   return ObjectMapper.deserializeArray(Unit, reminderCategories);
 };
 
+const getCategoriesDropdown = (state: IState): IDropdownOption[] => {
+  const categories = getReminderCategories(state);
+  if (categories.length < 1) return [];
+  return categories.map((item) => {
+    return {
+      label: item.name,
+      value: item.id,
+    };
+  });
+};
+
 const getReminderFrequencies = (state: IState): Unit[] => {
   const {
     financials: { reminderFrequencies },
   } = state;
   if (!reminderFrequencies) return [];
   return ObjectMapper.deserializeArray(Unit, reminderFrequencies);
+};
+
+const getFrequenciesDropdown = (state: IState): IDropdownOption[] => {
+  const frequencies = getReminderFrequencies(state);
+  if (frequencies.length < 1) return [];
+  return frequencies.map((item) => {
+    return {
+      label: item.name,
+      value: item.id,
+    };
+  });
 };
 
 const getReminders = (state: IState): Reminder[] => {
@@ -163,6 +186,13 @@ const getCurrentReminderId = (state: IState): number => {
   return currentReminderId;
 };
 
+const getReminderFormData = (state: IState): IReminderFormData => {
+  const {
+    financials: { reminderFormData },
+  } = state;
+  return reminderFormData;
+};
+
 export const FinancialSelectors = {
   getDues,
   getDueItems,
@@ -182,4 +212,7 @@ export const FinancialSelectors = {
   getReminderAssets,
   getCurrentDue,
   getCurrentReminderId,
+  getReminderFormData,
+  getCategoriesDropdown,
+  getFrequenciesDropdown,
 };

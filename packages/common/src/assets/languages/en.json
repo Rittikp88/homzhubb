@@ -704,7 +704,9 @@
     "userNotAssociated": "This person is not associated with the property",
     "selectOwner": "Select owner",
     "selectTenant": "Select Tenant",
-    "enterRentAmount": "Enter Rent amount"
+    "enterRentAmount": "Enter Rent amount",
+    "selectBankAccount": "Select Bank Account",
+    "yetToAcceptInvite": "The tenant for this property is yet to accept the invite"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -972,7 +974,7 @@
     "frequency": "Frequency",
     "enterEmails": "Enter your Emails here..",
     "notifyTo": "Notify to",
-    "reminderSuccessMsg": "Reminder added successfully",
+    "reminderSuccessMsg": "Your Reminder has been added successfully",
     "reminders": "Reminders",
     "addNew": "Add New",
     "alreadyPaid": "Already Paid",

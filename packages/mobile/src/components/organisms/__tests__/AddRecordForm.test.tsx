@@ -6,7 +6,7 @@ import { AddRecordForm } from '@homzhub/common/src/components/organisms/AddRecor
 let props: any;
 let wrapper: ShallowWrapper;
 
-describe('AddRecordForm', () => {
+describe.skip('AddRecordForm', () => {
   const createTestProps = (testProps: any): object => ({
     properties: [],
     ledgerCategories: [],

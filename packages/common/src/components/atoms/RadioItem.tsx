@@ -16,8 +16,9 @@ const RadioItem = (props: IProps): React.ReactElement => {
     <TouchableOpacity onPress={(): void => onItemSelect(item.value)} style={styles.row}>
       <Icon
         name={isCheck ? icons.circleFilled : icons.circleOutline}
-        color={isCheck ? theme.colors.primaryColor : theme.colors.blueTint1}
+        color={theme.colors.darkTint3}
         style={styles.icon}
+        size={14}
       />
       <DetailCard heading={item.heading} label={item.label} description={item.description} />
     </TouchableOpacity>
@@ -32,6 +33,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginTop: 6,
-    marginHorizontal: 10,
+    marginHorizontal: 16,
   },
 });

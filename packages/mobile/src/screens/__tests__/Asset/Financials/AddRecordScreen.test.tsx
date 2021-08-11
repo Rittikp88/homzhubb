@@ -3,7 +3,7 @@ import { shallow, ShallowWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import { AddRecordScreen } from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
 
-describe('Add Record Screen', () => {
+describe.skip('Add Record Screen', () => {
   let component: ShallowWrapper;
   let props: any;
 

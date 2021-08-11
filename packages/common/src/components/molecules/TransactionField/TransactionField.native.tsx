@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { FormikProps } from 'formik';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -36,9 +37,10 @@ export const TransactionField = (props: ITransactionProp): React.ReactElement =>
     placeholder,
     name,
     isDisabled = false,
-    formProps: { setFieldValue, setFieldTouched, values },
+    formProps: { setFieldValue, setFieldTouched, values, errors },
   } = props;
   const [isVisible, setIsVisible] = useState(false);
+  const { t } = useTranslation();
 
   const onSelectItem = (value: string): void => {
     setIsVisible(false);
@@ -56,24 +58,34 @@ export const TransactionField = (props: ITransactionProp): React.ReactElement =>
   };
 
   const itemSeparator = (): React.ReactElement => {
-    return <Divider />;
+    return <Divider containerStyles={styles.divider} />;
   };
 
   const value = options.filter((item) => item.value === values[name])[0];
   const color = isDisabled ? theme.colors.disabled : theme.colors.darkTint7;
   return (
-    <WithFieldError>
+    <WithFieldError error={errors[name]}>
       <View style={styles.rowView}>
         <Typography size={textSize} fontWeight={fontType} variant={textType}>
           {label}
         </Typography>
         {rightNode}
       </View>
-      <TouchableOpacity style={[styles.field, isDisabled && styles.disabled]} onPress={(): void => setIsVisible(true)}>
+      <TouchableOpacity
+        style={[styles.field, isDisabled && styles.disabled]}
+        disabled={isDisabled}
+        onPress={(): void => setIsVisible(true)}
+      >
         <Label>{value ? value.selectedValue : placeholder}</Label>
         <Icon name={icons.downArrowFilled} size={16} color={color} />
       </TouchableOpacity>
-      <BottomSheet visible={isVisible} onCloseSheet={(): void => setIsVisible(false)} sheetHeight={350}>
+      <BottomSheet
+        isAlwaysVisible
+        headerTitle={t('property:selectBankAccount')}
+        visible={isVisible}
+        onCloseSheet={(): void => setIsVisible(false)}
+        sheetHeight={350}
+      >
         <FlatList data={options} renderItem={renderItem} ItemSeparatorComponent={itemSeparator} />
       </BottomSheet>
     </WithFieldError>
@@ -98,5 +110,9 @@ const styles = StyleSheet.create({
   },
   disabled: {
     opacity: 0.5,
+  },
+  divider: {
+    margin: 16,
+    borderColor: theme.colors.background,
   },
 });

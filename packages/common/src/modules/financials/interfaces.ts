@@ -29,6 +29,7 @@ export interface IFinancialState {
   reminderFrequencies: IUnit[];
   reminders: IReminder[];
   reminderAssets: IAsset[];
+  reminderFormData: IReminderFormData;
   loaders: {
     transactions: boolean;
     dues: boolean;
@@ -53,4 +54,17 @@ export interface IUpdateReminderPayload {
   id: number;
   data: IReminderPayload;
   onCallback?: (status: boolean) => void;
+}
+
+export interface IReminderFormData {
+  title: string;
+  property?: number;
+  frequency: number;
+  date: string;
+  category: number;
+  leaseUnit?: number;
+  rent?: string;
+  bankAccount?: number;
+  owner?: number;
+  tenant?: number;
 }

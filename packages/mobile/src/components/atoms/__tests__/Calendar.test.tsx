@@ -15,7 +15,7 @@ const createTestProps = (testProps: any): object => ({
 let props: any;
 
 describe.skip('CalendarComponent', () => {
-  it('should match snapshot when isMonthView is true', () => {
+  it.skip('should match snapshot when isMonthView is true', () => {
     props = createTestProps({});
     const wrapper = shallow(<CalendarComponent {...props} />);
     const instance = wrapper.instance();
@@ -27,7 +27,7 @@ describe.skip('CalendarComponent', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('should match snapshot when isMonthView is false', () => {
+  it.skip('should match snapshot when isMonthView is false', () => {
     props = createTestProps({
       selectedDate: '',
     });

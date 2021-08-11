@@ -2,26 +2,17 @@
 
 exports[`Test cases for FormDropdown should render snapshot 1`] = `
 <WithFieldError>
-  <View
+  <Label
     style={
       Object {
-        "flexDirection": "row",
-        "justifyContent": "space-between",
+        "color": "#33495E",
+        "marginBottom": 6,
+        "marginTop": 16,
       }
     }
-  >
-    <Label
-      style={
-        Object {
-          "color": "#33495E",
-          "marginBottom": 6,
-          "marginTop": 16,
-        }
-      }
-      textType="regular"
-      type="regular"
-    />
-  </View>
+    textType="regular"
+    type="regular"
+  />
   <Dropdown
     containerStyle={Object {}}
     data={

@@ -18,11 +18,11 @@ describe.skip('Book Visit Screen', () => {
     component = shallow(<BookVisit {...props} t={(key: string): string => key} />);
   });
 
-  it('should render snapshot', () => {
+  it.skip('should render snapshot', () => {
     expect(toJson(component)).toMatchSnapshot();
   });
 
-  it('should render snapshot with upcoming visits', () => {
+  it.skip('should render snapshot with upcoming visits', () => {
     component.setState({ upcomingVisits: [{}] });
     expect(toJson(component)).toMatchSnapshot();
   });

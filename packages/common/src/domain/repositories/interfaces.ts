@@ -1073,4 +1073,5 @@ export interface IBankAccountPayload {
 export interface IAssetUserPayload {
   assetId: number;
   lease_transaction_id?: number;
+  onCallback?: (status: boolean) => void;
 }

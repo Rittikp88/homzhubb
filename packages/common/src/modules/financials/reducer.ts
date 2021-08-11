@@ -1,3 +1,4 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { FinancialActionPayloadTypes, FinancialActionTypes } from '@homzhub/common/src/modules/financials/actions';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
@@ -6,7 +7,7 @@ import { IFinancialTransaction } from '@homzhub/common/src/domain/models/Financi
 import { IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IReminder } from '@homzhub/common/src/domain/models/Reminder';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
-import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
+import { IFinancialState, ILedgerMetrics, IReminderFormData } from '@homzhub/common/src/modules/financials/interfaces';
 import { IFluxStandardAction, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
@@ -33,6 +34,18 @@ export const initialFinancialsState: IFinancialState = {
   reminderCategories: [],
   reminderFrequencies: [],
   reminderAssets: [],
+  reminderFormData: {
+    title: '',
+    property: -1,
+    category: 2,
+    leaseUnit: -1,
+    frequency: 4, // ONE_TIME id
+    date: DateUtils.getNextDate(1),
+    rent: '',
+    bankAccount: -1,
+    owner: -1,
+    tenant: -1,
+  },
   loaders: {
     transactions: false,
     dues: false,
@@ -177,6 +190,11 @@ export const financialsReducer = (
       return {
         ...state,
         ['currentReminderId']: action.payload as number,
+      };
+    case FinancialActionTypes.SET.REMINDER_FORM_DATA:
+      return {
+        ...state,
+        ['reminderFormData']: action.payload as IReminderFormData,
       };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;
