@@ -5,7 +5,9 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
@@ -16,6 +18,7 @@ import {
   LeaseFormKeys,
   LeaseFormSchema,
   LeaseTermForm,
+  ModuleDependency,
 } from '@homzhub/common/src/components/molecules/LeaseTermForm';
 import { TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -27,10 +30,12 @@ interface IProps {
   leaseData: TransactionDetail;
   onSubmit: (payload: ILeaseTermData) => void;
   user?: User;
+  isFromEdit: boolean;
+  onCloseModal?: () => void;
 }
 
 const ProfileLeaseTerm = (props: IProps): React.ReactElement => {
-  const { leaseData, onSubmit, user, assetGroup } = props;
+  const { leaseData, onSubmit, user, assetGroup, isFromEdit, onCloseModal } = props;
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
 
@@ -90,7 +95,6 @@ const ProfileLeaseTerm = (props: IProps): React.ReactElement => {
 
   if (!leaseData) return <Loader visible />;
   const { currency, leaseEndDate, leaseStartDate } = leaseData;
-
   return (
     <>
       <View style={styles.container}>
@@ -107,22 +111,42 @@ const ProfileLeaseTerm = (props: IProps): React.ReactElement => {
             <>
               <LeaseTermForm
                 isTitleRequired={false}
-                isFromEdit
+                isFromEdit={isFromEdit}
                 isFromManage
                 formProps={formProps}
                 currencyData={currency}
                 assetGroupType={assetGroup}
                 leaseEndDate={leaseEndDate}
                 leaseStartDate={leaseStartDate}
+                moduleDependency={ModuleDependency.UPDATE_LEASE}
               />
-              <FormButton
-                title={t('common:update')}
-                type="primary"
-                formProps={formProps}
-                // @ts-ignore
-                onPress={formProps.handleSubmit}
-                containerStyle={styles.button}
-              />
+              {PlatformUtils.isWeb() && onCloseModal ? (
+                <View style={styles.buttonActionGroup}>
+                  <Button
+                    type="secondary"
+                    title={t('common:cancel')}
+                    onPress={(): void => onCloseModal()}
+                    containerStyle={[styles.button, PlatformUtils.isWeb() && styles.buttonWeb]}
+                  />
+                  <FormButton
+                    title={t('common:submit')}
+                    type="primary"
+                    formProps={formProps}
+                    // @ts-ignore
+                    onPress={formProps.handleSubmit}
+                    containerStyle={[styles.button, PlatformUtils.isWeb() && styles.buttonWeb]}
+                  />
+                </View>
+              ) : (
+                <FormButton
+                  title={t('common:update')}
+                  type="primary"
+                  formProps={formProps}
+                  // @ts-ignore
+                  onPress={formProps.handleSubmit}
+                  containerStyle={[styles.button]}
+                />
+              )}
             </>
           );
         }}
@@ -145,5 +169,12 @@ const styles = StyleSheet.create({
   button: {
     marginHorizontal: 16,
     marginVertical: 10,
+  },
+  buttonWeb: {
+    width: 200,
+  },
+  buttonActionGroup: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });

@@ -20,6 +20,7 @@ export enum OfferAction {
   COUNTER = 'COUNTER',
   REASON = 'REASON',
   CONFIRMARION = 'CONFIRMATION',
+  CREATE_LEASE = 'CREATE_LEASE',
 }
 
 export enum OfferFormKeys {

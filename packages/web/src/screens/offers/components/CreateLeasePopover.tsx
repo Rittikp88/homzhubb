@@ -1,31 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions';
-import { OfferSelectors } from '@homzhub/common/src/modules/offers/selectors';
-import { Loader } from '@homzhub/common/src/components/atoms/Loader';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import ProfileLeaseTerm from '@homzhub/common/src/components/organisms/ProfileLeaseTerm';
-import { ITransactionDetail, TransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
-import { Offer } from '@homzhub/common/src/domain/models/Offer';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { DetailType, ILeaseTermData } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { TransactionDetail, ITransactionDetail } from '@homzhub/common/src/domain/models/TransactionDetail';
+import { Offer } from '@homzhub/common/src/domain/models/Offer';
 import { ScheduleTypes } from '@homzhub/common/src/constants/Terms';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-const CreateLease = (): React.ReactElement => {
-  // HOOKS START
-  const { goBack, navigate } = useNavigation();
+interface IProps {
+  assetDetail: Asset | undefined;
+  onClosePopover: () => void;
+  offer: Offer;
+}
+
+const CreateLeasePopover: React.FC<IProps> = (props: IProps) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  const listingData = useSelector(OfferSelectors.getListingDetail);
-  const offerData: Offer | null = useSelector(OfferSelectors.getCurrentOffer);
-  const { t } = useTranslation(LocaleConstants.namespacesKey.offers);
+  const { assetDetail: listingData, offer: offerData, onClosePopover } = props;
+  const { user } = { ...offerData, user: offerData.user || {} };
+  const {
+    assetGroup: { code },
+  } = { ...listingData, assetGroup: listingData?.assetGroup || {} };
   const [leaseData, setLeaseData] = useState<TransactionDetail>();
 
   useEffect(() => {
@@ -74,7 +77,7 @@ const CreateLease = (): React.ReactElement => {
             assetType: DetailType.LEASE_UNIT,
           })
         );
-        navigate(ScreensKeys.PropertyDetailScreen);
+        onClosePopover();
         AlertHelper.success({ message: t('property:leaseUpdated') });
       } catch (e) {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -82,18 +85,18 @@ const CreateLease = (): React.ReactElement => {
     }
   };
 
-  if (!leaseData || !listingData) return <Loader visible />;
   return (
-    <UserScreen title={t('common:Offers')} pageTitle={t('createLease')} onBackPress={goBack}>
+    <View>
       <ProfileLeaseTerm
-        user={offerData?.user}
-        assetGroup={listingData.assetGroup.code}
-        leaseData={leaseData}
+        user={user}
+        assetGroup={code as string}
+        leaseData={leaseData as TransactionDetail}
         onSubmit={onSubmit}
         isFromEdit={false}
+        onCloseModal={onClosePopover}
       />
-    </UserScreen>
+    </View>
   );
 };
 
-export default CreateLease;
+export default CreateLeasePopover;

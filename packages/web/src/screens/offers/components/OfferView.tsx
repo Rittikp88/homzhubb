@@ -161,6 +161,14 @@ const OfferView: FC<IProps> = (props: IProps) => {
     getData();
   };
 
+  const onCreateLease = (offer: Offer): void => {
+    setCurrentOffer(offer);
+    setOfferActionType(OfferAction.CREATE_LEASE);
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+
   return (
     <View>
       {!isMobile &&
@@ -176,6 +184,7 @@ const OfferView: FC<IProps> = (props: IProps) => {
             onPressMessages={(): void => onPressMessageIcon(offer.threadId)}
             onPressAction={(action: OfferAction): void => onPressAction(action, offer)}
             onViewReasonWeb={(action: OfferAction): void => onViewReasonWeb(action, offer)}
+            onCreateLease={(): void => onCreateLease(offer)}
             pastOffer={pastOffers}
             onMoreInfo={handlePastOffer}
           />
@@ -191,6 +200,7 @@ const OfferView: FC<IProps> = (props: IProps) => {
             onPressMessages={(): void => onPressMessageIcon(offer.threadId)}
             onPressAction={(action: OfferAction): void => onPressAction(action, offer)}
             onViewReasonWeb={(action: OfferAction): void => onViewReasonWeb(action, offer)}
+            onCreateLease={(): void => onCreateLease(offer)}
             pastOffer={pastOffers}
             onMoreInfo={handlePastOffer}
           />

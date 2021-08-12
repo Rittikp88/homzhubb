@@ -138,6 +138,14 @@ const OffersMade: FC<IProps> = (props: IProps) => {
     subTitle: t('offers:offerSucessSubHeader'),
   };
 
+  const onCreateLease = (argOffer: Offer): void => {
+    setCurrentOffer(argOffer);
+    setOfferActionType(OfferAction.CREATE_LEASE);
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+
   return (
     <View>
       <View style={styles.background}>
@@ -156,6 +164,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
           onMoreInfo={handlePastOffer}
           onPressAction={(action: OfferAction): void => onPressAction(action, offer)}
           onViewReasonWeb={(action: OfferAction): void => onViewReasonWeb(action, offer)}
+          onCreateLease={(): void => onCreateLease(offer)}
         />
       )}
       {isMobile && offer && (
@@ -170,6 +179,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
           onMoreInfo={handlePastOffer}
           onPressAction={(action: OfferAction): void => onPressAction(action, offer)}
           onViewReasonWeb={(action: OfferAction): void => onViewReasonWeb(action, offer)}
+          onCreateLease={(): void => onCreateLease(offer)}
         />
       )}
       <TenancyFormPopover

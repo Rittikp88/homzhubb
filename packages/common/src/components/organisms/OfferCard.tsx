@@ -324,7 +324,7 @@ class OfferCard extends Component<Props, IOwnState> {
           <Button
             type="primary"
             title={t('createLease')}
-            containerStyle={styles.leaseButton}
+            containerStyle={!PlatformUtils.isWeb() && styles.leaseButton}
             titleStyle={styles.buttonTitle}
             onPress={onCreateLease}
           />

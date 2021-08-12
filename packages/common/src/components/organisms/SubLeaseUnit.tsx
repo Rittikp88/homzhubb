@@ -22,6 +22,7 @@ import {
   initialLeaseFormValues,
   LeaseFormSchema,
   LeaseTermForm,
+  ModuleDependency,
 } from '@homzhub/common/src/components/molecules/LeaseTermForm';
 import { FlowTypes, PropertySpaces } from '@homzhub/common/src/components/organisms/PropertySpaces';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
@@ -246,6 +247,7 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
               assetGroupType={assetGroupType}
               leaseStartDate={startDate}
               isLeaseUnitAvailable={!!leaseUnit}
+              moduleDependency={ModuleDependency.LEASE_LISTING}
             >
               {preferences.length > 0 && (
                 <AssetListingSection title={t('tenantPreferences')} containerStyles={styles.descriptionContainer}>

@@ -60,6 +60,12 @@ enum LeaseFormKeys {
   description = 'description',
 }
 
+export enum ModuleDependency { //  To validate the use of Component in various flows.
+  MANAGE_LISING = 'MANAGE_LISTING',
+  LEASE_LISTING = 'LEASE_LISTING',
+  UPDATE_LEASE = 'UPDATE_LEASE',
+}
+
 interface IProps {
   formProps: any;
   currencyData: Currency;
@@ -72,6 +78,7 @@ interface IProps {
   isFromEdit?: boolean;
   isLeaseUnitAvailable?: boolean;
   children?: React.ReactNode;
+  moduleDependency: ModuleDependency;
 }
 
 const MINIMUM_LEASE_PERIOD = 1;
@@ -110,6 +117,7 @@ const LeaseTermForm = ({
   isFromEdit = false,
   isTitleRequired = true,
   isLeaseUnitAvailable = false,
+  moduleDependency,
 }: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   const { setFieldValue, setFieldTouched, values } = formProps;
@@ -177,6 +185,8 @@ const LeaseTermForm = ({
     setFieldValue(LeaseFormKeys.description, value);
   }, []);
   // INTERACTION HANDLERS END
+
+  const isCreateLeaseWeb = moduleDependency === ModuleDependency.UPDATE_LEASE && PlatformUtils.isWeb();
 
   return (
     <>
@@ -279,7 +289,12 @@ const LeaseTermForm = ({
           </View>
 
           <>
-            <View style={PlatformUtils.isWeb() && !isMobile && styles.leasePeriod}>
+            <View
+              style={[
+                PlatformUtils.isWeb() && !isMobile && styles.leasePeriod,
+                isCreateLeaseWeb && styles.createLeaseWeb,
+              ]}
+            >
               <View>
                 <Text type="small" textType="semiBold" style={styles.sliderTitle}>
                   {t('minimumLeasePeriod')}
@@ -291,6 +306,7 @@ const LeaseTermForm = ({
                   minSliderValue={formProps.values[LeaseFormKeys.minimumLeasePeriod]}
                   isLabelRequired
                   labelText="Months"
+                  sliderLength={isCreateLeaseWeb ? 250 : 0}
                 />
               </View>
               <View style={PlatformUtils.isWeb() && !isMobile && !isTablet && styles.leasePeriodMax}>
@@ -305,6 +321,7 @@ const LeaseTermForm = ({
                     minSliderValue={formProps.values[LeaseFormKeys.maximumLeasePeriod]}
                     isLabelRequired
                     labelText="Months"
+                    sliderLength={isCreateLeaseWeb ? 250 : 0}
                   />
                 </WithFieldError>
               </View>
@@ -334,9 +351,9 @@ const LeaseTermForm = ({
               />
             </View>
           </>
-          <View style={PlatformUtils.isWeb && !isMobile && styles.maintenanceStyle}>
+          <View style={PlatformUtils.isWeb() && !isMobile && styles.maintenanceStyle}>
             {values.maintenanceBy === PaidByTypes.TENANT && (
-              <View style={PlatformUtils.isWeb && !isMobile && styles.maintenanceDetails}>
+              <View style={PlatformUtils.isWeb() && !isMobile && styles.maintenanceDetails}>
                 <MaintenanceDetails
                   formProps={formProps}
                   currencyData={currencyData}
@@ -350,8 +367,8 @@ const LeaseTermForm = ({
             {assetGroupType === AssetGroupTypes.COM && (
               <View
                 style={[
-                  PlatformUtils.isWeb && !isMobile && styles.rentFreeStyle,
-                  PlatformUtils.isWeb && !isMobile && isTablet && styles.rentFreeStyleTab,
+                  PlatformUtils.isWeb() && !isMobile && styles.rentFreeStyle,
+                  PlatformUtils.isWeb() && !isMobile && isTablet && styles.rentFreeStyleTab,
                 ]}
               >
                 <FormTextInput
@@ -487,8 +504,12 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   leasePeriod: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'wrap',
+  },
+  createLeaseWeb: {
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
   },
   leasePeriodMax: {
     left: 30,

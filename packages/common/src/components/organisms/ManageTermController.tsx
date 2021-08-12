@@ -21,6 +21,7 @@ import {
   initialLeaseFormValues,
   LeaseFormSchema,
   LeaseTermForm,
+  ModuleDependency,
 } from '@homzhub/common/src/components/molecules/LeaseTermForm';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
@@ -80,11 +81,11 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
         {this.renderCard()}
         {this.renderForm()}
         {!isPropertyOccupied && (
-          <View style={PlatformUtils.isWeb && !isMobile && styles.buttonContainer}>
+          <View style={PlatformUtils.isWeb() && !isMobile && styles.buttonContainer}>
             <Button
               type="primary"
               title={t('common:continue')}
-              containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
+              containerStyle={[styles.continue, PlatformUtils.isWeb() && !isMobile && styles.continueWeb]}
               onPress={this.onNextStep}
             />
           </View>
@@ -151,17 +152,18 @@ class ManageTermController extends React.PureComponent<Props, IOwnState> {
                   assetGroupType={assetGroupType}
                   leaseStartDate={startDate}
                   isLeaseUnitAvailable={!!leaseUnit}
+                  moduleDependency={ModuleDependency.MANAGE_LISING}
                 >
                   {this.renderTenantForm(formProps)}
                 </LeaseTermForm>
-                <View style={PlatformUtils.isWeb && !isMobile && styles.buttonContainer}>
+                <View style={PlatformUtils.isWeb() && !isMobile && styles.buttonContainer}>
                   <FormButton
                     title={t('common:continue')}
                     type="primary"
                     formProps={formProps}
                     // @ts-ignore
                     onPress={formProps.handleSubmit}
-                    containerStyle={[styles.continue, PlatformUtils.isWeb && !isMobile && styles.continueWeb]}
+                    containerStyle={[styles.continue, PlatformUtils.isWeb() && !isMobile && styles.continueWeb]}
                     disabled={loading}
                   />
                 </View>

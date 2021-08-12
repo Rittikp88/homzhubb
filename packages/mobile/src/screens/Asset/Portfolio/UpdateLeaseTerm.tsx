@@ -50,7 +50,7 @@ const UpdateLeaseTerm = (props: Props): React.ReactElement => {
 
   return (
     <UserScreen title={t('assetMore:more')} pageTitle={t('property:editLease')} onBackPress={navigation.goBack}>
-      <ProfileLeaseTerm user={user} assetGroup={assetGroup} leaseData={leaseData} onSubmit={onSubmit} />
+      <ProfileLeaseTerm user={user} assetGroup={assetGroup} leaseData={leaseData} onSubmit={onSubmit} isFromEdit />
     </UserScreen>
   );
 };

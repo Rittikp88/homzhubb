@@ -30,7 +30,7 @@ interface IProps {
   isFromAccept?: boolean;
   onPressAction?: (action: OfferAction) => void;
   onMoreInfo?: (payload: ICounterParam) => void;
-  onCreateLease?: () => void;
+  onCreateLease: () => void;
   onSelectOffer?: (count: number) => void;
   selectedOffers?: number[];
   containerStyle?: StyleProp<ViewStyle>;
@@ -538,7 +538,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   leaseButton: {
-    flex: 0,
+    marginTop: 20,
   },
   buttonTitle: {
     color: theme.colors.white,

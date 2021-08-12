@@ -172,8 +172,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
     } = assetDetails;
 
     const userData: User = user;
-    const isOccupied = isInviteAccepted;
-    const isListed = leaseListingId || saleListingId;
+    const isListed = (leaseListingId || saleListingId) && code !== Filters.OCCUPIED;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);
     const isVacant = code === Filters.VACANT || code === Filters.FOR_RENT || code === Filters.FOR_SALE;
     const isTakeActions = code === Filters.VACANT;
@@ -242,7 +241,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
               />
             </View>
           )}
-          {isListed && isOccupied && (code === Filters.FOR_RENT || Filters.FOR_SALE) && (
+          {isListed && (
             <View style={styles.latestUpdates}>
               <LatestUpdates
                 propertyVisitsData={assetDetails.listingVisits}

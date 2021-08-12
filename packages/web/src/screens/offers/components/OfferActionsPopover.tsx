@@ -9,14 +9,15 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import RejectOfferForm from '@homzhub/common/src/components/organisms/RejectOfferForm';
+import AcceptOffer from '@homzhub/web/src/screens/offers/components/AcceptOffer';
 import AcceptOfferPopOver from '@homzhub/web/src/screens/offers/components/AcceptOfferPopOver';
+import CreateLeasePopover from '@homzhub/web/src/screens/offers/components/CreateLeasePopover';
+import RejectOfferForm from '@homzhub/common/src/components/organisms/RejectOfferForm';
 import OfferReasonView from '@homzhub/web/src/screens/offers/components/OfferReasonView';
 import WithdrawOffer from '@homzhub/web/src/screens/offers/components/WithdrawOffer';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import AcceptOffer from '@homzhub/web/src/screens/offers/components/AcceptOffer';
 import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 
 interface IProps {
@@ -30,7 +31,7 @@ interface IProps {
 }
 
 const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
-  const { popupRef, offerActionType, offer, compareData = {}, handleOfferAction, onCloseModal } = props;
+  const { popupRef, offerActionType, offer, compareData = {}, handleOfferAction, onCloseModal, asset } = props;
   const renderActionsPopover = (): React.ReactNode | null => {
     switch (offerActionType) {
       case OfferAction.ACCEPT:
@@ -42,11 +43,15 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
       case OfferAction.CANCEL:
         return <WithdrawOffer onClosePopover={onCloseModal} />;
       case OfferAction.CONFIRMARION:
-        return <AcceptOfferPopOver onClosePopover={onCloseModal} />;
+        return <AcceptOfferPopOver onClosePopover={onCloseModal} handleOfferAction={handleOfferAction} />;
+      case OfferAction.CREATE_LEASE:
+        return <CreateLeasePopover assetDetail={asset} onClosePopover={onCloseModal} offer={offer as Offer} />;
       default:
         return null;
     }
   };
+  const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
+  const isTablet = useOnly(deviceBreakpoint.DESKTOP);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
 
@@ -81,6 +86,13 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
         height: '620px',
       },
     },
+    [OfferAction.CREATE_LEASE.toString()]: {
+      title: '',
+      styles: {
+        width: isDesktop ? '55%' : isTablet ? 400 : 320,
+        height: '620px',
+      },
+    },
   };
   const offerPopoverType = offerActionType && offerPopoverTypes[offerActionType?.toString()];
   const renderPopoverContent = (): React.ReactNode => {
@@ -112,12 +124,12 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
         closeOnDocumentClick: false,
         arrow: false,
         contentStyle: {
-          ...offerPopoverType?.styles,
           maxHeight: '100%',
           alignItems: 'stretch',
           width: isMobile ? 320 : 400,
           borderRadius: 8,
           overflow: 'auto',
+          ...offerPopoverType?.styles,
         },
         children: undefined,
         modal: true,

@@ -10,7 +10,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { Offer } from '@homzhub/common/src/domain/models/Offer';
+import { Offer, OfferAction } from '@homzhub/common/src/domain/models/Offer';
 import { acceptOffer } from '@homzhub/common/src/constants/ProspectProfile';
 import {
   INegotiationPayload,
@@ -23,6 +23,7 @@ export interface IContinuePopupProps {
   title?: string;
   subTitle?: string;
   onClosePopover: () => void;
+  handleOfferAction: (value: OfferAction) => void;
 }
 
 interface IOwner {
@@ -33,7 +34,7 @@ type Props = IContinuePopupProps;
 
 const AcceptOfferPopOver: React.FC<Props> = (props: Props) => {
   const { t } = useTranslation();
-  const { onClosePopover } = props;
+  const { onClosePopover, handleOfferAction } = props;
   const listing = useSelector(OfferSelectors.getListingDetail);
   const offer: Offer | null = useSelector(OfferSelectors.getCurrentOffer);
 
@@ -66,7 +67,7 @@ const AcceptOfferPopOver: React.FC<Props> = (props: Props) => {
     try {
       await OffersRepository.updateNegotiation(payload);
       AlertHelper.success({ message: t('offers:offerAcceptedSuccess') });
-      onClosePopover();
+      handleOfferAction(OfferAction.CREATE_LEASE);
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       onClosePopover();
