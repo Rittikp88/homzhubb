@@ -96,7 +96,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   useEffect(() => {
     if (userEmails.length > 0) {
       userEmails.forEach((item) => {
-        if (!emails.includes(item)) {
+        if (!emails.includes(item.toLowerCase())) {
           setEmailErrorText('property:userNotAssociated');
           setEmailError(true);
         }
@@ -234,7 +234,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   const onSetEmails = (value: string[]): void => {
     if (emails.length > 0) {
       value.forEach((item) => {
-        if (emails.includes(item.toLowerCase())) {
+        if (emails.includes(item.toLowerCase()) && !userEmails.includes(item)) {
           setUserEmails([...userEmails, item]);
         } else {
           setEmailErrorText('property:userNotAssociated');
@@ -292,7 +292,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     } = formProps;
     const check = !!title && Number(category) > 0 && Number(frequency) > 0 && !emailError && !isEmailError;
     if (category === 1) {
-      return check && bankAccount > 0 && owner > 0 && tenant > 0;
+      return check && bankAccount > 0 && owner > 0 && tenant > 0 && canEdit;
     }
 
     return check;
@@ -476,7 +476,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
               label={t('notes')}
               helpText={t('common:optional')}
               onMessageChange={setNotes}
-              isDisabled={canEdit}
+              isDisabled={!canEdit}
             />
             <Divider containerStyles={styles.divider} />
             <FormButton

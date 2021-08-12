@@ -56,6 +56,7 @@ interface IDispatchProps {
   setCurrentDueId: (dueId: number) => void;
   setCurrentReminderId: (id: number) => void;
   getAssetUsersSuccess: (payload: User[]) => void;
+  clearReminderFormData: () => void;
 }
 
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -77,6 +78,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       setCurrentDueId,
       setCurrentReminderId,
       getAssetUsersSuccess,
+      clearReminderFormData,
     } = this.props;
 
     this.onFocusSubscription = navigation.addListener('focus', (): void => {
@@ -85,6 +87,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       setCurrentDueId(-1);
       setCurrentReminderId(-1);
       getAssetUsersSuccess([]);
+      clearReminderFormData();
     });
   }
 
@@ -114,6 +117,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         <PropertyByCountryDropdown
           selectedProperty={selectedProperty}
           selectedCountry={selectedCountry}
+          // @ts-ignore
           propertyList={this.getPropertyList()}
           countryList={this.getCountryList()}
           onPropertyChange={this.onPropertyChange}
@@ -283,6 +287,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     resetLedgerFilters,
     setCurrentDueId,
     setCurrentReminderId,
+    clearReminderFormData,
   } = FinancialActions;
   const { getAssetUsersSuccess } = AssetActions;
   return bindActionCreators(
@@ -296,6 +301,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setCurrentDueId,
       setCurrentReminderId,
       getAssetUsersSuccess,
+      clearReminderFormData
     },
     dispatch
   );

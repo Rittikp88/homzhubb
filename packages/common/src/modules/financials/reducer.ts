@@ -196,6 +196,11 @@ export const financialsReducer = (
         ...state,
         ['reminderFormData']: action.payload as IReminderFormData,
       };
+    case FinancialActionTypes.CLEAR_REMINDER_FORM_DATA:
+      return {
+        ...state,
+        ['reminderFormData']: initialFinancialsState.reminderFormData,
+      };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;
     default:

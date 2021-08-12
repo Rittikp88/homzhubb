@@ -88,6 +88,7 @@ export const TextArea = (props: IProps): React.ReactElement => {
           multiline
           numberOfLines={4}
           value={value}
+          editable={!isDisabled}
           onChangeText={onMessageChange}
         />
       </TouchableOpacity>

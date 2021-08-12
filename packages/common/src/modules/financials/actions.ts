@@ -72,6 +72,7 @@ export const FinancialActionTypes = {
   },
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
   RESET_LEDGER_FILTERS: `${actionTypePrefix}RESET_LEDGER_FILTERS`,
+  CLEAR_REMINDER_FORM_DATA: `${actionTypePrefix}CLEAR_REMINDER_FORM_DATA`,
 };
 
 const getTransactions = (payload: ITransactionParams): IFluxStandardAction<ITransactionParams> => ({
@@ -258,6 +259,10 @@ const setReminderFormData = (payload: IReminderFormData): IFluxStandardAction<IR
   payload,
 });
 
+const clearReminderFormData = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.CLEAR_REMINDER_FORM_DATA,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -315,4 +320,5 @@ export const FinancialActions = {
   updateReminderSuccess,
   updateReminderFailure,
   setReminderFormData,
+  clearReminderFormData,
 };
