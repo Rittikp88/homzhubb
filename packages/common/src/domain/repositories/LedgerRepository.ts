@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
+import { DueOrderSummary } from '@homzhub/common/src/domain/models/DueOrderSummary';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { LedgerCategory } from '@homzhub/common/src/domain/models/LedgerCategory';
@@ -11,6 +12,7 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IAddGeneralLedgerPayload,
   ICreateLedgerResult,
+  IDueOrderSummaryAction,
   IGeneralLedgerPayload,
   IReminderPayload,
   ITransactionParams,
@@ -21,7 +23,8 @@ const ENDPOINTS = {
   getLedgerCategories: 'v1/general-ledger-categories/',
   genLedgers: 'v1/general-ledgers/',
   ledger: (id: number): string => `v1/general-ledgers/${id}/`,
-  getDues: (): string => 'v1/user-invoices/dues/',
+  getDues: (id?: number): string => `v1/user-invoices/dues/${id || ''}`,
+  dueOrderPayment: (id: number): string => `v1/user-invoices/dues/${id}/razorpay-orders/`,
   reminders: 'v1/reminders/',
   reminderCategories: 'v1/reminders/reminder-categories/',
   reminderFrequencies: 'v1/reminders/reminder-frequencies/',
@@ -117,6 +120,16 @@ class LedgerRepository {
 
   public updateReminder = async (id: number, payload: IReminderPayload): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.reminderById(id), payload);
+  };
+
+  public getDueOrderSummary = async (id: number): Promise<DueOrderSummary> => {
+    const response = await this.apiClient.get(ENDPOINTS.getDues(id));
+    return ObjectMapper.deserialize(DueOrderSummary, response);
+  };
+
+  public dueOrderSummaryAction = async (id: number, payload: IDueOrderSummaryAction): Promise<DueOrderSummary> => {
+    const response = await this.apiClient.put(ENDPOINTS.dueOrderPayment(id), payload);
+    return ObjectMapper.deserialize(DueOrderSummary, response);
   };
 }
 

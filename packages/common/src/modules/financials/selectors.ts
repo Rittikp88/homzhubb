@@ -186,6 +186,13 @@ const getCurrentReminderId = (state: IState): number => {
   return currentReminderId;
 };
 
+const getCurrentDueId = (state: IState): number => {
+  const {
+    financials: { currentDueId },
+  } = state;
+  return currentDueId;
+};
+
 const getReminderFormData = (state: IState): IReminderFormData => {
   const {
     financials: { reminderFormData },
@@ -212,6 +219,7 @@ export const FinancialSelectors = {
   getReminderAssets,
   getCurrentDue,
   getCurrentReminderId,
+  getCurrentDueId,
   getReminderFormData,
   getCategoriesDropdown,
   getFrequenciesDropdown,

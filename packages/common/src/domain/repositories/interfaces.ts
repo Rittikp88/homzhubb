@@ -1,5 +1,6 @@
 import { OSTypes } from '@homzhub/common/src/utils/PlatformUtils';
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
+import { DueOrderSummaryAction } from '@homzhub/common/src/domain/models/DueOrderSummary';
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
@@ -1074,4 +1075,10 @@ export interface IAssetUserPayload {
   assetId: number;
   lease_transaction_id?: number;
   onCallback?: (status: boolean) => void;
+}
+
+export interface IDueOrderSummaryAction {
+  action: DueOrderSummaryAction;
+  coins?: number;
+  promo_code?: string;
 }

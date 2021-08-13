@@ -2,16 +2,63 @@ import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 
+export interface ITax {
+  id: number;
+  tax_type_id?: string;
+  name: string;
+  tax_label: string;
+  label: string;
+  description: string;
+  tax_percentage: number;
+  tax_amount: number;
+}
+
+// Todo (Praharsh) : Remove ununsed keys when BE cleans up this response.
 @JsonObject('Tax')
 export class Tax {
+  @JsonProperty('id', Number, true)
+  private _id = -1;
+
+  @JsonProperty('tax_type_id', Number, true)
+  private _taxTypeId = -1;
+
+  @JsonProperty('name', String, true)
+  private _name = '';
+
+  @JsonProperty('label', String, true)
+  private _label = '';
+
   @JsonProperty('tax_label', String)
   private _taxLabel = '';
+
+  @JsonProperty('description', String, true)
+  private _description = '';
 
   @JsonProperty('tax_percentage', Number)
   private _taxPercentage = 0;
 
   @JsonProperty('tax_amount', Number)
   private _taxAmount = 0;
+
+  get id(): number {
+    return this._id;
+  }
+
+  get taxTypeId(): number {
+    return this._taxTypeId;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get label(): string {
+    return this._label;
+  }
+
+  get description(): string {
+    return this._description;
+  }
 
   get taxLabel(): string {
     return this._taxLabel;

@@ -301,7 +301,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setCurrentDueId,
       setCurrentReminderId,
       getAssetUsersSuccess,
-      clearReminderFormData
+      clearReminderFormData,
     },
     dispatch
   );

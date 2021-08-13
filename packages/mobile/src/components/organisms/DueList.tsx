@@ -5,7 +5,6 @@ import { SvgProps } from 'react-native-svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -16,9 +15,6 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import DueCard from '@homzhub/common/src/components/molecules/DueCard';
 import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
-import { Payment } from '@homzhub/common/src/domain/models/Payment';
-import { DuePaymentActions, IPaymentParams, IPaymentPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IProcessPaymentPayload } from '@homzhub/common/src/modules/financials/interfaces';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
@@ -70,46 +66,6 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
   const keyExtractor = (item: DueItem): string => item.id.toString();
 
   const renderItem = ({ item }: { item: DueItem }): React.ReactElement | null => {
-    const onOrderPlaced = (paymentParams: IPaymentParams): void => {
-      const getBody = (): IPaymentPayload => {
-        // Payment successful
-        if (paymentParams.razorpay_payment_id) {
-          const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
-          return {
-            action: DuePaymentActions.PAYMENT_CAPTURED,
-            payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
-          };
-        }
-        // Payment cancelled
-        const { razorpay_order_id } = paymentParams;
-        return {
-          action: DuePaymentActions.PAYMENT_CANCELLED,
-          payload: { razorpay_order_id },
-        };
-      };
-
-      const payload: IProcessPaymentPayload = {
-        data: getBody(),
-        onCallback: (status) => {
-          if (status && paymentParams.razorpay_payment_id) {
-            dispatch(FinancialActions.resetLedgerFilters());
-            dispatch(FinancialActions.getLedgerMetrics());
-            dispatch(FinancialActions.getLedgers());
-            dispatch(FinancialActions.getDues());
-            dispatch(
-              FinancialActions.getTransactions({
-                offset: 0,
-                limit: 10,
-              })
-            );
-            AlertHelper.success({ message: t('assetFinancial:paidSuccessfully', { amount: `${item.totalDue}` }) });
-          }
-        },
-      };
-
-      dispatch(FinancialActions.processPayment(payload));
-    };
-
     const onPressClose = (dueId?: number): void => {
       if (dueId) {
         dispatch(FinancialActions.setCurrentDueId(dueId));
@@ -117,18 +73,12 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
       setSheetVisibility(true);
     };
 
-    const onPressPayNow = async (id: number): Promise<Payment> => {
-      return await PaymentRepository.initiateDuePayment(id);
+    const onPressPayNow = (): void => {
+      dispatch(FinancialActions.setCurrentDueId(item.id));
+      navigate(ScreensKeys.DuesOrderSummary);
     };
 
-    return (
-      <DueCard
-        due={item}
-        onInitPayment={(): Promise<Payment> => onPressPayNow(item.id)}
-        onOrderPlaced={onOrderPlaced}
-        onPressClose={onPressClose}
-      />
-    );
+    return <DueCard due={item} onPressClose={onPressClose} onPressPayNow={onPressPayNow} />;
   };
 
   const itemSeparator = (): React.ReactElement => <Divider containerStyles={styles.divider} />;

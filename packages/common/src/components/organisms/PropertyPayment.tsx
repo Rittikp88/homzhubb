@@ -104,10 +104,11 @@ class PropertyPayment extends Component<Props, IPaymentState> {
       <View style={[styles.container, PlatformUtils.isWeb() && !isTablet && styles.containerWeb]}>
         {this.renderServices()}
         <HomzhubCoins
-          disabled={orderSummary.coins?.currentBalance <= 0}
+          disabled={orderSummary.coins?.currentBalance <= 0 || orderSummary.promo?.promoApplied}
           onToggle={this.onToggleCoin}
           selected={isCoinApplied}
           coins={orderSummary.coins}
+          showCoinCount={false}
         />
         <PromoCode
           type="regular"
@@ -115,8 +116,13 @@ class PropertyPayment extends Component<Props, IPaymentState> {
           isPromoApplied={orderSummary.promo?.promoApplied}
           isError={isPromoFailed}
           onClear={this.clearPromo}
+          isToggleButtonDisabled={isCoinApplied}
         />
-        <OrderSummary summary={orderSummary} />
+        <OrderSummary
+          summaryList={orderSummary.summaryList}
+          currency={orderSummary.currency}
+          amountPayableText={orderSummary.amountPayableText}
+        />
         {orderSummary.amountPayable > 0 &&
           (PlatformUtils.isWeb() ? (
             <PaymentGatewayWeb
@@ -294,6 +300,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
 
   private getOrderSummary = async (data?: IOrderSummaryPayload): Promise<void> => {
     const { propertyId } = this.props;
+    const { isPromoFailed } = this.state;
     const payload: IOrderSummaryPayload = {
       value_added_services: this.getServiceIds(),
       ...(propertyId && { asset: propertyId }),
@@ -306,6 +313,9 @@ class PropertyPayment extends Component<Props, IPaymentState> {
       const response = await RecordAssetRepository.getOrderSummary(payload);
       this.setState({ isLoading: false });
       this.setState({ orderSummary: response });
+      if (isPromoFailed) {
+        this.setState({ isPromoFailed: false });
+      }
     } catch (e) {
       this.setState({ isLoading: false });
       if (data?.promo_code) {

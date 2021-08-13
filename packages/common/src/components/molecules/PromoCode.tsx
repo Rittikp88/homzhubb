@@ -2,9 +2,11 @@ import React, { PureComponent, ReactElement } from 'react';
 import { StyleProp, StyleSheet, TextInput, TextStyle, View, ViewStyle } from 'react-native';
 import { FormikProps } from 'formik';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { RNSwitch } from '@homzhub/common/src/components/atoms/Switch';
 import { Label, Text, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 
@@ -26,6 +28,10 @@ interface IPromoProps {
   shouldShowText?: boolean;
   label?: string;
   textType?: TextSizeType;
+  hasToggleButton?: boolean;
+  isToggleButtonSelected?: boolean;
+  isToggleButtonDisabled?: boolean;
+  onToggle?: () => void;
 }
 type Props = IPromoProps & WithTranslation;
 
@@ -44,17 +50,46 @@ class PromoCode extends PureComponent<Props, IPromoState> {
     };
   }
 
+  // Clear promo code when toggle button is unselected.
+  public componentDidUpdate(prevProps: Props): void {
+    const { isToggleButtonSelected } = this.props;
+    const { isToggleButtonSelected: prevToggle } = prevProps;
+    if (prevToggle && !isToggleButtonSelected) {
+      this.setFieldValue('');
+      // eslint-disable-next-line react/no-did-update-set-state
+      this.setState({
+        promoCode: '',
+      });
+    }
+  }
+
   public render(): React.ReactNode {
-    const { t, containerStyles, type, code, label, textType } = this.props;
+    const {
+      t,
+      containerStyles,
+      type,
+      code,
+      label,
+      textType,
+      hasToggleButton = false,
+      isToggleButtonSelected = false,
+      isToggleButtonDisabled = false,
+      onToggle = FunctionUtils.noop,
+    } = this.props;
     const { showTextInput } = this.state;
     const showTextField = type === 'regular' || showTextInput || code;
 
     return (
       <View style={[styles.container, containerStyles]}>
         {type !== 'link' ? (
-          <Text type="small" style={styles.title}>
-            {t('havePromoCode')}
-          </Text>
+          <View style={styles.switchContainer}>
+            <Text type="small" style={[styles.title, isToggleButtonDisabled && styles.disabled]}>
+              {t('havePromoCode')}
+            </Text>
+            {!!hasToggleButton && (
+              <RNSwitch disabled={isToggleButtonDisabled} selected={isToggleButtonSelected} onToggle={onToggle} />
+            )}
+          </View>
         ) : (
           <Label
             onPress={this.toggleTextInput}
@@ -69,10 +104,26 @@ class PromoCode extends PureComponent<Props, IPromoState> {
     );
   }
 
-  private renderPromoCode = (): ReactElement => {
-    const { t, isError, isPromoApplied = false, inputStyles } = this.props;
+  private renderPromoCode = (): ReactElement | null => {
+    const {
+      t,
+      isError,
+      isPromoApplied = false,
+      inputStyles,
+      hasToggleButton = false,
+      isToggleButtonSelected,
+      isToggleButtonDisabled = false,
+    } = this.props;
     const { promoCode } = this.state;
     const value = isPromoApplied ? `${promoCode} Applied!` : promoCode;
+    const showPromoInput = (): boolean => {
+      if (hasToggleButton) return Boolean(hasToggleButton && isToggleButtonSelected);
+      return true;
+    };
+    const showTextInput = showPromoInput();
+    const isEditable = !isToggleButtonDisabled && !isPromoApplied;
+
+    if (!showTextInput) return null;
     return (
       <>
         <View style={styles.textInputContainer}>
@@ -81,10 +132,16 @@ class PromoCode extends PureComponent<Props, IPromoState> {
             autoCorrect={false}
             autoCapitalize="none"
             placeholder={t('promoPlaceholder')}
+            placeholderTextColor={!isEditable ? theme.colors.disabled : undefined}
             numberOfLines={1}
             onChangeText={this.handlePromoChange}
-            editable={!isPromoApplied}
-            style={[styles.textInput, isPromoApplied && { color: theme.colors.green }, inputStyles]}
+            editable={isEditable}
+            style={[
+              styles.textInput,
+              !isEditable && styles.disabled,
+              isPromoApplied && { color: theme.colors.green },
+              inputStyles,
+            ]}
           />
           {this.renderButton()}
         </View>
@@ -125,6 +182,8 @@ class PromoCode extends PureComponent<Props, IPromoState> {
 
   private renderButton = (): React.ReactNode => {
     const { t, isPromoApplied = false, type } = this.props;
+    const { promoCode } = this.state;
+    if (!promoCode.length) return null;
     return (
       <>
         {isPromoApplied || type === 'link' ? (
@@ -170,10 +229,6 @@ class PromoCode extends PureComponent<Props, IPromoState> {
   };
 
   private handlePromoChange = (text: string): void => {
-    const { onClear } = this.props;
-    if (onClear) {
-      onClear();
-    }
     this.setState({ promoCode: text });
   };
 
@@ -199,6 +254,9 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.darkTint4,
+  },
+  disabled: {
+    color: theme.colors.disabled,
   },
   textInputContainer: {
     borderWidth: 1,
@@ -233,5 +291,9 @@ const styles = StyleSheet.create({
   },
   crossIconBgColor: {
     backgroundColor: theme.colors.secondaryColor,
+  },
+  switchContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

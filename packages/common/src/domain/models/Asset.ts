@@ -106,9 +106,10 @@ export interface IData {
   count?: number;
 }
 
-export interface IDetailData {
+export interface IListData {
   label: string;
   value: string;
+  isTitle?: boolean;
 }
 
 @JsonObject('Data')
@@ -881,7 +882,7 @@ export class Asset {
     return this._amenities.filter((item) => item.category.name === AssetAmenityType.ECO_FRIENDLY);
   }
 
-  get addressDetails(): IDetailData[] {
+  get addressDetails(): IListData[] {
     const { t } = I18nService;
     const showValue = (value: string): string => (value.length > 0 ? value : 'N/A');
     return [

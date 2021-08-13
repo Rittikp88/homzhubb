@@ -9,7 +9,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { CollapsibleSection } from '@homzhub/mobile/src/components/molecules/CollapsibleSection';
-import { Asset, IDetailData } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, IListData } from '@homzhub/common/src/domain/models/Asset';
 import { AssetFeature } from '@homzhub/common/src/domain/models/AssetFeature';
 import { CategoryAmenityGroup } from '@homzhub/common/src/domain/models/Amenity';
 import { AssetHighlight } from '@homzhub/common/src/domain/models/AssetHighlight';
@@ -135,13 +135,13 @@ class PropertyDetail extends Component<Props, IDetailState> {
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         data={detail.addressDetails}
-        keyExtractor={(item: IDetailData, index: number): string => `${item.label}[${index}]`}
+        keyExtractor={(item: IListData, index: number): string => `${item.label}[${index}]`}
         ListEmptyComponent={(): React.ReactElement => (
           <Label type="large" textType="regular" style={styles.description}>
             {t('noInformation')}
           </Label>
         )}
-        renderItem={({ item }: { item: IDetailData }): React.ReactElement => (
+        renderItem={({ item }: { item: IListData }): React.ReactElement => (
           <View style={styles.featureItem}>
             <Label type="large" textType="regular" style={styles.featureTitle}>
               {item.label}
@@ -316,13 +316,13 @@ class PropertyDetail extends Component<Props, IDetailState> {
         numColumns={2}
         contentContainerStyle={styles.listContainer}
         data={data}
-        keyExtractor={(item: IDetailData, index: number): string => `${item.label}[${index}]`}
+        keyExtractor={(item: IListData, index: number): string => `${item.label}[${index}]`}
         ListEmptyComponent={(): React.ReactElement => (
           <Label type="large" textType="regular" style={styles.description}>
             {t('noInformation')}
           </Label>
         )}
-        renderItem={({ item }: { item: IDetailData }): React.ReactElement => (
+        renderItem={({ item }: { item: IListData }): React.ReactElement => (
           <View style={styles.featureItem}>
             <Label type="large" textType="regular" style={styles.featureTitle}>
               {item.label}

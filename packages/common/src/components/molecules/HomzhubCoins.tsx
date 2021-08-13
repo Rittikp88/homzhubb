@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -14,32 +14,54 @@ interface IOwnProps {
   selected: boolean;
   coins: Coins;
   disabled?: boolean;
+  hasBalanceInNewLine?: boolean;
+  containerStyle?: ViewStyle;
+  showCoinCount: boolean;
 }
 
 type Props = IOwnProps & WithTranslation;
 
 class HomzhubCoins extends PureComponent<Props> {
   public render(): React.ReactNode {
-    const { t, onToggle, selected, coins, disabled } = this.props;
+    const {
+      t,
+      onToggle,
+      selected,
+      coins,
+      disabled,
+      hasBalanceInNewLine = false,
+      containerStyle,
+      showCoinCount,
+    } = this.props;
     const amount = `₹${coins?.savedAmount ?? 0}`;
     const coinUsed = coins?.coinsUsed ?? 0;
+
+    const ShowCoinIcon = ({ iconStyle = styles.image }: { iconStyle?: ViewStyle }): React.ReactElement => {
+      return PlatformUtils.isWeb() ? <Coin /> : <Coin style={iconStyle} />;
+    };
+
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, containerStyle && containerStyle]}>
         <View style={styles.switchView}>
-          <Text type="small" textType="semiBold" style={styles.title}>
-            {t('useCoins')}
-          </Text>
+          <View style={styles.coinBalanceContainer}>
+            {hasBalanceInNewLine && <ShowCoinIcon iconStyle={styles.inlineCoin} />}
+            <Text type="small" textType="semiBold" style={[styles.title, disabled && styles.disabled]}>
+              {showCoinCount ? t('useFromCoinsWithCount', { count: coins.currentBalance }) : t('useCoins')}
+            </Text>
+          </View>
           <RNSwitch disabled={disabled} selected={selected} onToggle={onToggle} />
         </View>
-        <View style={styles.balanceView}>
-          <Text type="small" style={styles.title}>
-            {t('balance')}
-          </Text>
-          {PlatformUtils.isWeb() ? <Coin /> : <Coin style={styles.image} />}
-          <Text type="small" style={styles.title}>
-            {coins?.currentBalance ?? 0}
-          </Text>
-        </View>
+        {!hasBalanceInNewLine && (
+          <View style={styles.balanceView}>
+            <Text type="small" style={[styles.title, disabled && styles.disabled]}>
+              {t('balance')}
+            </Text>
+            <ShowCoinIcon />
+            <Text type="small" style={[styles.title, disabled && styles.disabled]}>
+              {coins?.currentBalance ?? 0}
+            </Text>
+          </View>
+        )}
         {selected && (
           <Label type="regular" textType="semiBold" style={styles.message}>
             {t('property:usedCoins', { amount, coin: coinUsed })}
@@ -60,6 +82,9 @@ const styles = StyleSheet.create({
   title: {
     color: theme.colors.darkTint3,
   },
+  disabled: {
+    color: theme.colors.disabled,
+  },
   message: {
     marginTop: 12,
     color: theme.colors.green,
@@ -75,5 +100,12 @@ const styles = StyleSheet.create({
   },
   image: {
     marginHorizontal: 6,
+  },
+  inlineCoin: {
+    marginEnd: 8,
+  },
+  coinBalanceContainer: {
+    flex: 1,
+    flexDirection: 'row',
   },
 });

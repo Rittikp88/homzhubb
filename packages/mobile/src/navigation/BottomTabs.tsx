@@ -226,6 +226,7 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.ReminderScreen,
     ScreensKeys.AddReminderScreen,
     ScreensKeys.DuesScreen,
+    ScreensKeys.DuesOrderSummary,
     ScreensKeys.AddBankAccount,
     ScreensKeys.TransactionsScreen,
   ];

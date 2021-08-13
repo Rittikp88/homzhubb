@@ -308,6 +308,7 @@
     "timeToUpdate": "Time to update",
     "underMaintenance": "Under Maintenance",
     "others": "Others",
+    "roundedOff": "rounded off",
     "featureInIndiaOnly": "Feature available only for India currently"
   },
   "auth": {
@@ -565,6 +566,7 @@
     "yourDetailsAdded": "Your property details are added!!",
     "yourPropertyIsReadyText": "Your property is ready for the next step - Rent, Sell or Manage now",
     "useCoins": "Use Homzhub Coins",
+    "useFromCoinsWithCount": "Use from {{count}} Homzhub Coins",
     "balance": "Balance:",
     "securePayment": "100% Secure Payments",
     "orderSummary": "Order Summary",

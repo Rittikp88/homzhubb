@@ -1,29 +1,37 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { theme } from '@homzhub/common/src/styles/theme';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Text } from '@homzhub/common/src/components/atoms/Text';
-import { OrderTotalSummary, OrderSummary as Summary } from '@homzhub/common/src/domain/models/OrderSummary';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { OrderTotalSummary } from '@homzhub/common/src/domain/models/OrderSummary';
 
 interface IOwnProps {
-  summary: Summary;
+  containerStyle?: ViewStyle;
+  summaryList: OrderTotalSummary[];
+  currency: Currency;
+  amountPayableText: OrderTotalSummary;
+  showOrderSummaryHeader?: boolean;
+  hasDottedDivider?: boolean;
 }
 
 type Props = IOwnProps & WithTranslation;
 
 export class OrderSummary extends PureComponent<Props> {
   public render(): React.ReactNode {
-    const {
-      t,
-      summary: { summaryList, amountPayableText },
-    } = this.props;
+    const { t, summaryList, amountPayableText, containerStyle, showOrderSummaryHeader = true } = this.props;
     return (
-      <View style={styles.container}>
-        <Text type="small" textType="semiBold" style={styles.heading}>
-          {t('property:orderSummary')}
-        </Text>
-        <View style={styles.listContainer}>{summaryList?.map(this.renderList) ?? null}</View>
+      <View style={[styles.container, containerStyle && containerStyle]}>
+        {showOrderSummaryHeader && (
+          <Text type="small" textType="semiBold" style={styles.heading}>
+            {t('property:orderSummary')}
+          </Text>
+        )}
+        <View style={[showOrderSummaryHeader && styles.listContainer]}>
+          {summaryList?.map(this.renderList) ?? null}
+        </View>
         {amountPayableText && this.renderTotalView(amountPayableText)}
       </View>
     );
@@ -31,9 +39,7 @@ export class OrderSummary extends PureComponent<Props> {
 
   private renderList = (item: OrderTotalSummary, index: number): React.ReactElement => {
     const { title, value, valueColor } = item;
-    const {
-      summary: { currency },
-    } = this.props;
+    const { currency } = this.props;
     const amount =
       valueColor === theme.colors.green ? `- ${currency.currencySymbol}${value}` : `${currency.currencySymbol}${value}`;
 
@@ -50,14 +56,12 @@ export class OrderSummary extends PureComponent<Props> {
   };
 
   private renderTotalView = (total: OrderTotalSummary): React.ReactElement => {
-    const {
-      summary: { currency },
-    } = this.props;
+    const { currency, t, hasDottedDivider = false } = this.props;
     const { title, value } = total;
 
     return (
       <View style={styles.totalView}>
-        <Divider containerStyles={styles.divider} />
+        <Divider containerStyles={[styles.divider, hasDottedDivider && styles.borderRadius]} />
         <View style={styles.totalContent}>
           <Text type="small" textType="semiBold" style={styles.totalText}>
             {title}
@@ -66,7 +70,13 @@ export class OrderSummary extends PureComponent<Props> {
             {`${currency.currencySymbol}${value}`}
           </Text>
         </View>
-        <Divider containerStyles={styles.divider} />
+        <View style={styles.roundedOffContainer}>
+          <Icon name={icons.roundFilled} color={theme.colors.darkTint3} size={7} style={styles.roundedOffText} />
+          <Label type="regular" textType="semiBold" style={styles.totalText}>
+            {t('common:roundedOff')}
+          </Label>
+        </View>
+        <Divider containerStyles={[styles.divider, hasDottedDivider && styles.borderRadius]} />
       </View>
     );
   };
@@ -101,7 +111,7 @@ const styles = StyleSheet.create({
   totalContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 16,
+    paddingTop: 16,
   },
   divider: {
     borderWidth: 1,
@@ -110,5 +120,19 @@ const styles = StyleSheet.create({
   },
   totalText: {
     color: theme.colors.darkTint2,
+  },
+  roundedOffContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginBottom: 16,
+    marginTop: 1,
+  },
+  roundedOffText: {
+    marginEnd: 5,
+    marginTop: 2,
+  },
+  borderRadius: {
+    borderRadius: 0.001,
   },
 });

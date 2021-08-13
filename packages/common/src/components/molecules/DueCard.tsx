@@ -1,38 +1,46 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Cross from '@homzhub/common/src/assets/images/circularCross.svg';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { flags } from '@homzhub/common/src/components/atoms/Flag';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { PaymentGateway } from '@homzhub/mobile/src/components';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
-import { Payment } from '@homzhub/common/src/domain/models/Payment';
-import { IPaymentParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
   due: DueItem;
-  onInitPayment: () => Promise<Payment>;
-  onOrderPlaced: (paymentOptions: IPaymentParams) => void;
   onPressClose?: (dueId?: number) => void;
+  onPressPayNow: () => void;
 }
 
 const DueCard = (props: IProps): React.ReactElement => {
-  const { due, onInitPayment, onOrderPlaced, onPressClose } = props;
+  const { due, onPressClose } = props;
   const { id, invoiceTitle, asset, totalDue, dueDate, isOverDue, createdAt, dueTitle, currency } = due;
 
   const { t } = useTranslation();
   const countries = useSelector(CommonSelectors.getCountryList);
+  const dispatch = useDispatch();
+
+  const { navigate } = useNavigation();
 
   const onPressCrossIcon = (): void => {
     if (onPressClose) {
       onPressClose(due.id);
     }
+  };
+
+  const onPressPayNow = (): void => {
+    dispatch(FinancialActions.setCurrentDueId(id));
+    navigate(ScreensKeys.DuesOrderSummary);
   };
 
   const getFlag = (): React.ReactElement => {
@@ -105,13 +113,11 @@ const DueCard = (props: IProps): React.ReactElement => {
             </Label>
           </View>
         </View>
-        <PaymentGateway
-          title={t('assetFinancial:payNow')}
+        <Button
           type="primary"
-          initiatePayment={onInitPayment}
-          outerContainerStyle={[styles.paymentButton, isOverDue && styles.redBackground]}
-          paymentApi={onOrderPlaced}
-          textStyle={styles.buttonText}
+          title={t('assetFinancial:payNow')}
+          onPress={onPressPayNow}
+          containerStyle={styles.payNowButton}
         />
       </View>
     </View>
@@ -174,6 +180,10 @@ const styles = StyleSheet.create({
   },
   redBackground: {
     backgroundColor: theme.colors.error,
+  },
+  payNowButton: {
+    maxWidth: 120,
+    maxHeight: 35,
   },
   buttonText: {
     marginVertical: 0,
