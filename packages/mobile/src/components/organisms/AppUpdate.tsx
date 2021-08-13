@@ -109,7 +109,7 @@ const AppUpdate = (): React.ReactElement => {
       }
     });
 
-    const isVisible = updatedData.isUpdateAvailable || updatedData.isUnderMaintenance;
+    const isVisible = updatedData.isUpdateAvailable || updatedData.isUnderMaintenance || updatedData.isForceUpdate;
 
     setVisibility(isVisible);
     setConfigValues(updatedData);

@@ -162,14 +162,18 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
 
   // DROPDOWN LIST FORMATION START
   const getPropertyList = (isRented: boolean): IDropdownOption[] => {
-    const data = isRented ? assets.filter((item) => item.isRented) : assets;
-    if (isRented && data.length < 1) {
-      AlertHelper.error({ message: t('property:noOccupiedProperty') });
-      return [];
+    if (assets.length > 0) {
+      const data = isRented ? assets.filter((item) => item.isRented) : assets;
+
+      if (isRented && data.length < 1) {
+        AlertHelper.error({ message: t('property:noOccupiedProperty') });
+        return [];
+      }
+      return data.map((property: Asset) => {
+        return { value: property.id, label: property.formattedProjectName };
+      });
     }
-    return data.map((property: Asset) => {
-      return { value: property.id, label: property.formattedProjectName };
-    });
+    return [];
   };
 
   const getUnitList = (): IDropdownOption[] => {
