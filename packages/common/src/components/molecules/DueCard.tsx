@@ -117,7 +117,7 @@ const DueCard = (props: IProps): React.ReactElement => {
           type="primary"
           title={t('assetFinancial:payNow')}
           onPress={onPressPayNow}
-          containerStyle={styles.payNowButton}
+          containerStyle={[styles.payNowButton, isOverDue && styles.redBackground]}
           textStyle={styles.buttonText}
         />
       </View>

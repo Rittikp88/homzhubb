@@ -72,6 +72,7 @@ export interface IMetricsData {
   id?: number;
   isCurrency?: boolean;
   colorCode: string;
+  code?: string;
 }
 
 class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
@@ -431,8 +432,18 @@ class PropertyOfferList extends React.PureComponent<Props, IScreenState> {
     const { offerReceived, offerMade } = offerCountData;
 
     return [
-      { name: t('offers:offerReceived'), count: offerReceived, colorCode: theme.colors.highPriority },
-      { name: t('offers:offerMade'), count: offerMade, colorCode: theme.colors.greenTint8 },
+      {
+        name: t('offers:offerReceived'),
+        code: t('offers:offerReceived'),
+        count: offerReceived,
+        colorCode: theme.colors.highPriority,
+      },
+      {
+        name: t('offers:offerMade'),
+        code: t('offers:offerMade'),
+        count: offerMade,
+        colorCode: theme.colors.greenTint8,
+      },
     ];
   };
 

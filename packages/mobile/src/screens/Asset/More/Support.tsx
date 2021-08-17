@@ -96,6 +96,7 @@ export class Support extends Component<Props, IScreenState> {
     const { t, route } = this.props;
     const { isFormSubmitted, isLoading, currentTab } = this.state;
     const title = route?.params?.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:more');
+    const renderItem = (): React.ReactElement | null => this.renderForm();
     return (
       <>
         <UserScreen title={title}>
@@ -105,7 +106,7 @@ export class Support extends Component<Props, IScreenState> {
             subTitle={t('clear')}
             iconBackSize={24}
             titleTextSize="small"
-            renderItem={(): React.ReactElement | null => this.renderContent()}
+            renderItem={renderItem}
             onIconPress={this.onGoBack}
             onClearPress={currentTab === TabKeys.caseLogs ? undefined : this.clearForm}
           />
@@ -150,7 +151,6 @@ export class Support extends Component<Props, IScreenState> {
               />
             </View>
             <Divider />
-            {this.renderForm()}
           </>
         ) : (
           <CaseLogs caseLogs={caseLogs} />
@@ -177,6 +177,7 @@ export class Support extends Component<Props, IScreenState> {
 
           return (
             <>
+              {this.renderContent()}
               <FormTextInput
                 formProps={formProps}
                 isMandatory
@@ -248,6 +249,7 @@ export class Support extends Component<Props, IScreenState> {
 
   private onTabChange = (tabId: TabKeys): void => {
     this.setState({ currentTab: tabId });
+    this.clearForm();
   };
 
   private onCloseSheet = (): void => {

@@ -23,7 +23,8 @@ const ENDPOINTS = {
   getLedgerCategories: 'v1/general-ledger-categories/',
   genLedgers: 'v1/general-ledgers/',
   ledger: (id: number): string => `v1/general-ledgers/${id}/`,
-  getDues: (id?: number): string => `v1/user-invoices/dues/${id || ''}`,
+  getDues: (): string => 'v1/user-invoices/dues/',
+  getDuesById: (id: number): string => `v1/user-invoices/dues/${id}/`,
   dueOrderPayment: (id: number): string => `v1/user-invoices/dues/${id}/razorpay-orders/`,
   reminders: 'v1/reminders/',
   reminderCategories: 'v1/reminders/reminder-categories/',
@@ -123,7 +124,7 @@ class LedgerRepository {
   };
 
   public getDueOrderSummary = async (id: number): Promise<DueOrderSummary> => {
-    const response = await this.apiClient.get(ENDPOINTS.getDues(id));
+    const response = await this.apiClient.get(ENDPOINTS.getDuesById(id));
     return ObjectMapper.deserialize(DueOrderSummary, response);
   };
 

@@ -185,30 +185,30 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
       popupProps: { position: 'top center' },
     };
     return (
-      <View style={[containerStyles]}>
-        <SelectionPicker
-          data={[
-            { title: t('income'), value: FormType.Income },
-            { title: t('expense'), value: FormType.Expense },
-          ]}
-          selectedItem={[selectedFormType]}
-          onValueChange={this.onFormTypeChange}
-          containerStyles={[isAbsoluteWeb && styles.selectionPicker]}
-          isDisabled={isFromDues}
-        />
-        <Formik
-          innerRef={this.formRef}
-          onSubmit={this.handleSubmit}
-          initialValues={{ ...formValues }}
-          validate={FormUtils.validate(this.formSchema)}
-          enableReinitialize
-        >
-          {(formProps: FormikProps<FormikValues>): React.ReactNode => {
-            const handleNotes = (value: string): void => {
-              formProps.setFieldValue('notes', value);
-            };
+      <Formik
+        innerRef={this.formRef}
+        onSubmit={this.handleSubmit}
+        initialValues={{ ...formValues }}
+        validate={FormUtils.validate(this.formSchema)}
+        enableReinitialize
+      >
+        {(formProps: FormikProps<FormikValues>): React.ReactNode => {
+          const handleNotes = (value: string): void => {
+            formProps.setFieldValue('notes', value);
+          };
 
-            return (
+          return (
+            <View style={[containerStyles]}>
+              <SelectionPicker
+                data={[
+                  { title: t('income'), value: FormType.Income },
+                  { title: t('expense'), value: FormType.Expense },
+                ]}
+                selectedItem={[selectedFormType]}
+                onValueChange={this.onFormTypeChange}
+                containerStyles={[isAbsoluteWeb && styles.selectionPicker]}
+                isDisabled={isFromDues}
+              />
               <View style={[isAbsoluteWeb && styles.formContainer]}>
                 <View style={[isAbsoluteWeb && styles.formColumn]}>
                   <FormDropdown
@@ -329,10 +329,10 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
                   />
                 </View>
               </View>
-            );
-          }}
-        </Formik>
-      </View>
+            </View>
+          );
+        }}
+      </Formik>
     );
   }
 
@@ -542,11 +542,13 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
     };
   };
 
-  private resetFormValues = (): void =>
+  private resetFormValues = (): void => {
     this.setState({
       formValues: this.getInitialValues(),
       attachments: [],
     });
+    this.formRef.current.resetForm();
+  };
 
   private handleUpload = (attachments: IDocumentSource[]): void => {
     this.setState((prevState: ILocalState) => {

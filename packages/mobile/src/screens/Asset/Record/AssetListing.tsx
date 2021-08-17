@@ -48,6 +48,7 @@ interface IDispatchProps {
   setValueAddedServices: (payload: ISelectedValueServices) => void;
   getValueAddedServices: () => void;
   setFilter: (payload: IFilter) => void;
+  clearAssetData: () => void;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetListing>;
@@ -132,6 +133,11 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
       this.setState({ leaseType: assetDetails.assetLeaseType });
     }
   };
+
+  public componentWillUnmount(): void {
+    const { clearAssetData } = this.props;
+    clearAssetData();
+  }
 
   public render(): React.ReactNode {
     const { currentIndex, isStepDone, isSheetVisible, tabViewHeights } = this.state;
@@ -626,7 +632,7 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { resetState, getAssetById, setValueAddedServices, getValueAddedServices } = RecordAssetActions;
+  const { resetState, getAssetById, setValueAddedServices, getValueAddedServices, clearAssetData } = RecordAssetActions;
   const { setFilter } = SearchActions;
   return bindActionCreators(
     {
@@ -635,6 +641,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setValueAddedServices,
       getValueAddedServices,
       setFilter,
+      clearAssetData,
     },
     dispatch
   );
