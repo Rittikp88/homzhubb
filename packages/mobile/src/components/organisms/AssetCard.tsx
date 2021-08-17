@@ -55,6 +55,7 @@ interface IListProps {
   customDesignation?: string;
   onPressArrow?: (id: number) => void;
   onResend?: (id: number) => void;
+  isFilteredApplied?: boolean;
   onCompleteDetails: (id: number) => void;
   containerStyle?: StyleProp<ViewStyle>;
   enterFullScreen?: (attachments: Attachment[]) => void;
@@ -83,7 +84,7 @@ export class AssetCard extends Component<Props, IState> {
   };
 
   public render(): React.ReactElement {
-    const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0, containerStyle } = this.props;
+    const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0, containerStyle, isFilteredApplied = false } = this.props;
     const {
       id,
       notifications,
@@ -92,6 +93,7 @@ export class AssetCard extends Component<Props, IState> {
       attachments,
       assetStatusInfo,
       projectName,
+      assetNameWithUnit,
       formattedAddressWithCity,
       country: { flag },
     } = assetData;
@@ -181,7 +183,7 @@ export class AssetCard extends Component<Props, IState> {
                 />
               )}
               <PropertyAddressCountry
-                primaryAddress={projectName}
+                primaryAddress={isFilteredApplied ? assetNameWithUnit : projectName}
                 countryFlag={flag}
                 subAddress={formattedAddressWithCity}
                 containerStyle={styles.addressStyle}

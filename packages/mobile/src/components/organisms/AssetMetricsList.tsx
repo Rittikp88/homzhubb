@@ -10,7 +10,6 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { PaginationComponent } from '@homzhub/mobile/src/components/atoms/PaginationComponent';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
 import { AssetMetrics } from '@homzhub/mobile/src/components/molecules/AssetMetrics';
-import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 
 export interface IMetricsData {
   name: string;
@@ -93,7 +92,8 @@ const AssetMetricsList = (props: IProps): React.ReactElement => {
             const cardStyle = {
               minWidth: (SLIDER_WIDTH - COMPONENT_PADDING * (numOfElements + 1)) / numOfElements,
             };
-            const handlePress = (): void => onMetricsClicked && onMetricsClicked(item.code ?? Filters.ALL);
+            // TODO: (Shikha) - Connect with BE to handle all logic with CODE
+            const handlePress = (): void => onMetricsClicked && onMetricsClicked(item.code || item.name);
             return (
               <AssetMetrics
                 key={`${item.label ?? item.name}`}

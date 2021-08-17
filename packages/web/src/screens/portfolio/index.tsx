@@ -47,7 +47,9 @@ import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IStateProps {
   tenancies: Asset[];
-  properties: Asset[] | null;
+  properties: Asset[];
+  propertiesById: Asset[];
+  tenanciesById: Asset[];
   isTenanciesLoading: boolean;
   currentFilter: Filters;
   assetPayload: ISetAssetPayload;
@@ -102,7 +104,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
 
   public popupRef = createRef<PopupActions>();
   public render = (): React.ReactElement => {
-    const { properties, tenancies, portfolioLoaders, isTablet, isMobile } = this.props;
+    const { tenancies, portfolioLoaders, isTablet, isMobile, tenanciesById } = this.props;
     const {
       filters,
       whilePortfolioFilters,
@@ -111,6 +113,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
       param,
       payload,
       submittedSuccessfully,
+      assetType,
     } = this.state;
     const { tenancies: tenanciesLoader, properties: propertiesLoader } = portfolioLoaders;
     const isLoading = whilePortfolioFilters || tenanciesLoader || propertiesLoader;
@@ -133,12 +136,13 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     const updateData = (): void => {
       this.getScreenData().then();
     };
+    const tenanciesData = assetType ? tenancies : tenanciesById;
     return (
       <View style={[styles.filterContainer, !isTablet && styles.filterContainerWeb]}>
         <PortfolioOverview onMetricsClicked={this.onMetricsClicked} />
         <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
-        {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
-        {this.renderPortfolio(properties)}
+        {tenanciesData && this.renderTenancies(tenanciesData)}
+        {this.renderPortfolio()}
         <Popover
           content={
             !submittedSuccessfully ? (
@@ -191,11 +195,11 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     );
   };
 
-  private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
-    const { t, currentFilter } = this.props;
+  private renderPortfolio = (): React.ReactElement => {
+    const { t, currentFilter, properties, propertiesById } = this.props;
     const { assetType } = this.state;
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
-    const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
+    const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : propertiesById;
     const filteredPortfolioData =
       currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.code === currentFilter);
     const isEmpty = !filteredPortfolioData || filteredPortfolioData.length <= 0;
@@ -344,6 +348,8 @@ const mapStateToProps = (state: IState): IStateProps => {
   return {
     tenancies: PortfolioSelectors.getTenancies(state),
     properties: PortfolioSelectors.getProperties(state),
+    propertiesById: PortfolioSelectors.getPropertiesById(state),
+    tenanciesById: PortfolioSelectors.getTenanciesById(state),
     currentFilter: PortfolioSelectors.getCurrentFilter(state),
     isTenanciesLoading: PortfolioSelectors.getTenanciesLoadingState(state),
     assetPayload: PortfolioSelectors.getCurrentAssetPayload(state),

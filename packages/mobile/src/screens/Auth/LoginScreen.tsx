@@ -21,7 +21,11 @@ export class LoginScreen extends Component<Props, IOwnState> {
   };
 
   public render(): React.ReactNode {
-    const { t, navigation } = this.props;
+    const {
+      t,
+      navigation,
+      route: { params },
+    } = this.props;
     const { isLoading } = this.state;
 
     return (
@@ -45,6 +49,7 @@ export class LoginScreen extends Component<Props, IOwnState> {
           <AuthenticationGateways
             isFromLogin
             onEmailLogin={this.onEmailLoginPress}
+            onSuccessCallback={params.onCallback}
             navigation={navigation}
             testID="socialEmailLogin"
             toggleLoading={this.toggleLoading}
@@ -85,7 +90,7 @@ export class LoginScreen extends Component<Props, IOwnState> {
     } = this.props;
     navigation.navigate(ScreensKeys.OTP, {
       type: OtpNavTypes.Login,
-      title: t('auth:loginOtp'),
+      title: t('auth:loginOtp') ?? '',
       countryCode: values.phone_code,
       otpSentTo: values.phone_number,
       ...(params && params.onCallback && { onCallback: params.onCallback }),

@@ -33,6 +33,7 @@ exports[`Login Screen should render login screen 1`] = `
       }
     }
     onEmailLogin={[Function]}
+    onSuccessCallback={[MockFunction]}
     testID="socialEmailLogin"
     toggleLoading={[Function]}
   />

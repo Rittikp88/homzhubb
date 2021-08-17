@@ -32,6 +32,7 @@ interface IAuthenticationGatewayProps {
   testID?: string;
   navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
   toggleLoading?: (isLoading: boolean) => void;
+  onSuccessCallback?: () => void;
 }
 
 type Props = IAuthenticationGatewayProps & WithTranslation & IDispatchProps;
@@ -95,7 +96,7 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
   };
 
   private onSocialAuthSuccess = async (userData: ISocialUserData): Promise<void> => {
-    const { loginSuccess, navigation, isFromLogin } = this.props;
+    const { loginSuccess, navigation, isFromLogin, onSuccessCallback } = this.props;
 
     await SocialAuthUtils.onSocialAuthSuccess(
       userData,
@@ -107,6 +108,9 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
       },
       (response) => {
         loginSuccess(response);
+        if (onSuccessCallback) {
+          onSuccessCallback();
+        }
       }
     );
   };

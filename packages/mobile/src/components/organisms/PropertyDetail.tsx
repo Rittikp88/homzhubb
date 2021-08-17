@@ -40,18 +40,19 @@ class PropertyDetail extends Component<Props, IDetailState> {
     const { t, isCollapsible = true, detail, isFromPortfolio = false } = this.props;
     return (
       <>
-        <CollapsibleSection
-          title={isFromPortfolio ? t('assetPortfolio:propertyAddress') : t('property:address')}
-          isDividerRequired
-          isCollapsibleRequired={isCollapsible}
-          titleStyle={isFromPortfolio ? styles.title : undefined}
-        >
-          <Label type="large" textType="regular" style={styles.description}>
-            {detail?.address}
-          </Label>
-          {isFromPortfolio && this.renderPropertyAddress()}
-        </CollapsibleSection>
-
+        {isFromPortfolio && (
+          <CollapsibleSection
+            title={isFromPortfolio ? t('assetPortfolio:propertyAddress') : t('property:address')}
+            isDividerRequired
+            isCollapsibleRequired={isCollapsible}
+            titleStyle={isFromPortfolio ? styles.title : undefined}
+          >
+            <Label type="large" textType="regular" style={styles.description}>
+              {detail?.address}
+            </Label>
+            {isFromPortfolio && this.renderPropertyAddress()}
+          </CollapsibleSection>
+        )}
         {isFromPortfolio && (
           <>
             <CollapsibleSection

@@ -118,6 +118,7 @@ const DueCard = (props: IProps): React.ReactElement => {
           title={t('assetFinancial:payNow')}
           onPress={onPressPayNow}
           containerStyle={styles.payNowButton}
+          textStyle={styles.buttonText}
         />
       </View>
     </View>
@@ -186,6 +187,6 @@ const styles = StyleSheet.create({
     maxHeight: 35,
   },
   buttonText: {
-    marginVertical: 0,
+    marginVertical: 6,
   },
 });

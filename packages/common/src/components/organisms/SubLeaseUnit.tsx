@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Formik, FormikProps } from 'formik';
 import * as yup from 'yup';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, isEmpty } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -189,9 +189,13 @@ const SubLeaseUnit = (props: IProps): React.ReactElement => {
       } else if (singleLeaseUnitKey && singleLeaseUnitKey !== -1) {
         params.lease_listing = singleLeaseUnitKey;
       }
-      formikHelpers?.setSubmitting(true);
+      if (!isEmpty(formikHelpers)) {
+        formikHelpers.setSubmitting(true);
+      }
       onSubmit(params, route?.key, proceed);
-      formikHelpers?.setSubmitting(false);
+      if (!isEmpty(formikHelpers)) {
+        formikHelpers?.setSubmitting(false);
+      }
     },
     [assetGroupType, onSubmit, tenantPreferences, route, furnishingType, spaces, availableSpaces, singleLeaseUnitKey]
   );

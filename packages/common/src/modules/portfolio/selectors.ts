@@ -1,7 +1,8 @@
+import { mapKeys } from 'lodash';
 import { Asset, DataType } from '@homzhub/common/src/domain/models/Asset';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { TenantInfo } from '@homzhub/common/src/domain/models/TenantInfo';
-import { IPortfolioState, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
+import { IDataObject, IPortfolioState, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getTenancies = (state: IState): Asset[] => {
@@ -10,16 +11,36 @@ const getTenancies = (state: IState): Asset[] => {
   } = state;
 
   if (!tenancies) return [];
-  return Object.values(tenancies);
+  return tenancies;
 };
 
-const getProperties = (state: IState): Asset[] | null => {
+const getProperties = (state: IState): Asset[] => {
   const {
     portfolio: { properties },
   } = state;
 
-  if (!properties) return null;
-  return Object.values(properties);
+  if (!properties) return [];
+  return properties;
+};
+
+const getPropertiesById = (state: IState): Asset[] => {
+  const {
+    portfolio: { properties },
+  } = state;
+
+  if (!properties) return [];
+  const data: IDataObject = mapKeys(properties, 'id');
+  return Object.values(data);
+};
+
+const getTenanciesById = (state: IState): Asset[] => {
+  const {
+    portfolio: { tenancies },
+  } = state;
+
+  if (!tenancies) return [];
+  const data: IDataObject = mapKeys(tenancies, 'id');
+  return Object.values(data);
 };
 
 const getTenanciesLoadingState = (state: IState): boolean => {
@@ -98,4 +119,6 @@ export const PortfolioSelectors = {
   getCurrentFilter,
   getCurrentAssetPayload,
   getPortfolioLoaders,
+  getPropertiesById,
+  getTenanciesById,
 };

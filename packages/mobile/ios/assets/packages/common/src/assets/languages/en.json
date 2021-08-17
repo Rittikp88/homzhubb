@@ -307,7 +307,9 @@
     "doLater": "I’ll do it later",
     "timeToUpdate": "Time to update",
     "underMaintenance": "Under Maintenance",
-    "others": "Others"
+    "others": "Others",
+    "roundedOff": "rounded off",
+    "featureInIndiaOnly": "Feature available only for India currently"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -564,6 +566,7 @@
     "yourDetailsAdded": "Your property details are added!!",
     "yourPropertyIsReadyText": "Your property is ready for the next step - Rent, Sell or Manage now",
     "useCoins": "Use Homzhub Coins",
+    "useFromCoinsWithCount": "Use from {{count}} Homzhub Coins",
     "balance": "Balance:",
     "securePayment": "100% Secure Payments",
     "orderSummary": "Order Summary",
@@ -703,7 +706,9 @@
     "userNotAssociated": "This person is not associated with the property",
     "selectOwner": "Select owner",
     "selectTenant": "Select Tenant",
-    "enterRentAmount": "Enter Rent amount"
+    "enterRentAmount": "Enter Rent amount",
+    "selectBankAccount": "Select Bank Account",
+    "yetToAcceptInvite": "The tenant for this property is yet to accept the invite"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -971,7 +976,7 @@
     "frequency": "Frequency",
     "enterEmails": "Enter your Emails here..",
     "notifyTo": "Notify to",
-    "reminderSuccessMsg": "Reminder added successfully",
+    "reminderSuccessMsg": "Your Reminder has been added successfully",
     "reminders": "Reminders",
     "addNew": "Add New",
     "alreadyPaid": "Already Paid",
@@ -996,8 +1001,12 @@
     "panNumber": "PAN Number",
     "enterPanNumber": "Enter PAN Number",
     "accNumMismatch": "Account Number does not match! Please check and enter again",
+    "ifscFormatError": "Please enter a valid IFSC Code",
+    "panFormatError": "Please enter a valid PAN",
+    "addBankDetailsSuccess": "Bank Details Added Successfully",
     "bankAccount": "Bank Account",
-    "selectAccount": "Select account"
+    "selectAccount": "Select account",
+    "reminderAlreadySetForDue": "A reminder is already set for this due"
   },
   "assetMore": {
     "more": "More",

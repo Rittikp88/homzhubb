@@ -105,14 +105,18 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   }, [assetUsers]);
 
   const getDueState = (): void => {
-    // TODO: (Shikha) - Handle RENT case once BE done
     if (selectedDue) {
+      const date =
+        DateUtils.getDateDifference(selectedDue.dueDate, 'days') > 0
+          ? DateUtils.getNextDate(1)
+          : DateUtils.getDisplayDate(selectedDue.dueDate, 'YYYY-MM-DD');
+
       dispatch(
         FinancialActions.setReminderFormData({
           ...reminderFormData,
           title: selectedDue.invoiceTitle,
-          category: 2,
-          date: DateUtils.getDisplayDate(selectedDue.dueDate, 'YYYY-MM-DD'),
+          category: selectedDue.paymentTransaction.paymentType.code === 'RENT' ? 1 : 2,
+          date,
           ...(selectedDue.asset && { property: selectedDue.asset.id }),
         })
       );

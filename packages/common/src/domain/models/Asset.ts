@@ -904,4 +904,8 @@ export class Asset {
       },
     ];
   }
+
+  get assetNameWithUnit(): string {
+    return `${this.projectName} - ${this.assetStatusInfo?.leaseUnitName}`;
+  }
 }

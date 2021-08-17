@@ -1,4 +1,3 @@
-import { mapKeys } from 'lodash';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { PortfolioActionTypes, PortfolioPayloadTypes } from '@homzhub/common/src/modules/portfolio/actions';
 import { IPortfolioState, ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -17,8 +16,8 @@ export const initialPortfolioState: IPortfolioState = {
     properties: false,
     history: false,
   },
-  properties: null,
-  tenancies: null,
+  properties: [],
+  tenancies: [],
   currentAsset: {} as ISetAssetPayload,
   tenantHistory: [],
   currentFilter: Filters.ALL,
@@ -38,7 +37,7 @@ export const portfolioReducer = (
     case PortfolioActionTypes.GET.TENANCIES_DETAILS_SUCCESS:
       return {
         ...state,
-        ['tenancies']: mapKeys(action.payload as Asset[], 'id'),
+        ['tenancies']: action.payload as Asset[],
         ['loaders']: { ...state.loaders, ['tenancies']: false },
       };
     case PortfolioActionTypes.GET.TENANCIES_DETAILS_FAILURE:
@@ -56,7 +55,7 @@ export const portfolioReducer = (
     case PortfolioActionTypes.GET.PROPERTY_DETAILS_SUCCESS:
       return {
         ...state,
-        ['properties']: mapKeys(action.payload as Asset[], 'id'),
+        ['properties']: action.payload as Asset[],
         ['loaders']: { ...state.loaders, ['properties']: false },
       };
     case PortfolioActionTypes.GET.PROPERTY_DETAILS_FAILURE:

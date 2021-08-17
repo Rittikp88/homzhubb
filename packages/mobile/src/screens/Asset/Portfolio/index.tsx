@@ -46,7 +46,9 @@ import { IChatPayload } from '@homzhub/common/src/modules/common/interfaces';
 
 interface IStateProps {
   tenancies: Asset[];
-  properties: Asset[] | null;
+  properties: Asset[];
+  propertiesById: Asset[];
+  tenanciesById: Asset[];
   currentFilter: Filters;
   loaders: IPortfolioState['loaders'];
 }
@@ -113,11 +115,12 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     const {
       t,
       tenancies,
-      properties,
+      tenanciesById,
       loaders,
       route: { params },
     } = this.props;
     const { metrics, assetType } = this.state;
+    const tenanciesData = assetType ? tenancies : tenanciesById;
     return (
       <UserScreen
         isGradient
@@ -134,8 +137,8 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
           selectedAssetType={assetType}
           numOfElements={2}
         />
-        {tenancies && tenancies.length > 0 && this.renderTenancies(tenancies)}
-        {this.renderPortfolio(properties)}
+        {tenanciesData.length > 0 && this.renderTenancies(tenanciesData)}
+        {this.renderPortfolio()}
       </UserScreen>
     );
   };
@@ -161,12 +164,12 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     );
   };
 
-  private renderPortfolio = (properties: Asset[] | null): React.ReactElement => {
-    const { t, currentFilter } = this.props;
+  private renderPortfolio = (): React.ReactElement => {
+    const { t, currentFilter, properties, propertiesById } = this.props;
     const { assetType, filters } = this.state;
     const title = currentFilter === Filters.ALL ? t('noPropertiesAdded') : t('noFilterProperties');
-
-    const data = assetType ? (properties ?? []).filter((item) => item.assetGroup.name === assetType) : properties;
+    const finalData = currentFilter !== Filters.ALL ? properties : propertiesById;
+    const data = assetType ? (finalData ?? []).filter((item) => item.assetGroup.name === assetType) : finalData;
     const filteredData =
       currentFilter === Filters.ALL ? data : data?.filter((item) => item.assetStatusInfo?.tag.code === currentFilter);
 
@@ -206,6 +209,7 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
 
   private renderList = (item: Asset, index: number, type: DataType): React.ReactElement => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
+    const { currentFilter } = this.props;
     const handleViewProperty = (data: ISetAssetPayload, assetData: Asset, key?: Tabs): void =>
       this.onViewProperty({ ...data, dataType: type }, assetData, key);
     const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
@@ -216,6 +220,7 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
       <AssetCard
         assetData={item}
         key={index}
+        isFilteredApplied={currentFilter !== Filters.ALL}
         expandedId={type === DataType.PROPERTIES ? expandedAssetId : expandedTenanciesId}
         isFromTenancies={type === DataType.TENANCIES}
         onViewProperty={handleViewProperty}
@@ -419,6 +424,8 @@ const mapStateToProps = (state: IState): IStateProps => {
   return {
     tenancies: PortfolioSelectors.getTenancies(state),
     properties: PortfolioSelectors.getProperties(state),
+    propertiesById: PortfolioSelectors.getPropertiesById(state),
+    tenanciesById: PortfolioSelectors.getTenanciesById(state),
     currentFilter: PortfolioSelectors.getCurrentFilter(state),
     loaders: PortfolioSelectors.getPortfolioLoaders(state),
   };

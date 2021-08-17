@@ -9,8 +9,8 @@ export interface IDataObject {
 }
 
 export interface IPortfolioState {
-  tenancies: IDataObject | null;
-  properties: IDataObject | null;
+  tenancies: Asset[];
+  properties: Asset[];
   currentAsset: ISetAssetPayload;
   tenantHistory: TenantInfo[];
   currentFilter: Filters;

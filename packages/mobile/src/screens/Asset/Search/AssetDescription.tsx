@@ -270,6 +270,8 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
 
     if (!assetDetails) return null;
 
+    const isApproved =
+      (assetDetails.leaseTerm?.status === 'APPROVED' || assetDetails.saleTerm?.status === 'APPROVED') ?? false;
     return (
       <>
         <StatusBar statusBarBackground={theme.colors.white} barStyle="dark-content" />
@@ -305,10 +307,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
                 )}
               </>
             </CollapsibleSection>
-            {!isPreview && this.renderSimilarProperties()}
+            {!isPreview && isApproved && this.renderSimilarProperties()}
           </View>
         </Animated.ScrollView>
-
         {this.renderFullscreenCarousel()}
         {!isPreview && this.renderFooterSection()}
         {!isFullScreen && isPreview && (
@@ -466,9 +467,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
         </View>
         <PropertyAmenities data={amenitiesData} direction="row" containerStyle={styles.amenitiesContainer} />
         {this.renderButtonGroup()}
-        <Divider />
-        <View style={styles.timelineContainer}>{this.renderPropertyTimelines(propertyTimelineData)}</View>
-        <Divider />
+        {!!listedOn && (
+          <>
+            <Divider />
+            <View style={styles.timelineContainer}>{this.renderPropertyTimelines(propertyTimelineData)}</View>
+            <Divider />
+          </>
+        )}
         {isPreview && <PropertyReviewCard containerStyle={styles.reviewCard} />}
       </View>
     );

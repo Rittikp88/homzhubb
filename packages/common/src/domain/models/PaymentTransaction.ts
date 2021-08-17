@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 
 @JsonObject('PaymentTransaction')
 export class PaymentTransaction {
@@ -14,6 +15,9 @@ export class PaymentTransaction {
   @JsonProperty('balance_amount', Number)
   private _balanceAmount = -1;
 
+  @JsonProperty('payment_type', Unit, true)
+  private _paymentType = new Unit();
+
   get id(): number {
     return this._id;
   }
@@ -28,5 +32,9 @@ export class PaymentTransaction {
 
   get balance_amount(): number {
     return this._balanceAmount;
+  }
+
+  get paymentType(): Unit {
+    return this._paymentType;
   }
 }

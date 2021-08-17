@@ -57,7 +57,12 @@ export class SignUpScreen extends Component<Props, IOwnState> {
             testID="signupForm"
           />
           {!PlatformUtils.isIOS() && (
-            <AuthenticationGateways toggleLoading={this.toggleLoading} isFromLogin={false} navigation={navigation} />
+            <AuthenticationGateways
+              onSuccessCallback={params.onCallback}
+              toggleLoading={this.toggleLoading}
+              isFromLogin={false}
+              navigation={navigation}
+            />
           )}
         </>
       </Screen>
@@ -109,7 +114,7 @@ export class SignUpScreen extends Component<Props, IOwnState> {
 
       navigation.navigate(ScreensKeys.OTP, {
         type: OtpNavTypes.SignUp,
-        title: t('auth:verifyNumber'),
+        title: t('auth:verifyNumber') ?? '',
         countryCode: formData.phone_code,
         otpSentTo: formData.phone_number,
         userData: formData,

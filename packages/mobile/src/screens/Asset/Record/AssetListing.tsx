@@ -209,6 +209,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
       t,
       selectedAssetPlan: { selectedPlan },
       valueAddedServices,
+      route: { params },
     } = this.props;
     const { currentIndex, leaseType, isActionSheetToggled } = this.state;
     const { key, title } = this.getRoutes()[currentIndex];
@@ -238,9 +239,11 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
       );
     };
 
+    const isEdit = params?.previousScreen === ScreensKeys.Dashboard || params?.isEditFlow;
+
     return (
       <View style={styles.tabHeader}>
-        {key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
+        {!isEdit && key === Tabs.ACTIONS && selectedPlan === TypeOfPlan.RENT && (
           <SelectionPicker
             data={[
               { title: t(LeaseTypes.Entire), value: LeaseTypes.Entire },

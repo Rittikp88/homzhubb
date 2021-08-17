@@ -334,82 +334,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
             </Text>
           </ForwardRef>
         </View>
-        <Divider />
-        <View
-          style={
-            Object {
-              "flexDirection": "row",
-              "justifyContent": "space-between",
-              "paddingVertical": 16,
-            }
-          }
-        >
-          <View
-            key="0"
-            style={
-              Object {
-                "marginLeft": 4,
-                "marginRight": 20,
-              }
-            }
-          >
-            <Label
-              style={
-                Object {
-                  "color": "#4C5F72",
-                }
-              }
-              textType="regular"
-              type="large"
-            >
-              Listed On
-            </Label>
-            <Label
-              style={
-                Object {
-                  "color": "#19324A",
-                }
-              }
-              textType="semiBold"
-              type="large"
-            >
-              11 Aug 2021
-            </Label>
-          </View>
-          <View
-            key="1"
-            style={
-              Object {
-                "marginLeft": 4,
-                "marginRight": 20,
-              }
-            }
-          >
-            <Label
-              style={
-                Object {
-                  "color": "#4C5F72",
-                }
-              }
-              textType="regular"
-              type="large"
-            >
-              Available from
-            </Label>
-            <Label
-              style={
-                Object {
-                  "color": "#19324A",
-                }
-              }
-              textType="semiBold"
-              type="large"
-            >
-              Invalid date
-            </Label>
-          </View>
-        </View>
-        <Divider />
       </View>
       <withI18nextTranslation(PropertyDetail)
         detail={
@@ -802,11 +726,6 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
           title="property:noPropertyReview"
         />
       </Memo(CollapsibleSection)>
-      <withI18nextTranslation(SimilarProperties)
-        onSelectedProperty={[Function]}
-        propertyTermId={1}
-        transaction_type={0}
-      />
     </View>
   </ForwardRef(AnimatedComponentWrapper)>
   <Memo(ContactPerson)

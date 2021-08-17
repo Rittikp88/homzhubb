@@ -42,6 +42,9 @@ export class AssetStatusInfo {
   @JsonProperty('status', String, true)
   private _status = '';
 
+  @JsonProperty('lease_unit_name', String, true)
+  private _leaseUnitName = '';
+
   constructor(
     lease_listing: number | null,
     sale_listing: number | null,
@@ -96,5 +99,9 @@ export class AssetStatusInfo {
 
   get status(): string {
     return this._status;
+  }
+
+  get leaseUnitName(): string {
+    return this._leaseUnitName;
   }
 }
