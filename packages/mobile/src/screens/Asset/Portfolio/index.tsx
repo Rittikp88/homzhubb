@@ -402,18 +402,18 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
   };
 
   private verifyData = (): void => {
-    const { tenancies, properties } = this.props;
+    const { propertiesById, tenanciesById } = this.props;
 
-    if ((tenancies && tenancies.length > 0) || (properties && properties.length > 0)) {
-      if (tenancies && tenancies.length > 0) {
+    if ((tenanciesById && tenanciesById.length > 0) || (propertiesById && propertiesById.length > 0)) {
+      if (tenanciesById && tenanciesById.length > 0) {
         this.setState({
-          expandedTenanciesId: tenancies[0].id,
+          expandedTenanciesId: tenanciesById[0].id,
         });
       }
 
-      if (properties && properties.length > 0) {
+      if (propertiesById && propertiesById.length > 0) {
         this.setState({
-          expandedAssetId: properties[0].id,
+          expandedAssetId: propertiesById[0].id,
         });
       }
     }
