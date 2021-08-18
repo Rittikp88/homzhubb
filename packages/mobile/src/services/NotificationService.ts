@@ -58,7 +58,7 @@ class NotificationService {
 
   public async init(): Promise<void> {
     await this.requestPermisson();
-
+    await this.handleFirstTimeAppOpen();
     // Called when a new registration token is generated for the device/token expires/server invalidates the token.
     this.messageObject.onTokenRefresh(async (token) => {
       await StorageService.set(StorageKeys.DEVICE_TOKEN, token);
@@ -66,6 +66,17 @@ class NotificationService {
     });
 
     await this.addNotificationListeners();
+  }
+
+  public async handleFirstTimeAppOpen(): Promise<void> {
+    const isAppAlreadyOpened = (await StorageService.get<boolean>(StorageKeys.IS_APP_ALREADY_OPENED)) ?? false;
+
+    if (isAppAlreadyOpened) {
+      return;
+    }
+
+    await this.sendDeviceTokenToServer(true);
+    await StorageService.set(StorageKeys.IS_APP_ALREADY_OPENED, true);
   }
 
   public addNotificationListeners = async (): Promise<void> => {
@@ -165,18 +176,7 @@ class NotificationService {
     }
 
     await StorageService.set(StorageKeys.DEVICE_TOKEN, newDeviceToken);
-
-    const deviceName = await DeviceUtils.getDeviceName();
-    const deviceId = DeviceUtils.getDeviceId();
-
-    const payload: IDeviceTokenPayload = {
-      registration_id: newDeviceToken,
-      device_id: deviceId,
-      name: deviceName,
-      type: PlatformUtils.getPlatform(),
-    };
-
-    CommonRepository.postDeviceToken(payload);
+    await this.sendDeviceTokenToServer();
   };
 
   public requestPermisson = async (): Promise<void> => {
@@ -191,6 +191,22 @@ class NotificationService {
 
     return false;
   };
+
+  private async sendDeviceTokenToServer(isFirstTime = false): Promise<void> {
+    const deviceToken = await this.messageObject.getToken();
+    const deviceName = await DeviceUtils.getDeviceName();
+    const deviceId = DeviceUtils.getDeviceId();
+
+    const payload: IDeviceTokenPayload = {
+      registration_id: deviceToken,
+      device_id: deviceId,
+      name: deviceName,
+      type: PlatformUtils.getPlatform(),
+      active: isFirstTime ? true : undefined,
+    };
+
+    CommonRepository.postDeviceToken(payload);
+  }
 
   private getCurrentNavigation = (): IGetCurrentNavigation => {
     const { navigation } = NavigationService;

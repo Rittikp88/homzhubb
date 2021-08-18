@@ -795,6 +795,7 @@ export interface IDeviceTokenPayload {
   name: string;
   device_id: string;
   type: OSTypes;
+  active?: boolean;
 }
 
 // SERVICE TICKETS START

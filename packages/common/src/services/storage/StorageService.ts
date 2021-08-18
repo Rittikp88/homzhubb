@@ -11,6 +11,7 @@ export enum StorageKeys {
   DEVICE_TOKEN = '@device_token',
   IS_OFFER_RECEIVED_INFO_READ = '@is_offer_received_info_read',
   IS_OFFER_MADE_INFO_READ = '@is_offer_made_info_read',
+  IS_APP_ALREADY_OPENED = '@is_app_already_opened',
 }
 
 export interface IUserTokens {
