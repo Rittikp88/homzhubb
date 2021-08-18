@@ -28,7 +28,7 @@ const AddBankAccount = (): React.ReactElement => {
       isLoading={isLoading}
     >
       <View style={styles.infoTextContainer}>
-        <Icon name={icons.roundFilled} color={theme.colors.infoBlack} style={styles.dotIcon} size={7} />
+        <Icon name={icons.roundFilled} color={theme.colors.blackTint2} style={styles.dotIcon} size={7} />
         <Label type="small" style={styles.infoText}>
           {t('common:featureInIndiaOnly')}
         </Label>
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   infoText: {
-    color: theme.colors.infoBlack,
+    color: theme.colors.blackTint2,
   },
 });

@@ -84,7 +84,15 @@ export class AssetCard extends Component<Props, IState> {
   };
 
   public render(): React.ReactElement {
-    const { assetData, isDetailView, onViewProperty, onPressArrow, expandedId = 0, containerStyle, isFilteredApplied = false } = this.props;
+    const {
+      assetData,
+      isDetailView,
+      onViewProperty,
+      onPressArrow,
+      expandedId = 0,
+      containerStyle,
+      isFilteredApplied = false,
+    } = this.props;
     const {
       id,
       notifications,

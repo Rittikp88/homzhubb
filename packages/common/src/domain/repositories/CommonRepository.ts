@@ -25,7 +25,7 @@ const ENDPOINTS = {
   getCurrencyCodes: 'v1/currency-codes/',
   carpetAreaUnits: 'v1/carpet-area-units/',
   maintenanceUnits: 'v1/list-of-values/maintenance-units/',
-  onBoarding: 'v2/onboardings/',
+  onBoarding: 'v3/onboardings/',
   supportCategories: 'v1/list-of-values/client-support-categories/',
   supportContact: 'v1/client-support/contacts/',
   clientSupport: 'v1/client-support/',

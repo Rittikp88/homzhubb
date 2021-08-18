@@ -165,7 +165,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
   // TODO: Refactor
   private renderCarouselItem = (item: OnBoarding): React.ReactElement => {
     const {
-      viewport: { width },
+      viewport: { width, height: viewportHeight },
       DeviceDimensions: { SMALL, MEDIUM },
     } = theme;
     /* eslint-disable */
@@ -174,7 +174,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
         ? width > MEDIUM.width
           ? PlatformUtils.isIOS()
             ? 450
-            : 320
+            : viewportHeight / 2.5
           : width === MEDIUM.width
           ? 280
           : 220
@@ -266,12 +266,11 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   textContainer: {
-    paddingTop: 40,
+    paddingTop: 35,
     alignItems: 'center',
   },
   description: {
     textAlign: 'center',
-    color: theme.colors.lightGreen,
     marginHorizontal: 10,
   },
   button: {
@@ -302,11 +301,11 @@ const styles = StyleSheet.create({
     height: 10,
   },
   title: {
-    color: theme.colors.blue,
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    fontSize: 30,
+    color: theme.colors.blackTint1,
+    padding: 10,
+    fontSize: 24,
     textAlign: 'center',
+    lineHeight: 28,
   },
   heading: {
     color: theme.colors.darkTint3,
@@ -349,6 +348,7 @@ const styles = StyleSheet.create({
   },
   imageView: {
     alignItems: 'center',
+    marginTop: 10,
   },
 });
 
