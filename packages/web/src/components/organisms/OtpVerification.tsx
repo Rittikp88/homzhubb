@@ -164,8 +164,9 @@ const OtpVerification: React.FC<Props> = (props: Props) => {
       });
       const tokens = { refresh_token: data.refreshToken, access_token: data.accessToken };
       PixelService.ReactPixel.track(PixelEventType.CompleteRegistration);
-      AnalyticsService.track(EventType.SignupSuccess, trackData);
-      AnalyticsService.setUser(ObjectMapper.deserialize(User, socialUserData.user));
+      AnalyticsService.setUser(ObjectMapper.deserialize(User, socialUserData.user), () => {
+        AnalyticsService.track(EventType.SignupSuccess, trackData);
+      });
       dispatch(UserActions.loginSuccess(tokens));
       navigateToHomeScreen();
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
