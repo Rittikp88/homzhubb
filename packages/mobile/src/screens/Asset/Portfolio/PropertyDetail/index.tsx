@@ -654,7 +654,9 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
         isFromPortfolio: true,
         isSubleased,
         leaseUnit: assetStatusInfo?.leaseUnitId ?? undefined,
-        startDate: DateUtils.getFutureDateByUnit(startDate, 1, 'days'),
+        ...(!!assetStatusInfo?.leaseTransaction?.leaseEndDate && {
+          startDate: DateUtils.getFutureDateByUnit(startDate, 1, 'days'),
+        }),
       });
     } else {
       navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });

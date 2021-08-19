@@ -155,8 +155,16 @@ class AssetPlanSelection extends React.PureComponent<Props, IAssetPlanState> {
   };
 
   private onSkip = (): void => {
-    const { navigation, resetState } = this.props;
+    const {
+      navigation,
+      resetState,
+      route: { params },
+    } = this.props;
     resetState();
+    if (params?.isFromPortfolioList) {
+      navigation.goBack();
+      return;
+    }
     // @ts-ignore
     navigation.navigate(ScreensKeys.BottomTabs, {
       screen: ScreensKeys.Portfolio,

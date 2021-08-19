@@ -323,6 +323,7 @@ export interface IPlanSelectionParam {
   isSubleased?: boolean;
   leaseUnit?: number;
   startDate?: string;
+  isFromPortfolioList?: boolean;
 }
 
 export interface IListingNavParam {

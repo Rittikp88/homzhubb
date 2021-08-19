@@ -386,7 +386,10 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
         isFromPortfolio: true,
         isSubleased,
         leaseUnit: assetStatusInfo?.leaseUnitId ?? undefined,
-        startDate: DateUtils.getFutureDateByUnit(startDate, 1, 'days'),
+        ...(!!assetStatusInfo?.leaseTransaction?.leaseEndDate && {
+          startDate: DateUtils.getFutureDateByUnit(startDate, 1, 'days'),
+        }),
+        isFromPortfolioList: true,
       });
     } else {
       navigation.navigate(ScreensKeys.UpdatePropertyScreen, { formType, payload, param, assetDetail: asset });

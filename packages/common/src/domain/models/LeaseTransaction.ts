@@ -84,11 +84,11 @@ export class LeasePeriod {
   }
 
   get leaseStartDate(): string {
-    return moment(this._leaseStartDate, DateFormats.ISO).format('DD/MM/YYYY');
+    return this._leaseStartDate ? moment(this._leaseStartDate, DateFormats.ISO).format('DD/MM/YYYY') : '';
   }
 
   get leaseEndDate(): string {
-    return moment(this._leaseEndDate, DateFormats.ISO).format('DD/MM/YYYY');
+    return this._leaseEndDate ? moment(this._leaseEndDate, DateFormats.ISO).format('DD/MM/YYYY') : '';
   }
 
   get totalLeasePeriod(): string {
