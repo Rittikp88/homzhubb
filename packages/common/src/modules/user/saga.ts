@@ -49,7 +49,6 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
   try {
     const userData: User = yield call(UserRepository.login, data);
     const tokens = { refresh_token: userData.refreshToken, access_token: userData.accessToken };
-
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
 
@@ -59,14 +58,15 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
         yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
       }
     }
+    const handleCallback = (): void => {
+      if (is_referral || is_from_signup) {
+        AnalyticsService.track(EventType.SignupSuccess, { ...trackData, email: userData.email });
+      } else {
+        AnalyticsService.track(EventType.LoginSuccess, { ...trackData, email: userData.email });
+      }
+    };
 
-    yield AnalyticsService.setUser(userData);
-
-    if (is_referral || is_from_signup) {
-      yield AnalyticsService.track(EventType.SignupSuccess, trackData);
-    } else {
-      yield AnalyticsService.track(EventType.LoginSuccess, trackData);
-    }
+    yield AnalyticsService.setUser(userData, handleCallback);
 
     if (callback) {
       callback();

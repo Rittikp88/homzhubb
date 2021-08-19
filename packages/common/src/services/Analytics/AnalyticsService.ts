@@ -1,4 +1,5 @@
 import { AppModes, ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
+import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -22,12 +23,13 @@ class AnalyticsService {
     }
   };
 
-  public setUser = (user: User): void => {
+  public setUser = (user: User, callback: () => void): void => {
     if (user.email) {
       this.mixPanelInstance.identify(user.email);
     }
     const name = user.fullName || `${user.firstName} ${user.lastName}`;
     this.mixPanelInstance.people.set({ $email: user.email, $name: name });
+    callback();
   };
 
   public track = (eventName: EventType, data?: EventDataType): void => {
@@ -42,6 +44,8 @@ class AnalyticsService {
     const properties = {
       token: this.projectToken,
       $event_name: eventName,
+      // @ts-ignore
+      distinct_id: data && data.email ? data.email : user?.email ?? DeviceUtils.getDeviceId(),
       email: user && user.email ? user.email : 'Anonymous',
       userId: user?.id,
       user_location_latitude,
