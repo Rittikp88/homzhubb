@@ -31,24 +31,22 @@ export class More extends React.PureComponent<Props> {
     return (
       <UserScreen title={t('assetMore:more')}>
         <MoreProfile onIconPress={this.onIconPress} />
-        {screenKeys.map(
-          (section: string, sectionCount: number): React.ReactElement => {
-            const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
-            return (
-              <React.Fragment key={sectionCount}>
-                {currentData.map((item, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      {this.renderItem(item)}
-                      {index !== currentData.length - 1 && this.renderSeparator()}
-                    </React.Fragment>
-                  );
-                })}
-                {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
-              </React.Fragment>
-            );
-          }
-        )}
+        {screenKeys.map((section: string, sectionCount: number): React.ReactElement => {
+          const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
+          return (
+            <React.Fragment key={sectionCount}>
+              {currentData.map((item, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    {this.renderItem(item)}
+                    {index !== currentData.length - 1 && this.renderSeparator()}
+                  </React.Fragment>
+                );
+              })}
+              {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
+            </React.Fragment>
+          );
+        })}
       </UserScreen>
     );
   };

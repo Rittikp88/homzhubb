@@ -33,14 +33,8 @@ const CreateLeasePopover: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     if (offerData && listingData && listingData.leaseTerm) {
-      const {
-        rent,
-        securityDeposit,
-        annualRentIncrementPercentage,
-        leasePeriod,
-        minLockInPeriod,
-        moveInDate,
-      } = offerData;
+      const { rent, securityDeposit, annualRentIncrementPercentage, leasePeriod, minLockInPeriod, moveInDate } =
+        offerData;
       const {
         leaseTerm: { maintenanceAmount, maintenanceSchedule, maintenancePaidBy, utilityPaidBy },
         country: { currencies },

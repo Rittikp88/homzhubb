@@ -444,17 +444,8 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
     const { formData } = this.state;
 
     if (!params) return;
-    const {
-      name,
-      pincode,
-      state,
-      address,
-      country,
-      city,
-      countryIsoCode,
-      longitude,
-      latitude,
-    } = params as IPostAssetDetailsProps;
+    const { name, pincode, state, address, country, city, countryIsoCode, longitude, latitude } =
+      params as IPostAssetDetailsProps;
     this.setState({
       formData: {
         ...formData,
@@ -585,13 +576,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    getAssetGroups,
-    setAssetId,
-    setEditPropertyFlow,
-    toggleEditPropertyFlowBottomSheet,
-    resetState,
-  } = RecordAssetActions;
+  const { getAssetGroups, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet, resetState } =
+    RecordAssetActions;
   return bindActionCreators(
     {
       setAssetId,

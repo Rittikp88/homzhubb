@@ -60,15 +60,13 @@ export const MarketTrendsData = {
     {
       id: 1,
       title: 'Top 5 Real Estate Trends for 2020',
-      link:
-        'http://bwsmartcities.businessworld.in/article/Green-Homes-Still-Waiting-for-Green-Shoots-of-Revival/11-02-2020-183924',
+      link: 'http://bwsmartcities.businessworld.in/article/Green-Homes-Still-Waiting-for-Green-Shoots-of-Revival/11-02-2020-183924',
       posted_at: '2020-07-01T04:03:07.256216Z',
     },
     {
       id: 2,
       title: '5 emerging trends that may reshape real estate sector in 2020',
-      link:
-        'https://www.financialexpress.com/money/5-emerging-trends-that-may-reshape-real-estate-sector-in-2020/1788394/',
+      link: 'https://www.financialexpress.com/money/5-emerging-trends-that-may-reshape-real-estate-sector-in-2020/1788394/',
       posted_at: '2020-07-01T04:03:07.256216Z',
     },
   ],
@@ -99,8 +97,7 @@ export const AssetAdvertisementData = {
         id: 14,
         file_name: 'DjangoBackendLLD (1).jpg',
         media_type: 'IMAGE',
-        link:
-          'https://is1-3.housingcdn.com/4f2250e8/6ec86b0c4555a4f83e0ea77c552db2a0/v0/fs/vessella_meadows-narsingi-hyderabad-vessella_group.jpg',
+        link: 'https://is1-3.housingcdn.com/4f2250e8/6ec86b0c4555a4f83e0ea77c552db2a0/v0/fs/vessella_meadows-narsingi-hyderabad-vessella_group.jpg',
         media_attributes: {},
       },
     },
@@ -111,8 +108,7 @@ export const AssetAdvertisementData = {
         id: 14,
         file_name: 'DjangoBackendLLD (1).jpg',
         media_type: 'IMAGE',
-        link:
-          'https://www.icicibank.com/managed-assets/images/blog/big/how-is-tax-on-sale-of-inherited-property-calculated.jpg',
+        link: 'https://www.icicibank.com/managed-assets/images/blog/big/how-is-tax-on-sale-of-inherited-property-calculated.jpg',
         media_attributes: {},
       },
     },

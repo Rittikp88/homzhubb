@@ -22,17 +22,8 @@ interface IProps {
 const InvestmentsCard = (props: IProps): React.ReactElement => {
   const { investmentData } = props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
-  const {
-    address,
-    asset_type,
-    furnishing,
-    spaces,
-    project_name,
-    carpetArea,
-    carpetAreaUnit,
-    unitNumber,
-    blockNumber,
-  } = investmentData;
+  const { address, asset_type, furnishing, spaces, project_name, carpetArea, carpetAreaUnit, unitNumber, blockNumber } =
+    investmentData;
 
   const primaryAddress = project_name;
   const subAddress = address ?? `${unitNumber ?? ''} ${blockNumber ?? ''}`;
@@ -71,8 +62,7 @@ const InvestmentsCard = (props: IProps): React.ReactElement => {
           style={styles.image}
           size={50}
           source={{
-            uri:
-              'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+            uri: 'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
           }}
         />
         <Badge

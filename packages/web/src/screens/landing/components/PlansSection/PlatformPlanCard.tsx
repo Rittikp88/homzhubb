@@ -117,14 +117,12 @@ const PlatformPlanCard: FC<IProps> = (props: IProps) => {
       {releaseHotfix && (
         <View style={styles.planList}>
           {serviceBundles &&
-            serviceBundles.map(
-              (datum: any, index: number): React.ReactNode => {
-                if (index < 5) {
-                  return <OrderedList label={datum.label} key={index} />;
-                }
-                return <></>;
+            serviceBundles.map((datum: any, index: number): React.ReactNode => {
+              if (index < 5) {
+                return <OrderedList label={datum.label} key={index} />;
               }
-            )}
+              return <></>;
+            })}
         </View>
       )}
       <Typography size="regular" variant="label" style={styles.disclaimerText}>

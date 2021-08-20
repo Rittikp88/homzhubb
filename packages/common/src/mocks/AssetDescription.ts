@@ -125,8 +125,7 @@ export const mockAsset = {
     {
       file_name: 'DjangoBackendLLD (1).jpg',
       is_cover_image: false,
-      link:
-        'https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg',
+      link: 'https://homzhub-bucket.s3.amazonaws.com/asset_images/01d71336-cd92-11ea-972b-34e12d38d70eDjangoBackendLLD%201.jpg',
       media_type: 'IMAGE',
       media_attributes: {},
     },

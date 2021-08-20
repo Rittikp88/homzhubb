@@ -19,17 +19,8 @@ interface IProps {
 }
 
 const AssetMetrics = (props: IProps): React.ReactElement => {
-  const {
-    header,
-    value,
-    cardStyle,
-    testID,
-    onPressMetrics,
-    isCurrency,
-    selectedAssetType,
-    colorCode,
-    maxLength,
-  } = props;
+  const { header, value, cardStyle, testID, onPressMetrics, isCurrency, selectedAssetType, colorCode, maxLength } =
+    props;
 
   const currency = useSelector(UserSelector.getCurrency);
 

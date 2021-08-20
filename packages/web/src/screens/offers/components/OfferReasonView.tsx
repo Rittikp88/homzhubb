@@ -18,14 +18,8 @@ const OfferReasonView: React.FC<IProps> = (props: IProps) => {
   if (!offer) {
     return null;
   }
-  const {
-    statusUpdatedAt,
-    statusUpdatedBy,
-    statusChangeComment,
-    statusChangeReason,
-    status,
-    statusUpdatedByRole,
-  } = offer;
+  const { statusUpdatedAt, statusUpdatedBy, statusChangeComment, statusChangeReason, status, statusUpdatedByRole } =
+    offer;
   const isCancelled = status === Status.CANCELLED;
   return (
     <View style={styles.cardContainer}>

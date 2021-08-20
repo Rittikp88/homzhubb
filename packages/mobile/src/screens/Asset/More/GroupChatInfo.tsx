@@ -102,20 +102,21 @@ const GroupChatInfo = (props: Props): React.ReactElement => {
   const crossIcon = <Icon name={icons.close} size={20} onPress={navigation.goBack} color={theme.colors.darkTint6} />;
 
   const HeaderSection = useMemo(
-    () => (): React.ReactElement => (
-      <>
-        <GroupChatAvatar containerStyle={styles.groupChatAvatar} faces={users} isHeader />
-        <View style={styles.titleContainer}>
-          <Text type="small" textType="semiBold" style={styles.propertyName}>
-            {name}
-          </Text>
-          <Text type="small" textType="regular" style={styles.memberCount}>
-            {t('common:chatMemberCount', { count: users.length })}
-          </Text>
-        </View>
-        <SectionSeparator extraStyle={styles.headerSeparator} />
-      </>
-    ),
+    () => (): React.ReactElement =>
+      (
+        <>
+          <GroupChatAvatar containerStyle={styles.groupChatAvatar} faces={users} isHeader />
+          <View style={styles.titleContainer}>
+            <Text type="small" textType="semiBold" style={styles.propertyName}>
+              {name}
+            </Text>
+            <Text type="small" textType="regular" style={styles.memberCount}>
+              {t('common:chatMemberCount', { count: users.length })}
+            </Text>
+          </View>
+          <SectionSeparator extraStyle={styles.headerSeparator} />
+        </>
+      ),
     [usersData]
   );
 

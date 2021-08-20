@@ -250,4 +250,5 @@ export const icons = {
   longArrowLeft: 'long-arrow-left',
   longArrowRight: 'long-arrow-right',
   scrollDown: 'scroll-down',
+  launchRedirect: 'launch-redirect',
 };

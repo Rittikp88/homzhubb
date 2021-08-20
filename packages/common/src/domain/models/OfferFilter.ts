@@ -35,38 +35,30 @@ export class OfferFilter {
   }
 
   get assetsDropdownData(): PickerItemProps[] {
-    return this.assets.map(
-      (asset: VisitAssetDetail): PickerItemProps => {
-        const { id, projectName } = asset;
-        return { label: projectName, value: id };
-      }
-    );
+    return this.assets.map((asset: VisitAssetDetail): PickerItemProps => {
+      const { id, projectName } = asset;
+      return { label: projectName, value: id };
+    });
   }
 
   get listingDropdownData(): PickerItemProps[] {
-    return this.listing.map(
-      (listData: Unit): PickerItemProps => {
-        const { name, label } = listData;
-        return { label, value: name };
-      }
-    );
+    return this.listing.map((listData: Unit): PickerItemProps => {
+      const { name, label } = listData;
+      return { label, value: name };
+    });
   }
 
   get countryDropdownData(): PickerItemProps[] {
-    return this.country.map(
-      (country: Country): PickerItemProps => {
-        const { name, id } = country;
-        return { label: name, value: id };
-      }
-    );
+    return this.country.map((country: Country): PickerItemProps => {
+      const { name, id } = country;
+      return { label: name, value: id };
+    });
   }
 
   get filterDropdownData(): PickerItemProps[] {
-    return this.filterBy.map(
-      (filterData: Unit): PickerItemProps => {
-        const { name, label } = filterData;
-        return { label, value: name };
-      }
-    );
+    return this.filterBy.map((filterData: Unit): PickerItemProps => {
+      const { name, label } = filterData;
+      return { label, value: name };
+    });
   }
 }

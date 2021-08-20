@@ -16,8 +16,7 @@ export const CaseLog = [
         id: '1',
         file_name: 'Original name of the attachment',
         media_type: 'IMAGE',
-        link:
-          'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/c1a1aac4-5108-11eb-8e84-0242ac110004IMG_0002.JPG',
+        link: 'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/c1a1aac4-5108-11eb-8e84-0242ac110004IMG_0002.JPG',
         media_attributes: {},
       },
     ],
@@ -40,8 +39,7 @@ export const CaseLog = [
         id: '1',
         file_name: 'Original name of the attachment',
         media_type: 'IMAGE',
-        link:
-          'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/c1a1aac4-5108-11eb-8e84-0242ac110004IMG_0002.JPG',
+        link: 'https://hmzhbdev.s3.ap-south-1.amazonaws.com/asset_images/c1a1aac4-5108-11eb-8e84-0242ac110004IMG_0002.JPG',
         media_attributes: {},
       },
       {

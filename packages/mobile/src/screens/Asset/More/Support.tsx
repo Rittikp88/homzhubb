@@ -122,8 +122,9 @@ export class Support extends Component<Props, IScreenState> {
   private renderContent = (): React.ReactElement | null => {
     const { t } = this.props;
     const { contact, currentTab, caseLogs } = this.state;
-    const count = caseLogs.filter((item: CaseLog) => item.status.toLowerCase().includes(Status.open.toLowerCase()))
-      .length;
+    const count = caseLogs.filter((item: CaseLog) =>
+      item.status.toLowerCase().includes(Status.open.toLowerCase())
+    ).length;
     if (isEmpty(contact)) {
       return null;
     }

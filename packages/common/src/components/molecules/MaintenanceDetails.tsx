@@ -27,14 +27,8 @@ interface IProps {
 export const MaintenanceDetails = (props: IProps): React.ReactElement => {
   const [t] = useTranslation(LocaleConstants.namespacesKey.property);
   const maintenanceUnits = useSelector(RecordAssetSelectors.getMaintenanceUnits);
-  const {
-    formProps,
-    currencyData,
-    maintenanceAmountKey,
-    maintenanceScheduleKey,
-    maintenanceUnitKey,
-    assetGroupType,
-  } = props;
+  const { formProps, currencyData, maintenanceAmountKey, maintenanceScheduleKey, maintenanceUnitKey, assetGroupType } =
+    props;
   const isMobile = useDown(deviceBreakpoint.MOBILE);
 
   const scheduleOptions = [

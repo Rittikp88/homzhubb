@@ -125,27 +125,25 @@ class ScrollableDropdownList extends React.PureComponent<IProps, IScreenState> {
     if (index < 0) {
       return;
     }
-    this.setState(
-      (oldState: IScreenState): IScreenState => {
-        const { onDropdown, data, allowDeselect = true } = this.props;
+    this.setState((oldState: IScreenState): IScreenState => {
+      const { onDropdown, data, allowDeselect = true } = this.props;
 
-        const updatedData = [...oldState.data];
-        const updatedSelectedValues: (ISelectedValue | undefined)[] = [...oldState.selectedValues];
+      const updatedData = [...oldState.data];
+      const updatedSelectedValues: (ISelectedValue | undefined)[] = [...oldState.selectedValues];
 
-        const oldSelectedValue = updatedData[index].selectedValue;
+      const oldSelectedValue = updatedData[index].selectedValue;
 
-        if (allowDeselect && oldSelectedValue === value) {
-          updatedData[index].selectedValue = '';
-          updatedSelectedValues[index] = undefined;
-        } else {
-          updatedData[index].selectedValue = value;
-          const { key } = data[index];
-          updatedSelectedValues[index] = { key, value };
-        }
-        onDropdown(updatedSelectedValues);
-        return { data: updatedData, selectedValues: updatedSelectedValues };
+      if (allowDeselect && oldSelectedValue === value) {
+        updatedData[index].selectedValue = '';
+        updatedSelectedValues[index] = undefined;
+      } else {
+        updatedData[index].selectedValue = value;
+        const { key } = data[index];
+        updatedSelectedValues[index] = { key, value };
       }
-    );
+      onDropdown(updatedSelectedValues);
+      return { data: updatedData, selectedValues: updatedSelectedValues };
+    });
   };
 }
 

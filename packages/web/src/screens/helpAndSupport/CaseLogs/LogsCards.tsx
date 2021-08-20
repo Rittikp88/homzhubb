@@ -93,24 +93,21 @@ const AccordianContent: React.FC = () => {
           style={styles.image as ImageStyle}
           size={50}
           source={{
-            uri:
-              'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+            uri: 'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
           }}
         />
         <ImageSquare
           style={styles.image as ImageStyle}
           size={50}
           source={{
-            uri:
-              'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+            uri: 'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
           }}
         />
         <ImageSquare
           style={styles.image as ImageStyle}
           size={50}
           source={{
-            uri:
-              'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+            uri: 'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
           }}
         />
       </MultiCarousel>

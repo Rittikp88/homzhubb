@@ -1229,7 +1229,9 @@
     "servicePlansHeader": "For <italic>complete peace of mind</italic>, subscribe to Homzhub Service packages that are delivered by an on-the-ground network of real estate professionals and service providers.",
     "emailValidations": "Please enter a valid email.",
     "viewAllTitle": "View All",
-    "featureComparison": "See the complete details of service packages"
+    "featureComparison": "See the complete details of service packages",
+    "learnMore": "Learn More",
+    "enquireNow": "Enquire Now"
   },
   "serviceTickets": {
     "serviceTickets": "Service Requests",

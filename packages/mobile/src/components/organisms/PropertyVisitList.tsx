@@ -183,7 +183,7 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
     const { showReviewForm, reviewAsset, reviewData } = this.state;
     const { t, pillars } = this.props;
     if (reviewAsset === null) return null;
-    const { asset, leaseListing, saleListing } = (reviewAsset as unknown) as AssetVisit;
+    const { asset, leaseListing, saleListing } = reviewAsset as unknown as AssetVisit;
     return (
       <BottomSheet
         visible={showReviewForm}

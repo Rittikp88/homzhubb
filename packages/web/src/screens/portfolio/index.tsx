@@ -105,16 +105,8 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
   public popupRef = createRef<PopupActions>();
   public render = (): React.ReactElement => {
     const { tenancies, portfolioLoaders, isTablet, isMobile, tenanciesById } = this.props;
-    const {
-      filters,
-      whilePortfolioFilters,
-      assetDetails,
-      formType,
-      param,
-      payload,
-      submittedSuccessfully,
-      assetType,
-    } = this.state;
+    const { filters, whilePortfolioFilters, assetDetails, formType, param, payload, submittedSuccessfully, assetType } =
+      this.state;
     const { tenancies: tenanciesLoader, properties: propertiesLoader } = portfolioLoaders;
     const isLoading = whilePortfolioFilters || tenanciesLoader || propertiesLoader;
     const { context } = this;

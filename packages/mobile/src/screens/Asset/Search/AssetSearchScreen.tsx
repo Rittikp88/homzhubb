@@ -771,14 +771,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const {
-    setFilter,
-    getFilterDetails,
-    getProperties,
-    setInitialFilters,
-    setInitialState,
-    getPropertiesListView,
-  } = SearchActions;
+  const { setFilter, getFilterDetails, getProperties, setInitialFilters, setInitialState, getPropertiesListView } =
+    SearchActions;
   const { setChangeStack } = UserActions;
   return bindActionCreators(
     {

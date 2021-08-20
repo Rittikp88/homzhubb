@@ -59,9 +59,8 @@ const popupProps = {
 };
 
 const getPropertyList = (t: TFunction, assets: Asset[], selectedCountry: number): IPropertyOption[] => {
-  const properties = (selectedCountry === 0
-    ? assets
-    : assets.filter((asset) => selectedCountry === asset.country.id)
+  const properties = (
+    selectedCountry === 0 ? assets : assets.filter((asset) => selectedCountry === asset.country.id)
   ).map((asset) => ({
     label: asset.projectName,
     value: asset.id,

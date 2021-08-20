@@ -10,7 +10,6 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 
 const PlatformPlanSection: FC = () => {
   const isDesktop = useUp(deviceBreakpoint.DESKTOP);
-
   const [platformPlanList, setPlatformPlanList] = useState<PlatformPlans[]>([]);
   useEffect(() => {
     ServiceRepository.getPlatformPlans()

@@ -357,13 +357,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const {
-    getAssetGroups,
-    getAssetGroupsLoading,
-    getCurrentAssetId,
-    getAssetDetails,
-    getLastVisitedStep,
-  } = RecordAssetSelectors;
+  const { getAssetGroups, getAssetGroupsLoading, getCurrentAssetId, getAssetDetails, getLastVisitedStep } =
+    RecordAssetSelectors;
   return {
     assetGroups: getAssetGroups(state),
     assetId: getCurrentAssetId(state),

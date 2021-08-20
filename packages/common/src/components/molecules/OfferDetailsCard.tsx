@@ -18,63 +18,61 @@ interface IProps {
   isRentFlow?: boolean;
 }
 
-const OfferDetails = React.memo(
-  (props: IProps): React.ReactElement => {
-    const { onClickCheckBox, checkBox, isRentFlow = true } = props;
-    const { t } = useTranslation();
-    const previousOfferDetailsRent = useSelector(OfferSelectors.getPastProposalsRent);
-    const previousOfferDetailsSale = useSelector(OfferSelectors.getPastProposalsSale);
-    const isCounterFlow = Boolean(useSelector(OfferSelectors.getCurrentOffer));
-    const listing = useSelector(OfferSelectors.getListingDetail);
+const OfferDetails = React.memo((props: IProps): React.ReactElement => {
+  const { onClickCheckBox, checkBox, isRentFlow = true } = props;
+  const { t } = useTranslation();
+  const previousOfferDetailsRent = useSelector(OfferSelectors.getPastProposalsRent);
+  const previousOfferDetailsSale = useSelector(OfferSelectors.getPastProposalsSale);
+  const isCounterFlow = Boolean(useSelector(OfferSelectors.getCurrentOffer));
+  const listing = useSelector(OfferSelectors.getListingDetail);
 
-    const styles = getStyles();
+  const styles = getStyles();
 
-    const formattedDetails = OfferUtils.getFormattedOfferDetails(
-      Boolean(isRentFlow),
-      isCounterFlow,
-      listing,
-      previousOfferDetailsRent,
-      previousOfferDetailsSale
-    );
+  const formattedDetails = OfferUtils.getFormattedOfferDetails(
+    Boolean(isRentFlow),
+    isCounterFlow,
+    listing,
+    previousOfferDetailsRent,
+    previousOfferDetailsSale
+  );
 
-    const onToggleCheckBox = (): void => onClickCheckBox();
+  const onToggleCheckBox = (): void => onClickCheckBox();
 
-    const renderItem = ({ item, index }: { item: IFormattedDetails; index: number }): React.ReactElement => {
-      const style = getStyles(index);
-      return (
-        <View style={style.detailItem}>
-          <Label textType="light" type="large">
-            {item.type}
-          </Label>
-          <Label textType="semiBold" type="large">
-            {item.value}
-          </Label>
-        </View>
-      );
-    };
-
-    const keyExtractor = (item: IFormattedDetails, index: number): string => `${item} [${index}]`;
+  const renderItem = ({ item, index }: { item: IFormattedDetails; index: number }): React.ReactElement => {
+    const style = getStyles(index);
     return (
-      <View style={PlatformUtils.isWeb() && styles.flatListWeb}>
-        <FlatList
-          data={formattedDetails}
-          renderItem={renderItem}
-          numColumns={3}
-          keyExtractor={keyExtractor}
-          contentContainerStyle={styles.flatList}
-        />
-        {formattedDetails.length > 0 && !isCounterFlow && (
-          <RNCheckbox
-            selected={checkBox}
-            label={t('offers:agreeToOwnerOffers')}
-            onToggle={onToggleCheckBox}
-            containerStyle={styles.checkBox}
-          />
-        )}
+      <View style={style.detailItem}>
+        <Label textType="light" type="large">
+          {item.type}
+        </Label>
+        <Label textType="semiBold" type="large">
+          {item.value}
+        </Label>
       </View>
     );
-  }
-);
+  };
+
+  const keyExtractor = (item: IFormattedDetails, index: number): string => `${item} [${index}]`;
+  return (
+    <View style={PlatformUtils.isWeb() && styles.flatListWeb}>
+      <FlatList
+        data={formattedDetails}
+        renderItem={renderItem}
+        numColumns={3}
+        keyExtractor={keyExtractor}
+        contentContainerStyle={styles.flatList}
+      />
+      {formattedDetails.length > 0 && !isCounterFlow && (
+        <RNCheckbox
+          selected={checkBox}
+          label={t('offers:agreeToOwnerOffers')}
+          onToggle={onToggleCheckBox}
+          containerStyle={styles.checkBox}
+        />
+      )}
+    </View>
+  );
+});
 
 const OfferDetailsCard = (props: IProps): React.ReactElement | null => {
   const { onClickCheckBox, checkBox } = props;

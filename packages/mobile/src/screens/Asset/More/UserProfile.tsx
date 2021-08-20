@@ -106,14 +106,8 @@ class UserProfile extends React.PureComponent<IOwnProps, IOwnState> {
       return null;
     }
 
-    const {
-      profileProgress,
-      name,
-      basicDetailsArray,
-      emergencyContactArray,
-      workInfoArray,
-      profilePicture,
-    } = userProfile;
+    const { profileProgress, name, basicDetailsArray, emergencyContactArray, workInfoArray, profilePicture } =
+      userProfile;
     const title = params && params.screenTitle ? params.screenTitle : t('assetMore:more');
     return (
       <>

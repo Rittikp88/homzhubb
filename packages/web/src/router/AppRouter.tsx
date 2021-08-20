@@ -19,10 +19,10 @@ import TermsServicesPayment from '@homzhub/web/src/components/staticPages/TermsS
 import TermsPropertyManagement from '@homzhub/web/src/components/staticPages/TermsPropertyManagement';
 import PrivacyPolicy from '@homzhub/web/src/components/staticPages/PrivacyPolicy';
 import MobileVerification from '@homzhub/web/src/components/organisms/MobileVerification';
+import ServicePlanDetails from '@homzhub/web/src/screens/landing/components/PlanDetails/ServicePlanDetails';
 import Error from '@homzhub/web/src/components/staticPages/ErrorGeneric';
 import Error404 from '@homzhub/web/src/components/staticPages/Error404';
 import Error504 from '@homzhub/web/src/components/staticPages/Error504';
-
 import FAQ from '@homzhub/web/src/screens/faq';
 
 const AppRouter = (props: AppRouterProps): React.ReactElement => {
@@ -43,6 +43,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
     OTP_VERIFICATION,
     MOBILE_VERIFICATION,
     MAHARASHTRA_CONNECT,
+    SERVICE_PLANS_DETAIL,
     FAQS,
     MEMBERSHIP_PLANS,
     ERROR,
@@ -90,6 +91,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
           render={(renderProps): any => <Login isAuthenticated={isAuthenticated} {...renderProps} />}
         />
         <Route exact path={MAHARASHTRA_CONNECT} component={MicroSite} />
+        <Route exact path={SERVICE_PLANS_DETAIL} component={ServicePlanDetails} />
         <Route exact path={TERMS_CONDITION} component={TermsAndCondition} />
         <Route exact path={PRIVACY_POLICY} component={PrivacyPolicy} />
         <Route exact path={TERMS_SERVICES_PAYMENTS} component={TermsServicesPayment} />

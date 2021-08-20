@@ -10,9 +10,10 @@ interface IProps {
   cardTitle: string;
   cardDescription: string;
   cardStyle?: ViewStyle[];
+  children?: React.ReactNode;
 }
 const CardWithIcon: FC<IProps> = (props: IProps) => {
-  const { cardTitle, cardDescription, cardImage, cardStyle } = props;
+  const { cardTitle, cardDescription, cardImage, cardStyle, children } = props;
   const isTablet = useDown(deviceBreakpoint.TABLET);
 
   return (
@@ -24,6 +25,7 @@ const CardWithIcon: FC<IProps> = (props: IProps) => {
       <Typography size="small" style={styles.cardDescription} fontWeight="regular">
         {cardDescription}
       </Typography>
+      <View>{children}</View>
     </View>
   );
 };
@@ -52,9 +54,11 @@ const styles = StyleSheet.create({
   cardTitle: {
     marginTop: 24,
     color: theme.colors.darkTint1,
+    minHeight: 60,
   },
   cardDescription: {
     marginTop: 8,
     color: theme.colors.darkTint3,
+    minHeight: 80,
   },
 });

@@ -45,25 +45,23 @@ const DragandDrop = ({ options, onSavePress, modalClose }: IProps): React.ReactE
     )
   );
 
-  const Sortable = SortableContainer(
-    ({ items }: any): React.ReactElement => {
-      return (
-        <View style={styles.draggableList}>
-          {items.map((item: any, index: number) => (
-            <View key={index}>
-              <SortableItem
-                key={`item-${item}`}
-                index={index}
-                value={item}
-                useDragHandle
-                helperClass="dragging-helper-class"
-              />
-            </View>
-          ))}
-        </View>
-      );
-    }
-  );
+  const Sortable = SortableContainer(({ items }: any): React.ReactElement => {
+    return (
+      <View style={styles.draggableList}>
+        {items.map((item: any, index: number) => (
+          <View key={index}>
+            <SortableItem
+              key={`item-${item}`}
+              index={index}
+              value={item}
+              useDragHandle
+              helperClass="dragging-helper-class"
+            />
+          </View>
+        ))}
+      </View>
+    );
+  });
   const onSortEnd = ({ oldIndex, newIndex }: any): void => {
     setOption(arrayMove(option, oldIndex, newIndex));
     document.body.style.cursor = 'default';

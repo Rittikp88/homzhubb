@@ -433,17 +433,8 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
     try {
       toggleLoading(true);
       const transactionData = await LedgerRepository.getLedgerDetails(transactionId);
-      const {
-        asset,
-        label,
-        transactionDate,
-        attachmentDetails,
-        amount,
-        notes,
-        tellerName,
-        categoryId,
-        formType,
-      } = transactionData;
+      const { asset, label, transactionDate, attachmentDetails, amount, notes, tellerName, categoryId, formType } =
+        transactionData;
       const existingAttachments = this.formatExistingAttachments(attachmentDetails);
       this.setState({
         selectedFormType: formType,
@@ -574,18 +565,8 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
   private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     const { toggleLoading, isEditFlow, transactionId, currentDue, isFromDues } = this.props;
     const { selectedFormType, attachments, currencyCode, existingAttachments, offlinePaymentModes } = this.state;
-    const {
-      property,
-      label,
-      tellerName,
-      amount,
-      category,
-      notes,
-      date,
-      fromBank,
-      referenceNum,
-      paymentModeUsed,
-    } = values;
+    const { property, label, tellerName, amount, category, notes, date, fromBank, referenceNum, paymentModeUsed } =
+      values;
     const existingAttachmentIds = existingAttachments.map((i) => i.id);
     let uploadedAttachmentIds: Array<number> = [];
 

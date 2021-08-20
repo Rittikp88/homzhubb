@@ -11,8 +11,7 @@ describe('<ImageRound />', () => {
       <ImageRound
         size={50}
         source={{
-          uri:
-            'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+          uri: 'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
         }}
       />
     );
@@ -26,8 +25,7 @@ describe('<ImageSquare />', () => {
       <ImageSquare
         size={50}
         source={{
-          uri:
-            'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
+          uri: 'https://cdn57.androidauthority.net/wp-content/uploads/2020/04/oneplus-8-pro-ultra-wide-sample-twitter-1.jpg',
         }}
       />
     );

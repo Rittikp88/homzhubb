@@ -11,6 +11,30 @@ export interface IValueBundle {
   label: string;
 }
 
+@JsonObject('ValueUnit')
+export class ValueUnit {
+  @JsonProperty('id', Number, true)
+  private _id = 0;
+
+  @JsonProperty('title', String, true)
+  private _title = '';
+
+  @JsonProperty('display_order', Number, true)
+  private _displayOrder = -1;
+
+  get id(): number {
+    return this._id;
+  }
+
+  get title(): string {
+    return this._title;
+  }
+
+  get displayOrder(): number {
+    return this._displayOrder;
+  }
+}
+
 @JsonObject('ValueBundle')
 export class ValueBundle extends Unit {
   @JsonProperty('attachment', Attachment, true)
@@ -22,6 +46,12 @@ export class ValueBundle extends Unit {
   @JsonProperty('display_order', Number, true)
   private _displayOrder = -1;
 
+  @JsonProperty('benefits', [ValueUnit], true)
+  private _benefits = [new ValueUnit()];
+
+  @JsonProperty('terms_and_conditions', [ValueUnit], true)
+  private _terms = [new ValueUnit()];
+
   get attachment(): Attachment {
     return this._attachment;
   }
@@ -32,5 +62,13 @@ export class ValueBundle extends Unit {
 
   get displayOrder(): number {
     return this._displayOrder;
+  }
+
+  get benefits(): ValueUnit[] {
+    return this._benefits;
+  }
+
+  get terms(): ValueUnit[] {
+    return this._terms;
   }
 }

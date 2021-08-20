@@ -26,20 +26,17 @@ export const acceptOffer = {
     { text: '2. All the active offers will be automatically rejected.' },
     { text: '3. Your last name, phone number, email will be visible to the prospect should you accept this offer.' },
     {
-      text:
-        '4. Homzhub is not legally liable for the actions of its user. Please do your own due diligence before transferring any amount',
+      text: '4. Homzhub is not legally liable for the actions of its user. Please do your own due diligence before transferring any amount',
     },
   ],
   tenant: [
     {
-      text:
-        '1. Your last name, phone number, and email will be visible to the property owner should you accept this offer.',
+      text: '1. Your last name, phone number, and email will be visible to the property owner should you accept this offer.',
     },
     { text: '2. The property owner will create a lease to connect you with the property' },
     { text: '3. Once the lease is created, you can chat with the owner via the messages feature in the app. ' },
     {
-      text:
-        '4. Homzhub is not legally liable for the actions of its user. Please do your own due diligence before transferring money.',
+      text: '4. Homzhub is not legally liable for the actions of its user. Please do your own due diligence before transferring money.',
     },
   ],
 };
