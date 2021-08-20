@@ -12,6 +12,7 @@ import AppRouter from '@homzhub/web/src/router/AppRouter';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { configureStore } from '@homzhub/common/src/modules/store';
 import { Toast } from '@homzhub/common/src/components/molecules/Toast';
+import DownloadAppPopup from '@homzhub/web/src/screens/landing/components/DownloadAppPopup';
 import ErrorBoundary from '@homzhub/web/src/components/hoc/ErrorBoundary';
 import '@homzhub/web/src/globalStyles.scss';
 
@@ -52,6 +53,7 @@ export class App extends React.PureComponent<{}, IState> {
             <AppRouter />
             <FlashMessage position="top" MessageComponent={this.renderToast} />
           </BrowserRouter>
+          <DownloadAppPopup />
         </Provider>
       </ErrorBoundary>
     );

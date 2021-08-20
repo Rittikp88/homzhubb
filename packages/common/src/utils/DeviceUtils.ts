@@ -17,6 +17,13 @@ class DeviceUtils {
   public getDeviceName = async (): Promise<string> => {
     return await DeviceInfo.getDeviceName();
   };
+
+  public getDeviceOs = (): Promise<string> => {
+    const Os = DeviceInfo.getBaseOs().then((res) => {
+      return res;
+    });
+    return Os;
+  };
 }
 
 const deviceUtils = new DeviceUtils();
