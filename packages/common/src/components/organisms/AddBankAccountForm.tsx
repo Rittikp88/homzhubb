@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +10,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { PanNumber } from '@homzhub/common/src/domain/models/PanNumber';
@@ -18,6 +20,7 @@ interface IOwnProps {
   onSubmit?: () => void;
   userId: number;
   setLoading: (loading: boolean) => void;
+  isEditFlow: boolean;
 }
 interface IBankAccount {
   beneficiaryName: string;
@@ -28,17 +31,34 @@ interface IBankAccount {
   panNumber: string;
 }
 
-const AddBankAccountForm = ({ onSubmit, userId, setLoading }: IOwnProps): React.ReactElement => {
+const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnProps): React.ReactElement => {
   const { t } = useTranslation();
   const [panDetail, setPanDetail] = useState(new PanNumber());
+  const currentBankId = useSelector(UserSelector.getCurrentBankId);
+  const currentBank = useSelector(UserSelector.getCurrentBankAccountSelected);
 
-  const initialData: IBankAccount = {
-    beneficiaryName: '',
-    bankName: '',
-    ifscCode: '',
-    bankAccNum: '',
-    confirmBankAccNum: '',
-    panNumber: panDetail.panNumber,
+  const getInitialData = (): IBankAccount => {
+    if (isEditFlow && currentBank) {
+      const { beneficiaryName, bankName, ifscCode, panNumber } = currentBank;
+      const prefilledData: IBankAccount = {
+        beneficiaryName,
+        bankName,
+        ifscCode,
+        bankAccNum: bankName,
+        confirmBankAccNum: '',
+        panNumber: panNumber ?? '',
+      };
+      return prefilledData;
+    }
+    const emptyData: IBankAccount = {
+      beneficiaryName: '',
+      bankName: '',
+      ifscCode: '',
+      bankAccNum: '',
+      confirmBankAccNum: '',
+      panNumber: panDetail.panNumber,
+    };
+    return emptyData;
   };
 
   const fetchPanDetails = async (): Promise<void> => {
@@ -101,12 +121,17 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading }: IOwnProps): React.
         beneficiary_name: beneficiaryName,
         bank_name: bankName,
         account_number: bankAccNum,
-        pan_number: panNumber.length > 0 && panNumber !== panDetail.panNumber ? panNumber : undefined,
+        pan_number: panNumber.length > 0 ? panNumber : undefined,
         ifsc_code: ifscCode,
       } as IBankAccountPayload;
-      await UserRepository.addBankDetails(userId, payload);
+      if (isEditFlow && currentBankId !== -1) {
+        await UserRepository.editBankDetails(userId, currentBankId, payload);
+        AlertHelper.success({ message: t('assetFinancial:bankAccountEditedSuccessfully') });
+      } else {
+        await UserRepository.addBankDetails(userId, payload);
+        AlertHelper.success({ message: t('assetFinancial:addBankDetailsSuccess') });
+      }
       setLoading(false);
-      AlertHelper.success({ message: t('assetFinancial:addBankDetailsSuccess') });
       if (onSubmit) onSubmit();
     } catch (e) {
       setLoading(false);
@@ -116,7 +141,7 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading }: IOwnProps): React.
 
   return (
     <Formik
-      initialValues={initialData}
+      initialValues={getInitialData()}
       onSubmit={onFormSubmit}
       validate={FormUtils.validate(formSchema)}
       enableReinitialize
@@ -180,9 +205,9 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading }: IOwnProps): React.
               onPress={formProps.handleSubmit}
               formProps={formProps}
               type="primary"
-              title={t('assetFinancial:addBankAccount')}
+              title={isEditFlow && currentBank ? t('assetFinancial:updateDetails') : t('assetFinancial:addBankAccount')}
               containerStyle={styles.button}
-              disabled={isEqual(formProps.values, initialData)}
+              disabled={isEqual(formProps.values, getInitialData())}
             />
           </>
         );

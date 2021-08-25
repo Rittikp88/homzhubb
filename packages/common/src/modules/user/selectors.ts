@@ -225,6 +225,21 @@ const getBankInfo = (state: IState): BankInfo[] => {
   return ObjectMapper.deserializeArray(BankInfo, bankInfo);
 };
 
+const getCurrentBankId = (state: IState): number => {
+  const {
+    user: { currentBankAccountId },
+  } = state;
+  return currentBankAccountId;
+};
+
+const getCurrentBankAccountSelected = (state: IState): BankInfo | null => {
+  const {
+    user: { currentBankAccountId, bankInfo },
+  } = state;
+  if (currentBankAccountId === -1) return null;
+  return ObjectMapper.deserialize(BankInfo, bankInfo.filter((bank) => bank.id === currentBankAccountId)[0]);
+};
+
 export const UserSelector = {
   isLoggedIn,
   hasOnBoardingCompleted,
@@ -249,4 +264,6 @@ export const UserSelector = {
   getUserServices,
   getUserCoinTransaction,
   getBankInfo,
+  getCurrentBankId,
+  getCurrentBankAccountSelected,
 };

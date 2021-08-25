@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -10,6 +10,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import AddBankAccountForm from '@homzhub/common/src/components/organisms/AddBankAccountForm';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
+import { IAddBankAccount } from '@homzhub/mobile/src/navigation/interfaces';
 
 const AddBankAccount = (): React.ReactElement => {
   const { t } = useTranslation();
@@ -17,13 +18,19 @@ const AddBankAccount = (): React.ReactElement => {
   const { id } = useSelector(UserSelector.getUserProfile);
   const { owner: ownerId } = useSelector(FinancialSelectors.getReminderFormData);
   const [isLoading, setLoading] = useState(false);
+  const { params } = useRoute();
+  const navParams = params as IAddBankAccount;
 
-  const userId = ownerId > 0 ? ownerId : id;
+  const userId = ownerId && ownerId > 0 ? ownerId : id;
 
   return (
     <Screen
       backgroundColor={theme.colors.white}
-      headerProps={{ title: t('assetFinancial:addBankAccount'), type: 'secondary', onIconPress: goBack }}
+      headerProps={{
+        title: navParams?.isEdit ? t('assetFinancial:editDetails') : t('assetFinancial:addBankAccount'),
+        type: 'secondary',
+        onIconPress: goBack,
+      }}
       containerStyle={styles.container}
       isLoading={isLoading}
     >
@@ -33,7 +40,12 @@ const AddBankAccount = (): React.ReactElement => {
           {t('common:featureInIndiaOnly')}
         </Label>
       </View>
-      <AddBankAccountForm onSubmit={goBack} userId={userId} setLoading={setLoading} />
+      <AddBankAccountForm
+        isEditFlow={Boolean(navParams?.isEdit)}
+        onSubmit={goBack}
+        userId={userId}
+        setLoading={setLoading}
+      />
     </Screen>
   );
 };

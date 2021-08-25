@@ -36,6 +36,18 @@ export class BankInfo {
   @JsonProperty('pan_number', String, true)
   private _panNumber = null;
 
+  @JsonProperty('is_active', Boolean)
+  private _isActive = false;
+
+  @JsonProperty('can_edit', Boolean)
+  private _canEdit = false;
+
+  @JsonProperty('can_delete', Boolean)
+  private _canDelete = false;
+
+  @JsonProperty('can_deactivate', Boolean)
+  private _canDeactivate = false;
+
   get id(): number {
     return this._id;
   }
@@ -69,5 +81,21 @@ export class BankInfo {
       description: this.bankName,
       selectedValue: `${this.accountNumber} - ${this.bankName}`,
     };
+  }
+
+  get canEdit(): boolean {
+    return this._canEdit;
+  }
+
+  get canDelete(): boolean {
+    return this._canDelete;
+  }
+
+  get canDeactivate(): boolean {
+    return this._canDeactivate;
+  }
+
+  get isActive(): boolean {
+    return this._isActive;
   }
 }

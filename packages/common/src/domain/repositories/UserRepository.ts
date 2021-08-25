@@ -73,6 +73,7 @@ const ENDPOINTS = {
   verifyReferralCode: (code: string): string => `v1/users/referrals/${code}/`,
   verifyWorkEmail: (email: string): string => `v1/users/work-info/emails/${email}/`,
   bankInfo: (id: number): string => `v1/users/${id}/user-bank-info/`,
+  bankInfoById: (userId: number, bankAccId: number): string => `v1/users/${userId}/user-bank-info/${bankAccId}/`,
   panNumbers: (userId: number): string => `v1/users/${userId}/pan-numbers/`,
 };
 
@@ -246,6 +247,10 @@ class UserRepository {
   public getPanDetails = async (userId: number): Promise<PanNumber> => {
     const response = await this.apiClient.get(ENDPOINTS.panNumbers(userId));
     return ObjectMapper.deserialize(PanNumber, response);
+  };
+
+  public editBankDetails = async (userId: number, bankAccId: number, payload: IBankAccountPayload): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.bankInfoById(userId, bankAccId), payload);
   };
 }
 

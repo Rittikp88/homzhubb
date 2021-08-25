@@ -1011,7 +1011,12 @@
     "editAccount": "Edit Account",
     "deleteAccount": "Delete Account",
     "bankAccountOptions": "Bank Account Options",
-    "noBankAccsAdded": "No Bank Accounts Added"
+    "noBankAccsAdded": "No Bank Accounts Added",
+    "bankDetailsCantBeEdited": "Bank Details cannot be edited",
+    "bankAccountEditedSuccessfully": "Bank Details Successfully Updated",
+    "editBankAccount": "Edit Bank Account",
+    "editDetails": "Edit Details",
+    "updateDetails": "Update Details"
   },
   "assetMore": {
     "more": "More",

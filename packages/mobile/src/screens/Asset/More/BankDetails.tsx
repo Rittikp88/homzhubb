@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -22,6 +23,7 @@ const BankDetails = (): React.ReactElement => {
   const dispatch = useDispatch();
   const bankDetails = useSelector(UserSelector.getBankInfo);
   const { bankInfo: bankInfoLoading } = useSelector(UserSelector.getUserLoaders);
+  const currentBank = useSelector(UserSelector.getCurrentBankAccountSelected);
 
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
@@ -35,10 +37,6 @@ const BankDetails = (): React.ReactElement => {
     useCallback(() => {
       dispatch(UserActions.getBankInfo());
       dispatch(UserActions.setCurrentBankAccountId(-1));
-
-      return (): void => {
-        dispatch(UserActions.setCurrentBankAccountId(-1));
-      };
     }, [])
   );
 
@@ -99,10 +97,25 @@ const BankDetails = (): React.ReactElement => {
       },
     ];
 
-    // Todo (Praharsh) : Handle action API when BE is done.
+    const onPressEdit = (): void => {
+      if (currentBank) {
+        if (!currentBank.canEdit) {
+          AlertHelper.error({ message: t('assetFinancial:bankDetailsCantBeEdited') });
+          return;
+        }
+        navigate(ScreensKeys.AddBankAccount, { isEdit: true });
+      }
+    };
+
     const handleBankAccountActions = (action: string): void => {
       resetBottomSheet();
-      FunctionUtils.noop();
+      switch (action) {
+        case BankAccountActions.EDIT:
+          onPressEdit();
+          return;
+        default:
+          FunctionUtils.noop();
+      }
     };
 
     return (
