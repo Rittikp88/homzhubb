@@ -1019,7 +1019,15 @@
     "updateDetails": "Update Details",
     "youCanDeactivate": "You can also deactivate this account instead, are you sure you want to delete this?",
     "bankAccountCantBeDeleted": "This Bank account cannot be deleted",
-    "bankAccountDeletedSuccessfully": "Bank Account deleted successfully"
+    "bankAccountDeletedSuccessfully": "Bank Account deleted successfully",
+    "deactivateConfirmation": "Are you sure you want to deactivate this account?",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "activateAccount": "Activate Account",
+    "bankAccountDeactivationSuccess": "Bank Account deactivated successfully",
+    "bankAccountActivationSuccess": "Bank Account activated successfully",
+    "bankAccountCantBeDeactivated": "This Account cannot be deactivated",
+    "bankAccountDeleteConfirmation": "Are you sure you want to delete this bank account?"
   },
   "assetMore": {
     "more": "More",

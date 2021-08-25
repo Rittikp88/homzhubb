@@ -14,6 +14,7 @@ export enum BankAccountActions {
   EDIT = 'EDIT',
   DELETE = 'DELETE',
   DEACTIVATE = 'DEACTIVATE',
+  ACTIVATE = 'ACTIVATE',
 }
 
 @JsonObject('BankInfo')

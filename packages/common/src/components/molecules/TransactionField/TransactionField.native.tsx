@@ -5,6 +5,7 @@ import { FormikProps } from 'formik';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import RadioItem from '@homzhub/common/src/components/atoms/RadioItem';
 import { FontWeightType, TextFieldType, TextSizeType, Label } from '@homzhub/common/src/components/atoms/Text';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -61,6 +62,8 @@ export const TransactionField = (props: ITransactionProp): React.ReactElement =>
     return <Divider containerStyles={styles.divider} />;
   };
 
+  const emptyContent = (): React.ReactElement => <EmptyState containerStyle={styles.emptyContent} />;
+
   const value = options.filter((item) => item.value === values[name])[0];
   const color = isDisabled ? theme.colors.disabled : theme.colors.darkTint7;
   return (
@@ -86,7 +89,12 @@ export const TransactionField = (props: ITransactionProp): React.ReactElement =>
         onCloseSheet={(): void => setIsVisible(false)}
         sheetHeight={350}
       >
-        <FlatList data={options} renderItem={renderItem} ItemSeparatorComponent={itemSeparator} />
+        <FlatList
+          data={options}
+          ListEmptyComponent={emptyContent}
+          renderItem={renderItem}
+          ItemSeparatorComponent={itemSeparator}
+        />
       </BottomSheet>
     </WithFieldError>
   );
@@ -114,5 +122,8 @@ const styles = StyleSheet.create({
   divider: {
     margin: 16,
     borderColor: theme.colors.background,
+  },
+  emptyContent: {
+    marginTop: 25,
   },
 });

@@ -26,6 +26,7 @@ import {
   IVerifyAuthTokenResponse,
   IUpdatePlanPayload,
   IBankAccountPayload,
+  IPayloadWithAction,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
@@ -255,6 +256,14 @@ class UserRepository {
 
   public deleteBankDetails = async (userId: number, bankAccId: number): Promise<void> => {
     return await this.apiClient.delete(ENDPOINTS.bankInfoById(userId, bankAccId));
+  };
+
+  public handleBankDetailsActivation = async (
+    userId: number,
+    bankAccId: number,
+    payload: IPayloadWithAction
+  ): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.bankInfoById(userId, bankAccId), payload);
   };
 }
 

@@ -39,12 +39,12 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnPr
 
   const getInitialData = (): IBankAccount => {
     if (isEditFlow && currentBank) {
-      const { beneficiaryName, bankName, ifscCode, panNumber } = currentBank;
+      const { beneficiaryName, bankName, ifscCode, panNumber, accountNumber } = currentBank;
       const prefilledData: IBankAccount = {
         beneficiaryName,
         bankName,
         ifscCode,
-        bankAccNum: bankName,
+        bankAccNum: accountNumber,
         confirmBankAccNum: '',
         panNumber: panNumber ?? '',
       };

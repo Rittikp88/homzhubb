@@ -24,6 +24,7 @@ const BankDetails = (): React.ReactElement => {
   const { t } = useTranslation();
   const { goBack, navigate } = useNavigation();
   const dispatch = useDispatch();
+
   const bankDetails = useSelector(UserSelector.getBankInfo);
   const { bankInfo: bankInfoLoading } = useSelector(UserSelector.getUserLoaders);
   const currentBank = useSelector(UserSelector.getCurrentBankAccountSelected);
@@ -31,16 +32,17 @@ const BankDetails = (): React.ReactElement => {
   const { id: userId } = useSelector(UserSelector.getUserProfile);
 
   const [showOptionsSheet, setShowOptionsSheet] = useState(false);
-  const [showDeleteSheet, setShowDeleteSheet] = useState(false);
+  const [showConfirmationSheet, setShowConfirmationSheet] = useState(false);
   const [localLoader, setLocalLoader] = useState(false);
+  const [isDeactivateFlow, setIsDeactivateFlow] = useState(false);
 
   const setOptionsSheet = (): void => setShowOptionsSheet(true);
 
   const resetOptionsSheet = (): void => setShowOptionsSheet(false);
 
-  const setDeleteSheet = (): void => setShowDeleteSheet(true);
+  const setConfirmationSheet = (): void => setShowConfirmationSheet(true);
 
-  const resetDeleteSheet = (): void => setShowDeleteSheet(false);
+  const resetConfirmationSheet = (): void => setShowConfirmationSheet(false);
 
   const onPressPlusIcon = (): void => navigate(ScreensKeys.AddBankAccount);
 
@@ -50,6 +52,34 @@ const BankDetails = (): React.ReactElement => {
       dispatch(UserActions.setCurrentBankAccountId(-1));
     }, [])
   );
+
+  const handleAccountActivation = async (action: BankAccountActions): Promise<void> => {
+    try {
+      const payload = {
+        action,
+      };
+      setLocalLoader(true);
+      await UserRepository.handleBankDetailsActivation(userId, currentBankId, payload);
+      setLocalLoader(false);
+      setIsDeactivateFlow(false);
+      dispatch(UserActions.setCurrentBankAccountId(-1));
+      dispatch(UserActions.getBankInfo());
+      AlertHelper.success({
+        message: t(
+          `assetFinancial:${
+            action === BankAccountActions.ACTIVATE ? 'bankAccountActivationSuccess' : 'bankAccountDeactivationSuccess'
+          }`
+        ),
+      });
+    } catch (e) {
+      setLocalLoader(false);
+      setIsDeactivateFlow(false);
+      AlertHelper.error({
+        message: ErrorUtils.getErrorMessage(e.details.statusCode),
+        statusCode: e.details.statusCode,
+      });
+    }
+  };
 
   const BankAccountsList = (): React.ReactElement => {
     const renderItem = ({ item }: { item: ICardProp }): React.ReactElement => {
@@ -65,7 +95,7 @@ const BankDetails = (): React.ReactElement => {
         );
       };
 
-      const hasGrayBackground = (showOptionsSheet || showDeleteSheet) && item.id === currentBankId;
+      const hasGrayBackground = (showOptionsSheet || showConfirmationSheet) && item.id === currentBankId;
 
       return (
         <DetailCard
@@ -96,21 +126,31 @@ const BankDetails = (): React.ReactElement => {
   };
 
   const OptionsSheet = (): React.ReactElement => {
-    const options: IListItem[] = [
-      {
-        label: t('assetFinancial:editAccount'),
-        value: BankAccountActions.EDIT,
-      },
-      {
-        label: t('moreSettings:deactivateAccount'),
-        value: BankAccountActions.DEACTIVATE,
-      },
-      {
-        label: t('assetFinancial:deleteAccount'),
-        value: BankAccountActions.DELETE,
-        isNegative: true,
-      },
-    ];
+    const returnOptions = (): IListItem[] => {
+      const options: IListItem[] = [
+        {
+          label: t('assetFinancial:editAccount'),
+          value: BankAccountActions.EDIT,
+        },
+        {
+          label: t('assetFinancial:deleteAccount'),
+          value: BankAccountActions.DELETE,
+          isNegative: true,
+        },
+      ];
+      if (!currentBank?.isActive) {
+        options.splice(1, 0, {
+          label: t('assetFinancial:activateAccount'),
+          value: BankAccountActions.ACTIVATE,
+        });
+      } else {
+        options.splice(1, 0, {
+          label: t('moreSettings:deactivateAccount'),
+          value: BankAccountActions.DEACTIVATE,
+        });
+      }
+      return options;
+    };
 
     const onPressEdit = (): void => {
       if (currentBank) {
@@ -129,8 +169,16 @@ const BankDetails = (): React.ReactElement => {
           onPressEdit();
           return;
         case BankAccountActions.DELETE:
-          setDeleteSheet();
+          setConfirmationSheet();
           return;
+        case BankAccountActions.DEACTIVATE:
+          setIsDeactivateFlow(true);
+          setConfirmationSheet();
+          return;
+        case BankAccountActions.ACTIVATE:
+          handleAccountActivation(BankAccountActions.ACTIVATE).then();
+          return;
+
         default:
           FunctionUtils.noop();
       }
@@ -139,7 +187,7 @@ const BankDetails = (): React.ReactElement => {
     return (
       <BottomSheetListView
         selectedValue=""
-        data={options}
+        data={returnOptions()}
         listTitle={t('assetFinancial:bankAccountOptions')}
         isBottomSheetVisible={showOptionsSheet}
         onSelectItem={handleBankAccountActions}
@@ -151,7 +199,11 @@ const BankDetails = (): React.ReactElement => {
     );
   };
 
-  const DeleteConfirmation = (): React.ReactElement => {
+  const ConfirmationBottomSheet = (): React.ReactElement => {
+    const onConfirmDeactivate = async (): Promise<void> => {
+      await handleAccountActivation(BankAccountActions.DEACTIVATE);
+    };
+
     const onConfirmDelete = async (): Promise<void> => {
       try {
         setLocalLoader(true);
@@ -165,8 +217,20 @@ const BankDetails = (): React.ReactElement => {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details.message), statusCode: e.details.statusCode });
       }
     };
+
+    const onPressDeactivate = async (): Promise<void> => {
+      resetConfirmationSheet();
+      if (currentBank) {
+        if (currentBank.canDeactivate) {
+          await onConfirmDeactivate();
+          return;
+        }
+        AlertHelper.error({ message: t('assetFinancial:bankAccountCantBeDeactivated') });
+      }
+    };
+
     const onPressDelete = async (): Promise<void> => {
-      resetDeleteSheet();
+      resetConfirmationSheet();
       if (currentBank) {
         if (currentBank.canDelete) {
           await onConfirmDelete();
@@ -175,13 +239,24 @@ const BankDetails = (): React.ReactElement => {
         AlertHelper.error({ message: t('assetFinancial:bankAccountCantBeDeleted') });
       }
     };
+
+    const getConfirmationMessage = (): string => {
+      if (isDeactivateFlow) {
+        return t('assetFinancial:deactivateConfirmation');
+      }
+      return t(
+        currentBank?.isActive ? 'assetFinancial:youCanDeactivate' : 'assetFinancial:bankAccountDeleteConfirmation'
+      );
+    };
+
     return (
       <ConfirmationSheet
-        message={t('assetFinancial:youCanDeactivate')}
-        isVisible={showDeleteSheet}
-        onCloseSheet={resetDeleteSheet}
-        onPressDelete={onPressDelete}
+        message={getConfirmationMessage()}
+        isVisible={showConfirmationSheet}
+        onCloseSheet={resetConfirmationSheet}
+        onPressDelete={isDeactivateFlow ? onPressDeactivate : onPressDelete}
         sheetHeight={theme.viewport.height / 2.5}
+        buttonTitles={isDeactivateFlow ? [t('common:cancel'), t('assetFinancial:deactivate')] : undefined}
       />
     );
   };
@@ -197,7 +272,7 @@ const BankDetails = (): React.ReactElement => {
     >
       <BankAccountsList />
       <OptionsSheet />
-      <DeleteConfirmation />
+      <ConfirmationBottomSheet />
     </UserScreen>
   );
 };

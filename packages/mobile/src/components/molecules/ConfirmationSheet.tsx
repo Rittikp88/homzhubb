@@ -13,6 +13,7 @@ interface IProps {
   sheetTitle?: string;
   sheetHeight?: number;
   message?: string;
+  buttonTitles?: string[];
 }
 
 const ConfirmationSheet = (props: IProps): React.ReactElement => {
@@ -24,6 +25,7 @@ const ConfirmationSheet = (props: IProps): React.ReactElement => {
     sheetTitle = t('common:confirm'),
     sheetHeight = theme.viewport.height / 3,
     message = t('property:deleteConfirmation'),
+    buttonTitles = [t('common:cancel'), t('common:delete')],
   } = props;
 
   return (
@@ -35,14 +37,14 @@ const ConfirmationSheet = (props: IProps): React.ReactElement => {
         <View style={styles.buttonContainer}>
           <Button
             type="secondary"
-            title={t('common:cancel')}
+            title={buttonTitles[0]}
             onPress={onCloseSheet}
             titleStyle={styles.buttonTitle}
             containerStyle={styles.cancelButton}
           />
           <Button
             type="primary"
-            title={t('common:delete')}
+            title={buttonTitles[1]}
             titleStyle={styles.buttonTitle}
             onPress={onPressDelete}
             containerStyle={styles.deleteButton}

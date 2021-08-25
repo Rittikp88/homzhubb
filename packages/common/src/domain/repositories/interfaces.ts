@@ -1083,3 +1083,7 @@ export interface IDueOrderSummaryAction {
   coins?: number;
   promo_code?: string;
 }
+
+export interface IPayloadWithAction {
+  action: string;
+}
