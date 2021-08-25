@@ -10,6 +10,12 @@ export interface IBankInfo {
   pan_number: string | null;
 }
 
+export enum BankAccountActions {
+  EDIT = 'EDIT',
+  DELETE = 'DELETE',
+  DEACTIVATE = 'DEACTIVATE',
+}
+
 @JsonObject('BankInfo')
 export class BankInfo {
   @JsonProperty('id', Number)
@@ -56,6 +62,7 @@ export class BankInfo {
 
   get bankDetail(): ICardProp {
     return {
+      id: this._id,
       heading: this.beneficiaryName,
       value: this.id,
       label: `A/C Number - ${this.accountNumber}`,

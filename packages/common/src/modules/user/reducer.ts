@@ -23,6 +23,7 @@ export const initialUserState: IUserState = {
   userServices: [],
   userTransaction: [],
   bankInfo: [],
+  currentBankAccountId: -1,
   error: {
     user: '',
   },
@@ -221,6 +222,11 @@ export const userReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['bankInfo']: false },
+      };
+    case UserActionTypes.SET.CURRENT_BANK_ACCOUNT_ID:
+      return {
+        ...state,
+        ['currentBankAccountId']: action.payload as number,
       };
     default:
       return state;

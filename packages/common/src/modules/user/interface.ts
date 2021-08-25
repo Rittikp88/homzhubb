@@ -20,6 +20,7 @@ export interface IUserState {
   userServices: IAsset[];
   userTransaction: ICoinTransaction[];
   bankInfo: IBankInfo[];
+  currentBankAccountId: number;
   error: {
     user: string;
   };

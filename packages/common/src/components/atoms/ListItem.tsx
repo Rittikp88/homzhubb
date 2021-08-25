@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle, PickerItemProps } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle, PickerItemProps, TextStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -11,14 +11,25 @@ interface IListItemProps {
   listItemViewStyle?: StyleProp<ViewStyle>;
   itemContentStyle?: StyleProp<ViewStyle>;
   testID?: string;
+  itemStyle?: StyleProp<TextStyle>;
+  hasFullySpannedItems?: boolean;
 }
 
 export const ListItem = (props: IListItemProps): React.ReactElement => {
-  const { listItem, onItemSelect, isCheck, listItemViewStyle, itemContentStyle, testID } = props;
+  const {
+    listItem,
+    onItemSelect,
+    isCheck,
+    listItemViewStyle,
+    itemContentStyle,
+    testID,
+    itemStyle,
+    hasFullySpannedItems = false,
+  } = props;
   return (
-    <View style={[styles.listItemView, listItemViewStyle]}>
+    <View style={[hasFullySpannedItems ? styles.fullySpannedItems : styles.listItemView, listItemViewStyle]}>
       <TouchableOpacity style={[styles.itemContent, itemContentStyle]} onPress={onItemSelect} testID={testID}>
-        <Text type="small" textType="regular" style={styles.item}>
+        <Text type="small" textType="regular" style={[styles.item, itemStyle && itemStyle]}>
           {listItem.label}
         </Text>
         {isCheck && <Icon name={icons.checkFilled} size={16} color={theme.colors.primaryColor} />}
@@ -38,5 +49,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  fullySpannedItems: {
+    paddingHorizontal: 26,
   },
 });

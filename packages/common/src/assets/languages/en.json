@@ -1006,7 +1006,12 @@
     "addBankDetailsSuccess": "Bank Details Added Successfully",
     "bankAccount": "Bank Account",
     "selectAccount": "Select account",
-    "reminderAlreadySetForDue": "A reminder is already set for this due"
+    "reminderAlreadySetForDue": "A reminder is already set for this due",
+    "bankAccounts": "Bank Accounts",
+    "editAccount": "Edit Account",
+    "deleteAccount": "Delete Account",
+    "bankAccountOptions": "Bank Account Options",
+    "noBankAccsAdded": "No Bank Accounts Added"
   },
   "assetMore": {
     "more": "More",
@@ -1090,7 +1095,8 @@
     "referEarn": "Refer and Earn",
     "coinBalance": "Coin Balance",
     "coinsEarned": "Coins Earned",
-    "marketPlace": "Market Place"
+    "marketPlace": "Market Place",
+    "bankDetails": "Bank Details"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

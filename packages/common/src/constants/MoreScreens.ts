@@ -32,6 +32,7 @@ export enum MoreScreenTypes {
   SUPPORT = 'support',
   OFFERS = 'Offers',
   FAQS = 'Faqs',
+  BANK_DETAILS = 'bankDetails',
 }
 
 const ICON_COLOR = theme.colors.lowPriority;
@@ -72,10 +73,18 @@ export const MORE_SCREENS: IMoreScreens = {
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.MESSAGES,
     },
+    {
+      id: 5,
+      title: 'assetMore:bankDetails',
+      icon: icons.bankBuilding,
+      iconColor: ICON_COLOR,
+      textColor: TEXT_COLOR,
+      type: MoreScreenTypes.BANK_DETAILS,
+    },
   ],
   sectionB: [
     {
-      id: 4,
+      id: 6,
       title: 'common:search',
       icon: icons.search,
       iconColor: ICON_COLOR,
@@ -83,7 +92,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.SEARCH,
     },
     {
-      id: 4,
+      id: 7,
       title: `${translationKey}:savedProperties`,
       icon: icons.heartOutline,
       iconColor: ICON_COLOR,
@@ -91,7 +100,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.SAVED_PROPERTIES,
     },
     {
-      id: 5,
+      id: 8,
       title: `${translationKey}:propertyVisits`,
       icon: icons.visit,
       iconColor: ICON_COLOR,
@@ -99,7 +108,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.PROPERTY_VISITS,
     },
     {
-      id: 6,
+      id: 9,
       title: 'common:offers',
       icon: icons.offers,
       iconColor: ICON_COLOR,
@@ -107,7 +116,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.OFFERS,
     },
     {
-      id: 7,
+      id: 10,
       title: `${translationKey}:newLaunches`,
       icon: icons.newLaunch,
       iconColor: ICON_COLOR,
@@ -115,7 +124,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.NEW_LAUNCHES,
     },
     {
-      id: 8,
+      id: 11,
       title: `${translationKey}:marketTrends`,
       icon: icons.increase,
       iconColor: ICON_COLOR,
@@ -125,7 +134,7 @@ export const MORE_SCREENS: IMoreScreens = {
   ],
   sectionC: [
     {
-      id: 8,
+      id: 12,
       title: `${translationKey}:settings`,
       icon: icons.setting,
       iconColor: ICON_COLOR,
@@ -133,7 +142,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.SETTINGS,
     },
     {
-      id: 9,
+      id: 13,
       title: `${translationKey}:paymentMethods`,
       icon: icons.payment,
       iconColor: ICON_COLOR,
@@ -143,7 +152,7 @@ export const MORE_SCREENS: IMoreScreens = {
   ],
   sectionD: [
     {
-      id: 10,
+      id: 14,
       title: `${translationKey}:referFriend`,
       icon: icons.refer,
       iconColor: ICON_COLOR,
@@ -151,7 +160,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.REFER_FRIEND,
     },
     {
-      id: 11,
+      id: 15,
       title: `${translationKey}:support`,
       icon: icons.headset,
       iconColor: ICON_COLOR,
@@ -159,7 +168,7 @@ export const MORE_SCREENS: IMoreScreens = {
       type: MoreScreenTypes.SUPPORT,
     },
     {
-      id: 11,
+      id: 16,
       title: `${translationKey}:faqs`,
       icon: icons.faq,
       iconColor: ICON_COLOR,

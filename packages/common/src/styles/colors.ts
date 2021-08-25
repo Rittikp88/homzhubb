@@ -162,6 +162,7 @@ const opacity = {
   redOpacity: 'rgba(242, 60, 6, 0.1)',
   orange: 'rgb(260,121,121)',
   transparent: 'rgba(0,0,0,0)',
+  errorOpacity: 'rgba(242,60,6, 0.1)',
 };
 const grayShades = {
   grey1: '#F9FCFE',

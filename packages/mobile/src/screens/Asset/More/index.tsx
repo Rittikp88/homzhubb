@@ -127,6 +127,9 @@ export class More extends React.PureComponent<Props> {
       case MoreScreenTypes.MESSAGES:
         navigation.navigate(ScreensKeys.Messages);
         break;
+      case MoreScreenTypes.BANK_DETAILS:
+        navigation.navigate(ScreensKeys.BankDetails);
+        break;
       case MoreScreenTypes.TICKETS:
         navigation.navigate(ScreensKeys.ServiceTicketScreen);
         break;

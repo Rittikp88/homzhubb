@@ -192,6 +192,7 @@ export const icons = {
   serviceRequest: 'service',
   marketPlace: 'market-place',
   reminder: 'reminder',
+  bankBuilding: 'bank-building',
 
   // COMMUTE
   train: 'train',

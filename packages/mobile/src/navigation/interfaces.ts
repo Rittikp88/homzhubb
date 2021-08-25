@@ -130,6 +130,7 @@ export enum ScreensKeys {
   ServicesDashboard = 'ServicesDashboard',
   AddPropertyImage = 'AddPropertyImage',
   AddBankAccount = 'AddBankAccount',
+  BankDetails = 'BankDetails',
 
   // Messages
   Messages = 'Messages',

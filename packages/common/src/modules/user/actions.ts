@@ -53,6 +53,7 @@ export const UserActionTypes = {
     IS_ADD_PROPERTY_FLOW: `${actionTypePrefix}IS_ADD_PROPERTY_FLOW`,
     CLEAR_FAVOURITE_PROPERTIES: `${actionTypePrefix}CLEAR_FAVOURITE_PROPERTIES`,
     USER_COUNTRY_CODE: `${actionTypePrefix}USER_COUNTRY_CODE`,
+    CURRENT_BANK_ACCOUNT_ID: `${actionTypePrefix}CURRENT_BANK_ACCOUNT_ID`,
   },
   UPDATE: {
     ONBOARDING: `${actionTypePrefix}UPDATE_ONBOARDING`,
@@ -254,6 +255,11 @@ const getBankInfoFailure = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.BANK_INFO_FAILURE,
 });
 
+const setCurrentBankAccountId = (payload: number): IFluxStandardAction<number> => ({
+  type: UserActionTypes.SET.CURRENT_BANK_ACCOUNT_ID,
+  payload,
+});
+
 export type UserPayloadTypes =
   | string
   | boolean
@@ -304,4 +310,5 @@ export const UserActions = {
   getBankInfo,
   getBankInfoSuccess,
   getBankInfoFailure,
+  setCurrentBankAccountId,
 };
