@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 
@@ -15,12 +15,13 @@ export interface IOwnProps {
   description?: string;
   containerStyle?: ViewStyle;
   rightNode?: React.ReactNode;
+  outerContainerStyle?: StyleProp<ViewStyle>;
 }
 
 const DetailCard = (props: IOwnProps): React.ReactElement => {
-  const { heading, label, description, containerStyle, rightNode } = props;
+  const { heading, label, description, containerStyle, rightNode, outerContainerStyle } = props;
   return (
-    <View style={[!!rightNode && styles.container]}>
+    <View style={[outerContainerStyle, !!rightNode && styles.container]}>
       <View style={[containerStyle && containerStyle]}>
         <Label type="large" textType="semiBold" style={styles.label}>
           {heading}
@@ -51,6 +52,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems : 'center',
+    alignItems: 'center',
   },
 });

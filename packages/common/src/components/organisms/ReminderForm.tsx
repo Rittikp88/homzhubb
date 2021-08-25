@@ -449,7 +449,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
                   rightNode={renderRightNode()}
                   formProps={formProps}
                   isDisabled={!canEdit}
-                  options={bankInfo.map((item) => item.bankDetail)}
+                  options={bankInfo.filter((item) => item.isActive).map((item) => item.bankDetail)}
                 />
               </>
             )}

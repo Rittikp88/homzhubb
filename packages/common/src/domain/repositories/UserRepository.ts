@@ -252,6 +252,10 @@ class UserRepository {
   public editBankDetails = async (userId: number, bankAccId: number, payload: IBankAccountPayload): Promise<void> => {
     return await this.apiClient.put(ENDPOINTS.bankInfoById(userId, bankAccId), payload);
   };
+
+  public deleteBankDetails = async (userId: number, bankAccId: number): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.bankInfoById(userId, bankAccId));
+  };
 }
 
 const userRepository = new UserRepository();

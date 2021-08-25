@@ -1012,11 +1012,14 @@
     "deleteAccount": "Delete Account",
     "bankAccountOptions": "Bank Account Options",
     "noBankAccsAdded": "No Bank Accounts Added",
-    "bankDetailsCantBeEdited": "Bank Details cannot be edited",
+    "bankDetailsCantBeEdited": "This Bank’s Details cannot be edited",
     "bankAccountEditedSuccessfully": "Bank Details Successfully Updated",
     "editBankAccount": "Edit Bank Account",
     "editDetails": "Edit Details",
-    "updateDetails": "Update Details"
+    "updateDetails": "Update Details",
+    "youCanDeactivate": "You can also deactivate this account instead, are you sure you want to delete this?",
+    "bankAccountCantBeDeleted": "This Bank account cannot be deleted",
+    "bankAccountDeletedSuccessfully": "Bank Account deleted successfully"
   },
   "assetMore": {
     "more": "More",

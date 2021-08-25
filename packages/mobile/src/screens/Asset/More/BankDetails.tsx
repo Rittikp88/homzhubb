@@ -4,12 +4,15 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import DetailCard, { ICardProp } from '@homzhub/common/src/components/molecules/DetailCard';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheetListView } from '@homzhub/mobile/src/components';
@@ -24,12 +27,20 @@ const BankDetails = (): React.ReactElement => {
   const bankDetails = useSelector(UserSelector.getBankInfo);
   const { bankInfo: bankInfoLoading } = useSelector(UserSelector.getUserLoaders);
   const currentBank = useSelector(UserSelector.getCurrentBankAccountSelected);
+  const currentBankId = useSelector(UserSelector.getCurrentBankId);
+  const { id: userId } = useSelector(UserSelector.getUserProfile);
 
-  const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [showOptionsSheet, setShowOptionsSheet] = useState(false);
+  const [showDeleteSheet, setShowDeleteSheet] = useState(false);
+  const [localLoader, setLocalLoader] = useState(false);
 
-  const setBottomSheet = (): void => setShowBottomSheet(true);
+  const setOptionsSheet = (): void => setShowOptionsSheet(true);
 
-  const resetBottomSheet = (): void => setShowBottomSheet(false);
+  const resetOptionsSheet = (): void => setShowOptionsSheet(false);
+
+  const setDeleteSheet = (): void => setShowDeleteSheet(true);
+
+  const resetDeleteSheet = (): void => setShowDeleteSheet(false);
 
   const onPressPlusIcon = (): void => navigate(ScreensKeys.AddBankAccount);
 
@@ -44,7 +55,7 @@ const BankDetails = (): React.ReactElement => {
     const renderItem = ({ item }: { item: ICardProp }): React.ReactElement => {
       const onPressItemMenu = (): void => {
         dispatch(UserActions.setCurrentBankAccountId(item.id));
-        setBottomSheet();
+        setOptionsSheet();
       };
       const renderMenuIcon = (): React.ReactElement => {
         return (
@@ -53,6 +64,9 @@ const BankDetails = (): React.ReactElement => {
           </TouchableOpacity>
         );
       };
+
+      const hasGrayBackground = (showOptionsSheet || showDeleteSheet) && item.id === currentBankId;
+
       return (
         <DetailCard
           heading={item.heading}
@@ -60,6 +74,7 @@ const BankDetails = (): React.ReactElement => {
           description={item.description}
           containerStyle={styles.accountItem}
           rightNode={renderMenuIcon()}
+          outerContainerStyle={[styles.detailCard, hasGrayBackground && styles.detailCardContainer]}
         />
       );
     };
@@ -108,10 +123,13 @@ const BankDetails = (): React.ReactElement => {
     };
 
     const handleBankAccountActions = (action: string): void => {
-      resetBottomSheet();
+      resetOptionsSheet();
       switch (action) {
         case BankAccountActions.EDIT:
           onPressEdit();
+          return;
+        case BankAccountActions.DELETE:
+          setDeleteSheet();
           return;
         default:
           FunctionUtils.noop();
@@ -123,12 +141,47 @@ const BankDetails = (): React.ReactElement => {
         selectedValue=""
         data={options}
         listTitle={t('assetFinancial:bankAccountOptions')}
-        isBottomSheetVisible={showBottomSheet}
+        isBottomSheetVisible={showOptionsSheet}
         onSelectItem={handleBankAccountActions}
-        onCloseDropDown={resetBottomSheet}
+        onCloseDropDown={resetOptionsSheet}
         showDivider={false}
         listHeight={theme.viewport.height / 2.3}
         hasFullySpannedItems
+      />
+    );
+  };
+
+  const DeleteConfirmation = (): React.ReactElement => {
+    const onConfirmDelete = async (): Promise<void> => {
+      try {
+        setLocalLoader(true);
+        await UserRepository.deleteBankDetails(userId, currentBankId);
+        dispatch(UserActions.getBankInfo());
+        dispatch(UserActions.setCurrentBankAccountId(-1));
+        setLocalLoader(false);
+        AlertHelper.success({ message: t('assetFinancial:bankAccountDeletedSuccessfully') });
+      } catch (e) {
+        setLocalLoader(false);
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details.message), statusCode: e.details.statusCode });
+      }
+    };
+    const onPressDelete = async (): Promise<void> => {
+      resetDeleteSheet();
+      if (currentBank) {
+        if (currentBank.canDelete) {
+          await onConfirmDelete();
+          return;
+        }
+        AlertHelper.error({ message: t('assetFinancial:bankAccountCantBeDeleted') });
+      }
+    };
+    return (
+      <ConfirmationSheet
+        message={t('assetFinancial:youCanDeactivate')}
+        isVisible={showDeleteSheet}
+        onCloseSheet={resetDeleteSheet}
+        onPressDelete={onPressDelete}
+        sheetHeight={theme.viewport.height / 2.5}
       />
     );
   };
@@ -138,12 +191,13 @@ const BankDetails = (): React.ReactElement => {
       title={t('assetMore:more')}
       pageTitle={t('assetMore:bankDetails')}
       onBackPress={goBack}
-      loading={bankInfoLoading}
+      loading={bankInfoLoading || localLoader}
       contentContainerStyle={styles.content}
       onPlusIconClicked={onPressPlusIcon}
     >
       <BankAccountsList />
       <OptionsSheet />
+      <DeleteConfirmation />
     </UserScreen>
   );
 };
@@ -154,10 +208,15 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   content: {
-    paddingHorizontal: 16,
     paddingBottom: 30,
   },
   centered: {
     paddingVertical: '50%',
+  },
+  detailCardContainer: {
+    backgroundColor: theme.colors.darkTint10,
+  },
+  detailCard: {
+    paddingHorizontal: 16,
   },
 });
