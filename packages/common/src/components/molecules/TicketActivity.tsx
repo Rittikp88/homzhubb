@@ -70,14 +70,23 @@ class TicketActivityCard extends PureComponent<Props> {
 
     if (!data) return null;
 
+    const {
+      assignedTo: { firstName },
+      quoteRequestCategory,
+      quotes,
+      attachments,
+    } = data;
+
     const renderActivityData = (): React.ReactElement | null => {
       switch (code) {
+        case TicketStatus.TICKET_REASSIGNED:
+          return this.renderActivityStatusBadge({ data: this.getActionContent(code, firstName) });
         case TicketStatus.QUOTE_SUBMITTED:
-          return <ActivityQuotesSubmitted quoteData={data.quoteRequestCategory} onQuotePress={onPressQuote} />;
+          return <ActivityQuotesSubmitted quoteData={quoteRequestCategory} onQuotePress={onPressQuote} />;
         case TicketStatus.QUOTE_APPROVED:
-          return <ActivityQuotesApproved quoteData={data.quotes} description={comment} />;
+          return <ActivityQuotesApproved quoteData={quotes} description={comment} />;
         case TicketStatus.WORK_COMPLETED:
-          return this.renderWorkCompleted(data.attachments);
+          return this.renderWorkCompleted(attachments);
         case TicketStatus.TICKET_RAISED:
         case TicketStatus.QUOTE_REQUESTED:
         default:
@@ -161,11 +170,13 @@ class TicketActivityCard extends PureComponent<Props> {
     );
   };
 
-  private getActionContent = (code: string): string[] => {
+  private getActionContent = (code: string, name = 'Homzhub'): string[] => {
     const { t } = this.props;
     switch (code) {
       case TicketStatus.TICKET_RAISED:
-        return [t('ticketAssignedTo', { name: 'Homzhub' }), t('awaitingAction', { name: 'Homzhub' })];
+        return [t('ticketAssignedTo', { name }), t('awaitingAction', { name })];
+      case TicketStatus.TICKET_REASSIGNED:
+        return [t('ticketReassignedTo', { name }), t('awaitingAction', { name })];
       case TicketStatus.QUOTE_REQUESTED:
         return [t('awaitingQuotes')];
       default:

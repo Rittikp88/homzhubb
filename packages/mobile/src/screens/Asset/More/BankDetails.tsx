@@ -193,7 +193,7 @@ const BankDetails = (): React.ReactElement => {
         onSelectItem={handleBankAccountActions}
         onCloseDropDown={resetOptionsSheet}
         showDivider={false}
-        listHeight={theme.viewport.height / 2.3}
+        listHeight={theme.viewport.height / 2.5}
         hasFullySpannedItems
       />
     );

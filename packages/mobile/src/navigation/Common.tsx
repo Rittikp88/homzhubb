@@ -26,6 +26,7 @@ import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedPro
 import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
 import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
+import ReassignTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ReassignTicket';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
 import Support from '@homzhub/mobile/src/screens/Asset/More/Support';
 import WorkCompleted from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkCompleted';
@@ -85,6 +86,7 @@ export type CommonParamList = {
   [ScreensKeys.BookVisit]: IBookVisitProps;
   [ScreensKeys.ServiceTicketDetail]: undefined;
   [ScreensKeys.SubmitQuote]: undefined;
+  [ScreensKeys.ReassignTicket]: undefined;
   [ScreensKeys.ApproveQuote]: undefined;
   [ScreensKeys.WorkCompleted]: undefined;
   [ScreensKeys.SubmitOffer]: undefined;
@@ -143,6 +145,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.ServiceTicketScreen} component={ServiceTicket} />
       <Stack.Screen name={ScreensKeys.SubmitQuote} component={SubmitQuote} />
       <Stack.Screen name={ScreensKeys.ApproveQuote} component={ApproveQuote} />
+      <Stack.Screen name={ScreensKeys.ReassignTicket} component={ReassignTicket} />
       <Stack.Screen name={ScreensKeys.WorkCompleted} component={WorkCompleted} />
       <Stack.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
       <Stack.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />

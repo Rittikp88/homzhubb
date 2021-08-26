@@ -1295,12 +1295,10 @@
     "timeElapsed": "Time Elapsed",
     "ticketNo": "Request No.",
     "ticketRaised": "Request Raised",
-    "ticketRaisedDescription": "Dummy Request raised description",
     "ticketAssignedTo": "Request assigned to {{name}}",
     "awaitingAction": "Awaiting for {{name}}'s action",
     "ticketReassigned": "Request Reassigned",
-    "ticketReassignedToOwner2": "Request reassigned to owner 2",
-    "awaitingOwner2Action": "Awaiting for owner 2's action",
+    "ticketReassignedTo": "Request reassigned to {{name}}",
     "quotesRequested": "Quotes Requested",
     "quotesSubmitted": "Quotes Submitted",
     "awaitingQuotes": "Awaiting for quotes",
@@ -1332,7 +1330,13 @@
     "ticketComplete": "Request Completed Successfully",
     "noQuoteFound": "No quote found",
     "noDetail": "There was an error while trying to fetch your data. Please try again",
-    "maxProof": "Max 10 proofs are allowed"
+    "maxProof": "Max 10 proofs are allowed",
+    "reassignRequest": "Reassign Request",
+    "assigneeDetails": "Assignee details",
+    "reassign": "Reassign",
+    "reassignInfoText": "Select the person you want to assign the request to",
+    "selectAnAssignee": "Select an Assignee",
+    "requestReassignedSuccessfully": "Request Reassigned Successfully"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

@@ -230,6 +230,7 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.AddBankAccount,
     ScreensKeys.TransactionsScreen,
     ScreensKeys.BankDetails,
+    ScreensKeys.ReassignTicket,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
 };

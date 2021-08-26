@@ -26,6 +26,7 @@ export enum TicketStatusTitle {
 }
 
 export enum TakeActionTitle {
+  REASSIGN_TICKET = 'Reassign Request',
   SUBMIT_QUOTE = 'Submit Quotes',
   APPROVE_QUOTE = 'Approve Quotes',
   WORK_COMPLETED = 'Work Completed',

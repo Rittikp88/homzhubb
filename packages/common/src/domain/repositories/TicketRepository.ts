@@ -12,6 +12,7 @@ import {
   IQuoteApprovePayload,
   IQuoteParam,
   IQuoteSubmitPayload,
+  IReassignTicketParam,
   ISubmitReview,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
@@ -27,6 +28,7 @@ const ENDPOINTS = {
   reviewSubmit: (ticketId: number): string => `v1/tickets/${ticketId}/reviews/`,
   quoteApprove: (param: IQuoteParam): string => `v1/tickets/${param.ticketId}/quote-approved-group/`,
   ticketById: (ticketId: number): string => `v1/tickets/${ticketId}/`,
+  reassignTicket: (ticketId: number): string => `v1/tickets/${ticketId}/ticket-users/`,
 };
 
 class TicketRepository {
@@ -83,6 +85,10 @@ class TicketRepository {
   public completeTicket = async (payload: ICompleteTicketPayload): Promise<void> => {
     const { param, data } = payload;
     return await this.apiClient.patch(ENDPOINTS.ticketById(param.ticketId), data);
+  };
+
+  public reassignTicket = async (ticketId: number, payload: IReassignTicketParam): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.reassignTicket(ticketId), payload);
   };
 }
 

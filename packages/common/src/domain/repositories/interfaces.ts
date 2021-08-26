@@ -886,6 +886,11 @@ export interface IGetTicketParam {
   asset_id: number;
 }
 
+export interface IReassignTicketParam {
+  assigned_to: number;
+  comment?: string;
+}
+
 // SERVICE TICKETS END
 
 // OFFERS

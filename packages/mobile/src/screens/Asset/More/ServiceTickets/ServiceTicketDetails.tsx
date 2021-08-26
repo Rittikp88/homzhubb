@@ -203,6 +203,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     const { navigation } = this.props;
 
     switch (value) {
+      case TakeActionTitle.REASSIGN_TICKET:
+        navigation.navigate(ScreensKeys.ReassignTicket);
+        break;
       case TakeActionTitle.SUBMIT_QUOTE:
         navigation.navigate(ScreensKeys.SubmitQuote);
         break;
@@ -255,9 +258,17 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   /* Take action button logic */
   private getActionData = (status: string, actions: TicketAction): ITicketAction | null => {
     const { navigation } = this.props;
-    const { canApproveQuote, canCloseTicket, canSubmitQuote } = actions;
+    const { canApproveQuote, canCloseTicket, canSubmitQuote, canReassignTicket } = actions;
     switch (status) {
+      // Todo (Praharsh) : Update status handler when BE is done with changing ticket's status.
+      case TicketStatus.OPEN:
       case TicketStatus.QUOTE_REQUESTED:
+        return {
+          title: TakeActionTitle.REASSIGN_TICKET,
+          onPress: (): void => navigation.navigate(ScreensKeys.ReassignTicket),
+          isDisabled: !canReassignTicket,
+        };
+      case TicketStatus.TICKET_REASSIGNED:
         return {
           title: TakeActionTitle.SUBMIT_QUOTE,
           onPress: (): void => navigation.navigate(ScreensKeys.SubmitQuote),
@@ -285,11 +296,14 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private getActionList = (): PickerItemProps[] => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return [];
-    const { canCloseTicket, canApproveQuote, canSubmitQuote } = ticketDetails.actions;
-    const { SUBMIT_QUOTE, WORK_COMPLETED, APPROVE_QUOTE } = TakeActionTitle;
+    const { canCloseTicket, canApproveQuote, canSubmitQuote, canReassignTicket } = ticketDetails.actions;
+    const { SUBMIT_QUOTE, WORK_COMPLETED, APPROVE_QUOTE, REASSIGN_TICKET } = TakeActionTitle;
 
     const list: PickerItemProps[] = [];
 
+    if (canReassignTicket) {
+      list.push({ label: REASSIGN_TICKET, value: REASSIGN_TICKET });
+    }
     if (canSubmitQuote) {
       list.push({ label: SUBMIT_QUOTE, value: SUBMIT_QUOTE });
     }

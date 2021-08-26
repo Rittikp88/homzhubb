@@ -144,6 +144,7 @@ export enum ScreensKeys {
   SubmitQuote = 'SubmitQuote',
   ApproveQuote = 'ApproveQuote',
   WorkCompleted = 'WorkCompleted',
+  ReassignTicket = 'ReassignTicket',
 
   // Offers
   ProspectProfile = 'ProspectProfile',

@@ -181,9 +181,9 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   // HANDLERS START
-  private onTicketPress = ({ id }: Ticket): void => {
+  private onTicketPress = ({ id, asset: { id: assetId } }: Ticket): void => {
     const { navigateToDetail, setCurrentTicket } = this.props;
-    setCurrentTicket({ ticketId: id });
+    setCurrentTicket({ ticketId: id, assetId });
     navigateToDetail();
   };
 

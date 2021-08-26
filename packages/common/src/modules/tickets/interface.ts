@@ -18,4 +18,5 @@ export interface ICurrentTicket {
   quoteRequestId?: number;
   propertyName?: string;
   currency?: Currency;
+  assetId?: number;
 }
