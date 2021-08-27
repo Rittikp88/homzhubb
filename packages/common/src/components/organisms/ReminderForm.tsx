@@ -26,7 +26,7 @@ import { FormCalendar } from '@homzhub/common/src/components/molecules/FormCalen
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { TransactionField } from '@homzhub/common/src/components/molecules/TransactionField';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
-import EmailTextInput from '@homzhub/common/src/components/molecules/EmailTextInput';
+import ChipField from '@homzhub/common/src/components/molecules/ChipField';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { OnGoingTransaction } from '@homzhub/common/src/domain/models/OnGoingTransaction';
 import { IReminderPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -469,12 +469,13 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
               dropdownContainerStyle={styles.field}
               isDisabled={!canEdit}
             />
-            <EmailTextInput
+            <ChipField
               data={userEmails}
-              onSetEmails={onSetEmails}
-              setEmailError={onSetEmailError}
+              onSetValue={onSetEmails}
+              setValueError={onSetEmailError}
               isDisabled={!canEdit}
               errorText={emailError}
+              isEmailField
             />
             <TextArea
               value={notes}

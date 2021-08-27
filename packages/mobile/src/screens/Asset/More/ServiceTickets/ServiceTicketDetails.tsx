@@ -262,6 +262,11 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     switch (status) {
       // Todo (Praharsh) : Update status handler when BE is done with changing ticket's status.
       case TicketStatus.OPEN:
+        return {
+          title: TakeActionTitle.REQUEST_QUOTE,
+          onPress: (): void => navigation.navigate(ScreensKeys.RequestQuote),
+          isDisabled: false,
+        };
       case TicketStatus.QUOTE_REQUESTED:
         return {
           title: TakeActionTitle.REASSIGN_TICKET,

@@ -404,7 +404,8 @@
     "emailUsed": "This email is already used by someone. Please use unique email",
     "enterMobileNo": "Enter your mobile number",
     "updatePasswordWeb": "Update password",
-    "duplicateEmail": "This email is already used. Please use unique email"
+    "duplicateEmail": "This email is already used. Please use unique email",
+    "emails": "E-mails"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -1332,6 +1333,12 @@
     "noQuoteFound": "No quote found",
     "noDetail": "There was an error while trying to fetch your data. Please try again",
     "maxProof": "Max 10 proofs are allowed",
+    "requestQuote": "Request for Quotes",
+    "requestDescription": "Add Request Categories and Vendor Emails to receive best quotes",
+    "ticketCategory": "Enter ticket category",
+    "invitePartner": "Invite Homzhub Service Partners",
+    "vendorEmail": "Add Vendor Email",
+    "sendRequest": "Send Request",
     "reassignRequest": "Reassign Request",
     "assigneeDetails": "Assignee details",
     "reassign": "Reassign",

@@ -30,6 +30,7 @@ export enum TakeActionTitle {
   SUBMIT_QUOTE = 'Submit Quotes',
   APPROVE_QUOTE = 'Approve Quotes',
   WORK_COMPLETED = 'Work Completed',
+  REQUEST_QUOTE = 'Request Quote',
 }
 
 // ENUM END

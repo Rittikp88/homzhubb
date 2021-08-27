@@ -16,27 +16,36 @@ import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFie
 
 interface IProps {
   data?: string[];
-  onSetEmails: (emails: string[]) => void;
-  setEmailError: (isError: boolean) => void;
+  onSetValue: (values: string[]) => void;
+  setValueError?: (isError: boolean) => void;
   isDisabled?: boolean;
   errorText?: string;
+  label?: string;
+  placeholder?: string;
+  isEmailField?: boolean;
+  chipColor?: string;
 }
 
-const EmailTextInput = ({
-  data,
-  onSetEmails,
-  setEmailError,
-  isDisabled = false,
-  errorText,
-}: IProps): React.ReactElement => {
-  const [emails, setEmails] = useState<string[]>([]);
+const ChipField = (props: IProps): React.ReactElement => {
+  const [chips, setChips] = useState<string[]>([]);
   const [value, setValue] = useState('');
   const [error, setError] = useState('');
   const { t } = useTranslation();
+  const {
+    data,
+    onSetValue,
+    setValueError,
+    isDisabled = false,
+    errorText,
+    label = t('assetFinancial:separatedByComma'),
+    placeholder = t('assetFinancial:enterEmails'),
+    isEmailField = false,
+    chipColor = theme.colors.darkTint4,
+  } = props;
 
   useEffect(() => {
     if (data) {
-      setEmails(data);
+      setChips(data);
     }
   }, [data]);
 
@@ -52,7 +61,9 @@ const EmailTextInput = ({
       return;
     }
 
-    setEmailError(false);
+    if (setValueError) {
+      setValueError(false);
+    }
     setError('');
     setValue(text);
   };
@@ -67,29 +78,38 @@ const EmailTextInput = ({
   };
 
   const onUpdate = (text: string): void => {
-    if (FormUtils.validateEmail(text)) {
-      if (!emails.includes(text)) {
-        const updated: string[] = [...emails, text];
-        setEmails(updated);
-        onSetEmails(updated);
-        setValue('');
-        setError('');
-        setEmailError(false);
-      } else {
-        setEmailError(true);
-        setError('auth:duplicateEmail');
+    if (isEmailField && !FormUtils.validateEmail(text)) {
+      if (setValueError) {
+        setValueError(true);
+      }
+      setError('landing:emailValidations');
+      return;
+    }
+
+    if (!chips.includes(text)) {
+      const updated: string[] = [...chips, text];
+      setChips(updated);
+      onSetValue(updated);
+      setValue('');
+      setError('');
+      if (setValueError) {
+        setValueError(false);
       }
     } else {
-      setEmailError(true);
-      setError('landing:emailValidations');
+      if (setValueError) {
+        setValueError(true);
+      }
+      setError('auth:duplicateEmail');
     }
   };
 
   const handleRemove = (email: string): void => {
     if (isDisabled) return;
-    setEmails(emails.filter((item) => item !== email));
+    setChips(chips.filter((item) => item !== email));
     setError('');
-    setEmailError(false);
+    if (setValueError) {
+      setValueError(false);
+    }
   };
 
   const isError = !!errorText || !!error;
@@ -98,35 +118,35 @@ const EmailTextInput = ({
     <View style={styles.container}>
       <WithFieldError error={t(errorText || error)}>
         <Label type="large" style={[styles.label, isError && styles.errorLabel]}>
-          {t('assetFinancial:separatedByComma')}
+          {label}
         </Label>
         <View style={[styles.itemContainer, isError && styles.errorContainer]}>
-          {emails.length > 0 && (
+          {chips.length > 0 && (
             <View style={styles.content}>
-              {emails.map((item, index) => (
+              {chips.map((item, index) => (
                 <View key={index} style={styles.item}>
-                  <Label type="large" style={styles.itemLabel}>
+                  <Label type="large" style={{ ...styles.itemLabel, color: chipColor }}>
                     {item}
                   </Label>
                   <Icon
                     name={icons.circularCrossFilled}
                     size={16}
-                    color={isDisabled ? theme.colors.disabled : theme.colors.darkTint4}
+                    color={isDisabled ? theme.colors.disabled : chipColor}
                     onPress={(): void => handleRemove(item)}
                   />
                 </View>
               ))}
             </View>
           )}
-          {emails.length < 10 && (
+          {chips.length < 10 && (
             <TextInput
               value={value}
               onChange={handleChange}
-              autoFocus={emails.length > 0}
+              autoFocus={chips.length > 0}
               onEndEditing={onEndEditing}
               editable={!isDisabled}
               style={isDisabled && styles.disabled}
-              placeholder={t('assetFinancial:enterEmails')}
+              placeholder={placeholder}
             />
           )}
         </View>
@@ -135,7 +155,7 @@ const EmailTextInput = ({
   );
 };
 
-export default EmailTextInput;
+export default ChipField;
 
 const styles = StyleSheet.create({
   container: {
@@ -173,7 +193,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   itemLabel: {
-    color: theme.colors.darkTint4,
     marginRight: 6,
   },
   disabled: {

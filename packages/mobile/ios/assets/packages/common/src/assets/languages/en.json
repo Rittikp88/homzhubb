@@ -1006,7 +1006,28 @@
     "addBankDetailsSuccess": "Bank Details Added Successfully",
     "bankAccount": "Bank Account",
     "selectAccount": "Select account",
-    "reminderAlreadySetForDue": "A reminder is already set for this due"
+    "reminderAlreadySetForDue": "A reminder is already set for this due",
+    "bankAccounts": "Bank Accounts",
+    "editAccount": "Edit Account",
+    "deleteAccount": "Delete Account",
+    "bankAccountOptions": "Bank Account Options",
+    "noBankAccsAdded": "No Bank Accounts Added",
+    "bankDetailsCantBeEdited": "This Bank’s Details cannot be edited",
+    "bankAccountEditedSuccessfully": "Bank Details Successfully Updated",
+    "editBankAccount": "Edit Bank Account",
+    "editDetails": "Edit Details",
+    "updateDetails": "Update Details",
+    "youCanDeactivate": "You can also deactivate this account instead, are you sure you want to delete this?",
+    "bankAccountCantBeDeleted": "This Bank account cannot be deleted",
+    "bankAccountDeletedSuccessfully": "Bank Account deleted successfully",
+    "deactivateConfirmation": "Are you sure you want to deactivate this account?",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "activateAccount": "Activate Account",
+    "bankAccountDeactivationSuccess": "Bank Account deactivated successfully",
+    "bankAccountActivationSuccess": "Bank Account activated successfully",
+    "bankAccountCantBeDeactivated": "This Account cannot be deactivated",
+    "bankAccountDeleteConfirmation": "Are you sure you want to delete this bank account?"
   },
   "assetMore": {
     "more": "More",
@@ -1090,7 +1111,8 @@
     "referEarn": "Refer and Earn",
     "coinBalance": "Coin Balance",
     "coinsEarned": "Coins Earned",
-    "marketPlace": "Market Place"
+    "marketPlace": "Market Place",
+    "bankDetails": "Bank Details"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
@@ -1229,7 +1251,10 @@
     "servicePlansHeader": "For <italic>complete peace of mind</italic>, subscribe to Homzhub Service packages that are delivered by an on-the-ground network of real estate professionals and service providers.",
     "emailValidations": "Please enter a valid email.",
     "viewAllTitle": "View All",
-    "featureComparison": "See the complete details of service packages"
+    "featureComparison": "See the complete details of service packages",
+    "downloadNow": "Download Now",
+    "learnMore": "Learn More",
+    "enquireNow": "Enquire Now"
   },
   "serviceTickets": {
     "serviceTickets": "Service Requests",

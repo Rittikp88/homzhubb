@@ -1,5 +1,5 @@
 import React, { Component, ReactElement } from 'react';
-import { View, StyleSheet, TextInput, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { cloneDeep, remove } from 'lodash';
@@ -11,12 +11,12 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { CheckboxGroup, ICheckboxGroupData } from '@homzhub/common/src/components/molecules/CheckboxGroup';
 import { AssetHighlightCard } from '@homzhub/common/src/components/molecules/AssetHighlightCard';
 import { AssetListingSection } from '@homzhub/common/src/components/HOC/AssetListingSection';
+import InputGroup from '@homzhub/common/src/components/molecules/InputGroup';
 import { Amenity, AssetAmenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -159,84 +159,34 @@ export class AssetHighlights extends Component<Props, IOwnState> {
   private renderOtherHighlights = (): React.ReactElement => {
     const { propertyHighlight } = this.state;
     const { t, isMobile, isTablet } = this.props;
-    let highlightsContainerDeviceStyle: ViewStyle = {};
+    let highlightsContainerDeviceStyle: ViewStyle = {
+      padding: 14,
+    };
     let textInputContainerDeviceStyle: ViewStyle = {};
     let textInputDeviceStyle: ViewStyle = {};
-    let addButtonDeviceStyle: ViewStyle = {};
+    let addButtonDeviceStyle: ViewStyle = {
+      paddingHorizontal: 16,
+    };
     if (isMobile) {
       textInputDeviceStyle = styles.textInputAndAddButtonMobile;
-      highlightsContainerDeviceStyle = styles.highlightsContainerMobile;
+      highlightsContainerDeviceStyle = { ...highlightsContainerDeviceStyle, ...styles.highlightsContainerMobile };
       textInputContainerDeviceStyle = styles.textInputContainerMobile;
-      addButtonDeviceStyle = styles.addButtonWrapperMobile;
+      addButtonDeviceStyle = { ...addButtonDeviceStyle, ...styles.addButtonWrapperMobile };
     } else if (isTablet) textInputDeviceStyle = styles.textInputAndAddButtonTablet;
     else textInputDeviceStyle = styles.textInputAndAddButtonDesktop;
     return (
       <AssetListingSection title={t('property:propertyHighlights')} containerStyles={styles.card}>
-        <>
-          <View style={[styles.highlightsContainer, highlightsContainerDeviceStyle]}>
-            {propertyHighlight.map((item, index) => {
-              return (
-                <View
-                  style={[
-                    styles.textInputContainer,
-                    textInputContainerDeviceStyle,
-                    styles.textInputWrapper,
-                    textInputDeviceStyle,
-                  ]}
-                  key={index}
-                >
-                  <TextInput
-                    placeholder={t('property:highlightPlaceholder')}
-                    autoCorrect={false}
-                    autoCapitalize="words"
-                    numberOfLines={1}
-                    value={propertyHighlight[index]}
-                    onChangeText={(text): void => this.handleTextChange(text, index)}
-                    style={styles.textInput}
-                  />
-                  {propertyHighlight.length > 1 && index > 0 && (
-                    <Button
-                      type="primary"
-                      icon={icons.circularCrossFilled}
-                      iconSize={20}
-                      iconColor={theme.colors.darkTint9}
-                      containerStyle={styles.iconButton}
-                      onPress={(): void => this.onPressCross(index)}
-                      testID="btnCross"
-                    />
-                  )}
-                </View>
-              );
-            })}
-          </View>
-          {propertyHighlight.length !== this.MAX_ADDITIONAL_HIGHLIGHTS && (
-            <View style={[styles.addButtonWrapper, addButtonDeviceStyle]}>
-              <Button
-                type="secondary"
-                title={t('add')}
-                containerStyle={[styles.addButton, textInputDeviceStyle]}
-                onPress={this.handleNext}
-              />
-            </View>
-          )}
-        </>
+        <InputGroup
+          data={propertyHighlight}
+          maxLimit={this.MAX_ADDITIONAL_HIGHLIGHTS}
+          updateData={this.updateHighlight}
+          inputContainer={highlightsContainerDeviceStyle}
+          textInputContainerDeviceStyle={textInputContainerDeviceStyle}
+          textInputDeviceStyle={textInputDeviceStyle}
+          addButtonDeviceStyle={addButtonDeviceStyle}
+        />
       </AssetListingSection>
     );
-  };
-
-  private onPressCross = (index: number): void => {
-    const { propertyHighlight } = this.state;
-    if (propertyHighlight[index]) {
-      const newData: string[] = propertyHighlight;
-      newData[index] = '';
-      this.setState({
-        propertyHighlight: newData,
-      });
-    } else {
-      this.setState({
-        propertyHighlight: propertyHighlight.slice(0, -1),
-      });
-    }
   };
 
   private onPressCheckbox = (id: number | string, isChecked: boolean): void => {
@@ -360,19 +310,9 @@ export class AssetHighlights extends Component<Props, IOwnState> {
     }
   };
 
-  private handleNext = (): void => {
-    const { propertyHighlight } = this.state;
+  private updateHighlight = (values: string[]): void => {
     this.setState({
-      propertyHighlight: [...propertyHighlight, ''],
-    });
-  };
-
-  private handleTextChange = (text: string, index: number): void => {
-    const { propertyHighlight } = this.state;
-    const newData: string[] = propertyHighlight;
-    newData[index] = text;
-    this.setState({
-      propertyHighlight: newData,
+      propertyHighlight: values,
     });
   };
 

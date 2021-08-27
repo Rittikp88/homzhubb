@@ -15,11 +15,9 @@ import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/se
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { UserProfile } from '@homzhub/common/src/domain/models/UserProfile';
 import { UserPreferences, UserPreferencesKeys } from '@homzhub/common/src/domain/models/UserPreferences';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 import {
