@@ -215,6 +215,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       case TakeActionTitle.WORK_INITIATED:
         navigation.navigate(ScreensKeys.WorkInitiated);
         break;
+      case TakeActionTitle.UPDATE_STATUS:
+        navigation.navigate(ScreensKeys.UpdateTicketStatus);
+        break;
       case TakeActionTitle.WORK_COMPLETED:
       default:
         navigation.navigate(ScreensKeys.WorkCompleted);
@@ -317,7 +320,14 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       canReassignTicket,
       canUpdateWorkProgress,
     } = ticketDetails.actions;
-    const { SUBMIT_QUOTE, WORK_COMPLETED, APPROVE_QUOTE, REASSIGN_TICKET, WORK_INITIATED } = TakeActionTitle;
+    const {
+      SUBMIT_QUOTE,
+      WORK_COMPLETED,
+      APPROVE_QUOTE,
+      REASSIGN_TICKET,
+      WORK_INITIATED,
+      UPDATE_STATUS,
+    } = TakeActionTitle;
 
     const list: PickerItemProps[] = [];
 
@@ -335,6 +345,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     }
     if (canCloseTicket) {
       list.push({ label: WORK_COMPLETED, value: WORK_COMPLETED });
+    }
+    if (canUpdateWorkProgress) {
+      list.push({ label: UPDATE_STATUS, value: UPDATE_STATUS });
     }
 
     return list;

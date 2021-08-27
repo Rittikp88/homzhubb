@@ -1347,7 +1347,12 @@
     "requestReassignedSuccessfully": "Request Reassigned Successfully",
     "updateWorkProgressInfoText": "Update participants about the progress on the work",
     "updateYourWorkProgress": "Update your Work Progress",
-    "workInitiatedSuccess": "Status Updated to Work Initiated Successfully"
+    "workInitiatedSuccess": "Status Updated to Work Initiated Successfully",
+    "updateSentSuccess": "Update sent successfully ",
+    "sendUpdates": "Send Updates",
+    "sendUpdate": "Send Update",
+    "updates": "Updates",
+    "updateTitle": "Update Title"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",
