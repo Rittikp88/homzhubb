@@ -49,6 +49,7 @@ import { ReferEarn } from '@homzhub/mobile/src/screens/Asset/More/ReferEarn';
 import SuccessResetPassword from '@homzhub/mobile/src/screens/Auth/SuccessResetPassword';
 import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
+import WorkInitiated from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkInitiated';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import { IGetMessageParam, IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
@@ -88,6 +89,7 @@ export type CommonParamList = {
   [ScreensKeys.ServiceTicketDetail]: undefined;
   [ScreensKeys.SubmitQuote]: undefined;
   [ScreensKeys.ReassignTicket]: undefined;
+  [ScreensKeys.WorkInitiated]: undefined;
   [ScreensKeys.ApproveQuote]: undefined;
   [ScreensKeys.WorkCompleted]: undefined;
   [ScreensKeys.SubmitOffer]: undefined;
@@ -148,6 +150,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.SubmitQuote} component={SubmitQuote} />
       <Stack.Screen name={ScreensKeys.ApproveQuote} component={ApproveQuote} />
       <Stack.Screen name={ScreensKeys.ReassignTicket} component={ReassignTicket} />
+      <Stack.Screen name={ScreensKeys.WorkInitiated} component={WorkInitiated} />
       <Stack.Screen name={ScreensKeys.WorkCompleted} component={WorkCompleted} />
       <Stack.Screen name={ScreensKeys.CreateLease} component={CreateLease} />
       <Stack.Screen name={ScreensKeys.AcceptOffer} component={AcceptOffer} />

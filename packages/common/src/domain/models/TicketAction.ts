@@ -12,6 +12,10 @@ export class TicketAction {
   @JsonProperty('can_approve_quote', Boolean)
   private _canApproveQuote = false;
 
+  // Todo (Praharsh) : Check with BE and change if needed.
+  @JsonProperty('can_update_work_progress', Boolean, true)
+  private _canUpdateWorkProgress = true;
+
   @JsonProperty('can_close_ticket', Boolean)
   private _canCloseTicket = false;
 
@@ -25,6 +29,10 @@ export class TicketAction {
 
   get canApproveQuote(): boolean {
     return this._canApproveQuote;
+  }
+
+  get canUpdateWorkProgress(): boolean {
+    return this._canUpdateWorkProgress;
   }
 
   get canCloseTicket(): boolean {

@@ -212,6 +212,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       case TakeActionTitle.APPROVE_QUOTE:
         navigation.navigate(ScreensKeys.ApproveQuote);
         break;
+      case TakeActionTitle.WORK_INITIATED:
+        navigation.navigate(ScreensKeys.WorkInitiated);
+        break;
       case TakeActionTitle.WORK_COMPLETED:
       default:
         navigation.navigate(ScreensKeys.WorkCompleted);
@@ -258,7 +261,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   /* Take action button logic */
   private getActionData = (status: string, actions: TicketAction): ITicketAction | null => {
     const { navigation } = this.props;
-    const { canApproveQuote, canCloseTicket, canSubmitQuote, canReassignTicket } = actions;
+    const { canApproveQuote, canCloseTicket, canSubmitQuote, canReassignTicket, canUpdateWorkProgress } = actions;
     switch (status) {
       // Todo (Praharsh) : Update status handler when BE is done with changing ticket's status.
       case TicketStatus.OPEN:
@@ -285,6 +288,12 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           onPress: (): void => navigation.navigate(ScreensKeys.ApproveQuote),
           isDisabled: !canApproveQuote,
         };
+      case TicketStatus.PAYMENT_DONE:
+        return {
+          title: TakeActionTitle.WORK_INITIATED,
+          onPress: (): void => navigation.navigate(ScreensKeys.WorkInitiated),
+          isDisabled: !canUpdateWorkProgress,
+        };
       case TicketStatus.QUOTE_APPROVED:
         return {
           title: TakeActionTitle.WORK_COMPLETED,
@@ -301,8 +310,14 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private getActionList = (): PickerItemProps[] => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return [];
-    const { canCloseTicket, canApproveQuote, canSubmitQuote, canReassignTicket } = ticketDetails.actions;
-    const { SUBMIT_QUOTE, WORK_COMPLETED, APPROVE_QUOTE, REASSIGN_TICKET } = TakeActionTitle;
+    const {
+      canCloseTicket,
+      canApproveQuote,
+      canSubmitQuote,
+      canReassignTicket,
+      canUpdateWorkProgress,
+    } = ticketDetails.actions;
+    const { SUBMIT_QUOTE, WORK_COMPLETED, APPROVE_QUOTE, REASSIGN_TICKET, WORK_INITIATED } = TakeActionTitle;
 
     const list: PickerItemProps[] = [];
 
@@ -314,6 +329,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     }
     if (canApproveQuote) {
       list.push({ label: APPROVE_QUOTE, value: APPROVE_QUOTE });
+    }
+    if (canUpdateWorkProgress) {
+      list.push({ label: WORK_INITIATED, value: WORK_INITIATED });
     }
     if (canCloseTicket) {
       list.push({ label: WORK_COMPLETED, value: WORK_COMPLETED });
