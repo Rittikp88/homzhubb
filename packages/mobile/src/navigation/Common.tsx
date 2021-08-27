@@ -51,11 +51,14 @@ import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
 import WorkInitiated from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkInitiated';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
-import { IGetMessageParam, IServiceTicketForm } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IBookVisitProps,
+  IGetMessageParam,
+  IServiceTicketForm,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import {
   IAddRecordProps,
   IAssetDescriptionProps,
-  IBookVisitProps,
   IComingSoon,
   ICommonNavProps,
   IForgotPasswordProps,

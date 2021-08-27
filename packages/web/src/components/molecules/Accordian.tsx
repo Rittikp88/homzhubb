@@ -1,22 +1,28 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 
 interface IProps {
   headerComponent?: React.ReactNode;
   accordianContent?: React.ReactNode;
+  onToggle?: (isActive: boolean) => void;
 }
 
 const Accordian: React.FC<IProps> = (props: IProps) => {
-  const { headerComponent, accordianContent } = props;
-  const [setActive, setActiveState] = useState('');
+  const { headerComponent, accordianContent, onToggle } = props;
+
+  const [setActive, setActiveState] = useState(false);
   const [setHeight, setHeightState] = useState('0px');
 
   const content = useRef(null);
-
+  useEffect(() => {
+    if (onToggle) {
+      onToggle(setActive);
+    }
+    setHeightState(setActive ? '1500px' : '0px');
+  }, [setActive]);
   const toggleAccordion = (): void => {
-    setActiveState(setActive === '' ? 'active' : '');
-    setHeightState(setActive === 'active' ? '0px' : '1500px');
+    setActiveState(!setActive);
   };
   return (
     <View style={styles.accordianContainer}>

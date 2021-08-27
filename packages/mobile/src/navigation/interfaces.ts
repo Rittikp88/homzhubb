@@ -239,14 +239,6 @@ export interface IContactProps {
   propertyTermId: number;
 }
 
-export interface IBookVisitProps {
-  propertyTermId?: number;
-  sale_listing_id?: number;
-  lease_listing_id?: number;
-  isReschedule?: boolean;
-  userId?: number;
-}
-
 // Add Financial Records
 export interface IAddRecordProps {
   assetId?: number;

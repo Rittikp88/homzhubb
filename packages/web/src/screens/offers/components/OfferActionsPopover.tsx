@@ -23,11 +23,11 @@ import { IOfferCompare } from '@homzhub/common/src/modules/offers/interfaces';
 interface IProps {
   popupRef: React.RefObject<PopupActions>;
   offerActionType: OfferAction | null;
+  handleOfferAction: (value: OfferAction) => void;
+  onCloseModal: () => void;
   offer?: Offer;
   asset?: Asset;
   compareData?: IOfferCompare;
-  handleOfferAction: (value: OfferAction) => void;
-  onCloseModal: () => void;
 }
 
 const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
@@ -51,7 +51,7 @@ const OfferActionsPopover: React.FC<IProps> = (props: IProps) => {
     }
   };
   const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
-  const isTablet = useOnly(deviceBreakpoint.DESKTOP);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
 

@@ -15,8 +15,8 @@ import SiteVisitCalendarView from '@homzhub/mobile/src/components/organisms/Site
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
-import { IBookVisitProps, NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IAssetVisitPayload, IBookVisitProps } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IDispatchProps {

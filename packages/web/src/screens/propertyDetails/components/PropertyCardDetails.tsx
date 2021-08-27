@@ -30,10 +30,14 @@ import { PropertyAmenities } from '@homzhub/common/src/components/molecules/Prop
 import { ShieldGroup } from '@homzhub/web/src/components/molecules/ShieldGroupHeader';
 import TenancyFormPopover from '@homzhub/web/src/screens/propertyDetails/components/TenancyFormPopover';
 import TabSection from '@homzhub/web/src/screens/propertyDetails/components/TabSection';
+import SiteVisitsActionsPopover, {
+  SiteVisitAction,
+} from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsActionsPopover';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFilter, IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IBookVisitProps } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export enum renderPopUpTypes {
   tenancy = 'TENANT',
@@ -169,7 +173,21 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
         this.getProspectProfile();
       });
     };
-
+    const popupRef = createRef<PopupActions>();
+    const onOpenModal = (): void => {
+      if (popupRef && popupRef.current) {
+        popupRef.current.open();
+      }
+    };
+    const onCloseModal = (): void => {
+      if (popupRef && popupRef.current) {
+        popupRef.current.close();
+      }
+    };
+    const params: IBookVisitProps = {
+      ...(leaseTerm && { lease_listing_id: leaseTerm.id }),
+      ...(saleTerm && { sale_listing_id: saleTerm.id }),
+    };
     return (
       <>
         <View style={styles.container}>
@@ -237,13 +255,24 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
                   </Button>
                 </View>
                 <View style={(isMobile || isTablet || isIpadPro) && styles.scheduleContainer}>
-                  <Button type="primary" containerStyle={[styles.enquire, styles.schedule]} disabled>
+                  <Button
+                    type="primary"
+                    containerStyle={[styles.enquire, styles.schedule]}
+                    disabled={isAssetOwner}
+                    onPress={onOpenModal}
+                  >
                     <Icon name={icons.timer} size={22} color={theme.colors.white} />
                     <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleSchedule}>
                       {t('propertySearch:scheduleVisit')}
                     </Typography>
                   </Button>
                 </View>
+                <SiteVisitsActionsPopover
+                  popupRef={popupRef}
+                  onCloseModal={onCloseModal}
+                  siteVisitActionType={SiteVisitAction.SCHEDULE_VISIT}
+                  paramsBookVisit={params}
+                />
               </View>
             )}
           </View>
@@ -418,7 +447,7 @@ const propertyDetailStyle = (
     },
     schedule: {
       width: !isMobile ? (isTablet || isIpadPro ? '85%' : 216) : '82%',
-      backgroundColor: theme.colors.darkTint10,
+      backgroundColor: theme.colors.primaryColor,
     },
 
     textStyleEnquire: {

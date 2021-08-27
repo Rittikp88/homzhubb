@@ -96,7 +96,6 @@ class ScheduleVisitForm extends Component<Props, IVisitState> {
     const upcomingVisitTitle = PropertyUtils.getUpcomingSlotMessage(upcomingVisits[0]);
     const isPastDate = DateUtils.isPastDate(selectedDate);
     const isButtonDisabled = (selectedDate === '' || selectedTimeSlot === 0) && !isUpcomingSlotSelected;
-
     return (
       <View style={styles.container}>
         {this.renderVisitType()}

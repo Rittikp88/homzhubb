@@ -28,11 +28,11 @@ import { AssetVisit, ISlotItem, IVisitByKey, VisitActions } from '@homzhub/commo
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IAssetVisitPayload,
+  IBookVisitProps,
   IUpdateVisitPayload,
   IVisitActionParam,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IBookVisitProps } from '@homzhub/mobile/src/navigation/interfaces';
 import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';

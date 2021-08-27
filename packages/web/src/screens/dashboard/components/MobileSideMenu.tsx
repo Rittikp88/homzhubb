@@ -59,21 +59,21 @@ const MobileSideMenu: FC<Props> = (props: Props) => {
     },
     {
       id: 5,
+      text: t('assetMore:propertyVisits'),
+      icon: icons.visit,
+      url: RouteNames.protectedRoutes.PROPERTY_VISITS,
+    },
+    {
+      id: 6,
       text: t('common:offers'),
       icon: icons.offers,
       url: RouteNames.protectedRoutes.OFFERS,
     },
     {
-      id: 6,
+      id: 7,
       text: t('assetMore:notifications'),
       icon: icons.bell,
       url: RouteNames.protectedRoutes.NOTIFICATIONS,
-    },
-    {
-      id: 7,
-      text: t('assetMore:propertyVisits'),
-      icon: icons.visit,
-      url: RouteNames.protectedRoutes.PROPERTY_VISITS,
     },
     {
       id: 8,

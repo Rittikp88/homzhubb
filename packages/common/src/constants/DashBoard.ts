@@ -71,21 +71,21 @@ export const MenuItemList: IMenuItemList[] = [
   },
   {
     id: 5,
+    name: sideMenuItems.propertyVisits,
+    icon: icons.visit,
+    url: RouteNames.protectedRoutes.PROPERTY_VISITS,
+  },
+  {
+    id: 6,
     name: sideMenuItems.offers,
     icon: icons.offers,
     url: RouteNames.protectedRoutes.OFFERS,
   },
   {
-    id: 6,
+    id: 7,
     name: sideMenuItems.notifications,
     icon: icons.bell,
     url: RouteNames.protectedRoutes.NOTIFICATIONS,
-  },
-  {
-    id: 7,
-    name: sideMenuItems.propertyVisits,
-    icon: icons.visit,
-    url: RouteNames.protectedRoutes.PROPERTY_VISITS,
   },
   {
     id: 8,

@@ -28,13 +28,14 @@ import { AssetVisit, IVisitByKey, VisitActions } from '@homzhub/common/src/domai
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
   IAssetVisitPayload,
+  IBookVisitProps,
   IUpdateVisitPayload,
   IVisitActionParam,
   VisitStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { PortfolioNavigatorParamList } from '@homzhub/mobile/src/navigation/PortfolioStack';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
-import { IBookVisitProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRoutes, Tabs, VisitRoutes } from '@homzhub/common/src/constants/Tabs';
 import { UserInteraction } from '@homzhub/common/src/domain/models/UserInteraction';
 import { ISetAssetPayload } from '@homzhub/common/src/modules/portfolio/interfaces';
