@@ -1007,6 +1007,7 @@
     "bankAccount": "Bank Account",
     "selectAccount": "Select account",
     "reminderAlreadySetForDue": "A reminder is already set for this due",
+    "separatedByComma": "Enter emails (Separated by commas)",
     "bankAccounts": "Bank Accounts",
     "editAccount": "Edit Account",
     "deleteAccount": "Delete Account",

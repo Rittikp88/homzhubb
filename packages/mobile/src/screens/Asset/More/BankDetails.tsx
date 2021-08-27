@@ -48,7 +48,7 @@ const BankDetails = (): React.ReactElement => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(UserActions.getBankInfo());
+      dispatch(UserActions.getBankInfo(userId));
       dispatch(UserActions.setCurrentBankAccountId(-1));
     }, [])
   );
@@ -63,7 +63,7 @@ const BankDetails = (): React.ReactElement => {
       setLocalLoader(false);
       setIsDeactivateFlow(false);
       dispatch(UserActions.setCurrentBankAccountId(-1));
-      dispatch(UserActions.getBankInfo());
+      dispatch(UserActions.getBankInfo(userId));
       AlertHelper.success({
         message: t(
           `assetFinancial:${
@@ -208,7 +208,7 @@ const BankDetails = (): React.ReactElement => {
       try {
         setLocalLoader(true);
         await UserRepository.deleteBankDetails(userId, currentBankId);
-        dispatch(UserActions.getBankInfo());
+        dispatch(UserActions.getBankInfo(userId));
         dispatch(UserActions.setCurrentBankAccountId(-1));
         setLocalLoader(false);
         AlertHelper.success({ message: t('assetFinancial:bankAccountDeletedSuccessfully') });

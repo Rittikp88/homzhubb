@@ -72,7 +72,7 @@ export const TransactionField = (props: ITransactionProp): React.ReactElement =>
         <Typography size={textSize} fontWeight={fontType} variant={textType}>
           {label}
         </Typography>
-        {!isDisabled && rightNode}
+        {rightNode}
       </View>
       <TouchableOpacity
         style={[styles.field, isDisabled && styles.disabled]}

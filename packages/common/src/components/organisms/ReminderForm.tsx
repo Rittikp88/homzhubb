@@ -1,10 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -69,12 +68,6 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   const [canEdit, setCanEdit] = useState(true);
   const [currency, setCurrency] = useState('');
 
-  useFocusEffect(
-    useCallback(() => {
-      dispatch(UserActions.getBankInfo());
-    }, [])
-  );
-
   useEffect(() => {
     dispatch(FinancialActions.getReminderCategories());
     dispatch(FinancialActions.getReminderFrequencies());
@@ -103,6 +96,10 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
       });
     }
   }, [assetUsers]);
+
+  const onChangeOwner = (id: string): void => {
+    dispatch(UserActions.getBankInfo(Number(id)));
+  };
 
   const getDueState = (): void => {
     if (selectedDue) {
@@ -423,6 +420,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
                   isDisabled={Number(formProps.values.leaseUnit) < 1 || !canEdit}
                   dropdownContainerStyle={styles.field}
                   listHeight={300}
+                  onChange={onChangeOwner}
                 />
                 <FormDropdown
                   name="tenant"
@@ -448,7 +446,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
                   placeholder={t('selectAccount')}
                   rightNode={renderRightNode()}
                   formProps={formProps}
-                  isDisabled={!canEdit}
+                  isDisabled={!canEdit || bankInfo.length < 1}
                   options={bankInfo.filter((item) => item.isActive).map((item) => item.bankDetail)}
                 />
               </>

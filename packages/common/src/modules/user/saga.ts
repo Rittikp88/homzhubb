@@ -233,10 +233,9 @@ export function* getUserTransaction() {
   }
 }
 
-export function* getBankInfo() {
+export function* getBankInfo(action: IFluxStandardAction<number>) {
   try {
-    const profile: UserProfile = yield select(UserSelector.getUserProfile);
-    const response = yield call(UserRepository.getUserBankInfo, profile.id);
+    const response = yield call(UserRepository.getUserBankInfo, action.payload as number);
     yield put(UserActions.getBankInfoSuccess(response));
   } catch (e) {
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });

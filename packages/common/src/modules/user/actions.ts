@@ -238,9 +238,10 @@ const getUserCoinTransactionFailure = (): IFluxStandardAction => ({
   type: UserActionTypes.GET.USER_COIN_TRANSACTION_FAILURE,
 });
 
-const getBankInfo = (): IFluxStandardAction => {
+const getBankInfo = (userId: number): IFluxStandardAction<number> => {
   return {
     type: UserActionTypes.GET.BANK_INFO,
+    payload: userId,
   };
 };
 

@@ -98,7 +98,7 @@ const EmailTextInput = ({
     <View style={styles.container}>
       <WithFieldError error={t(errorText || error)}>
         <Label type="large" style={[styles.label, isError && styles.errorLabel]}>
-          {t('assetFinancial:notifyTo')}
+          {t('assetFinancial:separatedByComma')}
         </Label>
         <View style={[styles.itemContainer, isError && styles.errorContainer]}>
           {emails.length > 0 && (
