@@ -15,6 +15,7 @@ import {
   IQuoteSubmitPayload,
   IReassignTicketParam,
   ISubmitReview,
+  IUpdateTicketWorkStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
@@ -96,6 +97,10 @@ class TicketRepository {
 
   public requestQuote = async (ticketId: number, payload: IQuoteRequestParam): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.quoteRequest(ticketId), payload);
+  };
+
+  public updateWorkStatus = async (ticketId: number, payload: IUpdateTicketWorkStatus): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.ticketById(ticketId), payload);
   };
 }
 

@@ -31,6 +31,11 @@ export enum TicketPriority {
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
 }
+
+export enum TicketWorkStatus {
+  WORK_INITIATED = 'WORK_INITIATED',
+  WORK_UPDATE = 'WORK_UPDATE',
+}
 // ENUM
 
 interface IGroupTicket {

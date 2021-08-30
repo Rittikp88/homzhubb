@@ -4,6 +4,7 @@ import { DueOrderSummaryAction } from '@homzhub/common/src/domain/models/DueOrde
 import { ILeaseTermParams } from '@homzhub/common/src/domain/models/LeaseTerm';
 import { ILastVisitedStep } from '@homzhub/common/src/domain/models/LastVisitedStep';
 import { SelectedPreferenceType } from '@homzhub/common/src/domain/models/SettingOptions';
+import { TicketWorkStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { SocialAuthKeys } from '@homzhub/common/src/constants/SocialAuthProviders';
 import { PaidByTypes } from '@homzhub/common/src/constants/Terms';
 
@@ -896,6 +897,16 @@ export interface IQuoteRequestParam {
   is_homzhub_partner_invited: boolean;
   emails?: string[];
   comment?: string;
+}
+
+export interface ITitleWithComment {
+  title: string | null;
+  comment: string | null;
+}
+
+export interface IUpdateTicketWorkStatus {
+  action: TicketWorkStatus;
+  payload: ITitleWithComment;
 }
 
 // SERVICE TICKETS END

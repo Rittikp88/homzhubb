@@ -4,13 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { TicketWorkStatus } from '@homzhub/common/src/domain/models/Ticket';
+import { IUpdateTicketWorkStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   containerStyle?: ViewStyle;
@@ -30,14 +32,22 @@ const WorkInitiatedForm = (props: IProps): ReactElement => {
 
   const onFormSubmit = async (): Promise<void> => {
     try {
-      toggleLoader(true);
-      // Todo (Praharsh) : Call API here
-      await FunctionUtils.noopAsync(selectedTicket?.ticketId);
-      toggleLoader(false);
-      if (onSubmit) {
-        onSubmit();
+      if (selectedTicket) {
+        toggleLoader(true);
+        const requestBody: IUpdateTicketWorkStatus = {
+          action: TicketWorkStatus.WORK_INITIATED,
+          payload: {
+            title: null,
+            comment: comment.length > 0 ? comment : null,
+          },
+        };
+        await TicketRepository.updateWorkStatus(selectedTicket.ticketId, requestBody);
+        toggleLoader(false);
+        if (onSubmit) {
+          onSubmit();
+        }
+        AlertHelper.success({ message: t('workInitiatedSuccess') });
       }
-      AlertHelper.success({ message: t('workInitiatedSuccess') });
     } catch (e) {
       toggleLoader(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details.message), statusCode: e.details.statusCode });
