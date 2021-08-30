@@ -60,7 +60,7 @@ class TicketActivityCard extends PureComponent<Props> {
 
     return (
       <View style={styles.activityView}>
-        <View style={styles.titleContainer}>
+        <View style={[styles.titleContainer, status !== TicketStatus.CLOSED && styles.titleBottom]}>
           <Text type="small" textType="semiBold" style={styles.activity}>
             {t('serviceTickets:activity')}
           </Text>
@@ -265,6 +265,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  titleBottom: {
     marginBottom: 16,
   },
   closeTicketButton: {
@@ -300,6 +302,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
+    marginVertical: 10,
   },
   dateOnSeparator: {
     paddingHorizontal: 10,

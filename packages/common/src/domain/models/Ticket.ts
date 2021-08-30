@@ -1,13 +1,13 @@
 import { groupBy } from 'lodash';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
+import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { TicketActivity } from '@homzhub/common/src/domain/models/TicketActivity';
 import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { ExperienceType } from '@homzhub/common/src/constants/ServiceTickets';
 
 // ENUM
@@ -42,7 +42,7 @@ export interface ITicket {
   ticket_category: TicketCategory;
   assigned_to: User;
   closed_by: User;
-  asset: VisitAssetDetail;
+  asset: IAsset;
   title: string;
   description?: string;
   status: string;
@@ -85,8 +85,8 @@ export class Ticket {
   @JsonProperty('closed_by', User, true)
   private _closedBy = new User();
 
-  @JsonProperty('asset', VisitAssetDetail, true)
-  private _asset = new VisitAssetDetail();
+  @JsonProperty('asset', Asset, true)
+  private _asset = new Asset();
 
   @JsonProperty('title', String)
   private _title = '';
@@ -191,7 +191,7 @@ export class Ticket {
     return this._updatedAt;
   }
 
-  get asset(): VisitAssetDetail {
+  get asset(): Asset {
     return this._asset;
   }
 

@@ -120,9 +120,9 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     closedAt,
     closedBy,
     id,
-    location,
     review: { rating, description },
     experienceType,
+    asset: { formattedAddressWithProjectAndCity },
   } = cardData;
   // HOOKS START
 
@@ -255,7 +255,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
             </Label>
             {isFromMore && (
               <Label type="regular" style={styles.subTitle}>
-                {location}
+                {formattedAddressWithProjectAndCity}
               </Label>
             )}
           </View>
