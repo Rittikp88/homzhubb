@@ -1345,6 +1345,7 @@
     "reassignInfoText": "Select the person you want to assign the request to",
     "selectAnAssignee": "Select an Assignee",
     "requestReassignedSuccessfully": "Request Reassigned Successfully",
+    "categoryLimit": "Category must not be greater than {{limit}} length",
     "updateWorkProgressInfoText": "Update participants about the progress on the work",
     "updateYourWorkProgress": "Update your Work Progress",
     "workInitiatedSuccess": "Status Updated to Work Initiated Successfully",

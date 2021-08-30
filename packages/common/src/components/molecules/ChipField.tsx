@@ -21,6 +21,7 @@ interface IProps {
   isDisabled?: boolean;
   errorText?: string;
   label?: string;
+  valueLimit?: number;
   placeholder?: string;
   isEmailField?: boolean;
   chipColor?: string;
@@ -41,6 +42,7 @@ const ChipField = (props: IProps): React.ReactElement => {
     placeholder = t('assetFinancial:enterEmails'),
     isEmailField = false,
     chipColor = theme.colors.darkTint4,
+    valueLimit,
   } = props;
 
   useEffect(() => {
@@ -86,6 +88,14 @@ const ChipField = (props: IProps): React.ReactElement => {
       return;
     }
 
+    if (valueLimit && text.length > valueLimit) {
+      if (setValueError) {
+        setValueError(true);
+      }
+      setError(t('serviceTicket:categoryLimit', { limit: valueLimit }));
+      return;
+    }
+
     if (!chips.includes(text)) {
       const updated: string[] = [...chips, text];
       setChips(updated);
@@ -106,6 +116,7 @@ const ChipField = (props: IProps): React.ReactElement => {
   const handleRemove = (email: string): void => {
     if (isDisabled) return;
     setChips(chips.filter((item) => item !== email));
+    onSetValue(chips.filter((item) => item !== email));
     setError('');
     if (setValueError) {
       setValueError(false);

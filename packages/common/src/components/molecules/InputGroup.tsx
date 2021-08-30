@@ -1,10 +1,20 @@
-import React from 'react';
-import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  NativeSyntheticEvent,
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  TextInputEndEditingEventData,
+  View,
+  ViewStyle,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
 interface IInputGroupProps {
   data: string[];
@@ -13,6 +23,8 @@ interface IInputGroupProps {
   label?: string;
   buttonLabel?: string;
   placeholder?: string;
+  isEmailField?: boolean;
+  updateError?: (isError: boolean) => void;
   inputContainer?: StyleProp<ViewStyle>;
   textInputContainerDeviceStyle?: StyleProp<ViewStyle>;
   textInputDeviceStyle?: StyleProp<ViewStyle>;
@@ -30,27 +42,57 @@ const InputGroup = (props: IInputGroupProps): React.ReactElement => {
     maxLimit = 5,
     addButtonDeviceStyle,
     label,
+    isEmailField = false,
     buttonLabel = t('add'),
     placeholder = t('property:highlightPlaceholder'),
+    updateError,
   } = props;
+  const [inputValues, setValues] = useState<string[]>([]);
+  const [errorIndex, setErrorIndex] = useState<number>(-1);
+  const [error, setError] = useState<string>('');
+
+  useEffect(() => {
+    setValues(data);
+  }, []);
 
   const handleTextChange = (text: string, index: number): void => {
-    const newData: string[] = data;
+    const newData: string[] = [...inputValues];
     newData[index] = text;
-    updateData(newData);
+    onSetData(newData);
   };
 
   const handleNext = (): void => {
-    updateData([...data, '']);
+    onSetData([...inputValues, '']);
   };
 
   const onPressCross = (index: number): void => {
-    if (data[index]) {
-      const newData: string[] = data;
+    if (inputValues[index]) {
+      const newData: string[] = inputValues;
       newData[index] = '';
-      updateData(newData);
+      onSetData(newData);
     } else {
-      updateData(data.slice(0, -1));
+      onSetData(inputValues.slice(0, -1));
+    }
+  };
+
+  const onEndEditing = (event: NativeSyntheticEvent<TextInputEndEditingEventData>, index: number): void => {
+    const { text } = event.nativeEvent;
+    if (isEmailField && !FormUtils.validateEmail(text)) {
+      setErrorIndex(index);
+      setError(t('landing:emailValidations'));
+      if (updateError) {
+        updateError(true);
+      }
+    }
+    updateData(inputValues);
+  };
+
+  const onSetData = (values: string[]): void => {
+    setValues(values);
+    setError('');
+    setErrorIndex(-1);
+    if (updateError) {
+      updateError(false);
     }
   };
 
@@ -58,42 +100,46 @@ const InputGroup = (props: IInputGroupProps): React.ReactElement => {
     <>
       <View style={[styles.container, inputContainer]}>
         {!!label && <Label style={styles.label}>{label}</Label>}
-        {data.map((item, index) => {
+        {inputValues.map((item, index) => {
+          const isError = errorIndex === index;
           return (
-            <View
-              style={[
-                styles.textInputContainer,
-                textInputContainerDeviceStyle,
-                styles.textInputWrapper,
-                textInputDeviceStyle,
-              ]}
-              key={index}
-            >
-              <TextInput
-                placeholder={placeholder}
-                autoCorrect={false}
-                autoCapitalize="words"
-                numberOfLines={1}
-                value={data[index]}
-                onChangeText={(text): void => handleTextChange(text, index)}
-                style={styles.textInput}
-              />
-              {data.length > 1 && index > 0 && (
-                <Button
-                  type="primary"
-                  icon={icons.circularCrossFilled}
-                  iconSize={20}
-                  iconColor={theme.colors.darkTint9}
-                  containerStyle={styles.iconButton}
-                  onPress={(): void => onPressCross(index)}
-                  testID="btnCross"
+            <WithFieldError key={index} error={isError ? error : ''} labelStyle={styles.errorLabel}>
+              <View
+                style={[
+                  styles.textInputContainer,
+                  textInputContainerDeviceStyle,
+                  styles.textInputWrapper,
+                  textInputDeviceStyle,
+                  isError && styles.errorStyle,
+                ]}
+              >
+                <TextInput
+                  placeholder={placeholder}
+                  autoCorrect={false}
+                  autoCapitalize="words"
+                  numberOfLines={1}
+                  value={item}
+                  onEndEditing={(e): void => onEndEditing(e, index)}
+                  onChangeText={(text): void => handleTextChange(text, index)}
+                  style={styles.textInput}
                 />
-              )}
-            </View>
+                {inputValues.length > 1 && index > 0 && (
+                  <Button
+                    type="primary"
+                    icon={icons.circularCrossFilled}
+                    iconSize={20}
+                    iconColor={theme.colors.darkTint9}
+                    containerStyle={styles.iconButton}
+                    onPress={(): void => onPressCross(index)}
+                    testID="btnCross"
+                  />
+                )}
+              </View>
+            </WithFieldError>
           );
         })}
       </View>
-      {data.length !== maxLimit && (
+      {inputValues.length !== maxLimit && (
         <View style={[styles.addButtonWrapper, addButtonDeviceStyle]}>
           <Button
             type="secondary"
@@ -147,5 +193,11 @@ const styles = StyleSheet.create({
   },
   label: {
     color: theme.colors.darkTint3,
+  },
+  errorStyle: {
+    borderColor: theme.colors.error,
+  },
+  errorLabel: {
+    marginTop: 0,
   },
 });

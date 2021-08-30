@@ -11,6 +11,7 @@ import {
   IPostTicketPayload,
   IQuoteApprovePayload,
   IQuoteParam,
+  IQuoteRequestParam,
   IQuoteSubmitPayload,
   IReassignTicketParam,
   ISubmitReview,
@@ -20,7 +21,8 @@ import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 const ENDPOINTS = {
   ticket: 'v1/tickets/',
   ticketCategories: 'v1/ticket-categories/',
-  quoteRequest: (param: IQuoteParam): string => `v1/tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/`,
+  quoteRequestById: (param: IQuoteParam): string =>
+    `v1/tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/`,
   quoteRequestCategory: (param: IQuoteParam): string =>
     `v1/tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quote-request-categories/`,
   quoteSubmit: (param: IQuoteParam): string =>
@@ -29,6 +31,7 @@ const ENDPOINTS = {
   quoteApprove: (param: IQuoteParam): string => `v1/tickets/${param.ticketId}/quote-approved-group/`,
   ticketById: (ticketId: number): string => `v1/tickets/${ticketId}/`,
   reassignTicket: (ticketId: number): string => `v1/tickets/${ticketId}/ticket-users/`,
+  quoteRequest: (ticketId: number): string => `v1/tickets/${ticketId}/quote-requests/`,
 };
 
 class TicketRepository {
@@ -73,7 +76,7 @@ class TicketRepository {
   };
 
   public getQuoteRequest = async (param: IQuoteParam): Promise<QuoteRequest> => {
-    const response = await this.apiClient.get(ENDPOINTS.quoteRequest(param));
+    const response = await this.apiClient.get(ENDPOINTS.quoteRequestById(param));
     return ObjectMapper.deserialize(QuoteRequest, response);
   };
 
@@ -89,6 +92,10 @@ class TicketRepository {
 
   public reassignTicket = async (ticketId: number, payload: IReassignTicketParam): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.reassignTicket(ticketId), payload);
+  };
+
+  public requestQuote = async (ticketId: number, payload: IQuoteRequestParam): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.quoteRequest(ticketId), payload);
   };
 }
 

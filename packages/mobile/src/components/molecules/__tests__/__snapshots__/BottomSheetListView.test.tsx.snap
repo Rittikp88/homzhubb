@@ -1193,6 +1193,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="0"
                                                       listItem={
                                                         Object {
@@ -1369,9 +1374,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -1388,9 +1398,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -1406,9 +1421,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -1589,6 +1609,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="1"
                                                       listItem={
                                                         Object {
@@ -1765,9 +1790,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -1784,9 +1814,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -1802,9 +1837,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -1985,6 +2025,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="2"
                                                       listItem={
                                                         Object {
@@ -2161,9 +2206,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -2180,9 +2230,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -2198,9 +2253,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -2381,6 +2441,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="3"
                                                       listItem={
                                                         Object {
@@ -2557,9 +2622,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -2576,9 +2646,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -2594,9 +2669,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -2777,6 +2857,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="4"
                                                       listItem={
                                                         Object {
@@ -2953,9 +3038,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -2972,9 +3062,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -2990,9 +3085,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -3173,6 +3273,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="5"
                                                       listItem={
                                                         Object {
@@ -3349,9 +3454,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -3368,9 +3478,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -3386,9 +3501,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -3569,6 +3689,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="6"
                                                       listItem={
                                                         Object {
@@ -3745,9 +3870,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -3764,9 +3894,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -3782,9 +3917,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -3965,6 +4105,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="7"
                                                       listItem={
                                                         Object {
@@ -4141,9 +4286,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -4160,9 +4310,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -4178,9 +4333,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -4361,6 +4521,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="8"
                                                       listItem={
                                                         Object {
@@ -4537,9 +4702,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -4556,9 +4726,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -4574,9 +4749,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >
@@ -4757,6 +4937,11 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                   >
                                                     <ListItem
                                                       isCheck={false}
+                                                      itemStyle={
+                                                        Array [
+                                                          undefined,
+                                                        ]
+                                                      }
                                                       key="9"
                                                       listItem={
                                                         Object {
@@ -4933,9 +5118,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                     >
                                                                       <Text
                                                                         style={
-                                                                          Object {
-                                                                            "paddingVertical": 16,
-                                                                          }
+                                                                          Array [
+                                                                            Object {
+                                                                              "paddingVertical": 16,
+                                                                            },
+                                                                            Array [
+                                                                              undefined,
+                                                                            ],
+                                                                          ]
                                                                         }
                                                                         textType="regular"
                                                                         type="small"
@@ -4952,9 +5142,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                 "fontFamily": "OpenSans-Regular",
                                                                                 "fontWeight": "400",
                                                                               },
-                                                                              Object {
-                                                                                "paddingVertical": 16,
-                                                                              },
+                                                                              Array [
+                                                                                Object {
+                                                                                  "paddingVertical": 16,
+                                                                                },
+                                                                                Array [
+                                                                                  undefined,
+                                                                                ],
+                                                                              ],
                                                                             ]
                                                                           }
                                                                         >
@@ -4970,9 +5165,14 @@ exports[`BottomSheetListView should render snapshot 1`] = `
                                                                                   "fontFamily": "OpenSans-Regular",
                                                                                   "fontWeight": "400",
                                                                                 },
-                                                                                Object {
-                                                                                  "paddingVertical": 16,
-                                                                                },
+                                                                                Array [
+                                                                                  Object {
+                                                                                    "paddingVertical": 16,
+                                                                                  },
+                                                                                  Array [
+                                                                                    undefined,
+                                                                                  ],
+                                                                                ],
                                                                               ]
                                                                             }
                                                                           >

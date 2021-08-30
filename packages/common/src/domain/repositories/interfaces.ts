@@ -891,6 +891,13 @@ export interface IReassignTicketParam {
   comment?: string;
 }
 
+export interface IQuoteRequestParam {
+  quote_request_categories: string[];
+  is_homzhub_partner_invited: boolean;
+  emails?: string[];
+  comment?: string;
+}
+
 // SERVICE TICKETS END
 
 // OFFERS

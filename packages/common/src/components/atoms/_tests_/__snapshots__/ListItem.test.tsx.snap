@@ -25,9 +25,12 @@ exports[`ListItem should match snapshot 1`] = `
   >
     <Text
       style={
-        Object {
-          "paddingVertical": 16,
-        }
+        Array [
+          Object {
+            "paddingVertical": 16,
+          },
+          undefined,
+        ]
       }
       textType="regular"
       type="small"

@@ -203,6 +203,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     const { navigation } = this.props;
 
     switch (value) {
+      case TakeActionTitle.REQUEST_QUOTE:
+        navigation.navigate(ScreensKeys.RequestQuote);
+        break;
       case TakeActionTitle.REASSIGN_TICKET:
         navigation.navigate(ScreensKeys.ReassignTicket);
         break;
@@ -313,13 +316,8 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private getActionList = (): PickerItemProps[] => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return [];
-    const {
-      canCloseTicket,
-      canApproveQuote,
-      canSubmitQuote,
-      canReassignTicket,
-      canUpdateWorkProgress,
-    } = ticketDetails.actions;
+    const { canCloseTicket, canApproveQuote, canSubmitQuote, canReassignTicket, canUpdateWorkProgress } =
+      ticketDetails.actions;
     const {
       SUBMIT_QUOTE,
       WORK_COMPLETED,
@@ -327,9 +325,11 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       REASSIGN_TICKET,
       WORK_INITIATED,
       UPDATE_STATUS,
+      REQUEST_QUOTE,
     } = TakeActionTitle;
 
-    const list: PickerItemProps[] = [];
+    // TODO: (SHIKHA) - Add validation
+    const list: PickerItemProps[] = [{ label: REQUEST_QUOTE, value: REQUEST_QUOTE }];
 
     if (canReassignTicket) {
       list.push({ label: REASSIGN_TICKET, value: REASSIGN_TICKET });
