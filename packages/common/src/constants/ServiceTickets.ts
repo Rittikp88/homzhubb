@@ -33,6 +33,7 @@ export enum TakeActionTitle {
   WORK_COMPLETED = 'Work Completed',
   REQUEST_QUOTE = 'Request Quote',
   UPDATE_STATUS = 'Update Status',
+  QUOTE_PAYMENT = 'Quote Payment',
 }
 
 // ENUM END

@@ -51,6 +51,7 @@ import ComingSoonScreen from '@homzhub/mobile/src/screens/ComingSoonScreen';
 import LandingScreen from '@homzhub/mobile/src/screens/LandingScreen';
 import WorkInitiated from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/WorkInitiated';
 import UpdateTicketStatus from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/UpdateTicketStatus';
+import QuotePayment from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/QuotePayment';
 import { WebViewScreen } from '@homzhub/mobile/src/screens/common/WebViewScreen';
 import {
   IBookVisitProps,
@@ -133,6 +134,7 @@ export type CommonParamList = {
   [ScreensKeys.DuesScreen]: undefined;
   [ScreensKeys.AddBankAccount]: undefined;
   [ScreensKeys.RequestQuote]: undefined;
+  [ScreensKeys.QuotePayment]: undefined;
 };
 
 /**
@@ -195,6 +197,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.DuesScreen} component={DuesScreen} />
       <Stack.Screen name={ScreensKeys.AddBankAccount} component={AddBankAccount} />
       <Stack.Screen name={ScreensKeys.RequestQuote} component={RequestQuote} />
+      <Stack.Screen name={ScreensKeys.QuotePayment} component={QuotePayment} />
     </>
   );
 };

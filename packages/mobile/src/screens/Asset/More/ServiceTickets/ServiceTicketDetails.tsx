@@ -221,6 +221,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       case TakeActionTitle.UPDATE_STATUS:
         navigation.navigate(ScreensKeys.UpdateTicketStatus);
         break;
+      case TakeActionTitle.QUOTE_PAYMENT:
+        navigation.navigate(ScreensKeys.QuotePayment);
+        break;
       case TakeActionTitle.WORK_COMPLETED:
       default:
         navigation.navigate(ScreensKeys.WorkCompleted);
@@ -325,11 +328,15 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       REASSIGN_TICKET,
       WORK_INITIATED,
       UPDATE_STATUS,
+      QUOTE_PAYMENT,
       REQUEST_QUOTE,
     } = TakeActionTitle;
 
     // TODO: (SHIKHA) - Add validation
-    const list: PickerItemProps[] = [{ label: REQUEST_QUOTE, value: REQUEST_QUOTE }];
+    const list: PickerItemProps[] = [
+      { label: REQUEST_QUOTE, value: REQUEST_QUOTE },
+      { label: QUOTE_PAYMENT, value: QUOTE_PAYMENT },
+    ];
 
     if (canReassignTicket) {
       list.push({ label: REASSIGN_TICKET, value: REASSIGN_TICKET });

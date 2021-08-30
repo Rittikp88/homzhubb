@@ -1353,7 +1353,11 @@
     "sendUpdates": "Send Updates",
     "sendUpdate": "Send Update",
     "updates": "Updates",
-    "updateTitle": "Update Title"
+    "updateTitle": "Update Title",
+    "makePaymentForQuote": "Make payment for your approved quotes using your preferred payment method",
+    "quoteInfo": "The above quotes are shown inclusive of all the taxes and relevant information",
+    "payLater": "Pay Later",
+    "quotePayment": "Quote Payment"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",
