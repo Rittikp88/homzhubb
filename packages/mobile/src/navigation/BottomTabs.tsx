@@ -204,6 +204,8 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.SubmitQuote,
     ScreensKeys.ApproveQuote,
     ScreensKeys.WorkCompleted,
+    ScreensKeys.WorkInitiated,
+    ScreensKeys.UpdateTicketStatus,
     ScreensKeys.ProspectProfile,
     ScreensKeys.SubmitOffer,
     ScreensKeys.AcceptOffer,

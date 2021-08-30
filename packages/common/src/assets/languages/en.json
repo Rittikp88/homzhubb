@@ -309,7 +309,8 @@
     "underMaintenance": "Under Maintenance",
     "others": "Others",
     "roundedOff": "rounded off",
-    "featureInIndiaOnly": "Feature available only for India currently"
+    "featureInIndiaOnly": "Feature available only for India currently",
+    "close": "Close"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1354,6 +1355,9 @@
     "sendUpdate": "Send Update",
     "updates": "Updates",
     "updateTitle": "Update Title",
+    "closeTicket": "Close Request",
+    "closeTicketSuccess": "Request Closed Successfully",
+    "closeTicketConfirmation": "Are you sure you want to close the request?",
     "makePaymentForQuote": "Make payment for your approved quotes using your preferred payment method",
     "quoteInfo": "The above quotes are shown inclusive of all the taxes and relevant information",
     "payLater": "Pay Later",
@@ -1485,7 +1489,7 @@
     "genericError": "Something Unexpected Happened",
     "genericErrorMessage": "We are not sure what caused this error, but engineers are looking into it. We are sorry for the inconvenience",
     "backToHome": "Back to Home"
-  }, 
+  },
   "siteVisits": {
     "schedulePropertyVisit": "Schedule Property Visit"
   }

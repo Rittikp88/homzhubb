@@ -193,6 +193,7 @@ export const icons = {
   marketPlace: 'market-place',
   reminder: 'reminder',
   bankBuilding: 'bank-building',
+  tickInsideCircle: 'tick-inside-circle',
 
   // COMMUTE
   train: 'train',

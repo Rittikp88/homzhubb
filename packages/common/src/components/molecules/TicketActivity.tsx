@@ -1,15 +1,21 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
 import ImageThumbnail from '@homzhub/common/src/components/atoms/ImageThumbnail';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import {
   ActivityQuotesApproved,
   ActivityQuotesSubmitted,
 } from '@homzhub/common/src/components/molecules/ActivityQuoteCard';
+import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import { TicketActivitySection } from '@homzhub/common/src/components/HOC/TicketActivitySection';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { Ticket, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
@@ -22,23 +28,57 @@ interface IProps {
   onPressQuote?: (url: string) => Promise<void>;
 }
 
+interface IDispatchProps {
+  closeTicket: () => void;
+}
+
 interface IActivityStatusBadge {
   data: string[];
   extraStyle?: ViewStyle;
 }
 
-type Props = IProps & WithTranslation;
+interface IState {
+  showConfirmationSheet: boolean;
+}
+
+type Props = IProps & WithTranslation & IDispatchProps;
 
 class TicketActivityCard extends PureComponent<Props> {
+  public state: IState = {
+    showConfirmationSheet: false,
+  };
+
   public render(): React.ReactNode {
-    const { t, ticketData } = this.props;
-    const { groupedActivities } = ticketData;
+    const { t, ticketData, closeTicket } = this.props;
+    const { showConfirmationSheet } = this.state;
+    const { groupedActivities, status } = ticketData;
+
+    const onConfirmClose = (): void => {
+      closeTicket();
+      this.closeSheet();
+    };
 
     return (
       <View style={styles.activityView}>
-        <Text type="small" textType="semiBold" style={styles.activity}>
-          {t('serviceTickets:activity')}
-        </Text>
+        <View style={styles.titleContainer}>
+          <Text type="small" textType="semiBold" style={styles.activity}>
+            {t('serviceTickets:activity')}
+          </Text>
+          {status !== TicketStatus.CLOSED && (
+            <Button
+              containerStyle={styles.closeTicketButton}
+              type="secondary"
+              icon={icons.tickInsideCircle}
+              iconSize={20}
+              iconColor={theme.colors.blue}
+              onPress={this.openSheet}
+            >
+              <Text type="small" textType="regular" style={styles.closeTicketText}>
+                {t('closeTicket')}
+              </Text>
+            </Button>
+          )}
+        </View>
         {Object.keys(groupedActivities).map((key) => {
           return (
             <>
@@ -53,6 +93,13 @@ class TicketActivityCard extends PureComponent<Props> {
             </>
           );
         })}
+        <ConfirmationSheet
+          isVisible={showConfirmationSheet}
+          onCloseSheet={this.closeSheet}
+          onPressDelete={onConfirmClose}
+          message={t('closeTicketConfirmation')}
+          buttonTitles={[t('common:cancel'), t('common:close')]}
+        />
       </View>
     );
   }
@@ -170,6 +217,14 @@ class TicketActivityCard extends PureComponent<Props> {
     );
   };
 
+  private openSheet = (): void => {
+    this.setState({ showConfirmationSheet: true });
+  };
+
+  private closeSheet = (): void => {
+    this.setState({ showConfirmationSheet: false });
+  };
+
   private getActionContent = (code: string, name = 'Homzhub'): string[] => {
     const { t } = this.props;
     switch (code) {
@@ -185,15 +240,48 @@ class TicketActivityCard extends PureComponent<Props> {
   };
 }
 
-export default withTranslation(LocaleConstants.namespacesKey.serviceTickets)(TicketActivityCard);
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { closeTicket } = TicketActions;
+  return bindActionCreators(
+    {
+      closeTicket,
+    },
+    dispatch
+  );
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(withTranslation(LocaleConstants.namespacesKey.serviceTickets)(TicketActivityCard));
 
 const styles = StyleSheet.create({
   activityView: {
     backgroundColor: theme.colors.background,
-    padding: 10,
+    paddingTop: 16,
+  },
+  titleContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  closeTicketButton: {
+    flex: 0.7,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    paddingVertical: 7,
+    borderColor: theme.colors.disabled,
+    borderRadius: 4,
+    borderWidth: 1,
+  },
+  closeTicketText: {
+    marginStart: 5,
+    color: theme.colors.blue,
   },
   activity: {
-    marginTop: 10,
+    flex: 1,
   },
   activityBadgeContainer: {
     marginBottom: 16,
@@ -212,7 +300,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    marginVertical: 10,
   },
   dateOnSeparator: {
     paddingHorizontal: 10,

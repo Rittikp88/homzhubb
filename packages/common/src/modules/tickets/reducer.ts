@@ -13,6 +13,7 @@ export const initialTicketState: ITicketState = {
   loaders: {
     tickets: false,
     ticketDetail: false,
+    closeTicket: false,
   },
 };
 
@@ -70,6 +71,17 @@ export const ticketReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['ticketDetail']: false },
+      };
+    case TicketActionTypes.CLOSE_TICKET:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['closeTicket']: true },
+      };
+    case TicketActionTypes.CLOSE_TICKET_SUCCESS:
+    case TicketActionTypes.CLOSE_TICKET_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['closeTicket']: false },
       };
     case TicketActionTypes.CLEAR_STATE:
       return {

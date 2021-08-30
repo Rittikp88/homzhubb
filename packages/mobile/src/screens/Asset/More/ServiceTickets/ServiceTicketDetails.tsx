@@ -24,7 +24,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { Ticket, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { TakeActionTitle } from '@homzhub/common/src/constants/ServiceTickets';
@@ -44,6 +44,7 @@ interface IStateProps {
   currentTicket: ICurrentTicket | null;
   ticketDetails: Ticket | null;
   isLoading: boolean;
+  ticketLoader: ITicketState['loaders'];
 }
 
 interface IScreenState {
@@ -80,7 +81,12 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
 
   public render = (): React.ReactNode => {
     const { isActionSheet, selectedAction } = this.state;
-    const { t, ticketDetails, isLoading } = this.props;
+    const {
+      t,
+      ticketDetails,
+      isLoading,
+      ticketLoader: { closeTicket },
+    } = this.props;
 
     const actionList = this.getActionList();
     const title = ticketDetails ? ticketDetails.asset.projectName : t('common:detail');
@@ -89,7 +95,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         <UserScreen
           title={title}
           pageTitle={t('serviceTickets:ticketDetails')}
-          loading={isLoading}
+          loading={isLoading || closeTicket}
           onBackPress={this.handleGoBack}
           contentContainerStyle={styles.userScreen}
         >
@@ -310,6 +316,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           isDisabled: !canCloseTicket,
         };
       case TicketStatus.WORK_COMPLETED:
+      case TicketStatus.CLOSED:
       default:
         return null;
     }
@@ -319,8 +326,13 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private getActionList = (): PickerItemProps[] => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return [];
-    const { canCloseTicket, canApproveQuote, canSubmitQuote, canReassignTicket, canUpdateWorkProgress } =
-      ticketDetails.actions;
+    const {
+      canCloseTicket,
+      canApproveQuote,
+      canSubmitQuote,
+      canReassignTicket,
+      canUpdateWorkProgress,
+    } = ticketDetails.actions;
     const {
       SUBMIT_QUOTE,
       WORK_COMPLETED,
@@ -364,11 +376,12 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentTicket, getTicketDetail, getTicketDetailLoader } = TicketSelectors;
+  const { getCurrentTicket, getTicketDetail, getTicketDetailLoader, getTicketLoaders } = TicketSelectors;
   return {
     currentTicket: getCurrentTicket(state),
     ticketDetails: getTicketDetail(state),
     isLoading: getTicketDetailLoader(state),
+    ticketLoader: getTicketLoaders(state),
   };
 };
 

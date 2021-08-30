@@ -19,6 +19,9 @@ export const TicketActionTypes = {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
     CURRENT_TICKET: `${actionTypePrefix}CURRENT_TICKET`,
   },
+  CLOSE_TICKET: `${actionTypePrefix}CLOSE_TICKET`,
+  CLOSE_TICKET_SUCCESS: `${actionTypePrefix}CLOSE_TICKET_SUCCESS`,
+  CLOSE_TICKET_FAILURE: `${actionTypePrefix}CLOSE_TICKET_FAILURE`,
   REMOVE_ATTACHMENT: `${actionTypePrefix}REMOVE_ATTACHMENT`,
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
 };
@@ -70,6 +73,18 @@ const getTicketDetailFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.GET.TICKET_DETAIL_FAILURE,
 });
 
+const closeTicket = (): IFluxStandardAction => ({
+  type: TicketActionTypes.CLOSE_TICKET,
+});
+
+const closeTicketSuccess = (): IFluxStandardAction => ({
+  type: TicketActionTypes.CLOSE_TICKET_SUCCESS,
+});
+
+const closeTicketFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.CLOSE_TICKET_FAILURE,
+});
+
 export type TicketActionPayloadTypes =
   | string[]
   | string
@@ -91,4 +106,7 @@ export const TicketActions = {
   getTicketDetailFailure,
   setCurrentTicket,
   getTicketsFailure,
+  closeTicket,
+  closeTicketSuccess,
+  closeTicketFailure,
 };

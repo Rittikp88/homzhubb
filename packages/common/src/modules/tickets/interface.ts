@@ -10,6 +10,7 @@ export interface ITicketState {
   loaders: {
     tickets: boolean;
     ticketDetail: boolean;
+    closeTicket: boolean;
   };
 }
 
