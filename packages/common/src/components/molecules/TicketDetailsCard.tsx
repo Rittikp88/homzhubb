@@ -111,6 +111,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
           {title}
         </Text>
         <RenderDetails />
+        {/* Todo (Praharsh) : Add Submit Review button here when that story is picked up */}
       </View>
     </>
   );

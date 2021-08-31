@@ -3,7 +3,6 @@ import { call, put, takeEvery, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { TicketActions, TicketActionTypes } from '@homzhub/common/src/modules/tickets/actions';
@@ -11,7 +10,11 @@ import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IGetTicketParam,
+  IUpdateTicketWorkStatus,
+  TicketAction,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 export function* getUserTickets(action: IFluxStandardAction<IGetTicketParam>) {
   try {
@@ -56,8 +59,11 @@ export function* getTicketDetails(action: IFluxStandardAction<number>) {
 export function* closeTicket() {
   try {
     const currentTicket: ICurrentTicket = yield select(TicketSelectors.getCurrentTicket);
-    // Todo (Praharsh) : Call real API here
-    yield call(FunctionUtils.noopAsync, currentTicket.ticketId);
+    const requestBody: IUpdateTicketWorkStatus = {
+      action: TicketAction.CLOSE_TICKET,
+      payload: {},
+    };
+    yield call(TicketRepository.updateWorkStatus, currentTicket.ticketId, requestBody);
     yield put(TicketActions.closeTicketSuccess());
     yield put(TicketActions.getTicketDetail(currentTicket.ticketId));
     AlertHelper.success({ message: I18nService.t('serviceTickets:closeTicketSuccess') });

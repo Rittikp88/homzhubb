@@ -23,6 +23,7 @@ export enum TicketStatus {
   WORK_INITIATED = 'WORK_INITIATED',
   PAYMENT_DONE = 'PAYMENT_DONE',
   WORK_COMPLETED = 'WORK_COMPLETED',
+  TICKET_CLOSED = 'TICKET_CLOSED',
 }
 
 export enum TicketPriority {
@@ -30,11 +31,6 @@ export enum TicketPriority {
   LOW = 'LOW',
   MEDIUM = 'MEDIUM',
   HIGH = 'HIGH',
-}
-
-export enum TicketWorkStatus {
-  WORK_INITIATED = 'WORK_INITIATED',
-  WORK_UPDATE = 'WORK_UPDATE',
 }
 // ENUM
 

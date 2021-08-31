@@ -115,25 +115,18 @@ class TicketActivityCard extends PureComponent<Props> {
       data,
     } = activity;
 
-    if (!data) return null;
-
-    const {
-      assignedTo: { firstName },
-      quoteRequestCategory,
-      quotes,
-      attachments,
-    } = data;
-
     const renderActivityData = (): React.ReactElement | null => {
       switch (code) {
         case TicketStatus.TICKET_REASSIGNED:
-          return this.renderActivityStatusBadge({ data: this.getActionContent(code, firstName) });
+          return this.renderActivityStatusBadge({
+            data: this.getActionContent(code, data?.assignedTo?.firstName ?? ''),
+          });
         case TicketStatus.QUOTE_SUBMITTED:
-          return <ActivityQuotesSubmitted quoteData={quoteRequestCategory} onQuotePress={onPressQuote} />;
+          return <ActivityQuotesSubmitted quoteData={data?.quoteRequestCategory ?? []} onQuotePress={onPressQuote} />;
         case TicketStatus.QUOTE_APPROVED:
-          return <ActivityQuotesApproved quoteData={quotes} description={comment} />;
+          return <ActivityQuotesApproved quoteData={data?.quotes ?? []} description={comment} />;
         case TicketStatus.WORK_COMPLETED:
-          return this.renderWorkCompleted(attachments);
+          return this.renderWorkCompleted(data?.attachments ?? []);
         case TicketStatus.TICKET_RAISED:
         case TicketStatus.QUOTE_REQUESTED:
         default:
@@ -194,7 +187,7 @@ class TicketActivityCard extends PureComponent<Props> {
             )}
           </View>
         )}
-        {this.renderActivityStatusBadge({ data: [t('ticketClosed')] })}
+        {this.renderActivityStatusBadge({ data: [t('ticketClosed'), t('submitReview')] })}
       </>
     );
   };
@@ -234,6 +227,10 @@ class TicketActivityCard extends PureComponent<Props> {
         return [t('ticketReassignedTo', { name }), t('awaitingAction', { name })];
       case TicketStatus.QUOTE_REQUESTED:
         return [t('awaitingQuotes')];
+      case TicketStatus.WORK_INITIATED:
+        return [t('awaitingCompletionProof')];
+      case TicketStatus.TICKET_CLOSED:
+        return [t('ticketClosed'), t('submitReview')];
       default:
         return [];
     }

@@ -14,8 +14,7 @@ import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { TicketWorkStatus } from '@homzhub/common/src/domain/models/Ticket';
-import { IUpdateTicketWorkStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUpdateTicketWorkStatus, TicketAction } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   containerStyle?: ViewStyle;
@@ -48,7 +47,7 @@ const UpdateTicketStatusForm = (props: IProps): ReactElement => {
         const { updateTitle, description } = values;
         toggleLoader(true);
         const requestBody: IUpdateTicketWorkStatus = {
-          action: TicketWorkStatus.WORK_UPDATE,
+          action: TicketAction.WORK_UPDATE,
           payload: {
             title: updateTitle,
             comment: description,

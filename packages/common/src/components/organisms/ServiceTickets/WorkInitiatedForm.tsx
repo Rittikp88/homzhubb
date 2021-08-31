@@ -11,8 +11,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { TicketWorkStatus } from '@homzhub/common/src/domain/models/Ticket';
-import { IUpdateTicketWorkStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IUpdateTicketWorkStatus, TicketAction } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   containerStyle?: ViewStyle;
@@ -35,7 +34,7 @@ const WorkInitiatedForm = (props: IProps): ReactElement => {
       if (selectedTicket) {
         toggleLoader(true);
         const requestBody: IUpdateTicketWorkStatus = {
-          action: TicketWorkStatus.WORK_INITIATED,
+          action: TicketAction.WORK_INITIATED,
           payload: {
             title: null,
             comment: comment.length > 0 ? comment : null,

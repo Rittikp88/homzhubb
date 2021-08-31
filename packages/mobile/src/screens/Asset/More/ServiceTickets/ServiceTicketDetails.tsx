@@ -280,18 +280,13 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     switch (status) {
       // Todo (Praharsh) : Update status handler when BE is done with changing ticket's status.
       case TicketStatus.OPEN:
+      case TicketStatus.TICKET_REASSIGNED:
         return {
           title: TakeActionTitle.REQUEST_QUOTE,
           onPress: (): void => navigation.navigate(ScreensKeys.RequestQuote),
           isDisabled: false,
         };
       case TicketStatus.QUOTE_REQUESTED:
-        return {
-          title: TakeActionTitle.REASSIGN_TICKET,
-          onPress: (): void => navigation.navigate(ScreensKeys.ReassignTicket),
-          isDisabled: !canReassignTicket,
-        };
-      case TicketStatus.TICKET_REASSIGNED:
         return {
           title: TakeActionTitle.SUBMIT_QUOTE,
           onPress: (): void => navigation.navigate(ScreensKeys.SubmitQuote),
@@ -304,12 +299,13 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           isDisabled: !canApproveQuote,
         };
       case TicketStatus.PAYMENT_DONE:
+      case TicketStatus.QUOTE_APPROVED:
         return {
           title: TakeActionTitle.WORK_INITIATED,
           onPress: (): void => navigation.navigate(ScreensKeys.WorkInitiated),
           isDisabled: !canUpdateWorkProgress,
         };
-      case TicketStatus.QUOTE_APPROVED:
+      case TicketStatus.WORK_INITIATED:
         return {
           title: TakeActionTitle.WORK_COMPLETED,
           onPress: (): void => navigation.navigate(ScreensKeys.WorkCompleted),
