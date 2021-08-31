@@ -9,10 +9,12 @@ import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import TicketActivityCard from '@homzhub/common/src/components/molecules/TicketActivity';
 import TicketDetailsCard from '@homzhub/common/src/components/molecules/TicketDetailsCard';
 import {
@@ -38,6 +40,7 @@ interface ITicketAction {
 interface IDispatchProps {
   getTicketDetail: (payload: number) => void;
   clearState: () => void;
+  sendTicketReminder: () => void;
 }
 
 interface IStateProps {
@@ -53,6 +56,7 @@ interface IScreenState {
   isActionSheet: boolean;
   selectedAction: string;
   hasClickedWorkDone: boolean;
+  showRemindSheet: boolean;
 }
 
 type NavProps = NavigationScreenProps<CommonParamList, ScreensKeys.ServiceTicketDetail>;
@@ -67,6 +71,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     isActionSheet: false,
     selectedAction: '',
     hasClickedWorkDone: false,
+    showRemindSheet: false,
   };
 
   public componentDidMount = (): void => {
@@ -80,12 +85,12 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   };
 
   public render = (): React.ReactNode => {
-    const { isActionSheet, selectedAction } = this.state;
+    const { isActionSheet, selectedAction, showRemindSheet } = this.state;
     const {
       t,
       ticketDetails,
       isLoading,
-      ticketLoader: { closeTicket },
+      ticketLoader: { closeTicket, ticketReminder },
     } = this.props;
 
     const actionList = this.getActionList();
@@ -95,7 +100,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         <UserScreen
           title={title}
           pageTitle={t('serviceTickets:ticketDetails')}
-          loading={isLoading || closeTicket}
+          loading={isLoading || closeTicket || ticketReminder}
           onBackPress={this.handleGoBack}
           contentContainerStyle={styles.userScreen}
         >
@@ -115,6 +120,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           onSelectItem={this.onSelectAction}
           onCloseDropDown={(): void => this.handleActionSheet(false)}
           isBottomSheetVisible={isActionSheet}
+          extraContent={showRemindSheet ? this.renderRemindSheet : undefined}
         />
       </HandleBack>
     );
@@ -203,6 +209,50 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     );
   };
 
+  private renderRemindSheet = (): React.ReactElement => {
+    const { t, sendTicketReminder } = this.props;
+    const { showRemindSheet } = this.state;
+
+    const onConfirmSendReminder = (): void => {
+      sendTicketReminder();
+      this.hideActionAndRemindSheets();
+    };
+
+    return (
+      <BottomSheet
+        visible={showRemindSheet}
+        sheetHeight={theme.viewport.height / 2.8}
+        onCloseSheet={this.hideRemindSheet}
+        headerTitle={t('serviceTickets:remindToPay')}
+        headerStyles={styles.remindHeader}
+      >
+        <View style={styles.remindSheetContent}>
+          <Text type="small" style={styles.remindConfirmationText}>
+            {t('serviceTickets:sendReminderConfirmation')}
+          </Text>
+
+          <View style={styles.remindInfoContainer}>
+            <Icon name={icons.roundFilled} size={5} color={theme.colors.darkTint3} />
+            <Label type="regular" textType="regular" style={styles.remindInfoText}>
+              {t('serviceTickets:onceIn12Hours')}
+            </Label>
+          </View>
+
+          <View style={styles.remindButtonsContainer}>
+            <Button
+              type="secondaryOutline"
+              title={t('cancel')}
+              titleStyle={styles.remindCancelTitle}
+              onPress={this.hideRemindSheet}
+              containerStyle={styles.remindCancelButton}
+            />
+            <Button type="primary" title={t('serviceTickets:remindNow')} onPress={onConfirmSendReminder} />
+          </View>
+        </View>
+      </BottomSheet>
+    );
+  };
+
   // HANDLERS START
 
   private onSelectAction = (value: string): void => {
@@ -217,6 +267,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         break;
       case TakeActionTitle.SUBMIT_QUOTE:
         navigation.navigate(ScreensKeys.SubmitQuote);
+        break;
+      case TakeActionTitle.REMIND_TO_APPROVE_AND_PAY:
+        this.showRemindSheet();
         break;
       case TakeActionTitle.APPROVE_QUOTE:
         navigation.navigate(ScreensKeys.ApproveQuote);
@@ -235,8 +288,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         navigation.navigate(ScreensKeys.WorkCompleted);
         break;
     }
-
-    this.handleActionSheet(false);
+    if (value !== TakeActionTitle.REMIND_TO_APPROVE_AND_PAY) {
+      this.handleActionSheet(false);
+    }
   };
 
   private onFullScreenToggleCompleted = (slideNumber: number): void => {
@@ -276,7 +330,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   /* Take action button logic */
   private getActionData = (status: string, actions: TicketAction): ITicketAction | null => {
     const { navigation } = this.props;
-    const { canApproveQuote, canCloseTicket, canSubmitQuote, canReassignTicket, canUpdateWorkProgress } = actions;
+    const { canApproveQuote, canCloseTicket, canSubmitQuote, canUpdateWorkProgress } = actions;
     switch (status) {
       // Todo (Praharsh) : Update status handler when BE is done with changing ticket's status.
       case TicketStatus.OPEN:
@@ -328,9 +382,11 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       canSubmitQuote,
       canReassignTicket,
       canUpdateWorkProgress,
+      isVendor,
     } = ticketDetails.actions;
     const {
       SUBMIT_QUOTE,
+      REMIND_TO_APPROVE_AND_PAY,
       WORK_COMPLETED,
       APPROVE_QUOTE,
       REASSIGN_TICKET,
@@ -352,6 +408,9 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     if (canSubmitQuote) {
       list.push({ label: SUBMIT_QUOTE, value: SUBMIT_QUOTE });
     }
+    if (isVendor) {
+      list.push({ label: REMIND_TO_APPROVE_AND_PAY, value: REMIND_TO_APPROVE_AND_PAY });
+    }
     if (canApproveQuote) {
       list.push({ label: APPROVE_QUOTE, value: APPROVE_QUOTE });
     }
@@ -368,6 +427,18 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     return list;
   };
 
+  private showRemindSheet = (): void => {
+    this.setState({ showRemindSheet: true });
+  };
+
+  private hideRemindSheet = (): void => {
+    this.setState({ showRemindSheet: false });
+  };
+
+  private hideActionAndRemindSheets = (): void => {
+    this.setState({ showRemindSheet: false, isActionSheet: false });
+  };
+
   // HANDLERS END
 }
 
@@ -382,11 +453,12 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTicketDetail, clearState } = TicketActions;
+  const { getTicketDetail, clearState, sendTicketReminder } = TicketActions;
   return bindActionCreators(
     {
       getTicketDetail,
       clearState,
+      sendTicketReminder,
     },
     dispatch
   );
@@ -418,5 +490,38 @@ const styles = StyleSheet.create({
   },
   userScreen: {
     paddingBottom: 0,
+  },
+  remindHeader: {
+    fontSize: 20,
+  },
+  remindSheetContent: {
+    paddingHorizontal: 16,
+    flex: 1,
+  },
+  remindConfirmationText: {
+    color: theme.colors.darkTint3,
+  },
+  remindInfoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  remindInfoText: {
+    color: theme.colors.darkTint3,
+    marginStart: 5,
+  },
+  remindButtonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 16,
+  },
+  remindCancelButton: {
+    borderWidth: 1,
+    borderColor: theme.colors.primaryColor,
+    marginEnd: 16,
+  },
+  remindCancelTitle: {
+    color: theme.colors.primaryColor,
   },
 });

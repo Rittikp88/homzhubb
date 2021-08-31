@@ -3,6 +3,7 @@ import { call, put, takeEvery, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { TicketActions, TicketActionTypes } from '@homzhub/common/src/modules/tickets/actions';
@@ -73,8 +74,23 @@ export function* closeTicket() {
   }
 }
 
+export function* sendTicketReminder() {
+  try {
+    const currentTicket: ICurrentTicket = yield select(TicketSelectors.getCurrentTicket);
+    // Todo (Praharsh) : Call actual API here
+    yield call(FunctionUtils.noopAsync);
+    yield put(TicketActions.handleTicketReminderSent());
+    yield put(TicketActions.getTicketDetail(currentTicket.ticketId));
+    AlertHelper.success({ message: I18nService.t('assetFinancial:reminderSuccessMsg') });
+  } catch (e) {
+    yield put(TicketActions.handleTicketReminderSent());
+    AlertHelper.error({ message: e.details.message, statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchTicket() {
   yield takeLatest(TicketActionTypes.GET.TICKETS, getUserTickets);
   yield takeEvery(TicketActionTypes.GET.TICKET_DETAIL, getTicketDetails);
   yield takeEvery(TicketActionTypes.CLOSE_TICKET, closeTicket);
+  yield takeEvery(TicketActionTypes.SEND_TICKET_REMINDER, sendTicketReminder);
 }

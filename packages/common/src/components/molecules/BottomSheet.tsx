@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, View, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -17,6 +17,7 @@ export interface IBottomSheetProps {
   isCloseOnDrag?: boolean;
   isAlwaysVisible?: boolean;
   sheetContainerStyle?: StyleProp<ViewStyle>;
+  headerStyles?: StyleProp<ViewStyle | TextStyle>;
 }
 
 export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
@@ -32,6 +33,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
     renderHeader = true,
     isCloseOnDrag = true,
     isAlwaysVisible = false,
+    headerStyles,
   } = props;
 
   useEffect(() => {
@@ -62,7 +64,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
         {!isAlwaysVisible && (
           <Icon name={icons.close} size={22} color={theme.colors.darkTint3} onPress={onCloseBottomSheet} />
         )}
-        <Label type="large" textType="semiBold" style={styles.headerTitle}>
+        <Label type="large" textType="semiBold" style={[styles.headerTitle, headerStyles]}>
           {headerTitle}
         </Label>
       </View>

@@ -20,6 +20,7 @@ interface IProps<T> {
   numColumns?: number;
   showDivider?: boolean;
   hasFullySpannedItems?: boolean;
+  extraContent?: () => React.ReactElement;
 }
 
 const LIST_HEIGHT = theme.viewport.height <= theme.DeviceDimensions.SMALL.height ? 450 : 700;
@@ -33,6 +34,7 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
       data,
       listHeight = LIST_HEIGHT,
       numColumns = 1,
+      extraContent,
     } = this.props;
     return (
       <BottomSheet
@@ -42,14 +44,17 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
         visible={isBottomSheetVisible}
         onCloseSheet={onCloseDropDown}
       >
-        <FlatList
-          data={data}
-          renderItem={this.renderSheetItem}
-          keyExtractor={this.renderKeyExtractor}
-          extraData={selectedValue}
-          numColumns={numColumns}
-          ItemSeparatorComponent={this.itemSeparator}
-        />
+        <>
+          {extraContent && extraContent()}
+          <FlatList
+            data={data}
+            renderItem={this.renderSheetItem}
+            keyExtractor={this.renderKeyExtractor}
+            extraData={selectedValue}
+            numColumns={numColumns}
+            ItemSeparatorComponent={this.itemSeparator}
+          />
+        </>
       </BottomSheet>
     );
   }

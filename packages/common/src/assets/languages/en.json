@@ -1361,7 +1361,12 @@
     "makePaymentForQuote": "Make payment for your approved quotes using your preferred payment method",
     "quoteInfo": "The above quotes are shown inclusive of all the taxes and relevant information",
     "payLater": "Pay Later",
-    "quotePayment": "Quote Payment"
+    "quotePayment": "Quote Payment",
+    "remindToPay": "Remind to pay",
+    "sendReminderConfirmation": "Are you sure, you want to send a reminder ?",
+    "onceIn12Hours": "Can be sent once in every 12 hours.",
+    "remindToApproveAndPay": "Remind to Approve & Pay",
+    "remindNow": "Remind now"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

@@ -14,6 +14,7 @@ export const initialTicketState: ITicketState = {
     tickets: false,
     ticketDetail: false,
     closeTicket: false,
+    ticketReminder: false,
   },
 };
 
@@ -82,6 +83,16 @@ export const ticketReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['closeTicket']: false },
+      };
+    case TicketActionTypes.SEND_TICKET_REMINDER:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['ticketReminder']: true },
+      };
+    case TicketActionTypes.HANDLE_TICKET_REMINDER_SENT:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['ticketReminder']: false },
       };
     case TicketActionTypes.CLEAR_STATE:
       return {

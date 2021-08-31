@@ -11,6 +11,7 @@ export interface ITicketState {
     tickets: boolean;
     ticketDetail: boolean;
     closeTicket: boolean;
+    ticketReminder: boolean;
   };
 }
 

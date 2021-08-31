@@ -23,6 +23,8 @@ export const TicketActionTypes = {
   CLOSE_TICKET_SUCCESS: `${actionTypePrefix}CLOSE_TICKET_SUCCESS`,
   CLOSE_TICKET_FAILURE: `${actionTypePrefix}CLOSE_TICKET_FAILURE`,
   REMOVE_ATTACHMENT: `${actionTypePrefix}REMOVE_ATTACHMENT`,
+  SEND_TICKET_REMINDER: `${actionTypePrefix}SEND_TICKET_REMINDER`,
+  HANDLE_TICKET_REMINDER_SENT: `${actionTypePrefix}HANDLE_TICKET_REMINDER_SENT`,
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
 };
 
@@ -85,6 +87,14 @@ const closeTicketFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.CLOSE_TICKET_FAILURE,
 });
 
+const sendTicketReminder = (): IFluxStandardAction => ({
+  type: TicketActionTypes.SEND_TICKET_REMINDER,
+});
+
+const handleTicketReminderSent = (): IFluxStandardAction => ({
+  type: TicketActionTypes.HANDLE_TICKET_REMINDER_SENT,
+});
+
 export type TicketActionPayloadTypes =
   | string[]
   | string
@@ -109,4 +119,6 @@ export const TicketActions = {
   closeTicket,
   closeTicketSuccess,
   closeTicketFailure,
+  sendTicketReminder,
+  handleTicketReminderSent,
 };

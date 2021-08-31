@@ -16,6 +16,10 @@ export class TicketAction {
   @JsonProperty('can_update_work_progress', Boolean, true)
   private _canUpdateWorkProgress = true;
 
+  // Todo (Praharsh) : Check with BE and change if needed.
+  @JsonProperty('is_vendor', Boolean, true)
+  private _isVendor = true;
+
   @JsonProperty('can_close_ticket', Boolean)
   private _canCloseTicket = false;
 
@@ -37,5 +41,9 @@ export class TicketAction {
 
   get canCloseTicket(): boolean {
     return this._canCloseTicket;
+  }
+
+  get isVendor(): boolean {
+    return this._isVendor;
   }
 }
