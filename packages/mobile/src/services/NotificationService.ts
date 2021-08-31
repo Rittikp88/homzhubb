@@ -291,6 +291,10 @@ class NotificationService {
               ticketId: Number(object_id),
             })
           );
+          if (currentScreen === ScreensKeys.ServiceTicketDetail) {
+            store.dispatch(TicketActions.getTicketDetail(Number(object_id)));
+            return;
+          }
 
           NavigationService.notificationNavigation(screenName, params, navigationTab);
         }
