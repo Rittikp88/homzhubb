@@ -7,13 +7,15 @@ import * as yup from 'yup';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
+import { TicketWorkStatus } from '@homzhub/common/src/domain/models/Ticket';
+import { IUpdateTicketWorkStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   containerStyle?: ViewStyle;
@@ -42,14 +44,23 @@ const UpdateTicketStatusForm = (props: IProps): ReactElement => {
 
   const onFormSubmit = async (values: IUpdateTicketForm): Promise<void> => {
     try {
-      toggleLoader(true);
-      // Todo (Praharsh) : Call API here
-      await FunctionUtils.noopAsync(selectedTicket?.ticketId);
-      toggleLoader(false);
-      if (onSubmit) {
-        onSubmit();
+      if (selectedTicket) {
+        const { updateTitle, description } = values;
+        toggleLoader(true);
+        const requestBody: IUpdateTicketWorkStatus = {
+          action: TicketWorkStatus.WORK_UPDATE,
+          payload: {
+            title: updateTitle,
+            comment: description,
+          },
+        };
+        await TicketRepository.updateWorkStatus(selectedTicket.ticketId, requestBody);
+        toggleLoader(false);
+        if (onSubmit) {
+          onSubmit();
+        }
+        AlertHelper.success({ message: t('updateSentSuccess') });
       }
-      AlertHelper.success({ message: t('updateSentSuccess') });
     } catch (e) {
       toggleLoader(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details.message), statusCode: e.details.statusCode });
@@ -90,6 +101,7 @@ const UpdateTicketStatusForm = (props: IProps): ReactElement => {
                 placeholderTextColor={theme.colors.darkTint8}
                 style={styles.textArea}
                 multiline
+                maxLength={450}
               />
               <FormButton
                 // @ts-ignore
