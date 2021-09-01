@@ -149,6 +149,7 @@ export enum ScreensKeys {
   WorkInitiated = 'WorkInitiated',
   UpdateTicketStatus = 'UpdateTicketStatus',
   QuotePayment = 'QuotePayment',
+  RejectTicket = 'RejectTicket',
 
   // Offers
   ProspectProfile = 'ProspectProfile',

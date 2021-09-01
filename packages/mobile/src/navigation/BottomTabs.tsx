@@ -201,11 +201,13 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.GroupChatInfo,
     ScreensKeys.ServiceTicketDetail,
     ScreensKeys.AddServiceTicket,
+    ScreensKeys.ReassignTicket,
     ScreensKeys.SubmitQuote,
     ScreensKeys.ApproveQuote,
     ScreensKeys.WorkCompleted,
     ScreensKeys.WorkInitiated,
     ScreensKeys.UpdateTicketStatus,
+    ScreensKeys.RejectTicket,
     ScreensKeys.ProspectProfile,
     ScreensKeys.SubmitOffer,
     ScreensKeys.AcceptOffer,
@@ -232,7 +234,6 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreensKeys.AddBankAccount,
     ScreensKeys.TransactionsScreen,
     ScreensKeys.BankDetails,
-    ScreensKeys.ReassignTicket,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreensKeys);
 };

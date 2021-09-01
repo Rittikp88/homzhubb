@@ -99,7 +99,7 @@ class TicketRepository {
     return await this.apiClient.post(ENDPOINTS.quoteRequest(ticketId), payload);
   };
 
-  public updateWorkStatus = async (ticketId: number, payload: IUpdateTicketWorkStatus): Promise<void> => {
+  public updateTicketStatusById = async (ticketId: number, payload: IUpdateTicketWorkStatus): Promise<void> => {
     return await this.apiClient.patch(ENDPOINTS.ticketById(ticketId), payload);
   };
 }

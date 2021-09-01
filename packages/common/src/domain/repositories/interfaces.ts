@@ -117,6 +117,7 @@ export enum TicketAction {
   CLOSE_TICKET = 'CLOSE_TICKET',
   WORK_INITIATED = 'WORK_INITIATED',
   WORK_UPDATE = 'WORK_UPDATE',
+  REJECT_TICKET = 'REJECT_TICKET',
 }
 
 export enum PurchaseTypes {

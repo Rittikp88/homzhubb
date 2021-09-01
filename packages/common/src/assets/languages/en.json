@@ -1368,7 +1368,11 @@
     "sendReminderConfirmation": "Are you sure, you want to send a reminder ?",
     "onceIn12Hours": "Can be sent once in every 12 hours.",
     "remindToApproveAndPay": "Remind to Approve & Pay",
-    "remindNow": "Remind now"
+    "remindNow": "Remind now",
+    "rejectTicketInfoText": "The ticket will be closed as soon as you reject the ticket. Please add a reason for it below.",
+    "rejectReason": "Reject Reason",
+    "rejectRequest": "Reject Request",
+    "rejectRequestSuccess": "Request rejected and closed successfully"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

@@ -265,11 +265,15 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       case TakeActionTitle.REASSIGN_TICKET:
         navigation.navigate(ScreensKeys.ReassignTicket);
         break;
+      case TakeActionTitle.REJECT_TICKET:
+        navigation.navigate(ScreensKeys.RejectTicket);
+        break;
       case TakeActionTitle.SUBMIT_QUOTE:
         navigation.navigate(ScreensKeys.SubmitQuote);
         break;
       case TakeActionTitle.REMIND_TO_APPROVE_AND_PAY:
-        this.showRemindSheet();
+        // Todo (Praharsh) : Update handler here to this.showRemindSheet() when reminder story is picked
+        this.handleActionSheet(false);
         break;
       case TakeActionTitle.APPROVE_QUOTE:
         navigation.navigate(ScreensKeys.ApproveQuote);
@@ -376,11 +380,16 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private getActionList = (): PickerItemProps[] => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return [];
-    const { canCloseTicket, canApproveQuote, canSubmitQuote, canReassignTicket, canUpdateWorkProgress, isVendor } =
-      ticketDetails.actions;
+    const {
+      canCloseTicket,
+      canRejectTicket,
+      canApproveQuote,
+      canSubmitQuote,
+      canReassignTicket,
+      canUpdateWorkProgress,
+    } = ticketDetails.actions;
     const {
       SUBMIT_QUOTE,
-      REMIND_TO_APPROVE_AND_PAY,
       WORK_COMPLETED,
       APPROVE_QUOTE,
       REASSIGN_TICKET,
@@ -388,6 +397,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       UPDATE_STATUS,
       QUOTE_PAYMENT,
       REQUEST_QUOTE,
+      REJECT_TICKET,
     } = TakeActionTitle;
 
     // TODO: (SHIKHA) - Add validation
@@ -399,12 +409,13 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     if (canReassignTicket) {
       list.push({ label: REASSIGN_TICKET, value: REASSIGN_TICKET });
     }
+    if (canRejectTicket) {
+      list.push({ label: REJECT_TICKET, value: REJECT_TICKET });
+    }
     if (canSubmitQuote) {
       list.push({ label: SUBMIT_QUOTE, value: SUBMIT_QUOTE });
     }
-    if (isVendor) {
-      list.push({ label: REMIND_TO_APPROVE_AND_PAY, value: REMIND_TO_APPROVE_AND_PAY });
-    }
+    // (Note : Praharsh) : Remind to Pay option here is removed. To be added once picked
     if (canApproveQuote) {
       list.push({ label: APPROVE_QUOTE, value: APPROVE_QUOTE });
     }

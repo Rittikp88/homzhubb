@@ -75,7 +75,7 @@ export function* closeTicket() {
       action: TicketAction.CLOSE_TICKET,
       payload: {},
     };
-    yield call(TicketRepository.updateWorkStatus, currentTicket.ticketId, requestBody);
+    yield call(TicketRepository.updateTicketStatusById, currentTicket.ticketId, requestBody);
     yield put(TicketActions.closeTicketSuccess());
     yield put(TicketActions.getTicketDetail(currentTicket.ticketId));
     AlertHelper.success({ message: I18nService.t('serviceTickets:closeTicketSuccess') });

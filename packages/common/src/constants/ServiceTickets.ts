@@ -27,6 +27,7 @@ export enum TicketStatusTitle {
 
 export enum TakeActionTitle {
   REASSIGN_TICKET = 'Reassign Request',
+  REJECT_TICKET = 'Reject Request',
   SUBMIT_QUOTE = 'Submit Quotes',
   REMIND_TO_APPROVE_AND_PAY = 'Remind to Approve and Pay',
   APPROVE_QUOTE = 'Approve Quotes',

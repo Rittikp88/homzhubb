@@ -20,6 +20,10 @@ export class TicketAction {
   @JsonProperty('is_vendor', Boolean, true)
   private _isVendor = true;
 
+  // Todo (Praharsh) : Check with BE and change if needed.
+  @JsonProperty('can_reject', Boolean, true)
+  private _canReject = true;
+
   @JsonProperty('can_close_ticket', Boolean)
   private _canCloseTicket = false;
 
@@ -45,5 +49,9 @@ export class TicketAction {
 
   get isVendor(): boolean {
     return this._isVendor;
+  }
+
+  get canRejectTicket(): boolean {
+    return this._canReject;
   }
 }

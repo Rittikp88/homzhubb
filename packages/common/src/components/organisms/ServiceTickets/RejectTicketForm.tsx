@@ -19,7 +19,7 @@ interface IProps {
   toggleLoader: (loading: boolean) => void;
 }
 
-const WorkInitiatedForm = (props: IProps): ReactElement => {
+const RejectTIcketForm = (props: IProps): ReactElement => {
   const { containerStyle, onSubmit, toggleLoader } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
@@ -34,10 +34,9 @@ const WorkInitiatedForm = (props: IProps): ReactElement => {
       if (selectedTicket) {
         toggleLoader(true);
         const requestBody: IUpdateTicketWorkStatus = {
-          action: TicketAction.WORK_INITIATED,
+          action: TicketAction.REJECT_TICKET,
           payload: {
-            title: null,
-            comment: comment.length > 0 ? comment : null,
+            comment: comment.length > 0 ? comment : undefined,
           },
         };
         await TicketRepository.updateTicketStatusById(selectedTicket.ticketId, requestBody);
@@ -45,7 +44,7 @@ const WorkInitiatedForm = (props: IProps): ReactElement => {
         if (onSubmit) {
           onSubmit();
         }
-        AlertHelper.success({ message: t('workInitiatedSuccess') });
+        AlertHelper.success({ message: t('rejectRequestSuccess') });
       }
     } catch (e) {
       toggleLoader(false);
@@ -58,10 +57,10 @@ const WorkInitiatedForm = (props: IProps): ReactElement => {
     <>
       <View style={[styles.container, containerStyle]}>
         <Text type="small" textType="semiBold">
-          {t('updateYourWorkProgress')}
+          {t('rejectReason')}
         </Text>
         <Label type="large" style={styles.description}>
-          {t('updateWorkProgressInfoText')}
+          {t('rejectTicketInfoText')}
         </Label>
 
         <TextArea
@@ -73,13 +72,13 @@ const WorkInitiatedForm = (props: IProps): ReactElement => {
           onMessageChange={setComment}
           containerStyle={styles.commentBox}
         />
-        <Button type="primary" title={t('common:submit')} onPress={onFormSubmit} />
+        <Button type="primary" title={t('common:reject')} onPress={onFormSubmit} />
       </View>
     </>
   );
 };
 
-export default React.memo(WorkInitiatedForm);
+export default React.memo(RejectTIcketForm);
 
 const styles = StyleSheet.create({
   container: {

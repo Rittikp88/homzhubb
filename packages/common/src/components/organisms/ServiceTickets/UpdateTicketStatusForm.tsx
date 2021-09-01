@@ -53,7 +53,7 @@ const UpdateTicketStatusForm = (props: IProps): ReactElement => {
             comment: description,
           },
         };
-        await TicketRepository.updateWorkStatus(selectedTicket.ticketId, requestBody);
+        await TicketRepository.updateTicketStatusById(selectedTicket.ticketId, requestBody);
         toggleLoader(false);
         if (onSubmit) {
           onSubmit();
