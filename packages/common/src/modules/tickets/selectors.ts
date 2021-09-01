@@ -1,4 +1,5 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
@@ -45,9 +46,19 @@ const getTicketDetailLoader = (state: IState): boolean => {
   } = state;
   return loaders.ticketDetail;
 };
+
 const getTicketLoaders = (state: IState): ITicketState['loaders'] => {
   return state.ticket.loaders;
 };
+
+const getInvoiceSummary = (state: IState): InvoiceSummary | null => {
+  const {
+    ticket: { invoiceSummary },
+  } = state;
+  if (!invoiceSummary) return null;
+  return ObjectMapper.deserialize(InvoiceSummary, invoiceSummary);
+};
+
 export const TicketSelectors = {
   getProofAttachment,
   getTickets,
@@ -56,4 +67,5 @@ export const TicketSelectors = {
   getTicketLoader,
   getTicketDetailLoader,
   getTicketLoaders,
+  getInvoiceSummary,
 };

@@ -837,8 +837,9 @@ export class Asset {
   }
 
   get formattedAddressWithProjectAndCity(): string {
-    return `${this.unitNumber},${this.blockNumber && ` ${this.blockNumber},`} ${this.projectName}${this.city && `, ${this.city}`
-      }`;
+    return `${this.unitNumber},${this.blockNumber && ` ${this.blockNumber},`} ${this.projectName}${
+      this.city && `, ${this.city}`
+    }`;
   }
 
   get valueAddedServices(): Service[] {

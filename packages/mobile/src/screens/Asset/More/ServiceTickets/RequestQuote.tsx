@@ -69,13 +69,13 @@ const RequestQuote = (): React.ReactElement => {
   return (
     <UserScreen
       title={selectedTicket?.propertyName ?? ''}
-      pageTitle={t('approveQuote')}
+      pageTitle={t('requestQuote')}
       onBackPress={goBack}
       keyboardShouldPersistTaps
     >
       <View style={styles.container}>
         <Text type="small" textType="semiBold">
-          {t('requestQuote')}
+          {t('requestForQuote')}
         </Text>
         <Label type="large" style={styles.description}>
           {t('requestDescription')}

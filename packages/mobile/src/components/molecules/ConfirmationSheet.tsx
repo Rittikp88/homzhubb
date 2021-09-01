@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -14,6 +14,7 @@ interface IProps {
   sheetHeight?: number;
   message?: string;
   buttonTitles?: string[];
+  primaryButtonStyle?: StyleProp<ViewStyle>;
 }
 
 const ConfirmationSheet = (props: IProps): React.ReactElement => {
@@ -26,6 +27,7 @@ const ConfirmationSheet = (props: IProps): React.ReactElement => {
     sheetHeight = theme.viewport.height / 3,
     message = t('property:deleteConfirmation'),
     buttonTitles = [t('common:cancel'), t('common:delete')],
+    primaryButtonStyle,
   } = props;
 
   return (
@@ -47,7 +49,8 @@ const ConfirmationSheet = (props: IProps): React.ReactElement => {
             title={buttonTitles[1]}
             titleStyle={styles.buttonTitle}
             onPress={onPressDelete}
-            containerStyle={styles.deleteButton}
+            // @ts-ignore
+            containerStyle={[styles.deleteButton, primaryButtonStyle]}
           />
         </View>
       </View>

@@ -128,6 +128,11 @@ export enum DuePaymentActions {
   PAYMENT_CANCELLED = 'PAYMENT_CANCELLED',
 }
 
+export enum InvoiceActions {
+  TICKET_ORDER_SUMMARY = 'TICKET_ORDER_SUMMARY',
+  TICKET_INVOICE = 'TICKET_INVOICE',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -1115,6 +1120,16 @@ export interface IBookVisitProps {
   isReschedule?: boolean;
   userId?: number;
 }
+
 export interface IPayloadWithAction {
   action: string;
+}
+
+export interface ISummaryPayload {
+  ticket: number;
+  quotes?: number[];
+}
+
+export interface IInvoiceSummaryPayload extends IPayloadWithAction {
+  payload: ISummaryPayload;
 }

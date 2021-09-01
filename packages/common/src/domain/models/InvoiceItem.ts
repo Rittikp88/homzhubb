@@ -1,5 +1,13 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export interface IInvoiceItem {
+  id: number;
+  item_name: string;
+  no_of_units: number;
+  unit_price: number;
+  pos_price: number;
+}
+
 @JsonObject('InvoiceItem')
 export class InvoiceItem {
   @JsonProperty('id', Number)

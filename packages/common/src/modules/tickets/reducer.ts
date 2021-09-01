@@ -1,5 +1,6 @@
 import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { TicketActionPayloadTypes, TicketActionTypes } from '@homzhub/common/src//modules/tickets/actions';
+import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
@@ -10,9 +11,11 @@ export const initialTicketState: ITicketState = {
   currentTicket: null,
   tickets: [],
   ticketDetail: null,
+  invoiceSummary: null,
   loaders: {
     tickets: false,
     ticketDetail: false,
+    invoiceSummary: false,
     closeTicket: false,
     ticketReminder: false,
   },
@@ -72,6 +75,22 @@ export const ticketReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['ticketDetail']: false },
+      };
+    case TicketActionTypes.POST.INVOICE_SUMMARY:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['invoiceSummary']: true },
+      };
+    case TicketActionTypes.POST.INVOICE_SUMMARY_SUCCESS:
+      return {
+        ...state,
+        ['invoiceSummary']: action.payload as IInvoiceSummary,
+        ['loaders']: { ...state.loaders, ['invoiceSummary']: false },
+      };
+    case TicketActionTypes.POST.INVOICE_SUMMARY_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['invoiceSummary']: false },
       };
     case TicketActionTypes.CLOSE_TICKET:
       return {

@@ -1,18 +1,21 @@
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { InvoiceId, InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IPaymentPayload,
   IOrderSummaryPayload,
   IPaymentParams,
+  IInvoiceSummaryPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   valueAddedServices: 'v1/value-added-services/payment/',
   valueAddedServicesPayment: 'v1/value-added-services/payment-response/',
-  initiateDuePayment: (invoiceId: number): string => `v1/invoices/${invoiceId}/razorpay-orders/`,
+  initiatePayment: (invoiceId: number): string => `v1/invoices/${invoiceId}/razorpay-orders/`,
   processPayment: 'v1/invoices/razorpay-payments/',
+  invoiceSummary: 'v1/invoices/summary/',
 };
 
 class PaymentRepository {
@@ -31,13 +34,23 @@ class PaymentRepository {
     return await this.apiClient.post(ENDPOINTS.valueAddedServicesPayment, paymentDetails);
   };
 
-  public initiateDuePayment = async (invoiceId: number): Promise<Payment> => {
-    const response = await this.apiClient.put(ENDPOINTS.initiateDuePayment(invoiceId));
+  public initiatePayment = async (invoiceId: number): Promise<Payment> => {
+    const response = await this.apiClient.put(ENDPOINTS.initiatePayment(invoiceId));
     return ObjectMapper.deserialize(Payment, response);
   };
 
   public processPayment = async (data: IPaymentPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.processPayment, data);
+  };
+
+  public getInvoiceSummary = async (data: IInvoiceSummaryPayload): Promise<InvoiceSummary> => {
+    const response = await this.apiClient.post(ENDPOINTS.invoiceSummary, data);
+    return ObjectMapper.deserialize(InvoiceSummary, response);
+  };
+
+  public ticketInvoice = async (data: IInvoiceSummaryPayload): Promise<InvoiceId> => {
+    const response = await this.apiClient.post(ENDPOINTS.invoiceSummary, data);
+    return ObjectMapper.deserialize(InvoiceId, response);
   };
 }
 

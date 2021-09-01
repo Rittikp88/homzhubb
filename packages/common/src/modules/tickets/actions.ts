@@ -1,7 +1,8 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { IInvoiceSummary, InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IGetTicketParam, IInvoiceSummaryPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
@@ -14,6 +15,11 @@ export const TicketActionTypes = {
     TICKET_DETAIL: `${actionTypePrefix}TICKET_DETAIL`,
     TICKET_DETAIL_SUCCESS: `${actionTypePrefix}TICKET_DETAIL_SUCCESS`,
     TICKET_DETAIL_FAILURE: `${actionTypePrefix}TICKET_DETAIL_FAILURE`,
+  },
+  POST: {
+    INVOICE_SUMMARY: `${actionTypePrefix}INVOICE_SUMMARY`,
+    INVOICE_SUMMARY_SUCCESS: `${actionTypePrefix}INVOICE_SUMMARY_SUCCESS`,
+    INVOICE_SUMMARY_FAILURE: `${actionTypePrefix}INVOICE_SUMMARY_FAILURE`,
   },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
@@ -75,6 +81,20 @@ const getTicketDetailFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.GET.TICKET_DETAIL_FAILURE,
 });
 
+const getInvoiceSummary = (payload: IInvoiceSummaryPayload): IFluxStandardAction<IInvoiceSummaryPayload> => ({
+  type: TicketActionTypes.POST.INVOICE_SUMMARY,
+  payload,
+});
+
+const getInvoiceSummarySuccess = (payload: InvoiceSummary): IFluxStandardAction<IInvoiceSummary> => ({
+  type: TicketActionTypes.POST.INVOICE_SUMMARY_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getInvoiceSummaryFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.INVOICE_SUMMARY_FAILURE,
+});
+
 const closeTicket = (): IFluxStandardAction => ({
   type: TicketActionTypes.CLOSE_TICKET,
 });
@@ -103,7 +123,9 @@ export type TicketActionPayloadTypes =
   | ICurrentTicket
   | ITicket
   | IGetTicketParam
-  | IImageSource[];
+  | IImageSource[]
+  | IInvoiceSummaryPayload
+  | IInvoiceSummary;
 
 export const TicketActions = {
   setAttachment,
@@ -116,6 +138,9 @@ export const TicketActions = {
   getTicketDetailFailure,
   setCurrentTicket,
   getTicketsFailure,
+  getInvoiceSummary,
+  getInvoiceSummarySuccess,
+  getInvoiceSummaryFailure,
   closeTicket,
   closeTicketSuccess,
   closeTicketFailure,

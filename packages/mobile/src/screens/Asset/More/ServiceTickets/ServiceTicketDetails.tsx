@@ -376,14 +376,8 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private getActionList = (): PickerItemProps[] => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return [];
-    const {
-      canCloseTicket,
-      canApproveQuote,
-      canSubmitQuote,
-      canReassignTicket,
-      canUpdateWorkProgress,
-      isVendor,
-    } = ticketDetails.actions;
+    const { canCloseTicket, canApproveQuote, canSubmitQuote, canReassignTicket, canUpdateWorkProgress, isVendor } =
+      ticketDetails.actions;
     const {
       SUBMIT_QUOTE,
       REMIND_TO_APPROVE_AND_PAY,
