@@ -276,7 +276,11 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       <>
         <StatusBar statusBarBackground={theme.colors.white} barStyle="dark-content" />
         {!isFullScreen && this.renderHeader()}
-        <Animated.ScrollView scrollEventThrottle={16} onScroll={this.handleScrollAnimations}>
+        <Animated.ScrollView
+          scrollEventThrottle={16}
+          onScroll={this.handleScrollAnimations}
+          showsVerticalScrollIndicator={false}
+        >
           <Animated.View style={{ ...styles.carouselHeight, opacity: this.carouselOpacityAnimated }}>
             {this.renderCarousel()}
           </Animated.View>

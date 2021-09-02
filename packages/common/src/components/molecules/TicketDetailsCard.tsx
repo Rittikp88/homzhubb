@@ -6,12 +6,14 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import TicketReview from '@homzhub/common/src/components/organisms/ServiceTickets/TicketReview';
+import { Ticket, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { priorityColors } from '@homzhub/common/src/constants/ServiceTickets';
 
 interface IProps {
   ticketData: Ticket;
   ticketImages: React.ReactElement;
+  renderRatingForm: (children: React.ReactElement, onClose: () => void) => React.ReactElement;
 }
 
 interface ITicketDetails {
@@ -21,7 +23,7 @@ interface ITicketDetails {
 
 const TicketDetailsCard = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { ticketData, ticketImages } = props;
+  const { ticketData, ticketImages, renderRatingForm } = props;
   const { createdAt, updatedAt, status, ticketNumber, priority, title } = ticketData;
 
   const translatedValue = (value: string, root = 'serviceTickets'): string => t(`${root}:${value}`);
@@ -71,7 +73,6 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
         <Label textType="regular" type="small" style={styles.label}>
           {type}
         </Label>
-
         <Label textType="semiBold" type="regular" style={styles.label}>
           {value}
         </Label>
@@ -91,6 +92,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
           contentContainerStyle={styles.flatList}
           ItemSeparatorComponent={DetailSeparator}
           showsVerticalScrollIndicator={false}
+          scrollEnabled={false}
         />
       );
     },
@@ -111,7 +113,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
           {title}
         </Text>
         <RenderDetails />
-        {/* Todo (Praharsh) : Add Submit Review button here when that story is picked up */}
+        {status === TicketStatus.CLOSED && <TicketReview ticketData={ticketData} renderRatingForm={renderRatingForm} />}
       </View>
     </>
   );

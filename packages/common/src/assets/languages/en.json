@@ -310,7 +310,8 @@
     "others": "Others",
     "roundedOff": "rounded off",
     "featureInIndiaOnly": "Feature available only for India currently",
-    "close": "Close"
+    "close": "Close",
+    "writReview": "Write a review"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1369,6 +1370,7 @@
     "onceIn12Hours": "Can be sent once in every 12 hours.",
     "remindToApproveAndPay": "Remind to Approve & Pay",
     "remindNow": "Remind now",
+    "ticketReview": "Ticket Review & Rating",
     "rejectTicketInfoText": "The ticket will be closed as soon as you reject the ticket. Please add a reason for it below.",
     "rejectReason": "Reject Reason",
     "rejectRequest": "Reject Request",

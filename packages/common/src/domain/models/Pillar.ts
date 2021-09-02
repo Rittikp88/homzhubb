@@ -9,7 +9,9 @@ export interface IPillar {
 
 export enum PillarTypes {
   LISTING_REVIEW = 'LISTING_REVIEW',
+  SERVICE_TICKET_REVIEW = 'SERVICE_TICKET_REVIEW',
 }
+
 @JsonObject('PillarName')
 export class PillarName {
   @JsonProperty('id', Number)

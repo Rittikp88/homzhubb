@@ -308,13 +308,13 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
   };
 
   private getReview = (id: number): void => {
-    try {
-      AssetRepository.getReview(id).then((response) => {
+    AssetRepository.getReview(id)
+      .then((response) => {
         this.setState({ reviewData: response });
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       });
-    } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-    }
   };
 
   private openReviewForm = (): void => {

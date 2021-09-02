@@ -4,18 +4,13 @@ import { useTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
-import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import EditableTextArea from '@homzhub/common/src/components/molecules/EditableTextArea';
 import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
-import {
-  ExperienceType,
-  IExperienceData,
-  initialExperienceData,
-  TicketStatusTitle,
-} from '@homzhub/common/src/constants/ServiceTickets';
+import { ExperienceType, TicketStatusTitle } from '@homzhub/common/src/constants/ServiceTickets';
 
 interface IDataType {
   [key: string]: string;
@@ -27,19 +22,6 @@ interface IProps {
   isFromMore?: boolean;
   onSubmitReview: () => void;
 }
-
-const getIconColor = (type: ExperienceType): string => {
-  switch (type) {
-    case ExperienceType.SATISFIED:
-      return theme.colors.green;
-    case ExperienceType.NEUTRAL:
-      return theme.colors.mediumPriority;
-    case ExperienceType.UNSATISFIED:
-      return theme.colors.error;
-    default:
-      return theme.colors.darkTint9;
-  }
-};
 
 /* Get color for status  */
 const getStatusColor = (type: string): string => {
@@ -83,31 +65,10 @@ const cardColor = (type: string): string => {
 const keyValue = (key: string, data: IDataType): string => {
   if (key === 'helpAndSupport:status') {
     const status = data[key] as TicketStatus;
+    // @ts-ignore
     return TicketStatusTitle[status];
   }
   return data[key];
-};
-
-const setEmojiColor = (
-  experienceType: ExperienceType | string,
-  experienceData: IExperienceData[],
-  callback?: (selectedExperience: IExperienceData) => void
-): IExperienceData[] => {
-  let updatedExperienceData = experienceData;
-
-  if (experienceType) {
-    updatedExperienceData = experienceData.map((item, index) => {
-      if (item.type === experienceType) {
-        if (callback) {
-          callback(item);
-        }
-        return { ...item, color: getIconColor(experienceType) };
-      }
-      return initialExperienceData[index];
-    });
-  }
-
-  return updatedExperienceData;
 };
 
 export const TicketCard = (props: IProps): React.ReactElement => {
@@ -127,7 +88,6 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   // HOOKS START
 
   const { t } = useTranslation();
-  const [experienceData, setExperienceData] = useState(setEmojiColor(experienceType, initialExperienceData));
   const [ticketInfo, setTicketInfo] = useState({
     experience: experienceType,
     showComment: !!description,
@@ -155,26 +115,19 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   // HANDLERS START
 
-  const handleExperience = (type: ExperienceType): void => {
-    setExperienceData(
-      setEmojiColor(type, experienceData, (selectedExperience: IExperienceData) =>
-        setTicketInfo((prevState) => ({
-          ...prevState,
-          showComment: true,
-          experience: type,
-          rating: selectedExperience.rating,
-        }))
-      )
-    );
+  const handleExperience = (value: number): void => {
+    const experience =
+      value < 3 ? ExperienceType.UNSATISFIED : value < 5 ? ExperienceType.NEUTRAL : ExperienceType.SATISFIED;
+    setTicketInfo((prevState) => ({
+      ...prevState,
+      showComment: true,
+      experience,
+      rating: value,
+    }));
   };
 
   const clearExperience = (): void => {
-    const updatedData = experienceData.map((item, index) => {
-      setTicketInfo((prevState) => ({ ...prevState, experience: '', rating: -1 }));
-      return initialExperienceData[index];
-    });
-    setTicketInfo((prevState) => ({ ...prevState, showComment: false, comment: '' }));
-    setExperienceData(updatedData);
+    setTicketInfo((prevState) => ({ ...prevState, showComment: false, comment: '', experience: '', rating: -1 }));
   };
 
   const onChangeComment = (value: string): void => {
@@ -210,20 +163,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
         <Label type="large">{t('common:experience')}</Label>
         <View style={styles.iconView}>
           <>
-            <View style={styles.row}>
-              {experienceData.map((item, index) => {
-                return (
-                  <Icon
-                    key={index}
-                    name={item.icon}
-                    color={item.color}
-                    size={28}
-                    style={styles.iconPadding}
-                    onPress={isReviewed ? FunctionUtils.noop : (): void => handleExperience(item.type)}
-                  />
-                );
-              })}
-            </View>
+            <Rating value={ticketInfo.rating} onChange={isReviewed ? FunctionUtils.noop : handleExperience} />
             <Label type="large" textType="semiBold">
               {experience}
             </Label>
@@ -245,8 +185,8 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   };
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onCardPress}>
-      <View style={styles.row}>
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.row} onPress={onCardPress}>
         <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
         <View>
           <View style={styles.titleView}>
@@ -272,9 +212,9 @@ export const TicketCard = (props: IProps): React.ReactElement => {
             ))}
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
       {isClosed && renderIconView()}
-    </TouchableOpacity>
+    </View>
   );
 };
 

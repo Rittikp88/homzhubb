@@ -74,7 +74,7 @@ class LinkingService {
   public buildShortLink = async (type: DynamicLinkTypes, extraParams?: string): Promise<string> => {
     return await firebase.dynamicLinks().buildShortLink(
       {
-        link: `https://homzhub.com?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
+        link: `https://www.homzhub.com?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
         android: {
           packageName: 'com.homzhub',
         },

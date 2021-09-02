@@ -129,7 +129,13 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private renderDetailsCard = (): React.ReactElement | null => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return null;
-    return <TicketDetailsCard ticketData={ticketDetails} ticketImages={this.renderCarousel(ticketDetails)} />;
+    return (
+      <TicketDetailsCard
+        ticketData={ticketDetails}
+        ticketImages={this.renderCarousel(ticketDetails)}
+        renderRatingForm={this.renderRatingSheet}
+      />
+    );
   };
 
   private renderCarousel = (detail: Ticket): React.ReactElement => {
@@ -249,6 +255,15 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
             <Button type="primary" title={t('serviceTickets:remindNow')} onPress={onConfirmSendReminder} />
           </View>
         </View>
+      </BottomSheet>
+    );
+  };
+
+  private renderRatingSheet = (children: React.ReactElement, onClose: () => void): React.ReactElement => {
+    const { t } = this.props;
+    return (
+      <BottomSheet visible headerTitle={t('serviceTickets:ticketReview')} sheetHeight={600} onCloseSheet={onClose}>
+        {children}
       </BottomSheet>
     );
   };
