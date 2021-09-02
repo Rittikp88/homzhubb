@@ -114,12 +114,12 @@ export class PropertyVisits extends React.Component<Props, IScreenState> {
         ) : (
           <SiteVisitTab
             onReschedule={this.rescheduleVisit}
-            selectedAssetId={selectedAssetId}
-            navigation={navigation}
-            reviewVisitId={params && params.reviewVisitId}
-            visitId={params && params.visitId ? params.visitId : null}
             setVisitPayload={this.setVisitPayload}
-            isFromProperty={params?.isFromPortfolio}
+            navigation={navigation}
+            reviewVisitId={params && params.reviewVisitId} // When Navigated from Notifications
+            visitId={params && params.visitId ? params.visitId : null} // When Navigated from Notifications
+            selectedAssetId={selectedAssetId} // When Navigated from Portfolio View
+            isFromProperty={params?.isFromPortfolio} // When Navigated from Portfolio View
           />
         )}
       </>

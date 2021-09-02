@@ -11,7 +11,7 @@ import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
-import VisitCard from '@homzhub/mobile/src/components/molecules/VisitCard';
+import VisitCard from '@homzhub/common/src/components/molecules/VisitCard';
 import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import {

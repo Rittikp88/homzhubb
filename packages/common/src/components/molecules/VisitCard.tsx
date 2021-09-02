@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { AddressWithVisitDetail } from '@homzhub/mobile/src/components/molecules/AddressWithVisitDetail';
+import { AddressWithVisitDetail } from '@homzhub/common/src/components/molecules/AddressWithVisitDetail';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { AssetVisit, IVisitActions, RoleType, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
@@ -33,6 +34,7 @@ interface IProps {
   handleConfirmation?: (param: IVisitActionParam) => void;
   handleAction: (param: IVisitActionParam) => void;
   navigateToAssetDetails: (listingId: number, assetId: number, isValidVisit: boolean) => void;
+  mainContainerStyles?: StyleProp<ViewStyle>;
 }
 
 const VisitCard = (props: IProps): React.ReactElement => {
@@ -66,6 +68,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
     navigateToAssetDetails,
     isFromVisitScreen = true,
     isRightIcon = true,
+    mainContainerStyles,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const [isCancelSheet, setCancelSheet] = useState(false);
@@ -211,7 +214,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
     return (
       <>
         <Divider containerStyles={styles.dividerStyle} />
-        <View style={isSmallerView ? styles.buttonSmallerView : styles.buttonView}>
+        <View style={[isSmallerView ? styles.buttonSmallerView : styles.buttonView]}>
           {actions?.length < 2 && (
             <Button
               type="secondary"
@@ -219,7 +222,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
               iconColor={visitStatus?.color}
               iconSize={20}
               title={visitStatus?.title}
-              containerStyle={styles.statusView}
+              containerStyle={[styles.statusView, !PlatformUtils.isWeb() && { flex: 0 }]}
               titleStyle={[styles.statusTitle, { color: visitStatus?.color }]}
               maxLength={18}
             />
@@ -254,7 +257,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
     return (
       <>
         <Divider containerStyles={styles.dividerStyle} />
-        {/* eslint-disable-next-line react-native/no-inline-styles */}
+        {/* // eslint-disable-next-line react-native/no-inline-styles */}
         <View style={[styles.buttonContainer, { flexDirection: !review ? 'row' : 'column' }]}>
           {!review ? (
             <TouchableOpacity style={styles.writeReviewButton} onPress={onPress}>
@@ -300,8 +303,8 @@ const VisitCard = (props: IProps): React.ReactElement => {
 
   return (
     <>
-      <View style={isFromVisitScreen && styles.mainContainer}>
-        <View style={containerStyle}>
+      <View style={[isFromVisitScreen && styles.mainContainer, mainContainerStyles]}>
+        <View style={[containerStyle]}>
           {!isUserView && (
             <Avatar
               fullName={user.name}
@@ -330,8 +333,8 @@ const VisitCard = (props: IProps): React.ReactElement => {
           {userVisitStatus === Tabs.COMPLETED && renderCompletedButtons()}
         </View>
       </View>
-      {renderCancelConfirmation()}
-    </>
+      {!PlatformUtils.isWeb() && renderCancelConfirmation()}
+    </> // Popover for Cancel Visit
   );
 };
 
@@ -368,7 +371,6 @@ const styles = StyleSheet.create({
   },
   statusView: {
     borderWidth: 0,
-    flex: 0,
     flexDirection: 'row-reverse',
     backgroundColor: theme.colors.transparent,
   },

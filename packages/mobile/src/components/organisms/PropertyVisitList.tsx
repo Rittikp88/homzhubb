@@ -16,7 +16,7 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { AssetReviewCard } from '@homzhub/mobile/src/components/molecules/AssetReviewCard';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import { ReviewForm } from '@homzhub/mobile/src/components/molecules/ReviewForm';
-import VisitCard from '@homzhub/mobile/src/components/molecules/VisitCard';
+import VisitCard from '@homzhub/common/src/components/molecules/VisitCard';
 import { AssetVisit, IVisitByKey } from '@homzhub/common/src/domain/models/AssetVisit';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
@@ -31,16 +31,16 @@ type NavigationType =
   | StackNavigationProp<PortfolioNavigatorParamList, ScreensKeys.PropertyDetailScreen>;
 
 interface IProps {
-  visitType?: Tabs;
   visitData: IVisitByKey[];
+  handleAction: (param: IVisitActionParam) => void;
+  visitType?: Tabs;
   dropdownData?: PickerItemProps[];
   isLoading?: boolean;
   isFromProperty?: boolean;
   dropdownValue?: number;
   isUserView?: boolean;
-  handleAction: (param: IVisitActionParam) => void;
   handleUserView?: (id: number) => void;
-  handleConfirmation?: (param: IVisitActionParam) => void;
+  handleConfirmation?: (param: IVisitActionParam) => void; // Prop from EventWithProfile Bottomsheet
   handleReschedule: (asset: AssetVisit, userId?: number) => void;
   handleDropdown?: (value: string | number, visitType: Tabs) => void;
   containerStyle?: StyleProp<ViewStyle>;
