@@ -1374,7 +1374,9 @@
     "rejectTicketInfoText": "The ticket will be closed as soon as you reject the ticket. Please add a reason for it below.",
     "rejectReason": "Reject Reason",
     "rejectRequest": "Reject Request",
-    "rejectRequestSuccess": "Request rejected and closed successfully"
+    "rejectRequestSuccess": "Request rejected and closed successfully",
+    "reviewSuccess": "Request reviewed successfully",
+    "reviewUpdateSuccess": "Request review updated successfully"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

@@ -121,6 +121,7 @@ exports[`Markdown View should render snapshot with assetDetails 1`] = `
   <ForwardRef(AnimatedComponentWrapper)
     onScroll={[Function]}
     scrollEventThrottle={16}
+    showsVerticalScrollIndicator={false}
   >
     <View
       style={

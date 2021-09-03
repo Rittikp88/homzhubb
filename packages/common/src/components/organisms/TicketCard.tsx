@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
-import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import EditableTextArea from '@homzhub/common/src/components/molecules/EditableTextArea';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import TicketReview from '@homzhub/common/src/components/organisms/ServiceTickets/TicketReview';
 import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
-import { ExperienceType, TicketStatusTitle } from '@homzhub/common/src/constants/ServiceTickets';
+import { TicketStatusTitle } from '@homzhub/common/src/constants/ServiceTickets';
 
 interface IDataType {
   [key: string]: string;
@@ -80,22 +78,10 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     status,
     closedAt,
     closedBy,
-    id,
-    review: { rating, description },
-    experienceType,
     asset: { formattedAddressWithProjectAndCity },
   } = cardData;
-  // HOOKS START
 
   const { t } = useTranslation();
-  const [ticketInfo, setTicketInfo] = useState({
-    experience: experienceType,
-    showComment: !!description,
-    comment: description,
-    rating,
-  });
-
-  // HOOKS END
 
   const isClosed = status === TicketStatus.CLOSED;
 
@@ -115,78 +101,32 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   // HANDLERS START
 
-  const handleExperience = (value: number): void => {
-    const experience =
-      value < 3 ? ExperienceType.UNSATISFIED : value < 5 ? ExperienceType.NEUTRAL : ExperienceType.SATISFIED;
-    setTicketInfo((prevState) => ({
-      ...prevState,
-      showComment: true,
-      experience,
-      rating: value,
-    }));
-  };
-
-  const clearExperience = (): void => {
-    setTicketInfo((prevState) => ({ ...prevState, showComment: false, comment: '', experience: '', rating: -1 }));
-  };
-
-  const onChangeComment = (value: string): void => {
-    setTicketInfo((prevState) => ({ ...prevState, comment: value }));
-  };
-
-  const submitReview = (): void => {
-    const { rating: ticketRating, comment } = ticketInfo;
-
-    const payload = {
-      param: { ticketId: id },
-      data: { rating: ticketRating, description: comment },
-    };
-
-    TicketRepository.reviewSubmit(payload).then();
-    onSubmitReview();
-    clearExperience();
-  };
-
   const onColorChange = (value: string): TextStyle => {
     const color = getStatusColor(value);
     return { ...styles.detail, color };
   };
   // HANDLERS END
 
-  const { experience, showComment, comment } = ticketInfo;
+  const renderRatingSheet = (children: React.ReactElement, onClose: () => void): React.ReactElement => {
+    return (
+      <BottomSheet visible headerTitle={t('serviceTickets:ticketReview')} sheetHeight={600} onCloseSheet={onClose}>
+        {children}
+      </BottomSheet>
+    );
+  };
 
-  const renderIconView = (): React.ReactElement => {
-    const isReviewed = rating > 0;
+  const renderRatingView = (): React.ReactElement => {
     return (
       <View style={styles.experienceContent}>
         <Divider containerStyles={styles.divider} />
-        <Label type="large">{t('common:experience')}</Label>
-        <View style={styles.iconView}>
-          <>
-            <Rating value={ticketInfo.rating} onChange={isReviewed ? FunctionUtils.noop : handleExperience} />
-            <Label type="large" textType="semiBold">
-              {experience}
-            </Label>
-          </>
-        </View>
-        {showComment && (
-          <EditableTextArea
-            message={comment}
-            onCancelPress={clearExperience}
-            showCancel
-            onChangeMessage={onChangeComment}
-            onSubmit={submitReview}
-            isEditable={!(rating > 0)}
-            containerStyle={styles.commentBox}
-          />
-        )}
+        <TicketReview ticketData={cardData} renderRatingForm={renderRatingSheet} successCallback={onSubmitReview} />
       </View>
     );
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.row} onPress={onCardPress}>
+    <TouchableOpacity style={styles.container} onPress={onCardPress}>
+      <View style={styles.row}>
         <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
         <View>
           <View style={styles.titleView}>
@@ -212,9 +152,9 @@ export const TicketCard = (props: IProps): React.ReactElement => {
             ))}
           </View>
         </View>
-      </TouchableOpacity>
-      {isClosed && renderIconView()}
-    </View>
+      </View>
+      {isClosed && renderRatingView()}
+    </TouchableOpacity>
   );
 };
 

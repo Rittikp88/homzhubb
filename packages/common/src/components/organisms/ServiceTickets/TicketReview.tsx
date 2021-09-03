@@ -1,54 +1,108 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
+import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
+import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import RatingForm from '@homzhub/common/src/components/molecules/RatingForm';
-import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
-import { IListingReviewParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IListingReviewParams, ISubmitReview } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
   ticketData: Ticket;
   renderRatingForm: (children: React.ReactElement, onClose: () => void) => React.ReactElement;
+  successCallback: () => void;
 }
 
 const TicketReview = (props: IProps): React.ReactElement => {
   const {
-    ticketData: { title, createdAt },
+    ticketData: { title, createdAt, id, review },
     renderRatingForm,
+    successCallback,
   } = props;
+  const pillarData = useSelector(CommonSelectors.getPillars);
   const [isReview, setIsReview] = useState(false);
-  const [pillars, setPillars] = useState<Pillar[]>([]);
+  const [pillars, setPillars] = useState<Pillar[]>(pillarData);
+  const [reviewData, setReview] = useState<AssetReview>();
   const timeElapsed = DateUtils.getTimeElapsedInDays(createdAt);
   const { t } = useTranslation();
 
   useEffect(() => {
-    CommonRepository.getPillars(PillarTypes.SERVICE_TICKET_REVIEW)
-      .then((res) => {
-        setPillars(res);
-      })
-      .catch((e) => {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    if (isReview && review.rating > 0 && pillars) {
+      /*
+       * Get Ticket Review by id
+       * Map selected categories with all data to display all categories for Update Call
+       */
+      TicketRepository.getTicketReview(id, review.id).then((res) => {
+        setReview(res);
+        const previousData = [...pillars];
+        const updatePillars: Pillar[] = previousData.map((item): Pillar => {
+          const pillarItem = item;
+          res.pillarRatings.forEach((pillar) => {
+            if (item.name === pillar.pillarName?.name) {
+              pillarItem.rating = pillar.rating;
+            }
+          });
+
+          return pillarItem;
+        });
+        setPillars(updatePillars);
       });
-  }, []);
+    }
+  }, [isReview]);
 
   const onCloseForm = (): void => {
     setIsReview(false);
   };
 
   const onUpdate = async (payload: IListingReviewParams): Promise<void> => {
-    // TODO:  (Shikha) - Call Update API
+    try {
+      const finalPayload: ISubmitReview = {
+        param: { ticketId: id, reviewId: review.id },
+        data: {
+          rating: payload.rating,
+          description: payload.description,
+          pillar_ratings: payload.pillar_ratings,
+        },
+      };
+      await TicketRepository.updateReviewById(finalPayload);
+      setIsReview(false);
+      AlertHelper.success({ message: t('serviceTickets:reviewUpdateSuccess') });
+      successCallback();
+    } catch (e) {
+      setIsReview(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   const onSubmit = async (payload: IListingReviewParams): Promise<void> => {
-    // TODO:  (Shikha) - Call Submit API
+    try {
+      const finalPayload: ISubmitReview = {
+        param: { ticketId: id },
+        data: {
+          rating: payload.rating,
+          description: payload.description,
+          pillar_ratings: payload.pillar_ratings,
+        },
+      };
+      await TicketRepository.reviewSubmit(finalPayload);
+      setIsReview(false);
+      AlertHelper.success({ message: t('serviceTickets:reviewSuccess') });
+      successCallback();
+    } catch (e) {
+      setIsReview(false);
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
   };
 
   const renderRating = (): React.ReactElement => {
@@ -89,6 +143,10 @@ const TicketReview = (props: IProps): React.ReactElement => {
           onSubmit={onSubmit}
           secondaryAction={onCloseForm}
           containerStyle={styles.form}
+          // eslint-disable-next-line react/prop-types
+          isEdit={review.rating > 0}
+          isDeleteRequired={false}
+          review={reviewData}
         />
       </View>
     );
@@ -96,15 +154,21 @@ const TicketReview = (props: IProps): React.ReactElement => {
 
   return (
     <>
-      <Button // TODO: (Shikha) - Handle Reviewed case
-        type="primary"
-        textType="label"
-        textSize="large"
-        title={t('common:writReview')}
-        onPress={(): void => setIsReview(!isReview)}
-        containerStyle={styles.buttonContainer}
-        titleStyle={styles.buttonTitle}
-      />
+      {review ? (
+        <TouchableOpacity onPress={(): void => setIsReview(!isReview)}>
+          <Rating value={review.rating} isOverallRating containerStyle={styles.overallContainer} />
+        </TouchableOpacity>
+      ) : (
+        <Button
+          type="primary"
+          textType="label"
+          textSize="large"
+          title={t('common:writReview')}
+          onPress={(): void => setIsReview(!isReview)}
+          containerStyle={styles.buttonContainer}
+          titleStyle={styles.buttonTitle}
+        />
+      )}
       {isReview && renderRatingForm(renderRating(), onCloseForm)}
     </>
   );
@@ -147,5 +211,8 @@ const styles = StyleSheet.create({
   form: {
     marginHorizontal: 16,
     marginBottom: 16,
+  },
+  overallContainer: {
+    marginVertical: 12,
   },
 });

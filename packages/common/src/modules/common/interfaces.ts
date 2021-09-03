@@ -1,8 +1,9 @@
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
+import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationService';
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
 import { IMessages, Messages } from '@homzhub/common/src/domain/models/Message';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
-import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationService';
+import { IPillar } from '@homzhub/common/src/domain/models/Pillar';
 
 export interface ICommonState {
   countries: ICountry[];
@@ -12,10 +13,12 @@ export interface ICommonState {
   redirectionDetails: IRedirectionDetails | IRedirectionDetailsWeb;
   currentChatDetail: IChatPayload | null;
   groupMessages: GroupMessage[] | null;
+  pillars: IPillar[];
   loaders: {
     groupMessages: boolean;
     messages: boolean;
     whileGetCountries: boolean;
+    pillars: boolean;
   };
 }
 

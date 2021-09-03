@@ -702,10 +702,7 @@ export interface IListingReviewParams {
   lease_listing?: number;
   sale_listing?: number;
   rating: number;
-  pillar_ratings: {
-    pillar: number;
-    rating: number;
-  }[];
+  pillar_ratings: IPillarParam[];
   description?: string;
 }
 
@@ -855,11 +852,18 @@ export interface IQuoteSubmitPayload {
 
 export interface ISubmitReviewData {
   rating: number;
-  description: string;
+  description?: string;
+  pillar_ratings?: IPillarParam[];
+}
+
+export interface IPillarParam {
+  pillar: number;
+  rating: number;
 }
 
 export interface ISubmitReviewParam {
   ticketId: number;
+  reviewId?: number;
 }
 
 export interface ISubmitReview {

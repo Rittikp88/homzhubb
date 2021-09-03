@@ -4,6 +4,7 @@ import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationServ
 import { CommonActionPayloadTypes, CommonActionTypes } from '@homzhub/common/src/modules/common/actions';
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { IPillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IChatPayload, ICommonState, IMessageSuccess } from '@homzhub/common/src/modules/common/interfaces';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -14,6 +15,7 @@ export const initialCommonState: ICommonState = {
   attachment: '',
   messages: null,
   currentChatDetail: null,
+  pillars: [],
   redirectionDetails: {
     redirectionLink: '',
     shouldRedirect: false,
@@ -28,6 +30,7 @@ export const initialCommonState: ICommonState = {
     groupMessages: false,
     messages: false,
     whileGetCountries: false,
+    pillars: false,
   },
 };
 
@@ -121,6 +124,23 @@ export const commonReducer = (
       return {
         ...state,
         currentChatDetail: initialCommonState.currentChatDetail,
+      };
+    case CommonActionTypes.GET.PILLARS:
+      return {
+        ...state,
+        countries: [],
+        ['loaders']: { ...state.loaders, ['pillars']: true },
+      };
+    case CommonActionTypes.GET.PILLARS_SUCCESS:
+      return {
+        ...state,
+        ['pillars']: action.payload as IPillar[],
+        ['loaders']: { ...state.loaders, ['pillars']: false },
+      };
+    case CommonActionTypes.GET.PILLARS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['pillars']: false },
       };
     default:
       return {

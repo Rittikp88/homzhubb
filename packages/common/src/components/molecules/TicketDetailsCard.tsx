@@ -14,6 +14,7 @@ interface IProps {
   ticketData: Ticket;
   ticketImages: React.ReactElement;
   renderRatingForm: (children: React.ReactElement, onClose: () => void) => React.ReactElement;
+  successCallback: () => void;
 }
 
 interface ITicketDetails {
@@ -23,7 +24,7 @@ interface ITicketDetails {
 
 const TicketDetailsCard = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { ticketData, ticketImages, renderRatingForm } = props;
+  const { ticketData, ticketImages, renderRatingForm, successCallback } = props;
   const { createdAt, updatedAt, status, ticketNumber, priority, title } = ticketData;
 
   const translatedValue = (value: string, root = 'serviceTickets'): string => t(`${root}:${value}`);
@@ -113,7 +114,9 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
           {title}
         </Text>
         <RenderDetails />
-        {status === TicketStatus.CLOSED && <TicketReview ticketData={ticketData} renderRatingForm={renderRatingForm} />}
+        {status === TicketStatus.CLOSED && (
+          <TicketReview ticketData={ticketData} renderRatingForm={renderRatingForm} successCallback={successCallback} />
+        )}
       </View>
     </>
   );

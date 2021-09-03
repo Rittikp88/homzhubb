@@ -4,6 +4,7 @@ import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationServ
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
+import { IPillar, Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IChatPayload, IMessageSuccess } from '@homzhub/common/src/modules/common/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -18,6 +19,9 @@ export const CommonActionTypes = {
     MESSAGES_SUCCESS: `${actionTypePrefix}MESSAGES_SUCCESS`,
     GROUP_MESSAGES: `${actionTypePrefix}GROUP_MESSAGES`,
     GROUP_MESSAGES_SUCCESS: `${actionTypePrefix}GROUP_MESSAGES_SUCCESS`,
+    PILLARS: `${actionTypePrefix}PILLARS`,
+    PILLARS_SUCCESS: `${actionTypePrefix}PILLARS_SUCCESS`,
+    PILLARS_FAILURE: `${actionTypePrefix}PILLARS_FAILURE`,
   },
   SET: {
     DEVICE_COUNTRY: `${actionTypePrefix}DEVICE_COUNTRY`,
@@ -96,6 +100,20 @@ const clearChatDetail = (): IFluxStandardAction => ({
   type: CommonActionTypes.CLEAR_CHAT_DETAIL,
 });
 
+const getPillars = (payload: PillarTypes): IFluxStandardAction<PillarTypes> => ({
+  type: CommonActionTypes.GET.PILLARS,
+  payload,
+});
+
+const getPillarsSuccess = (payload: Pillar[]): IFluxStandardAction<IPillar[]> => ({
+  type: CommonActionTypes.GET.PILLARS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getPillarsFailure = (): IFluxStandardAction => ({
+  type: CommonActionTypes.GET.PILLARS_FAILURE,
+});
+
 export type CommonActionPayloadTypes =
   | ICountry[]
   | IRedirectionDetails
@@ -104,6 +122,8 @@ export type CommonActionPayloadTypes =
   | Messages
   | GroupMessage[]
   | IChatPayload
+  | PillarTypes
+  | IPillar[]
   | string;
 
 export const CommonActions = {
@@ -121,4 +141,7 @@ export const CommonActions = {
   getGroupMessageSuccess,
   setCurrentChatDetail,
   clearChatDetail,
+  getPillars,
+  getPillarsSuccess,
+  getPillarsFailure,
 };

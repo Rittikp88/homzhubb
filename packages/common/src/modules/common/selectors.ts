@@ -5,6 +5,7 @@ import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { IMessages } from '@homzhub/common/src/domain/models/Message';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IChatPayload, ICommonState } from '@homzhub/common/src/modules/common/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
@@ -112,6 +113,16 @@ const getCommonLoaders = (state: IState): ICommonState['loaders'] => {
   return state.common.loaders;
 };
 
+const getPillars = (state: IState): Pillar[] => {
+  const {
+    common: { pillars },
+  } = state;
+
+  if (pillars.length < 1) return [];
+
+  return ObjectMapper.deserializeArray(Pillar, pillars);
+};
+
 export const CommonSelectors = {
   getCountryList,
   getDefaultPhoneCode,
@@ -125,4 +136,5 @@ export const CommonSelectors = {
   getCurrentChatDetail,
   getMessagesLoading,
   getCommonLoaders,
+  getPillars,
 };

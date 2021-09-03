@@ -134,6 +134,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         ticketData={ticketDetails}
         ticketImages={this.renderCarousel(ticketDetails)}
         renderRatingForm={this.renderRatingSheet}
+        successCallback={this.onSuccessCallback}
       />
     );
   };
@@ -318,6 +319,13 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
       activeSlide: slideNumber,
       hasClickedWorkDone: true,
     }));
+  };
+
+  private onSuccessCallback = (): void => {
+    const { currentTicket, getTicketDetail } = this.props;
+    if (currentTicket) {
+      getTicketDetail(currentTicket.ticketId);
+    }
   };
 
   private handleActionSheet = (isOpen: boolean): void => {

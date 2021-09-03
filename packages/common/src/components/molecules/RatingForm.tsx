@@ -19,12 +19,22 @@ interface IProps {
   onSubmit: (payload: IListingReviewParams) => Promise<void>;
   secondaryAction: () => void;
   isEdit?: boolean;
+  isDeleteRequired?: boolean;
   review?: AssetReview;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
 const RatingForm = (props: IProps): React.ReactElement => {
-  const { onSubmit, onUpdate, isEdit, ratings, review, secondaryAction, containerStyle } = props;
+  const {
+    onSubmit,
+    onUpdate,
+    isEdit,
+    ratings,
+    review,
+    secondaryAction,
+    containerStyle,
+    isDeleteRequired = true,
+  } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
 
   const [overallRating, setOverallRating] = useState(0);
@@ -65,7 +75,7 @@ const RatingForm = (props: IProps): React.ReactElement => {
       finalPayload = {
         ...payload,
         pillar_ratings: categoryRatings.map((pillar: Pillar) => ({
-          pillar: pillar.pillarName?.id ?? 0,
+          pillar: (pillar.id || pillar.pillarName?.id) ?? 0,
           rating: pillar.rating,
         })),
       };
@@ -84,6 +94,7 @@ const RatingForm = (props: IProps): React.ReactElement => {
       style={[styles.container, containerStyle]}
       showsVerticalScrollIndicator={false}
       bounces={false}
+      keyboardShouldPersistTaps="handled"
     >
       <Label type="large" textType="semiBold" style={styles.overallExperience}>
         {t('overallExperience')}
@@ -115,9 +126,9 @@ const RatingForm = (props: IProps): React.ReactElement => {
         <Button
           onPress={secondaryAction}
           type="secondary"
-          title={isEdit ? t('common:delete') : t('common:notNow')}
-          titleStyle={isEdit ? styles.buttonTitle : styles.buttonTitleText}
-          containerStyle={isEdit ? styles.deleteButton : undefined}
+          title={isEdit && isDeleteRequired ? t('common:delete') : t('common:notNow')}
+          titleStyle={isEdit && isDeleteRequired ? styles.buttonTitle : styles.buttonTitleText}
+          containerStyle={isEdit && isDeleteRequired ? styles.deleteButton : undefined}
         />
         <Button
           onPress={onClick}

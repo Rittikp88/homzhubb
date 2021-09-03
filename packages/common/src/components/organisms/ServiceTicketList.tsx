@@ -1,10 +1,11 @@
 import React, { Component, ReactElement } from 'react';
 import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { Dispatch, bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -13,6 +14,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { TicketCard } from '@homzhub/common/src/components/organisms/TicketCard';
+import { PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { Ticket, TicketPriority, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
@@ -31,6 +33,7 @@ interface IProps {
 interface IDispatchProps {
   getTickets: (param?: IGetTicketParam) => void;
   setCurrentTicket: (payload: ICurrentTicket) => void;
+  getPillars: (payload: PillarTypes) => void;
 }
 
 interface IStateProps {
@@ -51,7 +54,8 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   public componentDidMount = (): void => {
-    const { getTickets, propertyId, isFromMore } = this.props;
+    const { getTickets, propertyId, isFromMore, getPillars } = this.props;
+    getPillars(PillarTypes.SERVICE_TICKET_REVIEW);
     if (!isFromMore && propertyId) {
       const param = {
         asset_id: propertyId,
@@ -229,10 +233,12 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTickets, setCurrentTicket } = TicketActions;
+  const { getPillars } = CommonActions;
   return bindActionCreators(
     {
       getTickets,
       setCurrentTicket,
+      getPillars,
     },
     dispatch
   );

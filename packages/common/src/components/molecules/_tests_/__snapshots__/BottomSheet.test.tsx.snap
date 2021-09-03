@@ -481,10 +481,13 @@ exports[`BottomSheet should render snapshot 1`] = `
                               </Icon>
                               <Label
                                 style={
-                                  Object {
-                                    "flex": 1,
-                                    "textAlign": "center",
-                                  }
+                                  Array [
+                                    Object {
+                                      "flex": 1,
+                                      "textAlign": "center",
+                                    },
+                                    undefined,
+                                  ]
                                 }
                                 textType="semiBold"
                                 type="large"
@@ -501,10 +504,13 @@ exports[`BottomSheet should render snapshot 1`] = `
                                         "fontFamily": "OpenSans-SemiBold",
                                         "fontWeight": "600",
                                       },
-                                      Object {
-                                        "flex": 1,
-                                        "textAlign": "center",
-                                      },
+                                      Array [
+                                        Object {
+                                          "flex": 1,
+                                          "textAlign": "center",
+                                        },
+                                        undefined,
+                                      ],
                                     ]
                                   }
                                 >
@@ -520,10 +526,13 @@ exports[`BottomSheet should render snapshot 1`] = `
                                           "fontFamily": "OpenSans-SemiBold",
                                           "fontWeight": "600",
                                         },
-                                        Object {
-                                          "flex": 1,
-                                          "textAlign": "center",
-                                        },
+                                        Array [
+                                          Object {
+                                            "flex": 1,
+                                            "textAlign": "center",
+                                          },
+                                          undefined,
+                                        ],
                                       ]
                                     }
                                   />
@@ -1048,10 +1057,13 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
                               </Icon>
                               <Label
                                 style={
-                                  Object {
-                                    "flex": 1,
-                                    "textAlign": "center",
-                                  }
+                                  Array [
+                                    Object {
+                                      "flex": 1,
+                                      "textAlign": "center",
+                                    },
+                                    undefined,
+                                  ]
                                 }
                                 textType="semiBold"
                                 type="large"
@@ -1068,10 +1080,13 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
                                         "fontFamily": "OpenSans-SemiBold",
                                         "fontWeight": "600",
                                       },
-                                      Object {
-                                        "flex": 1,
-                                        "textAlign": "center",
-                                      },
+                                      Array [
+                                        Object {
+                                          "flex": 1,
+                                          "textAlign": "center",
+                                        },
+                                        undefined,
+                                      ],
                                     ]
                                   }
                                 >
@@ -1087,10 +1102,13 @@ exports[`BottomSheet should render snapshot when visible is true 1`] = `
                                           "fontFamily": "OpenSans-SemiBold",
                                           "fontWeight": "600",
                                         },
-                                        Object {
-                                          "flex": 1,
-                                          "textAlign": "center",
-                                        },
+                                        Array [
+                                          Object {
+                                            "flex": 1,
+                                            "textAlign": "center",
+                                          },
+                                          undefined,
+                                        ],
                                       ]
                                     }
                                   />
