@@ -3,6 +3,7 @@ import { View, PickerItemProps, StyleProp, ViewStyle, LayoutChangeEvent, StyleSh
 import { useTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -17,6 +18,7 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IVisitActionParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IProps {
   visitType: Tabs;
@@ -28,10 +30,10 @@ interface IProps {
   handleReschedule: (asset: AssetVisit, userId?: number) => void;
   handleDropdown: (value: string | number, visitType: Tabs) => void;
   handleUserView: (id: number) => void;
+  handleConfirmation: (param: IVisitActionParam) => void;
   pillars?: Pillar[];
   resetData?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
-  // handleConfirmation?: (param: IVisitActionParam) => void;
   // isFromProperty?: boolean;
   // isUserView?: boolean;
   // reviewVisitId?: number;
@@ -55,6 +57,7 @@ const PropertyVisitList: React.FC<IProps> = (props: IProps) => {
     handleAction,
     handleReschedule,
     handleUserView,
+    handleConfirmation,
     containerStyle,
   } = props;
   const [customState, setCustomState] = useState<ICustomState>({
@@ -133,6 +136,8 @@ const PropertyVisitList: React.FC<IProps> = (props: IProps) => {
     width: '320px',
   };
 
+  const isMobile = useOnly(deviceBreakpoint.MOBILE);
+
   const renderItem = (item: AssetVisit): React.ReactElement => {
     // const { handleConfirmation } = props;
 
@@ -145,7 +150,7 @@ const PropertyVisitList: React.FC<IProps> = (props: IProps) => {
         handleReschedule={handleReschedule}
         navigateToAssetDetails={navigateToPropertyView}
         handleAction={handleAction}
-        // handleConfirmation={handleConfirmation}
+        handleConfirmation={handleConfirmation}
         onPressReview={onPressReview}
         mainContainerStyles={mainContainerStyles}
       />
@@ -186,7 +191,7 @@ const PropertyVisitList: React.FC<IProps> = (props: IProps) => {
                     <View style={styles.dividerView} />
                   </View>
                 )}
-                <View style={styles.cardsRow}>
+                <View style={[styles.cardsRow, isMobile && styles.cardsRowMobile]}>
                   {results.map((asset: AssetVisit) => {
                     return renderItem(asset);
                   })}
@@ -242,5 +247,8 @@ const styles = StyleSheet.create({
   },
   cardsRow: {
     flexDirection: 'row',
+  },
+  cardsRowMobile: {
+    flexDirection: 'column',
   },
 });

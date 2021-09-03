@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { useSelector, useDispatch } from 'react-redux';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -18,9 +19,12 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import PropertyVisitList from '@homzhub/web/src/screens/siteVisits/components/PropertyVisitList';
+import SiteVisitsActionsPopover, {
+  SiteVisitAction,
+} from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsActionsPopover';
 import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
+import { AssetVisit, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import {
   IAssetVisitPayload,
   IBookVisitProps,
@@ -34,7 +38,6 @@ interface ICustomState {
   currentIndex: number;
   dropdownValue: number;
   pillars: Pillar[];
-  //   heights: number[];
 }
 
 interface IProps {
@@ -45,12 +48,10 @@ interface IProps {
 const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  //   const { height } = theme.viewport;
   const [customState, setCustomState] = useState<ICustomState>({
     currentIndex: 0,
     dropdownValue: 1,
     pillars: [],
-    // heights: [height, height, height],
   });
   const { getAssetVisit, setVisitType, clearVisits, setVisitIds } = AssetActions;
   const visits = useSelector((state: IState) => AssetSelectors.getAssetVisitsByDate(state));
@@ -64,22 +65,6 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
   useEffect(() => {
     getVisitsData();
   }, [customState.currentIndex]);
-
-  //   const onLayout = (e: LayoutChangeEvent, index: number): void => {
-  //     const { heights } = customState;
-  //     const { height: newHeight } = e.nativeEvent.layout;
-  //     const arrayToUpdate = [...heights];
-
-  //     if (newHeight !== arrayToUpdate[index]) {
-  //       arrayToUpdate[index] = newHeight;
-  //       setCustomState((state) => {
-  //         return {
-  //           ...state,
-  //           heights: arrayToUpdate,
-  //         };
-  //       });
-  //     }
-  //   };
 
   const getRatingPillars = async (): Promise<void> => {
     try {
@@ -200,6 +185,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
       //     this.onShowProfile(id);
       //   } else {
       getVisitsData();
+      onCloseModal();
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -221,7 +207,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
   const handleRescheduleVisit = (argsAsset: AssetVisit, key: Tabs, userId?: number): void => {
     const { onReschedule } = props;
     const { id, leaseListing, saleListing, isValidVisit } = argsAsset;
-    setVisitIds([id]);
+    dispatch(setVisitIds([id]));
     const param = {
       ...(leaseListing && leaseListing > 0 && { lease_listing_id: leaseListing }),
       ...(saleListing && saleListing > 0 && { sale_listing_id: saleListing }),
@@ -235,6 +221,22 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
     } else {
       onReschedule(param, false);
     }
+  };
+
+  const handleConfirmation = (param: IVisitActionParam): void => {
+    const { isValidVisit, id, isUserView } = param;
+    if (!isValidVisit) {
+      handleInvalidVisit();
+      return;
+    }
+
+    setParamsVisitAction({
+      id,
+      action: VisitActions.CANCEL,
+      isValidVisit,
+      isUserView,
+    });
+    setIsPopoverActive(true);
   };
 
   const renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
@@ -255,6 +257,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
               handleReschedule={(item: AssetVisit): void => handleRescheduleVisit(item, Tabs.UPCOMING)}
               handleDropdown={handleDropdownSelection}
               handleUserView={onShowProfile}
+              handleConfirmation={handleConfirmation}
             />
           </View>
         );
@@ -272,6 +275,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
               handleReschedule={(item: AssetVisit): void => handleRescheduleVisit(item, Tabs.MISSED)}
               handleDropdown={handleDropdownSelection}
               handleUserView={onShowProfile}
+              handleConfirmation={handleConfirmation}
             />
           </View>
         );
@@ -293,6 +297,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
               handleUserView={onShowProfile}
               pillars={pillars}
               resetData={getVisitsData}
+              handleConfirmation={handleConfirmation}
               //   reviewVisitId={reviewVisitId} // When Navigated from Notifications
             />
           </View>
@@ -301,6 +306,29 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
         return <EmptyState icon={icons.schedule} title={t('property:noVisits')} />;
     }
   };
+
+  const [isPopoverActive, setIsPopoverActive] = useState(false);
+  const [paramsVisitAction, setParamsVisitAction] = useState({} as IVisitActionParam);
+
+  const popupRef = createRef<PopupActions>();
+  const onOpenModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+  const onCloseModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+      setIsPopoverActive(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isPopoverActive) {
+      onOpenModal();
+    }
+  }, [isPopoverActive]);
+
   const { currentIndex } = customState;
   const statusIndex = getVisitStatus();
   return (
@@ -335,6 +363,13 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
           index: statusIndex || currentIndex,
           routes: VisitRoutes,
         }}
+      />
+      <SiteVisitsActionsPopover
+        popupRef={popupRef}
+        onCloseModal={onCloseModal}
+        siteVisitActionType={SiteVisitAction.CANCEL}
+        paramsVisitAction={paramsVisitAction}
+        handleVisitActions={handleVisitActions}
       />
     </View>
   );

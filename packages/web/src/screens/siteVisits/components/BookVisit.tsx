@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
@@ -11,10 +10,12 @@ import { IBookVisitProps } from '@homzhub/common/src/domain/repositories/interfa
 
 interface IProps {
   paramsBookVisit: IBookVisitProps;
+  isReschedule: boolean;
+  onCloseModal: () => void;
 }
 
 const BookVisit: React.FC<IProps> = (props: IProps) => {
-  const { paramsBookVisit: params } = props;
+  const { paramsBookVisit: params, isReschedule, onCloseModal } = props;
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const renderAccordianHeader = (title: string): React.ReactNode => {
@@ -49,19 +50,16 @@ const BookVisit: React.FC<IProps> = (props: IProps) => {
     setIsLoading(isLoadingParam);
   };
 
-  const goBack = (): void => {
-    NavigationService.goBack();
-  };
   return (
     <View>
       <Loader visible={isLoading} />
       {/* @ts-ignore */}
       <ScheduleVisitForm
         isCollapsed={!isCollapsed}
-        isReschedule={false}
+        isReschedule={isReschedule}
         renderCollapseSection={renderCollapsibleSection}
         setLoading={setLoading}
-        onSubmitSuccess={goBack}
+        onSubmitSuccess={onCloseModal}
         leaseListingId={params.lease_listing_id}
         saleListingId={params.sale_listing_id}
       />

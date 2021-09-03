@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import { View, StyleSheet, PickerItemProps } from 'react-native';
 import { useDispatch } from 'react-redux';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { AssetService } from '@homzhub/common/src/services/AssetService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecules/PropertyByCountryDropdown';
 import SiteVisitsGridView from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsGridView';
+import SiteVisitsActionsPopover, {
+  SiteVisitAction,
+} from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsActionsPopover';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
-import { IAssetVisitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAssetVisitPayload, IBookVisitProps } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface ICustomState {
@@ -111,6 +115,33 @@ const PropertyVisits: React.FC = () => {
     });
   };
 
+  const [visitParams, setVisitParams] = useState({} as IBookVisitProps);
+  const [isReschedule, setIsReschedule] = useState(false);
+
+  const rescheduleVisit = (paramsArg: IBookVisitProps, isNew?: boolean): void => {
+    setVisitParams(paramsArg);
+    setIsReschedule(true);
+  };
+
+  const popupRef = createRef<PopupActions>();
+  const onOpenModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+  const onCloseModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+      setIsReschedule(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isReschedule) {
+      onOpenModal();
+    }
+  }, [isReschedule]);
+
   const { isCalendarView, countryData, propertiesByCountry, selectedAssetId, selectedCountry } = customState;
   return (
     <View style={styles.container}>
@@ -137,7 +168,15 @@ const PropertyVisits: React.FC = () => {
         {isCalendarView ? (
           <View />
         ) : (
-          <SiteVisitsGridView onReschedule={(): void => {}} setVisitPayload={setVisitPayload} />
+          <View>
+            <SiteVisitsGridView onReschedule={rescheduleVisit} setVisitPayload={setVisitPayload} />
+            <SiteVisitsActionsPopover
+              popupRef={popupRef}
+              onCloseModal={onCloseModal}
+              siteVisitActionType={SiteVisitAction.RESCHEDULE_VISIT}
+              paramsBookVisit={visitParams}
+            />
+          </View>
         )}
       </View>
     </View>
