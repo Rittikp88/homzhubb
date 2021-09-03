@@ -26,7 +26,6 @@ interface IProps {
   onAddTicket: () => void;
   navigateToDetail: () => void;
   isFromMore?: boolean;
-  propertyId?: number;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -54,16 +53,8 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   public componentDidMount = (): void => {
-    const { getTickets, propertyId, isFromMore, getPillars } = this.props;
+    const { getPillars } = this.props;
     getPillars(PillarTypes.SERVICE_TICKET_REVIEW);
-    if (!isFromMore && propertyId) {
-      const param = {
-        asset_id: propertyId,
-      };
-      getTickets(param);
-    } else {
-      getTickets();
-    }
   };
 
   public render(): React.ReactNode {

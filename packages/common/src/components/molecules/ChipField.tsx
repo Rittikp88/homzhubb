@@ -92,7 +92,7 @@ const ChipField = (props: IProps): React.ReactElement => {
       if (setValueError) {
         setValueError(true);
       }
-      setError(t('serviceTicket:categoryLimit', { limit: valueLimit }));
+      setError(t('serviceTickets:categoryLimit', { limit: valueLimit }));
       return;
     }
 

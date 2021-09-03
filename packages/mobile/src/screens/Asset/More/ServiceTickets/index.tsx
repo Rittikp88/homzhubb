@@ -1,22 +1,38 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TouchableOpacity } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import ServiceTicketList from '@homzhub/common/src/components/organisms/ServiceTicketList';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { ICommonNavProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const ServiceTicket = (): React.ReactElement => {
   const { navigate, goBack } = useNavigation();
   const { params } = useRoute();
+  const dispatch = useDispatch();
   const isLoading = useSelector(TicketSelectors.getTicketLoader);
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const param = params as ICommonNavProps;
+
+  useFocusEffect(
+    useCallback(() => {
+      if (!param?.isFromPortfolio && param?.propertyId) {
+        const payload: IGetTicketParam = {
+          asset_id: param?.propertyId,
+        };
+        dispatch(TicketActions.getTickets(payload));
+      } else {
+        dispatch(TicketActions.getTickets());
+      }
+    }, [])
+  );
 
   // HANDLERS
   const onAddTicket = (): void => {
@@ -54,7 +70,6 @@ const ServiceTicket = (): React.ReactElement => {
         onAddTicket={onAddTicket}
         navigateToDetail={onNavigateToDetail}
         isFromMore={!param?.isFromPortfolio}
-        propertyId={param?.propertyId}
       />
     </UserScreen>
   );

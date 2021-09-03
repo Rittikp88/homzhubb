@@ -444,7 +444,6 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         description: issueDescription,
         ...otherField,
       };
-
       const response = await TicketRepository.postTicket(payload);
       setCurrentTicket({ ticketId: response.id });
       const selectedProperty = properties.find((asset: Asset) => asset.id === property);

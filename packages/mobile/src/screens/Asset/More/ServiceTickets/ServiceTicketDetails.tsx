@@ -141,7 +141,6 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
 
   private renderCarousel = (detail: Ticket): React.ReactElement => {
     const { activeSlide, isFullScreen } = this.state;
-
     if (!detail.ticketAttachments.length) {
       return <ImagePlaceholder height="100%" containerStyle={styles.carousel} />;
     }
