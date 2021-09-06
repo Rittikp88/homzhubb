@@ -10,7 +10,7 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import { TicketActions, TicketActionTypes } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
-import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { ICurrentTicket, IReassignTicket, IRequestQuote } from '@homzhub/common/src/modules/tickets/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetTicketParam,
@@ -99,10 +99,42 @@ export function* sendTicketReminder() {
   }
 }
 
+export function* reassignTicket(action: IFluxStandardAction<IReassignTicket>) {
+  if (!action.payload) return;
+  const { ticketId, payload, onCallback } = action.payload;
+  try {
+    yield call(TicketRepository.reassignTicket, ticketId, payload);
+    yield put(TicketActions.reassignTicketSuccess());
+    AlertHelper.success({ message: I18nService.t('serviceTickets:requestReassignedSuccessfully') });
+    onCallback(true);
+  } catch (e) {
+    onCallback(false);
+    yield put(TicketActions.reassignTicketFailure());
+    AlertHelper.error({ message: e.details.message, statusCode: e.details.statusCode });
+  }
+}
+
+export function* requestQuote(action: IFluxStandardAction<IRequestQuote>) {
+  if (!action.payload) return;
+  const { ticketId, payload, onCallback } = action.payload;
+  try {
+    yield call(TicketRepository.requestQuote, ticketId, payload);
+    yield put(TicketActions.requestQuoteSuccess());
+    AlertHelper.success({ message: I18nService.t('serviceTickets:quoteRequestSuccess') });
+    onCallback(true);
+  } catch (e) {
+    onCallback(false);
+    yield put(TicketActions.requestQuoteFailure());
+    AlertHelper.error({ message: e.details.message, statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchTicket() {
   yield takeLatest(TicketActionTypes.GET.TICKETS, getUserTickets);
   yield takeEvery(TicketActionTypes.GET.TICKET_DETAIL, getTicketDetails);
   yield takeEvery(TicketActionTypes.POST.INVOICE_SUMMARY, getInvoiceSummary);
   yield takeEvery(TicketActionTypes.CLOSE_TICKET, closeTicket);
   yield takeEvery(TicketActionTypes.SEND_TICKET_REMINDER, sendTicketReminder);
+  yield takeEvery(TicketActionTypes.POST.REASSIGN_TICKET, reassignTicket);
+  yield takeEvery(TicketActionTypes.POST.REQUEST_QUOTE, requestQuote);
 }

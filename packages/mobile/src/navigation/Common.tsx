@@ -24,7 +24,7 @@ import ChatScreen from '@homzhub/mobile/src/screens/Asset/More/ChatScreen';
 import Messages from '@homzhub/mobile/src/screens/Asset/More/Messages';
 import { SavedProperties } from '@homzhub/mobile/src/screens/Asset/More/SavedProperties';
 import ServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets';
-import ServiceTicketForm from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketForm';
+import AddServiceTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/AddServiceTicket';
 import ServiceTicketDetails from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ServiceTicketDetails';
 import ReassignTicket from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/ReassignTicket';
 import SubmitQuote from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/SubmitQuote';
@@ -149,7 +149,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.ComingSoonScreen} component={ComingSoonScreen} />
       <Stack.Screen name={ScreensKeys.PropertyDetailScreen} component={PropertyDetailScreen} />
       <Stack.Screen name={ScreensKeys.PropertyAssetDescription} component={AssetDescription} />
-      <Stack.Screen name={ScreensKeys.AddServiceTicket} component={ServiceTicketForm} />
+      <Stack.Screen name={ScreensKeys.AddServiceTicket} component={AddServiceTicket} />
       <Stack.Screen name={ScreensKeys.AssetNotifications} component={Notifications} />
       <Stack.Screen name={ScreensKeys.AddRecordScreen} component={AddRecordScreen} />
       <Stack.Screen name={ScreensKeys.PropertyVisits} component={PropertyVisits} />

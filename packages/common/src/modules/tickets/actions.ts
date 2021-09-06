@@ -3,7 +3,7 @@ import { IInvoiceSummary, InvoiceSummary } from '@homzhub/common/src/domain/mode
 import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IGetTicketParam, IInvoiceSummaryPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
+import { ICurrentTicket, IReassignTicket, IRequestQuote } from '@homzhub/common/src/modules/tickets/interface';
 import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 const actionTypePrefix = 'Ticket/';
@@ -20,6 +20,12 @@ export const TicketActionTypes = {
     INVOICE_SUMMARY: `${actionTypePrefix}INVOICE_SUMMARY`,
     INVOICE_SUMMARY_SUCCESS: `${actionTypePrefix}INVOICE_SUMMARY_SUCCESS`,
     INVOICE_SUMMARY_FAILURE: `${actionTypePrefix}INVOICE_SUMMARY_FAILURE`,
+    REASSIGN_TICKET: `${actionTypePrefix}REASSIGN_TICKET`,
+    REASSIGN_TICKET_SUCCESS: `${actionTypePrefix}REASSIGN_TICKET_SUCCESS`,
+    REASSIGN_TICKET_FAILURE: `${actionTypePrefix}REASSIGN_TICKET_FAILURE`,
+    REQUEST_QUOTE: `${actionTypePrefix}REQUEST_QUOTE`,
+    REQUEST_QUOTE_SUCCESS: `${actionTypePrefix}REQUEST_QUOTE_SUCCESS`,
+    REQUEST_QUOTE_FAILURE: `${actionTypePrefix}REQUEST_QUOTE_FAILURE`,
   },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
@@ -115,6 +121,32 @@ const handleTicketReminderSent = (): IFluxStandardAction => ({
   type: TicketActionTypes.HANDLE_TICKET_REMINDER_SENT,
 });
 
+const reassignTicket = (payload: IReassignTicket): IFluxStandardAction<IReassignTicket> => ({
+  type: TicketActionTypes.POST.REASSIGN_TICKET,
+  payload,
+});
+
+const reassignTicketSuccess = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.REASSIGN_TICKET_SUCCESS,
+});
+
+const reassignTicketFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.REASSIGN_TICKET_FAILURE,
+});
+
+const requestQuote = (payload: IRequestQuote): IFluxStandardAction<IRequestQuote> => ({
+  type: TicketActionTypes.POST.REQUEST_QUOTE,
+  payload,
+});
+
+const requestQuoteSuccess = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.REQUEST_QUOTE_SUCCESS,
+});
+
+const requestQuoteFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.REQUEST_QUOTE_FAILURE,
+});
+
 export type TicketActionPayloadTypes =
   | string[]
   | string
@@ -125,7 +157,9 @@ export type TicketActionPayloadTypes =
   | IGetTicketParam
   | IImageSource[]
   | IInvoiceSummaryPayload
-  | IInvoiceSummary;
+  | IInvoiceSummary
+  | IReassignTicket
+  | IRequestQuote;
 
 export const TicketActions = {
   setAttachment,
@@ -146,4 +180,10 @@ export const TicketActions = {
   closeTicketFailure,
   sendTicketReminder,
   handleTicketReminderSent,
+  reassignTicket,
+  reassignTicketSuccess,
+  reassignTicketFailure,
+  requestQuote,
+  requestQuoteSuccess,
+  requestQuoteFailure,
 };

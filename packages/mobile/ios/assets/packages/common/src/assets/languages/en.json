@@ -309,7 +309,9 @@
     "underMaintenance": "Under Maintenance",
     "others": "Others",
     "roundedOff": "rounded off",
-    "featureInIndiaOnly": "Feature available only for India currently"
+    "featureInIndiaOnly": "Feature available only for India currently",
+    "close": "Close",
+    "writReview": "Write a review"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -404,7 +406,8 @@
     "emailUsed": "This email is already used by someone. Please use unique email",
     "enterMobileNo": "Enter your mobile number",
     "updatePasswordWeb": "Update password",
-    "duplicateEmail": "This email is already used. Please use unique email"
+    "duplicateEmail": "This email is already used. Please use unique email",
+    "emails": "E-mails"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -1007,6 +1010,7 @@
     "bankAccount": "Bank Account",
     "selectAccount": "Select account",
     "reminderAlreadySetForDue": "A reminder is already set for this due",
+    "separatedByComma": "Enter emails (Separated by commas)",
     "bankAccounts": "Bank Accounts",
     "editAccount": "Edit Account",
     "deleteAccount": "Delete Account",
@@ -1295,12 +1299,10 @@
     "timeElapsed": "Time Elapsed",
     "ticketNo": "Request No.",
     "ticketRaised": "Request Raised",
-    "ticketRaisedDescription": "Dummy Request raised description",
     "ticketAssignedTo": "Request assigned to {{name}}",
     "awaitingAction": "Awaiting for {{name}}'s action",
     "ticketReassigned": "Request Reassigned",
-    "ticketReassignedToOwner2": "Request reassigned to owner 2",
-    "awaitingOwner2Action": "Awaiting for owner 2's action",
+    "ticketReassignedTo": "Request reassigned to {{name}}",
     "quotesRequested": "Quotes Requested",
     "quotesSubmitted": "Quotes Submitted",
     "awaitingQuotes": "Awaiting for quotes",
@@ -1332,7 +1334,49 @@
     "ticketComplete": "Request Completed Successfully",
     "noQuoteFound": "No quote found",
     "noDetail": "There was an error while trying to fetch your data. Please try again",
-    "maxProof": "Max 10 proofs are allowed"
+    "maxProof": "Max 10 proofs are allowed",
+    "requestForQuote": "Request for Quotes",
+    "requestDescription": "Add Request Categories and Vendor Emails to receive best quotes",
+    "ticketCategory": "Enter ticket category",
+    "invitePartner": "Invite Homzhub Service Partners",
+    "vendorEmail": "Add Vendor Email",
+    "sendRequest": "Send Request",
+    "reassignRequest": "Reassign Request",
+    "assigneeDetails": "Assignee details",
+    "reassign": "Reassign",
+    "reassignInfoText": "Select the person you want to assign the request to",
+    "selectAnAssignee": "Select an Assignee",
+    "requestReassignedSuccessfully": "Request Reassigned Successfully",
+    "categoryLimit": "Category must not be greater than {{limit}} length",
+    "updateWorkProgressInfoText": "Update participants about the progress on the work",
+    "updateYourWorkProgress": "Update your Work Progress",
+    "workInitiatedSuccess": "Status Updated to Work Initiated Successfully",
+    "updateSentSuccess": "Update sent successfully ",
+    "sendUpdates": "Send Updates",
+    "sendUpdate": "Send Update",
+    "updates": "Updates",
+    "updateTitle": "Update Title",
+    "closeTicket": "Close Request",
+    "closeTicketSuccess": "Request Closed Successfully",
+    "closeTicketConfirmation": "Are you sure you want to close the request?",
+    "makePaymentForQuote": "Make payment for your approved quotes using your preferred payment method",
+    "quoteInfo": "The above quotes are shown inclusive of all the taxes and relevant information",
+    "payLater": "Pay Later",
+    "quotePayment": "Quote Payment",
+    "requestQuote": "Request Quote",
+    "payLaterConfirmation": "Homzhub will create a due and notify you timely. Are you sure you want to pay this  later?",
+    "remindToPay": "Remind to pay",
+    "sendReminderConfirmation": "Are you sure, you want to send a reminder ?",
+    "onceIn12Hours": "Can be sent once in every 12 hours.",
+    "remindToApproveAndPay": "Remind to Approve & Pay",
+    "remindNow": "Remind now",
+    "ticketReview": "Ticket Review & Rating",
+    "rejectTicketInfoText": "The ticket will be closed as soon as you reject the ticket. Please add a reason for it below.",
+    "rejectReason": "Reject Reason",
+    "rejectRequest": "Reject Request",
+    "rejectRequestSuccess": "Request rejected and closed successfully",
+    "reviewSuccess": "Request reviewed successfully",
+    "reviewUpdateSuccess": "Request review updated successfully"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",
@@ -1460,5 +1504,8 @@
     "genericError": "Something Unexpected Happened",
     "genericErrorMessage": "We are not sure what caused this error, but engineers are looking into it. We are sorry for the inconvenience",
     "backToHome": "Back to Home"
+  },
+  "siteVisits": {
+    "schedulePropertyVisit": "Schedule Property Visit"
   }
 }

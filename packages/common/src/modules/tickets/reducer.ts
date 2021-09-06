@@ -18,6 +18,8 @@ export const initialTicketState: ITicketState = {
     invoiceSummary: false,
     closeTicket: false,
     ticketReminder: false,
+    reassignTicket: false,
+    requestQuote: false,
   },
 };
 
@@ -112,6 +114,28 @@ export const ticketReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['ticketReminder']: false },
+      };
+    case TicketActionTypes.POST.REASSIGN_TICKET:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reassignTicket']: true },
+      };
+    case TicketActionTypes.POST.REASSIGN_TICKET_SUCCESS:
+    case TicketActionTypes.POST.REASSIGN_TICKET_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reassignTicket']: false },
+      };
+    case TicketActionTypes.POST.REQUEST_QUOTE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['requestQuote']: true },
+      };
+    case TicketActionTypes.POST.REQUEST_QUOTE_SUCCESS:
+    case TicketActionTypes.POST.REQUEST_QUOTE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['requestQuote']: false },
       };
     case TicketActionTypes.CLEAR_STATE:
       return {

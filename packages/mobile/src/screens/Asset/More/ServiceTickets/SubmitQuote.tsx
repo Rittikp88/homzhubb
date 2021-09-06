@@ -26,6 +26,7 @@ import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { IInitialQuote, initialQuotes } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
+// TODO: (Shikha) - Handle multiple category
 const SubmitQuote = (): ReactElement => {
   const dispatch = useDispatch();
   const [quotes, setQuotes] = useState<IInitialQuote[]>([]);

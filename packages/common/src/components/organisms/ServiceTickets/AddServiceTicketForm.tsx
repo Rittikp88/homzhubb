@@ -1,19 +1,16 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import * as yup from 'yup';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import DocumentPicker from 'react-native-document-picker';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
-import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
-import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
@@ -21,18 +18,14 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
-import { IUploadAttachmentResponse } from '@homzhub/common/src/components/organisms/AddRecordForm';
-import { UploadBoxComponent } from '@homzhub/mobile/src/components';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { IUploadAttachmentResponse, IUploadCompProps } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { IAddServiceEvent } from '@homzhub/common/src/services/Analytics/interfaces';
@@ -52,8 +45,6 @@ interface IFormValues {
 interface IScreeState {
   serviceForm: IFormValues;
   attachments: IDocumentSource[];
-  clearCount: number;
-  isScreenLoading: boolean;
   selectedCategoryId: number;
   categories: IDropdownOption[];
   subCategories: IDropdownOption[];
@@ -71,21 +62,27 @@ interface IDispatchToProps {
   setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
-type NavigationProps = NavigationScreenProps<CommonParamList, ScreensKeys.AddServiceTicket>;
+interface IOwnProps {
+  clearCount: number;
+  propertyId?: number;
+  renderUploadBoxComponent: (uploadProps: IUploadCompProps) => ReactElement;
+  onSubmit?: () => void;
+  toggleLoader: (loading: boolean) => void;
+  onAddProperty: () => void;
+}
 
-type Props = WithTranslation & IStateToProps & NavigationProps & IDispatchToProps;
+type Props = WithTranslation & IStateToProps & IDispatchToProps & IOwnProps;
 
-class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
+class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   public formRef: React.RefObject<any> = React.createRef();
 
   constructor(props: Props) {
     super(props);
-    const { route } = this.props;
-    const propertyId = (route && route.params && route.params.propertyId) || -1;
+    const { propertyId } = this.props;
 
     this.state = {
       serviceForm: {
-        property: propertyId,
+        property: propertyId ?? -1,
         title: '',
         category: -1,
         subCategory: '',
@@ -93,8 +90,6 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         otherCategory: '',
       },
       attachments: [],
-      clearCount: 0,
-      isScreenLoading: false,
       categories: [],
       subCategories: [],
       categoryWithSubCategory: [],
@@ -122,15 +117,17 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   }
 
   public componentDidUpdate = (prevProps: Props, prevState: IScreeState): void => {
-    const { clearCount: newVal, selectedCategoryId: newCatogoryId } = this.state;
-    const { clearCount: oldVal, selectedCategoryId: oldCategoryId } = prevState;
+    const { clearCount: newVal } = this.props;
+    const { clearCount: oldVal } = prevProps;
+    const { selectedCategoryId: newCategoryId } = this.state;
+    const { selectedCategoryId: oldCategoryId } = prevState;
 
     if (newVal !== oldVal) {
       this.formRef.current.resetForm({});
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ attachments: [], selectedCategoryId: -1 });
     }
-    if (newCatogoryId !== oldCategoryId) {
+    if (newCategoryId !== oldCategoryId) {
       const subCategories = this.getSubCategories();
       if (subCategories) {
         // eslint-disable-next-line react/no-did-update-set-state
@@ -140,157 +137,141 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   };
 
   public render(): React.ReactElement {
-    const {
-      t,
-      route,
-      navigation: { goBack },
-      properties,
-      loaders: { activeAssets },
-    } = this.props;
-    const { serviceForm, attachments, isScreenLoading, categories, subCategories, selectedCategoryId } = this.state;
+    const { t, propertyId, properties, renderUploadBoxComponent } = this.props;
+    const { serviceForm, attachments, categories, subCategories, selectedCategoryId } = this.state;
 
-    const propertyId = route && route.params && route.params.propertyId;
     const isPropertiesPresent = properties && properties.length > 0;
-    const title = route?.params?.isFromDashboard ? t('assetDashboard:dashboard') : t('assetMore:tickets');
+
+    const uploadProps: IUploadCompProps = {
+      attachments,
+      icon: icons.document,
+      header: t('common:uploadDocument'),
+      subHeader: t('common:uploadDocHelperText'),
+      onCapture: this.handleUpload,
+      onDelete: this.handleDocumentDelete,
+      containerStyle: styles.uploadBox,
+    };
 
     return (
       <>
-        <UserScreen
-          title={title}
-          pageTitle={t('serviceTickets:newTicket')}
-          onBackPress={goBack}
-          rightNode={isPropertiesPresent ? this.renderClearButton() : undefined}
-          scrollEnabled
-          loading={activeAssets || isScreenLoading}
-        >
-          {isPropertiesPresent ? (
-            <View style={styles.container}>
-              <Formik
-                onSubmit={this.handleSubmit}
-                initialValues={serviceForm}
-                validate={FormUtils.validate(this.formSchema)}
-                innerRef={this.formRef}
-              >
-                {(formProps: FormikProps<FormikValues>): React.ReactElement => {
-                  const { values, setFieldValue } = formProps;
+        {isPropertiesPresent ? (
+          <View style={styles.container}>
+            <Formik
+              onSubmit={this.handleSubmit}
+              initialValues={serviceForm}
+              validate={FormUtils.validate(this.formSchema)}
+              innerRef={this.formRef}
+            >
+              {(formProps: FormikProps<FormikValues>): React.ReactElement => {
+                const { values, setFieldValue } = formProps;
 
-                  const onMessageChange = (description: string): void => {
-                    setFieldValue('issueDescription', description);
-                  };
-                  const isSubmitDisabled = !FormUtils.isValuesTouched(values, ['issueDescription', 'otherCategory']);
+                const onMessageChange = (description: string): void => {
+                  setFieldValue('issueDescription', description);
+                };
+                const isSubmitDisabled = !FormUtils.isValuesTouched(values, ['issueDescription', 'otherCategory']);
 
-                  const subCategorySelectedValue = values.subCategory;
-                  let isOtherSelected = false;
+                const subCategorySelectedValue = values.subCategory;
+                let isOtherSelected = false;
 
-                  const selectedSubCategory = subCategories.find(
-                    (subCategory: IDropdownOption) => subCategory.value === subCategorySelectedValue
-                  );
+                const selectedSubCategory = subCategories.find(
+                  (subCategory: IDropdownOption) => subCategory.value === subCategorySelectedValue
+                );
 
-                  if (selectedSubCategory) {
-                    isOtherSelected = selectedSubCategory.label === 'Others';
-                  }
+                if (selectedSubCategory) {
+                  isOtherSelected = selectedSubCategory.label === 'Others';
+                }
 
-                  return (
-                    <>
+                return (
+                  <>
+                    <FormDropdown
+                      textType="label"
+                      textSize="regular"
+                      fontType="regular"
+                      options={this.getProperties()}
+                      name="property"
+                      formProps={formProps}
+                      label={t('assetFinancial:property')}
+                      placeholder={t('assetFinancial:selectProperty')}
+                      isMandatory
+                      isDisabled={propertyId ? propertyId >= 0 : false}
+                      onChange={(value: string): void => setFieldValue('property', value)}
+                    />
+                    <FormTextInput
+                      label={t('serviceTickets:title')}
+                      formProps={formProps}
+                      name="title"
+                      placeholder={t('serviceTickets:exampleTitle')}
+                      inputType="default"
+                      isMandatory
+                      maxLength={100}
+                    />
+                    <FormDropdown
+                      textType="label"
+                      textSize="regular"
+                      fontType="regular"
+                      label={t('assetFinancial:category')}
+                      options={categories}
+                      name="category"
+                      formProps={formProps}
+                      placeholder={t('serviceTickets:selectCategory')}
+                      isMandatory
+                      onChange={this.setSelectedCategory}
+                    />
+                    {selectedCategoryId > 0 && (
                       <FormDropdown
                         textType="label"
                         textSize="regular"
                         fontType="regular"
-                        options={this.getProperties()}
-                        name="property"
+                        options={subCategories}
+                        name="subCategory"
+                        label={t('serviceTickets:subCategory')}
                         formProps={formProps}
-                        label={t('assetFinancial:property')}
-                        placeholder={t('assetFinancial:selectProperty')}
+                        placeholder={t('serviceTickets:selectSubCategory')}
                         isMandatory
-                        isDisabled={propertyId ? propertyId >= 0 : false}
-                        onChange={(value: string): void => setFieldValue('property', value)}
+                        onChange={(value: string): void => setFieldValue('subCategory', value)}
                       />
+                    )}
+                    {isOtherSelected && (
                       <FormTextInput
-                        label={t('serviceTickets:title')}
+                        label={t('serviceTickets:otherCategory')}
                         formProps={formProps}
-                        name="title"
-                        placeholder={t('serviceTickets:exampleTitle')}
+                        name="otherCategory"
+                        placeholder={t('serviceTickets:enterOtherCategory')}
                         inputType="default"
-                        isMandatory
-                        maxLength={100}
                       />
-                      <FormDropdown
-                        textType="label"
-                        textSize="regular"
-                        fontType="regular"
-                        label={t('assetFinancial:category')}
-                        options={categories}
-                        name="category"
-                        formProps={formProps}
-                        placeholder={t('serviceTickets:selectCategory')}
-                        isMandatory
-                        onChange={this.setSelectedCategory}
-                      />
-                      {selectedCategoryId > 0 && (
-                        <FormDropdown
-                          textType="label"
-                          textSize="regular"
-                          fontType="regular"
-                          options={subCategories}
-                          name="subCategory"
-                          label={t('serviceTickets:subCategory')}
-                          formProps={formProps}
-                          placeholder={t('serviceTickets:selectSubCategory')}
-                          isMandatory
-                          onChange={(value: string): void => setFieldValue('subCategory', value)}
-                        />
-                      )}
-                      {isOtherSelected && (
-                        <FormTextInput
-                          label={t('serviceTickets:otherCategory')}
-                          formProps={formProps}
-                          name="otherCategory"
-                          placeholder={t('serviceTickets:enterOtherCategory')}
-                          inputType="default"
-                        />
-                      )}
-                      <TextArea
-                        label={t('serviceTickets:description')}
-                        placeholder={t('serviceTickets:typeIssue')}
-                        value={values.issueDescription}
-                        onMessageChange={onMessageChange}
-                        wordCountLimit={200}
-                        helpText={t('common:optional')}
-                        containerStyle={styles.description}
-                        labelType="regular"
-                      />
-                      <UploadBoxComponent
-                        attachments={attachments}
-                        icon={icons.addImage}
-                        header={t('serviceTickets:addIssuePhotos')}
-                        subHeader={t('serviceTickets:uploadIssuePhotoHelperText')}
-                        onCapture={this.handleUpload}
-                        onDelete={this.handleDocumentDelete}
-                        containerStyle={styles.uploadBox}
-                        allowedTypes={[DocumentPicker.types.images]}
-                      />
-                      <FormButton
-                        onPress={(): void => formProps.handleSubmit()}
-                        formProps={formProps}
-                        type="primary"
-                        title={t('common:submit')}
-                        disabled={isSubmitDisabled}
-                      />
-                    </>
-                  );
-                }}
-              </Formik>
-            </View>
-          ) : (
-            this.renderEmptyState()
-          )}
-        </UserScreen>
+                    )}
+                    <TextArea
+                      label={t('serviceTickets:description')}
+                      placeholder={t('serviceTickets:typeIssue')}
+                      value={values.issueDescription}
+                      onMessageChange={onMessageChange}
+                      wordCountLimit={200}
+                      helpText={t('common:optional')}
+                      containerStyle={styles.description}
+                      labelType="regular"
+                    />
+                    {renderUploadBoxComponent(uploadProps)}
+                    <FormButton
+                      onPress={(): void => formProps.handleSubmit()}
+                      formProps={formProps}
+                      type="primary"
+                      title={t('common:submit')}
+                      disabled={isSubmitDisabled}
+                    />
+                  </>
+                );
+              }}
+            </Formik>
+          </View>
+        ) : (
+          this.renderEmptyState()
+        )}
       </>
     );
   }
 
   private renderEmptyState = (): React.ReactElement => {
-    const { t } = this.props;
+    const { t, onAddProperty } = this.props;
 
     return (
       <EmptyState
@@ -299,35 +280,10 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         buttonProps={{
           title: t('property:addProperty'),
           type: 'secondary',
-          onPress: this.onAddProperty,
+          onPress: onAddProperty,
         }}
       />
     );
-  };
-
-  private renderClearButton = (): React.ReactElement => {
-    const { t } = this.props;
-
-    return (
-      <TouchableOpacity onPress={this.onClear}>
-        <Label type="large" textType="semiBold" style={styles.clear}>
-          {t('common:clear')}
-        </Label>
-      </TouchableOpacity>
-    );
-  };
-
-  private onClear = (): void => {
-    this.setState((prevState: IScreeState) => {
-      return { clearCount: prevState.clearCount + 1 };
-    });
-  };
-
-  private onAddProperty = (): void => {
-    const { navigation } = this.props;
-    // @ts-ignore
-    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
-    AnalyticsService.track(EventType.AddPropertyInitiation);
   };
 
   private setSelectedCategory = (value: string, props?: FormikProps<FormikValues>): void => {
@@ -405,18 +361,13 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   };
 
   private handleSubmit = async (values: IFormValues, formActions: FormikHelpers<IFormValues>): Promise<void> => {
-    const {
-      properties,
-      setCurrentTicket,
-      getTickets,
-      route: { params },
-    } = this.props;
+    const { properties, setCurrentTicket, getTickets, onSubmit, toggleLoader, propertyId } = this.props;
     const { property, subCategory, title, issueDescription, otherCategory } = values;
     const { attachments } = this.state;
 
     let attachmentIds: Array<number> = [];
 
-    this.setState({ isScreenLoading: true });
+    toggleLoader(true);
 
     if (attachments.length > 0) {
       /* Make an API call for uploading the document and extract the doc Id */
@@ -461,23 +412,22 @@ class ServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       }
 
       formActions.resetForm({});
-      this.setState({ isScreenLoading: false, selectedCategoryId: -1, attachments: [] });
+      toggleLoader(false);
+      this.setState({ selectedCategoryId: -1, attachments: [] });
 
       formActions.setSubmitting(false);
-      if (params && params.propertyId) {
-        getTickets({ asset_id: params.propertyId });
+      if (propertyId && propertyId >= 0) {
+        getTickets({ asset_id: propertyId });
       } else {
         getTickets();
       }
 
-      NavigationService.navigation.navigate(ScreensKeys.BottomTabs, {
-        screen: ScreensKeys.More,
-        params: {
-          screen: ScreensKeys.ServiceTicketDetail,
-        },
-      });
+      if (onSubmit) {
+        onSubmit();
+      }
     } catch (e) {
-      this.setState({ isScreenLoading: false, selectedCategoryId: -1, attachments: [] });
+      toggleLoader(false);
+      this.setState({ selectedCategoryId: -1, attachments: [] });
       formActions.setSubmitting(false);
       formActions.resetForm({});
       AlertHelper.error({ message: e.message });
@@ -497,7 +447,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
   return bindActionCreators({ getActiveAssets, setCurrentTicket, getTickets }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(ServiceTicketForm));
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(React.memo(AddServiceTicketForm)));
 
 const styles = StyleSheet.create({
   container: {
