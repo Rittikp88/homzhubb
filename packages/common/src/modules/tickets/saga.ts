@@ -10,11 +10,18 @@ import { I18nService } from '@homzhub/common/src/services/Localization/i18nextSe
 import { TicketActions, TicketActionTypes } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
-import { ICurrentTicket, IReassignTicket, IRequestQuote } from '@homzhub/common/src/modules/tickets/interface';
+import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import {
+  ICurrentTicket,
+  IReassignTicket,
+  IRequestQuote,
+  ISubmitQuote,
+} from '@homzhub/common/src/modules/tickets/interface';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetTicketParam,
   IInvoiceSummaryPayload,
+  IQuoteParam,
   IUpdateTicketWorkStatus,
   TicketAction,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -36,6 +43,7 @@ export function* getTicketDetails(action: IFluxStandardAction<number>) {
     const {
       id,
       quoteRequestId,
+      assignedTo: { id: assignedUserId },
       asset: {
         projectName,
         country: { currencies },
@@ -51,6 +59,7 @@ export function* getTicketDetails(action: IFluxStandardAction<number>) {
         propertyName: projectName,
         currency: currencies[0],
         assetId,
+        assignedUserId,
       })
     );
   } catch (e) {
@@ -68,6 +77,7 @@ export function* getInvoiceSummary(action: IFluxStandardAction<IInvoiceSummaryPa
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }
 }
+
 export function* closeTicket() {
   try {
     const currentTicket: ICurrentTicket = yield select(TicketSelectors.getCurrentTicket);
@@ -129,6 +139,61 @@ export function* requestQuote(action: IFluxStandardAction<IRequestQuote>) {
   }
 }
 
+export function* getQuoteCategory(action: IFluxStandardAction<IQuoteParam>) {
+  if (!action.payload) return;
+  try {
+    const response: QuoteCategory[] = yield call(TicketRepository.getQuoteRequestCategory, action.payload);
+    yield put(TicketActions.getQuoteCategorySuccess(response));
+    // Creating initial set of quotes
+    const initialGroup = response.map((item) => {
+      return {
+        groupId: item.id,
+        groupName: item.name,
+        data: [
+          {
+            quoteNumber: 1,
+            title: 'serviceTickets:quote1',
+            price: '',
+            document: null,
+          },
+          {
+            quoteNumber: 2,
+            title: 'serviceTickets:quote2',
+            price: '',
+            document: null,
+          },
+          {
+            quoteNumber: 3,
+            title: 'serviceTickets:quote3',
+            price: '',
+            document: null,
+          },
+        ],
+      };
+    });
+    yield put(TicketActions.setQuotes(initialGroup));
+  } catch (e) {
+    yield put(TicketActions.requestQuoteFailure());
+    AlertHelper.error({ message: e.details.message, statusCode: e.details.statusCode });
+  }
+}
+
+export function* submitQuote(action: IFluxStandardAction<ISubmitQuote>) {
+  if (!action.payload) return;
+  const { data, onCallback } = action.payload;
+  try {
+    yield call(TicketRepository.quoteSubmit, data);
+    yield put(TicketActions.submitQuoteSuccess());
+    yield put(TicketActions.setQuotes([]));
+    AlertHelper.success({ message: I18nService.t('serviceTickets:quoteSubmission') });
+    onCallback(true);
+  } catch (e) {
+    onCallback(false);
+    yield put(TicketActions.submitQuoteFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchTicket() {
   yield takeLatest(TicketActionTypes.GET.TICKETS, getUserTickets);
   yield takeEvery(TicketActionTypes.GET.TICKET_DETAIL, getTicketDetails);
@@ -137,4 +202,6 @@ export function* watchTicket() {
   yield takeEvery(TicketActionTypes.SEND_TICKET_REMINDER, sendTicketReminder);
   yield takeEvery(TicketActionTypes.POST.REASSIGN_TICKET, reassignTicket);
   yield takeEvery(TicketActionTypes.POST.REQUEST_QUOTE, requestQuote);
+  yield takeEvery(TicketActionTypes.GET.QUOTES_CATEGORY, getQuoteCategory);
+  yield takeEvery(TicketActionTypes.POST.SUBMIT_QUOTE, submitQuote);
 }

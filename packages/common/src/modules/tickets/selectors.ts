@@ -1,9 +1,11 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
-import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
 
 const getProofAttachment = (state: IState): IImageSource[] => {
   const {
@@ -59,6 +61,30 @@ const getInvoiceSummary = (state: IState): InvoiceSummary | null => {
   return ObjectMapper.deserialize(InvoiceSummary, invoiceSummary);
 };
 
+const getQuoteAttachment = (state: IState): IDocumentSource[] => {
+  const {
+    ticket: { quoteAttachment },
+  } = state;
+  if (!quoteAttachment) return [];
+  return quoteAttachment;
+};
+
+const getQuotes = (state: IState): IQuoteGroup[] => {
+  const {
+    ticket: { quotes },
+  } = state;
+  if (!quotes) return [];
+  return quotes;
+};
+
+const getQuotesCategory = (state: IState): QuoteCategory[] => {
+  const {
+    ticket: { quotesCategory },
+  } = state;
+  if (!quotesCategory) return [];
+  return ObjectMapper.deserializeArray(QuoteCategory, quotesCategory);
+};
+
 export const TicketSelectors = {
   getProofAttachment,
   getTickets,
@@ -68,4 +94,7 @@ export const TicketSelectors = {
   getTicketDetailLoader,
   getTicketLoaders,
   getInvoiceSummary,
+  getQuoteAttachment,
+  getQuotes,
+  getQuotesCategory,
 };

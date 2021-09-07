@@ -134,8 +134,10 @@ class TicketActivityCard extends PureComponent<Props> {
       }
     };
 
+    const title = code === TicketStatus.WORK_UPDATE && data ? data.title : label;
+
     return (
-      <TicketActivitySection role={role} user={user} time={createdAt} label={label} description={comment}>
+      <TicketActivitySection role={role} user={user} time={createdAt} label={title} description={comment}>
         {renderActivityData()}
       </TicketActivitySection>
     );
@@ -194,7 +196,6 @@ class TicketActivityCard extends PureComponent<Props> {
 
   private renderActivityStatusBadge = (props: IActivityStatusBadge): React.ReactElement => {
     const { data, extraStyle } = props;
-
     return (
       <View style={[styles.activityBadgeContainer, extraStyle]}>
         {data.map((status: string, index: number) => (

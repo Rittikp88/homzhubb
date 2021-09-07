@@ -1,6 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { Attachment, IAttachment } from '@homzhub/common/src/domain/models/Attachment';
+import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
+
+export interface IQuote {
+  id: number;
+  quote_number: number;
+  total_amount: number;
+  status: string;
+  currency: ICurrency;
+  attachment: IAttachment;
+}
 
 @JsonObject('Quote')
 export class Quote {

@@ -42,8 +42,8 @@ const AddReminderScreen = (): React.ReactElement => {
     }
   };
 
-  const handleAddAccount = (): void => {
-    navigate(ScreensKeys.AddBankAccount);
+  const handleAddAccount = (id?: number): void => {
+    navigate(ScreensKeys.AddBankAccount, { id });
   };
 
   return (

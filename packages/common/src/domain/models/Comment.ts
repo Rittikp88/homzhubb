@@ -1,5 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { User } from '@homzhub/common/src/domain/models/User';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
+
+export interface IComment {
+  id: number;
+  comment: string;
+  commented_by: IUser;
+  posted_at: string;
+  modified_at: string;
+  can_edit: boolean;
+  can_delete: boolean;
+}
 
 @JsonObject('Comment')
 export class Comment {

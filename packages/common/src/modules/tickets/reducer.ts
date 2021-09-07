@@ -2,9 +2,11 @@ import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { TicketActionPayloadTypes, TicketActionTypes } from '@homzhub/common/src//modules/tickets/actions';
 import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
+import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
-import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
 
 export const initialTicketState: ITicketState = {
   proofAttachment: [],
@@ -12,6 +14,9 @@ export const initialTicketState: ITicketState = {
   tickets: [],
   ticketDetail: null,
   invoiceSummary: null,
+  quoteAttachment: [],
+  quotes: [],
+  quotesCategory: [],
   loaders: {
     tickets: false,
     ticketDetail: false,
@@ -20,6 +25,8 @@ export const initialTicketState: ITicketState = {
     ticketReminder: false,
     reassignTicket: false,
     requestQuote: false,
+    quotesCategory: false,
+    submitQuote: false,
   },
 };
 
@@ -142,6 +149,43 @@ export const ticketReducer = (
         ...state,
         proofAttachment: initialTicketState.proofAttachment,
         currentTicket: initialTicketState.currentTicket,
+      };
+    case TicketActionTypes.SET.QUOTE_ATTACHMENT:
+      return {
+        ...state,
+        ['quoteAttachment']: action.payload as IDocumentSource[],
+      };
+    case TicketActionTypes.SET.QUOTE:
+      return {
+        ...state,
+        ['quotes']: action.payload as IQuoteGroup[],
+      };
+    case TicketActionTypes.GET.QUOTES_CATEGORY:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['quotesCategory']: true },
+      };
+    case TicketActionTypes.GET.QUOTES_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        ['quotesCategory']: action.payload as IQuoteCategory[],
+        ['loaders']: { ...state.loaders, ['quotesCategory']: false },
+      };
+    case TicketActionTypes.GET.QUOTES_CATEGORY_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['quotesCategory']: false },
+      };
+    case TicketActionTypes.POST.SUBMIT_QUOTE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['submitQuote']: true },
+      };
+    case TicketActionTypes.POST.SUBMIT_QUOTE_SUCCESS:
+    case TicketActionTypes.POST.SUBMIT_QUOTE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['submitQuote']: false },
       };
     default:
       return {

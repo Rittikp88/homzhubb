@@ -47,6 +47,9 @@ const ReassignTicketForm = ({ onSuccess }: IProps): React.ReactElement => {
     }
   };
   // HANDLERS
+  const dropdownData = [...(assetUsers?.owners ?? []), ...(assetUsers?.tenants ?? [])].filter(
+    (item) => item.value !== selectedTicket?.assignedUserId
+  );
 
   return (
     <View style={styles.container}>
@@ -57,7 +60,7 @@ const ReassignTicketForm = ({ onSuccess }: IProps): React.ReactElement => {
         {t('reassignInfoText')}
       </Label>
       <Dropdown
-        data={[...(assetUsers?.owners ?? []), ...(assetUsers?.tenants ?? [])]}
+        data={dropdownData}
         icon={icons.downArrowFilled}
         iconColor={theme.colors.darkTint5}
         iconSize={15}
@@ -65,6 +68,7 @@ const ReassignTicketForm = ({ onSuccess }: IProps): React.ReactElement => {
         onDonePress={setReassignedTo}
         listHeight={theme.viewport.height / 2}
         placeholder={t('selectAnAssignee')}
+        disable={dropdownData.length < 1}
       />
       <TextArea
         value={comment}

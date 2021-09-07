@@ -25,6 +25,7 @@ interface IProps {
   placeholder?: string;
   isEmailField?: boolean;
   chipColor?: string;
+  totalChips?: number;
 }
 
 const ChipField = (props: IProps): React.ReactElement => {
@@ -43,6 +44,7 @@ const ChipField = (props: IProps): React.ReactElement => {
     isEmailField = false,
     chipColor = theme.colors.darkTint4,
     valueLimit,
+    totalChips = 10,
   } = props;
 
   useEffect(() => {
@@ -109,7 +111,11 @@ const ChipField = (props: IProps): React.ReactElement => {
       if (setValueError) {
         setValueError(true);
       }
-      setError('auth:duplicateEmail');
+      if (isEmailField) {
+        setError('auth:duplicateEmail');
+      } else {
+        setError('common:duplicateValue');
+      }
     }
   };
 
@@ -149,7 +155,7 @@ const ChipField = (props: IProps): React.ReactElement => {
               ))}
             </View>
           )}
-          {chips.length < 10 && (
+          {chips.length < totalChips && (
             <TextInput
               value={value}
               onChange={handleChange}

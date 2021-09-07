@@ -8,6 +8,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -39,7 +40,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IOwnProp {
   onSubmit: () => void;
-  onAddAccount?: () => void;
+  onAddAccount?: (id?: number) => void;
   isEdit?: boolean;
   isFromDues?: boolean;
   setLoading?: (isLoading: boolean) => void;
@@ -347,9 +348,13 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     }
   };
 
-  const renderRightNode = (): React.ReactElement => {
+  const renderRightNode = (ownerId?: number): React.ReactElement => {
     return (
-      <TouchableOpacity style={styles.rightNode} onPress={onAddAccount}>
+      <TouchableOpacity
+        style={styles.rightNode}
+        disabled={!onAddAccount}
+        onPress={onAddAccount ? (): void => onAddAccount(ownerId) : FunctionUtils.noop}
+      >
         <Icon name={icons.plus} color={theme.colors.primaryColor} size={20} />
         <Label textType="semiBold" style={styles.rightText}>
           {t('addNew')}
@@ -444,7 +449,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
                   name="bankAccount"
                   label={t('bankAccount')}
                   placeholder={t('selectAccount')}
-                  rightNode={renderRightNode()}
+                  rightNode={renderRightNode(formProps.values.owner)}
                   formProps={formProps}
                   isDisabled={!canEdit || bankInfo.length < 1}
                   options={bankInfo.filter((item) => item.isActive).map((item) => item.bankDetail)}

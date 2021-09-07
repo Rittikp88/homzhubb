@@ -40,7 +40,7 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnPr
   const getInitialData = (): IBankAccount => {
     if (isEditFlow && currentBank) {
       const { beneficiaryName, bankName, ifscCode, panNumber, accountNumber } = currentBank;
-      const prefilledData: IBankAccount = {
+      return {
         beneficiaryName,
         bankName,
         ifscCode,
@@ -48,9 +48,8 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnPr
         confirmBankAccNum: '',
         panNumber: panNumber ?? '',
       };
-      return prefilledData;
     }
-    const emptyData: IBankAccount = {
+    return {
       beneficiaryName: '',
       bankName: '',
       ifscCode: '',
@@ -58,7 +57,6 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnPr
       confirmBankAccNum: '',
       panNumber: panDetail.panNumber,
     };
-    return emptyData;
   };
 
   const fetchPanDetails = async (): Promise<void> => {

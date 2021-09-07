@@ -18,6 +18,9 @@ export class TicketActivityData {
   @JsonProperty('attachments', [Attachment], true)
   private _attachments = [];
 
+  @JsonProperty('title', String, true)
+  private _title = '';
+
   get assignedTo(): User {
     return this._assignedTo;
   }
@@ -32,5 +35,9 @@ export class TicketActivityData {
 
   get attachments(): Attachment[] {
     return this._attachments;
+  }
+
+  get title(): string {
+    return this._title;
   }
 }

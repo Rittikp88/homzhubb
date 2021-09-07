@@ -131,6 +131,7 @@ const ReviewForm = (props: IProps): React.ReactElement => {
         onUpdate={update}
         onSubmit={onSubmit}
         secondaryAction={onPress}
+        review={review}
       />
       {renderDeleteView()}
     </>

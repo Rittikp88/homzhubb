@@ -1,7 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { Comment } from '@homzhub/common/src/domain/models/Comment';
-import { User } from '@homzhub/common/src/domain/models/User';
-import { Quote } from '@homzhub/common/src/domain/models/Quote';
+import { Comment, IComment } from '@homzhub/common/src/domain/models/Comment';
+import { IUser, User } from '@homzhub/common/src/domain/models/User';
+import { IQuote, Quote } from '@homzhub/common/src/domain/models/Quote';
+
+export interface IQuoteGroup {
+  id: number;
+  user: IUser;
+  role?: string;
+  comment?: IComment;
+  quotes?: IQuote[];
+}
 
 @JsonObject('QuoteGroup')
 export class QuoteGroup {

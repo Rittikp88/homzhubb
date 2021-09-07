@@ -1,8 +1,14 @@
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
-import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
-import { IQuoteRequestParam, IReassignTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import {
+  IQuoteRequestParam,
+  IQuoteSubmitPayload,
+  IReassignTicketParam,
+} from '@homzhub/common/src/domain/repositories/interfaces';
+import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
 
 export interface ITicketState {
   proofAttachment: IImageSource[];
@@ -10,6 +16,9 @@ export interface ITicketState {
   tickets: ITicket[];
   ticketDetail: ITicket | null;
   invoiceSummary: IInvoiceSummary | null;
+  quoteAttachment: IDocumentSource[];
+  quotes: IQuoteGroup[];
+  quotesCategory: IQuoteCategory[];
   loaders: {
     tickets: boolean;
     ticketDetail: boolean;
@@ -18,6 +27,8 @@ export interface ITicketState {
     ticketReminder: boolean;
     reassignTicket: boolean;
     requestQuote: boolean;
+    quotesCategory: boolean;
+    submitQuote: boolean;
   };
 }
 
@@ -27,6 +38,7 @@ export interface ICurrentTicket {
   propertyName?: string;
   currency?: Currency;
   assetId?: number;
+  assignedUserId?: number;
 }
 
 export interface IReassignTicket {
@@ -38,5 +50,10 @@ export interface IReassignTicket {
 export interface IRequestQuote {
   ticketId: number;
   payload: IQuoteRequestParam;
+  onCallback: (status: boolean) => void;
+}
+
+export interface ISubmitQuote {
+  data: IQuoteSubmitPayload;
   onCallback: (status: boolean) => void;
 }

@@ -1,6 +1,4 @@
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 // ENUM START
@@ -40,8 +38,6 @@ export enum TakeActionTitle {
 
 // ENUM END
 
-const translationKey = LocaleConstants.namespacesKey.serviceTickets;
-
 export const TOTAL_IMAGES = 10;
 
 export const priorityColors = {
@@ -51,62 +47,15 @@ export const priorityColors = {
   ALL: theme.colors.informational,
 };
 
+export interface IQuoteGroup {
+  groupId: number;
+  groupName: string;
+  data: IInitialQuote[];
+}
+
 export interface IInitialQuote {
   quoteNumber: number;
   title: string;
   price: string;
   document: IDocumentSource | null;
 }
-
-export const initialQuotes: IInitialQuote[] = [
-  {
-    quoteNumber: 1,
-    title: `${translationKey}:quote1`,
-    price: '',
-    document: null,
-  },
-  {
-    quoteNumber: 2,
-    title: `${translationKey}:quote2`,
-    price: '',
-    document: null,
-  },
-  {
-    quoteNumber: 3,
-    title: `${translationKey}:quote3`,
-    price: '',
-    document: null,
-  },
-];
-
-export interface IExperienceData {
-  icon: string;
-  title: ExperienceType;
-  type: ExperienceType;
-  color: string;
-  rating: number;
-}
-
-export const initialExperienceData: IExperienceData[] = [
-  {
-    icon: icons.sadFace,
-    title: ExperienceType.UNSATISFIED,
-    type: ExperienceType.UNSATISFIED,
-    color: theme.colors.darkTint9,
-    rating: 1,
-  },
-  {
-    icon: icons.neutralFace,
-    title: ExperienceType.NEUTRAL,
-    type: ExperienceType.NEUTRAL,
-    color: theme.colors.darkTint9,
-    rating: 3,
-  },
-  {
-    icon: icons.happyFace,
-    title: ExperienceType.SATISFIED,
-    type: ExperienceType.SATISFIED,
-    color: theme.colors.darkTint9,
-    rating: 5,
-  },
-];

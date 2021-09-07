@@ -1,10 +1,21 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IInvoiceSummary, InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { IQuoteCategory, QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IGetTicketParam, IInvoiceSummaryPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { ICurrentTicket, IReassignTicket, IRequestQuote } from '@homzhub/common/src/modules/tickets/interface';
-import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import {
+  IGetTicketParam,
+  IInvoiceSummaryPayload,
+  IQuoteParam,
+} from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  ICurrentTicket,
+  IReassignTicket,
+  IRequestQuote,
+  ISubmitQuote,
+} from '@homzhub/common/src/modules/tickets/interface';
+import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
 
 const actionTypePrefix = 'Ticket/';
 export const TicketActionTypes = {
@@ -15,6 +26,9 @@ export const TicketActionTypes = {
     TICKET_DETAIL: `${actionTypePrefix}TICKET_DETAIL`,
     TICKET_DETAIL_SUCCESS: `${actionTypePrefix}TICKET_DETAIL_SUCCESS`,
     TICKET_DETAIL_FAILURE: `${actionTypePrefix}TICKET_DETAIL_FAILURE`,
+    QUOTES_CATEGORY: `${actionTypePrefix}QUOTES_CATEGORY`,
+    QUOTES_CATEGORY_SUCCESS: `${actionTypePrefix}QUOTES_CATEGORY_SUCCESS`,
+    QUOTES_CATEGORY_FAILURE: `${actionTypePrefix}QUOTES_CATEGORY_FAILURE`,
   },
   POST: {
     INVOICE_SUMMARY: `${actionTypePrefix}INVOICE_SUMMARY`,
@@ -26,10 +40,15 @@ export const TicketActionTypes = {
     REQUEST_QUOTE: `${actionTypePrefix}REQUEST_QUOTE`,
     REQUEST_QUOTE_SUCCESS: `${actionTypePrefix}REQUEST_QUOTE_SUCCESS`,
     REQUEST_QUOTE_FAILURE: `${actionTypePrefix}REQUEST_QUOTE_FAILURE`,
+    SUBMIT_QUOTE: `${actionTypePrefix}SUBMIT_QUOTE`,
+    SUBMIT_QUOTE_SUCCESS: `${actionTypePrefix}SUBMIT_QUOTE_SUCCESS`,
+    SUBMIT_QUOTE_FAILURE: `${actionTypePrefix}SUBMIT_QUOTE_FAILURE`,
   },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
     CURRENT_TICKET: `${actionTypePrefix}CURRENT_TICKET`,
+    QUOTE_ATTACHMENT: `${actionTypePrefix}QUOTE_ATTACHMENT`,
+    QUOTE: `${actionTypePrefix}QUOTE`,
   },
   CLOSE_TICKET: `${actionTypePrefix}CLOSE_TICKET`,
   CLOSE_TICKET_SUCCESS: `${actionTypePrefix}CLOSE_TICKET_SUCCESS`,
@@ -147,6 +166,43 @@ const requestQuoteFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.POST.REQUEST_QUOTE_FAILURE,
 });
 
+const setQuoteAttachment = (payload: IDocumentSource[]): IFluxStandardAction<IDocumentSource[]> => ({
+  type: TicketActionTypes.SET.QUOTE_ATTACHMENT,
+  payload,
+});
+
+const setQuotes = (payload: IQuoteGroup[]): IFluxStandardAction<IQuoteGroup[]> => ({
+  type: TicketActionTypes.SET.QUOTE,
+  payload,
+});
+
+const getQuoteCategory = (payload: IQuoteParam): IFluxStandardAction<IQuoteParam> => ({
+  type: TicketActionTypes.GET.QUOTES_CATEGORY,
+  payload,
+});
+
+const getQuoteCategorySuccess = (payload: QuoteCategory[]): IFluxStandardAction<IQuoteCategory[]> => ({
+  type: TicketActionTypes.GET.QUOTES_CATEGORY_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getQuoteCategoryFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.GET.QUOTES_CATEGORY_FAILURE,
+});
+
+const submitQuote = (payload: ISubmitQuote): IFluxStandardAction<ISubmitQuote> => ({
+  type: TicketActionTypes.POST.SUBMIT_QUOTE,
+  payload,
+});
+
+const submitQuoteSuccess = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.SUBMIT_QUOTE_SUCCESS,
+});
+
+const submitQuoteFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.SUBMIT_QUOTE_FAILURE,
+});
+
 export type TicketActionPayloadTypes =
   | string[]
   | string
@@ -159,7 +215,12 @@ export type TicketActionPayloadTypes =
   | IInvoiceSummaryPayload
   | IInvoiceSummary
   | IReassignTicket
-  | IRequestQuote;
+  | IRequestQuote
+  | IDocumentSource[]
+  | IQuoteGroup[]
+  | IQuoteParam
+  | IQuoteCategory[]
+  | ISubmitQuote;
 
 export const TicketActions = {
   setAttachment,
@@ -186,4 +247,12 @@ export const TicketActions = {
   requestQuote,
   requestQuoteSuccess,
   requestQuoteFailure,
+  setQuoteAttachment,
+  setQuotes,
+  getQuoteCategory,
+  getQuoteCategorySuccess,
+  getQuoteCategoryFailure,
+  submitQuote,
+  submitQuoteSuccess,
+  submitQuoteFailure,
 };

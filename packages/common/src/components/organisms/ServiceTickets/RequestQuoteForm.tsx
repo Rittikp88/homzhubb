@@ -89,6 +89,7 @@ const RequestQuoteForm = ({ onSuccess }: IProps): React.ReactElement => {
         onSetValue={onSetCategories}
         setValueError={updateCategoryError}
         valueLimit={20}
+        totalChips={5}
       />
       <View style={styles.switchContainer}>
         <Text type="small" textType="semiBold">

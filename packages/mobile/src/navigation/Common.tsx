@@ -78,6 +78,7 @@ import {
   IChatScreen,
   IDetailNavParam,
   IPropertyImageParam,
+  IAddBankAccount,
 } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type CommonParamList = {
@@ -134,7 +135,7 @@ export type CommonParamList = {
   [ScreensKeys.LocalitiesSelection]: undefined;
   [ScreensKeys.AddPropertyImage]: IPropertyImageParam;
   [ScreensKeys.DuesScreen]: undefined;
-  [ScreensKeys.AddBankAccount]: undefined;
+  [ScreensKeys.AddBankAccount]: undefined | IAddBankAccount;
   [ScreensKeys.RequestQuote]: undefined;
   [ScreensKeys.QuotePayment]: undefined;
 };

@@ -24,6 +24,7 @@ export enum TicketStatus {
   PAYMENT_DONE = 'PAYMENT_DONE',
   WORK_COMPLETED = 'WORK_COMPLETED',
   TICKET_CLOSED = 'TICKET_CLOSED',
+  WORK_UPDATE = 'WORK_UPDATE',
 }
 
 export enum TicketPriority {

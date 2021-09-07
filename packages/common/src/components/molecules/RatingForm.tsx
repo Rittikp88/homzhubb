@@ -75,7 +75,7 @@ const RatingForm = (props: IProps): React.ReactElement => {
       finalPayload = {
         ...payload,
         pillar_ratings: categoryRatings.map((pillar: Pillar) => ({
-          pillar: (pillar.id || pillar.pillarName?.id) ?? 0,
+          pillar: (pillar.pillarName?.id || pillar.id) ?? 0,
           rating: pillar.rating,
         })),
       };
