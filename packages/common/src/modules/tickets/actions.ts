@@ -2,13 +2,16 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IInvoiceSummary, InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IQuoteCategory, QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import { IQuoteRequest, QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetTicketParam,
   IInvoiceSummaryPayload,
   IQuoteParam,
+  IRequestMorePayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
+  IApproveQuote,
   ICurrentTicket,
   IReassignTicket,
   IRequestQuote,
@@ -29,6 +32,9 @@ export const TicketActionTypes = {
     QUOTES_CATEGORY: `${actionTypePrefix}QUOTES_CATEGORY`,
     QUOTES_CATEGORY_SUCCESS: `${actionTypePrefix}QUOTES_CATEGORY_SUCCESS`,
     QUOTES_CATEGORY_FAILURE: `${actionTypePrefix}QUOTES_CATEGORY_FAILURE`,
+    QUOTES_REQUEST: `${actionTypePrefix}QUOTES_REQUEST`,
+    QUOTES_REQUEST_SUCCESS: `${actionTypePrefix}QUOTES_REQUEST_SUCCESS`,
+    QUOTES_REQUEST_FAILURE: `${actionTypePrefix}QUOTES_REQUEST_FAILURE`,
   },
   POST: {
     INVOICE_SUMMARY: `${actionTypePrefix}INVOICE_SUMMARY`,
@@ -43,6 +49,12 @@ export const TicketActionTypes = {
     SUBMIT_QUOTE: `${actionTypePrefix}SUBMIT_QUOTE`,
     SUBMIT_QUOTE_SUCCESS: `${actionTypePrefix}SUBMIT_QUOTE_SUCCESS`,
     SUBMIT_QUOTE_FAILURE: `${actionTypePrefix}SUBMIT_QUOTE_FAILURE`,
+    APPROVE_QUOTE: `${actionTypePrefix}APPROVE_QUOTE`,
+    APPROVE_QUOTE_SUCCESS: `${actionTypePrefix}APPROVE_QUOTE_SUCCESS`,
+    APPROVE_QUOTE_FAILURE: `${actionTypePrefix}APPROVE_QUOTE_FAILURE`,
+    REQUEST_MORE_QUOTE: `${actionTypePrefix}REQUEST_MORE_QUOTE`,
+    REQUEST_MORE_QUOTE_SUCCESS: `${actionTypePrefix}REQUEST_MORE_QUOTE_SUCCESS`,
+    REQUEST_MORE_QUOTE_FAILURE: `${actionTypePrefix}REQUEST_MORE_QUOTE_FAILURE`,
   },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
@@ -203,6 +215,46 @@ const submitQuoteFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.POST.SUBMIT_QUOTE_FAILURE,
 });
 
+const getQuoteRequests = (payload: IQuoteParam): IFluxStandardAction<IQuoteParam> => ({
+  type: TicketActionTypes.GET.QUOTES_REQUEST,
+  payload,
+});
+
+const getQuoteRequestsSuccess = (payload: QuoteRequest): IFluxStandardAction<IQuoteRequest> => ({
+  type: TicketActionTypes.GET.QUOTES_REQUEST_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getQuoteRequestsFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.GET.QUOTES_REQUEST_FAILURE,
+});
+
+const approveQuote = (payload: IApproveQuote): IFluxStandardAction<IApproveQuote> => ({
+  type: TicketActionTypes.POST.APPROVE_QUOTE,
+  payload,
+});
+
+const approveQuoteSuccess = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.APPROVE_QUOTE_SUCCESS,
+});
+
+const approveQuoteFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.APPROVE_QUOTE_FAILURE,
+});
+
+const requestMoreQuote = (payload: IRequestMorePayload): IFluxStandardAction<IRequestMorePayload> => ({
+  type: TicketActionTypes.POST.REQUEST_MORE_QUOTE,
+  payload,
+});
+
+const requestMoreQuoteSuccess = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.REQUEST_MORE_QUOTE_SUCCESS,
+});
+
+const requestMoreQuoteFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.POST.REQUEST_MORE_QUOTE_FAILURE,
+});
+
 export type TicketActionPayloadTypes =
   | string[]
   | string
@@ -220,7 +272,10 @@ export type TicketActionPayloadTypes =
   | IQuoteGroup[]
   | IQuoteParam
   | IQuoteCategory[]
-  | ISubmitQuote;
+  | ISubmitQuote
+  | IQuoteRequest
+  | IApproveQuote
+  | IRequestMorePayload;
 
 export const TicketActions = {
   setAttachment,
@@ -255,4 +310,13 @@ export const TicketActions = {
   submitQuote,
   submitQuoteSuccess,
   submitQuoteFailure,
+  getQuoteRequests,
+  getQuoteRequestsSuccess,
+  getQuoteRequestsFailure,
+  approveQuote,
+  approveQuoteSuccess,
+  approveQuoteFailure,
+  requestMoreQuote,
+  requestMoreQuoteSuccess,
+  requestMoreQuoteFailure,
 };

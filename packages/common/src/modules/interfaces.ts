@@ -36,6 +36,10 @@ export interface IPaginationPayload<T> {
   isReset?: boolean;
 }
 
+export interface IOnCallback {
+  onCallback: (status: boolean) => void;
+}
+
 export type GeneratorEffects = SelectEffect | PutEffect | CallEffect;
 
 export type VoidGenerator = Generator<GeneratorEffects, void>;

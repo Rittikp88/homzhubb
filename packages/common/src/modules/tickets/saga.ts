@@ -12,6 +12,7 @@ import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import {
+  IApproveQuote,
   ICurrentTicket,
   IReassignTicket,
   IRequestQuote,
@@ -22,6 +23,7 @@ import {
   IGetTicketParam,
   IInvoiceSummaryPayload,
   IQuoteParam,
+  IRequestMorePayload,
   IUpdateTicketWorkStatus,
   TicketAction,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -194,6 +196,50 @@ export function* submitQuote(action: IFluxStandardAction<ISubmitQuote>) {
   }
 }
 
+export function* getQuoteRequests(action: IFluxStandardAction<IQuoteParam>) {
+  if (!action.payload) return;
+  try {
+    const res = yield call(TicketRepository.getQuoteRequest, action.payload);
+    yield put(TicketActions.getQuoteRequestsSuccess(res));
+  } catch (e) {
+    yield put(TicketActions.getQuoteRequestsFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
+export function* quoteApprove(action: IFluxStandardAction<IApproveQuote>) {
+  if (!action.payload) return;
+  const { data, onCallback } = action.payload;
+  try {
+    yield call(TicketRepository.quoteApprove, data);
+    yield put(TicketActions.approveQuoteSuccess());
+    AlertHelper.success({ message: I18nService.t('serviceTickets:quoteApproved') });
+    onCallback(true);
+  } catch (e) {
+    onCallback(false);
+    yield put(TicketActions.approveQuoteFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
+export function* requestMoreQuote(action: IFluxStandardAction<IRequestMorePayload>) {
+  if (!action.payload) return;
+  const { onCallback } = action.payload;
+  try {
+    yield call(TicketRepository.requestMoreQuote, action.payload);
+    yield put(TicketActions.requestMoreQuoteSuccess());
+    if (onCallback) {
+      onCallback(true);
+    }
+  } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
+    yield put(TicketActions.requestMoreQuoteFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchTicket() {
   yield takeLatest(TicketActionTypes.GET.TICKETS, getUserTickets);
   yield takeEvery(TicketActionTypes.GET.TICKET_DETAIL, getTicketDetails);
@@ -204,4 +250,7 @@ export function* watchTicket() {
   yield takeEvery(TicketActionTypes.POST.REQUEST_QUOTE, requestQuote);
   yield takeEvery(TicketActionTypes.GET.QUOTES_CATEGORY, getQuoteCategory);
   yield takeEvery(TicketActionTypes.POST.SUBMIT_QUOTE, submitQuote);
+  yield takeEvery(TicketActionTypes.GET.QUOTES_REQUEST, getQuoteRequests);
+  yield takeEvery(TicketActionTypes.POST.APPROVE_QUOTE, quoteApprove);
+  yield takeEvery(TicketActionTypes.POST.REQUEST_MORE_QUOTE, requestMoreQuote);
 }

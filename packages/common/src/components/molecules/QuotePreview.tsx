@@ -17,10 +17,11 @@ interface IProps {
   selectedQuote: number;
   onSelectQuote: (id: number) => void;
   onOpenQuote: (url: string) => void;
+  onRequestMore: () => void;
 }
 
 const QuotePreview = (props: IProps): React.ReactElement => {
-  const { detail, selectedQuote, onSelectQuote, onOpenQuote } = props;
+  const { detail, selectedQuote, onSelectQuote, onOpenQuote, onRequestMore } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
   // HANDLERS
@@ -81,7 +82,12 @@ const QuotePreview = (props: IProps): React.ReactElement => {
                   return renderQuotes(quote);
                 })}
               </View>
-              {index !== quotes.length - 1 && <Divider containerStyles={styles.separator} />}
+              <TouchableOpacity onPress={onRequestMore}>
+                <Label type="large" textType="semiBold" style={styles.moreText}>
+                  {t('requestForMore')}
+                </Label>
+              </TouchableOpacity>
+              {index === quotes.length - 1 && <Divider containerStyles={styles.separator} />}
             </View>
           );
         })
@@ -123,5 +129,8 @@ const styles = StyleSheet.create({
   },
   subTTitle: {
     marginRight: 8,
+  },
+  moreText: {
+    color: theme.colors.primaryColor,
   },
 });

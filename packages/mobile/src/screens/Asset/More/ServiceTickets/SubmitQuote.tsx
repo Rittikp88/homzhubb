@@ -11,9 +11,8 @@ import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { CollapsibleSection } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import SubmitQuoteForm, {
-  ICollapseSection,
-} from '@homzhub/common/src/components/organisms/ServiceTickets/SubmitQuoteForm';
+import SubmitQuoteForm from '@homzhub/common/src/components/organisms/ServiceTickets/SubmitQuoteForm';
+import { ICollapseSection } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const SubmitQuote = (): ReactElement => {

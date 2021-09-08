@@ -134,6 +134,10 @@ export enum InvoiceActions {
   TICKET_INVOICE = 'TICKET_INVOICE',
 }
 
+export enum QuoteActions {
+  REQUEST_MORE_QUOTE = 'REQUEST_MORE_QUOTE',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -1137,4 +1141,18 @@ export interface ISummaryPayload {
 
 export interface IInvoiceSummaryPayload extends IPayloadWithAction {
   payload: ISummaryPayload;
+}
+
+export interface IRequestMore {
+  action: string;
+  payload: {
+    quote_request_category: number;
+    comment?: string;
+  };
+}
+
+export interface IRequestMorePayload {
+  data: IRequestMore;
+  param: IQuoteParam;
+  onCallback?: (status: boolean) => void;
 }

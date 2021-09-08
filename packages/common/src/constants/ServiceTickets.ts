@@ -1,3 +1,4 @@
+import React from 'react';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
@@ -37,6 +38,11 @@ export enum TakeActionTitle {
 }
 
 // ENUM END
+
+export interface ICollapseSection {
+  children: React.ReactElement;
+  title: string;
+}
 
 export const TOTAL_IMAGES = 10;
 

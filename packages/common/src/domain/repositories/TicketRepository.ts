@@ -15,6 +15,7 @@ import {
   IQuoteRequestParam,
   IQuoteSubmitPayload,
   IReassignTicketParam,
+  IRequestMorePayload,
   ISubmitReview,
   IUpdateTicketWorkStatus,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -116,6 +117,11 @@ class TicketRepository {
   public getTicketReview = async (ticketId: number, reviewId: number): Promise<AssetReview> => {
     const response = await this.apiClient.get(ENDPOINTS.reviewById(ticketId, reviewId));
     return ObjectMapper.deserialize(AssetReview, response);
+  };
+
+  public requestMoreQuote = async (payload: IRequestMorePayload): Promise<void> => {
+    const { data, param } = payload;
+    return await this.apiClient.patch(ENDPOINTS.quoteRequestById(param), data);
   };
 }
 

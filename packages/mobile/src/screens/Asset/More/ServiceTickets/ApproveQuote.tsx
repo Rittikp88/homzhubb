@@ -1,87 +1,39 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
-import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import QuotePreview from '@homzhub/common/src/components/molecules/QuotePreview';
 import { CollapsibleSection } from '@homzhub/mobile/src/components';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import { QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { IQuoteApprovePayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import ApproveQuoteForm from '@homzhub/common/src/components/organisms/ServiceTickets/ApproveQuoteForm';
+import { IRequestMorePayload, QuoteActions } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ICollapseSection } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const ApproveQuote = (): React.ReactElement => {
+  const { goBack } = useNavigation();
   const dispatch = useDispatch();
-  const [isLoading, setLoader] = useState(false);
-  const [comment, setComment] = useState('');
-  const [quotes, setQuotes] = useState<QuoteRequest>();
-  const [selectedQuote, setSelectedQuote] = useState<number[]>([]);
-
-  const { goBack, navigate } = useNavigation();
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
+  const { quoteRequests, approveQuote } = useSelector(TicketSelectors.getTicketLoaders);
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
+  const [category, setCategory] = useState({
+    id: 0,
+    name: '',
+  });
+  const [isRequestMore, setRequestMore] = useState(false);
+  const [moreComment, setMoreComment] = useState('');
 
-  useEffect(() => {
-    setLoader(true);
-    if (selectedTicket) {
-      TicketRepository.getQuoteRequest({
-        ticketId: selectedTicket.ticketId,
-        quoteRequestId: selectedTicket.quoteRequestId,
-      })
-        .then((res) => {
-          setQuotes(res);
-          setLoader(false);
-        })
-        .catch((e) => {
-          setLoader(false);
-          AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-        });
-    }
-  }, []);
-
-  // HANDLERS
-
-  const onSubmit = (): void => {
-    if (selectedTicket) {
-      const payload: IQuoteApprovePayload = {
-        param: { ticketId: selectedTicket.ticketId },
-        data: {
-          quotes: selectedQuote,
-          ...(!!comment && { comment }),
-        },
-      };
-
-      TicketRepository.quoteApprove(payload)
-        .then(() => {
-          AlertHelper.success({ message: t('quoteApproved') });
-          dispatch(TicketActions.getTickets());
-          navigate(ScreensKeys.ServiceTicketDetail);
-        })
-        .catch((e) => AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) }));
-    }
-  };
-
-  const onSelectQuote = (id: number, index: number): void => {
-    const updateQuote = [...selectedQuote];
-    updateQuote[index] = id;
-    setSelectedQuote(updateQuote);
-  };
-
-  const onCommentChange = (value: string): void => {
-    setComment(value);
-  };
+  // HANDLERS START
 
   const onOpenQuote = async (url: string): Promise<void> => {
     if (!(await LinkingService.canOpenURL(url))) {
@@ -90,55 +42,114 @@ const ApproveQuote = (): React.ReactElement => {
 
     await LinkingService.canOpenURL(url);
   };
-  // HANDLERS
+
+  const onRequestMore = (id: number, name: string): void => {
+    setCategory({ id, name });
+    setRequestMore(true);
+  };
+
+  const onCloseSheet = (): void => {
+    setRequestMore(false);
+  };
+
+  const onCommentChange = (value: string): void => {
+    setMoreComment(value);
+  };
+
+  const onSubmit = (): void => {
+    if (selectedTicket) {
+      const submitPayload: IRequestMorePayload = {
+        param: {
+          ticketId: selectedTicket.ticketId,
+          quoteRequestId: selectedTicket.quoteRequestId,
+        },
+        data: {
+          action: QuoteActions.REQUEST_MORE_QUOTE,
+          payload: {
+            quote_request_category: category.id,
+            ...(!!moreComment && { comment: moreComment }),
+          },
+        },
+        onCallback: handleCallback,
+      };
+
+      dispatch(TicketActions.requestMoreQuote(submitPayload));
+    }
+  };
+
+  const handleCallback = (status: boolean): void => {
+    setRequestMore(false);
+    if (status) {
+      AlertHelper.success({ message: t('moreQuoteSuccess') });
+    }
+    goBack();
+  };
+
+  // HANDLERS END
+
+  const renderCollapsibleSection = (data: ICollapseSection): React.ReactElement => {
+    return (
+      <CollapsibleSection
+        title={t(data.title)}
+        collapseIcon={icons.upArrow}
+        expandIcon={icons.downArrow}
+        containerStyle={styles.cardContainer}
+        titleStyle={styles.cardTitle}
+        iconStyle={styles.iconStyle}
+      >
+        {data.children}
+      </CollapsibleSection>
+    );
+  };
 
   return (
-    <UserScreen
-      title={selectedTicket?.propertyName ?? ''}
-      pageTitle={t('approveQuote')}
-      onBackPress={goBack}
-      loading={isLoading}
-    >
-      <View style={styles.container}>
-        <Text type="small" textType="semiBold">
-          {t('submittedQuotes')}
-        </Text>
-        <Label type="large" style={styles.description}>
-          {t('approveQuoteDescription')}
-        </Label>
-        {quotes &&
-          quotes.quoteRequestCategories.map((item, index) => {
-            return (
-              <CollapsibleSection
-                key={index}
-                title={item.name}
-                collapseIcon={icons.upArrow}
-                expandIcon={icons.downArrow}
-                containerStyle={styles.cardContainer}
-                titleStyle={styles.cardTitle}
-                iconStyle={styles.iconStyle}
-              >
-                <QuotePreview
-                  detail={item.quoteSubmitGroups}
-                  selectedQuote={selectedQuote[index]}
-                  onSelectQuote={(id): void => onSelectQuote(id, index)}
-                  onOpenQuote={onOpenQuote}
-                />
-              </CollapsibleSection>
-            );
-          })}
-        <TextArea
-          value={comment}
-          label={t('common:comment')}
-          helpText={t('common:optional')}
-          placeholder={t('common:typeComment')}
-          wordCountLimit={450}
-          onMessageChange={onCommentChange}
-          containerStyle={styles.commentBox}
+    <>
+      <UserScreen
+        title={selectedTicket?.propertyName ?? ''}
+        pageTitle={t('approveQuote')}
+        onBackPress={goBack}
+        loading={quoteRequests || approveQuote}
+      >
+        <ApproveQuoteForm
+          renderCollapsibleSection={renderCollapsibleSection}
+          onSuccess={goBack}
+          onOpenQuote={onOpenQuote}
+          onRequestMore={onRequestMore}
         />
-        <Button type="primary" title={t('common:accept')} disabled={!selectedQuote.length} onPress={onSubmit} />
-      </View>
-    </UserScreen>
+      </UserScreen>
+      <BottomSheet
+        visible={isRequestMore}
+        onCloseSheet={onCloseSheet}
+        headerTitle={t('moreQuotes')}
+        sheetContainerStyle={styles.container}
+        sheetHeight={theme.viewport.height * 0.6}
+      >
+        <>
+          <Label type="large">{t('requestingMoreQuotes')}</Label>
+          <View style={styles.chipView}>
+            <Label type="large" textType="semiBold" style={styles.chipLabel}>
+              {category.name}
+            </Label>
+          </View>
+          <TextArea
+            value={moreComment}
+            wordCountLimit={450}
+            label={t('common:comment')}
+            helpText={t('common:optional')}
+            placeholder={t('common:typeComment')}
+            onMessageChange={onCommentChange}
+            containerStyle={styles.commentBox}
+          />
+          <Button
+            type="primary"
+            title={t('common:submit')}
+            onPress={onSubmit}
+            titleStyle={styles.titleStyle}
+            containerStyle={styles.buttonContainer}
+          />
+        </>
+      </BottomSheet>
+    </>
   );
 };
 
@@ -148,9 +159,12 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
-  description: {
-    color: theme.colors.darkTint3,
-    marginVertical: 12,
+  titleStyle: {
+    marginVertical: 8,
+  },
+  buttonContainer: {
+    maxHeight: 48,
+    marginTop: 10,
   },
   cardContainer: {
     borderWidth: 0.5,
@@ -166,6 +180,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   commentBox: {
-    marginVertical: 20,
+    marginVertical: 10,
+  },
+  chipView: {
+    backgroundColor: theme.colors.lightGrayishBlue,
+    borderRadius: 20,
+    alignSelf: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginVertical: 10,
+  },
+  chipLabel: {
+    color: theme.colors.primaryColor,
+    textAlign: 'center',
   },
 });

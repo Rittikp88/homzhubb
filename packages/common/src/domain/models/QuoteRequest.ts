@@ -1,6 +1,15 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
-import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
-import { QuoteGroup } from '@homzhub/common/src/domain/models/QuoteGroup';
+import { IQuoteCategory, QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import { QuoteGroup, IQuoteGroup } from '@homzhub/common/src/domain/models/QuoteGroup';
+
+export interface IQuoteRequest {
+  id: number;
+  ticket: number;
+  ticket_activity?: number;
+  emails: string[];
+  quote_submit_groups?: IQuoteGroup[];
+  quote_request_categories?: IQuoteCategory[];
+}
 
 @JsonObject('QuoteRequest')
 export class QuoteRequest {

@@ -1378,7 +1378,11 @@
     "rejectRequestSuccess": "Request rejected and closed successfully",
     "reviewSuccess": "Request reviewed successfully",
     "reviewUpdateSuccess": "Request review updated successfully",
-    "quoteRequestSuccess": "Quote requested successfully"
+    "quoteRequestSuccess": "Quote requested successfully",
+    "requestingMoreQuotes": "You are requesting more quotes for the following category: ",
+    "moreQuotes": "Request for more quotes",
+    "moreQuoteSuccess": "More Quotes requested successfully",
+    "requestForMore": "Request for more"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

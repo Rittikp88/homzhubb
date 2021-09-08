@@ -3,6 +3,7 @@ import { TicketActionPayloadTypes, TicketActionTypes } from '@homzhub/common/src
 import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
 import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import { IQuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
@@ -17,6 +18,7 @@ export const initialTicketState: ITicketState = {
   quoteAttachment: [],
   quotes: [],
   quotesCategory: [],
+  quoteRequests: null,
   loaders: {
     tickets: false,
     ticketDetail: false,
@@ -27,6 +29,9 @@ export const initialTicketState: ITicketState = {
     requestQuote: false,
     quotesCategory: false,
     submitQuote: false,
+    quoteRequests: false,
+    approveQuote: false,
+    moreQuote: false,
   },
 };
 
@@ -186,6 +191,44 @@ export const ticketReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['submitQuote']: false },
+      };
+    case TicketActionTypes.GET.QUOTES_REQUEST:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['quoteRequests']: true },
+      };
+    case TicketActionTypes.GET.QUOTES_REQUEST_SUCCESS:
+      return {
+        ...state,
+        ['quoteRequests']: action.payload as IQuoteRequest,
+        ['loaders']: { ...state.loaders, ['quoteRequests']: false },
+      };
+    case TicketActionTypes.GET.QUOTES_REQUEST_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['quoteRequests']: false },
+      };
+    case TicketActionTypes.POST.APPROVE_QUOTE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['approveQuote']: true },
+      };
+    case TicketActionTypes.POST.APPROVE_QUOTE_SUCCESS:
+    case TicketActionTypes.POST.APPROVE_QUOTE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['approveQuote']: false },
+      };
+    case TicketActionTypes.POST.REQUEST_MORE_QUOTE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['moreQuote']: true },
+      };
+    case TicketActionTypes.POST.REQUEST_MORE_QUOTE_SUCCESS:
+    case TicketActionTypes.POST.REQUEST_MORE_QUOTE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['moreQuote']: false },
       };
     default:
       return {

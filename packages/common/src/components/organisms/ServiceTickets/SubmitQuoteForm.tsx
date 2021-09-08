@@ -15,16 +15,11 @@ import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import QuoteBox from '@homzhub/common/src/components/molecules/QuoteBox';
 import { IQuoteData, IQuoteGroup, IQuoteSubmitPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
-import { IInitialQuote } from '@homzhub/common/src/constants/ServiceTickets';
+import { IInitialQuote, ICollapseSection } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IRoute {
   key: string;
-  title: string;
-}
-
-export interface ICollapseSection {
-  children: React.ReactElement;
   title: string;
 }
 
