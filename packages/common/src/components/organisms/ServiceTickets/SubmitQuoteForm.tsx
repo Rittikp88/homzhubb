@@ -92,66 +92,53 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
     }
   };
 
-  // TODO: (Shikha) - Re-look logic - START
-  const getQuotes = (quote: IInitialQuote[], onCallback: (data: IQuoteData[]) => void): void => {
-    const updatedData: IQuoteData[] = [];
-    quote.forEach((item, index, array) => {
-      const formData = new FormData();
-      if (item.document) {
-        // @ts-ignore
-        formData.append('files[]', item.document);
-        // Upload Attachment to S3 and get attachment id
-        AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS).then((res: any) => {
-          const { data, error } = res;
-          if (data) {
-            updatedData.push({
-              quote_number: item.quoteNumber,
-              price: Number(item.price),
-              currency: selectedTicket && selectedTicket.currency ? selectedTicket.currency.currencyCode : 'INR',
-              attachment: data[0].id,
-            });
-          }
-
-          if (error) {
-            setLoader(false);
-            AlertHelper.error({ message: t('common:fileCorrupt') });
-          }
-        });
-      }
-
-      if (index === array.length - 1) {
-        onCallback(updatedData);
-      }
-    });
-  };
-
-  const generatePayload = (callback: (payload: IQuoteGroup[]) => void): void => {
+  const generatePayload = async (callback: (payload: IQuoteGroup[]) => void): Promise<void> => {
     if (selectedTicket && quotes.length > 0) {
-      const updatedData: IQuoteGroup[] = [];
       setLoader(true);
-      quotes.forEach((item, index, array) => {
-        let quoteData: IQuoteData[] = [];
-        const onCallback = (quote: IQuoteData[]): void => {
-          quoteData = quote;
-        };
-        getQuotes(item.data, onCallback);
+      const quoteGroupData = quotes.map(async (item) => {
+        const updatedData: IQuoteData[] = [];
+        const formData = new FormData();
+        const quote: IInitialQuote[] = item.data;
+        const quoteData = quote.map(async (quoteItem) => {
+          if (quoteItem.document) {
+            // @ts-ignore
+            formData.append('files[]', quoteItem.document);
+            // Upload Attachment to S3 and get attachment id
+            const response = await AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS);
+            const { data, error } = response;
+            if (data) {
+              updatedData.push({
+                quote_number: quoteItem.quoteNumber,
+                price: Number(quoteItem.price),
+                currency: selectedTicket && selectedTicket.currency ? selectedTicket.currency.currencyCode : 'INR',
+                attachment: data[0].id,
+              });
+            }
 
-        updatedData.push({
-          quote_request_category: item.groupId,
-          quotes: quoteData,
+            if (error) {
+              setLoader(false);
+              AlertHelper.error({ message: t('common:fileCorrupt') });
+            }
+          }
         });
 
-        if (index === array.length - 1) {
-          callback(updatedData);
-        }
+        await Promise.all(quoteData);
+        return {
+          quote_request_category: item.groupId,
+          quotes: updatedData,
+        };
+      });
+
+      await Promise.all(quoteGroupData).then((res) => {
+        callback(res);
       });
     }
   };
 
-  const onSubmit = (): void => {
+  const onSubmit = async (): Promise<void> => {
     if (selectedTicket && quotes.length > 0) {
       setLoader(true);
-      generatePayload((data) => {
+      await generatePayload((data) => {
         /* Creating Final payload for submit quote */
         const submitPayload: IQuoteSubmitPayload = {
           param: {
@@ -164,15 +151,11 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
           },
         };
 
-        // TODO: (Shikha) - Find other alternative and remove this setTimeout
-        setTimeout(() => {
-          setLoader(false);
-          dispatch(TicketActions.submitQuote({ data: submitPayload, onCallback: handleCallback }));
-        }, 5000);
+        setLoader(false);
+        dispatch(TicketActions.submitQuote({ data: submitPayload, onCallback: handleCallback }));
       });
     }
   };
-  // TODO: (Shikha) - Re-look logic - END
 
   const renderQuoteBox = (item: IInitialQuote, index: number): React.ReactElement => {
     return (

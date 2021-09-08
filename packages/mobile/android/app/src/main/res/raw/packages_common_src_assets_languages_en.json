@@ -309,7 +309,10 @@
     "underMaintenance": "Under Maintenance",
     "others": "Others",
     "roundedOff": "rounded off",
-    "featureInIndiaOnly": "Feature available only for India currently"
+    "featureInIndiaOnly": "Feature available only for India currently",
+    "close": "Close",
+    "writReview": "Write a review",
+    "duplicateValue": "This value is already used. Please use unique value"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -404,7 +407,8 @@
     "emailUsed": "This email is already used by someone. Please use unique email",
     "enterMobileNo": "Enter your mobile number",
     "updatePasswordWeb": "Update password",
-    "duplicateEmail": "This email is already used. Please use unique email"
+    "duplicateEmail": "This email is already used. Please use unique email",
+    "emails": "E-mails"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -1006,7 +1010,29 @@
     "addBankDetailsSuccess": "Bank Details Added Successfully",
     "bankAccount": "Bank Account",
     "selectAccount": "Select account",
-    "reminderAlreadySetForDue": "A reminder is already set for this due"
+    "reminderAlreadySetForDue": "A reminder is already set for this due",
+    "separatedByComma": "Enter emails (Separated by commas)",
+    "bankAccounts": "Bank Accounts",
+    "editAccount": "Edit Account",
+    "deleteAccount": "Delete Account",
+    "bankAccountOptions": "Bank Account Options",
+    "noBankAccsAdded": "No Bank Accounts Added",
+    "bankDetailsCantBeEdited": "This Bank’s Details cannot be edited",
+    "bankAccountEditedSuccessfully": "Bank Details Successfully Updated",
+    "editBankAccount": "Edit Bank Account",
+    "editDetails": "Edit Details",
+    "updateDetails": "Update Details",
+    "youCanDeactivate": "You can also deactivate this account instead, are you sure you want to delete this?",
+    "bankAccountCantBeDeleted": "This Bank account cannot be deleted",
+    "bankAccountDeletedSuccessfully": "Bank Account deleted successfully",
+    "deactivateConfirmation": "Are you sure you want to deactivate this account?",
+    "deactivate": "Deactivate",
+    "activate": "Activate",
+    "activateAccount": "Activate Account",
+    "bankAccountDeactivationSuccess": "Bank Account deactivated successfully",
+    "bankAccountActivationSuccess": "Bank Account activated successfully",
+    "bankAccountCantBeDeactivated": "This Account cannot be deactivated",
+    "bankAccountDeleteConfirmation": "Are you sure you want to delete this bank account?"
   },
   "assetMore": {
     "more": "More",
@@ -1090,7 +1116,8 @@
     "referEarn": "Refer and Earn",
     "coinBalance": "Coin Balance",
     "coinsEarned": "Coins Earned",
-    "marketPlace": "Market Place"
+    "marketPlace": "Market Place",
+    "bankDetails": "Bank Details"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",
@@ -1229,7 +1256,10 @@
     "servicePlansHeader": "For <italic>complete peace of mind</italic>, subscribe to Homzhub Service packages that are delivered by an on-the-ground network of real estate professionals and service providers.",
     "emailValidations": "Please enter a valid email.",
     "viewAllTitle": "View All",
-    "featureComparison": "See the complete details of service packages"
+    "featureComparison": "See the complete details of service packages",
+    "downloadNow": "Download Now",
+    "learnMore": "Learn More",
+    "enquireNow": "Enquire Now"
   },
   "serviceTickets": {
     "serviceTickets": "Service Requests",
@@ -1270,12 +1300,10 @@
     "timeElapsed": "Time Elapsed",
     "ticketNo": "Request No.",
     "ticketRaised": "Request Raised",
-    "ticketRaisedDescription": "Dummy Request raised description",
     "ticketAssignedTo": "Request assigned to {{name}}",
     "awaitingAction": "Awaiting for {{name}}'s action",
     "ticketReassigned": "Request Reassigned",
-    "ticketReassignedToOwner2": "Request reassigned to owner 2",
-    "awaitingOwner2Action": "Awaiting for owner 2's action",
+    "ticketReassignedTo": "Request reassigned to {{name}}",
     "quotesRequested": "Quotes Requested",
     "quotesSubmitted": "Quotes Submitted",
     "awaitingQuotes": "Awaiting for quotes",
@@ -1307,7 +1335,50 @@
     "ticketComplete": "Request Completed Successfully",
     "noQuoteFound": "No quote found",
     "noDetail": "There was an error while trying to fetch your data. Please try again",
-    "maxProof": "Max 10 proofs are allowed"
+    "maxProof": "Max 10 proofs are allowed",
+    "requestForQuote": "Request for Quotes",
+    "requestDescription": "Add Request Categories and Vendor Emails to receive best quotes",
+    "ticketCategory": "Enter ticket category",
+    "invitePartner": "Invite Homzhub Service Partners",
+    "vendorEmail": "Add Vendor Email",
+    "sendRequest": "Send Request",
+    "reassignRequest": "Reassign Request",
+    "assigneeDetails": "Assignee details",
+    "reassign": "Reassign",
+    "reassignInfoText": "Select the person you want to assign the request to",
+    "selectAnAssignee": "Select an Assignee",
+    "requestReassignedSuccessfully": "Request Reassigned Successfully",
+    "categoryLimit": "Category must not be greater than {{limit}} length",
+    "updateWorkProgressInfoText": "Update participants about the progress on the work",
+    "updateYourWorkProgress": "Update your Work Progress",
+    "workInitiatedSuccess": "Status Updated to Work Initiated Successfully",
+    "updateSentSuccess": "Update sent successfully ",
+    "sendUpdates": "Send Updates",
+    "sendUpdate": "Send Update",
+    "updates": "Updates",
+    "updateTitle": "Update Title",
+    "closeTicket": "Close Request",
+    "closeTicketSuccess": "Request Closed Successfully",
+    "closeTicketConfirmation": "Are you sure you want to close the request?",
+    "makePaymentForQuote": "Make payment for your approved quotes using your preferred payment method",
+    "quoteInfo": "The above quotes are shown inclusive of all the taxes and relevant information",
+    "payLater": "Pay Later",
+    "quotePayment": "Quote Payment",
+    "requestQuote": "Request Quote",
+    "payLaterConfirmation": "Homzhub will create a due and notify you timely. Are you sure you want to pay this  later?",
+    "remindToPay": "Remind to pay",
+    "sendReminderConfirmation": "Are you sure, you want to send a reminder ?",
+    "onceIn12Hours": "Can be sent once in every 12 hours.",
+    "remindToApproveAndPay": "Remind to Approve & Pay",
+    "remindNow": "Remind now",
+    "ticketReview": "Ticket Review & Rating",
+    "rejectTicketInfoText": "The ticket will be closed as soon as you reject the ticket. Please add a reason for it below.",
+    "rejectReason": "Reject Reason",
+    "rejectRequest": "Reject Request",
+    "rejectRequestSuccess": "Request rejected and closed successfully",
+    "reviewSuccess": "Request reviewed successfully",
+    "reviewUpdateSuccess": "Request review updated successfully",
+    "quoteRequestSuccess": "Quote requested successfully"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",
@@ -1435,5 +1506,9 @@
     "genericError": "Something Unexpected Happened",
     "genericErrorMessage": "We are not sure what caused this error, but engineers are looking into it. We are sorry for the inconvenience",
     "backToHome": "Back to Home"
+  },
+  "siteVisits": {
+    "schedulePropertyVisit": "Schedule Property Visit",
+    "reschedulePropertyVisit": "Reschedule Property Visit"
   }
 }
