@@ -1,57 +1,39 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 
+export interface ITicketAction {
+  code: string;
+  label: string;
+  is_allowed: boolean;
+  is_next: boolean;
+}
+
 @JsonObject('TicketAction')
 export class TicketAction {
-  // Todo (Praharsh) : Check with BE and change if needed.
-  @JsonProperty('can_reassign_ticket', Boolean, true)
-  private _canReassignTicket = true;
+  @JsonProperty('code', String)
+  private _code = '';
 
-  @JsonProperty('can_submit_quote', Boolean)
-  private _canSubmitQuote = false;
+  @JsonProperty('label', String)
+  private _label = '';
 
-  @JsonProperty('can_approve_quote', Boolean)
-  private _canApproveQuote = false;
+  @JsonProperty('is_allowed', Boolean)
+  private _isAllowed = false;
 
-  // Todo (Praharsh) : Check with BE and change if needed.
-  @JsonProperty('can_update_work_progress', Boolean, true)
-  private _canUpdateWorkProgress = true;
+  @JsonProperty('is_next', Boolean)
+  private _isNext = false;
 
-  // Todo (Praharsh) : Check with BE and change if needed.
-  @JsonProperty('is_vendor', Boolean, true)
-  private _isVendor = true;
-
-  // Todo (Praharsh) : Check with BE and change if needed.
-  @JsonProperty('can_reject', Boolean, true)
-  private _canReject = true;
-
-  @JsonProperty('can_close_ticket', Boolean)
-  private _canCloseTicket = false;
-
-  get canReassignTicket(): boolean {
-    return this._canReassignTicket;
+  get code(): string {
+    return this._code;
   }
 
-  get canSubmitQuote(): boolean {
-    return this._canSubmitQuote;
+  get label(): string {
+    return this._label;
   }
 
-  get canApproveQuote(): boolean {
-    return this._canApproveQuote;
+  get isAllowed(): boolean {
+    return this._isAllowed;
   }
 
-  get canUpdateWorkProgress(): boolean {
-    return this._canUpdateWorkProgress;
-  }
-
-  get canCloseTicket(): boolean {
-    return this._canCloseTicket;
-  }
-
-  get isVendor(): boolean {
-    return this._isVendor;
-  }
-
-  get canRejectTicket(): boolean {
-    return this._canReject;
+  get isNext(): boolean {
+    return this._isNext;
   }
 }

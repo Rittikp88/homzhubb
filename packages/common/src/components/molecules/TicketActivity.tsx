@@ -24,6 +24,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProps {
   ticketData: Ticket;
+  isCloseAllowed?: boolean;
   onPressImage?: (imageNumber: number) => void;
   onPressQuote?: (url: string) => Promise<void>;
 }
@@ -49,7 +50,7 @@ class TicketActivityCard extends PureComponent<Props> {
   };
 
   public render(): React.ReactNode {
-    const { t, ticketData, closeTicket } = this.props;
+    const { t, ticketData, closeTicket, isCloseAllowed = false } = this.props;
     const { showConfirmationSheet } = this.state;
     const { groupedActivities, status } = ticketData;
 
@@ -64,7 +65,7 @@ class TicketActivityCard extends PureComponent<Props> {
           <Text type="small" textType="semiBold" style={styles.activity}>
             {t('serviceTickets:activity')}
           </Text>
-          {status !== TicketStatus.CLOSED && (
+          {status !== TicketStatus.CLOSED && isCloseAllowed && (
             <Button
               containerStyle={styles.closeTicketButton}
               type="secondary"

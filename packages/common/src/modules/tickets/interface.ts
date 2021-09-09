@@ -1,6 +1,7 @@
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
+import { ITicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { IQuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import { IOnCallback } from '@homzhub/common/src/modules/interfaces';
@@ -22,6 +23,7 @@ export interface ITicketState {
   quoteAttachment: IDocumentSource[];
   quotes: IQuoteGroup[];
   quotesCategory: IQuoteCategory[];
+  ticketActions: ITicketAction[];
   quoteRequests: IQuoteRequest | null;
   loaders: {
     tickets: boolean;
@@ -33,6 +35,7 @@ export interface ITicketState {
     requestQuote: boolean;
     quotesCategory: boolean;
     submitQuote: boolean;
+    ticketActions: boolean;
     quoteRequests: boolean;
     approveQuote: boolean;
     moreQuote: boolean;

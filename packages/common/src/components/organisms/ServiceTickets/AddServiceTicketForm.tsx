@@ -30,7 +30,6 @@ import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { IAddServiceEvent } from '@homzhub/common/src/services/Analytics/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
-import { IGetTicketParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 
 interface IFormValues {
@@ -58,7 +57,6 @@ interface IStateToProps {
 
 interface IDispatchToProps {
   getActiveAssets: () => void;
-  getTickets: (param?: IGetTicketParam) => void;
   setCurrentTicket: (payload: ICurrentTicket) => void;
 }
 
@@ -361,7 +359,7 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
   };
 
   private handleSubmit = async (values: IFormValues, formActions: FormikHelpers<IFormValues>): Promise<void> => {
-    const { properties, setCurrentTicket, getTickets, onSubmit, toggleLoader, propertyId } = this.props;
+    const { properties, setCurrentTicket, onSubmit, toggleLoader } = this.props;
     const { property, subCategory, title, issueDescription, otherCategory } = values;
     const { attachments } = this.state;
 
@@ -396,7 +394,10 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
         ...otherField,
       };
       const response = await TicketRepository.postTicket(payload);
-      setCurrentTicket({ ticketId: response.id });
+      setCurrentTicket({
+        ticketId: response.id,
+        propertyName: this.getProperties().find((item) => Number(item.value) === Number(property))?.label,
+      });
       const selectedProperty = properties.find((asset: Asset) => asset.id === property);
       if (selectedProperty) {
         const { city, countryName, assetGroup, assetType, projectName, address } = selectedProperty;
@@ -416,12 +417,6 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       this.setState({ selectedCategoryId: -1, attachments: [] });
 
       formActions.setSubmitting(false);
-      if (propertyId && propertyId >= 0) {
-        getTickets({ asset_id: propertyId });
-      } else {
-        getTickets();
-      }
-
       if (onSubmit) {
         onSubmit();
       }
@@ -443,8 +438,8 @@ const mapStateToProps = (state: IState): IStateToProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchToProps => {
   const { getActiveAssets } = AssetActions;
-  const { setCurrentTicket, getTickets } = TicketActions;
-  return bindActionCreators({ getActiveAssets, setCurrentTicket, getTickets }, dispatch);
+  const { setCurrentTicket } = TicketActions;
+  return bindActionCreators({ getActiveAssets, setCurrentTicket }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(React.memo(AddServiceTicketForm)));

@@ -79,6 +79,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     closedAt,
     closedBy,
     asset: { formattedAddressWithProjectAndCity },
+    assignedTo: { fullName },
   } = cardData;
 
   const { t } = useTranslation();
@@ -90,7 +91,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     'serviceTickets:createdOn': DateUtils.convertDateFormatted(createdAt),
     'serviceTickets:updatedOn': DateUtils.convertDateFormatted(updatedAt),
     'helpAndSupport:status': status,
-    'serviceTickets:assignedTo': 'Homzhub', // TODO: (Shikha) Remove after demo and use AssignedTo
+    'serviceTickets:assignedTo': fullName,
   };
   const closedTicket = {
     'serviceTickets:closedOn': DateUtils.convertDateFormatted(closedAt),

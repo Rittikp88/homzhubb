@@ -3,17 +3,10 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 // ENUM START
-export enum ExperienceType {
-  UNSATISFIED = 'Unsatisfied',
-  NEUTRAL = 'Neutral',
-  SATISFIED = 'Satisfied',
-}
 
 export enum TicketStatusTitle {
   OPEN = 'Open',
   REQUEST_RAISED = 'Request Raised',
-  // Remove once BE removes this key
-  TICKET_RAISED = 'Ticket Raised',
   QUOTE_REQUESTED = 'Quote Requested',
   QUOTE_SUBMITTED = 'Quote Submitted',
   QUOTE_APPROVED = 'Quote Approved',
@@ -24,17 +17,16 @@ export enum TicketStatusTitle {
   CLOSED = 'Closed',
 }
 
-export enum TakeActionTitle {
-  REASSIGN_TICKET = 'Reassign Request',
-  REJECT_TICKET = 'Reject Request',
-  SUBMIT_QUOTE = 'Submit Quotes',
-  REMIND_TO_APPROVE_AND_PAY = 'Remind to Approve and Pay',
-  APPROVE_QUOTE = 'Approve Quotes',
-  WORK_INITIATED = 'Work Initiated',
-  WORK_COMPLETED = 'Work Completed',
-  REQUEST_QUOTE = 'Request Quote',
-  UPDATE_STATUS = 'Update Status',
-  QUOTE_PAYMENT = 'Quote Payment',
+export enum TicketActions {
+  APPROVE_QUOTE = 'APPROVE_QUOTE',
+  REASSIGN_TICKET = 'REASSIGN_TICKET',
+  REQUEST_QUOTE = 'REQUEST_QUOTE',
+  SUBMIT_QUOTE = 'SUBMIT_QUOTE',
+  INITIATE_WORK = 'INITIATE_WORK',
+  WORK_COMPLETED = 'WORK_COMPLETED',
+  SEND_UPDATES = 'SEND_UPDATES',
+  QUOTE_PAYMENT = 'QUOTE_PAYMENT',
+  CLOSE_TICKET = 'CLOSE_TICKET',
 }
 
 // ENUM END

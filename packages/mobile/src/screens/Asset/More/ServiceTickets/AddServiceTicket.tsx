@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
-import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -116,12 +115,8 @@ class AddServiceTicket extends React.PureComponent<Props, IScreenState> {
   };
 
   private onSubmit = (): void => {
-    NavigationService.navigation.navigate(ScreensKeys.BottomTabs, {
-      screen: ScreensKeys.More,
-      params: {
-        screen: ScreensKeys.ServiceTicketDetail,
-      },
-    });
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.RequestQuote, { isFromForm: true });
   };
 
   private toggleScreenLoader = (isScreenLoading: boolean): void => {

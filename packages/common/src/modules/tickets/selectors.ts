@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -86,6 +87,14 @@ const getQuotesCategory = (state: IState): QuoteCategory[] => {
   return ObjectMapper.deserializeArray(QuoteCategory, quotesCategory);
 };
 
+const getTicketActions = (state: IState): TicketAction[] => {
+  const {
+    ticket: { ticketActions },
+  } = state;
+  if (!ticketActions) return [];
+  return ObjectMapper.deserializeArray(TicketAction, ticketActions);
+};
+
 const getQuoteRequests = (state: IState): QuoteRequest | null => {
   const {
     ticket: { quoteRequests },
@@ -106,5 +115,6 @@ export const TicketSelectors = {
   getQuoteAttachment,
   getQuotes,
   getQuotesCategory,
+  getTicketActions,
   getQuoteRequests,
 };

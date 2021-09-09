@@ -93,7 +93,7 @@ export type CommonParamList = {
   [ScreensKeys.AddRecordScreen]: IAddRecordProps | undefined;
   [ScreensKeys.WebViewScreen]: IWebviewProps;
   [ScreensKeys.BookVisit]: IBookVisitProps;
-  [ScreensKeys.ServiceTicketDetail]: undefined;
+  [ScreensKeys.ServiceTicketDetail]: undefined | { isFromScreen: boolean };
   [ScreensKeys.SubmitQuote]: undefined;
   [ScreensKeys.ReassignTicket]: undefined;
   [ScreensKeys.WorkInitiated]: undefined;
@@ -136,7 +136,7 @@ export type CommonParamList = {
   [ScreensKeys.AddPropertyImage]: IPropertyImageParam;
   [ScreensKeys.DuesScreen]: undefined;
   [ScreensKeys.AddBankAccount]: undefined | IAddBankAccount;
-  [ScreensKeys.RequestQuote]: undefined;
+  [ScreensKeys.RequestQuote]: undefined | { isFromForm: boolean };
   [ScreensKeys.QuotePayment]: undefined;
 };
 

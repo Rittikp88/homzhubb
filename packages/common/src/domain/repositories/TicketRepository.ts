@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
@@ -36,6 +37,7 @@ const ENDPOINTS = {
   reassignTicket: (ticketId: number): string => `v1/tickets/${ticketId}/ticket-users/`,
   quoteRequest: (ticketId: number): string => `v1/tickets/${ticketId}/quote-requests/`,
   reviewById: (ticketId: number, reviewId?: number): string => `v1/tickets/${ticketId}/reviews/${reviewId}/`,
+  ticketActions: (ticketId: number): string => `v1/tickets/${ticketId}/actions/`,
 };
 
 class TicketRepository {
@@ -117,6 +119,11 @@ class TicketRepository {
   public getTicketReview = async (ticketId: number, reviewId: number): Promise<AssetReview> => {
     const response = await this.apiClient.get(ENDPOINTS.reviewById(ticketId, reviewId));
     return ObjectMapper.deserialize(AssetReview, response);
+  };
+
+  public getTicketActions = async (ticketId: number): Promise<TicketAction[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.ticketActions(ticketId));
+    return ObjectMapper.deserializeArray(TicketAction, response);
   };
 
   public requestMoreQuote = async (payload: IRequestMorePayload): Promise<void> => {

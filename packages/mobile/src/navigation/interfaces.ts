@@ -342,6 +342,7 @@ export interface ICommonNavProps {
   saleListingId?: number;
   leaseListingId?: number;
   leaseTransaction?: number;
+  isFromScreenLevel?: boolean;
 }
 
 export interface IVisitNavParam extends ICommonNavProps {

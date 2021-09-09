@@ -23,13 +23,13 @@ import {
   FullScreenAssetDetailsCarousel,
 } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { Ticket, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { TakeActionTitle } from '@homzhub/common/src/constants/ServiceTickets';
+import { TicketActions as Actions } from '@homzhub/common/src/constants/ServiceTickets';
 
 interface ITicketAction {
   title: string;
@@ -48,6 +48,7 @@ interface IStateProps {
   ticketDetails: Ticket | null;
   isLoading: boolean;
   ticketLoader: ITicketState['loaders'];
+  ticketActions: TicketAction[];
 }
 
 interface IScreenState {
@@ -117,7 +118,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
           listHeight={350}
           data={actionList}
           listTitle={t('chooseAction')}
-          onSelectItem={this.onSelectAction}
+          onSelectItem={this.handleAction}
           onCloseDropDown={(): void => this.handleActionSheet(false)}
           isBottomSheetVisible={isActionSheet}
           extraContent={showRemindSheet ? this.renderRemindSheet : undefined}
@@ -183,11 +184,15 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   };
 
   private renderActivityCard = (): React.ReactElement | null => {
-    const { ticketDetails } = this.props;
+    const { ticketDetails, ticketActions } = this.props;
     if (!ticketDetails) return null;
+
+    // Check close ticket action is allowed or not
+    const isCloseAllowed = ticketActions.find((item) => item.code === Actions.CLOSE_TICKET)?.isAllowed;
     return (
       <TicketActivityCard
         ticketData={ticketDetails}
+        isCloseAllowed={isCloseAllowed}
         onPressQuote={this.handleQuoteClick}
         onPressImage={this.onFullScreenToggleCompleted}
       />
@@ -197,7 +202,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   private renderActionButton = (): React.ReactElement | null => {
     const { ticketDetails } = this.props;
     if (!ticketDetails) return null;
-    const buttonData = this.getActionData(ticketDetails.status, ticketDetails.actions);
+    const buttonData = this.getActionData();
 
     if (!buttonData) return null;
     return (
@@ -205,8 +210,8 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
         <Button type="primary" title={buttonData.title} disabled={buttonData.isDisabled} onPress={buttonData.onPress} />
         <Button
           type="primary"
-          icon={icons.downArrow}
           iconSize={20}
+          icon={icons.downArrow}
           iconColor={theme.colors.white}
           containerStyle={styles.iconButton}
           onPress={(): void => this.handleActionSheet(true)}
@@ -270,48 +275,6 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
 
   // HANDLERS START
 
-  private onSelectAction = (value: string): void => {
-    const { navigation } = this.props;
-
-    switch (value) {
-      case TakeActionTitle.REQUEST_QUOTE:
-        navigation.navigate(ScreensKeys.RequestQuote);
-        break;
-      case TakeActionTitle.REASSIGN_TICKET:
-        navigation.navigate(ScreensKeys.ReassignTicket);
-        break;
-      case TakeActionTitle.REJECT_TICKET:
-        navigation.navigate(ScreensKeys.RejectTicket);
-        break;
-      case TakeActionTitle.SUBMIT_QUOTE:
-        navigation.navigate(ScreensKeys.SubmitQuote);
-        break;
-      case TakeActionTitle.REMIND_TO_APPROVE_AND_PAY:
-        // Todo (Praharsh) : Update handler here to this.showRemindSheet() when reminder story is picked
-        this.handleActionSheet(false);
-        break;
-      case TakeActionTitle.APPROVE_QUOTE:
-        navigation.navigate(ScreensKeys.ApproveQuote);
-        break;
-      case TakeActionTitle.WORK_INITIATED:
-        navigation.navigate(ScreensKeys.WorkInitiated);
-        break;
-      case TakeActionTitle.UPDATE_STATUS:
-        navigation.navigate(ScreensKeys.UpdateTicketStatus);
-        break;
-      case TakeActionTitle.QUOTE_PAYMENT:
-        navigation.navigate(ScreensKeys.QuotePayment);
-        break;
-      case TakeActionTitle.WORK_COMPLETED:
-      default:
-        navigation.navigate(ScreensKeys.WorkCompleted);
-        break;
-    }
-    if (value !== TakeActionTitle.REMIND_TO_APPROVE_AND_PAY) {
-      this.handleActionSheet(false);
-    }
-  };
-
   private onFullScreenToggleCompleted = (slideNumber: number): void => {
     this.setState((prevState) => ({
       isFullScreen: !prevState.isFullScreen,
@@ -332,10 +295,18 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   };
 
   private handleGoBack = (): void => {
-    const { navigation, clearState } = this.props;
+    const {
+      navigation,
+      clearState,
+      route: { params },
+    } = this.props;
     this.setState({ isFullScreen: false });
     clearState();
-    navigation.goBack();
+    if (params && params.isFromScreen) {
+      navigation.navigate(ScreensKeys.ServiceTicketScreen, { isFromScreenLevel: true });
+    } else {
+      navigation.goBack();
+    }
   };
 
   private enableFullScreenWithImage = (): void => {
@@ -353,105 +324,72 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     await LinkingService.canOpenURL(url);
   };
 
-  /* Take action button logic */
-  private getActionData = (status: string, actions: TicketAction): ITicketAction | null => {
+  // Take action button logic
+  private getActionData = (): ITicketAction | null => {
+    const { ticketActions } = this.props;
+    if (!ticketActions) return null;
+
+    const nextAction = ticketActions.filter((item) => item.isNext && item.code !== Actions.CLOSE_TICKET)[0];
+    if (!nextAction) return null;
+    return {
+      title: nextAction.label,
+      onPress: (): void => this.handleAction(nextAction.code),
+      isDisabled: !nextAction.isAllowed,
+    };
+  };
+
+  // Take action button handler
+  private handleAction = (code: string): void => {
     const { navigation } = this.props;
-    const { canApproveQuote, canCloseTicket, canSubmitQuote, canUpdateWorkProgress } = actions;
-    switch (status) {
-      // Todo (Praharsh) : Update status handler when BE is done with changing ticket's status.
-      case TicketStatus.OPEN:
-      case TicketStatus.TICKET_REASSIGNED:
-        return {
-          title: TakeActionTitle.REQUEST_QUOTE,
-          onPress: (): void => navigation.navigate(ScreensKeys.RequestQuote),
-          isDisabled: false,
-        };
-      case TicketStatus.QUOTE_REQUESTED:
-        return {
-          title: TakeActionTitle.SUBMIT_QUOTE,
-          onPress: (): void => navigation.navigate(ScreensKeys.SubmitQuote),
-          isDisabled: !canSubmitQuote,
-        };
-      case TicketStatus.QUOTE_SUBMITTED:
-        return {
-          title: TakeActionTitle.APPROVE_QUOTE,
-          onPress: (): void => navigation.navigate(ScreensKeys.ApproveQuote),
-          isDisabled: !canApproveQuote,
-        };
-      case TicketStatus.PAYMENT_DONE:
-      case TicketStatus.QUOTE_APPROVED:
-        return {
-          title: TakeActionTitle.WORK_INITIATED,
-          onPress: (): void => navigation.navigate(ScreensKeys.WorkInitiated),
-          isDisabled: !canUpdateWorkProgress,
-        };
-      case TicketStatus.WORK_INITIATED:
-        return {
-          title: TakeActionTitle.WORK_COMPLETED,
-          onPress: (): void => navigation.navigate(ScreensKeys.WorkCompleted),
-          isDisabled: !canCloseTicket,
-        };
-      case TicketStatus.WORK_COMPLETED:
-      case TicketStatus.CLOSED:
+    const { isActionSheet } = this.state;
+    switch (code) {
+      case Actions.REQUEST_QUOTE:
+        navigation.navigate(ScreensKeys.RequestQuote);
+        break;
+      case Actions.SUBMIT_QUOTE:
+        navigation.navigate(ScreensKeys.SubmitQuote);
+        break;
+      case Actions.APPROVE_QUOTE:
+        navigation.navigate(ScreensKeys.ApproveQuote);
+        break;
+      case Actions.INITIATE_WORK:
+        navigation.navigate(ScreensKeys.WorkInitiated);
+        break;
+      case Actions.WORK_COMPLETED:
+        navigation.navigate(ScreensKeys.WorkCompleted);
+        break;
+      case Actions.SEND_UPDATES:
+        navigation.navigate(ScreensKeys.UpdateTicketStatus);
+        break;
+      case Actions.REASSIGN_TICKET:
+        navigation.navigate(ScreensKeys.ReassignTicket);
+        break;
+      case Actions.QUOTE_PAYMENT:
+        navigation.navigate(ScreensKeys.QuotePayment);
+        break;
       default:
-        return null;
+        break;
+    }
+
+    if (isActionSheet) {
+      this.handleActionSheet(false);
     }
   };
 
-  /* Take action dropdown data logic */
+  // Take action dropdown data logic
   private getActionList = (): PickerItemProps[] => {
-    const { ticketDetails } = this.props;
-    if (!ticketDetails) return [];
-    const {
-      canCloseTicket,
-      canRejectTicket,
-      canApproveQuote,
-      canSubmitQuote,
-      canReassignTicket,
-      canUpdateWorkProgress,
-    } = ticketDetails.actions;
-    const {
-      SUBMIT_QUOTE,
-      WORK_COMPLETED,
-      APPROVE_QUOTE,
-      REASSIGN_TICKET,
-      WORK_INITIATED,
-      UPDATE_STATUS,
-      QUOTE_PAYMENT,
-      REQUEST_QUOTE,
-      REJECT_TICKET,
-    } = TakeActionTitle;
+    const { ticketActions } = this.props;
+    if (!ticketActions) return [];
 
-    // TODO: (SHIKHA) - Add validation
-    const list: PickerItemProps[] = [
-      { label: REQUEST_QUOTE, value: REQUEST_QUOTE },
-      { label: QUOTE_PAYMENT, value: QUOTE_PAYMENT },
-    ];
-
-    if (canReassignTicket) {
-      list.push({ label: REASSIGN_TICKET, value: REASSIGN_TICKET });
-    }
-    if (canRejectTicket) {
-      list.push({ label: REJECT_TICKET, value: REJECT_TICKET });
-    }
-    if (canSubmitQuote) {
-      list.push({ label: SUBMIT_QUOTE, value: SUBMIT_QUOTE });
-    }
-    // (Note : Praharsh) : Remind to Pay option here is removed. To be added once picked
-    if (canApproveQuote) {
-      list.push({ label: APPROVE_QUOTE, value: APPROVE_QUOTE });
-    }
-    if (canUpdateWorkProgress) {
-      list.push({ label: WORK_INITIATED, value: WORK_INITIATED });
-    }
-    if (canCloseTicket) {
-      list.push({ label: WORK_COMPLETED, value: WORK_COMPLETED });
-    }
-    if (canUpdateWorkProgress) {
-      list.push({ label: UPDATE_STATUS, value: UPDATE_STATUS });
-    }
-
-    return list;
+    // Excluding close ticket option from list
+    return ticketActions
+      .filter((actions) => actions.code !== Actions.CLOSE_TICKET)
+      .map((item) => {
+        return {
+          label: item.label,
+          value: item.code,
+        };
+      });
   };
 
   private showRemindSheet = (): void => {
@@ -470,12 +408,14 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
 }
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getCurrentTicket, getTicketDetail, getTicketDetailLoader, getTicketLoaders } = TicketSelectors;
+  const { getCurrentTicket, getTicketDetail, getTicketDetailLoader, getTicketLoaders, getTicketActions } =
+    TicketSelectors;
   return {
     currentTicket: getCurrentTicket(state),
     ticketDetails: getTicketDetail(state),
     isLoading: getTicketDetailLoader(state),
     ticketLoader: getTicketLoaders(state),
+    ticketActions: getTicketActions(state),
   };
 };
 

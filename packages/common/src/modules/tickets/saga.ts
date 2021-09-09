@@ -53,7 +53,7 @@ export function* getTicketDetails(action: IFluxStandardAction<number>) {
       },
     } = response;
     yield put(TicketActions.getTicketDetailSuccess(response));
-
+    yield put(TicketActions.getTicketActions(id));
     yield put(
       TicketActions.setCurrentTicket({
         ticketId: id,
@@ -93,7 +93,7 @@ export function* closeTicket() {
     AlertHelper.success({ message: I18nService.t('serviceTickets:closeTicketSuccess') });
   } catch (e) {
     yield put(TicketActions.closeTicketFailure());
-    AlertHelper.error({ message: e.details.message, statusCode: e.details.statusCode });
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }
 }
 
@@ -196,6 +196,16 @@ export function* submitQuote(action: IFluxStandardAction<ISubmitQuote>) {
   }
 }
 
+export function* getTicketActions(action: IFluxStandardAction<number>) {
+  try {
+    const response = yield call(TicketRepository.getTicketActions, action.payload as number);
+    yield put(TicketActions.getTicketActionsSuccess(response));
+  } catch (e) {
+    yield put(TicketActions.getTicketActionsFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* getQuoteRequests(action: IFluxStandardAction<IQuoteParam>) {
   if (!action.payload) return;
   try {
@@ -250,6 +260,7 @@ export function* watchTicket() {
   yield takeEvery(TicketActionTypes.POST.REQUEST_QUOTE, requestQuote);
   yield takeEvery(TicketActionTypes.GET.QUOTES_CATEGORY, getQuoteCategory);
   yield takeEvery(TicketActionTypes.POST.SUBMIT_QUOTE, submitQuote);
+  yield takeEvery(TicketActionTypes.GET.TICKET_ACTIONS, getTicketActions);
   yield takeEvery(TicketActionTypes.GET.QUOTES_REQUEST, getQuoteRequests);
   yield takeEvery(TicketActionTypes.POST.APPROVE_QUOTE, quoteApprove);
   yield takeEvery(TicketActionTypes.POST.REQUEST_MORE_QUOTE, requestMoreQuote);

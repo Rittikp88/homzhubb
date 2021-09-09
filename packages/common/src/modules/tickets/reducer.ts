@@ -2,6 +2,7 @@ import { ReducerUtils } from '@homzhub/common/src/utils/ReducerUtils';
 import { TicketActionPayloadTypes, TicketActionTypes } from '@homzhub/common/src//modules/tickets/actions';
 import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
+import { ITicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { IQuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -18,6 +19,7 @@ export const initialTicketState: ITicketState = {
   quoteAttachment: [],
   quotes: [],
   quotesCategory: [],
+  ticketActions: [],
   quoteRequests: null,
   loaders: {
     tickets: false,
@@ -29,6 +31,7 @@ export const initialTicketState: ITicketState = {
     requestQuote: false,
     quotesCategory: false,
     submitQuote: false,
+    ticketActions: false,
     quoteRequests: false,
     approveQuote: false,
     moreQuote: false,
@@ -149,12 +152,6 @@ export const ticketReducer = (
         ...state,
         ['loaders']: { ...state.loaders, ['requestQuote']: false },
       };
-    case TicketActionTypes.CLEAR_STATE:
-      return {
-        ...state,
-        proofAttachment: initialTicketState.proofAttachment,
-        currentTicket: initialTicketState.currentTicket,
-      };
     case TicketActionTypes.SET.QUOTE_ATTACHMENT:
       return {
         ...state,
@@ -191,6 +188,29 @@ export const ticketReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['submitQuote']: false },
+      };
+    case TicketActionTypes.GET.TICKET_ACTIONS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['ticketActions']: true },
+      };
+    case TicketActionTypes.GET.TICKET_ACTIONS_SUCCESS:
+      return {
+        ...state,
+        ['ticketActions']: action.payload as ITicketAction[],
+        ['loaders']: { ...state.loaders, ['ticketActions']: false },
+      };
+    case TicketActionTypes.GET.TICKET_ACTIONS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['ticketActions']: false },
+      };
+    case TicketActionTypes.CLEAR_STATE:
+      return {
+        ...state,
+        proofAttachment: initialTicketState.proofAttachment,
+        currentTicket: initialTicketState.currentTicket,
+        ticketActions: initialTicketState.ticketActions,
       };
     case TicketActionTypes.GET.QUOTES_REQUEST:
       return {

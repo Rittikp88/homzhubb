@@ -23,7 +23,7 @@ const ServiceTicket = (): React.ReactElement => {
 
   useFocusEffect(
     useCallback(() => {
-      if (!param?.isFromPortfolio && param?.propertyId) {
+      if (param?.isFromPortfolio && param?.propertyId) {
         const payload: IGetTicketParam = {
           asset_id: param?.propertyId,
         };
@@ -41,6 +41,16 @@ const ServiceTicket = (): React.ReactElement => {
 
   const onNavigateToDetail = (): void => {
     navigate(ScreensKeys.ServiceTicketDetail);
+  };
+
+  const handleGoBack = (): void => {
+    if (param.isFromScreenLevel) {
+      navigate(ScreensKeys.BottomTabs, {
+        screen: ScreensKeys.More,
+      });
+    } else {
+      goBack();
+    }
   };
   // HANDLERS
 
@@ -63,7 +73,7 @@ const ServiceTicket = (): React.ReactElement => {
       title={getTitle()}
       pageTitle={t('serviceTickets')}
       rightNode={param?.isFromPortfolio ? renderRightNode() : undefined}
-      onBackPress={goBack}
+      onBackPress={handleGoBack}
       loading={isLoading}
     >
       <ServiceTicketList

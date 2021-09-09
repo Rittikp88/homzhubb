@@ -25,7 +25,15 @@ interface ITicketDetails {
 const TicketDetailsCard = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const { ticketData, ticketImages, renderRatingForm, successCallback } = props;
-  const { createdAt, updatedAt, status, ticketNumber, priority, title } = ticketData;
+  const {
+    createdAt,
+    updatedAt,
+    status,
+    ticketNumber,
+    priority,
+    title,
+    assignedTo: { fullName },
+  } = ticketData;
 
   const translatedValue = (value: string, root = 'serviceTickets'): string => t(`${root}:${value}`);
   const timeElapsed = DateUtils.getTimeElapsedInDays(createdAt);
@@ -49,8 +57,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
       },
       {
         type: translatedValue('assignedTo'),
-        // TODO : (Praharsh) - Hard coded value for demo
-        value: translatedValue('homzhub', 'common'),
+        value: fullName,
       },
       {
         type: translatedValue('timeElapsed'),

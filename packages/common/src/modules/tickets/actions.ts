@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IInvoiceSummary, InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { ITicketAction, TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IQuoteCategory, QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
 import { IQuoteRequest, QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -32,6 +33,9 @@ export const TicketActionTypes = {
     QUOTES_CATEGORY: `${actionTypePrefix}QUOTES_CATEGORY`,
     QUOTES_CATEGORY_SUCCESS: `${actionTypePrefix}QUOTES_CATEGORY_SUCCESS`,
     QUOTES_CATEGORY_FAILURE: `${actionTypePrefix}QUOTES_CATEGORY_FAILURE`,
+    TICKET_ACTIONS: `${actionTypePrefix}TICKET_ACTIONS`,
+    TICKET_ACTIONS_SUCCESS: `${actionTypePrefix}TICKET_ACTIONS_SUCCESS`,
+    TICKET_ACTIONS_FAILURE: `${actionTypePrefix}TICKET_ACTIONS_FAILURE`,
     QUOTES_REQUEST: `${actionTypePrefix}QUOTES_REQUEST`,
     QUOTES_REQUEST_SUCCESS: `${actionTypePrefix}QUOTES_REQUEST_SUCCESS`,
     QUOTES_REQUEST_FAILURE: `${actionTypePrefix}QUOTES_REQUEST_FAILURE`,
@@ -215,6 +219,20 @@ const submitQuoteFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.POST.SUBMIT_QUOTE_FAILURE,
 });
 
+const getTicketActions = (payload: number): IFluxStandardAction<number> => ({
+  type: TicketActionTypes.GET.TICKET_ACTIONS,
+  payload,
+});
+
+const getTicketActionsSuccess = (payload: TicketAction[]): IFluxStandardAction<ITicketAction[]> => ({
+  type: TicketActionTypes.GET.TICKET_ACTIONS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getTicketActionsFailure = (): IFluxStandardAction => ({
+  type: TicketActionTypes.GET.TICKET_ACTIONS_FAILURE,
+});
+
 const getQuoteRequests = (payload: IQuoteParam): IFluxStandardAction<IQuoteParam> => ({
   type: TicketActionTypes.GET.QUOTES_REQUEST,
   payload,
@@ -273,6 +291,7 @@ export type TicketActionPayloadTypes =
   | IQuoteParam
   | IQuoteCategory[]
   | ISubmitQuote
+  | ITicketAction[]
   | IQuoteRequest
   | IApproveQuote
   | IRequestMorePayload;
@@ -310,6 +329,9 @@ export const TicketActions = {
   submitQuote,
   submitQuoteSuccess,
   submitQuoteFailure,
+  getTicketActions,
+  getTicketActionsSuccess,
+  getTicketActionsFailure,
   getQuoteRequests,
   getQuoteRequestsSuccess,
   getQuoteRequestsFailure,
