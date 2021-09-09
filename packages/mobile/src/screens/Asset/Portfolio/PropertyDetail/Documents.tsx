@@ -517,13 +517,7 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
   private uploadDocument = async (DocumentSource: DocumentPickerResponse[]): Promise<void> => {
     const { currentAssetId, assetData } = this.props;
-    if (!assetData || !assetData.assetStatusInfo) {
-      return;
-    }
 
-    const {
-      assetStatusInfo: { leaseListingId, saleListingId },
-    } = assetData;
     const formData = new FormData();
     DocumentSource.forEach((documentSource) => {
       // @ts-ignore
@@ -532,8 +526,10 @@ export class Documents extends PureComponent<Props, IDocumentState> {
 
     const returnDocumentData = (id: number): IDocumentPayload => ({
       attachment: id,
-      ...(leaseListingId && { lease_listing_id: leaseListingId }),
-      ...(saleListingId && { sale_listing_id: saleListingId }),
+      ...(assetData?.assetStatusInfo?.leaseListingId && {
+        lease_listing_id: assetData?.assetStatusInfo.leaseListingId,
+      }),
+      ...(assetData?.assetStatusInfo?.saleListingId && { sale_listing_id: assetData?.assetStatusInfo.saleListingId }),
     });
 
     try {
