@@ -87,7 +87,7 @@ const QuotePreview = (props: IProps): React.ReactElement => {
                   {t('requestForMore')}
                 </Label>
               </TouchableOpacity>
-              {index === quotes.length - 1 && <Divider containerStyles={styles.separator} />}
+              {index !== quotes.length - 1 && <Divider containerStyles={styles.separator} />}
             </View>
           );
         })
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.darkTint10,
   },
   separator: {
-    marginBottom: 12,
+    marginVertical: 12,
     borderColor: theme.colors.darkTint10,
   },
   title: {

@@ -106,7 +106,18 @@ class TicketActivityCard extends PureComponent<Props> {
   }
 
   private renderActivities = (activity: TicketActivity): React.ReactElement | null => {
-    const { onPressQuote } = this.props;
+    const { t, onPressQuote } = this.props;
+    const {
+      TICKET_RAISED,
+      PAYMENT_DONE,
+      TICKET_REASSIGNED,
+      QUOTE_APPROVED,
+      WORK_INITIATED,
+      WORK_COMPLETED,
+      WORK_UPDATE,
+      QUOTE_REQUESTED,
+      QUOTE_SUBMITTED,
+    } = TicketStatus;
     const {
       role,
       comment,
@@ -118,24 +129,26 @@ class TicketActivityCard extends PureComponent<Props> {
 
     const renderActivityData = (): React.ReactElement | null => {
       switch (code) {
-        case TicketStatus.TICKET_REASSIGNED:
+        case TICKET_REASSIGNED:
           return this.renderActivityStatusBadge({
             data: this.getActionContent(code, data?.assignedTo?.firstName ?? ''),
           });
-        case TicketStatus.QUOTE_SUBMITTED:
+        case QUOTE_SUBMITTED:
           return <ActivityQuotesSubmitted quoteData={data?.quoteRequestCategory ?? []} onQuotePress={onPressQuote} />;
-        case TicketStatus.QUOTE_APPROVED:
+        case QUOTE_APPROVED:
+        case PAYMENT_DONE:
           return <ActivityQuotesApproved quoteData={data?.quotes ?? []} description={comment} />;
-        case TicketStatus.WORK_COMPLETED:
+        case WORK_COMPLETED:
           return this.renderWorkCompleted(data?.attachments ?? []);
-        case TicketStatus.TICKET_RAISED:
-        case TicketStatus.QUOTE_REQUESTED:
+        case TICKET_RAISED:
+        case QUOTE_REQUESTED:
+        case WORK_INITIATED:
         default:
           return this.renderActivityStatusBadge({ data: this.getActionContent(code) });
       }
     };
 
-    const title = code === TicketStatus.WORK_UPDATE && data ? data.title : label;
+    const title = code === WORK_UPDATE && data ? data.title : code === PAYMENT_DONE ? t('paymentDone') : label;
 
     return (
       <TicketActivitySection role={role} user={user} time={createdAt} label={title} description={comment}>
@@ -228,6 +241,7 @@ class TicketActivityCard extends PureComponent<Props> {
       case TicketStatus.TICKET_REASSIGNED:
         return [t('ticketReassignedTo', { name }), t('awaitingAction', { name })];
       case TicketStatus.QUOTE_REQUESTED:
+      case TicketStatus.MORE_QUOTE_REQUESTED:
         return [t('awaitingQuotes')];
       case TicketStatus.WORK_INITIATED:
         return [t('awaitingCompletionProof')];
@@ -257,7 +271,7 @@ export default connect(
 const styles = StyleSheet.create({
   activityView: {
     backgroundColor: theme.colors.background,
-    paddingTop: 16,
+    paddingVertical: 16,
   },
   titleContainer: {
     flex: 1,

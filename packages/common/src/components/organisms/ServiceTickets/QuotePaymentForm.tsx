@@ -24,6 +24,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IProps {
   payLaterSheet: (callback: () => Promise<InvoiceId>, onClose: () => void) => React.ReactElement;
   onSuccess: () => void;
+  setLoader: (value: boolean) => void;
 }
 
 interface IRowProp {
@@ -33,12 +34,13 @@ interface IRowProp {
   color?: string;
 }
 
-const QuotePaymentForm = ({ payLaterSheet, onSuccess }: IProps): React.ReactElement => {
+const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const summary = useSelector(TicketSelectors.getInvoiceSummary);
   const [isPayLater, setPayLater] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     if (selectedTicket) {
@@ -78,7 +80,8 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess }: IProps): React.ReactElem
 
   const paymentApi = (paymentParams: IPaymentParams): void => {
     let payload;
-
+    setIsDisabled(true);
+    setLoader(true);
     if (paymentParams.razorpay_payment_id) {
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
       payload = {
@@ -94,8 +97,17 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess }: IProps): React.ReactElem
       };
     }
 
-    dispatch(FinancialActions.processPayment({ data: payload }));
-    onSuccess();
+    dispatch(FinancialActions.processPayment({ data: payload, onCallback: handleCallback }));
+  };
+
+  const handleCallback = (status: boolean): void => {
+    if (status) {
+      onSuccess();
+    } else {
+      setIsDisabled(false);
+    }
+
+    setLoader(false);
   };
 
   const renderRow = (rowProp: IRowProp): React.ReactElement => {
@@ -158,6 +170,7 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess }: IProps): React.ReactElem
           ) : (
             <PaymentGateway
               type="primary"
+              disabled={isDisabled}
               title={t('assetFinancial:payNow')}
               outerContainerStyle={styles.payButton}
               initiatePayment={initiatePayment}

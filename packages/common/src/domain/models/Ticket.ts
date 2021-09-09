@@ -23,6 +23,7 @@ export enum TicketStatus {
   WORK_COMPLETED = 'WORK_COMPLETED',
   TICKET_CLOSED = 'TICKET_CLOSED',
   WORK_UPDATE = 'WORK_UPDATE',
+  MORE_QUOTE_REQUESTED = 'MORE_QUOTE_REQUESTED',
 }
 
 export enum TicketPriority {

@@ -89,7 +89,13 @@ const UpdateTicketStatusForm = (props: IProps): ReactElement => {
           const isDisabled = !updateTitle.length || !description.length;
           return (
             <>
-              <FormTextInput name="updateTitle" inputType="default" formProps={formProps} label={t('updateTitle')} />
+              <FormTextInput
+                name="updateTitle"
+                inputType="default"
+                formProps={formProps}
+                label={t('updateTitle')}
+                maxLength={40}
+              />
               <FormTextInput
                 name="description"
                 inputType="default"

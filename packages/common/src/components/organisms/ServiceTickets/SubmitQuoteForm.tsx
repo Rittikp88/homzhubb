@@ -90,6 +90,7 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
   const generatePayload = async (callback: (payload: IQuoteGroup[]) => void): Promise<void> => {
     if (selectedTicket && quotes.length > 0) {
       setLoader(true);
+      const errorData: boolean[] = [];
       const quoteGroupData = quotes.map(async (item) => {
         const updatedData: IQuoteData[] = [];
         const formData = new FormData();
@@ -113,6 +114,7 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
             if (error) {
               setLoader(false);
               AlertHelper.error({ message: t('common:fileCorrupt') });
+              errorData.push(true);
             }
           }
         });
@@ -125,7 +127,12 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
       });
 
       await Promise.all(quoteGroupData).then((res) => {
-        callback(res);
+        const isError = errorData.filter((item) => item).length > 0;
+        if (!isError) {
+          callback(res);
+        } else {
+          setLoader(false);
+        }
       });
     }
   };

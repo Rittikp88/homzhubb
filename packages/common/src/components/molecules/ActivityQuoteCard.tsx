@@ -122,13 +122,14 @@ const QuotesApproved = (props: IQuotesApproved): React.ReactElement => {
 
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const formatApprovedQuotes = (): IApprovedQuoteItem[] => {
-    const formatted = quoteData.map((quote) => {
+    return quoteData.map((quote) => {
       const {
         id,
         quoteRequestCategory: { name },
         totalAmount,
         currency: { currencySymbol },
-        quoteSubmitGroup: { user, role },
+        user,
+        role,
       } = quote;
       return {
         id,
@@ -138,7 +139,6 @@ const QuotesApproved = (props: IQuotesApproved): React.ReactElement => {
         role,
       };
     });
-    return formatted;
   };
 
   const approvedQuotes = formatApprovedQuotes();

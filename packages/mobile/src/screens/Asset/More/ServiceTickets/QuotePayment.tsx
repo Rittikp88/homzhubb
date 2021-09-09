@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,7 @@ const QuotePayment = (): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const { invoiceSummary } = useSelector(TicketSelectors.getTicketLoaders);
+  const [isLoading, setLoading] = useState(false);
 
   const renderSheet = (callback: () => Promise<InvoiceId>, onClose: () => void): React.ReactElement => {
     const onCloseSheet = (): void => {
@@ -43,12 +44,12 @@ const QuotePayment = (): React.ReactElement => {
   return (
     <>
       <UserScreen
-        loading={invoiceSummary}
+        loading={invoiceSummary || isLoading}
         title={selectedTicket?.propertyName ?? ''}
         pageTitle={t('quotePayment')}
         onBackPress={goBack}
       >
-        <QuotePaymentForm payLaterSheet={renderSheet} onSuccess={goBack} />
+        <QuotePaymentForm payLaterSheet={renderSheet} onSuccess={goBack} setLoader={setLoading} />
       </UserScreen>
     </>
   );
