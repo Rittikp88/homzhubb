@@ -3,7 +3,7 @@ import { InvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummary
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
-import { QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
+import { RequestedQuote } from '@homzhub/common/src/domain/models/RequestedQuote';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
@@ -95,12 +95,12 @@ const getTicketActions = (state: IState): TicketAction[] => {
   return ObjectMapper.deserializeArray(TicketAction, ticketActions);
 };
 
-const getQuoteRequests = (state: IState): QuoteRequest | null => {
+const getQuoteRequests = (state: IState): RequestedQuote[] => {
   const {
     ticket: { quoteRequests },
   } = state;
-  if (!quoteRequests) return null;
-  return ObjectMapper.deserialize(QuoteRequest, quoteRequests);
+  if (!quoteRequests) return [];
+  return ObjectMapper.deserializeArray(RequestedQuote, quoteRequests);
 };
 
 export const TicketSelectors = {

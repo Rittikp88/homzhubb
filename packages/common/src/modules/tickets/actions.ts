@@ -3,7 +3,7 @@ import { IInvoiceSummary, InvoiceSummary } from '@homzhub/common/src/domain/mode
 import { ITicket, Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { ITicketAction, TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IQuoteCategory, QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
-import { IQuoteRequest, QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
+import { IRequestedQuote, RequestedQuote } from '@homzhub/common/src/domain/models/RequestedQuote';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   IGetTicketParam,
@@ -238,9 +238,9 @@ const getQuoteRequests = (payload: IQuoteParam): IFluxStandardAction<IQuoteParam
   payload,
 });
 
-const getQuoteRequestsSuccess = (payload: QuoteRequest): IFluxStandardAction<IQuoteRequest> => ({
+const getQuoteRequestsSuccess = (payload: RequestedQuote[]): IFluxStandardAction<IRequestedQuote[]> => ({
   type: TicketActionTypes.GET.QUOTES_REQUEST_SUCCESS,
-  payload: ObjectMapper.serialize(payload),
+  payload: ObjectMapper.serializeArray(payload),
 });
 
 const getQuoteRequestsFailure = (): IFluxStandardAction => ({
@@ -292,9 +292,10 @@ export type TicketActionPayloadTypes =
   | IQuoteCategory[]
   | ISubmitQuote
   | ITicketAction[]
-  | IQuoteRequest
   | IApproveQuote
-  | IRequestMorePayload;
+  | IRequestMorePayload
+  | RequestedQuote[]
+  | IRequestedQuote[];
 
 export const TicketActions = {
   setAttachment,

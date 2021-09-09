@@ -5,7 +5,7 @@ import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { TicketCategory } from '@homzhub/common/src/domain/models/TicketCategory';
 import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
-import { QuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
+import { RequestedQuote } from '@homzhub/common/src/domain/models/RequestedQuote';
 import {
   ICompleteTicketPayload,
   IGetTicketParam,
@@ -38,6 +38,8 @@ const ENDPOINTS = {
   quoteRequest: (ticketId: number): string => `v1/tickets/${ticketId}/quote-requests/`,
   reviewById: (ticketId: number, reviewId?: number): string => `v1/tickets/${ticketId}/reviews/${reviewId}/`,
   ticketActions: (ticketId: number): string => `v1/tickets/${ticketId}/actions/`,
+  requestedQuote: (param: IQuoteParam): string =>
+    `v1/tickets/${param.ticketId}/quote-requests/${param.quoteRequestId}/quotes/`,
 };
 
 class TicketRepository {
@@ -81,9 +83,9 @@ class TicketRepository {
     return await this.apiClient.post(ENDPOINTS.reviewSubmit(param.ticketId), data);
   };
 
-  public getQuoteRequest = async (param: IQuoteParam): Promise<QuoteRequest> => {
-    const response = await this.apiClient.get(ENDPOINTS.quoteRequestById(param));
-    return ObjectMapper.deserialize(QuoteRequest, response);
+  public getRequestedQuote = async (param: IQuoteParam): Promise<RequestedQuote[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.requestedQuote(param));
+    return ObjectMapper.deserializeArray(RequestedQuote, response);
   };
 
   public quoteApprove = async (payload: IQuoteApprovePayload): Promise<void> => {

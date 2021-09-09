@@ -9,11 +9,11 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Quote } from '@homzhub/common/src/domain/models/Quote';
-import { QuoteGroup } from '@homzhub/common/src/domain/models/QuoteGroup';
+import { UserQuote } from '@homzhub/common/src/domain/models/UserQuote';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
-  detail: QuoteGroup[];
+  detail: UserQuote[];
   selectedQuote: number;
   onSelectQuote: (id: number) => void;
   onOpenQuote: (url: string) => void;
@@ -63,17 +63,13 @@ const QuotePreview = (props: IProps): React.ReactElement => {
     );
   };
 
+  const quoteData = detail.length > 0 ? detail.filter((item) => item.quotes.length > 0) : [];
   return (
     <>
       <Divider containerStyles={styles.divider} />
-      {detail.length > 0 ? (
-        detail.map((item, index) => {
-          const {
-            user: { name },
-            role,
-            quotes,
-          } = item;
-
+      {quoteData.length > 0 ? (
+        quoteData.map((item, index) => {
+          const { role, name, quotes } = item;
           return (
             <View key={index} style={styles.container}>
               <Avatar fullName={name} designation={StringUtils.toTitleCase(role)} />
@@ -87,7 +83,7 @@ const QuotePreview = (props: IProps): React.ReactElement => {
                   {t('requestForMore')}
                 </Label>
               </TouchableOpacity>
-              {index !== quotes.length - 1 && <Divider containerStyles={styles.separator} />}
+              {index !== quoteData.length - 1 && <Divider containerStyles={styles.separator} />}
             </View>
           );
         })

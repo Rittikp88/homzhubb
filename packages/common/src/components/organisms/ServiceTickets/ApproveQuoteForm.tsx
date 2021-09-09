@@ -9,7 +9,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import QuotePreview from '@homzhub/common/src/components/molecules/QuotePreview';
-import { QuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
+import { RequestedQuote } from '@homzhub/common/src/domain/models/RequestedQuote';
 import { IQuoteApprovePayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ICollapseSection } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -75,10 +75,10 @@ const ApproveQuoteForm = (props: IProps): React.ReactElement => {
 
   // HANDLERS END
 
-  const renderPreview = (item: QuoteCategory, index: number): React.ReactElement => {
+  const renderPreview = (item: RequestedQuote, index: number): React.ReactElement => {
     return (
       <QuotePreview
-        detail={item.quoteSubmitGroups}
+        detail={item.users}
         selectedQuote={selectedQuote[index]}
         onSelectQuote={(id): void => onSelectQuote(id, index)}
         onOpenQuote={onOpenQuote}
@@ -94,8 +94,8 @@ const ApproveQuoteForm = (props: IProps): React.ReactElement => {
       <Label type="large" style={styles.description}>
         {t('approveQuoteDescription')}
       </Label>
-      {quotes &&
-        quotes.quoteRequestCategories.map((item, index) => {
+      {quotes.length > 0 &&
+        quotes.map((item, index) => {
           return renderCollapsibleSection({ children: renderPreview(item, index), title: item.name });
         })}
       <TextArea

@@ -4,7 +4,7 @@ import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummar
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
 import { ITicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
-import { IQuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
+import { IRequestedQuote } from '@homzhub/common/src/domain/models/RequestedQuote';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
@@ -20,7 +20,7 @@ export const initialTicketState: ITicketState = {
   quotes: [],
   quotesCategory: [],
   ticketActions: [],
-  quoteRequests: null,
+  quoteRequests: [],
   loaders: {
     tickets: false,
     ticketDetail: false,
@@ -220,7 +220,7 @@ export const ticketReducer = (
     case TicketActionTypes.GET.QUOTES_REQUEST_SUCCESS:
       return {
         ...state,
-        ['quoteRequests']: action.payload as IQuoteRequest,
+        ['quoteRequests']: action.payload as IRequestedQuote[],
         ['loaders']: { ...state.loaders, ['quoteRequests']: false },
       };
     case TicketActionTypes.GET.QUOTES_REQUEST_FAILURE:

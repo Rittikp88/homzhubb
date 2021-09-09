@@ -108,6 +108,7 @@ const ApproveQuote = (): React.ReactElement => {
         title={selectedTicket?.propertyName ?? ''}
         pageTitle={t('approveQuote')}
         onBackPress={goBack}
+        keyboardShouldPersistTaps
         loading={quoteRequests || approveQuote}
       >
         <ApproveQuoteForm

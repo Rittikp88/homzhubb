@@ -3,7 +3,7 @@ import { IInvoiceSummary } from '@homzhub/common/src/domain/models/InvoiceSummar
 import { ITicket } from '@homzhub/common/src/domain/models/Ticket';
 import { ITicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory';
-import { IQuoteRequest } from '@homzhub/common/src/domain/models/QuoteRequest';
+import { IRequestedQuote } from '@homzhub/common/src/domain/models/RequestedQuote';
 import { IOnCallback } from '@homzhub/common/src/modules/interfaces';
 import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import {
@@ -24,7 +24,7 @@ export interface ITicketState {
   quotes: IQuoteGroup[];
   quotesCategory: IQuoteCategory[];
   ticketActions: ITicketAction[];
-  quoteRequests: IQuoteRequest | null;
+  quoteRequests: IRequestedQuote[];
   loaders: {
     tickets: boolean;
     ticketDetail: boolean;

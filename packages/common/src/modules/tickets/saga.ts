@@ -209,7 +209,7 @@ export function* getTicketActions(action: IFluxStandardAction<number>) {
 export function* getQuoteRequests(action: IFluxStandardAction<IQuoteParam>) {
   if (!action.payload) return;
   try {
-    const res = yield call(TicketRepository.getQuoteRequest, action.payload);
+    const res = yield call(TicketRepository.getRequestedQuote, action.payload);
     yield put(TicketActions.getQuoteRequestsSuccess(res));
   } catch (e) {
     yield put(TicketActions.getQuoteRequestsFailure());
