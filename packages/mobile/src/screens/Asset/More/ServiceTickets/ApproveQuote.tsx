@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
@@ -125,7 +126,7 @@ const ApproveQuote = (): React.ReactElement => {
         sheetContainerStyle={styles.container}
         sheetHeight={theme.viewport.height * 0.6}
       >
-        <>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps="handled">
           <Label type="large">{t('requestingMoreQuotes')}</Label>
           <View style={styles.chipView}>
             <Label type="large" textType="semiBold" style={styles.chipLabel}>
@@ -145,10 +146,9 @@ const ApproveQuote = (): React.ReactElement => {
             type="primary"
             title={t('common:submit')}
             onPress={onSubmit}
-            titleStyle={styles.titleStyle}
             containerStyle={styles.buttonContainer}
           />
-        </>
+        </KeyboardAwareScrollView>
       </BottomSheet>
     </>
   );
@@ -160,11 +160,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
   },
-  titleStyle: {
-    marginVertical: 8,
-  },
   buttonContainer: {
-    maxHeight: 48,
     marginTop: 10,
   },
   cardContainer: {
