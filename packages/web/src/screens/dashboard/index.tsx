@@ -44,7 +44,6 @@ const Dashboard: FC = () => {
 
   const onCompleteDetails = (assetId: number): void => {
     dispatch(RecordAssetActions.setAssetId(assetId));
-    dispatch(RecordAssetActions.setEditPropertyFlow(true));
     NavigationService.navigate(history, {
       path: RouteNames.protectedRoutes.PROPERTY_VIEW,
       params: {
