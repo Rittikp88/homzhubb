@@ -105,7 +105,7 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       assetType,
       leaseTerm,
       saleTerm,
-      postedOn,
+      listedOn,
       contacts: { fullName, profilePicture },
       country: { currencies },
       assetGroup: { code, name },
@@ -114,7 +114,7 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
     const propertyType = assetType ? assetDetails.assetType.name : '';
     const propertyTimelineData = PropertyUtils.getPropertyTimelineData(
       name,
-      postedOn,
+      listedOn,
       (leaseTerm?.availableFromDate || saleTerm?.availableFromDate) ?? '',
       asset_transaction_type || 0,
       saleTerm

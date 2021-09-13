@@ -24,7 +24,16 @@ const TabSection = (propsData: IProps): React.ReactElement => {
   const [currentIndex, setcurrentIndex] = useState(0);
   const { t } = useTranslation(LocaleConstants.namespacesKey.common);
   const {
-    assetDetails: { description, features, leaseTerm, saleTerm, amenityGroup, highlights, assetStatusInfo },
+    assetDetails: {
+      description,
+      features,
+      leaseTerm,
+      saleTerm,
+      amenityGroup,
+      highlights,
+      assetStatusInfo,
+      id: assetId,
+    },
   } = propsData;
   const selectedFilters = { filter_by: '', sort_by: OfferSort.NEWEST };
   const renderTabScene = (route: IRoutes): React.ReactElement | null => {
@@ -43,7 +52,7 @@ const TabSection = (propsData: IProps): React.ReactElement => {
       case Tabs.OFFERS:
         return <OfferView selectedFilters={selectedFilters} />;
       case Tabs.FINANCIALS:
-        return <FinancialsTab />;
+        return <FinancialsTab assetId={assetId} />;
       default:
         return (
           <View style={styles.comingSoonContent}>

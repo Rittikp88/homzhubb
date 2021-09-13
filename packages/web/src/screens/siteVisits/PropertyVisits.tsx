@@ -14,7 +14,6 @@ import SiteVisitsActionsPopover, {
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { IAssetVisitPayload, IBookVisitProps } from '@homzhub/common/src/domain/repositories/interfaces';
-import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface ICustomState {
   isCalendarView: boolean;
@@ -33,7 +32,8 @@ const PropertyVisits: React.FC = () => {
     };
   }, []);
   const dispatch = useDispatch();
-  const { getAssetVisit, setVisitType, clearVisits } = AssetActions;
+  const { getAssetVisit, clearVisits } = AssetActions;
+  // const { getAssetVisit, setVisitType, clearVisits } = AssetActions; TODO: Lakshit - Add for Calendar View
   const [customState, setCustomState] = useState<ICustomState>({
     isCalendarView: false,
     countryData: [],
@@ -50,15 +50,15 @@ const PropertyVisits: React.FC = () => {
       };
     });
   };
-  const handleCalendarPress = (): void => {
-    setVisitType(Tabs.UPCOMING);
-    setCustomState((state) => {
-      return {
-        ...state,
-        isCalendarView: !state.isCalendarView,
-      };
-    });
-  };
+  // const handleCalendarPress = (): void => { TODO: Lakshit - Add for Calendar View
+  //   setVisitType(Tabs.UPCOMING);
+  //   setCustomState((state) => {
+  //     return {
+  //       ...state,
+  //       isCalendarView: !state.isCalendarView,
+  //     };
+  //   });
+  // };
   const onPropertyChange = (value: number): void => {
     const {
       visitPayload: { start_date__gte, status__in, start_date__lt },
@@ -143,6 +143,7 @@ const PropertyVisits: React.FC = () => {
   }, [isReschedule]);
 
   const { isCalendarView, countryData, propertiesByCountry, selectedAssetId, selectedCountry } = customState;
+
   return (
     <View style={styles.container}>
       <View style={styles.containerFilters}>
@@ -160,7 +161,7 @@ const PropertyVisits: React.FC = () => {
             size={24}
             name={isCalendarView ? icons.doubleBar : icons.calendar}
             color={theme.colors.primaryColor}
-            onPress={handleCalendarPress}
+            // onPress={handleCalendarPress} TODO: Lakshit - Add for Calendar View
           />
         </View>
       </View>

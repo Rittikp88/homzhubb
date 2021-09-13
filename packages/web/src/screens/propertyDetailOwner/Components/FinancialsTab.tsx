@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef, ReactElement } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { connect, ConnectedProps, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
-import { bindActionCreators, Dispatch } from 'redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -23,18 +22,14 @@ import { UploadBoxComponent } from '@homzhub/web/src/components/molecules/Upload
 import AddRecordForm, { IUploadCompProps } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import Transactions from '@homzhub/web/src/screens/financials/Transactions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
-interface IDispatchProps {
-  getTransactions: (payload: ITransactionParams) => void;
-  getLedgerMetrics: () => void;
+interface IProps {
+  assetId: number;
 }
 
-type Props = IReduxProps;
-
-const FinancialsTab: React.FC<Props> = (props: Props) => {
-  const { currency, assets } = props;
+const FinancialsTab: React.FC<IProps> = (props: IProps) => {
+  const { assetId } = props;
   const popupRef = useRef<PopupActions>(null);
   const { t } = useTranslation();
   // eslint-disable-next-line
@@ -43,8 +38,13 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
   const [isEditRecord, setIsEditRecord] = useState(false);
   const [transactionId, setTransactionId] = useState(-1);
   const dispatch = useDispatch();
+  const { getTransactions, getLedgerMetrics } = FinancialActions;
   const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
+  const currency = useSelector((state: IState) => UserSelector.getCurrency(state));
+  const assets = useSelector((state: IState) => UserSelector.getUserAssets(state));
+  const transactionsData = useSelector((state: IState) => FinancialSelectors.getTransactionRecords(state));
+
   useEffect(() => {
     dispatch(UserActions.getAssets());
   }, []);
@@ -85,13 +85,13 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
   };
 
   const getGeneralLedgers = (reset = false): void => {
-    const { getTransactions, transactionsData } = props;
-    getTransactions({
-      offset: reset ? 0 : transactionsData.length,
-      limit: 10,
-      asset_id: undefined,
-      country_id: undefined,
-    });
+    dispatch(
+      getTransactions({
+        offset: reset ? 0 : transactionsData.length,
+        limit: 10,
+        asset_id: assetId,
+      })
+    );
   };
 
   const onSubmitFormSuccess = (): void => {
@@ -122,6 +122,7 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
         <Divider containerStyles={styles.verticalStyle} />
         <View style={styles.modalContent}>
           <AddRecordForm
+            assetId={assetId}
             properties={assets}
             clear={clearForm}
             defaultCurrency={currency}
@@ -141,13 +142,12 @@ const FinancialsTab: React.FC<Props> = (props: Props) => {
     );
   };
   const onDeleteRecord = async (currentTransactionId: number): Promise<void> => {
-    const { getLedgerMetrics } = props;
     if (currentTransactionId > -1) {
       try {
         await LedgerRepository.deleteLedger(currentTransactionId);
         getGeneralLedgers(true);
         setTransactionId(-1);
-        getLedgerMetrics();
+        dispatch(getLedgerMetrics());
         AlertHelper.success({ message: t('assetFinancial:deletedSuccessfullyMessage') });
       } catch (e) {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -207,19 +207,4 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state: IState): any => {
-  return {
-    currency: UserSelector.getCurrency(state),
-    assets: UserSelector.getUserAssets(state),
-    transactionsData: FinancialSelectors.getTransactionRecords(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getTransactions, getLedgerMetrics } = FinancialActions;
-  return bindActionCreators({ getTransactions, getLedgerMetrics }, dispatch);
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-type IReduxProps = ConnectedProps<typeof connector>;
-export default connector(FinancialsTab);
+export default FinancialsTab;

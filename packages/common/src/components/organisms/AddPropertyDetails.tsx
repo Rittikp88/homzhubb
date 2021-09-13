@@ -178,7 +178,13 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
       furnishingType,
     } = values;
     const { spacesForm } = this.state;
-    const { handleNextStep, assetId, lastVisitedStep } = this.props;
+    const { handleNextStep, assetId, lastVisitedStep, t } = this.props;
+    const spaceCount = spacesForm.filter((item) => item.count > 0).length;
+
+    if (spaceCount < 1) {
+      AlertHelper.error({ message: t('property:selectSpaces') });
+      return;
+    }
 
     const sanitizedSpaces = spacesForm
       .filter((item) => item && item.description !== '')

@@ -44,7 +44,7 @@ const ServiceTicket = (): React.ReactElement => {
   };
 
   const handleGoBack = (): void => {
-    if (param.isFromScreenLevel) {
+    if (param && param.isFromScreenLevel) {
       navigate(ScreensKeys.BottomTabs, {
         screen: ScreensKeys.More,
       });

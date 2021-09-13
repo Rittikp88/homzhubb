@@ -248,6 +248,8 @@ const styles = StyleSheet.create({
   },
   propertyContainerStyle: {
     flex: 0.2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginLeft: 16,
     minWidth: 180,
   },

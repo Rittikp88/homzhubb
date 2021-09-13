@@ -10,6 +10,7 @@ import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { PortfolioRepository } from '@homzhub/common/src/domain/repositories/PortfolioRepository';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
@@ -37,6 +38,7 @@ interface IDispatchProps {
   clearAsset: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   setAssetId: (payload: number) => void;
+  setCurrentProperty: (payload: number) => void;
 }
 
 interface IStateProps {
@@ -55,7 +57,7 @@ interface IProps {
 type Props = IDispatchProps & IStateProps & IProps;
 
 const PropertyDetailsOwner: FC<Props> = (props: Props) => {
-  const { history } = props;
+  const { history, setCurrentProperty } = props;
   const { location } = history;
 
   const {
@@ -64,6 +66,9 @@ const PropertyDetailsOwner: FC<Props> = (props: Props) => {
   const popupRef = useRef<PopupActions>(null);
   const dispatch = useDispatch();
   const [propertyData, setPropertyData] = useState<Asset | null>(null);
+  useEffect(() => {
+    setCurrentProperty(asset_id);
+  }, []);
   useEffect(() => {
     if (!asset_id) {
       return;
@@ -217,12 +222,13 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { clearAsset } = AssetActions;
   const { setAssetId, setEditPropertyFlow } = RecordAssetActions;
-
+  const { setCurrentProperty } = FinancialActions;
   return bindActionCreators(
     {
       clearAsset,
       setEditPropertyFlow,
       setAssetId,
+      setCurrentProperty,
     },
     dispatch
   );

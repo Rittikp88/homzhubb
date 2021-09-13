@@ -133,7 +133,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
       <View style={[styles.filterContainer, !isTablet && styles.filterContainerWeb]}>
         <PortfolioOverview onMetricsClicked={this.onMetricsClicked} />
         <PortfolioFilter filterData={filters} getStatus={this.getStatus} />
-        {tenanciesData && this.renderTenancies(tenanciesData)}
+        {tenanciesData.length && this.renderTenancies(tenanciesData)}
         {this.renderPortfolio()}
         <Popover
           content={

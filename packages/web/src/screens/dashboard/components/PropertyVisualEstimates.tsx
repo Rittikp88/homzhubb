@@ -157,7 +157,7 @@ const PropertyVisualsEstimates = ({
           >
             <TouchableOpacity activeOpacity={1} style={styles.chooseTimeRange}>
               <Typography variant="label" size="regular" style={[styles.optionLabel, styles.timeRangeLabel]}>
-                {selectedDateFilter?.label ?? ''}
+                {selectedDateFilter?.displayValueAfterSelection ?? selectedDateFilter?.label}
               </Typography>
               <Icon name={icons.downArrow} size={18} color={theme.colors.blue} />
             </TouchableOpacity>
