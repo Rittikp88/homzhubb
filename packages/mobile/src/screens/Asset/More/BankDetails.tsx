@@ -75,7 +75,7 @@ const BankDetails = (): React.ReactElement => {
       setLocalLoader(false);
       setIsDeactivateFlow(false);
       AlertHelper.error({
-        message: ErrorUtils.getErrorMessage(e.details.statusCode),
+        message: ErrorUtils.getErrorMessage(e.details),
         statusCode: e.details.statusCode,
       });
     }
@@ -214,7 +214,7 @@ const BankDetails = (): React.ReactElement => {
         AlertHelper.success({ message: t('assetFinancial:bankAccountDeletedSuccessfully') });
       } catch (e) {
         setLocalLoader(false);
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details.message), statusCode: e.details.statusCode });
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
       }
     };
 

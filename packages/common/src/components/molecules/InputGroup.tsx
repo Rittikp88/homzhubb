@@ -99,7 +99,11 @@ const InputGroup = (props: IInputGroupProps): React.ReactElement => {
   return (
     <>
       <View style={[styles.container, inputContainer]}>
-        {!!label && <Label style={styles.label}>{label}</Label>}
+        {!!label && (
+          <Label type="large" style={styles.label}>
+            {label}
+          </Label>
+        )}
         {inputValues.map((item, index) => {
           const isError = errorIndex === index;
           return (

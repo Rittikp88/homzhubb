@@ -66,7 +66,6 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
     const isCheck: boolean = selectedValue === item.value;
 
     const returnStyles = (): StyleProp<ViewStyle | TextStyle> => {
-      if (item.isNegative) return styles.negativeItem;
       if (!hasFullySpannedItems) {
         return [styles.item, numColumns > 1 && styles.itemWidth];
       }
@@ -110,9 +109,6 @@ const styles = StyleSheet.create({
   },
   itemWidth: {
     width: theme.viewport.width / 2.5,
-  },
-  negativeItem: {
-    backgroundColor: theme.colors.errorOpacity,
   },
   redText: {
     color: theme.colors.error,

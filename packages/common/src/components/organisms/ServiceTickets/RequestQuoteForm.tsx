@@ -99,7 +99,7 @@ const RequestQuoteForm = ({ onSuccess }: IProps): React.ReactElement => {
       </View>
       <InputGroup
         data={emails}
-        label={t('auth:emails')}
+        label={t('inviteMorePartner')}
         placeholder={t('auth:enterEmailText')}
         buttonLabel={t('vendorEmail')}
         updateData={onUpdateEmails}

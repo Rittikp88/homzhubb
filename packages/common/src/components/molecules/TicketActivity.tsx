@@ -144,7 +144,7 @@ class TicketActivityCard extends PureComponent<Props> {
         case QUOTE_REQUESTED:
         case WORK_INITIATED:
         default:
-          return this.renderActivityStatusBadge({ data: this.getActionContent(code) });
+          return this.renderActivityStatusBadge({ data: this.getActionContent(code, data?.assignedTo?.firstName) });
       }
     };
 
