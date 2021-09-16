@@ -10,11 +10,12 @@ export interface IDropdownProps {
   valueChange: (changedValue: IPopupOptions) => void;
   dropdownVisible: boolean;
   content: React.ReactElement;
+  customPopupProps?: PopupProps;
 }
 
-const DropDown = ({ data, valueChange, dropdownVisible, content }: IDropdownProps): React.ReactElement => {
+const DropDown = ({ data, valueChange, dropdownVisible, content, customPopupProps }: IDropdownProps): React.ReactElement => {
   const defaultDropDownProps = (width: number): PopupProps => ({
-    position: 'bottom right' as 'bottom right',
+    position: customPopupProps?.position ?? 'bottom right' as 'bottom right',
     on: ['click' as 'click'],
     arrow: false,
     contentStyle: { minWidth: width, marginTop: '4px', alignItems: 'stretch', width },
@@ -33,7 +34,7 @@ const DropDown = ({ data, valueChange, dropdownVisible, content }: IDropdownProp
   }, [dropdownVisible]);
 
   const onLayout = (e: LayoutChangeEvent): void => {
-    setWidth(e.nativeEvent.layout.width);
+    setWidth(e.nativeEvent.layout.width > 200 ? e.nativeEvent.layout.width : 200);
   };
 
   return (

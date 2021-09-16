@@ -42,7 +42,7 @@ interface ICustomState {
 
 interface IProps {
   onReschedule: (param: IBookVisitProps, isNew?: boolean) => void;
-  setVisitPayload?: (payload: IAssetVisitPayload) => void;
+  setVisitPayload: (payload: IAssetVisitPayload) => void;
 }
 
 const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
@@ -53,6 +53,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
     dropdownValue: 1,
     pillars: [],
   });
+  const { currentIndex } = customState;
   const { getAssetVisit, setVisitType, clearVisits, setVisitIds } = AssetActions;
   const visits = useSelector((state: IState) => AssetSelectors.getAssetVisitsByDate(state));
   const asset = useSelector((state: IState) => PortfolioSelectors.getCurrentAssetPayload(state));
@@ -64,7 +65,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     getVisitsData();
-  }, [customState.currentIndex]);
+  }, [currentIndex]);
 
   const getRatingPillars = async (): Promise<void> => {
     try {
@@ -80,7 +81,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
   };
   const getVisitsData = (): void => {
     const { setVisitPayload } = props;
-    const { currentIndex, dropdownValue } = customState;
+    const { dropdownValue } = customState;
     const currentRoute = VisitRoutes[currentIndex];
     const payload: IAssetVisitPayload | null = VisitUtils.getVisitPayload({
       assetPayload: asset,
@@ -329,7 +330,6 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
     }
   }, [isPopoverActive]);
 
-  const { currentIndex } = customState;
   const statusIndex = getVisitStatus();
   return (
     <View>

@@ -83,6 +83,8 @@ const styles = StyleSheet.create({
   optionContainer: {
     backgroundColor: theme.colors.white,
     paddingVertical: 8,
+    maxHeight: 245,
+    overflowY: 'auto',
   },
   option: {
     flexDirection: 'row',

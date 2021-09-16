@@ -7,6 +7,7 @@ import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecules/PropertyByCountryDropdown';
+import SiteVisitsCalendarView from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsCalendarView';
 import SiteVisitsGridView from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsGridView';
 import SiteVisitsActionsPopover, {
   SiteVisitAction,
@@ -14,6 +15,7 @@ import SiteVisitsActionsPopover, {
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
 import { IAssetVisitPayload, IBookVisitProps } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface ICustomState {
   isCalendarView: boolean;
@@ -32,8 +34,7 @@ const PropertyVisits: React.FC = () => {
     };
   }, []);
   const dispatch = useDispatch();
-  const { getAssetVisit, clearVisits } = AssetActions;
-  // const { getAssetVisit, setVisitType, clearVisits } = AssetActions; TODO: Lakshit - Add for Calendar View
+  const { getAssetVisit, setVisitType, clearVisits } = AssetActions;
   const [customState, setCustomState] = useState<ICustomState>({
     isCalendarView: false,
     countryData: [],
@@ -50,15 +51,15 @@ const PropertyVisits: React.FC = () => {
       };
     });
   };
-  // const handleCalendarPress = (): void => { TODO: Lakshit - Add for Calendar View
-  //   setVisitType(Tabs.UPCOMING);
-  //   setCustomState((state) => {
-  //     return {
-  //       ...state,
-  //       isCalendarView: !state.isCalendarView,
-  //     };
-  //   });
-  // };
+  const handleCalendarPress = (): void => {
+    setVisitType(Tabs.UPCOMING);
+    setCustomState((state) => {
+      return {
+        ...state,
+        isCalendarView: !state.isCalendarView,
+      };
+    });
+  };
   const onPropertyChange = (value: number): void => {
     const {
       visitPayload: { start_date__gte, status__in, start_date__lt },
@@ -124,6 +125,11 @@ const PropertyVisits: React.FC = () => {
     setIsReschedule(true);
   };
 
+  const getAllVisits = (): void => {
+    const { visitPayload } = customState;
+    dispatch(getAssetVisit(visitPayload));
+  };
+
   const popupRef = createRef<PopupActions>();
   const onOpenModal = (): void => {
     if (popupRef && popupRef.current) {
@@ -134,6 +140,7 @@ const PropertyVisits: React.FC = () => {
     if (popupRef && popupRef.current) {
       popupRef.current.close();
       setIsReschedule(false);
+      getAllVisits();
     }
   };
 
@@ -166,24 +173,30 @@ const PropertyVisits: React.FC = () => {
             size={24}
             name={isCalendarView ? icons.doubleBar : icons.calendar}
             color={theme.colors.primaryColor}
-            // onPress={handleCalendarPress} TODO: Lakshit - Add for Calendar View
+            onPress={handleCalendarPress}
           />
         </View>
       </View>
       <View style={styles.contentContainer}>
         {isCalendarView ? (
-          <View />
+          <View>
+            <SiteVisitsCalendarView
+              onReschedule={rescheduleVisit}
+              selectedAssetId={selectedAssetId}
+              setVisitPayload={setVisitPayload}
+            />
+          </View>
         ) : (
           <View>
             <SiteVisitsGridView onReschedule={rescheduleVisit} setVisitPayload={setVisitPayload} />
-            <SiteVisitsActionsPopover
-              popupRef={popupRef}
-              onCloseModal={onCloseModal}
-              siteVisitActionType={SiteVisitAction.RESCHEDULE_VISIT}
-              paramsBookVisit={visitParams}
-            />
           </View>
         )}
+        <SiteVisitsActionsPopover
+          popupRef={popupRef}
+          onCloseModal={onCloseModal}
+          siteVisitActionType={SiteVisitAction.RESCHEDULE_VISIT}
+          paramsBookVisit={visitParams}
+        />
       </View>
     </View>
   );

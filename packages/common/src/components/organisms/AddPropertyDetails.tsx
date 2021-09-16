@@ -185,7 +185,6 @@ class AddPropertyDetails extends React.PureComponent<IProps, IOwnState> {
       AlertHelper.error({ message: t('property:selectSpaces') });
       return;
     }
-
     const sanitizedSpaces = spacesForm
       .filter((item) => item && item.description !== '')
       .map((space) => {

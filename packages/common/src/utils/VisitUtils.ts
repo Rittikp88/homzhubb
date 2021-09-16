@@ -42,7 +42,7 @@ class VisitUtils {
       case Tabs.MISSED:
         dropdownData = this.getDropdownData(Tabs.MISSED);
         key = Tabs.MISSED;
-        start_date_gte = date;
+        start_date_lt = date; // TODO: Team - Reconfirm Logic
         status__in = this.getStatus(Tabs.MISSED);
         break;
       case Tabs.COMPLETED:
@@ -83,7 +83,7 @@ class VisitUtils {
 
     return {
       ...(start_date_lte && { start_date__lte: start_date_lte }),
-      ...(key !== Tabs.MISSED && start_date_lt && { start_date__lt: start_date_lt }),
+      ...(key === Tabs.MISSED && start_date_lt && { start_date__lt: start_date_lt }), // TODO: Team - Reconfirm Logic
       ...(start_date_gte && { start_date__gte: start_date_gte }),
       ...(isFromProperty && lease_listing_id && { lease_listing_id }),
       ...(isFromProperty && sale_listing_id && { sale_listing_id }),
