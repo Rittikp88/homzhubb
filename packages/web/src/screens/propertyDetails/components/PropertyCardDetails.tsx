@@ -1,4 +1,4 @@
-import React, { createRef } from 'react';
+import React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -63,7 +63,7 @@ interface IStateData {
 type Props = IProp & IStateProps & WithTranslation & IWithMediaQuery;
 
 export class PropertyCardDetails extends React.PureComponent<Props, IStateData> {
-  public popupRef = createRef<PopupActions>();
+  public popupRef: React.RefObject<PopupActions> = React.createRef<PopupActions>();
 
   constructor(props: Props) {
     super(props);
@@ -173,15 +173,15 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
         this.getProspectProfile();
       });
     };
-    const popupRef = createRef<PopupActions>();
+    const popupRefSiteVisits: React.MutableRefObject<PopupActions | null> = React.createRef<PopupActions>();
     const onOpenModal = (): void => {
-      if (popupRef && popupRef.current) {
-        popupRef.current.open();
+      if (popupRefSiteVisits && popupRefSiteVisits.current) {
+        popupRefSiteVisits.current.open();
       }
     };
     const onCloseModal = (): void => {
-      if (popupRef && popupRef.current) {
-        popupRef.current.close();
+      if (popupRefSiteVisits && popupRefSiteVisits.current) {
+        popupRefSiteVisits.current.close();
       }
     };
     const params: IBookVisitProps = {
@@ -268,7 +268,7 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
                   </Button>
                 </View>
                 <SiteVisitsActionsPopover
-                  popupRef={popupRef}
+                  popupRef={popupRefSiteVisits}
                   onCloseModal={onCloseModal}
                   siteVisitActionType={SiteVisitAction.SCHEDULE_VISIT}
                   paramsBookVisit={params}

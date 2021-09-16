@@ -81,6 +81,7 @@ const PropertyVisits: React.FC = () => {
 
     dispatch(getAssetVisit(payload));
   };
+
   const getAllAssetsByCountry = async (): Promise<void> => {
     const response = await AssetService.getVisitAssetByCountry();
     const countryData = response.map((item) => {
@@ -147,15 +148,19 @@ const PropertyVisits: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerFilters}>
-        <PropertyByCountryDropdown
-          selectedCountry={selectedCountry}
-          selectedProperty={selectedAssetId}
-          countryList={countryData}
-          propertyList={propertiesByCountry}
-          onPropertyChange={onPropertyChange}
-          onCountryChange={onCountryChange}
-          containerStyle={styles.dropdownStyle}
-        />
+        {propertiesByCountry.length ? (
+          <PropertyByCountryDropdown
+            selectedCountry={selectedCountry}
+            selectedProperty={selectedAssetId}
+            countryList={countryData}
+            propertyList={propertiesByCountry}
+            onPropertyChange={onPropertyChange}
+            onCountryChange={onCountryChange}
+            containerStyle={styles.dropdownStyle}
+          />
+        ) : (
+          <View />
+        )}
         <View style={styles.containerIcon}>
           <Icon
             size={24}

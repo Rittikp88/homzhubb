@@ -22,7 +22,7 @@ export enum SiteVisitAction {
 }
 
 interface IProps {
-  popupRef: React.RefObject<PopupActions>;
+  popupRef: React.MutableRefObject<PopupActions | null>;
   siteVisitActionType: SiteVisitAction | null;
   onCloseModal: () => void;
   handleSiteVisitsAction?: (value: SiteVisitAction) => void;

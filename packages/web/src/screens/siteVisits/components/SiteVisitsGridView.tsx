@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { TabBar, TabView } from 'react-native-tab-view';
@@ -184,10 +184,10 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
       //     } = customState;
       //     this.onShowProfile(id);
       //   } else {
-      getVisitsData();
       onCloseModal();
+      getVisitsData();
     } catch (e) {
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e) });
     }
   };
 
@@ -310,7 +310,7 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
   const [isPopoverActive, setIsPopoverActive] = useState(false);
   const [paramsVisitAction, setParamsVisitAction] = useState({} as IVisitActionParam);
 
-  const popupRef = createRef<PopupActions>();
+  const popupRef = useRef<PopupActions>(null);
   const onOpenModal = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.open();
@@ -318,8 +318,8 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
   };
   const onCloseModal = (): void => {
     if (popupRef && popupRef.current) {
-      popupRef.current.close();
       setIsPopoverActive(false);
+      popupRef.current.close();
     }
   };
 
