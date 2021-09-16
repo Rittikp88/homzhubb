@@ -29,24 +29,26 @@ export class More extends React.PureComponent<Props> {
     const { t } = this.props;
     const screenKeys: string[] = Object.keys(MORE_SCREENS);
     return (
-      <UserScreen title={t('assetMore:more')}>
+      <UserScreen title={t('assetMore:more')} isGradient>
         <MoreProfile onIconPress={this.onIconPress} />
-        {screenKeys.map((section: string, sectionCount: number): React.ReactElement => {
-          const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
-          return (
-            <React.Fragment key={sectionCount}>
-              {currentData.map((item, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    {this.renderItem(item)}
-                    {index !== currentData.length - 1 && this.renderSeparator()}
-                  </React.Fragment>
-                );
-              })}
-              {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
-            </React.Fragment>
-          );
-        })}
+        <View style={styles.background}>
+          {screenKeys.map((section: string, sectionCount: number): React.ReactElement => {
+            const currentData: IMoreScreenItem[] = MORE_SCREENS[section];
+            return (
+              <React.Fragment key={sectionCount}>
+                {currentData.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      {this.renderItem(item)}
+                      {index !== currentData.length - 1 && this.renderSeparator()}
+                    </React.Fragment>
+                  );
+                })}
+                {sectionCount !== screenKeys.length - 1 && <Divider containerStyles={styles.listSeparator} />}
+              </React.Fragment>
+            );
+          })}
+        </View>
       </UserScreen>
     );
   };
@@ -184,5 +186,8 @@ const styles = StyleSheet.create({
   listSeparator: {
     borderColor: theme.colors.moreSeparator,
     borderWidth: 10,
+  },
+  background: {
+    backgroundColor: theme.colors.white,
   },
 });

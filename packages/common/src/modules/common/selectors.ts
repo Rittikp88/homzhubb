@@ -6,7 +6,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { IMessages } from '@homzhub/common/src/domain/models/Message';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
-import { IChatPayload, ICommonState } from '@homzhub/common/src/modules/common/interfaces';
+import { IChatPayload, ICommonState, IReviewRefer } from '@homzhub/common/src/modules/common/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 const getCountryList = (state: IState): Country[] => {
@@ -123,6 +123,16 @@ const getPillars = (state: IState): Pillar[] => {
   return ObjectMapper.deserializeArray(Pillar, pillars);
 };
 
+const getReviewReferData = (state: IState): IReviewRefer | null => {
+  const {
+    common: { reviewReferData },
+  } = state;
+
+  if (!reviewReferData) return null;
+
+  return reviewReferData;
+};
+
 export const CommonSelectors = {
   getCountryList,
   getDefaultPhoneCode,
@@ -137,4 +147,5 @@ export const CommonSelectors = {
   getMessagesLoading,
   getCommonLoaders,
   getPillars,
+  getReviewReferData,
 };

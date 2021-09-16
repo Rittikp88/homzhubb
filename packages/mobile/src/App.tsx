@@ -17,6 +17,7 @@ import { RootNavigator } from '@homzhub/mobile/src/navigation/RootNavigator';
 import ErrorBoundary from '@homzhub/mobile/src/components/HOC/ErrorBoundary';
 import { Toast } from '@homzhub/common/src/components/molecules/Toast';
 import AppUpdate from '@homzhub/mobile/src/components/organisms/AppUpdate';
+import ReviewAndRefer from '@homzhub/mobile/src/components/organisms/ReviewAndRefer';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 
 interface IState {
@@ -55,6 +56,7 @@ export default class App extends React.PureComponent<{}, IState> {
           <RootNavigator booting={booting} />
           <FlashMessage position="bottom" MessageComponent={this.renderToast} />
           <AppUpdate />
+          <ReviewAndRefer />
         </Provider>
       </ErrorBoundary>
     );

@@ -132,9 +132,6 @@ const styles = StyleSheet.create({
   shareOption: {
     alignItems: 'center',
   },
-  icon: {
-    alignSelf: 'center',
-  },
   shareText: {
     marginTop: 8,
     textAlign: 'center',

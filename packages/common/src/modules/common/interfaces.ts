@@ -14,6 +14,7 @@ export interface ICommonState {
   currentChatDetail: IChatPayload | null;
   groupMessages: GroupMessage[] | null;
   pillars: IPillar[];
+  reviewReferData: IReviewRefer | null;
   loaders: {
     groupMessages: boolean;
     messages: boolean;
@@ -30,4 +31,8 @@ export interface IMessageSuccess {
 export interface IChatPayload {
   groupName: string;
   groupId: number;
+}
+
+export interface IReviewRefer {
+  message: string;
 }

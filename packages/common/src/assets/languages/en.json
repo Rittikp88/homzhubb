@@ -312,7 +312,12 @@
     "featureInIndiaOnly": "Feature available only for India currently",
     "close": "Close",
     "writReview": "Write a review",
-    "duplicateValue": "This value is already used. Please use unique value"
+    "duplicateValue": "This value is already used. Please use unique value",
+    "enjoyExperience": "Enjoying the Homzhub Experience !",
+    "referFriends": "REFER FRIENDS &",
+    "earnRewards": "EARN REWARDS",
+    "getCoins": "Get Homzhub coins for every friend who joins.",
+    "shareNow": "Share now"
   },
   "auth": {
     "verifyNumber": "Verify your number",

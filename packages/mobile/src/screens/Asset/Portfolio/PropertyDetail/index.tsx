@@ -31,7 +31,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
-import { SocialMediaShare } from '@homzhub/common/src/components/molecules/SocialMediaShare';
+import { SocialMediaShare } from '@homzhub/mobile/src/components/molecules/SocialMediaShare';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { PropertyTabs } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyTabs';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';

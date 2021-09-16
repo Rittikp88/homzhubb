@@ -6,7 +6,12 @@ import { ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { IPillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IChatPayload, ICommonState, IMessageSuccess } from '@homzhub/common/src/modules/common/interfaces';
+import {
+  IChatPayload,
+  ICommonState,
+  IMessageSuccess,
+  IReviewRefer,
+} from '@homzhub/common/src/modules/common/interfaces';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export const initialCommonState: ICommonState = {
@@ -26,6 +31,7 @@ export const initialCommonState: ICommonState = {
     },
   },
   groupMessages: null,
+  reviewReferData: null,
   loaders: {
     groupMessages: false,
     messages: false,
@@ -141,6 +147,11 @@ export const commonReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['pillars']: false },
+      };
+    case CommonActionTypes.SET.REVIEW_REFER_DATA:
+      return {
+        ...state,
+        reviewReferData: action.payload as IReviewRefer,
       };
     default:
       return {

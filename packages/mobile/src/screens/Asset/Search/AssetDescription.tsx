@@ -48,7 +48,7 @@ import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { ContactPerson } from '@homzhub/common/src/components/molecules/ContactPerson';
 import { PropertyAddress } from '@homzhub/common/src/components/molecules/PropertyAddress';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
-import { SocialMediaShare } from '@homzhub/common/src/components/molecules/SocialMediaShare';
+import { SocialMediaShare } from '@homzhub/mobile/src/components/molecules/SocialMediaShare';
 import { AssetReviewsSummary } from '@homzhub/mobile/src/components/molecules/AssetReviewsSummary';
 import { PropertyReviewCard } from '@homzhub/common/src/components/molecules/PropertyReviewCard';
 import PropertyDetail from '@homzhub/mobile/src/components/organisms/PropertyDetail';

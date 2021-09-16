@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Share, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -9,21 +9,18 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import ReferEarnIcon from '@homzhub/common/src/assets/images/referEarn.svg';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import ReferralShare from '@homzhub/mobile/src/components/molecules/ReferralShare';
 import { TransactionType } from '@homzhub/common/src/domain/models/CoinTransaction';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 const ReferEarn = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -32,7 +29,6 @@ const ReferEarn = (): React.ReactElement => {
   const transaction = useSelector(UserSelector.getUserCoinTransaction);
   const [management, setManagementData] = useState<IMetricsData[]>([]);
   const [totalInvite, setTotalInvite] = useState('');
-  const url = useRef('');
   const [loading, setLoading] = useState(false);
   const { params } = useRoute();
   const { setParams } = useNavigation();
@@ -67,17 +63,6 @@ const ReferEarn = (): React.ReactElement => {
   }, [params]);
 
   useEffect(() => {
-    setLoading(true);
-    LinkingService.buildShortLink(
-      DynamicLinkTypes.Referral,
-      `${DynamicLinkParamKeys.ReferralCode}=${code}&${DynamicLinkParamKeys.RouteType}=${RouteTypes.Public}`
-    )
-      .then((link) => {
-        url.current = `${t('shareHomzhub', { code, url: link })}`;
-      })
-      .finally(() => {
-        setLoading(false);
-      });
     dispatch(UserActions.getUserCoinTransaction());
   }, [code, t]);
 
@@ -87,54 +72,12 @@ const ReferEarn = (): React.ReactElement => {
     trackEvent(t('common:codeCopy'));
   }, [code, t]);
 
-  const onShare = useCallback(async (): Promise<void> => {
-    await Share.share({ message: url.current });
-  }, []);
-
-  const onMail = useCallback(async (): Promise<void> => {
-    trackEvent(t('common:mail'));
-    await LinkingService.openEmail({ body: url.current, subject: t('shareHomzhubSubject') });
-  }, [t]);
-
-  const onSms = useCallback(async (): Promise<void> => {
-    trackEvent(t('common:sms'));
-    await LinkingService.openSMS({ message: url.current });
-  }, []);
-
-  const onWhatsapp = useCallback(async (): Promise<void> => {
-    trackEvent(t('common:whatsapp'));
-    await LinkingService.openWhatsapp(url.current);
-  }, []);
-
   const trackEvent = (source: string): void => {
     AnalyticsService.track(EventType.Refer, {
       source,
       code,
     });
   };
-
-  const data = useRef([
-    {
-      title: t('common:whatsapp'),
-      icon: 'w',
-      onPress: onWhatsapp,
-    },
-    {
-      title: t('common:sms'),
-      icon: icons.sms,
-      onPress: onSms,
-    },
-    {
-      title: t('common:mail'),
-      icon: icons.envelope,
-      onPress: onMail,
-    },
-    {
-      title: t('common:share'),
-      icon: icons.shareFilled,
-      onPress: onShare,
-    },
-  ]);
 
   return (
     <UserScreen loading={loading} title={t('referEarn')} backgroundColor={theme.colors.background}>
@@ -169,16 +112,7 @@ const ReferEarn = (): React.ReactElement => {
         <Label type="large" textType="semiBold" style={styles.friend}>
           {t('refWith')}
         </Label>
-        <View style={styles.shareContainer}>
-          {data.current.map((item) => (
-            <TouchableOpacity key={item.title} style={styles.shareOption} activeOpacity={0.5} onPress={item.onPress}>
-              {item.icon === 'w' ? <Whatsapp /> : <Icon name={item.icon} size={24} color={theme.colors.active} />}
-              <Label type="regular" style={styles.shareText}>
-                {item.title}
-              </Label>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <ReferralShare setLoading={setLoading} />
       </View>
       {transaction.length > 0 && (
         <View style={styles.transactionContainer}>
@@ -239,14 +173,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: theme.colors.white,
   },
-  shareContainer: {
-    marginHorizontal: 16,
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  shareOption: {
-    alignItems: 'center',
-  },
   icon: {
     alignSelf: 'center',
   },
@@ -293,11 +219,6 @@ const styles = StyleSheet.create({
   code: {
     marginStart: 8,
     color: theme.colors.white,
-  },
-  shareText: {
-    marginTop: 8,
-    textAlign: 'center',
-    color: theme.colors.darkTint5,
   },
   transactionContainer: {
     marginVertical: 16,

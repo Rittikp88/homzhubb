@@ -6,7 +6,7 @@ import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
 import { IPillar, Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IChatPayload, IMessageSuccess } from '@homzhub/common/src/modules/common/interfaces';
+import { IChatPayload, IMessageSuccess, IReviewRefer } from '@homzhub/common/src/modules/common/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'Common/';
@@ -28,6 +28,7 @@ export const CommonActionTypes = {
     REDIRECTION_DETAILS: `${actionTypePrefix}REDIRECTION_DETAILS`,
     MESSAGE_ATTACHMENT: `${actionTypePrefix}MESSAGE_ATTACHMENT`,
     CURRENT_CHAT: `${actionTypePrefix}CURRENT_CHAT`,
+    REVIEW_REFER_DATA: `${actionTypePrefix}REVIEW_REFER_DATA`,
   },
   CLEAR_MESSAGES: `${actionTypePrefix}CLEAR_MESSAGES`,
   CLEAR_ATTACHMENT: `${actionTypePrefix}CLEAR_ATTACHMENT`,
@@ -114,6 +115,11 @@ const getPillarsFailure = (): IFluxStandardAction => ({
   type: CommonActionTypes.GET.PILLARS_FAILURE,
 });
 
+const setReviewReferData = (payload: IReviewRefer): IFluxStandardAction<IReviewRefer> => ({
+  type: CommonActionTypes.SET.REVIEW_REFER_DATA,
+  payload,
+});
+
 export type CommonActionPayloadTypes =
   | ICountry[]
   | IRedirectionDetails
@@ -124,6 +130,7 @@ export type CommonActionPayloadTypes =
   | IChatPayload
   | PillarTypes
   | IPillar[]
+  | IReviewRefer
   | string;
 
 export const CommonActions = {
@@ -144,4 +151,5 @@ export const CommonActions = {
   getPillars,
   getPillarsSuccess,
   getPillarsFailure,
+  setReviewReferData,
 };

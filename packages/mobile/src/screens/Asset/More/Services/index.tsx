@@ -120,6 +120,7 @@ const ServicesDashboard = (): React.ReactElement => {
         title={t('common:marketPlace')}
         backgroundColor={userAsset.length > 0 ? theme.colors.background : theme.colors.white}
         loading={userService}
+        isGradient
       >
         {userAsset.length <= 0 ? (
           <EmptyState
