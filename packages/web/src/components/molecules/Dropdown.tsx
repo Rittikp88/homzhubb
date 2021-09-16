@@ -13,9 +13,15 @@ export interface IDropdownProps {
   customPopupProps?: PopupProps;
 }
 
-const DropDown = ({ data, valueChange, dropdownVisible, content, customPopupProps }: IDropdownProps): React.ReactElement => {
+const DropDown = ({
+  data,
+  valueChange,
+  dropdownVisible,
+  content,
+  customPopupProps,
+}: IDropdownProps): React.ReactElement => {
   const defaultDropDownProps = (width: number): PopupProps => ({
-    position: customPopupProps?.position ?? 'bottom right' as 'bottom right',
+    position: customPopupProps?.position ?? ('bottom right' as 'bottom right'),
     on: ['click' as 'click'],
     arrow: false,
     contentStyle: { minWidth: width, marginTop: '4px', alignItems: 'stretch', width },

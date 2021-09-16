@@ -374,10 +374,16 @@ const SiteVisitsCalendarView: React.FC<Props> = (props: Props) => {
 
   const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
-  
+
   return (
     <View style={[styles.container, isDesktop && styles.containerWeb]}>
-      <View style={[styles.subContainerCalendar, isDesktop && styles.subContainerCalendarWeb, isTablet && styles.subContainerCalendarTab]}>
+      <View
+        style={[
+          styles.subContainerCalendar,
+          isDesktop && styles.subContainerCalendarWeb,
+          isTablet && styles.subContainerCalendarTab,
+        ]}
+      >
         <View style={styles.calendarParentContainer}>
           <View style={styles.calendarTitle}>
             <Typography size="small" variant="text" fontWeight="bold">

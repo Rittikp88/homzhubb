@@ -55,7 +55,7 @@ const CalendarWeb: React.FC<Props> = (props: Props) => {
       className="react-calender-web-custom"
       defaultView={isYearView ? 'decade' : 'month'}
       minDate={new Date()}
-      onChange={(datum: Date): void => onChangeDate(datum)}
+      onChange={(datum: Date | Date[]): void => onChangeDate(datum as Date)}
       onClickYear={isYearView ? onChangeDate : FunctionUtils.noop}
     />
   );
