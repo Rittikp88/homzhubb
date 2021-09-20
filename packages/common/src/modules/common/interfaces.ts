@@ -34,5 +34,7 @@ export interface IChatPayload {
 }
 
 export interface IReviewRefer {
-  message: string;
+  message?: string;
+  isReview?: boolean;
+  isSheetVisible?: boolean;
 }

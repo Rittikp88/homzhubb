@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { CollapsibleSection } from '@homzhub/mobile/src/components';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import ScheduleVisitForm from '@homzhub/common/src/components/organisms/ScheduleVisitForm';
+import { IReviewRefer } from '@homzhub/common/src/modules/common/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IVisitState {
@@ -14,8 +18,12 @@ interface IVisitState {
   isLoading: boolean;
 }
 
+interface IDispatchProps {
+  setReviewReferData: (payload: IReviewRefer) => void;
+}
+
 type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.BookVisit>;
-type Props = libraryProps;
+type Props = libraryProps & IDispatchProps;
 
 export class BookVisit extends Component<Props, IVisitState> {
   public state = {
@@ -28,13 +36,14 @@ export class BookVisit extends Component<Props, IVisitState> {
     const {
       t,
       route: { params },
+      navigation,
     } = this.props;
     return (
       <Screen
         backgroundColor={theme.colors.white}
         isLoading={isLoading}
         headerProps={{
-          onIconPress: this.goBack,
+          onIconPress: navigation.goBack,
           type: 'secondary',
           title: t('assetDescription:BookVisit'),
           icon: icons.close,
@@ -49,7 +58,7 @@ export class BookVisit extends Component<Props, IVisitState> {
           userId={params.userId}
           renderCollapseSection={this.renderCollapsibleSection}
           setLoading={this.setLoading}
-          onSubmitSuccess={this.goBack}
+          onSubmitSuccess={this.onSuccess}
         />
       </Screen>
     );
@@ -70,6 +79,12 @@ export class BookVisit extends Component<Props, IVisitState> {
     );
   };
 
+  private onSuccess = (): void => {
+    const { navigation, setReviewReferData } = this.props;
+    navigation.goBack();
+    setReviewReferData({ isReview: true });
+  };
+
   private handleSlotView = (isCollapsed: boolean): void => {
     this.setState({ isCollapsed });
   };
@@ -77,13 +92,15 @@ export class BookVisit extends Component<Props, IVisitState> {
   private setLoading = (isLoading: boolean): void => {
     this.setState({ isLoading });
   };
-
-  private goBack = (): void => {
-    const { navigation } = this.props;
-    navigation.goBack();
-  };
 }
-export default withTranslation()(BookVisit);
+
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setReviewReferData } = CommonActions;
+  return bindActionCreators({ setReviewReferData }, dispatch);
+};
+
+const reduxComp = connect(null, mapDispatchToProps)(BookVisit);
+export default withTranslation()(reduxComp);
 
 const styles = StyleSheet.create({
   upcomingTitle: {

@@ -3,8 +3,10 @@ import { KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ImageHelper } from '@homzhub/mobile/src/utils/ImageHelper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
@@ -18,6 +20,7 @@ import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropert
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IReviewRefer } from '@homzhub/common/src/modules/common/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IScreenState {
@@ -33,6 +36,7 @@ interface IDispatchProps {
   getAssetById: () => void;
   resetState: () => void;
   setSelectedImages: (payload: AssetGallery[]) => void;
+  setReviewReferData: (payload: IReviewRefer) => void;
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AddProperty>;
@@ -133,8 +137,10 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   };
 
   private handleNavigationToPlan = (): void => {
-    const { navigation } = this.props;
+    const { navigation, setReviewReferData, t } = this.props;
     navigation.navigate(ScreensKeys.AssetPlanSelection);
+    AlertHelper.success({ message: t('property:yourDetailsAdded') });
+    setReviewReferData({ isReview: true });
   };
 
   private handleNavigationToDetail = (): void => {
@@ -161,7 +167,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getAssetById, resetState, setSelectedImages } = RecordAssetActions;
-  return bindActionCreators({ getAssetById, resetState, setSelectedImages }, dispatch);
+  const { setReviewReferData } = CommonActions;
+  return bindActionCreators({ getAssetById, resetState, setSelectedImages, setReviewReferData }, dispatch);
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(AddProperty));

@@ -13,6 +13,7 @@ import { PaymentRepository } from '@homzhub/common/src/domain/repositories/Payme
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -37,6 +38,7 @@ import {
   IUpdateAssetParams,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IReviewRefer } from '@homzhub/common/src/modules/common/interfaces';
 import { IFinancialState, IProcessPaymentPayload } from '@homzhub/common/src/modules/financials/interfaces';
 
 interface IPaymentProps {
@@ -47,6 +49,7 @@ interface IPaymentProps {
   goBackToService?: () => void;
   typeOfPlan?: TypeOfPlan;
   lastVisitedStep?: ILastVisitedStep;
+  isFromListing?: boolean;
 }
 
 interface IPaymentState {
@@ -62,6 +65,7 @@ interface IStateProps {
 
 interface IDispatchProps {
   processPayment: (payload: IProcessPaymentPayload) => void;
+  setReviewReferData: (payload: IReviewRefer) => void;
 }
 
 type Props = IPaymentProps & WithTranslation & IWithMediaQuery & IStateProps & IDispatchProps;
@@ -224,7 +228,16 @@ class PropertyPayment extends Component<Props, IPaymentState> {
   };
 
   private paymentApi = (paymentParams: IPaymentParams): void => {
-    const { handleNextStep, lastVisitedStep, typeOfPlan, propertyId, processPayment } = this.props;
+    const {
+      t,
+      handleNextStep,
+      lastVisitedStep,
+      typeOfPlan,
+      propertyId,
+      processPayment,
+      setReviewReferData,
+      isFromListing = false,
+    } = this.props;
     let payload;
 
     if (paymentParams.razorpay_payment_id) {
@@ -258,6 +271,9 @@ class PropertyPayment extends Component<Props, IPaymentState> {
               },
             };
             await AssetRepository.updateAsset(propertyId, updateAssetPayload);
+            if (!isFromListing) {
+              setReviewReferData({ message: t('property:paymentSuccessMsg'), isSheetVisible: true });
+            }
             if (typeOfPlan === TypeOfPlan.MANAGE) {
               AnalyticsService.track(EventType.TenantInviteSent);
             }
@@ -336,7 +352,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { processPayment } = FinancialActions;
-  return bindActionCreators({ processPayment }, dispatch);
+  const { setReviewReferData } = CommonActions;
+  return bindActionCreators({ processPayment, setReviewReferData }, dispatch);
 };
 
 const HOC = connect(mapStateToProps, mapDispatchToProps)(withTranslation()(PropertyPayment));

@@ -39,7 +39,7 @@ import {
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IOwnProp {
-  onSubmit: () => void;
+  onSubmit: (isEdit: boolean) => void;
   onAddAccount?: (id?: number) => void;
   isEdit?: boolean;
   isFromDues?: boolean;
@@ -344,7 +344,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   const handleReminderCallback = (status: boolean): void => {
     if (status) {
       AlertHelper.success({ message: t(isEdit ? 'reminderUpdateMsg' : 'reminderSuccessMsg') });
-      onSubmit();
+      onSubmit(isEdit);
     }
   };
 

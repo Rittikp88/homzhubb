@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/core';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -18,6 +19,7 @@ const AddReminderScreen = (): React.ReactElement => {
   const { goBack, navigate } = useNavigation();
   const { params } = useRoute();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const loaders = useSelector(FinancialSelectors.getFinancialLoaders);
   const [isLoading, setLoading] = useState(false);
   const [isSheetVisible, setSheetVisibility] = useState(false);
@@ -46,6 +48,15 @@ const AddReminderScreen = (): React.ReactElement => {
     navigate(ScreensKeys.AddBankAccount, { id });
   };
 
+  const onSubmitSuccess = (isEdit: boolean): void => {
+    goBack();
+    if (!isEdit) {
+      dispatch(
+        CommonActions.setReviewReferData({ message: t('assetFinancial:reminderSuccessMsg'), isSheetVisible: true })
+      );
+    }
+  };
+
   return (
     <>
       <Screen
@@ -60,7 +71,7 @@ const AddReminderScreen = (): React.ReactElement => {
         }}
       >
         <ReminderForm
-          onSubmit={goBack}
+          onSubmit={onSubmitSuccess}
           isEdit={param?.isEdit ?? false}
           isFromDues={param?.isFromDues ?? false}
           setLoading={setLoading}

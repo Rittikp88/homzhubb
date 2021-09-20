@@ -718,7 +718,8 @@
     "enterRentAmount": "Enter Rent amount",
     "selectBankAccount": "Select Bank Account",
     "yetToAcceptInvite": "The tenant for this property is yet to accept the invite",
-    "selectSpaces": "Please select spaces for property"
+    "selectSpaces": "Please select spaces for property",
+    "listingCreation": "Listing created successfully"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

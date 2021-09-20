@@ -8,6 +8,7 @@ import { CommonActions } from '@react-navigation/native';
 // @ts-ignore
 import Markdown from 'react-native-easy-markdown';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
+import { CommonActions as Actions } from '@homzhub/common/src/modules/common/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
@@ -32,6 +33,7 @@ import { Asset, LeaseTypes } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IReviewRefer } from '@homzhub/common/src/modules/common/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRoutes, ListingRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -49,6 +51,7 @@ interface IDispatchProps {
   getValueAddedServices: () => void;
   setFilter: (payload: IFilter) => void;
   clearAssetData: () => void;
+  setReviewReferData: (payload: IReviewRefer) => void;
 }
 
 type libraryProps = NavigationScreenProps<PropertyPostStackParamList, ScreensKeys.AssetListing>;
@@ -379,6 +382,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
               setValueAddedServices={setValueAddedServices}
               typeOfPlan={selectedPlan}
               handleNextStep={this.handleNextStep}
+              isFromListing
             />
           </View>
         );
@@ -554,6 +558,7 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
       getAssetById,
       route: { params },
     } = this.props;
+
     ListingService.handleListingStep({
       currentIndex,
       isStepDone,
@@ -605,8 +610,17 @@ class AssetListing extends React.PureComponent<Props, IOwnState> {
   };
 
   private navigateToDashboard = (): void => {
-    const { navigation, resetState } = this.props;
+    const {
+      t,
+      navigation,
+      resetState,
+      setReviewReferData,
+      route: { params },
+    } = this.props;
     resetState();
+    if (params && !params.isEditFlow) {
+      setReviewReferData({ message: t('property:listingCreation'), isSheetVisible: true });
+    }
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -634,6 +648,7 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { resetState, getAssetById, setValueAddedServices, getValueAddedServices, clearAssetData } = RecordAssetActions;
   const { setFilter } = SearchActions;
+  const { setReviewReferData } = Actions;
   return bindActionCreators(
     {
       resetState,
@@ -642,6 +657,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       getValueAddedServices,
       setFilter,
       clearAssetData,
+      setReviewReferData,
     },
     dispatch
   );

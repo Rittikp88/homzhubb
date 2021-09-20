@@ -399,6 +399,8 @@ PODS:
     - React
   - react-native-geolocation-service (5.2.0):
     - React
+  - react-native-in-app-review (3.2.2):
+    - React
   - react-native-maps (0.27.1):
     - React
   - react-native-netinfo (5.9.10):
@@ -606,6 +608,7 @@ DEPENDENCIES:
   - react-native-document-picker (from `../../../node_modules/react-native-document-picker`)
   - react-native-fbsdk (from `../../../node_modules/react-native-fbsdk`)
   - react-native-geolocation-service (from `../../../node_modules/react-native-geolocation-service`)
+  - react-native-in-app-review (from `../../../node_modules/react-native-in-app-review`)
   - react-native-maps (from `../../../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../../../node_modules/@react-native-community/netinfo`)"
   - react-native-orientation-locker (from `../../../node_modules/react-native-orientation-locker`)
@@ -744,6 +747,8 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native-fbsdk"
   react-native-geolocation-service:
     :path: "../../../node_modules/react-native-geolocation-service"
+  react-native-in-app-review:
+    :path: "../../../node_modules/react-native-in-app-review"
   react-native-maps:
     :path: "../../../node_modules/react-native-maps"
   react-native-netinfo:
@@ -899,6 +904,7 @@ SPEC CHECKSUMS:
   react-native-document-picker: 4921045c5c6c78243010f784eae0a3f4b2af7799
   react-native-fbsdk: 00c15d138bba6d4efa628670886fc58cec858c19
   react-native-geolocation-service: 7c9436da6dfdecd9526c62eac62ea2bc3f0cc8ea
+  react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
   react-native-maps: f4b89da81626ad7f151a8bfcb79733295d31ce5c
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-orientation-locker: 998c0744e26624407dac068c04c605b4af7304a2
