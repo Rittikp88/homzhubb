@@ -160,6 +160,10 @@ export enum ScreensKeys {
   RejectOffer = 'RejectOffer',
   CancelOffer = 'CancelOffer',
   CreateLease = 'CreateLease',
+
+  // Property Payment
+  PropertyPayment = 'PropertyPayment',
+  PaymentServices = 'PaymentServices',
 }
 
 export enum OtpNavTypes {

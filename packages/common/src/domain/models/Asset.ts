@@ -914,4 +914,8 @@ export class Asset {
   get assetNameWithUnit(): string {
     return `${this.projectName} ${this.assetStatusInfo?.leaseUnitName && `- ${this.assetStatusInfo?.leaseUnitName}`}`;
   }
+
+  get assetAddress(): string {
+    return `${this.city}, ${this.state} - ${this.pinCode}`;
+  }
 }

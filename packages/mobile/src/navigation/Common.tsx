@@ -1,4 +1,5 @@
 import React from 'react';
+import { getPropertyPaymentScreen, PropertyPaymentList } from '@homzhub/mobile/src/navigation/PropertyPaymentStack';
 import MarketTrends from '@homzhub/mobile/src/screens/Asset/Dashboard/MarketTrends';
 import Notifications from '@homzhub/mobile/src/screens/Asset/Dashboard/Notifications';
 import AddRecordScreen from '@homzhub/mobile/src/screens/Asset/Financials/AddRecordScreen';
@@ -138,7 +139,7 @@ export type CommonParamList = {
   [ScreensKeys.AddBankAccount]: undefined | IAddBankAccount;
   [ScreensKeys.RequestQuote]: undefined | { isFromForm: boolean };
   [ScreensKeys.QuotePayment]: undefined;
-};
+} & PropertyPaymentList;
 
 /**
  * Common Screen for multiple stacks
@@ -202,6 +203,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
       <Stack.Screen name={ScreensKeys.AddBankAccount} component={AddBankAccount} />
       <Stack.Screen name={ScreensKeys.RequestQuote} component={RequestQuote} />
       <Stack.Screen name={ScreensKeys.QuotePayment} component={QuotePayment} />
+      {getPropertyPaymentScreen(Stack)}
     </>
   );
 };

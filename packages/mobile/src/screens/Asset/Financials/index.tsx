@@ -11,6 +11,8 @@ import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selec
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Accounting from '@homzhub/common/src/assets/images/accounting.svg';
+import Bank from '@homzhub/common/src/assets/images/bank.svg';
+import Payment from '@homzhub/common/src/assets/images/payment.svg';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -139,7 +141,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
     return (
       <IconSheet
         data={data}
-        sheetHeight={250}
+        sheetHeight={350}
         isVisible={showAddSheet}
         onCloseSheet={(): void => this.toggleAddSheet(false)}
       />
@@ -186,7 +188,10 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
   };
 
   private getAddSheetData = (): ISheetData[] => {
-    const { t } = this.props;
+    const {
+      t,
+      navigation: { navigate },
+    } = this.props;
     const iconSize = 40;
     const ImageHOC = (Image: React.FC<SvgProps>): React.ReactElement => <Image width={iconSize} height={iconSize} />;
     const IconHOC = (name: string): React.ReactElement => (
@@ -202,6 +207,16 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
         icon: IconHOC(icons.reminder),
         label: t('assetFinancial:setReminders'),
         onPress: this.onSetReminder,
+      },
+      {
+        icon: ImageHOC(Bank),
+        label: t('assetFinancial:bankAccounts'),
+        onPress: (): void => navigate(ScreensKeys.AddBankAccount),
+      },
+      {
+        icon: ImageHOC(Payment),
+        label: t('propertyPayment:propertyPayment'),
+        onPress: (): void => navigate(ScreensKeys.PropertyPayment),
       },
     ];
   };

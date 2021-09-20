@@ -163,7 +163,7 @@ const TicketReview = (props: IProps): React.ReactElement => {
           type="primary"
           textType="label"
           textSize="large"
-          title={t('common:writReview')}
+          title={t('common:writeReview')}
           onPress={(): void => setIsReview(!isReview)}
           containerStyle={styles.buttonContainer}
           titleStyle={styles.buttonTitle}

@@ -33,6 +33,7 @@ interface IUserScreenProps {
   headerStyle?: ViewStyle;
   subTitle?: string;
   isBarVisible?: boolean;
+  isBackgroundRequired?: boolean;
   onPlusIconClicked?: () => void;
 }
 
@@ -64,13 +65,16 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     subTitle,
     isBarVisible = false,
     onPlusIconClicked,
+    isBackgroundRequired = false,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
   let headerColor = theme.colors.primaryColor;
   if (isGradient) {
     headerColor = theme.colors.transparent;
-    backgroundColor = '';
+    if (!isBackgroundRequired) {
+      backgroundColor = 'none';
+    }
   }
 
   const userProfile = useSelector(UserSelector.getUserProfile);

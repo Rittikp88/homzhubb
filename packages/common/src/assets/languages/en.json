@@ -311,7 +311,7 @@
     "roundedOff": "rounded off",
     "featureInIndiaOnly": "Feature available only for India currently",
     "close": "Close",
-    "writReview": "Write a review",
+    "writeReview": "Write a review",
     "duplicateValue": "This value is already used. Please use unique value",
     "enjoyExperience": "Enjoying the Homzhub Experience !",
     "referFriends": "REFER FRIENDS &",
@@ -719,6 +719,7 @@
     "selectBankAccount": "Select Bank Account",
     "yetToAcceptInvite": "The tenant for this property is yet to accept the invite",
     "selectSpaces": "Please select spaces for property",
+    "chooseProperty": "Choose the property",
     "listingCreation": "Listing created successfully"
   },
   "propertySearch": {
@@ -1522,5 +1523,10 @@
   "siteVisits": {
     "schedulePropertyVisit": "Schedule Property Visit",
     "reschedulePropertyVisit": "Reschedule Property Visit"
+  },
+  "propertyPayment": {
+    "propertyPayment": "Property Payment",
+    "paymentServices": "Payment Services",
+    "chooseService": "Choose the service"
   }
 }

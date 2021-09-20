@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 12,
     color: theme.colors.gray15,
+    textAlign: 'center',
   },
   padding: {
     paddingTop: 20,

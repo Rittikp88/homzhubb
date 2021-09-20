@@ -2,13 +2,13 @@ import React from 'react';
 import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-
 import { ITypographyProps, Typography } from '@homzhub/common/src/components/atoms/Typography';
 
 interface IProps {
   primaryAddress: string;
   isIcon?: boolean;
   subAddress?: string;
+  propertyType?: string;
   countryFlag: React.ReactElement | null;
   primaryAddressTextStyles?: ITypographyProps;
   subAddressTextStyles?: ITypographyProps;
@@ -30,9 +30,15 @@ const PropertyAddressCountry = (props: IProps): React.ReactElement => {
     countryFlag,
     isIcon,
     showAddress = true,
+    propertyType,
   } = props;
   return (
     <View style={[styles.propertyAddressContainer, containerStyle]}>
+      {!!propertyType && (
+        <Typography variant="label" size="large" fontWeight="regular" style={[styles.propertyType]} numberOfLines={1}>
+          {propertyType}
+        </Typography>
+      )}
       <View style={styles.flexRow}>
         {countryFlag}
         <Typography
@@ -93,5 +99,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginEnd: 9,
+  },
+  propertyType: {
+    color: theme.colors.primaryColor,
+    marginBottom: 6,
   },
 });

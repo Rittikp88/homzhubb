@@ -194,6 +194,11 @@ export const icons = {
   reminder: 'reminder',
   bankBuilding: 'bank-building',
   tickInsideCircle: 'tick-inside-circle',
+  rent: 'rent',
+  society: 'society',
+  bulb: 'bulb',
+  water: 'water',
+  gas: 'gas',
 
   // COMMUTE
   train: 'train',

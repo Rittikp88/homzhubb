@@ -38,6 +38,12 @@ export enum Tabs {
   ALERT = 'Alert',
   REQUESTS = 'Requests',
   CHAT = 'Chat',
+  RENT_PAYMENT = 'Rent Payment',
+  SOCIETY_BILL = 'Society Bill',
+  TAX_PAYMENT = 'Tax Payment',
+  GAS_PIPELINE_SERVICE = 'Gas and Pipeline Service',
+  WATER_SERVICE = 'Water Service',
+  ELECTRICITY_MANAGEMENT = 'Electricity management',
 }
 
 // enum END
@@ -157,3 +163,19 @@ export const TicketRoutes: IRoutes[] = [
 ];
 
 // Service Ticket Tabs END
+
+// Property Payment Tabs START
+export const PropertyPaymentRoutes: IRoutes[] = [
+  { key: Tabs.RENT_PAYMENT, title: Tabs.RENT_PAYMENT, icon: icons.rent, color: theme.colors.greenTint9 },
+  { key: Tabs.SOCIETY_BILL, title: Tabs.SOCIETY_BILL, icon: icons.society, color: theme.colors.blueTint14 },
+  { key: Tabs.TAX_PAYMENT, title: Tabs.TAX_PAYMENT, icon: icons.house, color: theme.colors.darkTint3 },
+  { key: Tabs.GAS_PIPELINE_SERVICE, title: Tabs.GAS_PIPELINE_SERVICE, icon: icons.gas, color: theme.colors.expense },
+  { key: Tabs.WATER_SERVICE, title: Tabs.WATER_SERVICE, icon: icons.water, color: theme.colors.greenTint3 },
+  {
+    key: Tabs.ELECTRICITY_MANAGEMENT,
+    title: Tabs.ELECTRICITY_MANAGEMENT,
+    icon: icons.bulb,
+    color: theme.colors.redTint6,
+  },
+];
+// Property Payment Tabs END

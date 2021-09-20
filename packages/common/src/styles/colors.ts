@@ -82,13 +82,16 @@ const tintColors = {
   blueTint11: '#E6F3FE',
   blueTint12: '#0084F8',
   blueTint13: '#54A7F0',
+  blueTint14: '#006BD1',
 
   // green
+  greenTint3: '#5AFFA1',
   greenTint4: '#AAC506',
   greenTint5: '#95E258',
   greenTint6: '#006A0A',
   greenTint7: '#73ce64',
   greenTint8: '#47C2B1',
+  greenTint9: '#638503',
 
   // red
   redTint1: '#EE7979',
@@ -96,6 +99,7 @@ const tintColors = {
   redTint3: '#F66351',
   redTint4: '#FF1F00',
   redTint5: '#FB6E07',
+  redTint6: '#FFBE9D',
 
   // yellow
   yellowTint1: '#FCD980',

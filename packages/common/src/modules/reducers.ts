@@ -4,6 +4,7 @@ import { commonReducer } from '@homzhub/common/src/modules/common/reducer';
 import { financialsReducer } from '@homzhub/common/src/modules/financials/reducer';
 import { offerReducer } from '@homzhub/common/src/modules/offers/reducer';
 import { portfolioReducer } from '@homzhub/common/src/modules/portfolio/reducer';
+import { propertyPaymentReducer } from '@homzhub/common/src/modules/propertyPayment/reducer';
 import { recordAssetReducer } from '@homzhub/common/src/modules/recordAsset/reducer';
 import { searchReducer } from '@homzhub/common/src/modules/search/reducer';
 import { ticketReducer } from '@homzhub/common/src/modules/tickets/reducer';
@@ -19,4 +20,5 @@ export default combineReducers({
   search: searchReducer,
   ticket: ticketReducer,
   user: userReducer,
+  propertyPayment: propertyPaymentReducer,
 });
