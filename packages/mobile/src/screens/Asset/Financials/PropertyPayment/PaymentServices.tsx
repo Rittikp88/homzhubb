@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -10,16 +10,25 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
-import { IRoutes, PropertyPaymentRoutes } from '@homzhub/common/src/constants/Tabs';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { IRoutes, PropertyPaymentRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const PropertyServices = (): React.ReactElement => {
-  const { t } = useTranslation();
-  const { goBack } = useNavigation();
+  const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
+  const { goBack, navigate } = useNavigation();
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const { activeAssets } = useSelector(AssetSelectors.getAssetLoaders);
 
-  const handleTabNavigation = (): void => {
-    // TODO: (Shikha) - Handle Tab Navigation
+  const handleTabNavigation = (key: Tabs): void => {
+    if (key === Tabs.SOCIETY_BILL) {
+      navigate(ScreensKeys.SocietyController);
+    } else {
+      navigate(ScreensKeys.ComingSoonScreen, {
+        title: key as string,
+        tabHeader: t('propertyPayment'),
+      });
+    }
   };
 
   const renderItem = ({ item }: { item: IRoutes }): React.ReactElement => {
@@ -28,7 +37,7 @@ const PropertyServices = (): React.ReactElement => {
         title={item.title}
         icon={item.icon}
         iconColor={item.color}
-        onPressCard={handleTabNavigation}
+        onPressCard={(): void => handleTabNavigation(item.key)}
         containerStyle={styles.item}
       />
     );
@@ -38,8 +47,8 @@ const PropertyServices = (): React.ReactElement => {
 
   return (
     <UserScreen
-      title={t('propertyPayment:propertyPayment')}
-      pageTitle={t('propertyPayment:paymentServices')}
+      title={t('propertyPayment')}
+      pageTitle={t('paymentServices')}
       isGradient
       isBackgroundRequired
       onBackPress={goBack}
@@ -49,7 +58,7 @@ const PropertyServices = (): React.ReactElement => {
     >
       <View style={styles.container}>
         <Text type="small" textType="semiBold">
-          {t('propertyPayment:chooseService')}
+          {t('chooseService')}
         </Text>
         <View style={styles.itemContainer}>
           <PropertyAddressCountry

@@ -64,7 +64,7 @@
 		E85B38F625EFB76C0041EA51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E85B38F525EFB76C0041EA51 /* LaunchScreen.storyboard */; };
 		F80C4570FE551668E3A45A43 /* libPods-ImageNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CC803019C7283DA669CD0715 /* libPods-ImageNotification.a */; };
 		FF2BA86EC8B01A7A4189DFFF /* libPods-homzhub-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB1A424FDA99B0872DE5F2EE /* libPods-homzhub-tvOSTests.a */; };
-		623011FB1FA94C8BB4E57E4B /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 750DC92EAA134E0BBADC1C85 /* icomoon.ttf */; };
+		1D1E3D554D064F108C7EEA45 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 800D65F744BD4ACEB5C755E2 /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -227,7 +227,7 @@
 		E914E6BE2EA674ACA2A10F46 /* Pods-ImageNotification.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageNotification.release.xcconfig"; path = "Target Support Files/Pods-ImageNotification/Pods-ImageNotification.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		750DC92EAA134E0BBADC1C85 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../../common/src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		800D65F744BD4ACEB5C755E2 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../../common/src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,7 +322,7 @@
 				91EB2EB3156A4550A4A5A313 /* Raleway-Light.ttf */,
 				BF7AB555DA614F1CAC96AA3E /* Raleway-Medium.ttf */,
 				26F007504DE64EDBA2DAEF56 /* fonts.ts */,
-				750DC92EAA134E0BBADC1C85 /* icomoon.ttf */,
+				800D65F744BD4ACEB5C755E2 /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -685,7 +685,7 @@
 				15882547F49946668123D15D /* Raleway-Medium.ttf in Resources */,
 				92D18F0E040D4034BB8E3C75 /* fonts.ts in Resources */,
 				A7A6BC1825D653F900E39488 /* GoogleService-Info.plist in Resources */,
-				623011FB1FA94C8BB4E57E4B /* icomoon.ttf in Resources */,
+				1D1E3D554D064F108C7EEA45 /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

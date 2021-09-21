@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
-import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+import { Text, Label, TextFieldType } from '@homzhub/common/src/components/atoms/Text';
 
 type TextSizeType = 'small' | 'regular' | 'large';
 interface IProps {
@@ -16,6 +16,7 @@ interface IProps {
   buttonProps?: IButtonProps;
   containerStyle?: StyleProp<ViewStyle>;
   textType?: TextSizeType;
+  fieldType?: TextFieldType;
   textStyle?: StyleProp<TextStyle>;
 }
 
@@ -31,13 +32,15 @@ export const EmptyState = (props: IProps): React.ReactElement => {
     containerStyle,
     textType = 'small',
     textStyle,
+    fieldType = 'text',
   } = props;
+  const TextField = fieldType === 'label' ? Label : Text;
   return (
     <View style={[styles.noDataContainer, containerStyle]}>
       {isIconRequired && <Icon name={icon} size={iconSize} color={theme.colors.disabledSearch} />}
-      <Text type={textType} textType="semiBold" style={[styles.noResultsFound, textStyle]}>
+      <TextField type={textType} textType="semiBold" style={[styles.noResultsFound, textStyle]}>
         {title}
-      </Text>
+      </TextField>
       {!!subTitle && (
         <Label type="large" textType="semiBold" style={styles.subTitle}>
           {subTitle}

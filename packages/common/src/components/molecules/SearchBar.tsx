@@ -10,12 +10,13 @@ interface IProps {
   updateValue: (value: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
   searchBarStyle?: StyleProp<ViewStyle>;
+  iconStyle?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
 export class SearchBar extends React.PureComponent<IProps> {
   public render = (): React.ReactNode => {
-    const { placeholder, value, containerStyle = {}, searchBarStyle = {} } = this.props;
+    const { placeholder, value, containerStyle = {}, searchBarStyle = {}, iconStyle } = this.props;
 
     return (
       <View style={[styles.container, containerStyle]}>
@@ -25,7 +26,7 @@ export class SearchBar extends React.PureComponent<IProps> {
             icon={icons.search}
             iconSize={20}
             iconColor={theme.colors.darkTint6}
-            containerStyle={[styles.iconButton, styles.searchIcon]}
+            containerStyle={[styles.iconButton, styles.searchIcon, iconStyle]}
             testID="btnSearch"
           />
           <TextInput

@@ -35,6 +35,7 @@ interface IUserScreenProps {
   isBarVisible?: boolean;
   isBackgroundRequired?: boolean;
   onPlusIconClicked?: () => void;
+  renderExtraContent?: React.ReactElement;
 }
 
 // Constants for Gradient background
@@ -66,6 +67,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     isBarVisible = false,
     onPlusIconClicked,
     isBackgroundRequired = false,
+    renderExtraContent,
   } = props;
   let { backgroundColor = theme.colors.white } = props;
 
@@ -160,6 +162,7 @@ const UserScreen = (props: IUserScreenProps): ReactElement => {
     <HandleBack navigation={navigation} onBack={onBackPress}>
       {isGradient ? <LinearGradient {...gradientProps}>{renderHeader()}</LinearGradient> : renderHeader()}
       <View style={[styles.screen, { backgroundColor }]}>
+        {renderExtraContent}
         {renderPageHeader()}
         {scrollEnabled ? (
           <KeyboardAwareScrollView

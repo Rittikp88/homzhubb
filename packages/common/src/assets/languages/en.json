@@ -1527,6 +1527,12 @@
   "propertyPayment": {
     "propertyPayment": "Property Payment",
     "paymentServices": "Payment Services",
-    "chooseService": "Choose the service"
+    "chooseService": "Choose the service",
+    "chooseSociety": "Choose the society",
+    "searchSociety": "Search Society",
+    "emptySocietyList": "The society you are looking for is not available.\n Click on the below + button to add new one.",
+    "addSociety": "Add a Society",
+    "societies": "Societies",
+    "selectSociety": "Select Society"
   }
 }

@@ -164,6 +164,7 @@ export enum ScreensKeys {
   // Property Payment
   PropertyPayment = 'PropertyPayment',
   PaymentServices = 'PaymentServices',
+  SocietyController = 'SocietyController',
 }
 
 export enum OtpNavTypes {
