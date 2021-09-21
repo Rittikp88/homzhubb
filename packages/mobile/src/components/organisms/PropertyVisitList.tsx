@@ -194,10 +194,10 @@ class PropertyVisitList extends PureComponent<Props, IScreenState> {
         {reviewData && reviewData.id ? (
           <ReviewForm
             editReview
+            review={reviewData}
             onDelete={this.onDelete}
             onClose={this.onCancelReview}
             asset={asset}
-            review={reviewData}
             ratingCategories={reviewData.pillarRatings}
             leaseListingId={reviewData.leaseListing}
             saleListingId={reviewData.saleListing}

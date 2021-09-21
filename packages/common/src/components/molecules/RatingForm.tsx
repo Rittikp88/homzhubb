@@ -22,6 +22,12 @@ interface IProps {
   isDeleteRequired?: boolean;
   review?: AssetReview;
   containerStyle?: StyleProp<ViewStyle>;
+  customStyles?: ICustomStyles;
+}
+
+export interface ICustomStyles {
+  buttonContainerStyle: StyleProp<ViewStyle>;
+  buttonStyle: StyleProp<ViewStyle>;
 }
 
 const RatingForm = (props: IProps): React.ReactElement => {
@@ -32,11 +38,12 @@ const RatingForm = (props: IProps): React.ReactElement => {
     ratings,
     review,
     secondaryAction,
-    containerStyle,
     isDeleteRequired = true,
+    containerStyle,
+    customStyles,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
-
+  const { buttonContainerStyle, buttonStyle } = { ...customStyles };
   const [overallRating, setOverallRating] = useState(0);
   const [description, setDescription] = useState('');
   const [categoryRatings, setCategoryRatings] = useState<Pillar[]>([]);
@@ -122,20 +129,20 @@ const RatingForm = (props: IProps): React.ReactElement => {
         onMessageChange={setDescription}
         textAreaStyle={styles.textArea}
       />
-      <View style={styles.buttonContainer}>
+      <View style={[styles.buttonContainer, buttonContainerStyle]}>
         <Button
           onPress={secondaryAction}
           type="secondary"
           title={isEdit && isDeleteRequired ? t('common:delete') : t('common:notNow')}
           titleStyle={isEdit && isDeleteRequired ? styles.buttonTitle : styles.buttonTitleText}
-          containerStyle={isEdit && isDeleteRequired ? styles.deleteButton : undefined}
+          containerStyle={[isEdit && isDeleteRequired ? styles.deleteButton : undefined, buttonStyle]}
         />
         <Button
           onPress={onClick}
           disabled={isEdit ? false : overallRating === 0}
           type="primary"
           title={isEdit ? t('common:update') : t('common:submit')}
-          containerStyle={styles.submitButton}
+          containerStyle={[styles.submitButton, buttonStyle]}
         />
       </View>
     </KeyboardAwareScrollView>

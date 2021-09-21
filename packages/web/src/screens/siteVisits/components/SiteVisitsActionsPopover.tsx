@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
@@ -12,13 +12,25 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import BookVisit from '@homzhub/web/src/screens/siteVisits/components/BookVisit';
 import CancelVisit from '@homzhub/web/src/screens/siteVisits/components/CancelVisit';
-import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+import { SubmitReviewForm } from '@homzhub/web/src/screens/siteVisits/components/SubmitReviewForm';
+import ReportReview from '@homzhub/web/src/screens/siteVisits/components/ReportReview';
+import { AssetReviewCard, IAssetReviewProps } from '@homzhub/web/src/screens/siteVisits/components/AssetReviewCard';
+import DeleteReview from '@homzhub/web/src/screens/siteVisits/components/DeleteReview';
 import { IBookVisitProps, IVisitActionParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
+import { VisitAssetDetail } from '@homzhub/common/src/domain/models/VisitAssetDetail';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 export enum SiteVisitAction {
   SCHEDULE_VISIT = 'SCHEDULE_VISIT',
   RESCHEDULE_VISIT = 'RESCHEDULE_VISIT',
   CANCEL = 'CANCEL',
+  SUBMIT_REVIEW = 'SUBMIT_REVIEW',
+  POST_REVIEW_ACTIONS = 'POST_REVIEW_ACTIONS',
+  REPORT_REVIEW = 'REPORT_REVIEW',
+  DELETE_REVIEW = 'DELETE_REVIEW',
 }
 
 interface IProps {
@@ -29,10 +41,48 @@ interface IProps {
   paramsBookVisit?: IBookVisitProps;
   paramsVisitAction?: IVisitActionParam;
   handleVisitActions?: (param: IVisitActionParam) => void;
+  reviewFormProps?: IReviewFormProps;
+  postReviewProps?: IAssetReviewProps;
+  reportReviewProps?: IReportReviewProps;
+  setSiteVisitActionType?: React.Dispatch<React.SetStateAction<SiteVisitAction>>;
+}
+
+export interface IReviewFormProps {
+  onDelete?: () => void;
+  review?: AssetReview;
+  editReview?: boolean;
+  onClose: (reset?: boolean) => void;
+  asset: VisitAssetDetail;
+  saleListingId: number | null;
+  leaseListingId: number | null;
+  ratingCategories: Pillar[];
+}
+
+interface IReportReviewProps {
+  review: AssetReview;
+  reportCategories: Unit[];
 }
 
 const SiteVisitsActionsPopover: React.FC<IProps> = (props: IProps) => {
-  const { siteVisitActionType, popupRef, onCloseModal, paramsBookVisit, paramsVisitAction, handleVisitActions } = props;
+  const {
+    siteVisitActionType,
+    popupRef,
+    onCloseModal,
+    paramsBookVisit,
+    paramsVisitAction,
+    handleVisitActions,
+    reviewFormProps,
+    postReviewProps,
+    reportReviewProps,
+    setSiteVisitActionType,
+  } = props;
+  const {
+    review: { isReported, reviewReportId },
+  } = { ...postReviewProps, review: postReviewProps?.review ?? {} };
+  const { onDelete } = { ...reviewFormProps };
+
+  const [isUnderReview, setIsUnderReview] = useState(isReported && !reviewReportId);
+
   const renderActionsPopover = (): React.ReactNode | null => {
     switch (siteVisitActionType) {
       case SiteVisitAction.SCHEDULE_VISIT:
@@ -55,6 +105,42 @@ const SiteVisitsActionsPopover: React.FC<IProps> = (props: IProps) => {
             onCloseModal={onCloseModal}
           />
         );
+      case SiteVisitAction.SUBMIT_REVIEW:
+        if (reviewFormProps?.asset.id && setSiteVisitActionType) {
+          return <SubmitReviewForm {...reviewFormProps} setSiteVisitActionType={setSiteVisitActionType} />;
+        }
+        return null;
+      case SiteVisitAction.POST_REVIEW_ACTIONS:
+        if (postReviewProps?.review.id) {
+          return (
+            <AssetReviewCard
+              {...postReviewProps}
+              isUnderReview={isUnderReview as boolean}
+              onCloseModal={onCloseModal}
+              setSiteVisitActionType={setSiteVisitActionType}
+            />
+          );
+        }
+        return null;
+      case SiteVisitAction.REPORT_REVIEW:
+        if (reportReviewProps?.review.id) {
+          return (
+            <ReportReview
+              {...reportReviewProps}
+              setIsUnderReview={setIsUnderReview}
+              onCloseModal={onCloseModal}
+              setSiteVisitActionType={setSiteVisitActionType}
+            />
+          );
+        }
+        return null;
+      case SiteVisitAction.DELETE_REVIEW:
+        if (reviewFormProps?.asset.id && setSiteVisitActionType) {
+          return (
+            <DeleteReview onDelete={onDelete || FunctionUtils.noop} setSiteVisitActionType={setSiteVisitActionType} />
+          );
+        }
+        return null;
       default:
         return null;
     }
@@ -78,6 +164,18 @@ const SiteVisitsActionsPopover: React.FC<IProps> = (props: IProps) => {
 
     [SiteVisitAction.CANCEL.toString()]: {
       title: t('property:cancelVisit'),
+    },
+    [SiteVisitAction.SUBMIT_REVIEW.toString()]: {
+      title: t('property:submitReviewTitle'),
+    },
+    [SiteVisitAction.POST_REVIEW_ACTIONS.toString()]: {
+      title: t('property:postReviewActionsTitle'),
+    },
+    [SiteVisitAction.REPORT_REVIEW.toString()]: {
+      title: t('property:reportReviewTitle'),
+    },
+    [SiteVisitAction.DELETE_REVIEW.toString()]: {
+      title: t('property:deleteReviewTitle'),
     },
   };
   const SiteVisitsPopoverType = siteVisitActionType && siteVisitsPopoverTypes[siteVisitActionType?.toString()];

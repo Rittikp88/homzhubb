@@ -317,7 +317,8 @@
     "referFriends": "REFER FRIENDS &",
     "earnRewards": "EARN REWARDS",
     "getCoins": "Get Homzhub coins for every friend who joins.",
-    "shareNow": "Share now"
+    "shareNow": "Share now",
+    "responseSubmitSuccess": "Response submitted successfully"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -719,6 +720,12 @@
     "selectBankAccount": "Select Bank Account",
     "yetToAcceptInvite": "The tenant for this property is yet to accept the invite",
     "selectSpaces": "Please select spaces for property",
+    "submitReviewSuccess": "Review submitted successfully.",
+    "deleteReviewSuccess": "Review deleted successfully.",
+    "submitReviewTitle": "Submit a Review",
+    "postReviewActionsTitle": "Review Feedback",
+    "reportReviewTitle": "Report a Review",
+    "deleteReviewTitle": "Delete a Review",
     "chooseProperty": "Choose the property",
     "listingCreation": "Listing created successfully"
   },

@@ -4,37 +4,40 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
-import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import ReportReviewForm from '@homzhub/common/src/components/molecules/ReportReviewForm';
+import { Rating } from '@homzhub/common/src/components/atoms/Rating';
+import { SiteVisitAction } from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsActionsPopover';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { AssetReviewComment } from '@homzhub/common/src/domain/models/AssetReviewComment';
-import { ReportReview } from '@homzhub/common/src/domain/models/ReportReview';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-interface IAssetReviewProps {
+export interface IAssetReviewProps {
   review: AssetReview;
   reportCategories?: Unit[];
   hideButtons?: boolean;
   hideShowMore?: boolean;
 }
 
+interface IProps extends IAssetReviewProps {
+  onCloseModal: () => void;
+  isUnderReview: boolean;
+  setSiteVisitActionType?: React.Dispatch<React.SetStateAction<SiteVisitAction>>;
+}
+
 const MAX_LENGTH = 50;
 
-const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
-  // Local const's
-  const { review, reportCategories, hideButtons = false, hideShowMore } = props;
+const AssetReviewCard = (props: IProps): React.ReactElement => {
+  // Local constant variables
+  const { review, hideButtons = false, hideShowMore, onCloseModal, isUnderReview, setSiteVisitActionType } = props;
   const {
     id: reviewId,
     description,
@@ -43,8 +46,6 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     rating: overallRating,
     pillarRatings: pillars,
     comments,
-    isReported,
-    reviewReportId,
   } = review;
   const comment = comments.length > 0 ? comments[0].comment : '';
   const commentDate = comments.length > 0 ? comments[0].modifiedAt : undefined;
@@ -56,25 +57,12 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
   const [showMoreReply, setShowMoreReply] = useState(false);
   const [replyMode, setReplyMode] = useState(false);
   const [reply, setReply] = useState(comment);
-  const [reportData, setReportData] = useState<ReportReview>();
-  const [showReportForm, setShowReportForm] = useState(false);
-  const [isUnderReview, setIsUnderReview] = useState(isReported && !reviewReportId);
 
   const enableReportForm = useCallback((): void => {
-    setShowReportForm(true);
-    if (reviewReportId) {
-      AssetRepository.getReportReviewData(reviewId, reviewReportId)
-        .then((res) => {
-          setReportData(res);
-        })
-        .catch((err) => {
-          AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details) });
-        });
+    // Code to switch Popover
+    if (setSiteVisitActionType) {
+      setSiteVisitActionType(SiteVisitAction.REPORT_REVIEW);
     }
-  }, [showReportForm]);
-
-  const disableReportForm = useCallback((): void => {
-    setShowReportForm(false);
   }, []);
 
   const toggleShowMore = useCallback((): void => {
@@ -109,6 +97,8 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
         const response: AssetReviewComment = await AssetRepository.addReviewComment(reviewId, { comment: reply });
         review.comments = [response];
       }
+      onCloseModal();
+      AlertHelper.info({ message: t('common:responseSubmitSuccess') });
     } catch (error) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
       onCancel();
@@ -130,41 +120,6 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
     } catch (error) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
     }
-  };
-
-  const onReportFormSubmit = (): void => {
-    setIsUnderReview(true);
-    disableReportForm();
-    AlertHelper.info({ message: t('reportSubmittedMessage') });
-  };
-
-  const renderReportedReview = (): ReactElement | null => {
-    if (!reportData) return null;
-    return (
-      <View style={styles.reportView}>
-        <Label textType="regular" type="large">
-          {t('property:youHaveAlreadyReportedThisCommentOn')}
-        </Label>
-        <Label type="large" textType="bold">
-          {TimeUtils.getLocaltimeDifference(reportData.reportedOn)}
-        </Label>
-        <Divider containerStyles={styles.divider} />
-        <Label textType="semiBold" type="large">
-          {t('common:comments')}
-        </Label>
-        <View style={styles.comment}>
-          <Avatar
-            fullName={reportData.reviewedBy.name}
-            imageSize={50}
-            designation={t('common:admin')}
-            date={new Date(reportData.reviewedAt).toString()}
-          />
-        </View>
-        <Label type="large" textType="light" style={styles.comment}>
-          {reportData.reviewComment}
-        </Label>
-      </View>
-    );
   };
 
   const renderReplyComment = (): ReactElement => {
@@ -220,33 +175,14 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
             disabled={reply.length === 0 || comment === reply}
             type="primary"
             title={t('common:submit')}
-            containerStyle={[styles.replyButton, styles.replySubmit]}
+            containerStyle={[
+              styles.replyButton,
+              styles.replySubmit,
+            ]}
             titleStyle={styles.replyButtonTitle}
           />
         </View>
       </>
-    );
-  };
-
-  const renderBottomSheet = (): ReactElement => {
-    return (
-      <BottomSheet
-        visible={showReportForm}
-        sheetHeight={theme.viewport.height * (reviewReportId ? 0.6 : 0.85)}
-        headerTitle={reviewReportId ? t('property:reportStatus') : t('reportComment')}
-        onCloseSheet={disableReportForm}
-      >
-        {reviewReportId ? (
-          renderReportedReview()
-        ) : (
-          <ReportReviewForm
-            reviewId={reviewId}
-            reportCategories={reportCategories ?? []}
-            onFormCancellation={disableReportForm}
-            onSuccessFullSubmit={onReportFormSubmit}
-          />
-        )}
-      </BottomSheet>
     );
   };
 
@@ -307,7 +243,7 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
         <View
           style={[
             styles.buttonContainer,
-            // eslint-disable-next-line react/prop-types,react-native/no-inline-styles
+            // @ts-ignore
             { justifyContent: reply || replyMode || hideButtons ? 'flex-end' : 'space-between' },
           ]}
         >
@@ -332,7 +268,6 @@ const AssetReviewCard = (props: IAssetReviewProps): React.ReactElement => {
         )}
       </View>
       <Divider containerStyles={styles.cardDivider} />
-      {renderBottomSheet()}
     </>
   );
 };
@@ -362,7 +297,7 @@ const styles = StyleSheet.create({
   },
   replyButtonContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-around',
   },
   pillarContainer: {
     marginTop: 16,
@@ -379,7 +314,6 @@ const styles = StyleSheet.create({
     color: theme.colors.darkTint4,
   },
   replyButton: {
-    flex: 0,
     width: 80,
   },
   replyButtonTitle: {
@@ -431,9 +365,6 @@ const styles = StyleSheet.create({
   },
   commentStyle: {
     marginStart: 8,
-  },
-  reportView: {
-    padding: 25,
   },
   comment: {
     marginTop: 10,

@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -89,7 +90,7 @@ class ReportReviewForm extends React.PureComponent<IOwnProps, IOwnState> {
                     onPress={onFormCancellation}
                     type="secondary"
                     title={t('common:cancel')}
-                    containerStyle={styles.buttonStyle}
+                    containerStyle={!PlatformUtils.isWeb() && styles.buttonStyle}
                   />
                   <FormButton
                     // @ts-ignore
@@ -98,7 +99,7 @@ class ReportReviewForm extends React.PureComponent<IOwnProps, IOwnState> {
                     formProps={formProps}
                     type="primary"
                     title={t('common:report')}
-                    containerStyle={styles.buttonStyle}
+                    containerStyle={!PlatformUtils.isWeb() && styles.buttonStyle}
                   />
                 </View>
               </>
