@@ -24,6 +24,7 @@ const PropertyList = (): React.ReactElement => {
 
   useEffect(() => {
     dispatch(AssetActions.getActiveAssets());
+    dispatch(PropertyPaymentActions.clearSocietyFormData());
   }, []);
 
   const handleNavigation = (assetId: number): void => {

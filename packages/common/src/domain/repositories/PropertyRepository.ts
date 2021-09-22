@@ -1,7 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { Society } from '@homzhub/common/src/domain/models/Society';
-import { ISocietyParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ISocietyParam, ISocietyPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 const ENDPOINTS = {
@@ -18,6 +18,10 @@ class PropertyRepository {
   public getSocieties = async (param?: ISocietyParam): Promise<Society[]> => {
     const response = await this.apiClient.get(ENDPOINTS.societies, param);
     return ObjectMapper.deserializeArray(Society, response);
+  };
+
+  public createSociety = async (payload: ISocietyPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.societies, payload);
   };
 }
 

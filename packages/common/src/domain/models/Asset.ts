@@ -19,6 +19,7 @@ import { IService, Service } from '@homzhub/common/src/domain/models/Service';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
+import { Project } from '@homzhub/common/src/domain/models/Project';
 import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
@@ -445,6 +446,9 @@ export class Asset {
 
   @JsonProperty('is_rented', Boolean, true)
   private _isRented = false;
+
+  @JsonProperty('project', Project, true)
+  private _project = null;
 
   get investmentStatus(): string {
     return this._investmentStatus;
@@ -917,5 +921,9 @@ export class Asset {
 
   get assetAddress(): string {
     return `${this.city}, ${this.state} - ${this.pinCode}`;
+  }
+
+  get project(): Project | null {
+    return this._project;
   }
 }

@@ -320,7 +320,8 @@
     "shareNow": "Share now",
     "accountHolder": "Account Holder",
     "accountNumber": "Account Number",
-    "responseSubmitSuccess": "Response submitted successfully"
+    "responseSubmitSuccess": "Response submitted successfully",
+    "contactNumber": "Contact Number"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -729,7 +730,10 @@
     "reportReviewTitle": "Report a Review",
     "deleteReviewTitle": "Delete a Review",
     "chooseProperty": "Choose the property",
-    "listingCreation": "Listing created successfully"
+    "listingCreation": "Listing created successfully",
+    "propertyName": "Property Name",
+    "societyName": "Society Name",
+    "societyContact": "Society Contact"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

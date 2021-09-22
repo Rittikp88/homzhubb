@@ -14,6 +14,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/AddSocietyForm';
 import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -22,6 +23,7 @@ const SocietyController = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
   const { getSocieties } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
+  const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const [currentStep, setCurrentStep] = useState(0);
   const [isAddSociety, setAddSociety] = useState(false);
   const [showConfirmationSheet, setConfirmationSheet] = useState(false);
@@ -29,11 +31,14 @@ const SocietyController = (): React.ReactElement => {
   const [isEmptyList, toggleList] = useState(false);
 
   useEffect(() => {
-    dispatch(PropertyPaymentActions.getSocieties());
+    if (asset.project) {
+      dispatch(PropertyPaymentActions.getSocieties({ project_id: asset.project.id }));
+    }
   }, []);
 
   const handleBackPress = (): void => {
     if (currentStep === 0 && isAddSociety) {
+      dispatch(PropertyPaymentActions.clearSocietyFormData());
       setAddSociety(false);
     } else if (currentStep === 2 && !isAddSociety) {
       // Skip 2nd step in case of existing societies
@@ -41,6 +46,7 @@ const SocietyController = (): React.ReactElement => {
     } else if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
+      dispatch(PropertyPaymentActions.getSocietiesSuccess([]));
       goBack();
     }
   };
@@ -135,7 +141,7 @@ const SocietyController = (): React.ReactElement => {
     switch (currentStep) {
       case 0:
         return isAddSociety ? (
-          <EmptyState />
+          <AddSocietyForm onSubmitForm={(): void => setCurrentStep(currentStep + 1)} />
         ) : (
           <SocietyList onUpdateSociety={onUpdateSociety} onSelectSociety={(): void => setConfirmationSheet(true)} />
         );
@@ -166,6 +172,8 @@ const SocietyController = (): React.ReactElement => {
     );
   };
 
+  const isPlusIconVisible = isEmptyList && currentStep === 0 && !isAddSociety;
+
   return (
     <UserScreen
       isGradient
@@ -176,7 +184,7 @@ const SocietyController = (): React.ReactElement => {
       title={t('propertyPayment')}
       backgroundColor={theme.colors.white}
       renderExtraContent={renderStepIndicator()}
-      onPlusIconClicked={isEmptyList ? (): void => setAddSociety(true) : undefined}
+      onPlusIconClicked={isPlusIconVisible ? (): void => setAddSociety(true) : undefined}
     >
       {renderSteps()}
       {renderConfirmationSheet()}

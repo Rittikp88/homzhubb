@@ -1160,3 +1160,21 @@ export interface IRequestMorePayload {
 export interface ISocietyParam {
   project_id: number;
 }
+
+export interface IBankInfoPayload {
+  beneficiary_name: string;
+  bank_name: string;
+  account_number: string;
+  ifsc_code: string;
+}
+
+export interface ISocietyPayload {
+  name: string;
+  contact_name: string;
+  contact_email: string;
+  contact_number: string;
+  project: number;
+  asset: number;
+  society_bank_info: IBankInfoPayload;
+  is_terms_accepted: boolean;
+}

@@ -2,7 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyPaymentState } from '@homzhub/common/src/modules/propertyPayment/interfaces';
+import { IPropertyPaymentState, ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 
 const getSelectedAssetId = (state: IState): number => {
   const {
@@ -34,9 +34,24 @@ const getPropertyPaymentLoaders = (state: IState): IPropertyPaymentState['loader
   return state.propertyPayment.loaders;
 };
 
+const getSocietyFormData = (state: IState): ISocietyFormData => {
+  const {
+    propertyPayment: { societyFormData },
+  } = state;
+
+  const asset = getSelectedAsset(state);
+
+  return {
+    ...societyFormData,
+    projectName: asset.project?.name ?? '',
+    propertyName: asset.projectName,
+  };
+};
+
 export const PropertyPaymentSelector = {
   getSelectedAssetId,
   getSelectedAsset,
   getSocieties,
   getPropertyPaymentLoaders,
+  getSocietyFormData,
 };
