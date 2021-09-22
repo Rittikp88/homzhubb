@@ -318,6 +318,8 @@
     "earnRewards": "EARN REWARDS",
     "getCoins": "Get Homzhub coins for every friend who joins.",
     "shareNow": "Share now",
+    "accountHolder": "Account Holder",
+    "accountNumber": "Account Number",
     "responseSubmitSuccess": "Response submitted successfully"
   },
   "auth": {
@@ -1540,6 +1542,9 @@
     "emptySocietyList": "The society you are looking for is not available.\n Click on the below + button to add new one.",
     "addSociety": "Add a Society",
     "societies": "Societies",
-    "selectSociety": "Select Society"
+    "selectSociety": "Select Society",
+    "accountInfo": "Account Info",
+    "verified": "verified",
+    "unverified": "unverified"
   }
 }

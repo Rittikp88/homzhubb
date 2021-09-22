@@ -1,30 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
+import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
-import SocietyList from '@homzhub/mobile/src/screens/Asset/Financials/PropertyPayment/SocietyController/SocietyList';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const SocietyController = (): React.ReactElement => {
   const { goBack } = useNavigation();
+  const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
+  const { getSocieties } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
   const [currentStep, setCurrentStep] = useState(0);
   const [isAddSociety, setAddSociety] = useState(false);
+  const [showConfirmationSheet, setConfirmationSheet] = useState(false);
+  const [isCheckboxSelected, toggleCheckbox] = useState(false);
+  const [isEmptyList, toggleList] = useState(false);
+
+  useEffect(() => {
+    dispatch(PropertyPaymentActions.getSocieties());
+  }, []);
 
   const handleBackPress = (): void => {
     if (currentStep === 0 && isAddSociety) {
       setAddSociety(false);
+    } else if (currentStep === 2 && !isAddSociety) {
+      // Skip 2nd step in case of existing societies
+      setCurrentStep(currentStep - 2);
     } else if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
       goBack();
     }
+  };
+
+  const onProceed = (): void => {
+    // Skip 2nd step in case of existing societies
+    setCurrentStep(currentStep < 1 ? currentStep + 2 : currentStep + 1);
+    setConfirmationSheet(false);
+  };
+
+  const onUpdateSociety = (value: boolean): void => {
+    toggleList(value);
   };
 
   const getStepLabels = (): string[] => {
@@ -106,23 +134,52 @@ const SocietyController = (): React.ReactElement => {
     // TODO: (Shikha) - Add Components for each step
     switch (currentStep) {
       case 0:
-        return isAddSociety ? <EmptyState /> : <SocietyList />;
+        return isAddSociety ? (
+          <EmptyState />
+        ) : (
+          <SocietyList onUpdateSociety={onUpdateSociety} onSelectSociety={(): void => setConfirmationSheet(true)} />
+        );
       default:
         return <EmptyState />;
     }
   };
+
+  const renderConfirmationSheet = (): React.ReactElement => {
+    return (
+      <BottomSheet visible={showConfirmationSheet} onCloseSheet={(): void => setConfirmationSheet(false)}>
+        <View style={styles.sheetContainer}>
+          <RNCheckbox
+            selected={isCheckboxSelected}
+            label="Et volutpat vehicula ut etiam viverra vesti  nulla aliquet nec. " // TODO: (Shikha) -Update Text
+            onToggle={(): void => toggleCheckbox(!isCheckboxSelected)}
+          />
+          <Button
+            type="primary"
+            title={t('common:proceed')}
+            onPress={onProceed}
+            disabled={!isCheckboxSelected}
+            containerStyle={styles.buttonContainer}
+            titleStyle={styles.buttonTitle}
+          />
+        </View>
+      </BottomSheet>
+    );
+  };
+
   return (
     <UserScreen
       isGradient
+      loading={getSocieties}
       pageTitle={getPageTitle()}
       onBackPress={handleBackPress}
       headerStyle={styles.pageHeader}
       title={t('propertyPayment')}
       backgroundColor={theme.colors.white}
       renderExtraContent={renderStepIndicator()}
-      onPlusIconClicked={(): void => setAddSociety(true)}
+      onPlusIconClicked={isEmptyList ? (): void => setAddSociety(true) : undefined}
     >
       {renderSteps()}
+      {renderConfirmationSheet()}
     </UserScreen>
   );
 };
@@ -144,5 +201,16 @@ const styles = StyleSheet.create({
     ...(theme.circleCSS(10) as object),
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonContainer: {
+    flex: 0,
+    height: 50,
+    marginVertical: 20,
+  },
+  buttonTitle: {
+    marginVertical: 4,
+  },
+  sheetContainer: {
+    marginHorizontal: 24,
   },
 });

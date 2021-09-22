@@ -175,10 +175,7 @@ const AssetReviewCard = (props: IProps): React.ReactElement => {
             disabled={reply.length === 0 || comment === reply}
             type="primary"
             title={t('common:submit')}
-            containerStyle={[
-              styles.replyButton,
-              styles.replySubmit,
-            ]}
+            containerStyle={[styles.replyButton, styles.replySubmit]}
             titleStyle={styles.replyButtonTitle}
           />
         </View>

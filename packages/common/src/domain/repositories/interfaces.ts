@@ -1156,3 +1156,7 @@ export interface IRequestMorePayload {
   param: IQuoteParam;
   onCallback?: (status: boolean) => void;
 }
+
+export interface ISocietyParam {
+  project_id: number;
+}

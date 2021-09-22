@@ -1,6 +1,8 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Society } from '@homzhub/common/src/domain/models/Society';
 import { IState } from '@homzhub/common/src/modules/interfaces';
+import { IPropertyPaymentState } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 
 const getSelectedAssetId = (state: IState): number => {
   const {
@@ -20,7 +22,21 @@ const getSelectedAsset = (state: IState): Asset => {
   return ObjectMapper.deserialize(Asset, selectedAsset);
 };
 
+const getSocieties = (state: IState): Society[] => {
+  const {
+    propertyPayment: { societies },
+  } = state;
+  if (societies.length < 1) return [];
+  return ObjectMapper.deserializeArray(Society, societies);
+};
+
+const getPropertyPaymentLoaders = (state: IState): IPropertyPaymentState['loaders'] => {
+  return state.propertyPayment.loaders;
+};
+
 export const PropertyPaymentSelector = {
   getSelectedAssetId,
   getSelectedAsset,
+  getSocieties,
+  getPropertyPaymentLoaders,
 };
