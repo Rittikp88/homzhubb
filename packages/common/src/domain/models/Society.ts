@@ -5,13 +5,13 @@ import { ISocietyBankInfo, SocietyBankInfo } from '@homzhub/common/src/domain/mo
 export interface ISociety {
   id: number;
   name: string;
-  contact_name: string;
-  contact_number: string;
-  contact_email: string;
-  project: IProject;
-  society_bank_info: ISocietyBankInfo;
-  can_edit: boolean;
-  can_delete: boolean;
+  contact_name?: string;
+  contact_number?: string;
+  contact_email?: string;
+  project?: IProject;
+  society_bank_info?: ISocietyBankInfo;
+  can_edit?: boolean;
+  can_delete?: boolean;
 }
 
 @JsonObject('Society')
@@ -22,25 +22,25 @@ export class Society {
   @JsonProperty('name', String)
   private _name = '';
 
-  @JsonProperty('contact_name', String)
+  @JsonProperty('contact_name', String, true)
   private _contactName = '';
 
-  @JsonProperty('contact_number', String)
+  @JsonProperty('contact_number', String, true)
   private _contactNumber = '';
 
-  @JsonProperty('contact_email', String)
+  @JsonProperty('contact_email', String, true)
   private _contactEmail = '';
 
-  @JsonProperty('project', Project)
+  @JsonProperty('project', Project, true)
   private _project = new Project();
 
-  @JsonProperty('society_bank_info', SocietyBankInfo)
+  @JsonProperty('society_bank_info', SocietyBankInfo, true)
   private _societyBankInfo = new SocietyBankInfo();
 
-  @JsonProperty('can_edit', Boolean)
+  @JsonProperty('can_edit', Boolean, true)
   private _canEdit = false;
 
-  @JsonProperty('can_delete', Boolean)
+  @JsonProperty('can_delete', Boolean, true)
   private _canDelete = false;
 
   get id(): number {

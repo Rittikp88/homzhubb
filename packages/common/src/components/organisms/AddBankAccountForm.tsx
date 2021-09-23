@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,12 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
+import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { theme } from '@homzhub/common/src/styles/theme';
+import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { PanNumber } from '@homzhub/common/src/domain/models/PanNumber';
@@ -18,9 +23,10 @@ import { IBankAccountPayload } from '@homzhub/common/src/domain/repositories/int
 
 interface IOwnProps {
   onSubmit?: () => void;
-  userId: number;
-  setLoading: (loading: boolean) => void;
-  isEditFlow: boolean;
+  userId?: number;
+  setLoading?: (loading: boolean) => void;
+  isEditFlow?: boolean;
+  isSocietyAccount?: boolean;
 }
 interface IBankAccount {
   beneficiaryName: string;
@@ -28,14 +34,22 @@ interface IBankAccount {
   ifscCode: string;
   bankAccNum: string;
   confirmBankAccNum: string;
-  panNumber: string;
+  panNumber?: string;
 }
 
-const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnProps): React.ReactElement => {
+const AddBankAccountForm = ({
+  onSubmit,
+  userId,
+  setLoading,
+  isEditFlow = false,
+  isSocietyAccount = false,
+}: IOwnProps): React.ReactElement => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [panDetail, setPanDetail] = useState(new PanNumber());
   const currentBankId = useSelector(UserSelector.getCurrentBankId);
   const currentBank = useSelector(UserSelector.getCurrentBankAccountSelected);
+  const societyBankData = useSelector(PropertyPaymentSelector.getSocietyBankData);
 
   const getInitialData = (): IBankAccount => {
     if (isEditFlow && currentBank) {
@@ -49,24 +63,42 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnPr
         panNumber: panNumber ?? '',
       };
     }
+
+    if (isSocietyAccount && societyBankData) {
+      return {
+        beneficiaryName: societyBankData.beneficiary_name,
+        bankName: societyBankData.bank_name,
+        bankAccNum: societyBankData.account_number,
+        confirmBankAccNum: '',
+        ifscCode: societyBankData.ifsc_code,
+      };
+    }
     return {
       beneficiaryName: '',
       bankName: '',
       ifscCode: '',
       bankAccNum: '',
       confirmBankAccNum: '',
-      panNumber: panDetail.panNumber,
+      ...(!isSocietyAccount && { panNumber: panDetail.panNumber }),
     };
   };
 
   const fetchPanDetails = async (): Promise<void> => {
     try {
-      setLoading(true);
-      const response = await UserRepository.getPanDetails(userId);
-      setPanDetail(response);
-      setLoading(false);
+      if (setLoading) {
+        setLoading(true);
+      }
+      if (userId) {
+        const response = await UserRepository.getPanDetails(userId);
+        setPanDetail(response);
+      }
+      if (setLoading) {
+        setLoading(false);
+      }
     } catch (e) {
-      setLoading(false);
+      if (setLoading) {
+        setLoading(false);
+      }
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
@@ -101,12 +133,14 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnPr
           return confirmBankAccNum === bankAccNum;
         },
       }),
-      panNumber: yup.string().test({
-        name: 'hasIfscTest',
-        message: t('assetFinancial:panFormatError'),
-        test(pan: string) {
-          return pan.length > 0 ? StringUtils.isValidPan(pan) : true;
-        },
+      ...(!isSocietyAccount && {
+        panNumber: yup.string().test({
+          name: 'hasIfscTest',
+          message: t('assetFinancial:panFormatError'),
+          test(pan: string) {
+            return pan.length > 0 ? StringUtils.isValidPan(pan) : true;
+          },
+        }),
       }),
     });
   };
@@ -114,108 +148,154 @@ const AddBankAccountForm = ({ onSubmit, userId, setLoading, isEditFlow }: IOwnPr
   const onFormSubmit = async (values: IBankAccount): Promise<void> => {
     const { beneficiaryName, bankName, bankAccNum, ifscCode, panNumber } = values;
     try {
-      setLoading(true);
+      if (setLoading) {
+        setLoading(true);
+      }
       const payload = {
         beneficiary_name: beneficiaryName,
         bank_name: bankName,
         account_number: bankAccNum,
-        pan_number: panNumber.length > 0 ? panNumber : undefined,
+        pan_number: panNumber && panNumber.length > 0 ? panNumber : undefined,
         ifsc_code: ifscCode,
       } as IBankAccountPayload;
-      if (isEditFlow && currentBankId !== -1) {
+
+      // Handle bank account addition flow for society
+      if (isSocietyAccount && onSubmit) {
+        dispatch(
+          PropertyPaymentActions.setSocietyBankData({
+            beneficiary_name: beneficiaryName,
+            bank_name: bankName,
+            account_number: bankAccNum,
+            ifsc_code: ifscCode,
+          })
+        );
+        onSubmit();
+        return;
+      }
+
+      // Handle bank account addition flow for users
+      if (isEditFlow && currentBankId !== -1 && userId) {
         await UserRepository.editBankDetails(userId, currentBankId, payload);
         AlertHelper.success({ message: t('assetFinancial:bankAccountEditedSuccessfully') });
       } else {
-        await UserRepository.addBankDetails(userId, payload);
+        if (userId) {
+          await UserRepository.addBankDetails(userId, payload);
+        }
         AlertHelper.success({ message: t('assetFinancial:addBankDetailsSuccess') });
       }
-      setLoading(false);
+      if (setLoading) {
+        setLoading(false);
+      }
       if (onSubmit) onSubmit();
     } catch (e) {
-      setLoading(false);
+      if (setLoading) {
+        setLoading(false);
+      }
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 
   return (
-    <Formik
-      initialValues={getInitialData()}
-      onSubmit={onFormSubmit}
-      validate={FormUtils.validate(formSchema)}
-      enableReinitialize
-    >
-      {(formProps): React.ReactNode => {
-        return (
-          <>
-            <FormTextInput
-              formProps={formProps}
-              inputType="default"
-              name="beneficiaryName"
-              label={t('assetFinancial:beneficiaryName')}
-              placeholder={t('assetFinancial:enterBeneficiaryName')}
-              fontWeightType="semiBold"
-            />
-            <FormTextInput
-              formProps={formProps}
-              inputType="default"
-              name="bankName"
-              label={t('assetFinancial:bankName')}
-              placeholder={t('assetFinancial:enterBankName')}
-              fontWeightType="semiBold"
-            />
-            <FormTextInput
-              formProps={formProps}
-              inputType="default"
-              name="ifscCode"
-              label={t('assetFinancial:ifscCode')}
-              placeholder={t('assetFinancial:ifscCode')}
-              fontWeightType="semiBold"
-            />
-            <FormTextInput
-              formProps={formProps}
-              inputType="default"
-              name="bankAccNum"
-              label={t('assetFinancial:bankAccountNumber')}
-              placeholder={t('assetFinancial:bankAccountNumber')}
-              fontWeightType="semiBold"
-              secureTextEntry
-            />
-            <FormTextInput
-              formProps={formProps}
-              inputType="default"
-              name="confirmBankAccNum"
-              label={t('assetFinancial:confirmBankAccountNumber')}
-              placeholder={t('assetFinancial:confirmBankAccountNumber')}
-              fontWeightType="semiBold"
-            />
-            <FormTextInput
-              formProps={formProps}
-              inputType="default"
-              name="panNumber"
-              label={t('assetFinancial:panNumber')}
-              placeholder={t('assetFinancial:enterPanNumber')}
-              fontWeightType="semiBold"
-              optionalText={t('common:optional')}
-              editable={panDetail.canEdit}
-            />
-            <FormButton
-              // @ts-ignore
-              onPress={formProps.handleSubmit}
-              formProps={formProps}
-              type="primary"
-              title={isEditFlow && currentBank ? t('assetFinancial:updateDetails') : t('assetFinancial:addBankAccount')}
-              containerStyle={styles.button}
-              disabled={isEqual(formProps.values, getInitialData())}
-            />
-          </>
-        );
-      }}
-    </Formik>
+    <>
+      <View style={styles.infoTextContainer}>
+        <Icon name={icons.roundFilled} color={theme.colors.blackTint2} style={styles.dotIcon} size={7} />
+        <Label type="small" style={styles.infoText}>
+          {t('common:featureInIndiaOnly')}
+        </Label>
+      </View>
+      <Formik
+        initialValues={getInitialData()}
+        onSubmit={onFormSubmit}
+        validate={FormUtils.validate(formSchema)}
+        enableReinitialize
+      >
+        {(formProps): React.ReactNode => {
+          return (
+            <>
+              <FormTextInput
+                formProps={formProps}
+                inputType="default"
+                name="beneficiaryName"
+                label={t('assetFinancial:beneficiaryName')}
+                placeholder={t('assetFinancial:enterBeneficiaryName')}
+                fontWeightType="semiBold"
+              />
+              <FormTextInput
+                formProps={formProps}
+                inputType="default"
+                name="bankName"
+                label={t('assetFinancial:bankName')}
+                placeholder={t('assetFinancial:enterBankName')}
+                fontWeightType="semiBold"
+              />
+              <FormTextInput
+                formProps={formProps}
+                inputType="default"
+                name="ifscCode"
+                label={t('assetFinancial:ifscCode')}
+                placeholder={t('assetFinancial:ifscCode')}
+                fontWeightType="semiBold"
+              />
+              <FormTextInput
+                formProps={formProps}
+                inputType="default"
+                name="bankAccNum"
+                label={t('assetFinancial:bankAccountNumber')}
+                placeholder={t('assetFinancial:bankAccountNumber')}
+                fontWeightType="semiBold"
+                secureTextEntry
+              />
+              <FormTextInput
+                formProps={formProps}
+                inputType="default"
+                name="confirmBankAccNum"
+                label={t('assetFinancial:confirmBankAccountNumber')}
+                placeholder={t('assetFinancial:confirmBankAccountNumber')}
+                fontWeightType="semiBold"
+              />
+              {!isSocietyAccount && (
+                <FormTextInput
+                  formProps={formProps}
+                  inputType="default"
+                  name="panNumber"
+                  label={t('assetFinancial:panNumber')}
+                  placeholder={t('assetFinancial:enterPanNumber')}
+                  fontWeightType="semiBold"
+                  optionalText={t('common:optional')}
+                  editable={panDetail.canEdit}
+                />
+              )}
+              <FormButton
+                // @ts-ignore
+                onPress={formProps.handleSubmit}
+                formProps={formProps}
+                type="primary"
+                title={
+                  isEditFlow && currentBank ? t('assetFinancial:updateDetails') : t('assetFinancial:addBankAccount')
+                }
+                containerStyle={styles.button}
+                disabled={isEqual(formProps.values, getInitialData())}
+              />
+            </>
+          );
+        }}
+      </Formik>
+    </>
   );
 };
 export default AddBankAccountForm;
 const styles = StyleSheet.create({
   button: {
     marginVertical: 30,
+  },
+  dotIcon: {
+    marginEnd: 7,
+  },
+  infoTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  infoText: {
+    color: theme.colors.blackTint2,
   },
 });

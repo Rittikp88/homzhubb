@@ -1,6 +1,8 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Society } from '@homzhub/common/src/domain/models/Society';
+import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyPaymentState, ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 
@@ -12,14 +14,13 @@ const getSelectedAssetId = (state: IState): number => {
 };
 
 const getSelectedAsset = (state: IState): Asset => {
-  const {
-    propertyPayment: { selectedAssetId },
-    asset: { activeAssets },
-  } = state;
-  if (!selectedAssetId) return new Asset();
-  const selectedAsset = activeAssets.find((item) => item.id === selectedAssetId);
+  const assetId = getSelectedAssetId(state);
+  const activeAssets = AssetSelectors.getUserActiveAssets(state);
+  if (!assetId) return new Asset();
+  const selectedAsset = activeAssets.find((item) => item.id === assetId);
   if (!selectedAsset) return new Asset();
-  return ObjectMapper.deserialize(Asset, selectedAsset);
+
+  return selectedAsset;
 };
 
 const getSocieties = (state: IState): Society[] => {
@@ -48,10 +49,19 @@ const getSocietyFormData = (state: IState): ISocietyFormData => {
   };
 };
 
+const getSocietyBankData = (state: IState): IBankInfoPayload | null => {
+  const {
+    propertyPayment: { societyBankData },
+  } = state;
+
+  return societyBankData;
+};
+
 export const PropertyPaymentSelector = {
   getSelectedAssetId,
   getSelectedAsset,
   getSocieties,
   getPropertyPaymentLoaders,
   getSocietyFormData,
+  getSocietyBankData,
 };

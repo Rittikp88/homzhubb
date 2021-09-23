@@ -1549,6 +1549,7 @@
     "selectSociety": "Select Society",
     "accountInfo": "Account Info",
     "verified": "verified",
-    "unverified": "unverified"
+    "unverified": "unverified",
+    "verificationMsg": "I have verified the bank details to the best of my knowledge and I wish to transfer the amount to the specified bank account."
   }
 }

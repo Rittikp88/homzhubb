@@ -1,5 +1,6 @@
 import { ActionPayloadTypes, PropertyPaymentActionTypes } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { ISociety } from '@homzhub/common/src/domain/models/Society';
+import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyPaymentState, ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 
@@ -15,9 +16,11 @@ const initialFormData: ISocietyFormData = {
 export const initialState: IPropertyPaymentState = {
   selectedAssetId: 0,
   societyFormData: initialFormData,
+  societyBankData: null,
   societies: [],
   loaders: {
     getSocieties: false,
+    society: false,
   },
 };
 
@@ -57,7 +60,23 @@ export const propertyPaymentReducer = (
         ...state,
         societyFormData: initialFormData,
       };
+    case PropertyPaymentActionTypes.POST.SOCIETY:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['society']: true },
+      };
+    case PropertyPaymentActionTypes.POST.SOCIETY_SUCCESS:
+    case PropertyPaymentActionTypes.POST.SOCIETY_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['society']: false },
+      };
+    case PropertyPaymentActionTypes.SET.SOCIETY_BANK_DATA:
+      return {
+        ...state,
+        societyBankData: action.payload as IBankInfoPayload,
+      };
     default:
-      return initialState;
+      return state;
   }
 };

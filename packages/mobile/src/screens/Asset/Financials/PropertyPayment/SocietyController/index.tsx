@@ -14,6 +14,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import AddSocietyBank from '@homzhub/common/src/components/organisms/Society/AddSocietyBank';
 import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/AddSocietyForm';
 import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -29,6 +30,7 @@ const SocietyController = (): React.ReactElement => {
   const [showConfirmationSheet, setConfirmationSheet] = useState(false);
   const [isCheckboxSelected, toggleCheckbox] = useState(false);
   const [isEmptyList, toggleList] = useState(false);
+  const [isTermsAccepted, setTermValue] = useState(false);
 
   useEffect(() => {
     if (asset.project) {
@@ -53,8 +55,19 @@ const SocietyController = (): React.ReactElement => {
 
   const onProceed = (): void => {
     // Skip 2nd step in case of existing societies
+    if (currentStep === 1) {
+      setTermValue(true);
+    } else {
+      onProceedCallback();
+    }
+  };
+
+  const onProceedCallback = (): void => {
     setCurrentStep(currentStep < 1 ? currentStep + 2 : currentStep + 1);
     setConfirmationSheet(false);
+    if (isTermsAccepted) {
+      setTermValue(false);
+    }
   };
 
   const onUpdateSociety = (value: boolean): void => {
@@ -145,6 +158,14 @@ const SocietyController = (): React.ReactElement => {
         ) : (
           <SocietyList onUpdateSociety={onUpdateSociety} onSelectSociety={(): void => setConfirmationSheet(true)} />
         );
+      case 1:
+        return (
+          <AddSocietyBank
+            isTermsAccepted={isTermsAccepted}
+            onSubmitSuccess={onProceedCallback}
+            onSubmit={(): void => setConfirmationSheet(true)}
+          />
+        );
       default:
         return <EmptyState />;
     }
@@ -156,7 +177,7 @@ const SocietyController = (): React.ReactElement => {
         <View style={styles.sheetContainer}>
           <RNCheckbox
             selected={isCheckboxSelected}
-            label="Et volutpat vehicula ut etiam viverra vesti  nulla aliquet nec. " // TODO: (Shikha) -Update Text
+            label={t('verificationMsg')}
             onToggle={(): void => toggleCheckbox(!isCheckboxSelected)}
           />
           <Button

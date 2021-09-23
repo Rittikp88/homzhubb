@@ -20,6 +20,7 @@ import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { IVerifications, Verification } from '@homzhub/common/src/domain/models/Verification';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { Project } from '@homzhub/common/src/domain/models/Project';
+import { Society } from '@homzhub/common/src/domain/models/Society';
 import { FurnishingTypes, ScheduleTypes } from '@homzhub/common/src/constants/Terms';
 import { AssetGroupTypes } from '@homzhub/common/src/constants/AssetGroup';
 import { Coordinate } from '@homzhub/common/src/services/GooglePlaces/interfaces';
@@ -449,6 +450,9 @@ export class Asset {
 
   @JsonProperty('project', Project, true)
   private _project = null;
+
+  @JsonProperty('society', Society, true)
+  private _society = null;
 
   get investmentStatus(): string {
     return this._investmentStatus;
@@ -925,5 +929,9 @@ export class Asset {
 
   get project(): Project | null {
     return this._project;
+  }
+
+  get society(): Society | null {
+    return this._society;
   }
 }
