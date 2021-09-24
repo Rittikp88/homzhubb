@@ -6,16 +6,24 @@ import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPay
 import { theme } from '@homzhub/common/src/styles/theme';
 import AddBankAccountForm from '@homzhub/common/src/components/organisms/AddBankAccountForm';
 import { ISocietyPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { MenuEnum } from '@homzhub/common/src/constants/Society';
 
 interface IProps {
   onSubmit: () => void;
   isTermsAccepted: boolean;
   onSubmitSuccess: () => void;
+  onUpdateCallback: (status: boolean) => void;
 }
 
-const AddSocietyBank = ({ onSubmit, isTermsAccepted, onSubmitSuccess }: IProps): React.ReactElement => {
+const AddSocietyBank = ({
+  onSubmit,
+  isTermsAccepted,
+  onSubmitSuccess,
+  onUpdateCallback,
+}: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const societyData = useSelector(PropertyPaymentSelector.getSocietyFormData);
+  const selectedSociety = useSelector(PropertyPaymentSelector.getSocietyDetails);
   const bankData = useSelector(PropertyPaymentSelector.getSocietyBankData);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
 
@@ -24,11 +32,6 @@ const AddSocietyBank = ({ onSubmit, isTermsAccepted, onSubmitSuccess }: IProps):
   }, [isTermsAccepted]);
 
   const onPressSubmit = (): void => {
-    if (asset.society) {
-      // TODO: (Shikha) - Handle Update Call;
-      onSubmitSuccess();
-      return;
-    }
     onSubmit();
   };
 
@@ -44,7 +47,19 @@ const AddSocietyBank = ({ onSubmit, isTermsAccepted, onSubmitSuccess }: IProps):
         society_bank_info: bankData,
         is_terms_accepted: isTermsAccepted,
       };
-      dispatch(PropertyPaymentActions.createSociety(payload));
+      if (selectedSociety) {
+        dispatch(
+          PropertyPaymentActions.updateSociety({
+            action: MenuEnum.EDIT,
+            societyId: selectedSociety.id,
+            payload,
+            onCallback: onUpdateCallback,
+          })
+        );
+      } else {
+        dispatch(PropertyPaymentActions.createSociety({ payload, onCallback: onUpdateCallback }));
+      }
+
       onSubmitSuccess();
     }
   };

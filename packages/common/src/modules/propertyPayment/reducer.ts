@@ -15,9 +15,11 @@ const initialFormData: ISocietyFormData = {
 
 export const initialState: IPropertyPaymentState = {
   selectedAssetId: 0,
+  selectedSocietyId: 0,
   societyFormData: initialFormData,
   societyBankData: null,
   societies: [],
+  societyDetail: null,
   loaders: {
     getSocieties: false,
     society: false,
@@ -55,18 +57,27 @@ export const propertyPaymentReducer = (
         ...state,
         societyFormData: action.payload as ISocietyFormData,
       };
-    case PropertyPaymentActionTypes.CLEAR.SOCIETY_FORM_DATA:
+    case PropertyPaymentActionTypes.CLEAR_SOCIETY_FORM_DATA:
       return {
         ...state,
         societyFormData: initialFormData,
+        societyBankData: initialState.societyBankData,
       };
     case PropertyPaymentActionTypes.POST.SOCIETY:
+    case PropertyPaymentActionTypes.GET.SOCIETY_DETAIL:
+    case PropertyPaymentActionTypes.POST.UPDATE_SOCIETY:
+    case PropertyPaymentActionTypes.POST.ASSET_SOCIETY:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['society']: true },
       };
     case PropertyPaymentActionTypes.POST.SOCIETY_SUCCESS:
     case PropertyPaymentActionTypes.POST.SOCIETY_FAILURE:
+    case PropertyPaymentActionTypes.POST.UPDATE_SOCIETY_SUCCESS:
+    case PropertyPaymentActionTypes.POST.UPDATE_SOCIETY_FAILURE:
+    case PropertyPaymentActionTypes.GET.SOCIETY_DETAIL_FAILURE:
+    case PropertyPaymentActionTypes.POST.ASSET_SOCIETY_FAILURE:
+    case PropertyPaymentActionTypes.POST.ASSET_SOCIETY_SUCCESS:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['society']: false },
@@ -75,6 +86,23 @@ export const propertyPaymentReducer = (
       return {
         ...state,
         societyBankData: action.payload as IBankInfoPayload,
+      };
+    case PropertyPaymentActionTypes.GET.SOCIETY_DETAIL_SUCCESS:
+      return {
+        ...state,
+        societyDetail: action.payload as ISociety,
+        ['loaders']: { ...state.loaders, ['society']: false },
+      };
+    case PropertyPaymentActionTypes.SET.SELECTED_SOCIETY_ID:
+      return {
+        ...state,
+        selectedSocietyId: action.payload as number,
+      };
+    case PropertyPaymentActionTypes.CLEAR_SOCIETY_DETAIL:
+      return {
+        ...state,
+        societyDetail: initialState.societyDetail,
+        selectedSocietyId: initialState.selectedSocietyId,
       };
     default:
       return state;

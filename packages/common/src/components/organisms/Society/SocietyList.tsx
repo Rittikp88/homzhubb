@@ -12,13 +12,15 @@ import { Society } from '@homzhub/common/src/domain/models/Society';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface ISocietyListProp {
-  onSelectSociety: () => void;
+  onSelectSociety: (id: number) => void;
+  renderMenu?: (item: Society) => React.ReactElement;
   onUpdateSociety?: (value: boolean) => void; // To handle Add new society flow if there is no existing society
 }
 
-const SocietyList = ({ onSelectSociety, onUpdateSociety }: ISocietyListProp): React.ReactElement => {
+const SocietyList = ({ onSelectSociety, onUpdateSociety, renderMenu }: ISocietyListProp): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
   const societies = useSelector(PropertyPaymentSelector.getSocieties);
+  const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const [searchValue, setSearchValue] = useState('');
 
   const getFormattedSocieties = (): Society[] => {
@@ -29,12 +31,19 @@ const SocietyList = ({ onSelectSociety, onUpdateSociety }: ISocietyListProp): Re
       if (onUpdateSociety) {
         onUpdateSociety(response.length < 1);
       }
+
+      if (asset.society) {
+        return response.filter((item) => item.id === asset.society?.id).sort();
+      }
       // Sorting in Alphabetical order
       return response.sort();
     }
 
     if (onUpdateSociety) {
       onUpdateSociety(societies.length < 1);
+    }
+    if (asset.society) {
+      return societies.filter((item) => item.id === asset.society?.id).sort();
     }
     // Sorting in Alphabetical order
     return societies.sort();
@@ -45,19 +54,21 @@ const SocietyList = ({ onSelectSociety, onUpdateSociety }: ISocietyListProp): Re
       <Label type="large" textType="semiBold">
         {t('chooseSociety')}
       </Label>
-      <SearchBar
-        placeholder={t('searchSociety')}
-        value={searchValue}
-        updateValue={setSearchValue}
-        containerStyle={styles.searchContainer}
-        searchBarStyle={styles.searchBar}
-        iconStyle={styles.icon}
-      />
+      {!asset.society && (
+        <SearchBar
+          placeholder={t('searchSociety')}
+          value={searchValue}
+          updateValue={setSearchValue}
+          containerStyle={styles.searchContainer}
+          searchBarStyle={styles.searchBar}
+          iconStyle={styles.icon}
+        />
+      )}
       {getFormattedSocieties().length > 0 ? (
         getFormattedSocieties().map((item, index) => {
           return (
-            <TouchableOpacity key={index} onPress={onSelectSociety}>
-              <SocietyInfoCard society={item} />
+            <TouchableOpacity key={index} onPress={(): void => onSelectSociety(item.id)}>
+              <SocietyInfoCard society={item} renderMenu={renderMenu && renderMenu(item)} />
             </TouchableOpacity>
           );
         })

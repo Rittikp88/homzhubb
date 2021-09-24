@@ -1550,6 +1550,9 @@
     "accountInfo": "Account Info",
     "verified": "verified",
     "unverified": "unverified",
-    "verificationMsg": "I have verified the bank details to the best of my knowledge and I wish to transfer the amount to the specified bank account."
+    "modifySociety": "Modify Society",
+    "verificationMsg": "I have verified the bank details to the best of my knowledge and I wish to transfer the amount to the specified bank account.",
+    "societyUpdated": "Society Updated Successfully",
+    "societyDeleted": "Society Deleted Successfully"
   }
 }

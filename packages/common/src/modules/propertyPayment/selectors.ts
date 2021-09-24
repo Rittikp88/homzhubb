@@ -57,6 +57,23 @@ const getSocietyBankData = (state: IState): IBankInfoPayload | null => {
   return societyBankData;
 };
 
+const getSocietyDetails = (state: IState): Society | null => {
+  const {
+    propertyPayment: { societyDetail },
+  } = state;
+
+  if (!societyDetail) return null;
+
+  return ObjectMapper.deserialize(Society, societyDetail);
+};
+
+const getSelectedSocietyId = (state: IState): number => {
+  const {
+    propertyPayment: { selectedSocietyId },
+  } = state;
+  return selectedSocietyId;
+};
+
 export const PropertyPaymentSelector = {
   getSelectedAssetId,
   getSelectedAsset,
@@ -64,4 +81,6 @@ export const PropertyPaymentSelector = {
   getPropertyPaymentLoaders,
   getSocietyFormData,
   getSocietyBankData,
+  getSocietyDetails,
+  getSelectedSocietyId,
 };

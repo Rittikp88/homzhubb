@@ -9,9 +9,11 @@ export interface IMenu {
   icon?: string;
   label: string;
   value: string;
+  labelColor?: string;
   isExtraData?: boolean;
   isExtraDataAllowed?: boolean;
   onPressItem?: () => void | Promise<void>;
+  isDisable?: boolean;
 }
 
 interface IProps {
@@ -21,11 +23,12 @@ interface IProps {
   sheetHeight?: number;
   extraNode?: React.ReactElement;
   isExtraNode?: boolean;
+  isShadowView?: boolean;
   onPressIcon?: () => void;
 }
 
 const Menu = (props: IProps): React.ReactElement => {
-  const { data, onSelect, optionTitle, sheetHeight, extraNode, isExtraNode, onPressIcon } = props;
+  const { data, onSelect, optionTitle, sheetHeight, extraNode, isExtraNode, onPressIcon, isShadowView = false } = props;
   const [isVisible, setIsVisible] = useState(false);
   const [isExtraData, setExtraData] = useState(false);
 
@@ -46,9 +49,14 @@ const Menu = (props: IProps): React.ReactElement => {
 
   const renderMenuItem = (item: IMenu, index: number): React.ReactElement => {
     return (
-      <TouchableOpacity onPress={(): void => handleSelection(item)} key={index} style={styles.content}>
+      <TouchableOpacity
+        onPress={(): void => handleSelection(item)}
+        key={index}
+        style={[styles.content, item.isDisable && styles.disableStyle]}
+        disabled={item.isDisable}
+      >
         {!!item.icon && <Icon name={item.icon} size={24} color={theme.colors.darkTint3} style={styles.iconStyle} />}
-        <Text type="small" style={styles.label}>
+        <Text type="small" style={[styles.label, { color: item.labelColor }]}>
           {item.label}
         </Text>
       </TouchableOpacity>
@@ -69,6 +77,7 @@ const Menu = (props: IProps): React.ReactElement => {
         visible={isVisible}
         headerTitle={optionTitle}
         sheetHeight={sheetHeight}
+        isShadowView={isShadowView}
         onCloseSheet={(): void => {
           setIsVisible(false);
           setExtraData(false);
@@ -91,6 +100,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 26,
     marginHorizontal: 16,
+  },
+  disableStyle: {
+    opacity: 0.5,
   },
   label: {
     color: theme.colors.darkTint3,

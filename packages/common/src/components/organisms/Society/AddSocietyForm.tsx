@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -15,12 +15,20 @@ import { ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/in
 
 interface IAddSocietyProps {
   onSubmitForm: () => void;
+  isEditFlow?: boolean;
 }
 
-const AddSocietyForm = ({ onSubmitForm }: IAddSocietyProps): React.ReactElement => {
+const AddSocietyForm = ({ onSubmitForm, isEditFlow = false }: IAddSocietyProps): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const formData = useSelector(PropertyPaymentSelector.getSocietyFormData);
+  const societyId = useSelector(PropertyPaymentSelector.getSelectedSocietyId);
+
+  useEffect(() => {
+    if (societyId && isEditFlow) {
+      dispatch(PropertyPaymentActions.getSocietyDetail({ societyId, isForUpdate: true }));
+    }
+  }, []);
 
   const formSchema = (): yup.ObjectSchema<ISocietyFormData> => {
     return yup.object().shape({
@@ -29,7 +37,7 @@ const AddSocietyForm = ({ onSubmitForm }: IAddSocietyProps): React.ReactElement 
       societyName: yup.string().required(),
       name: yup.string().required(),
       contactNumber: yup.string().required(),
-      email: yup.string().required(),
+      email: yup.string().email(t('auth:emailValidation')).required(t('auth:emailRequired')),
     });
   };
 

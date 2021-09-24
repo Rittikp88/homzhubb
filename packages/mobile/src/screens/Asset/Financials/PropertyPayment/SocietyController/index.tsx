@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -14,23 +14,32 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
+import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import AddSocietyBank from '@homzhub/common/src/components/organisms/Society/AddSocietyBank';
 import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/AddSocietyForm';
 import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
+import { Society } from '@homzhub/common/src/domain/models/Society';
+import { menu, MenuEnum } from '@homzhub/common/src/constants/Society';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const SocietyController = (): React.ReactElement => {
   const { goBack } = useNavigation();
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
-  const { getSocieties } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
+  const { getSocieties, society } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const [currentStep, setCurrentStep] = useState(0);
-  const [isAddSociety, setAddSociety] = useState(false);
-  const [showConfirmationSheet, setConfirmationSheet] = useState(false);
-  const [isCheckboxSelected, toggleCheckbox] = useState(false);
+  const [currentSocietyId, setCurrentSocietyId] = useState(0);
   const [isEmptyList, toggleList] = useState(false);
-  const [isTermsAccepted, setTermValue] = useState(false);
+  const [flags, setFlagValues] = useState({
+    isAddSociety: false,
+    showConfirmationSheet: false,
+    isCheckboxSelected: false,
+    isDeleteSociety: false,
+    isTermsAccepted: false,
+    isEditSociety: false,
+  });
 
   useEffect(() => {
     if (asset.project) {
@@ -38,40 +47,119 @@ const SocietyController = (): React.ReactElement => {
     }
   }, []);
 
+  // HANDLERS START
+
   const handleBackPress = (): void => {
-    if (currentStep === 0 && isAddSociety) {
-      dispatch(PropertyPaymentActions.clearSocietyFormData());
-      setAddSociety(false);
-    } else if (currentStep === 2 && !isAddSociety) {
+    if (currentStep === 0 && flags.isAddSociety) {
+      updateReduxState();
+      setFlagValues({ ...flags, isAddSociety: false, isEditSociety: false });
+    } else if (currentStep === 2 && !flags.isAddSociety) {
       // Skip 2nd step in case of existing societies
       setCurrentStep(currentStep - 2);
     } else if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
       dispatch(PropertyPaymentActions.getSocietiesSuccess([]));
+      updateReduxState();
       goBack();
     }
   };
 
   const onProceed = (): void => {
-    // Skip 2nd step in case of existing societies
     if (currentStep === 1) {
-      setTermValue(true);
+      setFlagValues({ ...flags, isTermsAccepted: true });
     } else {
+      dispatch(
+        PropertyPaymentActions.addAssetSociety({
+          societyId: currentSocietyId,
+          body: { asset: asset.id, is_terms_accepted: true },
+        })
+      );
       onProceedCallback();
     }
   };
 
   const onProceedCallback = (): void => {
-    setCurrentStep(currentStep < 1 ? currentStep + 2 : currentStep + 1);
-    setConfirmationSheet(false);
-    if (isTermsAccepted) {
-      setTermValue(false);
+    // Skip 2nd step in case of existing societies
+    if (flags.isEditSociety) {
+      setCurrentStep(0);
+    } else {
+      setCurrentStep(currentStep < 1 ? currentStep + 2 : currentStep + 1);
+      onUpdateState();
     }
+  };
+
+  const onUpdateState = (): void => {
+    setFlagValues({
+      ...flags,
+      showConfirmationSheet: false,
+      isTermsAccepted: false,
+      isCheckboxSelected: false,
+      ...(flags.isEditSociety && { isAddSociety: false }),
+    });
+  };
+
+  const updateReduxState = (): void => {
+    dispatch(PropertyPaymentActions.clearSocietyFormData());
+    dispatch(PropertyPaymentActions.clearSocietyDetail());
   };
 
   const onUpdateSociety = (value: boolean): void => {
     toggleList(value);
+  };
+
+  const onDeleteSociety = (id: number): void => {
+    dispatch(
+      PropertyPaymentActions.updateSociety({
+        action: MenuEnum.DELETE,
+        societyId: id,
+        onCallback: handleDeleteCallback,
+      })
+    );
+    setFlagValues({ ...flags, isDeleteSociety: false });
+  };
+
+  const onSelectSociety = (id: number): void => {
+    if (asset.society) {
+      setCurrentStep(2);
+    } else {
+      setCurrentSocietyId(id);
+      handleConfirmationSheet(true);
+    }
+  };
+
+  const handleDeleteCallback = (status: boolean): void => {
+    if (status && asset.project) {
+      dispatch(PropertyPaymentActions.getSocieties({ project_id: asset.project.id }));
+    }
+  };
+
+  const handleUpdateCallback = (status: boolean): void => {
+    if (status && asset.project) {
+      dispatch(PropertyPaymentActions.getSocieties({ project_id: asset.project.id }));
+      onProceedCallback();
+    }
+  };
+
+  const handleMenuSelection = (value: string, id: number): void => {
+    if (value === MenuEnum.EDIT) {
+      setFlagValues({ ...flags, isAddSociety: true, isEditSociety: true });
+      dispatch(PropertyPaymentActions.setSocietyId(id));
+    } else {
+      setFlagValues({ ...flags, isDeleteSociety: true });
+    }
+  };
+
+  const handleConfirmationSheet = (value: boolean): void => {
+    setFlagValues({ ...flags, showConfirmationSheet: value });
+  };
+
+  const handleCheckBox = (): void => {
+    setFlagValues({ ...flags, isCheckboxSelected: !flags.isCheckboxSelected });
+  };
+
+  const handleAddSociety = (): void => {
+    setFlagValues({ ...flags, isAddSociety: true });
   };
 
   const getStepLabels = (): string[] => {
@@ -81,7 +169,7 @@ const SocietyController = (): React.ReactElement => {
   const getPageTitle = (): string => {
     switch (currentStep) {
       case 0:
-        return isAddSociety ? t('addSociety') : t('societies');
+        return flags.isAddSociety ? t('addSociety') : t('societies');
       case 1:
         return t('assetFinancial:addBankAccount');
       case 2:
@@ -90,6 +178,8 @@ const SocietyController = (): React.ReactElement => {
         return t('propertyPayment');
     }
   };
+
+  // HANDLERS END
 
   const renderIndicator = (args: { position: number; stepStatus: string }): React.ReactElement => {
     const { stepStatus } = args;
@@ -153,17 +243,22 @@ const SocietyController = (): React.ReactElement => {
     // TODO: (Shikha) - Add Components for each step
     switch (currentStep) {
       case 0:
-        return isAddSociety ? (
-          <AddSocietyForm onSubmitForm={(): void => setCurrentStep(currentStep + 1)} />
+        return flags.isAddSociety ? (
+          <AddSocietyForm isEditFlow={flags.isEditSociety} onSubmitForm={(): void => setCurrentStep(currentStep + 1)} />
         ) : (
-          <SocietyList onUpdateSociety={onUpdateSociety} onSelectSociety={(): void => setConfirmationSheet(true)} />
+          <SocietyList
+            onUpdateSociety={onUpdateSociety}
+            onSelectSociety={onSelectSociety}
+            renderMenu={renderSocietyMenu}
+          />
         );
       case 1:
         return (
           <AddSocietyBank
-            isTermsAccepted={isTermsAccepted}
-            onSubmitSuccess={onProceedCallback}
-            onSubmit={(): void => setConfirmationSheet(true)}
+            isTermsAccepted={flags.isTermsAccepted}
+            onSubmitSuccess={onUpdateState}
+            onSubmit={(): void => handleConfirmationSheet(true)}
+            onUpdateCallback={handleUpdateCallback}
           />
         );
       default:
@@ -171,20 +266,46 @@ const SocietyController = (): React.ReactElement => {
     }
   };
 
+  const renderSocietyMenu = (societyData: Society): React.ReactElement => {
+    const formattedMenu = menu.map((item: IMenu) => {
+      if (item.value === MenuEnum.EDIT) {
+        item = { ...item, isDisable: !societyData.canEdit };
+      } else {
+        item = { ...item, isDisable: !societyData.canDelete };
+      }
+      return item;
+    });
+    return (
+      <Menu
+        data={formattedMenu}
+        isShadowView
+        optionTitle={t('modifySociety')}
+        onSelect={(value): void => handleMenuSelection(value, societyData.id)}
+        extraNode={renderDeleteView(societyData)}
+      />
+    );
+  };
+
+  const renderDeleteView = (societyData: Society): React.ReactElement => {
+    return (
+      <ConfirmationSheet
+        isVisible={flags.isDeleteSociety}
+        onCloseSheet={(): void => handleConfirmationSheet(false)}
+        onPressDelete={(): void => onDeleteSociety(societyData.id)}
+      />
+    );
+  };
+
   const renderConfirmationSheet = (): React.ReactElement => {
     return (
-      <BottomSheet visible={showConfirmationSheet} onCloseSheet={(): void => setConfirmationSheet(false)}>
+      <BottomSheet visible={flags.showConfirmationSheet} onCloseSheet={(): void => handleConfirmationSheet(false)}>
         <View style={styles.sheetContainer}>
-          <RNCheckbox
-            selected={isCheckboxSelected}
-            label={t('verificationMsg')}
-            onToggle={(): void => toggleCheckbox(!isCheckboxSelected)}
-          />
+          <RNCheckbox selected={flags.isCheckboxSelected} label={t('verificationMsg')} onToggle={handleCheckBox} />
           <Button
             type="primary"
             title={t('common:proceed')}
             onPress={onProceed}
-            disabled={!isCheckboxSelected}
+            disabled={!flags.isCheckboxSelected}
             containerStyle={styles.buttonContainer}
             titleStyle={styles.buttonTitle}
           />
@@ -193,19 +314,19 @@ const SocietyController = (): React.ReactElement => {
     );
   };
 
-  const isPlusIconVisible = isEmptyList && currentStep === 0 && !isAddSociety;
+  const isPlusIconVisible = isEmptyList && currentStep === 0 && !flags.isAddSociety && !asset.society;
 
   return (
     <UserScreen
       isGradient
-      loading={getSocieties}
+      loading={getSocieties || society}
       pageTitle={getPageTitle()}
       onBackPress={handleBackPress}
       headerStyle={styles.pageHeader}
       title={t('propertyPayment')}
       backgroundColor={theme.colors.white}
       renderExtraContent={renderStepIndicator()}
-      onPlusIconClicked={isPlusIconVisible ? (): void => setAddSociety(true) : undefined}
+      onPlusIconClicked={isPlusIconVisible ? handleAddSociety : undefined}
     >
       {renderSteps()}
       {renderConfirmationSheet()}

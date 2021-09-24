@@ -8,9 +8,10 @@ import { Society } from '@homzhub/common/src/domain/models/Society';
 
 interface ISocietyCardProp {
   society: Society;
+  renderMenu?: React.ReactElement;
 }
 
-const SocietyInfoCard = ({ society }: ISocietyCardProp): React.ReactElement => {
+const SocietyInfoCard = ({ society, renderMenu }: ISocietyCardProp): React.ReactElement => {
   const { t } = useTranslation();
   const {
     societyBankInfo: { beneficiaryName, ifscCode, accountNumber, isVerified },
@@ -25,9 +26,12 @@ const SocietyInfoCard = ({ society }: ISocietyCardProp): React.ReactElement => {
   };
   return (
     <View style={styles.container}>
-      <Typography variant="label" size="large" fontWeight="semiBold">
-        {society.name}
-      </Typography>
+      <View style={styles.header}>
+        <Typography variant="label" size="large" fontWeight="semiBold">
+          {society.name}
+        </Typography>
+        {renderMenu}
+      </View>
       <Divider containerStyles={styles.divider} />
       <Typography variant="label" size="large" fontWeight="semiBold">
         {t('propertyPayment:accountInfo')}
@@ -80,5 +84,9 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: theme.colors.darkTint3,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

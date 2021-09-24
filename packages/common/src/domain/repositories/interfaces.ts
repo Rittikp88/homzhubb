@@ -1178,3 +1178,11 @@ export interface ISocietyPayload {
   society_bank_info: IBankInfoPayload;
   is_terms_accepted: boolean;
 }
+
+export interface IAssetSocietyPayload {
+  societyId: number;
+  body: {
+    asset: number;
+    is_terms_accepted: boolean;
+  };
+}
