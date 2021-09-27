@@ -1,5 +1,6 @@
 import { ActionPayloadTypes, PropertyPaymentActionTypes } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { ISociety } from '@homzhub/common/src/domain/models/Society';
+import { ISocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyPaymentState, ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/interfaces';
@@ -20,9 +21,11 @@ export const initialState: IPropertyPaymentState = {
   societyBankData: null,
   societies: [],
   societyDetail: null,
+  societyCharges: null,
   loaders: {
     getSocieties: false,
     society: false,
+    societyCharges: false,
   },
 };
 
@@ -103,6 +106,22 @@ export const propertyPaymentReducer = (
         ...state,
         societyDetail: initialState.societyDetail,
         selectedSocietyId: initialState.selectedSocietyId,
+      };
+    case PropertyPaymentActionTypes.GET.SOCIETY_CHARGES:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['societyCharges']: true },
+      };
+    case PropertyPaymentActionTypes.GET.SOCIETY_CHARGES_SUCCESS:
+      return {
+        ...state,
+        societyCharges: action.payload as ISocietyCharge,
+        ['loaders']: { ...state.loaders, ['societyCharges']: false },
+      };
+    case PropertyPaymentActionTypes.GET.SOCIETY_CHARGES_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['societyCharges']: false },
       };
     default:
       return state;

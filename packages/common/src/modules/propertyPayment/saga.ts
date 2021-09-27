@@ -12,6 +12,7 @@ import {
 } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { Society } from '@homzhub/common/src/domain/models/Society';
+import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import { IAssetSocietyPayload, ISocietyParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import {
@@ -129,10 +130,21 @@ export function* addAssetSociety(action: IFluxStandardAction<IAssetSocietyPayloa
   }
 }
 
+export function* getSocietyCharges(action: IFluxStandardAction<number>): VoidGenerator {
+  try {
+    const response = yield call(PropertyRepository.getSocietyCharges, action.payload as number);
+    yield put(PropertyPaymentActions.getSocietyChargesSuccess(response as SocietyCharge));
+  } catch (e) {
+    yield put(PropertyPaymentActions.getSocietyChargesFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchPropertyPayment() {
   yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETIES, getSocieties);
   yield takeLatest(PropertyPaymentActionTypes.POST.SOCIETY, createSociety);
   yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETY_DETAIL, getSocietyDetail);
   yield takeLatest(PropertyPaymentActionTypes.POST.UPDATE_SOCIETY, updateSociety);
   yield takeLatest(PropertyPaymentActionTypes.POST.ASSET_SOCIETY, addAssetSociety);
+  yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETY_CHARGES, getSocietyCharges);
 }

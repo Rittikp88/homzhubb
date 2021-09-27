@@ -1,6 +1,7 @@
 import { ISociety } from '@homzhub/common/src/domain/models/Society';
 import { IBankInfoPayload, ISocietyPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { MenuEnum } from '@homzhub/common/src/constants/Society';
+import { ISocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 
 export interface IPropertyPaymentState {
   selectedAssetId: number;
@@ -9,9 +10,11 @@ export interface IPropertyPaymentState {
   societyBankData: IBankInfoPayload | null;
   societies: ISociety[];
   societyDetail: ISociety | null;
+  societyCharges: ISocietyCharge | null;
   loaders: {
     getSocieties: boolean;
     society: boolean;
+    societyCharges: boolean;
   };
 }
 

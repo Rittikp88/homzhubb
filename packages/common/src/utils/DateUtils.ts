@@ -399,6 +399,18 @@ class DateUtils {
   public isAfter = (date1: string, date2 = moment()): boolean => moment(date1).isAfter(date2);
 
   public isBefore = (date1: string, date2 = moment()): boolean => moment(date1).isBefore(date2);
+
+  public getNextMonth = (): string => {
+    return moment().add(1, 'month').format('MMMM');
+  };
+
+  public getPreviousMonth = (): string => {
+    return moment().subtract(1, 'month').format('MMMM');
+  };
+
+  public getMonth = (): string => {
+    return moment().format('MMMM');
+  };
 }
 
 const dateUtils = new DateUtils();

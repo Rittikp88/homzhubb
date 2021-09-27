@@ -1053,7 +1053,8 @@
     "bankAccountDeactivationSuccess": "Bank Account deactivated successfully",
     "bankAccountActivationSuccess": "Bank Account activated successfully",
     "bankAccountCantBeDeactivated": "This Account cannot be deactivated",
-    "bankAccountDeleteConfirmation": "Are you sure you want to delete this bank account?"
+    "bankAccountDeleteConfirmation": "Are you sure you want to delete this bank account?",
+    "setReminder": "Set Reminder"
   },
   "assetMore": {
     "more": "More",
@@ -1553,6 +1554,10 @@
     "modifySociety": "Modify Society",
     "verificationMsg": "I have verified the bank details to the best of my knowledge and I wish to transfer the amount to the specified bank account.",
     "societyUpdated": "Society Updated Successfully",
-    "societyDeleted": "Society Deleted Successfully"
+    "societyDeleted": "Society Deleted Successfully",
+    "amountPaid": "Amount to be paid",
+    "notifyMe": "Notify me for future bills in coming months.",
+    "selectMonth": "Select the Month",
+    "paidBy": "Paid By"
   }
 }

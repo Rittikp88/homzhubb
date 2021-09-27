@@ -133,6 +133,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       secondaryLabel,
       fontWeightType,
       optionalText,
+      labelTextType = 'regular',
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
@@ -274,7 +275,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
           <View style={styles.labels}>
             {label && (
               <View style={styles.labelContainer}>
-                <Label type="regular" textType={fontWeightType} style={labelStyles}>
+                <Label type={labelTextType} textType={fontWeightType} style={labelStyles}>
                   {label}
                   {isMandatory && <Text style={styles.asterix}> *</Text>}
                 </Label>

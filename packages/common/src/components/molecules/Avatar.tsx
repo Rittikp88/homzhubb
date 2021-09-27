@@ -21,6 +21,7 @@ interface IProps {
   rating?: number;
   date?: string;
   isButtonType?: boolean;
+  isSelected?: boolean;
   isRightIcon?: boolean;
   rightIconName?: string;
   rightIconColor?: string;
@@ -61,6 +62,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     onPressButton,
     customTextStyle = {},
     nameStyle = {},
+    isSelected = false,
   } = props;
 
   const renderText = (): React.ReactElement => {
@@ -110,6 +112,11 @@ const Avatar = (props: IProps): React.ReactElement => {
             <TouchableOpacity style={styles.editView} onPress={onPressCamera} activeOpacity={0.8}>
               <Icon name={icons.camera} size={14} color={theme.colors.white} />
             </TouchableOpacity>
+          )}
+          {isSelected && (
+            <View style={styles.selectedView}>
+              <Icon name={icons.checkFilled} size={14} color={theme.colors.white} />
+            </View>
           )}
         </>
         {!isOnlyAvatar && (
@@ -245,6 +252,15 @@ const styles = StyleSheet.create({
   buttonStyle: {
     marginVertical: 6,
     marginHorizontal: 8,
+  },
+  selectedView: {
+    ...(theme.circleCSS(24) as object),
+    backgroundColor: theme.colors.blue,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    top: 66,
+    left: 30,
   },
 });
 

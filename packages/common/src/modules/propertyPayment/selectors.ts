@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Society } from '@homzhub/common/src/domain/models/Society';
+import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IPropertyPaymentState, ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/interfaces';
@@ -74,6 +75,16 @@ const getSelectedSocietyId = (state: IState): number => {
   return selectedSocietyId;
 };
 
+const getSocietyCharges = (state: IState): SocietyCharge | null => {
+  const {
+    propertyPayment: { societyCharges },
+  } = state;
+
+  if (!societyCharges) return null;
+
+  return ObjectMapper.deserialize(SocietyCharge, societyCharges);
+};
+
 export const PropertyPaymentSelector = {
   getSelectedAssetId,
   getSelectedAsset,
@@ -83,4 +94,5 @@ export const PropertyPaymentSelector = {
   getSocietyBankData,
   getSocietyDetails,
   getSelectedSocietyId,
+  getSocietyCharges,
 };

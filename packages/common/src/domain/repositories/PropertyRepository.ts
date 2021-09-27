@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { Society } from '@homzhub/common/src/domain/models/Society';
+import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import {
   IAssetSocietyPayload,
   ISocietyParam,
@@ -12,6 +13,7 @@ const ENDPOINTS = {
   societies: 'v1/societies/',
   societyById: (id: number): string => `v1/societies/${id}/`,
   assetSociety: (id: number): string => `v1/societies/${id}/assets/`,
+  societyCharges: (id: number): string => `v1/assets/${id}/society-charges/`,
 };
 
 class PropertyRepository {
@@ -46,6 +48,11 @@ class PropertyRepository {
   public addAssetSociety = async (payload: IAssetSocietyPayload): Promise<void> => {
     const { societyId, body } = payload;
     return await this.apiClient.post(ENDPOINTS.assetSociety(societyId), body);
+  };
+
+  public getSocietyCharges = async (assetId: number): Promise<SocietyCharge> => {
+    const response = await this.apiClient.get(ENDPOINTS.societyCharges(assetId));
+    return ObjectMapper.deserialize(SocietyCharge, response);
   };
 }
 

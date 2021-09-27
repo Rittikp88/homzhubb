@@ -132,6 +132,7 @@ export enum DuePaymentActions {
 export enum InvoiceActions {
   TICKET_ORDER_SUMMARY = 'TICKET_ORDER_SUMMARY',
   TICKET_INVOICE = 'TICKET_INVOICE',
+  SOCIETY_MAINTENANCE_INVOICE = 'SOCIETY_MAINTENANCE_INVOICE',
 }
 
 export enum QuoteActions {
@@ -1139,8 +1140,15 @@ export interface ISummaryPayload {
   quotes?: number[];
 }
 
+export interface ISocietyInvoicePayload {
+  amount: number;
+  asset: number;
+  currency: string;
+  paid_by: number;
+}
+
 export interface IInvoiceSummaryPayload extends IPayloadWithAction {
-  payload: ISummaryPayload;
+  payload: ISummaryPayload | ISocietyInvoicePayload;
 }
 
 export interface IRequestMore {

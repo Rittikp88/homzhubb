@@ -19,6 +19,7 @@ import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import AddSocietyBank from '@homzhub/common/src/components/organisms/Society/AddSocietyBank';
 import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/AddSocietyForm';
 import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
+import SocietyPayment from '@homzhub/common/src/components/organisms/Society/SocietyPayment';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { menu, MenuEnum } from '@homzhub/common/src/constants/Society';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -27,7 +28,7 @@ const SocietyController = (): React.ReactElement => {
   const { goBack } = useNavigation();
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
-  const { getSocieties, society } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
+  const { getSocieties, society, societyCharges } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const [currentStep, setCurrentStep] = useState(0);
   const [currentSocietyId, setCurrentSocietyId] = useState(0);
@@ -126,6 +127,10 @@ const SocietyController = (): React.ReactElement => {
       setCurrentSocietyId(id);
       handleConfirmationSheet(true);
     }
+  };
+
+  const handlePayNow = (): void => {
+    // TODO: (Shikha) - Order Summary Navigation
   };
 
   const handleDeleteCallback = (status: boolean): void => {
@@ -261,6 +266,8 @@ const SocietyController = (): React.ReactElement => {
             onUpdateCallback={handleUpdateCallback}
           />
         );
+      case 2:
+        return <SocietyPayment handlePayNow={handlePayNow} />;
       default:
         return <EmptyState />;
     }
@@ -319,7 +326,7 @@ const SocietyController = (): React.ReactElement => {
   return (
     <UserScreen
       isGradient
-      loading={getSocieties || society}
+      loading={getSocieties || society || societyCharges}
       pageTitle={getPageTitle()}
       onBackPress={handleBackPress}
       headerStyle={styles.pageHeader}

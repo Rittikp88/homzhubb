@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { ISociety, Society } from '@homzhub/common/src/domain/models/Society';
+import { ISocietyCharge, SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import {
   IAssetSocietyPayload,
   IBankInfoPayload,
@@ -29,6 +30,9 @@ export const PropertyPaymentActionTypes = {
     SOCIETY_DETAIL: `${actionTypePrefix}SOCIETY_DETAIL`,
     SOCIETY_DETAIL_SUCCESS: `${actionTypePrefix}SOCIETY_DETAIL_SUCCESS`,
     SOCIETY_DETAIL_FAILURE: `${actionTypePrefix}SOCIETY_DETAIL_FAILURE`,
+    SOCIETY_CHARGES: `${actionTypePrefix}SOCIETY_CHARGES`,
+    SOCIETY_CHARGES_SUCCESS: `${actionTypePrefix}SOCIETY_CHARGES_SUCCESS`,
+    SOCIETY_CHARGES_FAILURE: `${actionTypePrefix}SOCIETY_CHARGES_FAILURE`,
   },
   POST: {
     SOCIETY: `${actionTypePrefix}SOCIETY`,
@@ -140,6 +144,20 @@ const addAssetSocietyFailure = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.POST.ASSET_SOCIETY_FAILURE,
 });
 
+const getSocietyCharges = (payload: number): IFluxStandardAction<number> => ({
+  type: PropertyPaymentActionTypes.GET.SOCIETY_CHARGES,
+  payload,
+});
+
+const getSocietyChargesSuccess = (payload: SocietyCharge): IFluxStandardAction<ISocietyCharge> => ({
+  type: PropertyPaymentActionTypes.GET.SOCIETY_CHARGES_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getSocietyChargesFailure = (): IFluxStandardAction => ({
+  type: PropertyPaymentActionTypes.GET.SOCIETY_CHARGES_FAILURE,
+});
+
 export type ActionPayloadTypes =
   | number
   | ISocietyParam
@@ -151,7 +169,8 @@ export type ActionPayloadTypes =
   | IUpdateSociety
   | IGetSocietyPayload
   | ICreateSociety
-  | IAssetSocietyPayload;
+  | IAssetSocietyPayload
+  | ISocietyCharge;
 
 export const PropertyPaymentActions = {
   setAssetId,
@@ -175,4 +194,7 @@ export const PropertyPaymentActions = {
   addAssetSociety,
   addAssetSocietySuccess,
   addAssetSocietyFailure,
+  getSocietyCharges,
+  getSocietyChargesSuccess,
+  getSocietyChargesFailure,
 };
