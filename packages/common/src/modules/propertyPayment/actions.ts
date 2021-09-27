@@ -1,9 +1,11 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ISociety, Society } from '@homzhub/common/src/domain/models/Society';
 import { ISocietyCharge, SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import {
   IAssetSocietyPayload,
   IBankInfoPayload,
+  IInvoiceSummaryPayload,
   ISocietyParam,
   ISocietyPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -44,6 +46,9 @@ export const PropertyPaymentActionTypes = {
     ASSET_SOCIETY: `${actionTypePrefix}ASSET_SOCIETY`,
     ASSET_SOCIETY_SUCCESS: `${actionTypePrefix}ASSET_SOCIETY_SUCCESS`,
     ASSET_SOCIETY_FAILURE: `${actionTypePrefix}ASSET_SOCIETY_FAILURE`,
+    USER_INVOICE: `${actionTypePrefix}USER_INVOICE`,
+    USER_INVOICE_SUCCESS: `${actionTypePrefix}USER_INVOICE_SUCCESS`,
+    USER_INVOICE_FAILURE: `${actionTypePrefix}USER_INVOICE_FAILURE`,
   },
   CLEAR_SOCIETY_FORM_DATA: `${actionTypePrefix}CLEAR_SOCIETY_FORM_DATA`,
   CLEAR_SOCIETY_DETAIL: `${actionTypePrefix}CLEAR_SOCIETY_DETAIL`,
@@ -158,6 +163,20 @@ const getSocietyChargesFailure = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.GET.SOCIETY_CHARGES_FAILURE,
 });
 
+const getUserInvoice = (payload: IInvoiceSummaryPayload): IFluxStandardAction<IInvoiceSummaryPayload> => ({
+  type: PropertyPaymentActionTypes.POST.USER_INVOICE,
+  payload,
+});
+
+const getUserInvoiceSuccess = (payload: InvoiceId): IFluxStandardAction<InvoiceId> => ({
+  type: PropertyPaymentActionTypes.POST.USER_INVOICE_SUCCESS,
+  payload,
+});
+
+const getUserInvoiceFailure = (): IFluxStandardAction => ({
+  type: PropertyPaymentActionTypes.POST.USER_INVOICE_FAILURE,
+});
+
 export type ActionPayloadTypes =
   | number
   | ISocietyParam
@@ -170,7 +189,9 @@ export type ActionPayloadTypes =
   | IGetSocietyPayload
   | ICreateSociety
   | IAssetSocietyPayload
-  | ISocietyCharge;
+  | ISocietyCharge
+  | IInvoiceSummaryPayload
+  | InvoiceId;
 
 export const PropertyPaymentActions = {
   setAssetId,
@@ -197,4 +218,7 @@ export const PropertyPaymentActions = {
   getSocietyCharges,
   getSocietyChargesSuccess,
   getSocietyChargesFailure,
+  getUserInvoice,
+  getUserInvoiceSuccess,
+  getUserInvoiceFailure,
 };

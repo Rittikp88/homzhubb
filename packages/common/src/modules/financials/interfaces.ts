@@ -1,11 +1,16 @@
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 import { IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { IDues } from '@homzhub/common/src/domain/models/Dues';
+import { IDueOrderSummary } from '@homzhub/common/src/domain/models/DueOrderSummary';
 import { IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
-import { IPaymentPayload, IReminderPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IReminder } from '@homzhub/common/src/domain/models/Reminder';
 import { IUnit } from '@homzhub/common/src/domain/models/Unit';
+import {
+  IDueOrderSummaryAction,
+  IPaymentPayload,
+  IReminderPayload,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 export interface ILedgerMetrics {
   income: string;
@@ -30,6 +35,7 @@ export interface IFinancialState {
   reminders: IReminder[];
   reminderAssets: IAsset[];
   reminderFormData: IReminderFormData;
+  dueOrderSummary: IDueOrderSummary | null;
   loaders: {
     transactions: boolean;
     dues: boolean;
@@ -37,6 +43,7 @@ export interface IFinancialState {
     ledgers: boolean;
     reminder: boolean;
     reminderAsset: boolean;
+    dueOrderSummary: boolean;
   };
 }
 
@@ -67,4 +74,13 @@ export interface IReminderFormData {
   bankAccount?: number;
   owner?: number;
   tenant?: number;
+}
+
+export interface IOrderSummaryPayload {
+  id: number;
+  onCallback?: (status: boolean) => void;
+}
+
+export interface IUpdateSummary extends IOrderSummaryPayload {
+  payload: IDueOrderSummaryAction;
 }

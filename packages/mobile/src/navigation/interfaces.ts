@@ -165,6 +165,7 @@ export enum ScreensKeys {
   PropertyPayment = 'PropertyPayment',
   PaymentServices = 'PaymentServices',
   SocietyController = 'SocietyController',
+  SocietyOrderSummary = 'SocietyOrderSummary',
 }
 
 export enum OtpNavTypes {

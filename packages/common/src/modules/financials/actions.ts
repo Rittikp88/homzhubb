@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { Dues, IDues } from '@homzhub/common/src/domain/models/Dues';
+import { DueOrderSummary, IDueOrderSummary } from '@homzhub/common/src/domain/models/DueOrderSummary';
 import { FinancialTransactions, IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers, IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IReminder, Reminder } from '@homzhub/common/src/domain/models/Reminder';
@@ -10,9 +11,11 @@ import { ITransactionParams } from '@homzhub/common/src/domain/repositories/inte
 import {
   IAddReminderPayload,
   ILedgerMetrics,
+  IOrderSummaryPayload,
   IProcessPaymentPayload,
   IReminderFormData,
   IUpdateReminderPayload,
+  IUpdateSummary,
 } from '@homzhub/common/src/modules/financials/interfaces';
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
@@ -49,6 +52,10 @@ export const FinancialActionTypes = {
     REMINDER_ASSETS: `${actionTypePrefix}REMINDER_ASSETS`,
     REMINDER_ASSETS_SUCCESS: `${actionTypePrefix}REMINDER_ASSETS_SUCCESS`,
     REMINDER_ASSETS_FAILURE: `${actionTypePrefix}REMINDER_ASSETS_FAILURE`,
+    // Orders
+    DUE_ORDER_SUMMARY: `${actionTypePrefix}DUE_ORDER_SUMMARY`,
+    DUE_ORDER_SUMMARY_SUCCESS: `${actionTypePrefix}DUE_ORDER_SUMMARY_SUCCESS`,
+    DUE_ORDER_SUMMARY_FAILURE: `${actionTypePrefix}DUE_ORDER_SUMMARY_FAILURE`,
   },
   SET: {
     SELECTED_PROPERTY: `${actionTypePrefix}SELECTED_PROPERTY`,
@@ -69,6 +76,10 @@ export const FinancialActionTypes = {
     UPDATE_REMINDER: `${actionTypePrefix}UPDATE_REMINDER`,
     UPDATE_REMINDER_SUCCESS: `${actionTypePrefix}UPDATE_REMINDER_SUCCESS`,
     UPDATE_REMINDER_FAILURE: `${actionTypePrefix}UPDATE_REMINDER_FAILURE`,
+    // Orders
+    UPDATE_ORDER_SUMMARY: `${actionTypePrefix}UPDATE_ORDER_SUMMARY`,
+    UPDATE_ORDER_SUMMARY_SUCCESS: `${actionTypePrefix}UPDATE_ORDER_SUMMARY_SUCCESS`,
+    UPDATE_ORDER_SUMMARY_FAILURE: `${actionTypePrefix}UPDATE_ORDER_SUMMARY_FAILURE`,
   },
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
   RESET_LEDGER_FILTERS: `${actionTypePrefix}RESET_LEDGER_FILTERS`,
@@ -263,6 +274,34 @@ const clearReminderFormData = (): IFluxStandardAction => ({
   type: FinancialActionTypes.CLEAR_REMINDER_FORM_DATA,
 });
 
+const getDueOderSummary = (payload: IOrderSummaryPayload): IFluxStandardAction<IOrderSummaryPayload> => ({
+  type: FinancialActionTypes.GET.DUE_ORDER_SUMMARY,
+  payload,
+});
+
+const getDueOderSummarySuccess = (data: DueOrderSummary): IFluxStandardAction<IDueOrderSummary> => ({
+  type: FinancialActionTypes.GET.DUE_ORDER_SUMMARY_SUCCESS,
+  payload: ObjectMapper.serialize(data),
+});
+
+const getDueOderSummaryFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.GET.DUE_ORDER_SUMMARY_FAILURE,
+});
+
+const updateOderSummary = (payload: IUpdateSummary): IFluxStandardAction<IUpdateSummary> => ({
+  type: FinancialActionTypes.POST.UPDATE_ORDER_SUMMARY,
+  payload,
+});
+
+const updateOderSummarySuccess = (data: DueOrderSummary): IFluxStandardAction<IDueOrderSummary> => ({
+  type: FinancialActionTypes.POST.UPDATE_ORDER_SUMMARY_SUCCESS,
+  payload: ObjectMapper.serialize(data),
+});
+
+const updateOderSummaryFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.POST.UPDATE_ORDER_SUMMARY_FAILURE,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -276,7 +315,10 @@ export type FinancialActionPayloadTypes =
   | IReminder[]
   | IAsset[]
   | IUpdateReminderPayload
-  | IReminderFormData;
+  | IReminderFormData
+  | IDueOrderSummary
+  | IOrderSummaryPayload
+  | IUpdateSummary;
 
 export const FinancialActions = {
   getTransactions,
@@ -321,4 +363,10 @@ export const FinancialActions = {
   updateReminderFailure,
   setReminderFormData,
   clearReminderFormData,
+  getDueOderSummary,
+  getDueOderSummarySuccess,
+  getDueOderSummaryFailure,
+  updateOderSummary,
+  updateOderSummarySuccess,
+  updateOderSummaryFailure,
 };

@@ -14,6 +14,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { DataGroupBy, GeneralLedgers, LedgerTypes } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
+import { DueOrderSummary } from '@homzhub/common/src/domain/models/DueOrderSummary';
 import { FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
@@ -22,8 +23,10 @@ import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/
 import {
   IAddReminderPayload,
   ILedgerMetrics,
+  IOrderSummaryPayload,
   IProcessPaymentPayload,
   IUpdateReminderPayload,
+  IUpdateSummary,
 } from '@homzhub/common/src/modules/financials/interfaces';
 import { DateFilter } from '@homzhub/common/src/constants/FinanceOverview';
 
@@ -198,6 +201,42 @@ export function* updateReminder(action: IFluxStandardAction<IUpdateReminderPaylo
   }
 }
 
+export function* getDueOrderSummary(action: IFluxStandardAction<IOrderSummaryPayload>): VoidGenerator {
+  if (!action.payload) return;
+  const { onCallback, id } = action.payload;
+  try {
+    const response = yield call(LedgerRepository.getDueOrderSummary, id);
+    yield put(FinancialActions.getDueOderSummarySuccess(response as DueOrderSummary));
+    if (onCallback) {
+      onCallback(true);
+    }
+  } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
+    yield put(FinancialActions.getDueOderSummaryFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
+export function* updateDueOrderSummary(action: IFluxStandardAction<IUpdateSummary>): VoidGenerator {
+  if (!action.payload) return;
+  const { onCallback, id, payload } = action.payload;
+  try {
+    const response = yield call(LedgerRepository.dueOrderSummaryAction, id, payload);
+    yield put(FinancialActions.updateOderSummarySuccess(response as DueOrderSummary));
+    if (onCallback) {
+      onCallback(true);
+    }
+  } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
+    yield put(FinancialActions.updateOderSummaryFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.GET.TRANSACTIONS, getTransactions);
   yield takeLatest(FinancialActionTypes.GET.DUES, getAllDues);
@@ -210,4 +249,6 @@ export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.GET.REMINDERS, getReminders);
   yield takeLatest(FinancialActionTypes.GET.REMINDER_ASSETS, getReminderAssets);
   yield takeLatest(FinancialActionTypes.POST.UPDATE_REMINDER, updateReminder);
+  yield takeLatest(FinancialActionTypes.GET.DUE_ORDER_SUMMARY, getDueOrderSummary);
+  yield takeLatest(FinancialActionTypes.POST.UPDATE_ORDER_SUMMARY, updateDueOrderSummary);
 }

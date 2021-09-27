@@ -21,11 +21,12 @@ import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/Add
 import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
 import SocietyPayment from '@homzhub/common/src/components/organisms/Society/SocietyPayment';
 import { Society } from '@homzhub/common/src/domain/models/Society';
+import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { menu, MenuEnum } from '@homzhub/common/src/constants/Society';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const SocietyController = (): React.ReactElement => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
   const { getSocieties, society, societyCharges } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
@@ -130,7 +131,7 @@ const SocietyController = (): React.ReactElement => {
   };
 
   const handlePayNow = (): void => {
-    // TODO: (Shikha) - Order Summary Navigation
+    navigate(ScreensKeys.SocietyOrderSummary);
   };
 
   const handleDeleteCallback = (status: boolean): void => {
@@ -245,7 +246,6 @@ const SocietyController = (): React.ReactElement => {
   };
 
   const renderSteps = (): React.ReactElement => {
-    // TODO: (Shikha) - Add Components for each step
     switch (currentStep) {
       case 0:
         return flags.isAddSociety ? (

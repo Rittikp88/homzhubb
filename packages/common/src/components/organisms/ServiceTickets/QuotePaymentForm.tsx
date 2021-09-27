@@ -56,7 +56,7 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): Reac
   }, []);
 
   const generateInvoice = async (): Promise<InvoiceId> => {
-    return await PaymentRepository.ticketInvoice({
+    return await PaymentRepository.getInvoice({
       action: InvoiceActions.TICKET_INVOICE,
       payload: {
         ticket: selectedTicket?.ticketId ?? 0,

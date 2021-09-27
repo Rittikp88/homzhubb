@@ -1,4 +1,5 @@
 import { ActionPayloadTypes, PropertyPaymentActionTypes } from '@homzhub/common/src/modules/propertyPayment/actions';
+import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ISociety } from '@homzhub/common/src/domain/models/Society';
 import { ISocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -22,10 +23,12 @@ export const initialState: IPropertyPaymentState = {
   societies: [],
   societyDetail: null,
   societyCharges: null,
+  userInvoice: new InvoiceId(),
   loaders: {
     getSocieties: false,
     society: false,
     societyCharges: false,
+    userInvoice: false,
   },
 };
 
@@ -122,6 +125,22 @@ export const propertyPaymentReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['societyCharges']: false },
+      };
+    case PropertyPaymentActionTypes.POST.USER_INVOICE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userInvoice']: true },
+      };
+    case PropertyPaymentActionTypes.POST.USER_INVOICE_SUCCESS:
+      return {
+        ...state,
+        userInvoice: action.payload as InvoiceId,
+        ['loaders']: { ...state.loaders, ['userInvoice']: false },
+      };
+    case PropertyPaymentActionTypes.POST.USER_INVOICE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['userInvoice']: false },
       };
     default:
       return state;

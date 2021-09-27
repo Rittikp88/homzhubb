@@ -48,7 +48,7 @@ class PaymentRepository {
     return ObjectMapper.deserialize(InvoiceSummary, response);
   };
 
-  public ticketInvoice = async (data: IInvoiceSummaryPayload): Promise<InvoiceId> => {
+  public getInvoice = async (data: IInvoiceSummaryPayload): Promise<InvoiceId> => {
     const response = await this.apiClient.post(ENDPOINTS.invoiceSummary, data);
     return ObjectMapper.deserialize(InvoiceId, response);
   };

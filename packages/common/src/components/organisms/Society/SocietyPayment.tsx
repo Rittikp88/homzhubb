@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
-import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -62,7 +61,7 @@ const SocietyPayment = ({ handlePayNow }: IProps): React.ReactElement => {
   const onPayNow = (): void => {
     if (societyCharges) {
       dispatch(
-        TicketActions.getInvoiceSummary({
+        PropertyPaymentActions.getUserInvoice({
           action: InvoiceActions.SOCIETY_MAINTENANCE_INVOICE,
           payload: {
             asset: asset.id,

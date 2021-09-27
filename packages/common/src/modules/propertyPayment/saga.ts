@@ -3,6 +3,7 @@ import { call, put, takeLatest } from '@redux-saga/core/effects';
 import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
@@ -11,9 +12,14 @@ import {
   PropertyPaymentActionTypes,
 } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
+import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
-import { IAssetSocietyPayload, ISocietyParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IAssetSocietyPayload,
+  IInvoiceSummaryPayload,
+  ISocietyParam,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import {
   ICreateSociety,
@@ -140,6 +146,16 @@ export function* getSocietyCharges(action: IFluxStandardAction<number>): VoidGen
   }
 }
 
+export function* getUserInvoice(action: IFluxStandardAction<IInvoiceSummaryPayload>): VoidGenerator {
+  try {
+    const response = yield call(PaymentRepository.getInvoice, action.payload as IInvoiceSummaryPayload);
+    yield put(PropertyPaymentActions.getUserInvoiceSuccess(response as InvoiceId));
+  } catch (e) {
+    yield put(PropertyPaymentActions.getUserInvoiceFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchPropertyPayment() {
   yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETIES, getSocieties);
   yield takeLatest(PropertyPaymentActionTypes.POST.SOCIETY, createSociety);
@@ -147,4 +163,5 @@ export function* watchPropertyPayment() {
   yield takeLatest(PropertyPaymentActionTypes.POST.UPDATE_SOCIETY, updateSociety);
   yield takeLatest(PropertyPaymentActionTypes.POST.ASSET_SOCIETY, addAssetSociety);
   yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETY_CHARGES, getSocietyCharges);
+  yield takeLatest(PropertyPaymentActionTypes.POST.USER_INVOICE, getUserInvoice);
 }

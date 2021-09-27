@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -85,6 +86,16 @@ const getSocietyCharges = (state: IState): SocietyCharge | null => {
   return ObjectMapper.deserialize(SocietyCharge, societyCharges);
 };
 
+const getUserInvoice = (state: IState): InvoiceId => {
+  const {
+    propertyPayment: { userInvoice },
+  } = state;
+
+  if (!userInvoice) return new InvoiceId();
+
+  return userInvoice;
+};
+
 export const PropertyPaymentSelector = {
   getSelectedAssetId,
   getSelectedAsset,
@@ -95,4 +106,5 @@ export const PropertyPaymentSelector = {
   getSocietyDetails,
   getSelectedSocietyId,
   getSocietyCharges,
+  getUserInvoice,
 };

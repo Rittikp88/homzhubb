@@ -5,6 +5,7 @@ import { Amount } from '@homzhub/common/src/domain/models/Amount';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 import { Dues } from '@homzhub/common/src/domain/models/Dues';
+import { DueOrderSummary } from '@homzhub/common/src/domain/models/DueOrderSummary';
 import { FinancialRecords, FinancialTransactions } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
@@ -200,6 +201,14 @@ const getReminderFormData = (state: IState): IReminderFormData => {
   return reminderFormData;
 };
 
+const getDueOrderSummary = (state: IState): DueOrderSummary | null => {
+  const {
+    financials: { dueOrderSummary },
+  } = state;
+  if (!dueOrderSummary) return null;
+  return ObjectMapper.deserialize(DueOrderSummary, dueOrderSummary);
+};
+
 export const FinancialSelectors = {
   getDues,
   getDueItems,
@@ -223,4 +232,5 @@ export const FinancialSelectors = {
   getReminderFormData,
   getCategoriesDropdown,
   getFrequenciesDropdown,
+  getDueOrderSummary,
 };
