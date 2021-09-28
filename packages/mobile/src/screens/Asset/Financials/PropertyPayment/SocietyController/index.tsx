@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
+import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -16,6 +17,7 @@ import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import ReminderSheet from '@homzhub/common/src/components/molecules/ReminderSheet';
 import AddSocietyBank from '@homzhub/common/src/components/organisms/Society/AddSocietyBank';
 import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/AddSocietyForm';
 import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
@@ -29,7 +31,10 @@ const SocietyController = (): React.ReactElement => {
   const { goBack, navigate } = useNavigation();
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
-  const { getSocieties, society, societyCharges } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
+  const { getSocieties, society, societyCharges, userInvoice } = useSelector(
+    PropertyPaymentSelector.getPropertyPaymentLoaders
+  );
+  const { payment } = useSelector(FinancialSelectors.getFinancialLoaders);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const [currentStep, setCurrentStep] = useState(0);
   const [currentSocietyId, setCurrentSocietyId] = useState(0);
@@ -41,6 +46,7 @@ const SocietyController = (): React.ReactElement => {
     isDeleteSociety: false,
     isTermsAccepted: false,
     isEditSociety: false,
+    showReminderSheet: false,
   });
 
   useEffect(() => {
@@ -58,6 +64,7 @@ const SocietyController = (): React.ReactElement => {
     } else if (currentStep === 2 && !flags.isAddSociety) {
       // Skip 2nd step in case of existing societies
       setCurrentStep(currentStep - 2);
+      dispatch(PropertyPaymentActions.clearPaymentData());
     } else if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     } else {
@@ -110,6 +117,14 @@ const SocietyController = (): React.ReactElement => {
     toggleList(value);
   };
 
+  const onSetReminder = (): void => {
+    setFlagValues({ ...flags, showReminderSheet: true });
+  };
+
+  const onCloseSheet = (): void => {
+    setFlagValues({ ...flags, showReminderSheet: false });
+  };
+
   const onDeleteSociety = (id: number): void => {
     dispatch(
       PropertyPaymentActions.updateSociety({
@@ -128,6 +143,11 @@ const SocietyController = (): React.ReactElement => {
       setCurrentSocietyId(id);
       handleConfirmationSheet(true);
     }
+  };
+
+  const onReminderSuccess = (): void => {
+    onCloseSheet();
+    navigate(ScreensKeys.PaymentServices);
   };
 
   const handlePayNow = (): void => {
@@ -267,7 +287,7 @@ const SocietyController = (): React.ReactElement => {
           />
         );
       case 2:
-        return <SocietyPayment handlePayNow={handlePayNow} />;
+        return <SocietyPayment handlePayNow={handlePayNow} onSetReminder={onSetReminder} />;
       default:
         return <EmptyState />;
     }
@@ -326,7 +346,7 @@ const SocietyController = (): React.ReactElement => {
   return (
     <UserScreen
       isGradient
-      loading={getSocieties || society || societyCharges}
+      loading={getSocieties || society || societyCharges || payment || userInvoice}
       pageTitle={getPageTitle()}
       onBackPress={handleBackPress}
       headerStyle={styles.pageHeader}
@@ -337,6 +357,14 @@ const SocietyController = (): React.ReactElement => {
     >
       {renderSteps()}
       {renderConfirmationSheet()}
+      <BottomSheet
+        visible={flags.showReminderSheet}
+        sheetHeight={400}
+        headerTitle={t('remindMeOn')}
+        onCloseSheet={onCloseSheet}
+      >
+        <ReminderSheet onReminderSuccess={onReminderSuccess} />
+      </BottomSheet>
     </UserScreen>
   );
 };

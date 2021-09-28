@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { View, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Formik, FormikProps, FormikValues } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
@@ -20,58 +20,95 @@ import { InvoiceActions } from '@homzhub/common/src/domain/repositories/interfac
 
 interface IProps {
   handlePayNow: () => void;
+  onSetReminder: () => void;
 }
 
-const SocietyPayment = ({ handlePayNow }: IProps): React.ReactElement => {
+const SocietyPayment = ({ handlePayNow, onSetReminder }: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const paymentData = useSelector(PropertyPaymentSelector.getPaymentData);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
-  const user = useSelector(UserSelector.getUserProfile);
   const societyCharges = useSelector(PropertyPaymentSelector.getSocietyCharges);
-  const [selectedMonth, setSelectedMonth] = useState(DateUtils.getMonth());
-  const [isNotify, setNotify] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(user.id);
-  const [formData, setFormData] = useState({
-    amount: '',
-  });
 
   useEffect(() => {
     dispatch(PropertyPaymentActions.getSocietyCharges(asset.id));
   }, []);
 
-  useEffect(() => {
-    if (societyCharges) {
-      setFormData({ amount: societyCharges.maintenance.amount.toString() });
-    }
-  }, [societyCharges]);
-
   const getMonthData = (): ISelectionPicker<string>[] => {
     const { getMonth, getPreviousMonth, getNextMonth } = DateUtils;
     return [
-      { title: getPreviousMonth(), value: getPreviousMonth() },
-      { title: getMonth(), value: getMonth() },
-      { title: getNextMonth(), value: getNextMonth() },
+      { title: getPreviousMonth(), value: getPreviousMonth('MM') },
+      { title: getMonth(), value: getMonth('MM') },
+      { title: getNextMonth(), value: getNextMonth('MM') },
     ];
   };
 
-  const handleAmountChange = (value: string): void => {
-    setFormData({ amount: value });
+  const handleNotify = (): void => {
+    dispatch(
+      PropertyPaymentActions.setPaymentData({
+        ...paymentData,
+        is_notify: !paymentData.is_notify,
+      })
+    );
+  };
+
+  const onChangeAmount = (value: string): void => {
+    if (societyCharges) {
+      dispatch(
+        PropertyPaymentActions.setPaymentData({
+          ...paymentData,
+          amount: Number(value),
+          currency: societyCharges.maintenance.currency.currencyCode,
+        })
+      );
+    }
+  };
+
+  const onSelectUser = (id: number): void => {
+    dispatch(
+      PropertyPaymentActions.setPaymentData({
+        ...paymentData,
+        paid_by: id,
+      })
+    );
+  };
+
+  const onSelectMonth = (value: string): void => {
+    dispatch(
+      PropertyPaymentActions.setPaymentData({
+        ...paymentData,
+        month: value,
+      })
+    );
   };
 
   const onPayNow = (): void => {
-    if (societyCharges) {
+    if (paymentData.amount < 1) {
+      AlertHelper.error({ message: t('amountMsg') });
+      return;
+    }
+    if (societyCharges && paymentData) {
       dispatch(
         PropertyPaymentActions.getUserInvoice({
-          action: InvoiceActions.SOCIETY_MAINTENANCE_INVOICE,
-          payload: {
-            asset: asset.id,
-            amount: Number(formData.amount),
-            paid_by: selectedUser,
-            currency: societyCharges.maintenance.currency.currencyCode,
+          data: {
+            action: InvoiceActions.SOCIETY_MAINTENANCE_INVOICE,
+            payload: {
+              asset: paymentData.asset,
+              amount: paymentData.amount,
+              paid_by: paymentData.paid_by,
+              currency: paymentData.currency,
+              is_notify_me_enabled: paymentData.is_notify,
+              payment_schedule_date: `${DateUtils.getCurrentYear()}-${paymentData.month}-01`,
+            },
           },
+          onCallback: handleCallback,
         })
       );
+    }
+  };
 
+  const handleCallback = (status: boolean): void => {
+    if (status) {
       handlePayNow();
     }
   };
@@ -88,9 +125,9 @@ const SocietyPayment = ({ handlePayNow }: IProps): React.ReactElement => {
           numColumns={2}
           contentContainerStyle={styles.userList}
           renderItem={({ item }): React.ReactElement => {
-            const isSelected = item.id === selectedUser;
+            const isSelected = item.id === paymentData.paid_by;
             return (
-              <TouchableOpacity key={item.id} onPress={(): void => setSelectedUser(item.id)}>
+              <TouchableOpacity key={item.id} onPress={(): void => onSelectUser(item.id)}>
                 <Avatar
                   isOnlyAvatar
                   fullName={item.fullName}
@@ -117,7 +154,11 @@ const SocietyPayment = ({ handlePayNow }: IProps): React.ReactElement => {
   } = societyCharges;
   return (
     <View style={styles.container}>
-      <Formik initialValues={formData} enableReinitialize onSubmit={FunctionUtils.noop}>
+      <Formik
+        initialValues={{ amount: paymentData.amount.toString() }}
+        enableReinitialize
+        onSubmit={FunctionUtils.noop}
+      >
         {(formProps: FormikProps<FormikValues>): React.ReactElement => {
           return (
             <>
@@ -130,24 +171,34 @@ const SocietyPayment = ({ handlePayNow }: IProps): React.ReactElement => {
                 label={t('propertyPayment:amountPaid')}
                 inputPrefixText={currency.currencySymbol}
                 inputGroupSuffixText={currency.currencyCode}
-                onValueChange={handleAmountChange}
+                onValueChange={onChangeAmount}
               />
               {renderUser()}
               <Label textType="semiBold" type="large" style={styles.label}>
                 {t('propertyPayment:selectMonth')}
               </Label>
-              <SelectionPicker data={getMonthData()} selectedItem={[selectedMonth]} onValueChange={setSelectedMonth} />
+              <SelectionPicker data={getMonthData()} selectedItem={[paymentData.month]} onValueChange={onSelectMonth} />
               <RNCheckbox
-                selected={isNotify}
+                selected={paymentData.is_notify}
                 containerStyle={styles.checkbox}
-                onToggle={(): void => setNotify(!isNotify)}
+                onToggle={handleNotify}
                 labelType="regular"
                 label={t('propertyPayment:notifyMe')}
               />
               <View style={styles.buttonContainer}>
-                <Button type="secondary" title={t('assetFinancial:setReminder')} disabled={isNotify} />
+                <Button
+                  type="secondary"
+                  title={t('assetFinancial:setReminder')}
+                  disabled={paymentData.is_notify || paymentData.amount < 1}
+                  onPress={onSetReminder}
+                />
                 <View style={styles.buttonSeparator} />
-                <Button type="primary" title={t('assetFinancial:payNow')} onPress={onPayNow} />
+                <Button
+                  type="primary"
+                  title={t('assetFinancial:payNow')}
+                  onPress={onPayNow}
+                  disabled={paymentData.amount < 1}
+                />
               </View>
             </>
           );

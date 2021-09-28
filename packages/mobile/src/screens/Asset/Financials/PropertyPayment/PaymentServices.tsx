@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -10,6 +11,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
+import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRoutes, PropertyPaymentRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -17,8 +19,16 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 const PropertyServices = (): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
   const { goBack, navigate } = useNavigation();
+  const dispatch = useDispatch();
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const { activeAssets } = useSelector(AssetSelectors.getAssetLoaders);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(PropertyPaymentActions.clearPaymentData());
+      dispatch(PropertyPaymentActions.getUserInvoiceSuccess(new InvoiceId()));
+    }, [])
+  );
 
   const handleTabNavigation = (key: Tabs): void => {
     if (key === Tabs.SOCIETY_BILL) {

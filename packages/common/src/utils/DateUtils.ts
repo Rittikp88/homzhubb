@@ -400,16 +400,20 @@ class DateUtils {
 
   public isBefore = (date1: string, date2 = moment()): boolean => moment(date1).isBefore(date2);
 
-  public getNextMonth = (): string => {
-    return moment().add(1, 'month').format('MMMM');
+  public getNextMonth = (format?: string): string => {
+    return moment()
+      .add(1, 'month')
+      .format(format || 'MMMM');
   };
 
-  public getPreviousMonth = (): string => {
-    return moment().subtract(1, 'month').format('MMMM');
+  public getPreviousMonth = (format?: string): string => {
+    return moment()
+      .subtract(1, 'month')
+      .format(format || 'MMMM');
   };
 
-  public getMonth = (): string => {
-    return moment().format('MMMM');
+  public getMonth = (format?: string): string => {
+    return moment().format(format || 'MMMM');
   };
 }
 

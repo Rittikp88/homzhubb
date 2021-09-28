@@ -84,6 +84,7 @@ export const FinancialActionTypes = {
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
   RESET_LEDGER_FILTERS: `${actionTypePrefix}RESET_LEDGER_FILTERS`,
   CLEAR_REMINDER_FORM_DATA: `${actionTypePrefix}CLEAR_REMINDER_FORM_DATA`,
+  CLEAR_ORDER_SUMMARY: `${actionTypePrefix}CLEAR_ORDER_SUMMARY`,
 };
 
 const getTransactions = (payload: ITransactionParams): IFluxStandardAction<ITransactionParams> => ({
@@ -302,6 +303,10 @@ const updateOderSummaryFailure = (): IFluxStandardAction => ({
   type: FinancialActionTypes.POST.UPDATE_ORDER_SUMMARY_FAILURE,
 });
 
+const clearOrderSummary = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.CLEAR_ORDER_SUMMARY,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -369,4 +374,5 @@ export const FinancialActions = {
   updateOderSummary,
   updateOderSummarySuccess,
   updateOderSummaryFailure,
+  clearOrderSummary,
 };

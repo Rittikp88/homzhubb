@@ -5,7 +5,6 @@ import { ISocietyCharge, SocietyCharge } from '@homzhub/common/src/domain/models
 import {
   IAssetSocietyPayload,
   IBankInfoPayload,
-  IInvoiceSummaryPayload,
   ISocietyParam,
   ISocietyPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -13,6 +12,8 @@ import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
   ICreateSociety,
   IGetSocietyPayload,
+  IInvoicePayload,
+  IPaymentData,
   ISocietyFormData,
   IUpdateSociety,
 } from '@homzhub/common/src/modules/propertyPayment/interfaces';
@@ -24,6 +25,7 @@ export const PropertyPaymentActionTypes = {
     SOCIETY_FORM_DATA: `${actionTypePrefix}SOCIETY_FORM_DATA`,
     SOCIETY_BANK_DATA: `${actionTypePrefix}SOCIETY_BANK_DATA`,
     SELECTED_SOCIETY_ID: `${actionTypePrefix}SELECTED_SOCIETY_ID`,
+    PAYMENT_DATA: `${actionTypePrefix}PAYMENT_DATA`,
   },
   GET: {
     SOCIETIES: `${actionTypePrefix}SOCIETIES`,
@@ -52,6 +54,7 @@ export const PropertyPaymentActionTypes = {
   },
   CLEAR_SOCIETY_FORM_DATA: `${actionTypePrefix}CLEAR_SOCIETY_FORM_DATA`,
   CLEAR_SOCIETY_DETAIL: `${actionTypePrefix}CLEAR_SOCIETY_DETAIL`,
+  CLEAR_PAYMENT_DATA: `${actionTypePrefix}CLEAR_PAYMENT_DATA`,
 };
 
 const setAssetId = (assetId: number): IFluxStandardAction<number> => ({
@@ -163,7 +166,7 @@ const getSocietyChargesFailure = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.GET.SOCIETY_CHARGES_FAILURE,
 });
 
-const getUserInvoice = (payload: IInvoiceSummaryPayload): IFluxStandardAction<IInvoiceSummaryPayload> => ({
+const getUserInvoice = (payload: IInvoicePayload): IFluxStandardAction<IInvoicePayload> => ({
   type: PropertyPaymentActionTypes.POST.USER_INVOICE,
   payload,
 });
@@ -175,6 +178,15 @@ const getUserInvoiceSuccess = (payload: InvoiceId): IFluxStandardAction<InvoiceI
 
 const getUserInvoiceFailure = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.POST.USER_INVOICE_FAILURE,
+});
+
+const setPaymentData = (payload: IPaymentData): IFluxStandardAction<IPaymentData> => ({
+  type: PropertyPaymentActionTypes.SET.PAYMENT_DATA,
+  payload,
+});
+
+const clearPaymentData = (): IFluxStandardAction => ({
+  type: PropertyPaymentActionTypes.CLEAR_PAYMENT_DATA,
 });
 
 export type ActionPayloadTypes =
@@ -190,8 +202,9 @@ export type ActionPayloadTypes =
   | ICreateSociety
   | IAssetSocietyPayload
   | ISocietyCharge
-  | IInvoiceSummaryPayload
-  | InvoiceId;
+  | IInvoicePayload
+  | InvoiceId
+  | IPaymentData;
 
 export const PropertyPaymentActions = {
   setAssetId,
@@ -221,4 +234,6 @@ export const PropertyPaymentActions = {
   getUserInvoice,
   getUserInvoiceSuccess,
   getUserInvoiceFailure,
+  setPaymentData,
+  clearPaymentData,
 };

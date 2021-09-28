@@ -1,10 +1,15 @@
+import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ActionPayloadTypes, PropertyPaymentActionTypes } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ISociety } from '@homzhub/common/src/domain/models/Society';
 import { ISocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyPaymentState, ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/interfaces';
+import {
+  IPaymentData,
+  IPropertyPaymentState,
+  ISocietyFormData,
+} from '@homzhub/common/src/modules/propertyPayment/interfaces';
 
 const initialFormData: ISocietyFormData = {
   propertyName: '',
@@ -13,6 +18,18 @@ const initialFormData: ISocietyFormData = {
   name: '',
   contactNumber: '',
   societyName: '',
+};
+
+const initialPaymentData: IPaymentData = {
+  amount: 0,
+  currency: '',
+  asset: 0,
+  paid_by: 0,
+  is_notify: false,
+  month: DateUtils.getMonth('MM'),
+  is_notify_me_enabled: false,
+  society: 0,
+  payment_schedule_date: '',
 };
 
 export const initialState: IPropertyPaymentState = {
@@ -24,6 +41,7 @@ export const initialState: IPropertyPaymentState = {
   societyDetail: null,
   societyCharges: null,
   userInvoice: new InvoiceId(),
+  paymentData: initialPaymentData,
   loaders: {
     getSocieties: false,
     society: false,
@@ -141,6 +159,16 @@ export const propertyPaymentReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['userInvoice']: false },
+      };
+    case PropertyPaymentActionTypes.SET.PAYMENT_DATA:
+      return {
+        ...state,
+        paymentData: action.payload as IPaymentData,
+      };
+    case PropertyPaymentActionTypes.CLEAR_PAYMENT_DATA:
+      return {
+        ...state,
+        paymentData: initialPaymentData,
       };
     default:
       return state;

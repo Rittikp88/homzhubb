@@ -223,6 +223,11 @@ export const financialsReducer = (
         ...state,
         ['loaders']: { ...state.loaders, ['dueOrderSummary']: false },
       };
+    case FinancialActionTypes.CLEAR_ORDER_SUMMARY:
+      return {
+        ...state,
+        ['dueOrderSummary']: initialFinancialsState.dueOrderSummary,
+      };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;
     default:

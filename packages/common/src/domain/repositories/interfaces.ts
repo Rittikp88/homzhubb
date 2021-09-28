@@ -1102,6 +1102,7 @@ export interface IReminderPayload {
   receiver_user?: number;
   user_bank_info?: number;
   lease_transaction?: number;
+  society?: number;
 }
 
 export interface IBankAccountPayload {
@@ -1145,6 +1146,8 @@ export interface ISocietyInvoicePayload {
   asset: number;
   currency: string;
   paid_by: number;
+  is_notify_me_enabled: boolean;
+  payment_schedule_date: string;
 }
 
 export interface IInvoiceSummaryPayload extends IPayloadWithAction {

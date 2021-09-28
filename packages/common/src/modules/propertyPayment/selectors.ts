@@ -1,12 +1,17 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IPropertyPaymentState, ISocietyFormData } from '@homzhub/common/src/modules/propertyPayment/interfaces';
+import {
+  IPaymentData,
+  IPropertyPaymentState,
+  ISocietyFormData,
+} from '@homzhub/common/src/modules/propertyPayment/interfaces';
 
 const getSelectedAssetId = (state: IState): number => {
   const {
@@ -96,6 +101,23 @@ const getUserInvoice = (state: IState): InvoiceId => {
   return userInvoice;
 };
 
+const getPaymentData = (state: IState): IPaymentData => {
+  const {
+    propertyPayment: { paymentData },
+  } = state;
+  const asset = getSelectedAsset(state);
+  const user = UserSelector.getUserProfile(state);
+  const society = getSocietyCharges(state);
+
+  return {
+    ...paymentData,
+    asset: asset.id,
+    ...(paymentData.paid_by < 1 && { paid_by: user.id }),
+    ...(paymentData.amount < 1 && society && { amount: society.maintenance.amount }),
+    ...(asset.society && { society: asset.society.id }),
+  };
+};
+
 export const PropertyPaymentSelector = {
   getSelectedAssetId,
   getSelectedAsset,
@@ -107,4 +129,5 @@ export const PropertyPaymentSelector = {
   getSelectedSocietyId,
   getSocietyCharges,
   getUserInvoice,
+  getPaymentData,
 };

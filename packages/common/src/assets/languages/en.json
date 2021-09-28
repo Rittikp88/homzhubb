@@ -321,7 +321,9 @@
     "accountHolder": "Account Holder",
     "accountNumber": "Account Number",
     "responseSubmitSuccess": "Response submitted successfully",
-    "contactNumber": "Contact Number"
+    "contactNumber": "Contact Number",
+    "repeat": "Repeat",
+    "amountMsg": "Amount must be greater than zero"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1558,6 +1560,10 @@
     "amountPaid": "Amount to be paid",
     "notifyMe": "Notify me for future bills in coming months.",
     "selectMonth": "Select the Month",
-    "paidBy": "Paid By"
+    "paidBy": "Paid By",
+    "remindMeOnce": "Remind me once",
+    "recurringReminder": "Recurring Reminder",
+    "selectFrequency": "Select Frequency",
+    "remindMeOn": "Remind me on"
   }
 }

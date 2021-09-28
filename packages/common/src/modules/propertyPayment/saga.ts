@@ -15,15 +15,12 @@ import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPay
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
-import {
-  IAssetSocietyPayload,
-  IInvoiceSummaryPayload,
-  ISocietyParam,
-} from '@homzhub/common/src/domain/repositories/interfaces';
+import { IAssetSocietyPayload, ISocietyParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import {
   ICreateSociety,
   IGetSocietyPayload,
+  IInvoicePayload,
   IUpdateSociety,
 } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 import { MenuEnum } from '@homzhub/common/src/constants/Society';
@@ -146,11 +143,19 @@ export function* getSocietyCharges(action: IFluxStandardAction<number>): VoidGen
   }
 }
 
-export function* getUserInvoice(action: IFluxStandardAction<IInvoiceSummaryPayload>): VoidGenerator {
+export function* getUserInvoice(action: IFluxStandardAction<IInvoicePayload>): VoidGenerator {
+  if (!action.payload) return;
+  const { data, onCallback } = action.payload;
   try {
-    const response = yield call(PaymentRepository.getInvoice, action.payload as IInvoiceSummaryPayload);
+    const response = yield call(PaymentRepository.getInvoice, data);
     yield put(PropertyPaymentActions.getUserInvoiceSuccess(response as InvoiceId));
+    if (onCallback) {
+      onCallback(true);
+    }
   } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
     yield put(PropertyPaymentActions.getUserInvoiceFailure());
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }
