@@ -146,7 +146,10 @@ export class AddProperty extends PureComponent<Props, IScreenState> {
   private handleNavigationToDetail = (): void => {
     const { navigation } = this.props;
     // @ts-ignore
-    navigation.navigate(ScreensKeys.PropertyDetailScreen);
+    navigation.navigate(ScreensKeys.BottomTabs, {
+      screen: ScreensKeys.Portfolio,
+      params: { screen: ScreensKeys.PropertyDetailScreen, initial: false },
+    });
   };
 
   private scrollToTop = (): void => {

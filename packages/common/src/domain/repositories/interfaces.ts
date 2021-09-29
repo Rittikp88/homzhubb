@@ -317,6 +317,7 @@ export interface ICreateAssetParams {
   country_iso2_code: string;
   asset_type: number;
   last_visited_step?: ILastVisitedStep;
+  project?: number;
 }
 
 export interface ICreateAssetResult {
@@ -356,6 +357,7 @@ export interface IUpdateAssetParams {
   is_subleased?: boolean;
   is_managed?: boolean;
   change_status?: boolean;
+  project?: number;
 }
 
 // ASSET - END
@@ -1196,4 +1198,10 @@ export interface IAssetSocietyPayload {
     asset: number;
     is_terms_accepted: boolean;
   };
+}
+
+export interface IProjectSearchPayload {
+  latitude: number;
+  longitude: number;
+  name: string;
 }

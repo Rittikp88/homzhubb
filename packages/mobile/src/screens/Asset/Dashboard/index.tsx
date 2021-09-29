@@ -66,6 +66,8 @@ interface IDispatchProps {
   getTenanciesDetails: () => void;
   getFilterDetails: (payload: IFilter) => void;
   setFilter: (payload: IFilter) => void;
+  setEditPropertyFlow: (payload: boolean) => void;
+  toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
 
 interface IReduxStateProps {
@@ -211,8 +213,10 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
   };
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } = this.props;
     setAssetId(assetId);
+    setEditPropertyFlow(true);
+    toggleEditPropertyFlowBottomSheet(true);
     // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
@@ -432,7 +436,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { setCurrentFilter, setCurrentAsset, setInitialState, getTenanciesDetails } = PortfolioActions;
   const { setAddPropertyFlow } = UserActions;
-  const { setAssetId, setSelectedPlan } = RecordAssetActions;
+  const { setAssetId, setSelectedPlan, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } = RecordAssetActions;
   const { getAssetVisit } = AssetActions;
   const { getFilterDetails, setFilter } = SearchActions;
   return bindActionCreators(
@@ -447,6 +451,8 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       getTenanciesDetails,
       getFilterDetails,
       setFilter,
+      setEditPropertyFlow,
+      toggleEditPropertyFlowBottomSheet,
     },
     dispatch
   );

@@ -351,6 +351,8 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       latitude,
       longitude,
       last_visited_step: visitedStep,
+      // @ts-ignore
+      ...(params && params.projectId && { project: params.projectId }),
     };
 
     formActions.setSubmitting(true);

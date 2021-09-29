@@ -10,6 +10,7 @@ import { User } from '@homzhub/common/src/domain/models/User';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 import { ISocialUserData } from '@homzhub/common/src/constants/SocialAuthProviders';
@@ -95,6 +96,7 @@ export enum ScreensKeys {
   AssetPlanSelection = 'AssetPlanSelection',
   AssetListing = 'AssetListing',
   MarkdownScreen = 'Markdown',
+  ProjectSelection = 'ProjectSelection',
 
   // Search Stack
   PropertySearchLanding = 'PropertySearchLanding',
@@ -216,6 +218,11 @@ export interface IAssetLocationMapProps {
   placeData: GooglePlaceDetail;
 }
 
+export interface IProjectSelectionProps {
+  options: IAssetLocationMapProps;
+  projects: Unit[];
+}
+
 export interface IPostAssetDetailsProps {
   latitude: number;
   longitude: number;
@@ -226,6 +233,7 @@ export interface IPostAssetDetailsProps {
   state: string;
   country: string;
   countryIsoCode: string;
+  projectId?: number;
 }
 
 export type MarkdownType = 'visit' | 'verification';

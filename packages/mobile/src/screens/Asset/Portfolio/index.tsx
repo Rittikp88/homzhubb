@@ -63,6 +63,7 @@ interface IDispatchProps {
   clearMessages: () => void;
   clearAssetData: () => void;
   setCurrentChatDetail: (payload: IChatPayload) => void;
+  toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
 }
 
 interface IScreenState {
@@ -304,9 +305,10 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
   };
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } = this.props;
     setAssetId(assetId);
     setEditPropertyFlow(true);
+    toggleEditPropertyFlowBottomSheet(true);
     // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,
@@ -436,7 +438,7 @@ const mapStateToProps = (state: IState): IStateProps => {
 
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getTenanciesDetails, getPropertyDetails, setCurrentAsset, setCurrentFilter } = PortfolioActions;
-  const { setAssetId, setEditPropertyFlow, clearAssetData } = RecordAssetActions;
+  const { setAssetId, setEditPropertyFlow, clearAssetData, toggleEditPropertyFlowBottomSheet } = RecordAssetActions;
   const { clearMessages, setCurrentChatDetail } = CommonActions;
   return bindActionCreators(
     {
@@ -449,6 +451,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       clearMessages,
       clearAssetData,
       setCurrentChatDetail,
+      toggleEditPropertyFlowBottomSheet,
     },
     dispatch
   );

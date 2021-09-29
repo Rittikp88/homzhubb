@@ -1,9 +1,12 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import {
   IAssetSocietyPayload,
+  IProjectSearchPayload,
   ISocietyParam,
   ISocietyPayload,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -14,6 +17,8 @@ const ENDPOINTS = {
   societyById: (id: number): string => `v1/societies/${id}/`,
   assetSociety: (id: number): string => `v1/societies/${id}/assets/`,
   societyCharges: (id: number): string => `v1/assets/${id}/society-charges/`,
+  projectSearch: 'v1/projects/search/',
+  projectAmenities: (id: number): string => `v1/projects/${id}/amenities/`,
 };
 
 class PropertyRepository {
@@ -53,6 +58,16 @@ class PropertyRepository {
   public getSocietyCharges = async (assetId: number): Promise<SocietyCharge> => {
     const response = await this.apiClient.get(ENDPOINTS.societyCharges(assetId));
     return ObjectMapper.deserialize(SocietyCharge, response);
+  };
+
+  public getProjects = async (payload: IProjectSearchPayload): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.projectSearch, payload);
+    return ObjectMapper.deserializeArray(Unit, response);
+  };
+
+  public getProjectAmenities = async (id: number): Promise<Amenity[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.projectAmenities(id));
+    return ObjectMapper.deserializeArray(Amenity, response);
   };
 }
 

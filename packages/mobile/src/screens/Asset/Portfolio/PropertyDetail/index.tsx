@@ -334,9 +334,10 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private onCompleteDetails = (assetId: number): void => {
-    const { navigation, setAssetId, setEditPropertyFlow } = this.props;
+    const { navigation, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet } = this.props;
     setAssetId(assetId);
     setEditPropertyFlow(true);
+    toggleEditPropertyFlowBottomSheet(true);
     // @ts-ignore
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AddProperty,

@@ -7,25 +7,27 @@ import { CommonActions } from '@react-navigation/native';
 import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { debounce } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
 import { GooglePlacesService } from '@homzhub/common/src/services/GooglePlaces/GooglePlacesService';
-import { theme } from '@homzhub/common/src/styles/theme';
-import AddPropertyGraphic from '@homzhub/common/src/assets/images/addPropertyGraphic.svg';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
-import { CurrentLocation } from '@homzhub/mobile/src/components';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import AddPropertyGraphic from '@homzhub/common/src/assets/images/addPropertyGraphic.svg';
+import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { CurrentLocation } from '@homzhub/mobile/src/components';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
+import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import {
   GoogleGeocodeData,
   GooglePlaceData,
   GooglePlaceDetail,
 } from '@homzhub/common/src/services/GooglePlaces/interfaces';
-import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { NavigationScreenProps, ScreensKeys, IAssetLocationMapProps } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IScreenState {
@@ -170,7 +172,23 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
     const {
       navigation: { navigate },
     } = this.props;
-    navigate(ScreensKeys.AssetLocationMap, options);
+    const {
+      name,
+      geometry: {
+        location: { lat, lng },
+      },
+    } = options.placeData;
+    PropertyRepository.getProjects({ latitude: lat, longitude: lng, name })
+      .then((res) => {
+        if (res.length > 0) {
+          navigate(ScreensKeys.ProjectSelection, { options, projects: res });
+        } else {
+          navigate(ScreensKeys.AssetLocationMap, options);
+        }
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      });
   };
 
   private displayError = (e: Error): void => {

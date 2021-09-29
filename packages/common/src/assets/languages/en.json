@@ -735,7 +735,10 @@
     "listingCreation": "Listing created successfully",
     "propertyName": "Property Name",
     "societyName": "Society Name",
-    "societyContact": "Society Contact"
+    "societyContact": "Society Contact",
+    "projects": "Projects",
+    "belongToProject": "Does your property belong to one of these projects?",
+    "propertyNotInProject": "Property not in above projects? Continue"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

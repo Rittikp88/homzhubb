@@ -319,7 +319,6 @@ class AddPropertyView extends Component<Props, IScreenState> {
       scrollToTop,
       onNavigateToDetail,
       onNavigateToPlanSelection,
-      assetPayload,
     } = this.props;
     if (currentIndex < AddPropertyRoutes.length - 1) {
       this.setState({ currentIndex: currentIndex + 1, isNextStep: true });
@@ -327,9 +326,7 @@ class AddPropertyView extends Component<Props, IScreenState> {
         scrollToTop();
       }
     } else {
-      if (!assetPayload || (assetPayload && isEmpty(assetPayload))) {
-        this.handleCurrentAsset();
-      }
+      this.handleCurrentAsset();
 
       if (isEditPropertyFlow) {
         resetState();

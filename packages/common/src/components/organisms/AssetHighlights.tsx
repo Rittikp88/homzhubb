@@ -5,9 +5,10 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 import { cloneDeep, remove } from 'lodash';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
+import { PropertyRepository } from '@homzhub/common/src/domain/repositories/PropertyRepository';
 import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/RecordAssetRepository';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -331,11 +332,13 @@ export class AssetHighlights extends Component<Props, IOwnState> {
 
   private getProjectAmenities = async (): Promise<void> => {
     const { propertyDetail } = this.props;
-    if (propertyDetail) {
+    if (propertyDetail && propertyDetail.project) {
       try {
-        const { projectName, pinCode } = propertyDetail;
+        const {
+          project: { id },
+        } = propertyDetail;
         this.setLoader();
-        const projectAmenities = await RecordAssetRepository.getProjectAmenities(projectName, pinCode);
+        const projectAmenities = await PropertyRepository.getProjectAmenities(id);
         const projectAmenityIds = projectAmenities.map((item) => item.id);
         this.setState({ selectedAmenity: projectAmenityIds });
         this.resetLoader();
