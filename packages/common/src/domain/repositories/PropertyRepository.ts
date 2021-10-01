@@ -3,6 +3,7 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { Amenity } from '@homzhub/common/src/domain/models/Amenity';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
+import { SocietyReminder } from '@homzhub/common/src/domain/models/SocietyReminder';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import {
   IAssetSocietyPayload,
@@ -19,6 +20,7 @@ const ENDPOINTS = {
   societyCharges: (id: number): string => `v1/assets/${id}/society-charges/`,
   projectSearch: 'v1/projects/search/',
   projectAmenities: (id: number): string => `v1/projects/${id}/amenities/`,
+  societyReminders: (id: number): string => `v1/assets/${id}/society-reminders/`,
 };
 
 class PropertyRepository {
@@ -68,6 +70,11 @@ class PropertyRepository {
   public getProjectAmenities = async (id: number): Promise<Amenity[]> => {
     const response = await this.apiClient.get(ENDPOINTS.projectAmenities(id));
     return ObjectMapper.deserializeArray(Amenity, response);
+  };
+
+  public getSocietyReminders = async (id: number): Promise<SocietyReminder> => {
+    const response = await this.apiClient.get(ENDPOINTS.societyReminders(id));
+    return ObjectMapper.deserialize(SocietyReminder, response);
   };
 }
 

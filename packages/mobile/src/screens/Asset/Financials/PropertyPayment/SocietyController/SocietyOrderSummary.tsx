@@ -15,7 +15,7 @@ const SocietyOrderSummary = (): React.ReactElement => {
   const { dueOrderSummary, payment } = useSelector(FinancialSelectors.getFinancialLoaders);
 
   const onSuccess = (): void => {
-    navigate(ScreensKeys.PaymentServices);
+    navigate(ScreensKeys.PaymentServices, { isFromSummary: true });
   };
 
   const onGoBack = (): void => {

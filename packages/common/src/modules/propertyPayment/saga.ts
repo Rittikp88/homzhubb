@@ -15,13 +15,14 @@ import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPay
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
+import { SocietyReminder } from '@homzhub/common/src/domain/models/SocietyReminder';
 import { IAssetSocietyPayload, ISocietyParam } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import {
   ICreateSociety,
   IGetSocietyPayload,
   IInvoicePayload,
-  ISocietyChargesPayload,
+  ISocietyDataPayload,
   IUpdateSociety,
 } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 import { MenuEnum } from '@homzhub/common/src/constants/Society';
@@ -134,7 +135,7 @@ export function* addAssetSociety(action: IFluxStandardAction<IAssetSocietyPayloa
   }
 }
 
-export function* getSocietyCharges(action: IFluxStandardAction<ISocietyChargesPayload>): VoidGenerator {
+export function* getSocietyCharges(action: IFluxStandardAction<ISocietyDataPayload>): VoidGenerator {
   if (!action.payload) return;
   const { id, onCallback } = action.payload;
   try {
@@ -173,6 +174,25 @@ export function* getUserInvoice(action: IFluxStandardAction<IInvoicePayload>): V
   }
 }
 
+export function* getSocietyReminders(action: IFluxStandardAction<ISocietyDataPayload>): VoidGenerator {
+  if (!action.payload) return;
+  const { id, onCallback } = action.payload;
+  try {
+    const response = yield call(PropertyRepository.getSocietyReminders, id);
+    yield put(PropertyPaymentActions.getSocietyRemindersSuccess(response as SocietyReminder));
+    if (onCallback && response) {
+      const data = response as SocietyReminder;
+      onCallback(true, data.reminders.length);
+    }
+  } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
+    yield put(PropertyPaymentActions.getSocietyRemindersFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchPropertyPayment() {
   yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETIES, getSocieties);
   yield takeLatest(PropertyPaymentActionTypes.POST.SOCIETY, createSociety);
@@ -181,4 +201,5 @@ export function* watchPropertyPayment() {
   yield takeLatest(PropertyPaymentActionTypes.POST.ASSET_SOCIETY, addAssetSociety);
   yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETY_CHARGES, getSocietyCharges);
   yield takeLatest(PropertyPaymentActionTypes.POST.USER_INVOICE, getUserInvoice);
+  yield takeLatest(PropertyPaymentActionTypes.GET.SOCIETY_REMINDERS, getSocietyReminders);
 }

@@ -380,7 +380,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
       reminder_frequency: frequency,
       start_date: new Date(date).toISOString(),
       emails: userEmails,
-      ...(!isEdit && property && property > 0 && { asset: property }),
+      ...(property && property > 0 && { asset: property }),
       ...(isRent && leaseUnit && leaseUnit > 0 && { lease_transaction: leaseUnit }),
       ...(!!notes && { description: notes }),
       ...(isRent && { payer_user: tenant }),
@@ -608,7 +608,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
               formProps={formProps}
               type="primary"
               disabled={!getButtonVisibility(formProps) || (isEdit && !canEdit)}
-              title={t('common:addNow')}
+              title={isEdit ? t('common:updateNow') : t('common:addNow')}
               containerStyle={styles.button}
             />
           </>

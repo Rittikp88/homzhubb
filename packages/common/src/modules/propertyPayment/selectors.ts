@@ -5,6 +5,7 @@ import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Society } from '@homzhub/common/src/domain/models/Society';
 import { SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
+import { SocietyReminder } from '@homzhub/common/src/domain/models/SocietyReminder';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import {
@@ -113,9 +114,19 @@ const getPaymentData = (state: IState): IPaymentData => {
     ...paymentData,
     asset: asset.id,
     ...(paymentData.paid_by < 1 && { paid_by: user.id }),
-    ...(paymentData.amount < 1 && society && { amount: society.maintenance.amount }),
+    ...(paymentData.amount < 1 && society && society.maintenance.amount && { amount: society.maintenance.amount }),
     ...(asset.society && { society: asset.society.id }),
   };
+};
+
+const getSocietyReminders = (state: IState): SocietyReminder | null => {
+  const {
+    propertyPayment: { societyReminders },
+  } = state;
+
+  if (!societyReminders) return null;
+
+  return ObjectMapper.deserialize(SocietyReminder, societyReminders);
 };
 
 export const PropertyPaymentSelector = {
@@ -130,4 +141,5 @@ export const PropertyPaymentSelector = {
   getSocietyCharges,
   getUserInvoice,
   getPaymentData,
+  getSocietyReminders,
 };

@@ -15,8 +15,8 @@ To download and install the nvm script run:
     nvm --version
     nvm install node
     node --version
-    nvm install 10.16.0
-    nvm use 10.16.0
+    nvm install 14.1.0
+    nvm use 14.1.0
 #### Install YARN
     npm -i g yarn
 ## Project Installation

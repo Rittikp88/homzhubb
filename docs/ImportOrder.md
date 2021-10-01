@@ -6,10 +6,10 @@
 4. Services
 5. Navigation/ Routes
 6. Redux-related (ex: @modules/user/… )
-7. theme, images, icons
-8. Components (atoms, molecules, organisms, templates, screens)
+7. icons, images, theme
+8. Components (atoms, HOC, molecules, organisms, templates, screens)
 9. Domain models
-10. Constants, mocks, interfaces
+10. interfaces, Constants, mocks
 
 #### Within each of them, you could sort them alphabetically
 #### why: Easier to identify dependencies for the class across application layers

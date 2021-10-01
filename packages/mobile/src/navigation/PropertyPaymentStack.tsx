@@ -7,7 +7,7 @@ import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type PropertyPaymentList = {
   [ScreensKeys.PropertyPayment]: undefined;
-  [ScreensKeys.PaymentServices]: undefined;
+  [ScreensKeys.PaymentServices]: undefined | { isFromSummary: boolean };
   [ScreensKeys.SocietyController]: undefined | { fromReminder: boolean };
   [ScreensKeys.SocietyOrderSummary]: undefined;
 };

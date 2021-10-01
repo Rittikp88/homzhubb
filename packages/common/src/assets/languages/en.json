@@ -1571,6 +1571,12 @@
     "selectFrequency": "Select Frequency",
     "remindMeOn": "Remind me on",
     "addSocietyLabel": "Add Society",
-    "society": "Society"
+    "society": "Society",
+    "lastPaidOn": "Last Paid on {{date}}",
+    "nextDueOn": "Next Due on {{date}}",
+    "amount": "Amount {{currency}} {{amount}}",
+    "payee": "Payee",
+    "billDeleted": "Maintenance Bill Deleted Successfully",
+    "modifySocietyBill": "Modify Society Bill Reminder"
   }
 }

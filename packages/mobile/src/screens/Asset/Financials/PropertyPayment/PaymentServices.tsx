@@ -1,44 +1,137 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
+import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
+import Menu from '@homzhub/mobile/src/components/molecules/Menu';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
+import SocietyReminderList from '@homzhub/common/src/components/organisms/Society/SocietyReminderList';
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IRoutes, PropertyPaymentRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
+import { menu, MenuEnum } from '@homzhub/common/src/constants/Society';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const PropertyServices = (): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
   const { goBack, navigate } = useNavigation();
+  const { params } = useRoute();
   const dispatch = useDispatch();
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const { activeAssets } = useSelector(AssetSelectors.getAssetLoaders);
+  const { societyReminders } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
+  const [isReminderView, setReminderView] = useState(false);
+  const [isDeleteView, setDeleteView] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
       dispatch(PropertyPaymentActions.clearPaymentData());
       dispatch(PropertyPaymentActions.getUserInvoiceSuccess(new InvoiceId()));
+      // @ts-ignore
+      if (params && params.isFromSummary) {
+        setReminderView(false);
+      } else if (isReminderView) {
+        dispatch(PropertyPaymentActions.getSocietyReminders({ id: asset.id }));
+      }
     }, [])
   );
 
+  const handleGoBack = (): void => {
+    if (isReminderView) {
+      setReminderView(false);
+    } else {
+      goBack();
+    }
+  };
+
   const handleTabNavigation = (key: Tabs): void => {
     if (key === Tabs.SOCIETY_BILL) {
-      navigate(ScreensKeys.SocietyController);
+      dispatch(PropertyPaymentActions.getSocietyReminders({ id: asset.id, onCallback: handleCallback }));
     } else {
       navigate(ScreensKeys.ComingSoonScreen, {
         title: key as string,
         tabHeader: t('propertyPayment'),
       });
     }
+  };
+
+  const handleCallback = (status: boolean, data?: number): void => {
+    if (status) {
+      if (data && data > 0) {
+        setReminderView(true);
+      } else {
+        navigate(ScreensKeys.SocietyController);
+      }
+    }
+  };
+
+  const handlePayNow = (): void => {
+    navigate(ScreensKeys.SocietyOrderSummary);
+  };
+
+  const handleMenuSelection = (value: string, id: number): void => {
+    if (value === MenuEnum.EDIT) {
+      dispatch(FinancialActions.setCurrentReminderId(id));
+      navigate(ScreensKeys.AddReminderScreen, { isEdit: true });
+    } else {
+      setDeleteView(true);
+    }
+  };
+
+  const onDeleteCallback = (status: boolean, data?: number): void => {
+    if (status && !data) {
+      setReminderView(false);
+    }
+  };
+
+  const onPressDelete = (id: number): void => {
+    LedgerRepository.deleteReminderById(id)
+      .then(() => {
+        dispatch(PropertyPaymentActions.getSocietyReminders({ id: asset.id, onCallback: onDeleteCallback }));
+        AlertHelper.success({ message: t('propertyPayment:billDeleted') });
+      })
+      .catch((e) => {
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+      })
+      .finally(() => {
+        setDeleteView(false);
+      });
+  };
+
+  const renderExtraNode = (id: number): React.ReactElement => {
+    return (
+      <ConfirmationSheet
+        isVisible={isDeleteView}
+        onCloseSheet={(): void => setDeleteView(false)}
+        onPressDelete={(): void => onPressDelete(id)}
+      />
+    );
+  };
+
+  const renderMenu = (id: number): React.ReactElement => {
+    return (
+      <Menu
+        optionTitle={t('propertyPayment:modifySocietyBill')}
+        data={menu}
+        isShadowView
+        isExtraNode={isDeleteView}
+        onSelect={(value): void => handleMenuSelection(value, id)}
+        iconStyle={styles.icon}
+        extraNode={renderExtraNode(id)}
+      />
+    );
   };
 
   const renderItem = ({ item }: { item: IRoutes }): React.ReactElement => {
@@ -61,8 +154,8 @@ const PropertyServices = (): React.ReactElement => {
       pageTitle={t('paymentServices')}
       isGradient
       isBackgroundRequired
-      onBackPress={goBack}
-      loading={activeAssets}
+      onBackPress={handleGoBack}
+      loading={activeAssets || societyReminders}
       backgroundColor={theme.colors.background}
       headerStyle={styles.header}
     >
@@ -83,9 +176,13 @@ const PropertyServices = (): React.ReactElement => {
           />
         </View>
       </View>
-      <View style={styles.tabView}>
-        <FlatList data={PropertyPaymentRoutes} keyExtractor={keyExtractor} numColumns={3} renderItem={renderItem} />
-      </View>
+      {isReminderView ? (
+        <SocietyReminderList renderMenu={renderMenu} handlePayNow={handlePayNow} />
+      ) : (
+        <View style={styles.tabView}>
+          <FlatList data={PropertyPaymentRoutes} keyExtractor={keyExtractor} numColumns={3} renderItem={renderItem} />
+        </View>
+      )}
     </UserScreen>
   );
 };
@@ -112,5 +209,8 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: theme.colors.white,
+  },
+  icon: {
+    alignSelf: 'flex-start',
   },
 });

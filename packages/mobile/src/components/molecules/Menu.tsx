@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -25,10 +25,21 @@ interface IProps {
   isExtraNode?: boolean;
   isShadowView?: boolean;
   onPressIcon?: () => void;
+  iconStyle?: StyleProp<ViewStyle>;
 }
 
 const Menu = (props: IProps): React.ReactElement => {
-  const { data, onSelect, optionTitle, sheetHeight, extraNode, isExtraNode, onPressIcon, isShadowView = false } = props;
+  const {
+    data,
+    onSelect,
+    optionTitle,
+    sheetHeight,
+    extraNode,
+    isExtraNode,
+    onPressIcon,
+    isShadowView = false,
+    iconStyle,
+  } = props;
   const [isVisible, setIsVisible] = useState(false);
   const [isExtraData, setExtraData] = useState(false);
 
@@ -70,7 +81,7 @@ const Menu = (props: IProps): React.ReactElement => {
 
   return (
     <>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} style={iconStyle}>
         <Icon name={icons.verticalDots} color={theme.colors.primaryColor} size={18} />
       </TouchableOpacity>
       <BottomSheet

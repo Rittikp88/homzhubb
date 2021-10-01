@@ -3,6 +3,7 @@ import { ActionPayloadTypes, PropertyPaymentActionTypes } from '@homzhub/common/
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ISociety } from '@homzhub/common/src/domain/models/Society';
 import { ISocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
+import { ISocietyReminder } from '@homzhub/common/src/domain/models/SocietyReminder';
 import { IBankInfoPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
@@ -42,11 +43,13 @@ export const initialState: IPropertyPaymentState = {
   societyCharges: null,
   userInvoice: new InvoiceId(),
   paymentData: initialPaymentData,
+  societyReminders: null,
   loaders: {
     getSocieties: false,
     society: false,
     societyCharges: false,
     userInvoice: false,
+    societyReminders: false,
   },
 };
 
@@ -169,6 +172,22 @@ export const propertyPaymentReducer = (
       return {
         ...state,
         paymentData: initialPaymentData,
+      };
+    case PropertyPaymentActionTypes.GET.SOCIETY_REMINDERS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['societyReminders']: true },
+      };
+    case PropertyPaymentActionTypes.GET.SOCIETY_REMINDERS_SUCCESS:
+      return {
+        ...state,
+        societyReminders: action.payload as ISocietyReminder,
+        ['loaders']: { ...state.loaders, ['societyReminders']: false },
+      };
+    case PropertyPaymentActionTypes.GET.SOCIETY_REMINDERS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['societyReminders']: false },
       };
     case PropertyPaymentActionTypes.RESET_PAYMENT_STATE:
       return initialState;

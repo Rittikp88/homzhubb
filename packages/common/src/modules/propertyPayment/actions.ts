@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ISociety, Society } from '@homzhub/common/src/domain/models/Society';
 import { ISocietyCharge, SocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
+import { ISocietyReminder, SocietyReminder } from '@homzhub/common/src/domain/models/SocietyReminder';
 import {
   IAssetSocietyPayload,
   IBankInfoPayload,
@@ -14,7 +15,7 @@ import {
   IGetSocietyPayload,
   IInvoicePayload,
   IPaymentData,
-  ISocietyChargesPayload,
+  ISocietyDataPayload,
   ISocietyFormData,
   IUpdateSociety,
 } from '@homzhub/common/src/modules/propertyPayment/interfaces';
@@ -38,6 +39,9 @@ export const PropertyPaymentActionTypes = {
     SOCIETY_CHARGES: `${actionTypePrefix}SOCIETY_CHARGES`,
     SOCIETY_CHARGES_SUCCESS: `${actionTypePrefix}SOCIETY_CHARGES_SUCCESS`,
     SOCIETY_CHARGES_FAILURE: `${actionTypePrefix}SOCIETY_CHARGES_FAILURE`,
+    SOCIETY_REMINDERS: `${actionTypePrefix}SOCIETY_REMINDERS`,
+    SOCIETY_REMINDERS_SUCCESS: `${actionTypePrefix}SOCIETY_REMINDERS_SUCCESS`,
+    SOCIETY_REMINDERS_FAILURE: `${actionTypePrefix}SOCIETY_REMINDERS_FAILURE`,
   },
   POST: {
     SOCIETY: `${actionTypePrefix}SOCIETY`,
@@ -154,7 +158,7 @@ const addAssetSocietyFailure = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.POST.ASSET_SOCIETY_FAILURE,
 });
 
-const getSocietyCharges = (payload: ISocietyChargesPayload): IFluxStandardAction<ISocietyChargesPayload> => ({
+const getSocietyCharges = (payload: ISocietyDataPayload): IFluxStandardAction<ISocietyDataPayload> => ({
   type: PropertyPaymentActionTypes.GET.SOCIETY_CHARGES,
   payload,
 });
@@ -195,6 +199,20 @@ const resetPaymentState = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.RESET_PAYMENT_STATE,
 });
 
+const getSocietyReminders = (payload: ISocietyDataPayload): IFluxStandardAction<ISocietyDataPayload> => ({
+  type: PropertyPaymentActionTypes.GET.SOCIETY_REMINDERS,
+  payload,
+});
+
+const getSocietyRemindersSuccess = (payload: SocietyReminder): IFluxStandardAction<ISocietyReminder> => ({
+  type: PropertyPaymentActionTypes.GET.SOCIETY_REMINDERS_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getSocietyRemindersFailure = (): IFluxStandardAction => ({
+  type: PropertyPaymentActionTypes.GET.SOCIETY_REMINDERS_FAILURE,
+});
+
 export type ActionPayloadTypes =
   | number
   | ISocietyParam
@@ -211,7 +229,8 @@ export type ActionPayloadTypes =
   | IInvoicePayload
   | InvoiceId
   | IPaymentData
-  | ISocietyChargesPayload;
+  | ISocietyDataPayload
+  | ISocietyReminder;
 
 export const PropertyPaymentActions = {
   setAssetId,
@@ -244,4 +263,7 @@ export const PropertyPaymentActions = {
   setPaymentData,
   clearPaymentData,
   resetPaymentState,
+  getSocietyReminders,
+  getSocietyRemindersSuccess,
+  getSocietyRemindersFailure,
 };

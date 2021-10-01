@@ -1,6 +1,7 @@
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { ISociety } from '@homzhub/common/src/domain/models/Society';
 import { ISocietyCharge } from '@homzhub/common/src/domain/models/SocietyCharge';
+import { ISocietyReminder } from '@homzhub/common/src/domain/models/SocietyReminder';
 import {
   IBankInfoPayload,
   IInvoiceSummaryPayload,
@@ -19,11 +20,13 @@ export interface IPropertyPaymentState {
   societyCharges: ISocietyCharge | null;
   userInvoice: InvoiceId;
   paymentData: IPaymentData;
+  societyReminders: ISocietyReminder | null;
   loaders: {
     getSocieties: boolean;
     society: boolean;
     societyCharges: boolean;
     userInvoice: boolean;
+    societyReminders: boolean;
   };
 }
 
@@ -64,7 +67,7 @@ export interface IInvoicePayload {
   onCallback?: (status: boolean) => void;
 }
 
-export interface ISocietyChargesPayload {
+export interface ISocietyDataPayload {
   id: number;
   onCallback?: (status: boolean, data?: number) => void;
 }

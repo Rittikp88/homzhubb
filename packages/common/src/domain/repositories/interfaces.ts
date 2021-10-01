@@ -1150,6 +1150,7 @@ export interface ISocietyInvoicePayload {
   paid_by: number;
   is_notify_me_enabled: boolean;
   payment_schedule_date: string;
+  reminder?: number;
 }
 
 export interface IInvoiceSummaryPayload extends IPayloadWithAction {
