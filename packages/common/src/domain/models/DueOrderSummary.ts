@@ -30,6 +30,8 @@ export interface IDueOrderSummary {
   asset: IAsset | null;
   total_discount: number | null;
   taxes: ITax[];
+  is_coins_allowed?: boolean;
+  is_promo_code_allowed?: boolean;
 }
 
 // Todo : see if we can club this with OrderSummary and make it generalised
@@ -89,6 +91,12 @@ export class DueOrderSummary {
 
   @JsonProperty('order', Payment, true)
   private _order = null;
+
+  @JsonProperty('is_coins_allowed', Boolean, true)
+  private _isCoinsAllowed = false;
+
+  @JsonProperty('is_promo_code_allowed', Boolean, true)
+  private _isPromoCodeAllowed = false;
 
   get id(): number {
     return this._id;
@@ -248,5 +256,13 @@ export class DueOrderSummary {
     );
     // @ts-ignore
     return flags[dueCurrency?.iso2Code ?? ''];
+  }
+
+  get isCoinsAllowed(): boolean {
+    return this._isCoinsAllowed;
+  }
+
+  get isPromoCodeAllowed(): boolean {
+    return this._isPromoCodeAllowed;
   }
 }

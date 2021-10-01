@@ -240,28 +240,32 @@ const ServiceOrderSummary = ({ invoiceId, onSuccess, isLabelRequired = false }: 
         />
         {orderSummary && <InvoiceSummary summary={orderSummary} />}
       </View>
-      <HomzhubCoins
-        onToggle={onToggleCoins}
-        disabled={isPromoSelected || Boolean(coins && coins.currentBalance <= 0)}
-        selected={areCoinsApplied}
-        coins={coins ?? new Coins()}
-        hasBalanceInNewLine
-        containerStyle={styles.coinsContainer}
-        showCoinCount={Boolean(coins && coins.currentBalance > 0)}
-      />
-      <View style={styles.containerPadding}>
-        <PromoCode
-          type="regular"
-          onApplyPromo={onApplyPromo}
-          isPromoApplied={isPromoApplied}
-          isError={isPromoFailed}
-          onClear={onClearPromo}
-          hasToggleButton
-          isToggleButtonSelected={isPromoSelected}
-          onToggle={onTogglePromoCode}
-          containerStyles={styles.promoContainer}
-          isToggleButtonDisabled={areCoinsApplied}
+      {orderSummary.isCoinsAllowed && (
+        <HomzhubCoins
+          onToggle={onToggleCoins}
+          disabled={isPromoSelected || Boolean(coins && coins.currentBalance <= 0)}
+          selected={areCoinsApplied}
+          coins={coins ?? new Coins()}
+          hasBalanceInNewLine
+          containerStyle={styles.coinsContainer}
+          showCoinCount={Boolean(coins && coins.currentBalance > 0)}
         />
+      )}
+      <View style={styles.containerPadding}>
+        {orderSummary.isPromoCodeAllowed && (
+          <PromoCode
+            type="regular"
+            onApplyPromo={onApplyPromo}
+            isPromoApplied={isPromoApplied}
+            isError={isPromoFailed}
+            onClear={onClearPromo}
+            hasToggleButton
+            isToggleButtonSelected={isPromoSelected}
+            onToggle={onTogglePromoCode}
+            containerStyles={styles.promoContainer}
+            isToggleButtonDisabled={areCoinsApplied}
+          />
+        )}
         <OrderSummary
           summaryList={dueOrderSummaryList}
           amountPayableText={totalPricePayableFormatted}
