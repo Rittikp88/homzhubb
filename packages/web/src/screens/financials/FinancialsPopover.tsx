@@ -4,6 +4,7 @@ import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
@@ -94,7 +95,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
   const renderActionsPopover = (): React.ReactNode | null => {
     switch (financialsActionType) {
       case FinancialsActions.AddReminder:
-        return <ReminderForm onSubmit={onSubmitReminder} />;
+        return <ReminderForm onSubmit={onSubmitReminder} onAddSociety={FunctionUtils.noop} />;
       case FinancialsActions.AddRecord:
         return (
           <AddRecordForm
