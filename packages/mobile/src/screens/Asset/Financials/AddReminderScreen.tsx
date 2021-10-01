@@ -8,6 +8,7 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
+import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
@@ -21,6 +22,7 @@ const AddReminderScreen = (): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loaders = useSelector(FinancialSelectors.getFinancialLoaders);
+  const { societyCharges } = useSelector(PropertyPaymentSelector.getPropertyPaymentLoaders);
   const [isLoading, setLoading] = useState(false);
   const [isSheetVisible, setSheetVisibility] = useState(false);
   const [showDeleteIcon, setShowDeleteIcon] = useState(false);
@@ -48,6 +50,10 @@ const AddReminderScreen = (): React.ReactElement => {
     navigate(ScreensKeys.AddBankAccount, { id });
   };
 
+  const onAddSociety = (): void => {
+    navigate(ScreensKeys.SocietyController, { fromReminder: true });
+  };
+
   const onSubmitSuccess = (isEdit: boolean): void => {
     goBack();
     if (!isEdit) {
@@ -61,7 +67,7 @@ const AddReminderScreen = (): React.ReactElement => {
     <>
       <Screen
         backgroundColor={theme.colors.white}
-        isLoading={loaders.reminder || isLoading}
+        isLoading={loaders.reminder || isLoading || societyCharges}
         keyboardShouldPersistTaps
         headerProps={{
           title: param?.isEdit ? t('assetFinancial:editReminder') : t('assetFinancial:addReminders'),
@@ -75,6 +81,7 @@ const AddReminderScreen = (): React.ReactElement => {
           isEdit={param?.isEdit ?? false}
           isFromDues={param?.isFromDues ?? false}
           setLoading={setLoading}
+          onAddSociety={onAddSociety}
           onAddAccount={handleAddAccount}
           setShowDeleteIcon={setShowDeleteIcon}
         />

@@ -1,4 +1,5 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { IMaintenance, Maintenance } from '@homzhub/common/src/domain/models/Maintenance';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 
@@ -21,5 +22,14 @@ export class SocietyCharge {
 
   get users(): User[] {
     return this._users;
+  }
+
+  get userDropdownData(): IDropdownOption[] {
+    return this.users.map((item) => {
+      return {
+        label: item.name,
+        value: item.id,
+      };
+    });
   }
 }

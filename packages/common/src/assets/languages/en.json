@@ -323,7 +323,8 @@
     "responseSubmitSuccess": "Response submitted successfully",
     "contactNumber": "Contact Number",
     "repeat": "Repeat",
-    "amountMsg": "Amount must be greater than zero"
+    "amountMsg": "Amount must be greater than zero",
+    "addNew": "+ Add New"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -738,7 +739,8 @@
     "societyContact": "Society Contact",
     "projects": "Projects",
     "belongToProject": "Does your property belong to one of these projects?",
-    "propertyNotInProject": "Property not in above projects? Continue"
+    "propertyNotInProject": "Property not in above projects? Continue",
+    "selectPayee": "Select Payee"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -1567,6 +1569,8 @@
     "remindMeOnce": "Remind me once",
     "recurringReminder": "Recurring Reminder",
     "selectFrequency": "Select Frequency",
-    "remindMeOn": "Remind me on"
+    "remindMeOn": "Remind me on",
+    "addSocietyLabel": "Add Society",
+    "society": "Society"
   }
 }

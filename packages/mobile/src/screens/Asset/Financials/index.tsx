@@ -7,15 +7,16 @@ import { uniqBy } from 'lodash';
 import { SvgProps } from 'react-native-svg';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Accounting from '@homzhub/common/src/assets/images/accounting.svg';
 import Bank from '@homzhub/common/src/assets/images/bank.svg';
 import Payment from '@homzhub/common/src/assets/images/payment.svg';
-import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
-import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
-import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { AssetMetricsList, IMetricsData } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
@@ -25,7 +26,6 @@ import DuesContainer from '@homzhub/mobile/src/components/organisms/DuesContaine
 import RemindersContainer from '@homzhub/mobile/src/components/organisms/RemindersContainer';
 import TransactionsContainer from '@homzhub/mobile/src/components/organisms/TransactionsContainer';
 import { FinancialsNavigatorParamList } from '@homzhub/mobile/src/navigation/FinancialStack';
-import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { GeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
@@ -33,6 +33,7 @@ import { User } from '@homzhub/common/src/domain/models/User';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IFinancialState, ILedgerMetrics } from '@homzhub/common/src/modules/financials/interfaces';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IOwnState {
   isLoading: boolean;
@@ -59,6 +60,7 @@ interface IDispatchProps {
   setCurrentReminderId: (id: number) => void;
   getAssetUsersSuccess: (payload: User[]) => void;
   clearReminderFormData: () => void;
+  resetPaymentState: () => void;
 }
 
 type libraryProps = NavigationScreenProps<FinancialsNavigatorParamList, ScreensKeys.FinancialsLandingScreen>;
@@ -81,6 +83,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       setCurrentReminderId,
       getAssetUsersSuccess,
       clearReminderFormData,
+      resetPaymentState,
     } = this.props;
 
     this.onFocusSubscription = navigation.addListener('focus', (): void => {
@@ -90,6 +93,7 @@ export class Financials extends React.PureComponent<Props, IOwnState> {
       setCurrentReminderId(-1);
       getAssetUsersSuccess([]);
       clearReminderFormData();
+      resetPaymentState();
     });
   }
 
@@ -300,6 +304,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     clearReminderFormData,
   } = FinancialActions;
   const { getAssetUsersSuccess } = AssetActions;
+  const { resetPaymentState } = PropertyPaymentActions;
   return bindActionCreators(
     {
       getLedgers,
@@ -312,6 +317,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setCurrentReminderId,
       getAssetUsersSuccess,
       clearReminderFormData,
+      resetPaymentState,
     },
     dispatch
   );

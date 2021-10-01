@@ -47,6 +47,9 @@ export const initialFinancialsState: IFinancialState = {
     bankAccount: -1,
     owner: -1,
     tenant: -1,
+    society: -1,
+    paidBy: -1,
+    maintenanceAmount: '',
   },
   loaders: {
     transactions: false,

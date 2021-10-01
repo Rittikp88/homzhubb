@@ -14,6 +14,7 @@ import {
   IGetSocietyPayload,
   IInvoicePayload,
   IPaymentData,
+  ISocietyChargesPayload,
   ISocietyFormData,
   IUpdateSociety,
 } from '@homzhub/common/src/modules/propertyPayment/interfaces';
@@ -55,6 +56,7 @@ export const PropertyPaymentActionTypes = {
   CLEAR_SOCIETY_FORM_DATA: `${actionTypePrefix}CLEAR_SOCIETY_FORM_DATA`,
   CLEAR_SOCIETY_DETAIL: `${actionTypePrefix}CLEAR_SOCIETY_DETAIL`,
   CLEAR_PAYMENT_DATA: `${actionTypePrefix}CLEAR_PAYMENT_DATA`,
+  RESET_PAYMENT_STATE: `${actionTypePrefix}REST_PAYMENT_STATE`,
 };
 
 const setAssetId = (assetId: number): IFluxStandardAction<number> => ({
@@ -152,7 +154,7 @@ const addAssetSocietyFailure = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.POST.ASSET_SOCIETY_FAILURE,
 });
 
-const getSocietyCharges = (payload: number): IFluxStandardAction<number> => ({
+const getSocietyCharges = (payload: ISocietyChargesPayload): IFluxStandardAction<ISocietyChargesPayload> => ({
   type: PropertyPaymentActionTypes.GET.SOCIETY_CHARGES,
   payload,
 });
@@ -189,6 +191,10 @@ const clearPaymentData = (): IFluxStandardAction => ({
   type: PropertyPaymentActionTypes.CLEAR_PAYMENT_DATA,
 });
 
+const resetPaymentState = (): IFluxStandardAction => ({
+  type: PropertyPaymentActionTypes.RESET_PAYMENT_STATE,
+});
+
 export type ActionPayloadTypes =
   | number
   | ISocietyParam
@@ -204,7 +210,8 @@ export type ActionPayloadTypes =
   | ISocietyCharge
   | IInvoicePayload
   | InvoiceId
-  | IPaymentData;
+  | IPaymentData
+  | ISocietyChargesPayload;
 
 export const PropertyPaymentActions = {
   setAssetId,
@@ -236,4 +243,5 @@ export const PropertyPaymentActions = {
   getUserInvoiceFailure,
   setPaymentData,
   clearPaymentData,
+  resetPaymentState,
 };

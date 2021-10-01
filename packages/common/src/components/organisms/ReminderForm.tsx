@@ -13,9 +13,11 @@ import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRe
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
+import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
+import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -40,6 +42,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IOwnProp {
   onSubmit: (isEdit: boolean) => void;
+  onAddSociety: () => void;
   onAddAccount?: (id?: number) => void;
   isEdit?: boolean;
   isFromDues?: boolean;
@@ -48,14 +51,24 @@ interface IOwnProp {
 }
 
 const ReminderForm = (props: IOwnProp): React.ReactElement => {
-  const { onSubmit, isEdit = false, setLoading, isFromDues = false, onAddAccount, setShowDeleteIcon } = props;
+  const {
+    onSubmit,
+    isEdit = false,
+    setLoading,
+    isFromDues = false,
+    onAddAccount,
+    setShowDeleteIcon,
+    onAddSociety,
+  } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetFinancial);
   const assets = useSelector(FinancialSelectors.getReminderAssets);
   const categories = useSelector(FinancialSelectors.getCategoriesDropdown);
   const frequencies = useSelector(FinancialSelectors.getFrequenciesDropdown);
   const selectedReminderId = useSelector(FinancialSelectors.getCurrentReminderId);
+  const societyCharges = useSelector(PropertyPaymentSelector.getSocietyCharges);
   const reminderFormData = useSelector(FinancialSelectors.getReminderFormData);
+  const userData = useSelector(UserSelector.getUserProfile);
   const selectedDue = useSelector(FinancialSelectors.getCurrentDue);
   const assetUsers = useSelector(AssetSelectors.getAssetUser);
   const emails = useSelector(AssetSelectors.getAssetUserEmails);
@@ -142,6 +155,8 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
             ...(res.receiverUser && { owner: res.receiverUser.id }),
             ...(res.payerUser && { tenant: res.payerUser.id }),
             ...(res.userBankInfo && { bankAccount: res.userBankInfo.id }),
+            ...(res.amount && { maintenanceAmount: res.amount.toString() }),
+            ...(res.payerUser && { paidBy: res.payerUser.id }),
           };
 
           dispatch(FinancialActions.setReminderFormData(payload));
@@ -198,6 +213,19 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     category: number,
     formProp?: FormikProps<FormikValues>
   ): Promise<void> => {
+    if (category === 3) {
+      dispatch(PropertyPaymentActions.setAssetId(Number(value)));
+      dispatch(
+        PropertyPaymentActions.getSocietyCharges({
+          id: Number(value),
+          onCallback: (status, data): void => onCallback(status, data, formProp),
+        })
+      );
+      if (formProp) {
+        formProp.setFieldValue('paidBy', -1);
+      }
+      return;
+    }
     try {
       const list = await AssetRepository.getOnGoingTransaction(Number(value));
       setUnitList(list);
@@ -234,6 +262,16 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
       if (Number(value) === 1) {
         formProps.setFieldValue('frequency', 1);
       }
+    }
+
+    if (Number(value) === 3) {
+      dispatch(AssetActions.getActiveAssets());
+    }
+  };
+
+  const onCallback = (status: boolean, data?: number, formProps?: FormikProps<FormikValues>): void => {
+    if (status && formProps && data !== undefined) {
+      formProps.setFieldValue('maintenanceAmount', data.toString());
     }
   };
 
@@ -294,11 +332,18 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
 
   const getButtonVisibility = (formProps: FormikProps<any>): boolean => {
     const {
-      values: { category, title, frequency, bankAccount, owner, tenant },
+      values: { category, title, frequency, bankAccount, owner, tenant, maintenanceAmount, property, paidBy },
     } = formProps;
     const check = !!title && Number(category) > 0 && Number(frequency) > 0 && !emailError && !isEmailError;
+    const selectedAsset = assets.filter((item) => item.id === Number(property))[0];
+    const user = societyCharges?.users.find((item) => item.id === userData.id && !item.isAssetOwner);
+
     if (category === 1) {
       return check && bankAccount > 0 && owner > 0 && tenant > 0 && canEdit;
+    }
+
+    if (category === 3) {
+      return check && Number(maintenanceAmount) > 0 && !!selectedAsset?.society && (!!user?.id || Number(paidBy) > 0);
     }
 
     return check;
@@ -311,8 +356,24 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   };
 
   const handleSubmit = (values: IReminderFormData): void => {
-    const { title, category, date, frequency, property, leaseUnit, owner, tenant, rent, bankAccount } = values;
+    const {
+      title,
+      category,
+      date,
+      frequency,
+      property,
+      leaseUnit,
+      owner,
+      tenant,
+      rent,
+      bankAccount,
+      maintenanceAmount,
+      paidBy,
+    } = values;
     const isRent = category === 1;
+    const isMaintenance = category === 3;
+    const selectedAsset = assets.find((item) => item.id === Number(property));
+    const user = societyCharges?.users.find((item) => item.id === userData.id && !item.isAssetOwner);
     const reminderPayload: IReminderPayload = {
       title,
       reminder_category: category,
@@ -327,6 +388,10 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
       ...(isRent && { user_bank_info: bankAccount }),
       ...(isRent && { amount: Number(rent) }),
       ...(isRent && { currency }),
+      ...(isMaintenance && selectedAsset && { society: selectedAsset.society?.id }),
+      ...(isMaintenance && { amount: Number(maintenanceAmount) }),
+      ...(isMaintenance && { payer_user: user?.id ?? paidBy }),
+      ...(isMaintenance && societyCharges && { currency: societyCharges.maintenance.currency.currencyCode }),
     };
     const finalPayload = {
       ...(isEdit && { id: selectedReminderId }),
@@ -363,6 +428,102 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     );
   };
 
+  const renderRentFields = (formProps: FormikProps<FormikValues>): React.ReactElement => {
+    return (
+      <>
+        <FormDropdown
+          name="leaseUnit"
+          label={t('leaseUnit')}
+          placeholder={t('selectLeaseUnit')}
+          options={getUnitList()}
+          formProps={formProps}
+          onChange={onChangeUnit}
+          isDisabled={getUnitList().length < 1 || !canEdit}
+          dropdownContainerStyle={styles.field}
+        />
+        <FormDropdown
+          name="owner"
+          label={t('property:owner')}
+          placeholder={t('property:selectOwner')}
+          options={assetUsers?.owners ?? []}
+          formProps={formProps}
+          isDisabled={Number(formProps.values.leaseUnit) < 1 || !canEdit}
+          dropdownContainerStyle={styles.field}
+          listHeight={300}
+          onChange={onChangeOwner}
+        />
+        <FormDropdown
+          name="tenant"
+          label={t('property:tenant')}
+          placeholder={t('property:selectTenant')}
+          options={assetUsers?.tenants ?? []}
+          formProps={formProps}
+          isDisabled={Number(formProps.values.leaseUnit) < 1 || !canEdit || !assetUsers?.tenants.length}
+          dropdownContainerStyle={styles.field}
+          listHeight={300}
+        />
+        <FormTextInput
+          name="rent"
+          inputType="decimal"
+          label={t('property:rent')}
+          formProps={formProps}
+          placeholder={t('property:enterRentAmount')}
+          editable={canEdit}
+        />
+        <TransactionField
+          name="bankAccount"
+          label={t('bankAccount')}
+          placeholder={t('selectAccount')}
+          rightNode={renderRightNode(formProps.values.owner)}
+          formProps={formProps}
+          isDisabled={!canEdit || bankInfo.length < 1}
+          options={bankInfo.filter((item) => item.isActive).map((item) => item.bankDetail)}
+        />
+      </>
+    );
+  };
+
+  const renderMaintenanceFields = (formProps: FormikProps<FormikValues>): React.ReactElement => {
+    const selectedAsset = assets.find((item) => item.id === Number(formProps.values.property));
+    const isAddNew = !selectedAsset?.society && Number(formProps.values.property) > 0;
+    const user = societyCharges?.users.find((item) => item.id === userData.id && !item.isAssetOwner);
+    return (
+      <>
+        <FormTextInput
+          formProps={formProps}
+          label={t('propertyPayment:society')}
+          inputType="default"
+          name="society"
+          placeholder={t('propertyPayment:addSocietyLabel')}
+          value={selectedAsset?.society?.name}
+          editable={false}
+          optionalText={isAddNew ? t('common:addNew') : undefined}
+          onPressOptional={onAddSociety}
+          optionalStyle={styles.rightText}
+        />
+        <FormTextInput
+          formProps={formProps}
+          label={t('property:maintenanceAmount')}
+          placeholder={t('property:maintenanceAmount')}
+          inputType="number"
+          name="maintenanceAmount"
+          editable={canEdit}
+        />
+        <FormDropdown
+          name="paidBy"
+          label={t('propertyPayment:paidBy')}
+          placeholder={t('property:selectPayee')}
+          options={societyCharges?.userDropdownData ?? []}
+          formProps={formProps}
+          dropdownContainerStyle={styles.field}
+          listHeight={300}
+          selectedValue={user?.id}
+          isDisabled={!canEdit || !!user}
+        />
+      </>
+    );
+  };
+
   return (
     <Formik
       initialValues={{ ...reminderFormData }}
@@ -370,7 +531,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
       validate={FormUtils.validate(formSchema)}
       enableReinitialize
     >
-      {(formProps): React.ReactNode => {
+      {(formProps: FormikProps<FormikValues>): React.ReactNode => {
         const { category } = formProps.values;
         const isRented = Number(formProps.values.category) === 1;
         return (
@@ -390,7 +551,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
               options={categories}
               onChange={onChangeCategory}
               formProps={formProps}
-              listHeight={250}
+              listHeight={350}
               isDisabled={isEdit || !canEdit}
               dropdownContainerStyle={styles.field}
             />
@@ -404,58 +565,8 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
               isDisabled={getPropertyList(isRented).length < 1 || isEdit || !canEdit}
               dropdownContainerStyle={styles.field}
             />
-            {Number(formProps.values.category) === 1 && ( // For RENT category only
-              <>
-                <FormDropdown
-                  name="leaseUnit"
-                  label={t('leaseUnit')}
-                  placeholder={t('selectLeaseUnit')}
-                  options={getUnitList()}
-                  formProps={formProps}
-                  onChange={onChangeUnit}
-                  isDisabled={getUnitList().length < 1 || !canEdit}
-                  dropdownContainerStyle={styles.field}
-                />
-                <FormDropdown
-                  name="owner"
-                  label={t('property:owner')}
-                  placeholder={t('property:selectOwner')}
-                  options={assetUsers?.owners ?? []}
-                  formProps={formProps}
-                  isDisabled={Number(formProps.values.leaseUnit) < 1 || !canEdit}
-                  dropdownContainerStyle={styles.field}
-                  listHeight={300}
-                  onChange={onChangeOwner}
-                />
-                <FormDropdown
-                  name="tenant"
-                  label={t('property:tenant')}
-                  placeholder={t('property:selectTenant')}
-                  options={assetUsers?.tenants ?? []}
-                  formProps={formProps}
-                  isDisabled={Number(formProps.values.leaseUnit) < 1 || !canEdit || !assetUsers?.tenants.length}
-                  dropdownContainerStyle={styles.field}
-                  listHeight={300}
-                />
-                <FormTextInput
-                  name="rent"
-                  inputType="decimal"
-                  label={t('property:rent')}
-                  formProps={formProps}
-                  placeholder={t('property:enterRentAmount')}
-                  editable={canEdit}
-                />
-                <TransactionField
-                  name="bankAccount"
-                  label={t('bankAccount')}
-                  placeholder={t('selectAccount')}
-                  rightNode={renderRightNode(formProps.values.owner)}
-                  formProps={formProps}
-                  isDisabled={!canEdit || bankInfo.length < 1}
-                  options={bankInfo.filter((item) => item.isActive).map((item) => item.bankDetail)}
-                />
-              </>
-            )}
+            {Number(formProps.values.category) === 1 && renderRentFields(formProps)}
+            {Number(formProps.values.category) === 3 && renderMaintenanceFields(formProps)}
             <FormCalendar
               formProps={formProps}
               name="date"
@@ -496,7 +607,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
               onPress={formProps.handleSubmit}
               formProps={formProps}
               type="primary"
-              disabled={!getButtonVisibility(formProps)}
+              disabled={!getButtonVisibility(formProps) || (isEdit && !canEdit)}
               title={t('common:addNow')}
               containerStyle={styles.button}
             />

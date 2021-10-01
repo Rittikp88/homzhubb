@@ -74,6 +74,9 @@ export interface IReminderFormData {
   bankAccount?: number;
   owner?: number;
   tenant?: number;
+  society?: number;
+  paidBy?: number;
+  maintenanceAmount?: string;
 }
 
 export interface IOrderSummaryPayload {

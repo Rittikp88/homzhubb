@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import StepIndicator from 'react-native-step-indicator';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
@@ -30,6 +31,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 const SocietyController = (): React.ReactElement => {
   const { goBack, navigate } = useNavigation();
   const dispatch = useDispatch();
+  const { params } = useRoute();
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
   const { getSocieties, society, societyCharges, userInvoice } = useSelector(
     PropertyPaymentSelector.getPropertyPaymentLoaders
@@ -89,10 +91,16 @@ const SocietyController = (): React.ReactElement => {
   };
 
   const onProceedCallback = (): void => {
-    // Skip 2nd step in case of existing societies
-    if (flags.isEditSociety) {
+    // @ts-ignore
+    if (params && params.fromReminder) {
+      dispatch(PropertyPaymentActions.getSocietiesSuccess([]));
+      dispatch(FinancialActions.getReminderAssets());
+      updateReduxState();
+      goBack();
+    } else if (flags.isEditSociety) {
       setCurrentStep(0);
     } else {
+      // Skip 2nd step in case of existing societies
       setCurrentStep(currentStep < 1 ? currentStep + 2 : currentStep + 1);
       onUpdateState();
     }

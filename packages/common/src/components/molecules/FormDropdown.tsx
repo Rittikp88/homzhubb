@@ -17,6 +17,7 @@ export interface IFormDropdownProps {
   options: IDropdownOption[];
   placeholder?: string;
   label?: string;
+  selectedValue?: number | string;
   listTitle?: string;
   listHeight?: number;
   formProps: FormikProps<any>;
@@ -50,6 +51,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
       textType = 'label',
       textSize = 'regular',
       fontType = 'regular',
+      selectedValue,
     } = this.props;
     const { values, errors, touched, setFieldValue, setFieldTouched } = formProps;
 
@@ -92,7 +94,7 @@ export class FormDropdown extends PureComponent<IFormDropdownProps> {
           data={options}
           listTitle={listTitle}
           listHeight={listHeight}
-          value={values[name]}
+          value={selectedValue ?? values[name]}
           onDonePress={onSelect}
           disable={isDisabled}
           placeholder={placeholder}

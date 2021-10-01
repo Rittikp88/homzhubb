@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
@@ -84,7 +84,7 @@ const Menu = (props: IProps): React.ReactElement => {
         }}
       >
         <>
-          {data.map((item, index) => renderMenuItem(item, index))}
+          <View style={styles.listContainer}>{data.map((item, index) => renderMenuItem(item, index))}</View>
           {isExtraData && extraNode}
         </>
       </BottomSheet>
@@ -102,12 +102,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   disableStyle: {
-    opacity: 0.5,
+    opacity: 0.6,
   },
   label: {
     color: theme.colors.darkTint3,
   },
   iconStyle: {
     marginRight: 6,
+  },
+  listContainer: {
+    marginVertical: 10,
   },
 });

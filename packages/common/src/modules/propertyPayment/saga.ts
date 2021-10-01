@@ -21,6 +21,7 @@ import {
   ICreateSociety,
   IGetSocietyPayload,
   IInvoicePayload,
+  ISocietyChargesPayload,
   IUpdateSociety,
 } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 import { MenuEnum } from '@homzhub/common/src/constants/Society';
@@ -133,11 +134,22 @@ export function* addAssetSociety(action: IFluxStandardAction<IAssetSocietyPayloa
   }
 }
 
-export function* getSocietyCharges(action: IFluxStandardAction<number>): VoidGenerator {
+export function* getSocietyCharges(action: IFluxStandardAction<ISocietyChargesPayload>): VoidGenerator {
+  if (!action.payload) return;
+  const { id, onCallback } = action.payload;
   try {
-    const response = yield call(PropertyRepository.getSocietyCharges, action.payload as number);
+    const response = yield call(PropertyRepository.getSocietyCharges, id);
     yield put(PropertyPaymentActions.getSocietyChargesSuccess(response as SocietyCharge));
+    if (onCallback && response) {
+      const data = response as SocietyCharge;
+      if (data.maintenance.amount) {
+        onCallback(true, data.maintenance.amount);
+      }
+    }
   } catch (e) {
+    if (onCallback) {
+      onCallback(false);
+    }
     yield put(PropertyPaymentActions.getSocietyChargesFailure());
     AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
   }

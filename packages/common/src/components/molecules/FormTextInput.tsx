@@ -75,6 +75,8 @@ export interface IFormTextInputProps extends TextInputProps {
   secondaryLabel?: React.ReactNode;
   fontWeightType?: FontWeightType;
   optionalText?: string;
+  onPressOptional?: () => void;
+  optionalStyle?: StyleProp<TextStyle>;
 }
 
 interface IFormTextInputState {
@@ -134,6 +136,8 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       fontWeightType,
       optionalText,
       labelTextType = 'regular',
+      onPressOptional,
+      optionalStyle,
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
@@ -280,9 +284,11 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
                   {isMandatory && <Text style={styles.asterix}> *</Text>}
                 </Label>
                 {!!optionalText && (
-                  <Label type="regular" style={labelStyles}>
-                    {optionalText}
-                  </Label>
+                  <TouchableOpacity onPress={onPressOptional} disabled={!onPressOptional}>
+                    <Label type="regular" style={[labelStyles, optionalStyle]}>
+                      {optionalText}
+                    </Label>
+                  </TouchableOpacity>
                 )}
               </View>
             )}

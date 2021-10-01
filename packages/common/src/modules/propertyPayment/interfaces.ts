@@ -63,3 +63,8 @@ export interface IInvoicePayload {
   data: IInvoiceSummaryPayload;
   onCallback?: (status: boolean) => void;
 }
+
+export interface ISocietyChargesPayload {
+  id: number;
+  onCallback?: (status: boolean, data?: number) => void;
+}

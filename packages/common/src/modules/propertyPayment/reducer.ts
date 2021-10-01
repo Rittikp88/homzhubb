@@ -170,6 +170,8 @@ export const propertyPaymentReducer = (
         ...state,
         paymentData: initialPaymentData,
       };
+    case PropertyPaymentActionTypes.RESET_PAYMENT_STATE:
+      return initialState;
     default:
       return state;
   }
