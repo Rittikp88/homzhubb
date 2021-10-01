@@ -109,9 +109,10 @@ const PropertySearchCard = (props: IProps): React.ReactElement => {
         AnalyticsService.track(EventType.ClickSimilarProperty, data);
       }
     }
+    const assetTransactionType = leaseTerm ? 0 : 1;
     NavigationService.navigate(history, {
-      path: RouteNames.protectedRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
-      params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0, isLease: !!leaseTerm },
+      path: RouteNames.publicRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
+      params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0, assetTransactionType },
     });
   };
   return (

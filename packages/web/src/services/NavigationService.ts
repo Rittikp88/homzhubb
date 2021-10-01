@@ -106,16 +106,35 @@ class NavigationService<T extends History> {
       return;
     }
 
-    // // Otherwise redirect user to the signup screen which has login option too
+    // Handle dynamic routes inside the below if statement
+    if (userData && routeType === RouteTypes.Public) {
+      const redirectionDetails = { dynamicLinks: { routeType: '', type: '', params: {} }, shouldRedirect: false };
+      store.dispatch(CommonActions.setRedirectionDetails(redirectionDetails));
+      this.handlePublicProtectedRoutes(dynamicLinkParams);
+      return;
+    }
+
+    // // Otherwise redirect user to the authentication screen which has login option too
     if (!userData && dynamicLinkParams) {
       const redirectionDetails = { dynamicLinks: dynamicLinkParams, shouldRedirect: true };
       store.dispatch(CommonActions.setRedirectionDetails(redirectionDetails));
-      this.navigate(this.history, { path: RouteNames.publicRoutes.SIGNUP });
+      this.navigate(this.history, { path: RouteNames.publicRoutes.LOGIN });
     }
   };
 
   public handlePublicRoutes = (dynamicLinkParams: IDynamicLinkParams): void => {
-    this.navigate(this.history, { path: RouteNames.publicRoutes.LOGIN });
+    const { type, params } = dynamicLinkParams;
+    const { asset_name: projectName, asset_transaction_type: assetTransactionType, propertyTermId } = params;
+    switch (type) {
+      case DynamicLinkTypes.AssetDescription:
+        this.navigate(this.history, {
+          path: RouteNames.publicRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
+          params: { listingId: propertyTermId, assetTransactionType },
+        });
+        break;
+      default:
+        this.navigate(this.history, { path: RouteNames.publicRoutes.LOGIN });
+    }
   };
 
   public handlePrivateRoutes = (dynamicLinkParams: IDynamicLinkParams): void => {
@@ -126,6 +145,26 @@ class NavigationService<T extends History> {
         this.navigate(this.history, {
           path: RouteNames.protectedRoutes.PROFILE,
           params: { ...dynamicLinkParams.params },
+        });
+        break;
+      default:
+        this.navigate(this.history, { path: RouteNames.protectedRoutes.DASHBOARD });
+    }
+  };
+
+  public handlePublicProtectedRoutes = (dynamicLinkParams: IDynamicLinkParams): void => {
+    const { type, params } = dynamicLinkParams;
+    const {
+      asset_name: projectName,
+      asset_transaction_type: assetTransactionType,
+      propertyTermId,
+      popupInitType,
+    } = params;
+    switch (type) {
+      case DynamicLinkTypes.AssetDescription:
+        this.navigate(this.history, {
+          path: RouteNames.publicRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
+          params: { listingId: propertyTermId, assetTransactionType, popupInitType },
         });
         break;
       default:

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,7 @@ import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
@@ -36,6 +38,7 @@ interface IProps {
 
 const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
   const { asset, userData, popupRef, propertyLeaseType, changePopUpStatus } = props;
+  const isAuthenticated = useSelector(UserSelector.isLoggedIn);
   const history = useHistory();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
   const isTablet = useDown(deviceBreakpoint.TABLET);
@@ -47,25 +50,28 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
     changePopUpStatus(renderPopUpTypes.editOffer);
   };
 
-  useEffect(() => {
-    let param: IOfferManagementParam;
-    if (asset) {
-      param = {
-        ...(asset.leaseTerm && { lease_listing_id: asset.leaseTerm.id }),
-        ...(asset.saleTerm && { sale_listing_id: asset.saleTerm.id }),
-      };
-    }
-    const getOfferCount = async (): Promise<void> => {
-      try {
-        const {
-          offerLeft: { sale, lease },
-        } = await OffersRepository.getOfferData(param);
-        setCount(isRentFlow ? lease : sale);
-      } catch (err) {
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.detail), statusCode: err.details.statusCode });
-      }
+  let param: IOfferManagementParam;
+  if (asset) {
+    param = {
+      ...(asset.leaseTerm && { lease_listing_id: asset.leaseTerm.id }),
+      ...(asset.saleTerm && { sale_listing_id: asset.saleTerm.id }),
     };
-    getOfferCount().then();
+  }
+  const getOfferCount = async (): Promise<void> => {
+    try {
+      const {
+        offerLeft: { sale, lease },
+      } = await OffersRepository.getOfferData(param);
+      setCount(isRentFlow ? lease : sale);
+    } catch (err) {
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(err.details), statusCode: err.details.statusCode });
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      getOfferCount().then();
+    }
   }, []);
   const onClosePopover = (): void => {
     if (popupRef && popupRef.current) {

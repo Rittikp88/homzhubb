@@ -4,7 +4,6 @@ import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
@@ -49,12 +48,9 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     const tokens = { refresh_token: userData.refreshToken, access_token: userData.accessToken };
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
-
-    if (!PlatformUtils.isWeb()) {
-      const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
-      if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
-        yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
-      }
+    const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
+    if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
+      yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
     }
     const handleCallback = (): void => {
       if (is_referral || is_from_signup) {

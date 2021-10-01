@@ -75,9 +75,11 @@ const PropertyCard: FC<IProps> = (props: IProps) => {
   const navigateToSearchView = (): void => {
     const trackData = AnalyticsHelper.getPropertyTrackData(investmentData);
     AnalyticsService.track(EventType.SearchPropertyOpen, trackData);
+    const listingId = leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0;
+    const assetTransactionType = leaseTerm ? 0 : 1;
     NavigationService.navigate(history, {
-      path: RouteNames.protectedRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
-      params: { listingId: leaseTerm ? leaseTerm.id : saleTerm?.id ?? 0, isLease: !!leaseTerm },
+      path: RouteNames.publicRoutes.PROPERTY_DETAIL.replace(':propertyName', `${projectName}`),
+      params: { listingId, assetTransactionType },
     });
   };
 

@@ -46,7 +46,6 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     HELP_SUPPORT,
     ADD_LISTING,
     PORTFOLIO,
-    PROPERTY_DETAIL,
     SEARCH_PROPERTY,
     PROPERTY_VIEW,
     PROPERTY_SELECTED,
@@ -62,7 +61,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     OFFERS,
     OFFERS_LISTED_PROPERTY,
   } = RouteNames.protectedRoutes;
-  const { APP_BASE } = RouteNames.publicRoutes;
+  const { APP_BASE, PROPERTY_DETAIL } = RouteNames.publicRoutes;
   const { t } = useTranslation();
   const isDeskTop = useUp(deviceBreakpoint.DESKTOP);
   const dispatch = useDispatch();

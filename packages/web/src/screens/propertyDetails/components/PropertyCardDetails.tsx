@@ -3,13 +3,15 @@ import { View, StyleSheet, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { PopupActions } from 'reactjs-popup/dist/types';
+import { Dispatch, bindActionCreators } from 'redux';
 import { History } from 'history';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { OffersRepository } from '@homzhub/common/src/domain/repositories/OffersRepository';
-import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { IRedirectionDetailsWeb, NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -33,9 +35,11 @@ import TabSection from '@homzhub/web/src/screens/propertyDetails/components/TabS
 import SiteVisitsActionsPopover, {
   SiteVisitAction,
 } from '@homzhub/web/src/screens/siteVisits/components/SiteVisitsActionsPopover';
+import { IRouteProps } from '@homzhub/web/src/screens/propertyDetails';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { IFilter, IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/models/UserProfile';
+import { DynamicLinkTypes, RouteTypes } from '@homzhub/web/src/services/constants';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { IBookVisitProps } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -49,21 +53,28 @@ export enum renderPopUpTypes {
 interface IStateProps {
   filters: IFilter;
   userProfile: UserProfileModel;
+  isAuthenticated: boolean;
 }
+
+interface IDispatchProps {
+  setRedirectionDetails: (payload: IRedirectionDetailsWeb) => void;
+}
+
 interface IProp {
   assetDetails: Asset | null;
   propertyTermId: number;
-  history: History;
+  history: History<IRouteProps>;
 }
 interface IStateData {
   propertyLeaseType: string;
   hasCreatedOffer: boolean;
 }
 
-type Props = IProp & IStateProps & WithTranslation & IWithMediaQuery;
+type Props = IProp & IStateProps & IDispatchProps & WithTranslation & IWithMediaQuery;
 
 export class PropertyCardDetails extends React.PureComponent<Props, IStateData> {
   public popupRef: React.RefObject<PopupActions> = React.createRef<PopupActions>();
+  public popupRefSiteVisits: React.MutableRefObject<PopupActions | null> = React.createRef<PopupActions>();
 
   constructor(props: Props) {
     super(props);
@@ -74,7 +85,24 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
   }
 
   public componentDidMount = (): void => {
-    this.getProspectProfile();
+    const { isAuthenticated } = this.props;
+    if (isAuthenticated) {
+      this.getProspectProfile();
+    }
+  };
+
+  public componentDidUpdate = (): void => {
+    const { history } = this.props;
+    const { location } = history;
+    const { state } = location;
+    const { popupInitType } = state;
+    if (popupInitType) {
+      if (popupInitType === renderPopUpTypes.tenancy) {
+        this.onOpenModal();
+      } else if (popupInitType === renderPopUpTypes.offer) {
+        this.handleMakeAnOffer();
+      }
+    }
   };
 
   public render = (): React.ReactNode => {
@@ -88,10 +116,13 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
       t,
       propertyTermId,
       history,
+      isAuthenticated,
+      setRedirectionDetails,
     } = this.props;
     if (!assetDetails) {
       return null;
     }
+
     const {
       projectName,
       unitNumber,
@@ -148,23 +179,6 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
     const salePrice = saleTerm && Number(saleTerm.expectedPrice) > 0 ? Number(saleTerm.expectedPrice) : 0;
     const price = leaseTerm && leaseTerm.expectedPrice > 0 ? leaseTerm.expectedPrice : salePrice;
 
-    const triggerPopUp = (): void => {
-      if (this.popupRef && this.popupRef.current) {
-        this.popupRef.current.open();
-      }
-    };
-    const handleMakeAnOffer = (): void => {
-      if (hasCreatedOffer) {
-        NavigationService.navigate(history, {
-          path: RouteNames.protectedRoutes.OFFERS,
-          params: {
-            isReceivedFlow: false,
-          },
-        });
-      } else {
-        triggerPopUp();
-      }
-    };
     const changePopUpStatus = (datum: string): void => {
       this.setState({ propertyLeaseType: datum });
     };
@@ -173,20 +187,33 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
         this.getProspectProfile();
       });
     };
-    const popupRefSiteVisits: React.MutableRefObject<PopupActions | null> = React.createRef<PopupActions>();
-    const onOpenModal = (): void => {
-      if (popupRefSiteVisits && popupRefSiteVisits.current) {
-        popupRefSiteVisits.current.open();
-      }
-    };
+
     const onCloseModal = (): void => {
-      if (popupRefSiteVisits && popupRefSiteVisits.current) {
-        popupRefSiteVisits.current.close();
+      if (this.popupRefSiteVisits && this.popupRefSiteVisits.current) {
+        this.popupRefSiteVisits.current.close();
       }
     };
     const params: IBookVisitProps = {
       ...(leaseTerm && { lease_listing_id: leaseTerm.id }),
       ...(saleTerm && { sale_listing_id: saleTerm.id }),
+    };
+
+    const handlePublicFlow = (action: renderPopUpTypes): void => {
+      const redirectionDetails = {
+        dynamicLinks: {
+          routeType: RouteTypes.Public,
+          type: DynamicLinkTypes.AssetDescription,
+          params: {
+            popupInitType: action,
+            asset_name: projectName,
+            asset_transaction_type,
+            propertyTermId,
+          },
+        },
+        shouldRedirect: true,
+      };
+      setRedirectionDetails(redirectionDetails);
+      NavigationService.navigate(history, { path: RouteNames.publicRoutes.LOGIN });
     };
     return (
       <>
@@ -237,7 +264,9 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
                   <Button
                     type="primary"
                     containerStyle={[styles.enquire, { backgroundColor }]}
-                    onPress={handleMakeAnOffer}
+                    onPress={
+                      isAuthenticated ? this.handleMakeAnOffer : (): void => handlePublicFlow(renderPopUpTypes.offer)
+                    }
                   >
                     <Icon
                       name={icons.offers}
@@ -259,7 +288,9 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
                     type="primary"
                     containerStyle={[styles.enquire, styles.schedule]}
                     disabled={isAssetOwner}
-                    onPress={onOpenModal}
+                    onPress={
+                      isAuthenticated ? this.onOpenModal : (): void => handlePublicFlow(renderPopUpTypes.tenancy)
+                    }
                   >
                     <Icon name={icons.timer} size={22} color={theme.colors.white} />
                     <Typography size="small" variant="text" fontWeight="semiBold" style={styles.textStyleSchedule}>
@@ -268,7 +299,7 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
                   </Button>
                 </View>
                 <SiteVisitsActionsPopover
-                  popupRef={popupRefSiteVisits}
+                  popupRef={this.popupRefSiteVisits}
                   onCloseModal={onCloseModal}
                   siteVisitActionType={SiteVisitAction.SCHEDULE_VISIT}
                   paramsBookVisit={params}
@@ -316,6 +347,33 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
     );
   };
 
+  public onOpenModal = (): void => {
+    if (this.popupRefSiteVisits && this.popupRefSiteVisits.current) {
+      this.popupRefSiteVisits.current.open();
+    }
+  };
+
+  public handleMakeAnOffer = (): void => {
+    const { history } = this.props;
+    const { hasCreatedOffer } = this.state;
+    if (hasCreatedOffer) {
+      NavigationService.navigate(history, {
+        path: RouteNames.protectedRoutes.OFFERS,
+        params: {
+          isReceivedFlow: false,
+        },
+      });
+    } else {
+      this.triggerPopUp();
+    }
+  };
+
+  public triggerPopUp = (): void => {
+    if (this.popupRef && this.popupRef.current) {
+      this.popupRef.current.open();
+    }
+  };
+
   private hasCreatedOffersValue = (): boolean => {
     const { assetDetails } = this.props;
     return Boolean(assetDetails?.leaseNegotiation) || Boolean(assetDetails?.saleNegotiation);
@@ -336,14 +394,25 @@ export class PropertyCardDetails extends React.PureComponent<Props, IStateData> 
 const propertyCardDetails = withMediaQuery<Props>(PropertyCardDetails);
 
 const mapStateToProps = (state: IState): IStateProps => {
-  const { getUserProfile } = UserSelector;
+  const { getUserProfile, isLoggedIn } = UserSelector;
   return {
     userProfile: getUserProfile(state),
     filters: SearchSelector.getFilters(state),
+    isAuthenticated: isLoggedIn(state),
   };
 };
 
-export default connect(mapStateToProps)(withTranslation()(propertyCardDetails));
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+  const { setRedirectionDetails } = CommonActions;
+  return bindActionCreators(
+    {
+      setRedirectionDetails,
+    },
+    dispatch
+  );
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withTranslation()(propertyCardDetails));
 
 interface IPropertyDetailStyles {
   parentContainer: ViewStyle;

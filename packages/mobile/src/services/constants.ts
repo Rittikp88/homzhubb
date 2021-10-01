@@ -34,6 +34,7 @@ export enum DynamicLinkParamKeys {
   LeaseNegotiationId = 'lease_negotiation_id',
   Screen = 'screen',
   AssetId = 'asset_id',
+  AssetName = 'asset_name',
   LeaseUnitId = 'lease_unit_id',
   MessageGroupId = 'message_group_id',
   MessageGroupName = 'message_group_name',

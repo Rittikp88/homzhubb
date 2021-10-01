@@ -14,6 +14,7 @@ import Landing from '@homzhub/web/src/screens/landing';
 import MembershipPlans from '@homzhub/web/src/screens/membershipPlans';
 import MicroSite from '@homzhub/web/src/screens/microSite';
 import OtpVerification from '@homzhub/web/src/components/organisms/OtpVerification';
+import PropertyDetails from '@homzhub/web/src/screens/propertyDetails';
 import TermsAndCondition from '@homzhub/web/src/components/staticPages/TermsAndCondition';
 import TermsServicesPayment from '@homzhub/web/src/components/staticPages/TermsServicesPayment';
 import TermsPropertyManagement from '@homzhub/web/src/components/staticPages/TermsPropertyManagement';
@@ -46,6 +47,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
     SERVICE_PLANS_DETAIL,
     FAQS,
     MEMBERSHIP_PLANS,
+    PROPERTY_DETAIL,
     ERROR,
     ERROR504,
     ERROR404,
@@ -98,6 +100,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
         <Route exact path={TERMS_PROPERTY_MANAGEMENT} component={TermsPropertyManagement} />
         <Route exact path={FAQS} component={FAQ} />
         <Route exact path={MEMBERSHIP_PLANS} component={MembershipPlans} />
+        {!isAuthenticated && <Route exact path={PROPERTY_DETAIL} component={PropertyDetails} />}
         <PrivateRoute path={DASHBOARD} component={AppLayout} isAuthenticated={isAuthenticated} />
         <Route exact path={ERROR} component={Error} />
         <Route exact path={ERROR504} component={Error504} />
