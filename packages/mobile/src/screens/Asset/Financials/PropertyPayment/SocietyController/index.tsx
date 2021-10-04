@@ -14,6 +14,7 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
@@ -49,6 +50,7 @@ const SocietyController = (): React.ReactElement => {
     isTermsAccepted: false,
     isEditSociety: false,
     showReminderSheet: false,
+    infoSheet: false,
   });
 
   useEffect(() => {
@@ -156,6 +158,10 @@ const SocietyController = (): React.ReactElement => {
   const onReminderSuccess = (): void => {
     onCloseSheet();
     navigate(ScreensKeys.PaymentServices);
+  };
+
+  const onPressInfo = (value: boolean): void => {
+    setFlagValues({ ...flags, infoSheet: value });
   };
 
   const handlePayNow = (): void => {
@@ -283,6 +289,7 @@ const SocietyController = (): React.ReactElement => {
             onUpdateSociety={onUpdateSociety}
             onSelectSociety={onSelectSociety}
             renderMenu={renderSocietyMenu}
+            onPressInfo={(): void => onPressInfo(true)}
           />
         );
       case 1:
@@ -373,6 +380,25 @@ const SocietyController = (): React.ReactElement => {
       >
         <ReminderSheet onReminderSuccess={onReminderSuccess} />
       </BottomSheet>
+      <BottomSheet
+        visible={flags.infoSheet}
+        sheetHeight={400}
+        isShadowView
+        headerTitle={t('common:disclaimer')}
+        onCloseSheet={(): void => onPressInfo(false)}
+      >
+        <View style={styles.disclaimerContent}>
+          <Typography size="small" style={styles.disclaimer}>
+            {t('propertyPayment:bankInfo')}
+          </Typography>
+          <Button
+            type="primary"
+            title={t('common:proceed')}
+            containerStyle={styles.buttonContainer}
+            onPress={(): void => onPressInfo(false)}
+          />
+        </View>
+      </BottomSheet>
     </UserScreen>
   );
 };
@@ -405,5 +431,12 @@ const styles = StyleSheet.create({
   },
   sheetContainer: {
     marginHorizontal: 24,
+  },
+  disclaimer: {
+    color: theme.colors.darkTint3,
+  },
+  disclaimerContent: {
+    margin: 30,
+    flex: 1,
   },
 });

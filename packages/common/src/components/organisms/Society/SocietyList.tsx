@@ -15,9 +15,15 @@ interface ISocietyListProp {
   onSelectSociety: (id: number) => void;
   renderMenu?: (item: Society) => React.ReactElement;
   onUpdateSociety?: (value: boolean) => void; // To handle Add new society flow if there is no existing society
+  onPressInfo?: () => void;
 }
 
-const SocietyList = ({ onSelectSociety, onUpdateSociety, renderMenu }: ISocietyListProp): React.ReactElement => {
+const SocietyList = ({
+  onSelectSociety,
+  onUpdateSociety,
+  renderMenu,
+  onPressInfo,
+}: ISocietyListProp): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.propertyPayment);
   const societies = useSelector(PropertyPaymentSelector.getSocieties);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
@@ -68,7 +74,7 @@ const SocietyList = ({ onSelectSociety, onUpdateSociety, renderMenu }: ISocietyL
         getFormattedSocieties().map((item, index) => {
           return (
             <TouchableOpacity key={index} onPress={(): void => onSelectSociety(item.id)}>
-              <SocietyInfoCard society={item} renderMenu={renderMenu && renderMenu(item)} />
+              <SocietyInfoCard society={item} renderMenu={renderMenu && renderMenu(item)} onPressInfo={onPressInfo} />
             </TouchableOpacity>
           );
         })

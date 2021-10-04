@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -9,9 +10,10 @@ import { Society } from '@homzhub/common/src/domain/models/Society';
 interface ISocietyCardProp {
   society: Society;
   renderMenu?: React.ReactElement;
+  onPressInfo?: () => void;
 }
 
-const SocietyInfoCard = ({ society, renderMenu }: ISocietyCardProp): React.ReactElement => {
+const SocietyInfoCard = ({ society, renderMenu, onPressInfo }: ISocietyCardProp): React.ReactElement => {
   const { t } = useTranslation();
   const {
     societyBankInfo: { beneficiaryName, ifscCode, accountNumber, isVerified },
@@ -40,8 +42,13 @@ const SocietyInfoCard = ({ society, renderMenu }: ISocietyCardProp): React.React
           size="large"
           style={{ color: isVerified ? theme.colors.green : theme.colors.error }}
         >
-          {`  (${isVerified ? t('propertyPayment:verified') : t('propertyPayment:unverified')})`}
+          {`  (${isVerified ? t('propertyPayment:verified') : t('propertyPayment:unverified')}) `}
         </Typography>
+        {!isVerified && onPressInfo && (
+          <TouchableOpacity onPress={onPressInfo}>
+            <Icon name={icons.circularFilledInfo} size={16} color={theme.colors.error} />
+          </TouchableOpacity>
+        )}
       </Typography>
       <View style={styles.infoContainer}>
         {getFormattedBankData().map((item, index) => {
