@@ -154,12 +154,9 @@ class NavigationService<T extends History> {
 
   public handlePublicProtectedRoutes = (dynamicLinkParams: IDynamicLinkParams): void => {
     const { type, params } = dynamicLinkParams;
-    const {
-      asset_name: projectName,
-      asset_transaction_type: assetTransactionType,
-      propertyTermId,
-      popupInitType,
-    } = params;
+    const { asset_name, asset_transaction_type: assetTransactionType, propertyTermId, popupInitType } = params;
+    const projectName = asset_name.replace('_', ' ');
+
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigate(this.history, {

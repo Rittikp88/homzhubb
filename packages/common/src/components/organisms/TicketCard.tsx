@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, TextStyle, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
@@ -19,6 +20,7 @@ interface IProps {
   onCardPress: () => void;
   isFromMore?: boolean;
   onSubmitReview: () => void;
+  isOddElement: boolean;
 }
 
 /* Get color for status  */
@@ -70,7 +72,7 @@ const keyValue = (key: string, data: IDataType): string => {
 };
 
 export const TicketCard = (props: IProps): React.ReactElement => {
-  const { cardData, onCardPress, isFromMore = false, onSubmitReview } = props;
+  const { cardData, onCardPress, isFromMore = false, onSubmitReview, isOddElement } = props;
   const {
     title,
     createdAt,
@@ -125,8 +127,13 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     );
   };
 
+  const isWeb = PlatformUtils.isWeb();
+
   return (
-    <TouchableOpacity style={styles.container} onPress={onCardPress}>
+    <TouchableOpacity
+      style={[styles.container, isWeb && isOddElement ? styles.oddElement : styles.evenElement]}
+      onPress={onCardPress}
+    >
       <View style={styles.row}>
         <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
         <View>
@@ -242,5 +249,11 @@ const styles = StyleSheet.create({
   },
   commentBox: {
     marginTop: 16,
+  },
+  oddElement: {
+    maxWidth: '50%',
+  },
+  evenElement: {
+    marginHorizontal: '1%',
   },
 });

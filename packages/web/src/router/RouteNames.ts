@@ -46,6 +46,7 @@ export const RouteNames = {
     SELECT_PROPERTY: '/home/marketPlace/selectProperty',
     SELECT_SERVICES: '/home/marketPlace/selectServices',
     VALUE_ADDED_SERVICES: '/home/marketPlace',
+    SERVICE_TICKETS: '/home/serviceTickets',
     SETTINGS: '/home/settings',
     MANAGE_SUBSCRIPTION: '',
     PAYMENT_METHODS: '',

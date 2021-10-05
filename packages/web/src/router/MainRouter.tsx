@@ -22,10 +22,12 @@ import SelectProperty from '@homzhub/web/src/screens/selectProperty';
 import SelectServices from '@homzhub/web/src/screens/selectServices';
 import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
 import PropertyVisits from '@homzhub/web/src/screens/siteVisits/PropertyVisits';
+import ServiceTickets from '@homzhub/web/src/screens/serviceTickets';
 import Notifications from '@homzhub/web/src/screens/notifications';
 import Offers from '@homzhub/web/src/screens/offers';
 import Error404 from '@homzhub/web/src/components/staticPages/Error404';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+
 // Lazy imports
 const Financials = lazy(() => import('@homzhub/web/src/screens/financials'));
 const PostProperty = lazy(() => import('@homzhub/web/src/screens/addProperty/index'));
@@ -60,6 +62,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     PROTECTEDERROR404,
     OFFERS,
     OFFERS_LISTED_PROPERTY,
+    SERVICE_TICKETS,
   } = RouteNames.protectedRoutes;
   const { APP_BASE, PROPERTY_DETAIL } = RouteNames.publicRoutes;
   const { t } = useTranslation();
@@ -92,6 +95,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={SAVED_PROPERTIES} component={ComingSoon} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={OFFERS} component={Offers} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_VISITS} component={PropertyVisits} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={SERVICE_TICKETS} component={ServiceTickets} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={NOTIFICATIONS} component={Notifications} isAuthenticated={isAuthenticated} />
         <PrivateRoute
           exact

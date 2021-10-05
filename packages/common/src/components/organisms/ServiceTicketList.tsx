@@ -5,6 +5,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { theme } from '@homzhub/common/src/styles/theme';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
@@ -27,6 +28,8 @@ interface IProps {
   navigateToDetail: () => void;
   isFromMore?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  isDesktop?: boolean;
+  isTablet?: boolean;
 }
 
 interface IDispatchProps {
@@ -59,16 +62,17 @@ class ServiceTicketList extends Component<Props, IScreenState> {
 
   public render(): React.ReactNode {
     const { selectedListType } = this.state;
-    const { t, onAddTicket, containerStyle, isFromMore } = this.props;
-
+    const { t, onAddTicket, containerStyle, isFromMore, isDesktop, isTablet } = this.props;
+    const isWeb = PlatformUtils.isWeb();
+    const isMultiCol = (isWeb && isDesktop) || isTablet;
     return (
       <View style={containerStyle}>
-        <View style={[styles.container, !isFromMore && { marginTop: 0 }]}>
+        <View style={[styles.container, !isFromMore && { marginTop: 0 }, isMultiCol && styles.containerWeb]}>
           {isFromMore && (
             <Button
               type="secondary"
               title={t('addNewTicket')}
-              containerStyle={styles.addButton}
+              containerStyle={[styles.addButton, isWeb && styles.buttonWeb, isMultiCol && styles.addButtonWeb]}
               onPress={onAddTicket}
             />
           )}
@@ -79,8 +83,9 @@ class ServiceTicketList extends Component<Props, IScreenState> {
             ]}
             selectedItem={[selectedListType]}
             onValueChange={this.onTypeChange}
-            containerStyles={styles.picker}
+            containerStyles={[styles.picker, isMultiCol && styles.pickerWeb]}
           />
+          {isDesktop && <View style={styles.emptyView} />}
         </View>
         {this.renderTabView()}
       </View>
@@ -139,8 +144,9 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   private renderContent = (priority: TicketPriority): ReactElement => {
-    const { t } = this.props;
+    const { t, isDesktop, isTablet } = this.props;
     const data = this.getFormattedData(priority);
+    const isMultiCol = isDesktop || isTablet;
     return (
       <View style={styles.listContainer}>
         {data.length > 0 && (
@@ -151,21 +157,28 @@ class ServiceTicketList extends Component<Props, IScreenState> {
         <FlatList
           data={data}
           ListEmptyComponent={this.renderEmptyComponent}
-          renderItem={this.renderItem}
+          renderItem={({ item }): ReactElement => this.renderItem(item, data.length)}
           extraData={data}
+          key={isMultiCol ? 'service-tickets-desktop' : 'service-tickets-mobile'}
+          numColumns={isMultiCol ? 2 : 1}
         />
       </View>
     );
   };
 
-  private renderItem = ({ item }: { item: Ticket }): ReactElement => {
+  private renderItem = (item: Ticket, totalItems: number): ReactElement => {
     const { isFromMore, getTickets } = this.props;
+    const isOdd = (num: number): boolean => {
+      return num % 2 === 1;
+    };
+    const isOddElement = isOdd(totalItems);
     return (
       <TicketCard
         cardData={item}
         onCardPress={(): void => this.onTicketPress(item)}
         isFromMore={isFromMore}
         onSubmitReview={getTickets}
+        isOddElement={isOddElement}
       />
     );
   };
@@ -243,12 +256,28 @@ const styles = StyleSheet.create({
   container: {
     margin: 16,
   },
+  containerWeb: {
+    flexDirection: 'row-reverse',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   addButton: {
     flex: 0,
     borderStyle: 'dashed',
   },
+  buttonWeb: {
+    flex: 1,
+  },
+  addButtonWeb: {
+    maxWidth: 200,
+  },
   picker: {
     marginTop: 20,
+  },
+  pickerWeb: {
+    maxWidth: 250,
+    justifyContent: 'center',
+    marginTop: 0,
   },
   tabBar: {
     backgroundColor: theme.colors.white,
@@ -261,5 +290,11 @@ const styles = StyleSheet.create({
   },
   count: {
     color: theme.colors.darkTint6,
+  },
+  buttonActionsWeb: {
+    flexDirection: 'row',
+  },
+  emptyView: {
+    width: 200,
   },
 });
