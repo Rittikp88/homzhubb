@@ -9,6 +9,7 @@ export const menu = [
   {
     label: MenuEnum.EDIT,
     value: MenuEnum.EDIT,
+    labelColor: theme.colors.darkTint2,
   },
   {
     label: MenuEnum.DELETE,

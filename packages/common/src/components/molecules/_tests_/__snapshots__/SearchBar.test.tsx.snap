@@ -82,6 +82,7 @@ exports[`Search Bar should match snapshot 1`] = `
                 Object {
                   "marginEnd": 16,
                 },
+                undefined,
               ]
             }
             icon="search"

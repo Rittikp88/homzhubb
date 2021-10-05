@@ -173,12 +173,11 @@ export class AssetLocationSearch extends React.PureComponent<Props, IScreenState
       navigation: { navigate },
     } = this.props;
     const {
-      name,
       geometry: {
         location: { lat, lng },
       },
     } = options.placeData;
-    PropertyRepository.getProjects({ latitude: lat, longitude: lng, name })
+    PropertyRepository.getProjects({ latitude: lat, longitude: lng, name: '' })
       .then((res) => {
         if (res.length > 0) {
           navigate(ScreensKeys.ProjectSelection, { options, projects: res });

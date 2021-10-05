@@ -13,7 +13,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 const ProjectSelection = (): React.ReactElement => {
   const { params } = useRoute();
-  const { navigate } = useNavigation();
+  const { navigate, goBack } = useNavigation();
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const { projects, options } = params as IProjectSelectionProps;
 
@@ -47,7 +47,7 @@ const ProjectSelection = (): React.ReactElement => {
   return (
     <Screen
       backgroundColor={theme.colors.white}
-      headerProps={{ title: t('projects') }}
+      headerProps={{ title: t('projects'), onIconPress: goBack }}
       containerStyle={styles.container}
     >
       <Text type="small" style={styles.heading}>

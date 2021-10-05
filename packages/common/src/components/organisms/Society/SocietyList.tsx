@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   searchBar: {
-    height: 30,
+    height: 40,
     paddingHorizontal: 0,
   },
   icon: {
