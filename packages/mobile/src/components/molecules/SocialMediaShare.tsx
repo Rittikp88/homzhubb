@@ -23,7 +23,6 @@ interface ISocialMediaProps {
   headerTitle: string;
   onCloseSharing: () => void;
   visible: boolean;
-  sharingUrl?: string;
   sharingMessage: string;
 }
 
@@ -37,13 +36,14 @@ interface ISocialMedium {
 const { Social } = Share;
 
 const SocialMediaShareComp = (props: ISocialMediaProps): React.ReactElement => {
-  const { headerTitle, onCloseSharing, visible, sharingMessage, sharingUrl } = props;
+  const { headerTitle, onCloseSharing, visible, sharingMessage } = props;
   const { t } = useTranslation();
   const assetData = useSelector(AssetSelectors.getAsset);
 
   const handleOnPress = (medium: Share.Social): void => {
-    SharingService.Share(medium, sharingMessage, sharingUrl).then();
     if (assetData) {
+      const sharingUrl = assetData.attachments.length ? assetData.attachments[0].link : undefined;
+      SharingService.Share(medium, sharingMessage, sharingUrl).then();
       const trackData = AnalyticsHelper.getPropertyTrackData(assetData);
       AnalyticsService.track(EventType.PropertyShare, {
         ...trackData,

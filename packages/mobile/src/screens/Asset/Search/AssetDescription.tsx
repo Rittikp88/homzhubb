@@ -59,7 +59,7 @@ import {
   FullScreenAssetDetailsCarousel,
   ShieldGroup,
 } from '@homzhub/mobile/src/components';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, IData } from '@homzhub/common/src/domain/models/Asset';
 import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
 import { ISelectedAssetPlan, TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { ContactActions, IAmenitiesIcons, IFilter } from '@homzhub/common/src/domain/models/Search';
@@ -68,11 +68,12 @@ import { DynamicLinkParamKeys, DynamicLinkTypes, RouteTypes } from '@homzhub/mob
 import {
   IAssetVisitPayload,
   ISendNotificationPayload,
+  SpaceAvailableTypes,
   VisitType,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
-import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
+import { ICallback, IState } from '@homzhub/common/src/modules/interfaces';
+import { IAssetState, IGetAssetPayload } from '@homzhub/common/src/modules/asset/interfaces';
 import { NavigationScreenProps, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 const { StatusBarManager } = NativeModules;
@@ -83,6 +84,7 @@ interface IStateProps {
   isLoading: boolean;
   filters: IFilter;
   isLoggedIn: boolean;
+  assetLoaders: IAssetState['loaders'];
 }
 
 interface IDispatchProps {
@@ -143,14 +145,13 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
   public elevationAnimated = interpolateAnimation(this.scrollY, [130, 150], [0, 10]);
   // ANIMATION VALUES END
 
-  public componentDidMount = async (): Promise<void> => {
+  public componentDidMount = (): void => {
     const { navigation } = this.props;
     const startDate = this.getFormattedDate();
     this.setState({ startDate });
     this.focusListener = navigation.addListener('focus', () => {
       this.getAssetData();
     });
-    await this.setSharingMessage();
     if (PlatformUtils.isIOS()) {
       StatusBarManager.getHeight(({ height }: { height: number }) => {
         this.setState({ statusBarHeight: height });
@@ -158,11 +159,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     }
   };
 
-  public async componentDidUpdate(
-    prevProps: Readonly<Props>,
-    prevState: Readonly<IOwnState>,
-    snapshot?: any
-  ): Promise<void> {
+  public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<IOwnState>, snapshot?: any): void {
     const {
       route: {
         params: { propertyTermId: oldPropertyTermId },
@@ -177,9 +174,9 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     if (oldPropertyTermId !== newPropertyTermId) {
       const payload: IGetAssetPayload = {
         propertyTermId: newPropertyTermId,
+        onCallback: this.handleCallback,
       };
       getAsset(payload);
-      await this.setSharingMessage();
       const startDate = this.getFormattedDate();
       // eslint-disable-next-line react/no-did-update-set-state
       this.setState({ ...initialState, startDate });
@@ -197,19 +194,17 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       route: {
         params: { isPreview },
       },
-      assetDetails,
+      assetLoaders: { asset },
     } = this.props;
-    const sharingLink = assetDetails?.attachments.length ? assetDetails?.attachments[0].link : undefined;
     const { isSharing, sharingMessage } = this.state;
     return (
       <>
-        <Loader visible={isLoading} />
+        <Loader visible={isLoading || asset} />
         {this.renderComponent()}
         <SocialMediaShare
           visible={isSharing && !isPreview}
           headerTitle={t('shareProperty')}
           sharingMessage={sharingMessage}
-          sharingUrl={sharingLink}
           onCloseSharing={this.onCloseSharing}
         />
       </>
@@ -840,15 +835,21 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       assetDetails,
     } = this.props;
     const { RouteType, PropertyTermId, AssetTransactionType, AssetName } = DynamicLinkParamKeys;
+    const name = assetDetails ? assetDetails.projectName.replace(' ', '_') : '';
     return LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
-      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${propertyTermId}&${AssetTransactionType}=${asset_transaction_type}&${AssetName}=${assetDetails?.projectName}`
+      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${propertyTermId}&${AssetTransactionType}=${asset_transaction_type}&${AssetName}=${name}`
     );
   };
 
   private setSharingMessage = async (): Promise<void> => {
+    const { assetDetails } = this.props;
     const url = await this.getDynamicUrl();
-    const sharingMessage = I18nService.t('common:shareMessage', { url });
+    const bhk = assetDetails
+      ? assetDetails.spaces.filter((space: IData) => space.name === SpaceAvailableTypes.BEDROOM)
+      : [];
+    const detail = `${bhk ? `${bhk.length} BHK, ` : ''}${assetDetails?.projectName}`;
+    const sharingMessage = I18nService.t('common:shareMessage', { url, detail });
     this.setState({ sharingMessage });
   };
 
@@ -959,11 +960,18 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     } = this.props;
     const payload: IGetAssetPayload = {
       propertyTermId,
+      onCallback: this.handleCallback,
     };
     this.setState({ isScroll: false, showContactDetailsInFooter: true });
     clearOfferFormValues();
     getAsset(payload);
     updateAnimatedValue(this.scrollY, 0);
+  };
+
+  private handleCallback = ({ status }: ICallback): void => {
+    if (status) {
+      this.setSharingMessage().then();
+    }
   };
 
   private getProspect = async (): Promise<number | void> => {
@@ -1016,6 +1024,7 @@ const mapStateToProps = (state: IState): IStateProps => {
     isLoading: AssetSelectors.getLoadingState(state),
     filters: SearchSelector.getFilters(state),
     isLoggedIn: UserSelector.isLoggedIn(state),
+    assetLoaders: AssetSelectors.getAssetLoaders(state),
   };
 };
 

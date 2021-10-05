@@ -11,20 +11,24 @@ import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/acti
 import { OfferActions } from '@homzhub/common/src/modules/offers/actions';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetDocument } from '@homzhub/common/src/domain/models/AssetDocument';
 import { AssetGallery } from '@homzhub/common/src/domain/models/AssetGallery';
+import { AssetReview } from '@homzhub/common/src/domain/models/AssetReview';
+import { AssetVisit } from '@homzhub/common/src/domain/models/AssetVisit';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
+import { User } from '@homzhub/common/src/domain/models/User';
 import {
   IAssetUserPayload,
   IAssetVisitPayload,
   IGetListingReviews,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import { IGetAssetPayload, IGetDocumentPayload } from '@homzhub/common/src/modules/asset/interfaces';
 
-function* getAssetReviews(action: IFluxStandardAction<IGetListingReviews>) {
+function* getAssetReviews(action: IFluxStandardAction<IGetListingReviews>): VoidGenerator {
   try {
     const response = yield call(AssetRepository.getListingReviewsSummary, action.payload as IGetListingReviews);
-    yield put(AssetActions.getAssetReviewsSuccess(response));
+    yield put(AssetActions.getAssetReviewsSuccess(response as AssetReview));
   } catch (err) {
     yield put(AssetActions.getAssetReviewsFailure(err.message));
   }
@@ -63,12 +67,12 @@ function* getAssetDetails(action: IFluxStandardAction<IGetAssetPayload>) {
   }
 }
 
-function* getAssetDocuments(action: IFluxStandardAction<IGetDocumentPayload>) {
+function* getAssetDocuments(action: IFluxStandardAction<IGetDocumentPayload>): VoidGenerator {
   if (action.payload) {
     const { assetId, onCallback } = action.payload;
     try {
       const response = yield call(AssetRepository.getAssetDocument, assetId);
-      yield put(AssetActions.getAssetDocumentSuccess(response));
+      yield put(AssetActions.getAssetDocumentSuccess(response as AssetDocument[]));
       if (onCallback) {
         onCallback({ status: true });
       }
@@ -83,10 +87,10 @@ function* getAssetDocuments(action: IFluxStandardAction<IGetDocumentPayload>) {
   }
 }
 
-function* getAssetVisit(action: IFluxStandardAction<IAssetVisitPayload>) {
+function* getAssetVisit(action: IFluxStandardAction<IAssetVisitPayload>): VoidGenerator {
   try {
     const response = yield call(AssetRepository.getPropertyVisit, action.payload as IAssetVisitPayload);
-    yield put(AssetActions.getAssetVisitSuccess(response));
+    yield put(AssetActions.getAssetVisitSuccess(response as AssetVisit[]));
   } catch (err) {
     const error = ErrorUtils.getErrorMessage(err.details);
     AlertHelper.error({ message: error, statusCode: err.details.statusCode });
@@ -94,10 +98,10 @@ function* getAssetVisit(action: IFluxStandardAction<IAssetVisitPayload>) {
   }
 }
 
-export function* getUserActiveAssets() {
+export function* getUserActiveAssets(): VoidGenerator {
   try {
     const response = yield call(AssetRepository.getActiveAssets);
-    yield put(AssetActions.getActiveAssetsSuccess(response));
+    yield put(AssetActions.getActiveAssetsSuccess(response as Asset[]));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error, statusCode: e.details.statusCode });
@@ -133,11 +137,11 @@ export function* getAssetById(action: IFluxStandardAction<number>) {
   }
 }
 
-function* getAssetUsers(action: IFluxStandardAction<IAssetUserPayload>) {
+function* getAssetUsers(action: IFluxStandardAction<IAssetUserPayload>): VoidGenerator {
   const { payload } = action;
   try {
     const response = yield call(AssetRepository.getAssetUsers, payload as IAssetUserPayload);
-    yield put(AssetActions.getAssetUsersSuccess(response));
+    yield put(AssetActions.getAssetUsersSuccess(response as User[]));
     if (payload && payload.onCallback) {
       payload.onCallback(true);
     }

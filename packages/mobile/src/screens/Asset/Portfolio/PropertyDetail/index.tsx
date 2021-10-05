@@ -34,7 +34,7 @@ import TabCard from '@homzhub/common/src/components/molecules/TabCard';
 import { SocialMediaShare } from '@homzhub/mobile/src/components/molecules/SocialMediaShare';
 import AssetCard from '@homzhub/mobile/src/components/organisms/AssetCard';
 import { PropertyTabs } from '@homzhub/mobile/src/screens/Asset/Portfolio/PropertyDetail/PropertyTabs';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, IData } from '@homzhub/common/src/domain/models/Asset';
 import { ISelectedAssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Filters } from '@homzhub/common/src/domain/models/AssetFilter';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
@@ -47,6 +47,7 @@ import {
   IListingParam,
   IPropertyDetailPayload,
   ListingType,
+  SpaceAvailableTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { NavigationScreenProps, ScreensKeys, UpdatePropertyFormTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -253,14 +254,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
 
   private renderShareView = (): React.ReactElement => {
     const { t } = this.props;
-    const { propertyData, isShare, sharingMessage } = this.state;
-    const sharingLink = propertyData?.attachments?.length ? propertyData?.attachments[0].link : undefined;
+    const { isShare, sharingMessage } = this.state;
     return (
       <SocialMediaShare
         visible={isShare}
         headerTitle={t('assetDescription:shareProperty')}
         sharingMessage={sharingMessage}
-        sharingUrl={sharingLink}
         onCloseSharing={(): void => this.onToggleSharing(false)}
       />
     );
@@ -466,8 +465,12 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
   };
 
   private setSharingMessage = async (): Promise<void> => {
+    const { propertyData } = this.state;
     const url = await this.getDynamicUrl();
-    const sharingMessage = I18nService.t('common:shareMessage', { url });
+    const bhk = propertyData.spaces.filter((space: IData) => space.name === SpaceAvailableTypes.BEDROOM);
+    const detail = `${bhk ? `${bhk.length} BHK, ` : ''}${propertyData.projectName}`;
+    const sharingMessage = I18nService.t('common:shareMessage', { url, detail });
+
     this.setState({ sharingMessage });
   };
 

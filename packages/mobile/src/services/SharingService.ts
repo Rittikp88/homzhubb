@@ -94,11 +94,8 @@ class SharingService {
             hashtag: 'homzhub',
           };
 
+          // @ts-ignore
           await ShareDialog.show(shareLinkContent);
-          return;
-        }
-        if (social === Share.Social.WHATSAPP) {
-          await Linking.openURL(`${appUrl}text=${message}`);
           return;
         }
 
