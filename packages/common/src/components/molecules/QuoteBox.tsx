@@ -57,7 +57,7 @@ const QuoteBox = (props: IProps): ReactElement => {
       </View>
       <View style={[styles.documentContainer, !!document && styles.filledDocument]}>
         <View style={styles.row}>
-          {!PlatformUtils.isWeb() && onUploadAttachment &&
+          {!PlatformUtils.isWeb() && onUploadAttachment && (
             <View>
               <Icon name={!document ? icons.attachDoc : icons.docFilled} color={theme.colors.darkTint5} size={20} />
               <TouchableOpacity
@@ -68,9 +68,13 @@ const QuoteBox = (props: IProps): ReactElement => {
                   {document || t('common:noFileChosen')}
                 </Label>
               </TouchableOpacity>
-            </View>}
-          {PlatformUtils.isWeb() && onUploadAttachmentWeb && !document &&
-            <CustomUpload handleFile={onUploadAttachmentWeb} acceptedTypes={'image/x-png, image/jpeg, image/jpg, application/pdf'}>
+            </View>
+          )}
+          {PlatformUtils.isWeb() && onUploadAttachmentWeb && !document && (
+            <CustomUpload
+              handleFile={onUploadAttachmentWeb}
+              acceptedTypes="image/x-png, image/jpeg, image/jpg, application/pdf"
+            >
               <View style={styles.row}>
                 <Icon name={!document ? icons.attachDoc : icons.docFilled} color={theme.colors.darkTint5} size={20} />
                 <Label type="regular" style={styles.document}>
@@ -78,8 +82,7 @@ const QuoteBox = (props: IProps): ReactElement => {
                 </Label>
               </View>
             </CustomUpload>
-
-          }
+          )}
         </View>
         {!!document && (
           <Icon
@@ -90,7 +93,7 @@ const QuoteBox = (props: IProps): ReactElement => {
           />
         )}
       </View>
-    </View >
+    </View>
   );
 };
 

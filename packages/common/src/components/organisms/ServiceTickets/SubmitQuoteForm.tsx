@@ -171,7 +171,7 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
         />
       );
     }
-    else if (onUploadWeb) {
+    if (onUploadWeb) {
       return (
         <QuoteBox
           document={item.document?.name ?? ''}
@@ -181,7 +181,7 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
         />
       );
     }
-    else return <View />
+    return <View />;
   };
 
   const renderScene = ({ route }: { route: IRoute }): React.ReactElement | null => {

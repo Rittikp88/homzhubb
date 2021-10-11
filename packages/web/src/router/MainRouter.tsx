@@ -98,7 +98,12 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={OFFERS} component={Offers} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_VISITS} component={PropertyVisits} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SERVICE_TICKETS} component={ServiceTickets} isAuthenticated={isAuthenticated} />
-        <PrivateRoute exact path={SERVICE_TICKET_DETAILS} component={ServiceTicketDetails} isAuthenticated={isAuthenticated} />
+        <PrivateRoute
+          exact
+          path={SERVICE_TICKET_DETAILS}
+          component={ServiceTicketDetails}
+          isAuthenticated={isAuthenticated}
+        />
         <PrivateRoute exact path={NOTIFICATIONS} component={Notifications} isAuthenticated={isAuthenticated} />
         <PrivateRoute
           exact

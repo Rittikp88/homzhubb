@@ -25,7 +25,7 @@ export const TicketActivitySection = (props: IProp): React.ReactElement => {
     label,
     description,
     children,
-    containerStyle
+    containerStyle,
   } = props;
 
   return (

@@ -12,67 +12,70 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import ServiceTicketList from '@homzhub/common/src/components/organisms/ServiceTicketList';
 import ServiceTicketsActionsPopover, {
-    ServiceTicketAction,
+  ServiceTicketAction,
 } from '@homzhub/web/src/screens/serviceTickets/components/ServiceTicketsActionsPopover';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 const ServiceTickets: React.FC = () => {
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const isLoading = useSelector(TicketSelectors.getTicketLoader);
-    const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
-    const isTablet = useOnly(deviceBreakpoint.TABLET);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const isLoading = useSelector(TicketSelectors.getTicketLoader);
+  const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
+  const isTablet = useOnly(deviceBreakpoint.TABLET);
 
-    useEffect(() => {
-        dispatch(TicketActions.getTickets());
-    }, []);
+  useEffect(() => {
+    dispatch(TicketActions.getTickets());
+  }, []);
 
-    const popupRef = useRef<PopupActions>(null);
-    const onOpenModal = (): void => {
-        if (popupRef && popupRef.current) {
-            popupRef.current.open();
-        }
-    };
-    const onCloseModal = (): void => {
-        if (popupRef && popupRef.current) {
-            popupRef.current.close();
-        }
-    };
+  const popupRef = useRef<PopupActions>(null);
+  const onOpenModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+  const onCloseModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+    }
+  };
 
-    const onAddTicket = (): void => {
-        onOpenModal();
-    };
+  const onAddTicket = (): void => {
+    onOpenModal();
+  };
 
-    const navigateToDetail = (payload: ICurrentTicket): void => {
-        NavigationService.navigate(history, { path: RouteNames.protectedRoutes.SERVICE_TICKET_DETAILS, params: { ...payload } })
-    };
+  const navigateToDetail = (payload: ICurrentTicket): void => {
+    NavigationService.navigate(history, {
+      path: RouteNames.protectedRoutes.SERVICE_TICKET_DETAILS,
+      params: { ...payload },
+    });
+  };
 
-    return (
-        <View style={styles.container}>
-            <ServiceTicketList
-                onAddTicket={onAddTicket}
-                navigateToDetail={navigateToDetail}
-                isFromMore
-                isDesktop={isDesktop}
-                isTablet={isTablet}
-            />
-            <ServiceTicketsActionsPopover
-                serviceTicketActionType={ServiceTicketAction.ADD_REQUEST}
-                popupRef={popupRef}
-                onCloseModal={onCloseModal}
-            />
-            <Loader visible={isLoading} />
-        </View>
-    );
+  return (
+    <View style={styles.container}>
+      <ServiceTicketList
+        onAddTicket={onAddTicket}
+        navigateToDetail={navigateToDetail}
+        isFromMore
+        isDesktop={isDesktop}
+        isTablet={isTablet}
+      />
+      <ServiceTicketsActionsPopover
+        serviceTicketActionType={ServiceTicketAction.ADD_REQUEST}
+        popupRef={popupRef}
+        onCloseModal={onCloseModal}
+      />
+      <Loader visible={isLoading} />
+    </View>
+  );
 };
 
 export default ServiceTickets;
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: theme.colors.white,
-        flexDirection: 'column',
-        maxWidth: '100%',
-    },
+  container: {
+    backgroundColor: theme.colors.white,
+    flexDirection: 'column',
+    maxWidth: '100%',
+  },
 });

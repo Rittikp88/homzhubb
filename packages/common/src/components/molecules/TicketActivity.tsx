@@ -65,7 +65,13 @@ class TicketActivityCard extends PureComponent<Props> {
 
     return (
       <View style={[styles.activityView, containerStyle]}>
-        <View style={[styles.titleContainer, status !== TicketStatus.CLOSED && styles.titleBottom, isWeb && styles.titleContainerWeb]}>
+        <View
+          style={[
+            styles.titleContainer,
+            status !== TicketStatus.CLOSED && styles.titleBottom,
+            isWeb && styles.titleContainerWeb,
+          ]}
+        >
           <Text type="small" textType="semiBold" style={styles.activity}>
             {t('serviceTickets:activity')}
           </Text>
@@ -98,13 +104,15 @@ class TicketActivityCard extends PureComponent<Props> {
             </>
           );
         })}
-        {!isWeb && <ConfirmationSheet
-          isVisible={showConfirmationSheet}
-          onCloseSheet={this.closeSheet}
-          onPressDelete={onConfirmClose}
-          message={t('closeTicketConfirmation')}
-          buttonTitles={[t('common:cancel'), t('common:close')]}
-        />}
+        {!isWeb && (
+          <ConfirmationSheet
+            isVisible={showConfirmationSheet}
+            onCloseSheet={this.closeSheet}
+            onPressDelete={onConfirmClose}
+            message={t('closeTicketConfirmation')}
+            buttonTitles={[t('common:cancel'), t('common:close')]}
+          />
+        )}
       </View>
     );
   }
@@ -155,7 +163,14 @@ class TicketActivityCard extends PureComponent<Props> {
     const title = code === WORK_UPDATE && data ? data.title : code === PAYMENT_DONE ? t('paymentDone') : label;
     const isWeb = PlatformUtils.isWeb();
     return (
-      <TicketActivitySection role={role} user={user} time={createdAt} label={title} description={comment} containerStyle={[isWeb && styles.ticketActivitySection]}>
+      <TicketActivitySection
+        role={role}
+        user={user}
+        time={createdAt}
+        label={title}
+        description={comment}
+        containerStyle={[isWeb && styles.ticketActivitySection]}
+      >
         {renderActivityData()}
       </TicketActivitySection>
     );
