@@ -92,7 +92,6 @@ const AddProperty: FC<IProps> = (props: IProps) => {
       });
       try {
         const response = await AttachmentService.uploadImage(formData, AttachmentType.ASSET_IMAGE);
-
         const { data } = response;
         const localSelectedImages: IPropertySelectedImages[] = [];
         data.forEach((item: any) => {

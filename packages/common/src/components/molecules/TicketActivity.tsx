@@ -70,6 +70,7 @@ class TicketActivityCard extends PureComponent<Props> {
             styles.titleContainer,
             status !== TicketStatus.CLOSED && styles.titleBottom,
             isWeb && styles.titleContainerWeb,
+            !isWeb && styles.titleContainerMobile,
           ]}
         >
           <Text type="small" textType="semiBold" style={styles.activity}>
@@ -292,14 +293,17 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   titleContainer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     maxHeight: 75,
     paddingHorizontal: 20,
   },
+  titleContainerMobile: {
+    flex: 1,
+  },
   titleContainerWeb: {
+    paddingVertical: 20,
     justifyContent: 'space-evenly',
     borderBottomColor: theme.colors.darkTint10,
     borderBottomWidth: 1,
@@ -375,7 +379,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   ticketActivitySection: {
-    maxHeight: 200,
+    minHeight: 200,
+    maxHeight: 240,
   },
 });
 

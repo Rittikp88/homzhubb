@@ -35,7 +35,6 @@ const QuoteBox = (props: IProps): ReactElement => {
   // HANDLERS
   const currencySymbol = selectedTicket && selectedTicket.currency ? selectedTicket.currency.currencySymbol : '';
   const currencyCode = selectedTicket && selectedTicket.currency ? selectedTicket.currency.currencyCode : '';
-
   return (
     <View style={styles.container}>
       <Label type="regular" style={styles.heading}>
@@ -70,7 +69,7 @@ const QuoteBox = (props: IProps): ReactElement => {
               </TouchableOpacity>
             </View>
           )}
-          {PlatformUtils.isWeb() && onUploadAttachmentWeb && !document && (
+          {PlatformUtils.isWeb() && onUploadAttachmentWeb && (
             <CustomUpload
               handleFile={onUploadAttachmentWeb}
               acceptedTypes="image/x-png, image/jpeg, image/jpg, application/pdf"

@@ -103,7 +103,7 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
             // Upload Attachment to S3 and get attachment id
             const response = await AttachmentService.uploadImage(formData, AttachmentType.TICKET_DOCUMENTS);
             const { data, error } = response;
-            if (data) {
+            if (data && data.length) {
               updatedData.push({
                 quote_number: quoteItem.quoteNumber,
                 price: Number(quoteItem.price),

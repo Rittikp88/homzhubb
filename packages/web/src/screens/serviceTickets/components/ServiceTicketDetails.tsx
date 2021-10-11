@@ -271,8 +271,8 @@ const styles = StyleSheet.create({
   },
   containerPropActivity: {
     backgroundColor: theme.colors.white,
-    height: theme.viewport.height,
-    overflow: 'hidden',
+    height: '100vh',
+    overflowY: 'auto',
   },
   carousel: {
     flex: 1,
