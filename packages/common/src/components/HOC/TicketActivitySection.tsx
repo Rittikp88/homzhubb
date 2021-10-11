@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -13,6 +13,7 @@ interface IProp {
   label: string;
   description: string;
   children: React.ReactNode;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 // TODO: (Shikha) - Re-look component
@@ -24,10 +25,11 @@ export const TicketActivitySection = (props: IProp): React.ReactElement => {
     label,
     description,
     children,
+    containerStyle
   } = props;
 
   return (
-    <View style={styles.activityHolder}>
+    <View style={[styles.activityHolder, containerStyle]}>
       <Avatar image={profilePicture} fullName={name} isOnlyAvatar imageSize={45} />
       <View style={styles.content}>
         <View style={styles.activityTextTop}>

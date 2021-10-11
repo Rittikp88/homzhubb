@@ -25,13 +25,14 @@ interface IRoute {
 
 interface IProps {
   renderCollapsibleSection: (data: ICollapseSection) => React.ReactElement;
-  onUploadDoc: (index: number, tabIndex: number) => void;
+  onUploadDoc?: (index: number, tabIndex: number) => void;
   setLoader: (loading: boolean) => void;
   onSuccess: () => void;
+  onUploadWeb?: (file: File, index: number, tabIndex: number) => void;
 }
 
 const SubmitQuoteForm = (props: IProps): React.ReactElement => {
-  const { renderCollapsibleSection, onUploadDoc, setLoader, onSuccess } = props;
+  const { renderCollapsibleSection, onUploadDoc, setLoader, onSuccess, onUploadWeb } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const dispatch = useDispatch();
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
@@ -160,14 +161,27 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
   };
 
   const renderQuoteBox = (item: IInitialQuote, index: number): React.ReactElement => {
-    return (
-      <QuoteBox
-        document={item.document?.name ?? ''}
-        onSetPrice={(price): void => updatePrice(price, index)}
-        onUploadAttachment={(): void => onUploadDoc(index, tabIndex)}
-        onRemoveAttachment={(): void => onRemovedDoc(index)}
-      />
-    );
+    if (onUploadDoc) {
+      return (
+        <QuoteBox
+          document={item.document?.name ?? ''}
+          onSetPrice={(price): void => updatePrice(price, index)}
+          onUploadAttachment={(): void => onUploadDoc(index, tabIndex)}
+          onRemoveAttachment={(): void => onRemovedDoc(index)}
+        />
+      );
+    }
+    else if (onUploadWeb) {
+      return (
+        <QuoteBox
+          document={item.document?.name ?? ''}
+          onSetPrice={(price): void => updatePrice(price, index)}
+          onUploadAttachmentWeb={(file: File): void => onUploadWeb(file, index, tabIndex)}
+          onRemoveAttachment={(): void => onRemovedDoc(index)}
+        />
+      );
+    }
+    else return <View />
   };
 
   const renderScene = ({ route }: { route: IRoute }): React.ReactElement | null => {

@@ -325,7 +325,8 @@
     "repeat": "Repeat",
     "amountMsg": "Amount must be greater than zero",
     "addNew": "+ Add New",
-    "disclaimer": "Disclaimer"
+    "disclaimer": "Disclaimer",
+    "document": "Document"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1413,7 +1414,9 @@
     "moreQuotes": "Request for more quotes",
     "moreQuoteSuccess": "More Quotes requested successfully",
     "requestForMore": "Request for more",
-    "inviteMorePartner": "Invite More Service Partners"
+    "inviteMorePartner": "Invite More Service Partners",
+    "ticketDetailsTitle": "Ticket Details",
+    "ticketActionSuccess": "Service request action completed Successfully"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

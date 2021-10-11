@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
@@ -15,6 +15,7 @@ interface IProps {
   ticketImages: React.ReactElement;
   renderRatingForm: (children: React.ReactElement, onClose: () => void) => React.ReactElement;
   successCallback: () => void;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface ITicketDetails {
@@ -24,7 +25,7 @@ interface ITicketDetails {
 
 const TicketDetailsCard = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { ticketData, ticketImages, renderRatingForm, successCallback } = props;
+  const { ticketData, ticketImages, renderRatingForm, successCallback, containerStyle } = props;
   const {
     createdAt,
     updatedAt,
@@ -108,7 +109,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
   );
 
   return (
-    <>
+    <View style={[containerStyle]}>
       {ticketImages}
       <View style={styles.details}>
         <Badge
@@ -125,7 +126,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
           <TicketReview ticketData={ticketData} renderRatingForm={renderRatingForm} successCallback={successCallback} />
         )}
       </View>
-    </>
+    </View>
   );
 };
 

@@ -25,7 +25,7 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 
 interface IProps {
   onAddTicket: () => void;
-  navigateToDetail: () => void;
+  navigateToDetail: (payload: ICurrentTicket) => void;
   isFromMore?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
   isDesktop?: boolean;
@@ -192,7 +192,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   private onTicketPress = ({ id, asset: { id: assetId }, assignedTo: { id: userId } }: Ticket): void => {
     const { navigateToDetail, setCurrentTicket } = this.props;
     setCurrentTicket({ ticketId: id, assetId, assignedUserId: userId });
-    navigateToDetail();
+    navigateToDetail({ ticketId: id, assetId, assignedUserId: userId });
   };
 
   private onTypeChange = (value: TicketStatus): void => {

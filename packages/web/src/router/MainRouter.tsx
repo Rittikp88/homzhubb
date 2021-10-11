@@ -23,6 +23,7 @@ import SelectServices from '@homzhub/web/src/screens/selectServices';
 import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
 import PropertyVisits from '@homzhub/web/src/screens/siteVisits/PropertyVisits';
 import ServiceTickets from '@homzhub/web/src/screens/serviceTickets';
+import ServiceTicketDetails from '@homzhub/web/src/screens/serviceTickets/components/ServiceTicketDetails';
 import Notifications from '@homzhub/web/src/screens/notifications';
 import Offers from '@homzhub/web/src/screens/offers';
 import Error404 from '@homzhub/web/src/components/staticPages/Error404';
@@ -63,6 +64,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
     OFFERS,
     OFFERS_LISTED_PROPERTY,
     SERVICE_TICKETS,
+    SERVICE_TICKET_DETAILS,
   } = RouteNames.protectedRoutes;
   const { APP_BASE, PROPERTY_DETAIL } = RouteNames.publicRoutes;
   const { t } = useTranslation();
@@ -96,6 +98,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={OFFERS} component={Offers} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_VISITS} component={PropertyVisits} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SERVICE_TICKETS} component={ServiceTickets} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={SERVICE_TICKET_DETAILS} component={ServiceTicketDetails} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={NOTIFICATIONS} component={Notifications} isAuthenticated={isAuthenticated} />
         <PrivateRoute
           exact

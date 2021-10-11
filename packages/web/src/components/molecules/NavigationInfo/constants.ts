@@ -10,6 +10,8 @@ export const pageTitles: tpageTitles = {
   savedProperties: 'Saved Properties',
   addProperty: 'Add Property',
   nextActions: 'Next Actions',
+  serviceRequests: 'Service Requests',
+  serviceRequestDetails: 'Service Request Details'
 };
 
 export const routesConfig = [
@@ -56,5 +58,13 @@ export const routesConfig = [
   {
     path: '/home/nextActions',
     breadcrumb: 'Next Actions',
+  },
+  {
+    path: '/home/serviceRequests',
+    breadcrumb: 'Service Requests',
+  },
+    {
+    path: '/home/serviceRequests/serviceRequestDetails',
+    breadcrumb: 'Service Request Details',
   },
 ];

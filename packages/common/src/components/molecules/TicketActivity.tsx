@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -27,6 +28,7 @@ interface IProps {
   isCloseAllowed?: boolean;
   onPressImage?: (imageNumber: number) => void;
   onPressQuote?: (url: string) => Promise<void>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IDispatchProps {
@@ -50,7 +52,7 @@ class TicketActivityCard extends PureComponent<Props> {
   };
 
   public render(): React.ReactNode {
-    const { t, ticketData, closeTicket, isCloseAllowed = false } = this.props;
+    const { t, ticketData, closeTicket, isCloseAllowed = false, containerStyle } = this.props;
     const { showConfirmationSheet } = this.state;
     const { groupedActivities, status } = ticketData;
 
@@ -59,9 +61,11 @@ class TicketActivityCard extends PureComponent<Props> {
       this.closeSheet();
     };
 
+    const isWeb = PlatformUtils.isWeb();
+
     return (
-      <View style={styles.activityView}>
-        <View style={[styles.titleContainer, status !== TicketStatus.CLOSED && styles.titleBottom]}>
+      <View style={[styles.activityView, containerStyle]}>
+        <View style={[styles.titleContainer, status !== TicketStatus.CLOSED && styles.titleBottom, isWeb && styles.titleContainerWeb]}>
           <Text type="small" textType="semiBold" style={styles.activity}>
             {t('serviceTickets:activity')}
           </Text>
@@ -94,13 +98,13 @@ class TicketActivityCard extends PureComponent<Props> {
             </>
           );
         })}
-        <ConfirmationSheet
+        {!isWeb && <ConfirmationSheet
           isVisible={showConfirmationSheet}
           onCloseSheet={this.closeSheet}
           onPressDelete={onConfirmClose}
           message={t('closeTicketConfirmation')}
           buttonTitles={[t('common:cancel'), t('common:close')]}
-        />
+        />}
       </View>
     );
   }
@@ -149,9 +153,9 @@ class TicketActivityCard extends PureComponent<Props> {
     };
 
     const title = code === WORK_UPDATE && data ? data.title : code === PAYMENT_DONE ? t('paymentDone') : label;
-
+    const isWeb = PlatformUtils.isWeb();
     return (
-      <TicketActivitySection role={role} user={user} time={createdAt} label={title} description={comment}>
+      <TicketActivitySection role={role} user={user} time={createdAt} label={title} description={comment} containerStyle={[isWeb && styles.ticketActivitySection]}>
         {renderActivityData()}
       </TicketActivitySection>
     );
@@ -271,13 +275,20 @@ export default connect(
 const styles = StyleSheet.create({
   activityView: {
     backgroundColor: theme.colors.background,
-    paddingVertical: 16,
   },
   titleContainer: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    maxHeight: 75,
+    paddingHorizontal: 20,
+  },
+  titleContainerWeb: {
+    justifyContent: 'space-evenly',
+    borderBottomColor: theme.colors.darkTint10,
+    borderBottomWidth: 1,
+    borderStyle: 'solid',
   },
   titleBottom: {
     marginBottom: 16,
@@ -347,6 +358,9 @@ const styles = StyleSheet.create({
   thumbnailView: {
     flex: 1,
     flexDirection: 'row',
+  },
+  ticketActivitySection: {
+    maxHeight: 200,
   },
 });
 

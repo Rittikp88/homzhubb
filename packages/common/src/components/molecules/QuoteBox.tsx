@@ -3,22 +3,25 @@ import { StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
+import CustomUpload from '@homzhub/web/src/components/molecules/CustomUpload';
 import { TextInputSuffix } from '@homzhub/common/src/components/atoms/TextInputSuffix';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   document?: string;
   onSetPrice: (price: string) => void;
-  onUploadAttachment: () => void;
+  onUploadAttachment?: () => void;
   onRemoveAttachment: () => void;
+  onUploadAttachmentWeb?: (file: File) => void;
 }
 
 const QuoteBox = (props: IProps): ReactElement => {
-  const { document, onSetPrice, onUploadAttachment, onRemoveAttachment } = props;
+  const { document, onSetPrice, onUploadAttachment, onRemoveAttachment, onUploadAttachmentWeb } = props;
 
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
@@ -54,15 +57,29 @@ const QuoteBox = (props: IProps): ReactElement => {
       </View>
       <View style={[styles.documentContainer, !!document && styles.filledDocument]}>
         <View style={styles.row}>
-          <Icon name={!document ? icons.attachDoc : icons.docFilled} color={theme.colors.darkTint5} size={20} />
-          <TouchableOpacity
-            activeOpacity={!document ? 0 : 0.8}
-            onPress={!document ? onUploadAttachment : FunctionUtils.noop}
-          >
-            <Label type="regular" style={styles.document}>
-              {document || t('common:noFileChosen')}
-            </Label>
-          </TouchableOpacity>
+          {!PlatformUtils.isWeb() && onUploadAttachment &&
+            <View>
+              <Icon name={!document ? icons.attachDoc : icons.docFilled} color={theme.colors.darkTint5} size={20} />
+              <TouchableOpacity
+                activeOpacity={!document ? 0 : 0.8}
+                onPress={!document ? onUploadAttachment : FunctionUtils.noop}
+              >
+                <Label type="regular" style={styles.document}>
+                  {document || t('common:noFileChosen')}
+                </Label>
+              </TouchableOpacity>
+            </View>}
+          {PlatformUtils.isWeb() && onUploadAttachmentWeb && !document &&
+            <CustomUpload handleFile={onUploadAttachmentWeb} acceptedTypes={'image/x-png, image/jpeg, image/jpg, application/pdf'}>
+              <View style={styles.row}>
+                <Icon name={!document ? icons.attachDoc : icons.docFilled} color={theme.colors.darkTint5} size={20} />
+                <Label type="regular" style={styles.document}>
+                  {document || t('common:noFileChosen')}
+                </Label>
+              </View>
+            </CustomUpload>
+
+          }
         </View>
         {!!document && (
           <Icon
@@ -73,7 +90,7 @@ const QuoteBox = (props: IProps): ReactElement => {
           />
         )}
       </View>
-    </View>
+    </View >
   );
 };
 

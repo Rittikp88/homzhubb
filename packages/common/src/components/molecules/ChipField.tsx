@@ -161,6 +161,7 @@ const ChipField = (props: IProps): React.ReactElement => {
               onChange={handleChange}
               autoFocus={chips.length > 0}
               onEndEditing={onEndEditing}
+              onBlur={onEndEditing}
               editable={!isDisabled}
               style={isDisabled && styles.disabled}
               placeholder={placeholder}
