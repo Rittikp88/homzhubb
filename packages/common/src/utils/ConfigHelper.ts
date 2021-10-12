@@ -54,6 +54,10 @@ const {
   REACT_NATIVE_APP_APPLE_STORE_URL,
   REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL,
   REACT_NATIVE_CONFIG_MODE = ConfigModes.DEV,
+  REACT_NATIVE_MAIN_URL,
+  REACT_NATIVE_ANDROID_APP_ID,
+  REACT_NATIVE_IOS_APP_ID,
+  REACT_NATIVE_APP_STORE_ID,
   // FIREBASE
   REACT_NATIVE_FIREBASE_API_KEY,
   REACT_NATIVE_FIREBASE_PROJECT_ID,
@@ -62,6 +66,7 @@ const {
   REACT_NATIVE_FIREBASE_MESSAGING_SENDER_ID,
   REACT_NATIVE_FIREBASE_AUTH_DOMAIN,
   REACT_NATIVE_FIREBASE_STORAGE_BUCKET,
+  REACT_NATIVE_FIREBASE_DYNAMIC_URL,
 } = Config;
 
 class ConfigHelper {
@@ -81,6 +86,10 @@ class ConfigHelper {
   private readonly googlePlayStoreUrl: string | undefined;
   private readonly facebookPixelId: string | undefined;
   private readonly configMode!: ConfigModes;
+  private readonly appMainUrl!: string;
+  private readonly androidAppId!: string;
+  private readonly iodAppId!: string;
+  private readonly appStoreId!: string;
 
   // FIREBASE - mobile only
   private readonly mobile_firebase_apiKey!: string;
@@ -90,6 +99,7 @@ class ConfigHelper {
   private readonly mobile_firebase_messagingSenderId!: string;
   private readonly mobile_firebase_authDomain!: string;
   private readonly mobile_firebase_storageBucket!: string;
+  private readonly mobile_firebase_dynamicUrl!: string;
 
   constructor() {
     this.baseUrl = REACT_APP_API_BASE_URL;
@@ -121,6 +131,10 @@ class ConfigHelper {
       this.appleStoreUrl = REACT_NATIVE_APP_APPLE_STORE_URL;
       this.googlePlayStoreUrl = REACT_NATIVE_APP_GOOGLE_PLAYSTORE_URL;
       this.configMode = REACT_NATIVE_CONFIG_MODE as ConfigModes;
+      this.appMainUrl = REACT_NATIVE_MAIN_URL;
+      this.androidAppId = REACT_NATIVE_ANDROID_APP_ID;
+      this.iodAppId = REACT_NATIVE_IOS_APP_ID;
+      this.appStoreId = REACT_NATIVE_APP_STORE_ID;
 
       // FIREBASE
       this.mobile_firebase_apiKey = REACT_NATIVE_FIREBASE_API_KEY;
@@ -130,6 +144,7 @@ class ConfigHelper {
       this.mobile_firebase_messagingSenderId = REACT_NATIVE_FIREBASE_MESSAGING_SENDER_ID;
       this.mobile_firebase_authDomain = REACT_NATIVE_FIREBASE_AUTH_DOMAIN;
       this.mobile_firebase_storageBucket = REACT_NATIVE_FIREBASE_STORAGE_BUCKET;
+      this.mobile_firebase_dynamicUrl = REACT_NATIVE_FIREBASE_DYNAMIC_URL;
     }
   }
 
@@ -174,6 +189,16 @@ class ConfigHelper {
     authDomain: this.mobile_firebase_authDomain,
     storageBucket: this.mobile_firebase_storageBucket,
   });
+
+  public getDynamicUrlPrefix = (): string => this.mobile_firebase_dynamicUrl;
+
+  public getMainUrl = (): string => this.appMainUrl;
+
+  public getAndroidAppId = (): string => this.androidAppId;
+
+  public getIosAppId = (): string => this.iodAppId;
+
+  public getAppStoreId = (): string => this.appStoreId;
 }
 
 const configHelper = new ConfigHelper();

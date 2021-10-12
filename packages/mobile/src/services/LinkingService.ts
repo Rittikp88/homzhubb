@@ -74,15 +74,15 @@ class LinkingService {
   public buildShortLink = async (type: DynamicLinkTypes, extraParams?: string): Promise<string> => {
     return await firebase.dynamicLinks().buildShortLink(
       {
-        link: `https://www.homzhub.com?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
+        link: `${ConfigHelper.getMainUrl()}?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
         android: {
-          packageName: 'com.homzhub',
+          packageName: ConfigHelper.getAndroidAppId(),
         },
         ios: {
-          bundleId: 'com.homzhub.rn',
-          appStoreId: '1516772395',
+          bundleId: ConfigHelper.getIosAppId(),
+          appStoreId: ConfigHelper.getAppStoreId(),
         },
-        domainUriPrefix: 'https://homzhubapps.page.link',
+        domainUriPrefix: ConfigHelper.getDynamicUrlPrefix(),
       },
       firebase.dynamicLinks.ShortLinkType.UNGUESSABLE
     );

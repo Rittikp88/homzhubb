@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.homzhub">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.homzhub">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -73,9 +74,9 @@
             </intent-filter>
         </activity>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider306770337332135"
-          android:name="com.facebook.FacebookContentProvider"
-          android:exported="true"/>
+<!--        <provider android:authorities="com.facebook.app.FacebookContentProvider306770337332135"-->
+<!--          android:name="com.facebook.FacebookContentProvider"-->
+<!--          android:exported="true"/>-->
 
     </application>
 

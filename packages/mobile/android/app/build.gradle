@@ -85,6 +85,11 @@ project.ext.react = [
         enableHermes: false,  // clean and rebuild if changing
 ]
 
+project.ext.envConfigFiles = [
+    partner: '.env',
+    homzhub: '.env',
+ ]
+
 apply from: "../../../../node_modules/react-native/react.gradle"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 /**
@@ -127,6 +132,8 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    flavorDimensions 'default'
+
     ndkVersion rootProject.ext.ndkVersion
 
     compileOptions {
@@ -145,11 +152,8 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.homzhub"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "2.1.5"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         missingDimensionStrategy 'store', 'play'
@@ -187,6 +191,23 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+        }
+    }
+
+    productFlavors {
+        homzhub {
+            dimension 'default'
+            applicationId "com.homzhub"
+            resValue "string", "build_config_package", "com.homzhub"
+            versionCode 2
+            versionName "2.1.5"
+        }
+        partner {
+            dimension 'default'
+            applicationId "com.homzhub.partner"
+            resValue "string", "build_config_package", "com.homzhub"
+            versionCode 1
+            versionName "0.0.1"
         }
     }
 

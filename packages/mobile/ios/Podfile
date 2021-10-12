@@ -3,6 +3,12 @@ require_relative '../../../node_modules/@react-native-community/cli-platform-ios
 
 platform :ios, '10.0'
 
+project 'homzhub',
+    'Partner.Debug' => :debug,
+    'Partner.Release' => :release,
+    'Homzhub.Debug' => :debug,
+    'Homzhub.Release' => :release
+
 target 'homzhub' do
   # Pods for homzhub
 
@@ -40,6 +46,25 @@ target 'homzhub' do
       end
    flipper_post_install(installer)
   end
+end
+
+target 'homzhub-partner' do
+    # Pods for homzhub-partner
+
+      pod 'Permission-LocationAlways', :path => "../../../node_modules/react-native-permissions/ios/LocationAlways.podspec"
+      pod 'Permission-LocationWhenInUse', :path => "../../../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
+
+      pod 'GoogleMaps'
+      pod 'Google-Maps-iOS-Utils'
+
+      config = use_native_modules!
+
+        use_react_native!(
+            :path => config[:reactNativePath],
+            # to enable hermes on iOS, change `false` to `true` and then install pods
+            :hermes_enabled => false
+          )
+
 end
 
 target 'homzhub-tvOS' do

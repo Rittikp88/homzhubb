@@ -38,9 +38,11 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#if DEBUG && TARGET_OS_SIMULATOR
-  InitializeFlipper(application);
-#endif
+//#if DEBUG && TARGET_OS_SIMULATOR
+//  #ifdef FB_SONARKIT_ENABLED
+//  InitializeFlipper(application);
+//#endif
+//#endif
   
 
   if ([FIRApp defaultApp] == nil) {
@@ -61,7 +63,9 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
-  [RNBootSplash initWithStoryboard:@"LaunchScreen" rootView:rootView];
+  
+  NSString *bootSplash = [self getStoryBoardNameInApp];
+  [RNBootSplash initWithStoryboard:bootSplash rootView:rootView];
   return YES;
 }
 
@@ -81,6 +85,17 @@ static void InitializeFlipper(UIApplication *application) {
 
     return handledDeepLink || handledFB;
   }
+
+- (NSString *)getStoryBoardNameInApp {
+  
+  NSString *bundleIdentifier = [[NSBundle mainBundle] bundleIdentifier];
+  if([bundleIdentifier isEqualToString:@"com.homzhub.partner"]) {
+    return @"LaunchScreenPartner";
+  }
+  else {
+    return @"LaunchScreenHomzhub";
+  }
+}
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
 {
