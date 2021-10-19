@@ -63,7 +63,7 @@ const getInvoiceSummary = (state: IState): InvoiceSummary | null => {
   return ObjectMapper.deserialize(InvoiceSummary, invoiceSummary);
 };
 
-const getQuoteAttachment = (state: IState): IDocumentSource[] => {
+const getQuoteAttachment = (state: IState): IDocumentSource[] | File[] => {
   const {
     ticket: { quoteAttachment },
   } = state;

@@ -182,7 +182,7 @@ const requestQuoteFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.POST.REQUEST_QUOTE_FAILURE,
 });
 
-const setQuoteAttachment = (payload: IDocumentSource[]): IFluxStandardAction<IDocumentSource[]> => ({
+const setQuoteAttachment = (payload: IDocumentSource[] | File[]): IFluxStandardAction<IDocumentSource[] | File[]> => ({
   type: TicketActionTypes.SET.QUOTE_ATTACHMENT,
   payload,
 });

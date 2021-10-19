@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
@@ -28,8 +29,10 @@ export const TicketActivitySection = (props: IProp): React.ReactElement => {
     containerStyle,
   } = props;
 
+  const isWeb = PlatformUtils.isWeb();
+
   return (
-    <View style={[styles.activityHolder, containerStyle]}>
+    <View style={[styles.activityHolder, !isWeb && styles.activityHolderMobile, containerStyle]}>
       <Avatar image={profilePicture} fullName={name} isOnlyAvatar imageSize={45} />
       <View style={styles.content}>
         <View style={styles.activityTextTop}>
@@ -56,9 +59,11 @@ export const TicketActivitySection = (props: IProp): React.ReactElement => {
 
 const styles = StyleSheet.create({
   activityHolder: {
-    flex: 1,
     flexDirection: 'row',
     marginTop: 20,
+  },
+  activityHolderMobile: {
+    flex: 1,
   },
   role: {
     color: theme.colors.darkTint4,

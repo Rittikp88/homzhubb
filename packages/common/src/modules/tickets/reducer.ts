@@ -155,7 +155,7 @@ export const ticketReducer = (
     case TicketActionTypes.SET.QUOTE_ATTACHMENT:
       return {
         ...state,
-        ['quoteAttachment']: action.payload as IDocumentSource[],
+        ['quoteAttachment']: action.payload as IDocumentSource[] | File[],
       };
     case TicketActionTypes.SET.QUOTE:
       return {

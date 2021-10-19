@@ -55,5 +55,5 @@ export interface IInitialQuote {
   quoteNumber: number;
   title: string;
   price: string;
-  document: IDocumentSource | null;
+  document: IDocumentSource | File | null;
 }

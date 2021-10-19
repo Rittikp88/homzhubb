@@ -27,7 +27,7 @@ interface IProps {
   ticketData: Ticket;
   isCloseAllowed?: boolean;
   onPressImage?: (imageNumber: number) => void;
-  onPressQuote?: (url: string) => Promise<void>;
+  onPressQuote?: (url: string) => Promise<void> | void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 
@@ -162,7 +162,6 @@ class TicketActivityCard extends PureComponent<Props> {
     };
 
     const title = code === WORK_UPDATE && data ? data.title : code === PAYMENT_DONE ? t('paymentDone') : label;
-    const isWeb = PlatformUtils.isWeb();
     return (
       <TicketActivitySection
         role={role}
@@ -170,7 +169,6 @@ class TicketActivityCard extends PureComponent<Props> {
         time={createdAt}
         label={title}
         description={comment}
-        containerStyle={[isWeb && styles.ticketActivitySection]}
       >
         {renderActivityData()}
       </TicketActivitySection>
@@ -353,7 +351,7 @@ const styles = StyleSheet.create({
   dividerView: {
     borderBottomWidth: 1,
     borderBottomColor: theme.colors.darkTint10,
-    width: 150,
+    width: 120,
   },
   thumbnailContainer: {
     flex: 1,
@@ -377,10 +375,6 @@ const styles = StyleSheet.create({
   thumbnailView: {
     flex: 1,
     flexDirection: 'row',
-  },
-  ticketActivitySection: {
-    minHeight: 200,
-    maxHeight: 240,
   },
 });
 

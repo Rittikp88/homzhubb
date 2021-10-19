@@ -12,7 +12,6 @@ import Accordian from '@homzhub/web/src/components/molecules/Accordian';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import SubmitQuoteForm from '@homzhub/common/src/components/organisms/ServiceTickets/SubmitQuoteForm';
-import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { ICollapseSection } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -34,13 +33,10 @@ const SubmitQuote: React.FC<IProps> = (props: IProps) => {
 
   const onUploadDoc = (file: File, index: number, tabIndex: number): void => {
     const prevQuotes = cloneDeep(quotes);
-    const prevAttachments = cloneDeep(attachments);
-    const uri = URL.createObjectURL(file);
-    const fileName = file.name.length ? file.name : t('common:document');
-    const documentSource: IDocumentSource = { type: file.type, name: fileName, uri, size: file.size, fileCopyUri: uri };
+    const prevAttachments = cloneDeep(attachments) as File[];
     try {
-      prevQuotes[tabIndex].data[index].document = documentSource;
-      dispatch(TicketActions.setQuoteAttachment([...prevAttachments, documentSource]));
+      prevQuotes[tabIndex].data[index].document = file;
+      dispatch(TicketActions.setQuoteAttachment([...prevAttachments, file]));
       dispatch(TicketActions.setQuotes(prevQuotes));
     } catch (e) {
       AlertHelper.error({ message: e.message });

@@ -17,7 +17,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProps {
   quoteData: QuoteCategory[];
-  onQuotePress?: (url: string) => Promise<void>;
+  onQuotePress?: (url: string) => Promise<void> | void;
 }
 
 interface IQuoteDataItem {

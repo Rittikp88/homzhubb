@@ -59,6 +59,7 @@ const Menu = (props: IProps): React.ReactElement => {
   };
 
   const renderMenuItem = (item: IMenu, index: number): React.ReactElement => {
+    const { labelColor = theme.colors.darkTint3 } = item;
     return (
       <TouchableOpacity
         onPress={(): void => handleSelection(item)}
@@ -67,7 +68,7 @@ const Menu = (props: IProps): React.ReactElement => {
         disabled={item.isDisable}
       >
         {!!item.icon && <Icon name={item.icon} size={24} color={theme.colors.darkTint3} style={styles.iconStyle} />}
-        <Text type="small" style={[styles.label, { color: item.labelColor }]}>
+        <Text type="small" style={{ color: labelColor }}>
           {item.label}
         </Text>
       </TouchableOpacity>
@@ -114,9 +115,6 @@ const styles = StyleSheet.create({
   },
   disableStyle: {
     opacity: 0.6,
-  },
-  label: {
-    color: theme.colors.darkTint3,
   },
   iconStyle: {
     marginRight: 6,

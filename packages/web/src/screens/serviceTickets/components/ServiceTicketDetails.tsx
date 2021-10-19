@@ -7,7 +7,7 @@ import { PopupActions } from 'reactjs-popup/dist/types';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-// import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -96,9 +96,9 @@ const ServiceTicketDetails: React.FC = () => {
       />
     );
   };
-  // const handleQuoteClick = async (url: string): Promise<void> => {
-  //     NavigationService.openNewTab({ path: url });
-  // };
+  const handleQuoteClick = (url: string): void => {
+    NavigationService.openNewTab({ path: url });
+  };
   const renderActivityCard = (): React.ReactElement | null => {
     if (!ticketDetails) return null;
 
@@ -109,7 +109,7 @@ const ServiceTicketDetails: React.FC = () => {
         <TicketActivityCard
           ticketData={ticketDetails}
           isCloseAllowed={isCloseAllowed}
-          // onPressQuote={handleQuoteClick}
+          onPressQuote={handleQuoteClick}
           // onPressImage={(slideNumber: number) => { }}
           containerStyle={styles.containerPropActivity as ViewStyle}
         />

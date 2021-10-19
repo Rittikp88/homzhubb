@@ -20,7 +20,7 @@ export interface ITicketState {
   tickets: ITicket[];
   ticketDetail: ITicket | null;
   invoiceSummary: IInvoiceSummary | null;
-  quoteAttachment: IDocumentSource[];
+  quoteAttachment: IDocumentSource[] | File[];
   quotes: IQuoteGroup[];
   quotesCategory: IQuoteCategory[];
   ticketActions: ITicketAction[];
