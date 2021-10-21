@@ -127,7 +127,7 @@ const getValueAddedService = (state: IState, planId: string): ValueAddedService 
     recordAsset: { valueAddedServices },
   } = state;
 
-  const services = ObjectMapper.deserializeArray(ValueAddedService, valueAddedServices)
+  const services = ObjectMapper.deserializeArray(ValueAddedService, valueAddedServices);
 
   const valueAddedService = services.find((item) => item.valueBundle.id === Number(planId));
   if (valueAddedService) {

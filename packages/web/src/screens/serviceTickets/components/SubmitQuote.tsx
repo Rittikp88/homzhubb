@@ -22,7 +22,6 @@ interface IProps {
 const SubmitQuote: React.FC<IProps> = (props: IProps) => {
   const { onSuccess } = props;
   const dispatch = useDispatch();
-  // const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const attachments = useSelector(TicketSelectors.getQuoteAttachment);
   const quotes = useSelector(TicketSelectors.getQuotes);
   const { quotesCategory, submitQuote } = useSelector(TicketSelectors.getTicketLoaders);

@@ -162,6 +162,10 @@ const ServiceTicketDetails: React.FC = () => {
     onOpenModal();
   };
 
+  const handleActiveTicketAction = (code: TicketActionTypes): void => {
+    setActiveTicketType(code);
+  };
+
   const popupRef = useRef<PopupActions>(null);
   const onOpenModal = (): void => {
     if (popupRef && popupRef.current) {
@@ -190,10 +194,14 @@ const ServiceTicketDetails: React.FC = () => {
       onPressAction(value);
     }
   };
-  const onSuccess = (): void => {
+  const onSuccess = (message?: string): void => {
     onCloseModal();
     dispatch(getTicketDetailAction(ticketId));
-    AlertHelper.success({ message: t('serviceTickets:ticketActionSuccess') });
+    if (message) {
+      AlertHelper.success({ message });
+    } else {
+      AlertHelper.success({ message: t('serviceTickets:ticketActionSuccess') });
+    }
   };
   if (!isLoading && !ticketDetails) {
     return (
@@ -226,6 +234,7 @@ const ServiceTicketDetails: React.FC = () => {
         popupRef={popupRef}
         onCloseModal={onCloseModal}
         onSuccessCallback={onSuccess}
+        handleActiveTicketAction={handleActiveTicketAction}
       />
     </View>
   );

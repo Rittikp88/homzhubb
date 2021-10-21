@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,8 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import RequestQuoteForm from '@homzhub/common/src/components/organisms/ServiceTickets/RequestQuoteForm';
+import ApproveQuote from '@homzhub/web/src/screens/serviceTickets/components/ApproveQuote';
+import RequestMoreQuotes from '@homzhub/web/src/screens/serviceTickets/components/RequestMoreQuotes';
 import SubmitQuote from '@homzhub/web/src/screens/serviceTickets/components/SubmitQuote';
 import { TicketActions as TicketActionTypes } from '@homzhub/common/src/constants/ServiceTickets';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -18,15 +20,24 @@ interface IProps {
   popupRef: React.MutableRefObject<PopupActions | null>;
   activeTicketActionType: TicketActionTypes | null;
   onCloseModal: () => void;
-  handleServiceTicketsAction?: (value: TicketActionTypes) => void;
-  onSuccessCallback: () => void;
+  handleActiveTicketAction?: (value: TicketActionTypes) => void;
+  onSuccessCallback: (message?: string) => void;
 }
 
 const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
   const { t } = useTranslation();
-
-  const { activeTicketActionType, popupRef, onCloseModal, onSuccessCallback } = props;
+  const { activeTicketActionType, popupRef, onCloseModal, onSuccessCallback, handleActiveTicketAction } = props;
+  const [category, setCategory] = useState({
+    id: 0,
+    name: '',
+  });
+  const onRequestMore = (id: number, name: string): void => {
+    setCategory({ id, name });
+    if (handleActiveTicketAction) {
+      handleActiveTicketAction(TicketActionTypes.REQUEST_MORE_QUOTES);
+    }
+  };
 
   const renderActionsPopover = (): React.ReactNode | null => {
     switch (activeTicketActionType) {
@@ -34,6 +45,10 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
         return <RequestQuoteForm onSuccess={onSuccessCallback} />;
       case TicketActionTypes.SUBMIT_QUOTE:
         return <SubmitQuote onSuccess={onSuccessCallback} />;
+      case TicketActionTypes.APPROVE_QUOTE:
+        return <ApproveQuote onSuccess={onSuccessCallback} onRequestMore={onRequestMore} />;
+      case TicketActionTypes.REQUEST_MORE_QUOTES:
+        return <RequestMoreQuotes onSuccess={onSuccessCallback} category={category} />;
       default:
         return null;
     }
@@ -52,6 +67,15 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
         height: '620px',
       },
     },
+    [TicketActionTypes.APPROVE_QUOTE.toString()]: {
+      title: t('serviceTickets:approveQuote'),
+      styles: {
+        height: '620px',
+      },
+    },
+    [TicketActionTypes.REQUEST_MORE_QUOTES.toString()]: {
+      title: t('serviceTickets:moreQuotes'),
+    },
   };
   const ServiceTicketsPopoverType =
     activeTicketActionType && serviceTicketsPopoverTypes[activeTicketActionType?.toString()];
@@ -67,7 +91,7 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
             type="text"
             iconSize={20}
             iconColor={theme.colors.darkTint7}
-            onPress={onCloseModal}
+            onPress={isRequestMore ? onCloseRequestMore : onCloseModal}
             containerStyle={styles.closeButton}
           />
         </View>
@@ -75,6 +99,12 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
         <View style={styles.modalContent}>{renderActionsPopover()}</View>
       </View>
     );
+  };
+  const isRequestMore = activeTicketActionType === TicketActionTypes.REQUEST_MORE_QUOTES;
+  const onCloseRequestMore = (): void => {
+    if (handleActiveTicketAction) {
+      handleActiveTicketAction(TicketActionTypes.APPROVE_QUOTE);
+    }
   };
   return (
     <Popover

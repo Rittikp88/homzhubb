@@ -163,13 +163,7 @@ class TicketActivityCard extends PureComponent<Props> {
 
     const title = code === WORK_UPDATE && data ? data.title : code === PAYMENT_DONE ? t('paymentDone') : label;
     return (
-      <TicketActivitySection
-        role={role}
-        user={user}
-        time={createdAt}
-        label={title}
-        description={comment}
-      >
+      <TicketActivitySection role={role} user={user} time={createdAt} label={title} description={comment}>
         {renderActivityData()}
       </TicketActivitySection>
     );

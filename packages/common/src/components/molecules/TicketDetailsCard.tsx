@@ -110,7 +110,9 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[containerStyle]}>
-      {ticketImages}
+      <View style={styles.ticketImage}>
+        {ticketImages}
+      </View>
       <View style={styles.details}>
         <Badge
           title={priority}
@@ -141,6 +143,10 @@ const styles = StyleSheet.create({
   },
   detailSeparator: {
     marginVertical: 7,
+  },
+  ticketImage: {
+    maxWidth: 650,
+    maxHeight: 300,
   },
   badgeStyle: {
     minWidth: 75,
