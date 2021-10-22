@@ -6,15 +6,14 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import DueList from '@homzhub/mobile/src/components/organisms/DueList';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
+import DueList from '@homzhub/mobile/src/components/organisms/DueList';
 
 const DuesScreen = (): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { goBack } = useNavigation();
-  const dueItems = useSelector(FinancialSelectors.getDueItems);
-  const { dues: dueLoading } = useSelector(FinancialSelectors.getFinancialLoaders);
+  const { dues: dueLoading, deleteDue } = useSelector(FinancialSelectors.getFinancialLoaders);
 
   useFocusEffect(
     useCallback(() => {
@@ -28,13 +27,13 @@ const DuesScreen = (): React.ReactElement => {
       backgroundColor={theme.colors.white}
       headerProps={{
         title: t('assetDashboard:dues'),
-        type: 'secondary',
+        type: 'primary',
         onIconPress: goBack,
       }}
       containerStyle={styles.container}
-      isLoading={dueLoading}
+      isLoading={dueLoading || deleteDue}
     >
-      <DueList dues={dueItems} />
+      <DueList />
     </Screen>
   );
 };

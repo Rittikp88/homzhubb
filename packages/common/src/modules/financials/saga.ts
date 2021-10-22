@@ -19,7 +19,7 @@ import { FinancialTransactions } from '@homzhub/common/src/domain/models/Financi
 import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
+import { IFluxStandardAction, IOnCallback, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import {
   IAddReminderPayload,
   ILedgerMetrics,
@@ -237,6 +237,21 @@ export function* updateDueOrderSummary(action: IFluxStandardAction<IUpdateSummar
   }
 }
 
+export function* deleteDue(action: IFluxStandardAction<IOnCallback>): VoidGenerator {
+  if (!action.payload) return;
+  const { onCallback } = action.payload;
+  try {
+    const dueId = yield select(FinancialSelectors.getCurrentDueId);
+    yield call(LedgerRepository.deleteDue, dueId as number);
+    yield put(FinancialActions.deleteDueSuccess());
+    onCallback(true);
+  } catch (e) {
+    onCallback(false);
+    yield put(FinancialActions.deleteDueFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.GET.TRANSACTIONS, getTransactions);
   yield takeLatest(FinancialActionTypes.GET.DUES, getAllDues);
@@ -251,4 +266,5 @@ export function* watchFinancials() {
   yield takeLatest(FinancialActionTypes.POST.UPDATE_REMINDER, updateReminder);
   yield takeLatest(FinancialActionTypes.GET.DUE_ORDER_SUMMARY, getDueOrderSummary);
   yield takeLatest(FinancialActionTypes.POST.UPDATE_ORDER_SUMMARY, updateDueOrderSummary);
+  yield takeLatest(FinancialActionTypes.POST.DELETE_DUE, deleteDue);
 }

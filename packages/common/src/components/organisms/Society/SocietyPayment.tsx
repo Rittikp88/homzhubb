@@ -31,8 +31,19 @@ const SocietyPayment = ({ handlePayNow, onSetReminder }: IProps): React.ReactEle
   const societyCharges = useSelector(PropertyPaymentSelector.getSocietyCharges);
 
   useEffect(() => {
-    dispatch(PropertyPaymentActions.getSocietyCharges({ id: asset.id }));
+    dispatch(PropertyPaymentActions.getSocietyCharges({ id: asset.id, onCallback }));
   }, []);
+
+  const onCallback = (status: boolean, data?: number): void => {
+    if (status && data) {
+      dispatch(
+        PropertyPaymentActions.setPaymentData({
+          ...paymentData,
+          amount: data,
+        })
+      );
+    }
+  };
 
   const getMonthData = (): ISelectionPicker<string>[] => {
     const { getMonth, getPreviousMonth, getNextMonth } = DateUtils;

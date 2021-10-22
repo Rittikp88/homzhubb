@@ -6,7 +6,7 @@ import { FinancialTransactions, IFinancialTransaction } from '@homzhub/common/sr
 import { GeneralLedgers, IGeneralLedgers } from '@homzhub/common/src/domain/models/GeneralLedgers';
 import { IReminder, Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
-import { IFluxStandardAction, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
+import { IFluxStandardAction, IOnCallback, IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
 import {
   IAddReminderPayload,
@@ -80,6 +80,11 @@ export const FinancialActionTypes = {
     UPDATE_ORDER_SUMMARY: `${actionTypePrefix}UPDATE_ORDER_SUMMARY`,
     UPDATE_ORDER_SUMMARY_SUCCESS: `${actionTypePrefix}UPDATE_ORDER_SUMMARY_SUCCESS`,
     UPDATE_ORDER_SUMMARY_FAILURE: `${actionTypePrefix}UPDATE_ORDER_SUMMARY_FAILURE`,
+
+    // Due
+    DELETE_DUE: `${actionTypePrefix}DELETE_DUE`,
+    DELETE_DUE_SUCCESS: `${actionTypePrefix}DELETE_DUE_SUCCESS`,
+    DELETE_DUE_FAILURE: `${actionTypePrefix}DELETE_DUE_FAILURE`,
   },
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
   RESET_LEDGER_FILTERS: `${actionTypePrefix}RESET_LEDGER_FILTERS`,
@@ -307,6 +312,19 @@ const clearOrderSummary = (): IFluxStandardAction => ({
   type: FinancialActionTypes.CLEAR_ORDER_SUMMARY,
 });
 
+const deleteDue = (payload: IOnCallback): IFluxStandardAction<IOnCallback> => ({
+  type: FinancialActionTypes.POST.DELETE_DUE,
+  payload,
+});
+
+const deleteDueSuccess = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.POST.DELETE_DUE_SUCCESS,
+});
+
+const deleteDueFailure = (): IFluxStandardAction => ({
+  type: FinancialActionTypes.POST.DELETE_DUE_FAILURE,
+});
+
 export type FinancialActionPayloadTypes =
   | IPaginationPayload<FinancialTransactions>
   | IDues
@@ -323,7 +341,8 @@ export type FinancialActionPayloadTypes =
   | IReminderFormData
   | IDueOrderSummary
   | IOrderSummaryPayload
-  | IUpdateSummary;
+  | IUpdateSummary
+  | IOnCallback;
 
 export const FinancialActions = {
   getTransactions,
@@ -375,4 +394,7 @@ export const FinancialActions = {
   updateOderSummarySuccess,
   updateOderSummaryFailure,
   clearOrderSummary,
+  deleteDue,
+  deleteDueSuccess,
+  deleteDueFailure,
 };

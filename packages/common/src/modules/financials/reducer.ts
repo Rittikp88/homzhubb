@@ -59,6 +59,7 @@ export const initialFinancialsState: IFinancialState = {
     reminder: false,
     reminderAsset: false,
     dueOrderSummary: false,
+    deleteDue: false,
   },
 };
 
@@ -230,6 +231,17 @@ export const financialsReducer = (
       return {
         ...state,
         ['dueOrderSummary']: initialFinancialsState.dueOrderSummary,
+      };
+    case FinancialActionTypes.POST.DELETE_DUE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['deleteDue']: true },
+      };
+    case FinancialActionTypes.POST.DELETE_DUE_SUCCESS:
+    case FinancialActionTypes.POST.DELETE_DUE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['deleteDue']: false },
       };
     case FinancialActionTypes.CLEAR_STATE:
       return initialFinancialsState;

@@ -12,22 +12,26 @@ import Accounting from '@homzhub/common/src/assets/images/accounting.svg';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import DueCard from '@homzhub/common/src/components/molecules/DueCard';
 import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
-  dues: DueItem[];
+  numOfDues?: number;
 }
 
-const DueList = ({ dues }: IProps): React.ReactElement => {
+const DueList = ({ numOfDues }: IProps): React.ReactElement => {
   // HOOKS START
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const [isSheetVisible, setSheetVisibility] = useState(false);
+  const [isDeleteView, setDeleteViewVisibility] = useState(false);
   const currentDue = useSelector(FinancialSelectors.getCurrentDue);
+  const dues = useSelector(FinancialSelectors.getDueItems);
+
   // HOOKS END
 
   const handleAlreadyPaid = (): void => {
@@ -70,7 +74,11 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
       if (dueId) {
         dispatch(FinancialActions.setCurrentDueId(dueId));
       }
-      setSheetVisibility(true);
+      if (item.canDelete) {
+        setDeleteViewVisibility(true);
+      } else {
+        setSheetVisibility(true);
+      }
     };
 
     const onPressPayNow = (): void => {
@@ -83,14 +91,28 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
 
   const itemSeparator = (): React.ReactElement => <Divider containerStyles={styles.divider} />;
 
+  const handleCallback = (status: boolean): void => {
+    if (status) {
+      AlertHelper.success({ message: t('assetFinancial:dueDeleteSuccess') });
+      dispatch(FinancialActions.setCurrentDueId(-1));
+      dispatch(FinancialActions.getDues());
+    }
+  };
+
   const onCloseSheet = (): void => {
+    setDeleteViewVisibility(false);
     setSheetVisibility(false);
+  };
+
+  const onDeleteDue = (): void => {
+    dispatch(FinancialActions.deleteDue({ onCallback: handleCallback }));
+    setDeleteViewVisibility(false);
   };
 
   return (
     <>
       <FlatList
-        data={dues}
+        data={numOfDues ? dues.slice(0, numOfDues) : dues}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         scrollEnabled={false}
@@ -98,6 +120,7 @@ const DueList = ({ dues }: IProps): React.ReactElement => {
         ListEmptyComponent={EmptyState}
       />
       <IconSheet isVisible={isSheetVisible} data={getSheetData()} sheetHeight={250} onCloseSheet={onCloseSheet} />
+      <ConfirmationSheet isVisible={isDeleteView} onCloseSheet={onCloseSheet} onPressDelete={onDeleteDue} />
     </>
   );
 };

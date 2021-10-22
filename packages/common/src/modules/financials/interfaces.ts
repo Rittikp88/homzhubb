@@ -44,6 +44,7 @@ export interface IFinancialState {
     reminder: boolean;
     reminderAsset: boolean;
     dueOrderSummary: boolean;
+    deleteDue: boolean;
   };
 }
 

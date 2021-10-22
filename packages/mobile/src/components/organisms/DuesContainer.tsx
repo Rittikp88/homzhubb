@@ -42,7 +42,7 @@ const DuesContainer = (): React.ReactElement | null => {
         rightIconColor={theme.colors.dark}
         onPressRightContent={onSelectViewAll}
       >
-        <DueList dues={dueItems.slice(0, 3)} />
+        <DueList numOfDues={3} />
       </SectionContainer>
     </>
   );

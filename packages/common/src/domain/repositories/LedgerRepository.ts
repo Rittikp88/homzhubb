@@ -24,7 +24,7 @@ const ENDPOINTS = {
   genLedgers: 'v1/general-ledgers/',
   ledger: (id: number): string => `v1/general-ledgers/${id}/`,
   getDues: (): string => 'v1/user-invoices/dues/',
-  getDuesById: (id: number): string => `v1/user-invoices/dues/${id}/`,
+  duesById: (id: number): string => `v1/user-invoices/dues/${id}/`,
   dueOrderPayment: (id: number): string => `v1/user-invoices/dues/${id}/razorpay-orders/`,
   reminders: 'v1/reminders/',
   reminderCategories: 'v1/reminders/reminder-categories/',
@@ -124,13 +124,17 @@ class LedgerRepository {
   };
 
   public getDueOrderSummary = async (id: number): Promise<DueOrderSummary> => {
-    const response = await this.apiClient.get(ENDPOINTS.getDuesById(id));
+    const response = await this.apiClient.get(ENDPOINTS.duesById(id));
     return ObjectMapper.deserialize(DueOrderSummary, response);
   };
 
   public dueOrderSummaryAction = async (id: number, payload: IDueOrderSummaryAction): Promise<DueOrderSummary> => {
     const response = await this.apiClient.put(ENDPOINTS.dueOrderPayment(id), payload);
     return ObjectMapper.deserialize(DueOrderSummary, response);
+  };
+
+  public deleteDue = async (id: number): Promise<void> => {
+    return await this.apiClient.delete(ENDPOINTS.duesById(id));
   };
 }
 

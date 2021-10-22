@@ -47,12 +47,9 @@ const getDues = (state: IState): Dues | null => {
 };
 
 const getDueItems = (state: IState): DueItem[] => {
-  const {
-    financials: { dues },
-  } = state;
-  if (!dues) return [];
-  const deserialisedData = ObjectMapper.deserializeArray(DueItem, dues.line_items);
-  return DateUtils.descendingDateSort(deserialisedData, 'createdAt');
+  const deserialisedDue = getDues(state);
+  if (!deserialisedDue) return [];
+  return DateUtils.descendingDateSort(deserialisedDue.dueItems, 'createdAt');
 };
 
 const getTotalDueAmount = (state: IState): Amount => {
@@ -172,10 +169,12 @@ const getReminderAssets = (state: IState): Asset[] => {
 
 const getCurrentDue = (state: IState): DueItem | null => {
   const {
-    financials: { currentDueId, dues },
+    financials: { currentDueId },
   } = state;
-  if (dues && currentDueId !== -1) {
-    return ObjectMapper.deserialize(DueItem, dues.line_items.filter((i) => i.id === currentDueId)[0]);
+  const dues = getDues(state);
+  if (dues && currentDueId > 0) {
+    const dueItem = dues.dueItems.filter((item) => item.id === currentDueId)[0];
+    return dueItem;
   }
   return null;
 };
