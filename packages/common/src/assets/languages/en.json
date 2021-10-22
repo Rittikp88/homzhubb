@@ -326,7 +326,8 @@
     "amountMsg": "Amount must be greater than zero",
     "addNew": "+ Add New",
     "disclaimer": "Disclaimer",
-    "document": "Document"
+    "document": "Document",
+    "ifscNotFound": "IFSC code not found"
   },
   "auth": {
     "verifyNumber": "Verify your number",

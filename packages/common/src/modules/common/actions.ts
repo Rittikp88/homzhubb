@@ -3,6 +3,7 @@ import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService
 import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationService';
 import { Country, ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { IfscDetail } from '@homzhub/common/src/domain/models/IfscDetail';
 import { Messages } from '@homzhub/common/src/domain/models/Message';
 import { IPillar, Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { IGetMessageParam } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -29,6 +30,7 @@ export const CommonActionTypes = {
     MESSAGE_ATTACHMENT: `${actionTypePrefix}MESSAGE_ATTACHMENT`,
     CURRENT_CHAT: `${actionTypePrefix}CURRENT_CHAT`,
     REVIEW_REFER_DATA: `${actionTypePrefix}REVIEW_REFER_DATA`,
+    IFSC_DETAIL: `${actionTypePrefix}IFSC_DETAIL`,
   },
   CLEAR_MESSAGES: `${actionTypePrefix}CLEAR_MESSAGES`,
   CLEAR_ATTACHMENT: `${actionTypePrefix}CLEAR_ATTACHMENT`,
@@ -120,6 +122,11 @@ const setReviewReferData = (payload: IReviewRefer): IFluxStandardAction<IReviewR
   payload,
 });
 
+const setIfscDetail = (payload: IfscDetail): IFluxStandardAction<IfscDetail> => ({
+  type: CommonActionTypes.SET.IFSC_DETAIL,
+  payload,
+});
+
 export type CommonActionPayloadTypes =
   | ICountry[]
   | IRedirectionDetails
@@ -131,7 +138,8 @@ export type CommonActionPayloadTypes =
   | PillarTypes
   | IPillar[]
   | IReviewRefer
-  | string;
+  | string
+  | IfscDetail;
 
 export const CommonActions = {
   getCountries,
@@ -152,4 +160,5 @@ export const CommonActions = {
   getPillarsSuccess,
   getPillarsFailure,
   setReviewReferData,
+  setIfscDetail,
 };

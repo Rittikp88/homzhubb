@@ -77,6 +77,7 @@ export interface IFormTextInputProps extends TextInputProps {
   optionalText?: string;
   onPressOptional?: () => void;
   optionalStyle?: StyleProp<TextStyle>;
+  extraError?: string;
 }
 
 interface IFormTextInputState {
@@ -138,6 +139,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       labelTextType = 'regular',
       onPressOptional,
       optionalStyle,
+      extraError,
       ...rest
     } = this.props;
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
@@ -261,7 +263,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     }
 
     const error = this.getFieldError();
-    if (error) {
+    if (error || extraError) {
       inputProps.style = { ...inputProps.style, ...theme.form.fieldError };
       labelStyles = { ...labelStyles, color: theme.colors.error };
     }
@@ -275,7 +277,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
 
     return (
       <>
-        <WithFieldError error={error} hideError={hideError}>
+        <WithFieldError error={error || extraError} hideError={hideError}>
           <View style={styles.labels}>
             {label && (
               <View style={styles.labelContainer}>
@@ -301,7 +303,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
             {inputGroupSuffix && <View style={styles.inputGroupSuffix}>{inputGroupSuffix}</View>}
             {!!inputGroupSuffixText && <TextInputSuffix text={inputGroupSuffixText} />}
           </View>
-          {helpText && (
+          {!!helpText && (
             <Label type="small" style={styles.helpText}>
               {helpText}
             </Label>

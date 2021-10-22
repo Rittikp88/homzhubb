@@ -4,6 +4,7 @@ import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationServ
 import { CommonActionPayloadTypes, CommonActionTypes } from '@homzhub/common/src/modules/common/actions';
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { IfscDetail } from '@homzhub/common/src/domain/models/IfscDetail';
 import { IPillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import {
@@ -21,6 +22,7 @@ export const initialCommonState: ICommonState = {
   messages: null,
   currentChatDetail: null,
   pillars: [],
+  ifscDetail: new IfscDetail(),
   redirectionDetails: {
     redirectionLink: '',
     shouldRedirect: false,
@@ -152,6 +154,11 @@ export const commonReducer = (
       return {
         ...state,
         reviewReferData: action.payload as IReviewRefer,
+      };
+    case CommonActionTypes.SET.IFSC_DETAIL:
+      return {
+        ...state,
+        ifscDetail: action.payload as IfscDetail,
       };
     default:
       return {

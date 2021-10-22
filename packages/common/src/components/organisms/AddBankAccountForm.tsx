@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Formik } from 'formik';
+import { Formik, FormikProps } from 'formik';
 import { isEqual } from 'lodash';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
@@ -10,7 +10,10 @@ import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
+import { RazorpayService } from '@homzhub/common/src/services/RazorpayService';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -18,8 +21,10 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { IfscDetail } from '@homzhub/common/src/domain/models/IfscDetail';
 import { PanNumber } from '@homzhub/common/src/domain/models/PanNumber';
 import { IBankAccountPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IfscLength } from '@homzhub/common/src/assets/constants';
 
 interface IOwnProps {
   onSubmit?: () => void;
@@ -47,6 +52,8 @@ const AddBankAccountForm = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [panDetail, setPanDetail] = useState(new PanNumber());
+  const [ifscError, setIfscError] = useState('');
+  const ifscDetail = useSelector(CommonSelectors.getIfscDetail);
   const currentBankId = useSelector(UserSelector.getCurrentBankId);
   const currentBank = useSelector(UserSelector.getCurrentBankAccountSelected);
   const societyBankData = useSelector(PropertyPaymentSelector.getSocietyBankData);
@@ -145,6 +152,18 @@ const AddBankAccountForm = ({
     });
   };
 
+  const onChangeIfsc = async (input: string, formProps: FormikProps<IBankAccount>): Promise<void> => {
+    if (input.length === IfscLength) {
+      const errorPayload = {
+        onError: (error: string): void => setIfscError(error),
+      };
+      await RazorpayService.validateIfsc(input, errorPayload);
+    } else {
+      setIfscError('');
+      dispatch(CommonActions.setIfscDetail(new IfscDetail()));
+    }
+  };
+
   const onFormSubmit = async (values: IBankAccount): Promise<void> => {
     const { beneficiaryName, bankName, bankAccNum, ifscCode, panNumber } = values;
     try {
@@ -195,6 +214,11 @@ const AddBankAccountForm = ({
     }
   };
 
+  const renderIcon = (): React.ReactNode => {
+    if (!ifscDetail.branch) return null;
+    return <Icon name={icons.circularCheckFilled} size={20} color={theme.colors.primaryColor} />;
+  };
+
   return (
     <>
       <View style={styles.infoTextContainer}>
@@ -235,6 +259,11 @@ const AddBankAccountForm = ({
                 label={t('assetFinancial:ifscCode')}
                 placeholder={t('assetFinancial:ifscCode')}
                 fontWeightType="semiBold"
+                helpText={ifscDetail.branch}
+                maxLength={IfscLength}
+                extraError={ifscError}
+                inputGroupSuffix={renderIcon()}
+                onValueChange={(input): Promise<void> => onChangeIfsc(input, formProps)}
               />
               <FormTextInput
                 formProps={formProps}
@@ -274,7 +303,7 @@ const AddBankAccountForm = ({
                   isEditFlow && currentBank ? t('assetFinancial:updateDetails') : t('assetFinancial:addBankAccount')
                 }
                 containerStyle={styles.button}
-                disabled={isEqual(formProps.values, getInitialData())}
+                disabled={isEqual(formProps.values, getInitialData()) || !!ifscError}
               />
             </>
           );

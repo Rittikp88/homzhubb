@@ -4,6 +4,7 @@ import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationServ
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
+import { IfscDetail } from '@homzhub/common/src/domain/models/IfscDetail';
 import { IMessages } from '@homzhub/common/src/domain/models/Message';
 import { Pillar } from '@homzhub/common/src/domain/models/Pillar';
 import { IChatPayload, ICommonState, IReviewRefer } from '@homzhub/common/src/modules/common/interfaces';
@@ -133,6 +134,14 @@ const getReviewReferData = (state: IState): IReviewRefer | null => {
   return reviewReferData;
 };
 
+const getIfscDetail = (state: IState): IfscDetail => {
+  const {
+    common: { ifscDetail },
+  } = state;
+
+  return ifscDetail;
+};
+
 export const CommonSelectors = {
   getCountryList,
   getDefaultPhoneCode,
@@ -148,4 +157,5 @@ export const CommonSelectors = {
   getCommonLoaders,
   getPillars,
   getReviewReferData,
+  getIfscDetail,
 };

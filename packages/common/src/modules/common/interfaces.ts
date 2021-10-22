@@ -1,6 +1,7 @@
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { IRedirectionDetailsWeb } from '@homzhub/web/src/services/NavigationService';
 import { ICountry } from '@homzhub/common/src/domain/models/Country';
+import { IfscDetail } from '@homzhub/common/src/domain/models/IfscDetail';
 import { IMessages, Messages } from '@homzhub/common/src/domain/models/Message';
 import { GroupMessage } from '@homzhub/common/src/domain/models/GroupMessage';
 import { IPillar } from '@homzhub/common/src/domain/models/Pillar';
@@ -15,6 +16,7 @@ export interface ICommonState {
   groupMessages: GroupMessage[] | null;
   pillars: IPillar[];
   reviewReferData: IReviewRefer | null;
+  ifscDetail: IfscDetail;
   loaders: {
     groupMessages: boolean;
     messages: boolean;

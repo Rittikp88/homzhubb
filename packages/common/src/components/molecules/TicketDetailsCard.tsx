@@ -110,9 +110,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[containerStyle]}>
-      <View style={styles.ticketImage}>
-        {ticketImages}
-      </View>
+      <View style={styles.ticketImage}>{ticketImages}</View>
       <View style={styles.details}>
         <Badge
           title={priority}
