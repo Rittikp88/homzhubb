@@ -11,6 +11,8 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import RequestQuoteForm from '@homzhub/common/src/components/organisms/ServiceTickets/RequestQuoteForm';
 import ApproveQuote from '@homzhub/web/src/screens/serviceTickets/components/ApproveQuote';
+import PayLater from '@homzhub/web/src/screens/serviceTickets/components//PayLater';
+import QuotePayment from '@homzhub/web/src/screens/serviceTickets/components/QuotePayment';
 import RequestMoreQuotes from '@homzhub/web/src/screens/serviceTickets/components/RequestMoreQuotes';
 import SubmitQuote from '@homzhub/web/src/screens/serviceTickets/components/SubmitQuote';
 import { TicketActions as TicketActionTypes } from '@homzhub/common/src/constants/ServiceTickets';
@@ -49,6 +51,16 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
         return <ApproveQuote onSuccess={onSuccessCallback} onRequestMore={onRequestMore} />;
       case TicketActionTypes.REQUEST_MORE_QUOTES:
         return <RequestMoreQuotes onSuccess={onSuccessCallback} category={category} />;
+      case TicketActionTypes.QUOTE_PAYMENT:
+        if (handleActiveTicketAction) {
+          return <QuotePayment onSuccess={onSuccessCallback} handleActiveTicketAction={handleActiveTicketAction} />;
+        }
+        return null;
+      case TicketActionTypes.PAY_LATER:
+        if (handleActiveTicketAction) {
+          return <PayLater handleActiveTicketAction={handleActiveTicketAction} />;
+        }
+        return null;
       default:
         return null;
     }
@@ -73,8 +85,8 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
         height: '620px',
       },
     },
-    [TicketActionTypes.REQUEST_MORE_QUOTES.toString()]: {
-      title: t('serviceTickets:moreQuotes'),
+    [TicketActionTypes.QUOTE_PAYMENT.toString()]: {
+      title: t('serviceTickets:quotePayment'),
     },
   };
   const ServiceTicketsPopoverType =
@@ -91,7 +103,7 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
             type="text"
             iconSize={20}
             iconColor={theme.colors.darkTint7}
-            onPress={isRequestMore ? onCloseRequestMore : onCloseModal}
+            onPress={onCloseCustom}
             containerStyle={styles.closeButton}
           />
         </View>
@@ -100,10 +112,16 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
       </View>
     );
   };
-  const isRequestMore = activeTicketActionType === TicketActionTypes.REQUEST_MORE_QUOTES;
-  const onCloseRequestMore = (): void => {
+
+  const onCloseCustom = (): void => {
     if (handleActiveTicketAction) {
-      handleActiveTicketAction(TicketActionTypes.APPROVE_QUOTE);
+      if (activeTicketActionType === TicketActionTypes.REQUEST_MORE_QUOTES) {
+        handleActiveTicketAction(TicketActionTypes.APPROVE_QUOTE);
+      } else if (activeTicketActionType === TicketActionTypes.PAY_LATER) {
+        handleActiveTicketAction(TicketActionTypes.QUOTE_PAYMENT);
+      } else {
+        onCloseModal();
+      }
     }
   };
   return (

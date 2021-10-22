@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
   cardContent: {
     backgroundColor: theme.colors.gray10,
     paddingHorizontal: 16,
-    paddingVertical: 12,
   },
   cardTitle: {
     color: theme.colors.darkTint1,

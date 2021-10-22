@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   collapseCardContent: {
-    backgroundColor: theme.colors.white,
+    backgroundColor: theme.colors.gray10,
     paddingHorizontal: 16,
     paddingVertical: 12,
   },
   collapseCardTitle: {
-    color: theme.colors.darkTint1,
+    color: theme.colors.darkTint4,
   },
   upcomingTitle: {
     marginLeft: 12,

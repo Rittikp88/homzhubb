@@ -19,12 +19,14 @@ import PaymentGatewayWeb from '@homzhub/web/src/components/molecules/PaymentGate
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
 import { DuePaymentActions, InvoiceActions, IPaymentParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { TicketActions as TicketActionTypes } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
-  payLaterSheet: (callback: () => Promise<InvoiceId>, onClose: () => void) => React.ReactElement;
-  onSuccess: () => void;
+  onSuccess: (message?: string) => void;
   setLoader: (value: boolean) => void;
+  payLaterSheet?: (callback: () => Promise<InvoiceId>, onClose: () => void) => React.ReactElement;
+  handleActiveTicketAction?: (value: TicketActionTypes) => void;
 }
 
 interface IRowProp {
@@ -34,7 +36,8 @@ interface IRowProp {
   color?: string;
 }
 
-const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): React.ReactElement => {
+const QuotePaymentForm = (props: IProps): React.ReactElement => {
+  const { payLaterSheet, onSuccess, setLoader, handleActiveTicketAction } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
@@ -72,6 +75,9 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): Reac
 
   const onPayLater = (): void => {
     setPayLater(true);
+    if (PlatformUtils.isWeb() && handleActiveTicketAction) {
+      handleActiveTicketAction(TicketActionTypes.PAY_LATER);
+    }
   };
 
   const onCloseSheet = (): void => {
@@ -82,13 +88,16 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): Reac
     let payload;
     setIsDisabled(true);
     setLoader(true);
+    let paymentSatus: boolean;
     if (paymentParams.razorpay_payment_id) {
+      paymentSatus = true;
       const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = paymentParams;
       payload = {
         action: DuePaymentActions.PAYMENT_CAPTURED,
         payload: { razorpay_order_id, razorpay_payment_id, razorpay_signature },
       };
     } else {
+      paymentSatus = false;
       // Payment cancelled
       const { razorpay_order_id } = paymentParams;
       payload = {
@@ -97,12 +106,16 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): Reac
       };
     }
 
-    dispatch(FinancialActions.processPayment({ data: payload, onCallback: handleCallback }));
+    dispatch(
+      FinancialActions.processPayment({ data: payload, onCallback: (status) => handleCallback(status, paymentSatus) })
+    );
   };
 
-  const handleCallback = (status: boolean): void => {
-    if (status) {
+  const handleCallback = (status: boolean, paymentStatus: boolean): void => {
+    if (status && paymentStatus) {
       onSuccess();
+    } else if (!status && PlatformUtils.isWeb()) {
+      onSuccess(t('serviceTickets:paymentCancelled'));
     } else {
       setIsDisabled(false);
     }
@@ -134,6 +147,8 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): Reac
   };
 
   if (!summary) return <EmptyState />;
+
+  const isPayLaterSheet = !PlatformUtils.isWeb() && payLaterSheet;
 
   return (
     <>
@@ -185,7 +200,7 @@ const QuotePaymentForm = ({ payLaterSheet, onSuccess, setLoader }: IProps): Reac
           </Label>
         </View>
       </View>
-      {isPayLater && payLaterSheet(generateInvoice, onCloseSheet)}
+      {isPayLater && isPayLaterSheet && payLaterSheet(generateInvoice, onCloseSheet)}
     </>
   );
 };
