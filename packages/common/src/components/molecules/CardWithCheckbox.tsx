@@ -12,7 +12,7 @@ import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
-import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { ServiceBundleItems } from '@homzhub/common/src/domain/models/ServiceBundleItems';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IOwnProps extends WithTranslation {
@@ -20,7 +20,7 @@ interface IOwnProps extends WithTranslation {
   image: string;
   price: number;
   discountedPrice: number;
-  bundleItems: Unit[];
+  bundleItems: ServiceBundleItems[];
   selected: boolean;
   onToggle: (value: boolean) => void;
   containerStyle?: StyleProp<ViewStyle>;

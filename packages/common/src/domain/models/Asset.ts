@@ -41,6 +41,11 @@ export enum PropertyStatus {
   PENDING = 'PENDING',
 }
 
+export enum ServiceGroup {
+  CITY = 'CITY',
+  ASSET = 'ASSET',
+}
+
 // ENUM END
 
 export interface ICarpetAreaUnit {
@@ -59,12 +64,12 @@ export interface IAssetSpaces {
 
 export interface IAsset {
   id: number;
-  project_name: string;
-  is_subleased: boolean;
+  project_name?: string;
+  is_subleased?: boolean;
   is_managed?: boolean;
-  unit_number: string;
+  unit_number?: string;
   posted_on?: string;
-  description: string;
+  description?: string;
   block_number: string;
   postal_code: string;
   city_name: string;
@@ -229,13 +234,19 @@ export class Asset {
   @JsonProperty('id', Number)
   private _id = 0;
 
-  @JsonProperty('project_name', String)
+  @JsonProperty('name', String, true)
+  private _name = '';
+
+  @JsonProperty('grouped_by', String, true)
+  private _groupedBy = '';
+
+  @JsonProperty('project_name', String, true)
   private _projectName = '';
 
-  @JsonProperty('unit_number', String)
+  @JsonProperty('unit_number', String, true)
   private _unitNumber = '';
 
-  @JsonProperty('block_number', String)
+  @JsonProperty('block_number', String, true)
   private _blockNumber = '';
 
   @JsonProperty('is_subleased', Boolean, true)
@@ -933,5 +944,13 @@ export class Asset {
 
   get society(): Society | null {
     return this._society;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get groupedBy(): ServiceGroup {
+    return this._groupedBy as ServiceGroup;
   }
 }

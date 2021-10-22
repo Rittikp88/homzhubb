@@ -37,15 +37,19 @@ class RecordAssetRepository {
   };
 
   public getValueAddedServices = async (
-    assetGroupId: number,
-    countryId: number,
-    city: string
+    assetGroupId?: number,
+    countryId?: number,
+    city?: string,
+    isParamRequired?: boolean
   ): Promise<ValueAddedService[]> => {
-    const response = await this.apiClient.get(ENDPOINTS.valueAddedServices, {
-      asset_group: assetGroupId,
-      asset_country: countryId,
-      asset_city: city,
-    });
+    const response = await this.apiClient.get(
+      ENDPOINTS.valueAddedServices,
+      isParamRequired && {
+        asset_group: assetGroupId,
+        asset_country: countryId,
+        asset_city: city,
+      }
+    );
     return ObjectMapper.deserializeArray(ValueAddedService, response);
   };
 }

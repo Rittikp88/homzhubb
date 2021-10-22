@@ -34,6 +34,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
         pageTitle={t('premiumServices')}
         onBackPress={navigation.goBack}
         loading={loading}
+        isGradient
       >
         <ValueAddedServiceCardList
           didLoad={apiDidLoad}
@@ -44,6 +45,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
     );
   };
 
+  // TODO: (Shikha) - Remove params once web changes are done
   const navigateToService = (
     propertyId: number,
     assetType: string,
@@ -54,16 +56,7 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
     badgeInfo: IBadgeInfo,
     amenities: IAmenitiesIcons[]
   ): void => {
-    navigation.navigate(ScreensKeys.ServicesForSelectedAsset, {
-      propertyId,
-      assetType,
-      projectName,
-      address,
-      flag,
-      serviceByIds,
-      badgeInfo,
-      amenities,
-    });
+    navigation.navigate(ScreensKeys.ServicePayment, { propertyId });
   };
 
   return render();

@@ -8,6 +8,7 @@ import { watchPortfolio } from '@homzhub/common/src/modules/portfolio/saga';
 import { watchPropertyPayment } from '@homzhub/common/src/modules/propertyPayment/saga';
 import { watchRecordAsset } from '@homzhub/common/src/modules/recordAsset/saga';
 import { watchSearch } from '@homzhub/common/src/modules/search/saga';
+import { watcService } from '@homzhub/common/src/modules/service/saga';
 import { watchTicket } from '@homzhub/common/src/modules/tickets/saga';
 import { watchUser } from '@homzhub/common/src/modules/user/saga';
 
@@ -23,5 +24,6 @@ export default function* rootSaga(): any {
     watchCommonActions(),
     watchFinancials(),
     watchPropertyPayment(),
+    watcService(),
   ]);
 }

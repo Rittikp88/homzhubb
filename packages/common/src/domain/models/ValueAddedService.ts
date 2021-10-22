@@ -1,11 +1,13 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Currency, ICurrency } from '@homzhub/common/src/domain/models/Currency';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IValueBundle, ValueBundle } from '@homzhub/common/src/domain/models/ValueBundle';
 
 export interface IGetServicesByIds {
-  assetGroupId: number;
-  countryId: number;
-  city: string;
+  assetGroupId?: number;
+  countryId?: number;
+  city?: string;
+  withoutParam?: boolean;
 }
 
 export interface ISelectedValueServices {
@@ -50,6 +52,9 @@ export class ValueAddedService {
   @JsonProperty('value', Boolean, true)
   private _value = false;
 
+  @JsonProperty('asset_city', Unit, true)
+  private _assetCity = null;
+
   get id(): number {
     return this._id;
   }
@@ -92,5 +97,9 @@ export class ValueAddedService {
 
   get isPartial(): boolean {
     return this._isPartial;
+  }
+
+  get assetCity(): Unit | null {
+    return this._assetCity;
   }
 }

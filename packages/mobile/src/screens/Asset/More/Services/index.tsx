@@ -111,7 +111,7 @@ const ServicesDashboard = (): React.ReactElement => {
   };
 
   const onBuyService = (): void => {
-    navigate(ScreensKeys.ValueAddedServices);
+    navigate(ScreensKeys.ServiceSelection);
   };
 
   return (

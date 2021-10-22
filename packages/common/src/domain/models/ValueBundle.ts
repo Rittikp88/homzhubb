@@ -46,6 +46,9 @@ export class ValueBundle extends Unit {
   @JsonProperty('display_order', Number, true)
   private _displayOrder = -1;
 
+  @JsonProperty('is_asset_dependent', Boolean, true)
+  private _isAssetDependent = false;
+
   @JsonProperty('benefits', [ValueUnit], true)
   private _benefits = [new ValueUnit()];
 
@@ -70,5 +73,9 @@ export class ValueBundle extends Unit {
 
   get terms(): ValueUnit[] {
     return this._terms;
+  }
+
+  get isAssetDependent(): boolean {
+    return this._isAssetDependent;
   }
 }

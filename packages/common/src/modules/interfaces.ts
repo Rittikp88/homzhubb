@@ -7,6 +7,7 @@ import { IPortfolioState } from '@homzhub/common/src/modules/portfolio/interface
 import { IPropertyPaymentState } from '@homzhub/common/src/modules/propertyPayment/interfaces';
 import { IRecordAssetState } from '@homzhub/common/src/modules/recordAsset/interface';
 import { ISearchState } from '@homzhub/common/src/modules/search/interface';
+import { IServiceState } from '@homzhub/common/src/modules/service/interface';
 import { ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { IUserState } from '@homzhub/common/src/modules/user/interface';
 
@@ -31,6 +32,7 @@ export interface IState {
   user: IUserState;
   financials: IFinancialState;
   propertyPayment: IPropertyPaymentState;
+  service: IServiceState;
 }
 
 export interface IPaginationPayload<T> {

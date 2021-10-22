@@ -327,6 +327,7 @@
     "addNew": "+ Add New",
     "disclaimer": "Disclaimer",
     "document": "Document",
+    "selectYourCity": "Select your city",
     "ifscNotFound": "IFSC code not found"
   },
   "auth": {
@@ -743,7 +744,10 @@
     "projects": "Projects",
     "belongToProject": "Does your property belong to one of these projects?",
     "propertyNotInProject": "Property not in above projects? Continue",
-    "selectPayee": "Select Payee"
+    "selectPayee": "Select Payee",
+    "serviceSelection": "Service Selection",
+    "addOnService": "Add-on Services",
+    "selectCityForService": "Please select city for services"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

@@ -10,10 +10,10 @@ import { RecordAssetRepository } from '@homzhub/common/src/domain/repositories/R
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
-import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
-import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { IGetServicesByIds, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 
-export function* getAssetPlanList() {
+export function* getAssetPlanList(): VoidGenerator {
   try {
     const data = yield call(ServiceRepository.getAssetPlans);
     yield put(RecordAssetActions.getAssetPlanListSuccess(data));
@@ -24,7 +24,7 @@ export function* getAssetPlanList() {
   }
 }
 
-export function* getAssetGroups() {
+export function* getAssetGroups(): VoidGenerator {
   try {
     const data = yield call(AssetRepository.getAssetGroups);
     yield put(RecordAssetActions.getAssetGroupsSuccess(data));
@@ -35,11 +35,11 @@ export function* getAssetGroups() {
   }
 }
 
-export function* getAssetById() {
+export function* getAssetById(): VoidGenerator {
   try {
     const assetId = yield select(RecordAssetSelectors.getCurrentAssetId);
     if (assetId > 0) {
-      const data = yield call(AssetRepository.getAssetById, assetId);
+      const data = yield call(AssetRepository.getAssetById, assetId as number);
       yield put(RecordAssetActions.getAssetByIdSuccess(data));
     } else {
       AlertHelper.error({ message: I18nService.t('property:assetIdWarning') });
@@ -51,7 +51,7 @@ export function* getAssetById() {
   }
 }
 
-export function* getMaintenanceUnits() {
+export function* getMaintenanceUnits(): VoidGenerator {
   try {
     const data = yield call(CommonRepository.getMaintenanceUnits);
     yield put(RecordAssetActions.getMaintenanceUnitsSuccess(data));
@@ -61,7 +61,7 @@ export function* getMaintenanceUnits() {
   }
 }
 
-export function* getValueAddedServices(action: IFluxStandardAction<IGetServicesByIds>) {
+export function* getValueAddedServices(action: IFluxStandardAction<IGetServicesByIds>): VoidGenerator {
   const { payload } = action;
   let assetGroupId = yield select(RecordAssetSelectors.getAssetGroupId);
   let countryId = yield select(RecordAssetSelectors.getCountryId);
@@ -74,8 +74,10 @@ export function* getValueAddedServices(action: IFluxStandardAction<IGetServicesB
   }
 
   try {
-    const data = yield call(RecordAssetRepository.getValueAddedServices, assetGroupId, countryId, city);
-    yield put(RecordAssetActions.getValueAddedServicesSuccess(data));
+    const data = payload?.withoutParam
+      ? yield call(RecordAssetRepository.getValueAddedServices)
+      : yield call(RecordAssetRepository.getValueAddedServices, assetGroupId, countryId, city, true);
+    yield put(RecordAssetActions.getValueAddedServicesSuccess(data as ValueAddedService[]));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error, statusCode: e.details.statusCode });

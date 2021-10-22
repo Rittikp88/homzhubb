@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { isEqual } from 'lodash';
 import { connect } from 'react-redux';
@@ -44,12 +44,13 @@ import { IFinancialState, IProcessPaymentPayload } from '@homzhub/common/src/mod
 interface IPaymentProps {
   valueAddedServices: ValueAddedService[];
   setValueAddedServices: (payload: ISelectedValueServices) => void;
-  propertyId: number;
+  propertyId?: number;
   handleNextStep: () => void;
   goBackToService?: () => void;
   typeOfPlan?: TypeOfPlan;
   lastVisitedStep?: ILastVisitedStep;
   isFromListing?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 interface IPaymentState {
@@ -99,13 +100,13 @@ class PropertyPayment extends Component<Props, IPaymentState> {
 
   public render(): React.ReactNode {
     const { isCoinApplied, orderSummary, isPromoFailed, isLoading } = this.state;
-    const { t, isTablet, financialLoaders } = this.props;
+    const { t, isTablet, financialLoaders, containerStyle } = this.props;
 
     if (PlatformUtils.isWeb() && orderSummary.amountPayable < 1) {
       return this.renderServices(true);
     }
     return (
-      <View style={[styles.container, PlatformUtils.isWeb() && !isTablet && styles.containerWeb]}>
+      <View style={[styles.container, PlatformUtils.isWeb() && !isTablet && styles.containerWeb, containerStyle]}>
         {this.renderServices()}
         <HomzhubCoins
           disabled={orderSummary.coins?.currentBalance <= 0 || orderSummary.promo?.promoApplied}
@@ -259,7 +260,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
       data: payload,
       onCallback: async (status) => {
         if (status && paymentParams.razorpay_order_id) {
-          if (lastVisitedStep && typeOfPlan) {
+          if (lastVisitedStep && typeOfPlan && propertyId) {
             const updateAssetPayload: IUpdateAssetParams = {
               last_visited_step: {
                 ...lastVisitedStep,

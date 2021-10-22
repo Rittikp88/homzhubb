@@ -9,7 +9,7 @@ import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
 import ServiceCard from '@homzhub/mobile/src/components/molecules/ServiceCard';
-import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { Asset, ServiceGroup } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ServiceOption } from '@homzhub/common/src/constants/Services';
 
@@ -21,7 +21,8 @@ interface IProps {
 const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
-  const { valueAddedServices, assetStatusInfo } = data;
+  const { valueAddedServices, assetStatusInfo, groupedBy, name } = data;
+  const isGroupedByAsset = groupedBy === ServiceGroup.ASSET;
 
   const getMenuOptions = (attachmentLength: number, isUploadAllowed: boolean): IMenu[] => {
     const options = [{ label: t('property:downloadInvoice'), value: ServiceOption.DOWNLOAD_INVOICE }];
@@ -45,8 +46,19 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
     <View style={styles.container}>
       <TouchableOpacity disabled={isExpanded} onPress={(): void => setIsExpanded(!isExpanded)}>
         <>
-          <TouchableOpacity onPress={(): void => setIsExpanded(!isExpanded)} style={styles.header}>
+          <TouchableOpacity
+            onPress={(): void => setIsExpanded(!isExpanded)}
+            style={[styles.header, !isGroupedByAsset && styles.groupStyle]}
+          >
             <View style={styles.headerLeft}>
+              {!isGroupedByAsset && (
+                <>
+                  {/* TODO: (Shikha) - Add Flag */}
+                  <Text type="regular" textType="semiBold">
+                    {name}
+                  </Text>
+                </>
+              )}
               {assetStatusInfo && <Badge title={assetStatusInfo.tag.label} badgeColor={assetStatusInfo.tag.color} />}
               <Icon name={icons.roundFilled} color={theme.colors.darkTint7} size={10} style={styles.separatorIcon} />
               <Icon name={icons.service} size={16} color={theme.colors.primaryColor} />
@@ -56,14 +68,16 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
             </View>
             <Icon name={isExpanded ? icons.upArrow : icons.downArrow} size={16} color={theme.colors.primaryColor} />
           </TouchableOpacity>
-          <PropertyCard
-            asset={data}
-            isExpanded={isExpanded}
-            isPriceVisible={false}
-            isShieldVisible={false}
-            isIcon={false}
-            containerStyle={styles.propertyCard}
-          />
+          {isGroupedByAsset && (
+            <PropertyCard
+              asset={data}
+              isExpanded={isExpanded}
+              isPriceVisible={false}
+              isShieldVisible={false}
+              isIcon={false}
+              containerStyle={styles.propertyCard}
+            />
+          )}
           {isExpanded && (
             <>
               <Text type="small" textType="semiBold" style={styles.serviceHeading}>
@@ -120,5 +134,8 @@ const styles = StyleSheet.create({
   count: {
     color: theme.colors.primaryColor,
     marginHorizontal: 4,
+  },
+  groupStyle: {
+    marginBottom: 20,
   },
 });

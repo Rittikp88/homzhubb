@@ -5,6 +5,7 @@ import { AssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { PlatformPlans } from '@homzhub/common/src/domain/models/PlatformPlan';
 import { ServiceManagement } from '@homzhub/common/src/domain/models/ServiceManagement';
 import { ServicePlans } from '@homzhub/common/src/domain/models/ServicePlans';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 
 const ENDPOINTS = {
@@ -12,7 +13,8 @@ const ENDPOINTS = {
   getServiceValueBundles: (): string => 'v1/value-bundles/',
   getServicePlatformPlans: (): string => 'v1/service-plans/',
   managementTab: 'v1/value-added-services/management-tab/',
-  services: 'v1/value-added-services/user-services/',
+  services: 'v2/value-added-services/user-services/',
+  serviceCities: 'v1/value-bundles/cities/',
 };
 
 class ServiceRepository {
@@ -45,6 +47,11 @@ class ServiceRepository {
   public getUserServices = async (): Promise<Asset[]> => {
     const response = await this.apiClient.get(ENDPOINTS.services);
     return ObjectMapper.deserializeArray(Asset, response);
+  };
+
+  public getServiceCities = async (): Promise<Unit[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.serviceCities);
+    return ObjectMapper.deserializeArray(Unit, response);
   };
 }
 
