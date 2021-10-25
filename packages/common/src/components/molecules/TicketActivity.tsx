@@ -21,6 +21,7 @@ import { TicketActivitySection } from '@homzhub/common/src/components/HOC/Ticket
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { Ticket, TicketStatus } from '@homzhub/common/src/domain/models/Ticket';
 import { TicketActivity } from '@homzhub/common/src/domain/models/TicketActivity';
+import { TicketActions as TicketActionTypes } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
@@ -29,6 +30,8 @@ interface IProps {
   onPressImage?: (imageNumber: number) => void;
   onPressQuote?: (url: string) => Promise<void> | void;
   containerStyle?: StyleProp<ViewStyle>;
+  onOpenModal?: () => void;
+  handleActiveTicketAction?: (value: TicketActionTypes) => void;
 }
 
 interface IDispatchProps {
@@ -52,7 +55,15 @@ class TicketActivityCard extends PureComponent<Props> {
   };
 
   public render(): React.ReactNode {
-    const { t, ticketData, closeTicket, isCloseAllowed = false, containerStyle } = this.props;
+    const {
+      t,
+      ticketData,
+      closeTicket,
+      isCloseAllowed = false,
+      containerStyle,
+      onOpenModal,
+      handleActiveTicketAction,
+    } = this.props;
     const { showConfirmationSheet } = this.state;
     const { groupedActivities, status } = ticketData;
 
@@ -62,6 +73,15 @@ class TicketActivityCard extends PureComponent<Props> {
     };
 
     const isWeb = PlatformUtils.isWeb();
+
+    const onCloseTicket = (): void => {
+      if (isWeb && onOpenModal && handleActiveTicketAction) {
+        handleActiveTicketAction(TicketActionTypes.CLOSE_TICKET);
+        onOpenModal();
+      } else {
+        this.openSheet();
+      }
+    };
 
     return (
       <View style={[styles.activityView, containerStyle]}>
@@ -83,7 +103,7 @@ class TicketActivityCard extends PureComponent<Props> {
               icon={icons.tickInsideCircle}
               iconSize={20}
               iconColor={theme.colors.blue}
-              onPress={this.openSheet}
+              onPress={onCloseTicket}
             >
               <Text type="small" textType="regular" style={styles.closeTicketText}>
                 {t('closeTicket')}

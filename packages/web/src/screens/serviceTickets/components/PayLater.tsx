@@ -62,7 +62,7 @@ const PayLater: React.FC<IProps> = (props: IProps): React.ReactElement => {
           title={buttonTitles[0]}
           onPress={onClose}
           titleStyle={styles.buttonTitle}
-          containerStyle={styles.cancelButton}
+          containerStyle={[styles.buttonGenric, styles.cancelButton]}
         />
         <Button
           type="primary"
@@ -70,7 +70,7 @@ const PayLater: React.FC<IProps> = (props: IProps): React.ReactElement => {
           titleStyle={styles.buttonTitle}
           onPress={generateInvoice}
           // @ts-ignore
-          containerStyle={[styles.primaryButtonStyle]}
+          containerStyle={[styles.buttonGenric, styles.primaryButtonStyle]}
         />
       </View>
     </View>
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 20,
+    justifyContent: 'space-around',
   },
   cancelButton: {
     marginLeft: 10,
@@ -100,5 +101,10 @@ const styles = StyleSheet.create({
   message: {
     textAlign: 'center',
     marginVertical: 10,
+  },
+  buttonGenric: {
+    width: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

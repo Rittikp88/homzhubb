@@ -11,9 +11,11 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import RequestQuoteForm from '@homzhub/common/src/components/organisms/ServiceTickets/RequestQuoteForm';
 import ApproveQuote from '@homzhub/web/src/screens/serviceTickets/components/ApproveQuote';
+import CloseTicket from '@homzhub/web/src/screens/serviceTickets/components/CloseTicket';
 import PayLater from '@homzhub/web/src/screens/serviceTickets/components//PayLater';
 import QuotePayment from '@homzhub/web/src/screens/serviceTickets/components/QuotePayment';
 import ReassignTicket from '@homzhub/web/src/screens/serviceTickets/components/ReassignTicket';
+import RejectTicket from '@homzhub/web/src/screens/serviceTickets/components/RejectTicket';
 import RequestMoreQuotes from '@homzhub/web/src/screens/serviceTickets/components/RequestMoreQuotes';
 import SubmitQuote from '@homzhub/web/src/screens/serviceTickets/components/SubmitQuote';
 import UpdateWorkStatus from '@homzhub/web/src/screens/serviceTickets/components/UpdateWorkStatus';
@@ -72,6 +74,10 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
         return <View />;
       case TicketActionTypes.SEND_UPDATES:
         return <UpdateWorkStatus onSuccess={onSuccessCallback} />;
+      case TicketActionTypes.REJECT_TICKET:
+        return <RejectTicket onSuccess={onSuccessCallback} />;
+      case TicketActionTypes.CLOSE_TICKET:
+        return <CloseTicket onCloseModal={onCloseModal} />;
       default:
         return null;
     }
@@ -99,6 +105,9 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
     [TicketActionTypes.QUOTE_PAYMENT.toString()]: {
       title: t('serviceTickets:quotePayment'),
     },
+    [TicketActionTypes.PAY_LATER.toString()]: {
+      title: t('serviceTickets:payLater'),
+    },
     [TicketActionTypes.REASSIGN_TICKET.toString()]: {
       title: t('serviceTickets:reassignRequest'),
     },
@@ -110,6 +119,12 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
     },
     [TicketActionTypes.SEND_UPDATES.toString()]: {
       title: t('serviceTickets:sendUpdates'),
+    },
+    [TicketActionTypes.REJECT_TICKET.toString()]: {
+      title: t('serviceTickets:rejectRequest'),
+    },
+    [TicketActionTypes.CLOSE_TICKET.toString()]: {
+      title: t('serviceTickets:closeTicket'),
     },
   };
   const ServiceTicketsPopoverType =

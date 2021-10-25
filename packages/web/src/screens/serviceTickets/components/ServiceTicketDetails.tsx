@@ -6,7 +6,6 @@ import { useHistory } from 'react-router';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
@@ -92,7 +91,7 @@ const ServiceTicketDetails: React.FC = () => {
         ticketData={ticketDetails}
         ticketImages={renderCarousel(ticketDetails)}
         renderRatingForm={renderRatingSheet}
-        successCallback={FunctionUtils.noop}
+        successCallback={onSuccess}
       />
     );
   };
@@ -110,8 +109,10 @@ const ServiceTicketDetails: React.FC = () => {
           ticketData={ticketDetails}
           isCloseAllowed={isCloseAllowed}
           onPressQuote={handleQuoteClick}
-          // onPressImage={(slideNumber: number) => { }}
           containerStyle={styles.containerPropActivity as ViewStyle}
+          onOpenModal={onOpenModal}
+          handleActiveTicketAction={handleActiveTicketAction}
+          // onPressImage={(slideNumber: number) => { }}
         />
       </View>
     );
@@ -158,7 +159,6 @@ const ServiceTicketDetails: React.FC = () => {
 
   const [activeTicketType, setActiveTicketType] = useState<TicketActionTypes | null>(null);
   const onPressAction = (code: TicketActionTypes): void => {
-    console.log('Code => ', code);
     setActiveTicketType(code);
     onOpenModal();
   };
