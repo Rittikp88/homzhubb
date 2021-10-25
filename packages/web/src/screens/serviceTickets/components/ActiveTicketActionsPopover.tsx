@@ -13,8 +13,11 @@ import RequestQuoteForm from '@homzhub/common/src/components/organisms/ServiceTi
 import ApproveQuote from '@homzhub/web/src/screens/serviceTickets/components/ApproveQuote';
 import PayLater from '@homzhub/web/src/screens/serviceTickets/components//PayLater';
 import QuotePayment from '@homzhub/web/src/screens/serviceTickets/components/QuotePayment';
+import ReassignTicket from '@homzhub/web/src/screens/serviceTickets/components/ReassignTicket';
 import RequestMoreQuotes from '@homzhub/web/src/screens/serviceTickets/components/RequestMoreQuotes';
 import SubmitQuote from '@homzhub/web/src/screens/serviceTickets/components/SubmitQuote';
+import UpdateWorkStatus from '@homzhub/web/src/screens/serviceTickets/components/UpdateWorkStatus';
+import WorkInitiated from '@homzhub/web/src/screens/serviceTickets/components/WorkInitiated';
 import { TicketActions as TicketActionTypes } from '@homzhub/common/src/constants/ServiceTickets';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
@@ -61,6 +64,14 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
           return <PayLater handleActiveTicketAction={handleActiveTicketAction} />;
         }
         return null;
+      case TicketActionTypes.REASSIGN_TICKET:
+        return <ReassignTicket onSuccess={onSuccessCallback} />;
+      case TicketActionTypes.INITIATE_WORK:
+        return <WorkInitiated onSuccess={onSuccessCallback} />;
+      case TicketActionTypes.WORK_COMPLETED:
+        return <View />;
+      case TicketActionTypes.SEND_UPDATES:
+        return <UpdateWorkStatus onSuccess={onSuccessCallback} />;
       default:
         return null;
     }
@@ -87,6 +98,18 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
     },
     [TicketActionTypes.QUOTE_PAYMENT.toString()]: {
       title: t('serviceTickets:quotePayment'),
+    },
+    [TicketActionTypes.REASSIGN_TICKET.toString()]: {
+      title: t('serviceTickets:reassignRequest'),
+    },
+    [TicketActionTypes.INITIATE_WORK.toString()]: {
+      title: t('serviceTickets:workInitiated'),
+    },
+    [TicketActionTypes.WORK_COMPLETED.toString()]: {
+      title: t('serviceTickets:workCompleted'),
+    },
+    [TicketActionTypes.SEND_UPDATES.toString()]: {
+      title: t('serviceTickets:sendUpdates'),
     },
   };
   const ServiceTicketsPopoverType =

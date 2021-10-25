@@ -37,9 +37,6 @@ const QuotePayment: React.FC<IProps> = (props: IProps): React.ReactElement => {
 export default QuotePayment;
 
 const styles = StyleSheet.create({
-  button: {
-    backgroundColor: theme.colors.primaryColor,
-  },
   title: {
     color: theme.colors.darkTint1,
   },

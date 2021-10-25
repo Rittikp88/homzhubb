@@ -158,6 +158,7 @@ const ServiceTicketDetails: React.FC = () => {
 
   const [activeTicketType, setActiveTicketType] = useState<TicketActionTypes | null>(null);
   const onPressAction = (code: TicketActionTypes): void => {
+    console.log('Code => ', code);
     setActiveTicketType(code);
     onOpenModal();
   };
@@ -189,10 +190,7 @@ const ServiceTicketDetails: React.FC = () => {
     }
   };
   const onSelectItem = (value: TicketActionTypes): void => {
-    const { REQUEST_QUOTE, SUBMIT_QUOTE } = TicketActionTypes;
-    if (value === REQUEST_QUOTE || value === SUBMIT_QUOTE) {
-      onPressAction(value);
-    }
+    onPressAction(value);
   };
   const onSuccess = (message?: string): void => {
     onCloseModal();
