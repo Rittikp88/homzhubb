@@ -175,7 +175,7 @@ const AddBankAccountForm = ({
         bank_name: bankName,
         account_number: bankAccNum,
         pan_number: panNumber && panNumber.length > 0 ? panNumber : undefined,
-        ifsc_code: ifscCode,
+        ifsc_code: ifscCode.toUpperCase(),
       } as IBankAccountPayload;
 
       // Handle bank account addition flow for society
@@ -185,7 +185,7 @@ const AddBankAccountForm = ({
             beneficiary_name: beneficiaryName,
             bank_name: bankName,
             account_number: bankAccNum,
-            ifsc_code: ifscCode,
+            ifsc_code: ifscCode.toUpperCase(),
           })
         );
         onSubmit();
@@ -202,6 +202,7 @@ const AddBankAccountForm = ({
         }
         AlertHelper.success({ message: t('assetFinancial:addBankDetailsSuccess') });
       }
+      dispatch(CommonActions.clearIfscDetail());
       if (setLoading) {
         setLoading(false);
       }

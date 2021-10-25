@@ -325,7 +325,10 @@
     "repeat": "Repeat",
     "amountMsg": "Amount must be greater than zero",
     "addNew": "+ Add New",
-    "disclaimer": "Disclaimer"
+    "disclaimer": "Disclaimer",
+    "document": "Document",
+    "selectYourCity": "Select your city",
+    "ifscNotFound": "IFSC code not found"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -741,7 +744,10 @@
     "projects": "Projects",
     "belongToProject": "Does your property belong to one of these projects?",
     "propertyNotInProject": "Property not in above projects? Continue",
-    "selectPayee": "Select Payee"
+    "selectPayee": "Select Payee",
+    "serviceSelection": "Service Selection",
+    "addOnService": "Add-on Services",
+    "selectCityForService": "Please select city for services"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -1062,7 +1068,8 @@
     "bankAccountActivationSuccess": "Bank Account activated successfully",
     "bankAccountCantBeDeactivated": "This Account cannot be deactivated",
     "bankAccountDeleteConfirmation": "Are you sure you want to delete this bank account?",
-    "setReminder": "Set Reminder"
+    "setReminder": "Set Reminder",
+    "dueDeleteSuccess": "Due deleted Successfully"
   },
   "assetMore": {
     "more": "More",
@@ -1413,7 +1420,9 @@
     "moreQuotes": "Request for more quotes",
     "moreQuoteSuccess": "More Quotes requested successfully",
     "requestForMore": "Request for more",
-    "inviteMorePartner": "Invite More Service Partners"
+    "inviteMorePartner": "Invite More Service Partners",
+    "ticketDetailsTitle": "Ticket Details",
+    "ticketActionSuccess": "Service request action completed Successfully"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

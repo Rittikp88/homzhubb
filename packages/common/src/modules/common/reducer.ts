@@ -160,6 +160,11 @@ export const commonReducer = (
         ...state,
         ifscDetail: action.payload as IfscDetail,
       };
+    case CommonActionTypes.CLEAR_IFSC_DETAIL:
+      return {
+        ...state,
+        ifscDetail: initialCommonState.ifscDetail,
+      };
     default:
       return {
         ...state,

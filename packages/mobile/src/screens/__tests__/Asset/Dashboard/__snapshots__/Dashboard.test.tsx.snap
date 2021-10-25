@@ -28,6 +28,9 @@ exports[`Dashboard Screen should render snapshot 1`] = `
       onPressServiceTickets={[Function]}
       serviceTickets={0}
     />
+    <WelcomeCard
+      handlePress={[Function]}
+    />
     <Connect(withI18nextTranslation(FinanceOverview)) />
     <withI18nextTranslation(AssetMarketTrends)
       isDashboard={true}

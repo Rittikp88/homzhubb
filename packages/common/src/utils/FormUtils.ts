@@ -17,7 +17,7 @@ class FormUtils {
 
   public emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
-  public isfcRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+  public isfcRegex = /^[a-zA-Z]{4}0[a-zA-Z0-9]{6}$/;
 
   public panRegex = /[A-Z]{3}[ABCFGHLJPTF]{1}[A-Z]{1}[0-9]{4}[A-Z]{1}/;
 

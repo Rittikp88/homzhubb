@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import AddBankAccountForm from '@homzhub/common/src/components/organisms/AddBankAccountForm';
@@ -15,8 +16,15 @@ const AddBankAccount = (): React.ReactElement => {
   const { id } = useSelector(UserSelector.getUserProfile);
   const [isLoading, setLoading] = useState(false);
   const { params } = useRoute();
+  const dispatch = useDispatch();
   const navParams = params as IAddBankAccount;
   const userId = navParams && navParams.id && navParams.id > 0 ? navParams.id : id;
+
+  useEffect(() => {
+    return (): void => {
+      dispatch(CommonActions.clearIfscDetail());
+    };
+  }, []);
 
   return (
     <Screen

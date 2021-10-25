@@ -10,7 +10,7 @@ import { IServicesForSelectAssetParams, ScreensKeys } from '@homzhub/mobile/src/
 
 export type ServiceNavigatorParamList = {
   [ScreensKeys.ServicesDashboard]: undefined | { isFromNavigation: boolean };
-  [ScreensKeys.ValueAddedServices]: undefined;
+  [ScreensKeys.ValueAddedServices]: undefined | { city: string };
   [ScreensKeys.ServicesForSelectedAsset]: IServicesForSelectAssetParams;
   [ScreensKeys.ServiceSelection]: undefined;
   [ScreensKeys.ServicePayment]: { propertyId: number; address: string } | undefined;

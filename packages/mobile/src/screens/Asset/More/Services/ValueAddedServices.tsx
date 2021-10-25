@@ -12,7 +12,10 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 type IProps = NavigationScreenProps<MoreStackNavigatorParamList, ScreensKeys.ValueAddedServices>;
 
 export const ValueAddedServices = (props: IProps): ReactElement => {
-  const { navigation } = props;
+  const {
+    navigation,
+    route: { params },
+  } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
 
   // Local States
@@ -35,11 +38,13 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
         onBackPress={navigation.goBack}
         loading={loading}
         isGradient
+        isBackgroundRequired
       >
         <ValueAddedServiceCardList
           didLoad={apiDidLoad}
           navigateToAddPropertyScreen={navigateToAddPropertyScreen}
           navigateToService={navigateToService}
+          selectedCity={params?.city}
         />
       </UserScreen>
     );

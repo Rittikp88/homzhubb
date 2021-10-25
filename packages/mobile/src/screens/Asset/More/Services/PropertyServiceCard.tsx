@@ -21,7 +21,13 @@ interface IProps {
 const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactElement => {
   const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(false);
-  const { valueAddedServices, assetStatusInfo, groupedBy, name } = data;
+  const {
+    valueAddedServices,
+    assetStatusInfo,
+    groupedBy,
+    name,
+    country: { flag },
+  } = data;
   const isGroupedByAsset = groupedBy === ServiceGroup.ASSET;
 
   const getMenuOptions = (attachmentLength: number, isUploadAllowed: boolean): IMenu[] => {
@@ -53,7 +59,8 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
             <View style={styles.headerLeft}>
               {!isGroupedByAsset && (
                 <>
-                  {/* TODO: (Shikha) - Add Flag */}
+                  <View style={styles.flagContainer}>{flag}</View>
+
                   <Text type="regular" textType="semiBold">
                     {name}
                   </Text>
@@ -137,5 +144,8 @@ const styles = StyleSheet.create({
   },
   groupStyle: {
     marginBottom: 20,
+  },
+  flagContainer: {
+    marginRight: 14,
   },
 });

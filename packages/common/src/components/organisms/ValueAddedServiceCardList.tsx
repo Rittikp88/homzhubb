@@ -42,11 +42,12 @@ interface IProps {
   ) => void;
 
   navigateToAddPropertyScreen: () => void;
+  selectedCity?: string;
 }
 
 export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
-  const { navigateToAddPropertyScreen, navigateToService, didLoad } = props;
+  const { navigateToAddPropertyScreen, navigateToService, didLoad, selectedCity } = props;
 
   // Local States
   const [activeSlide, setActiveSlide] = useState(0);
@@ -59,7 +60,11 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
   useEffect(() => {
     try {
       AssetRepository.getValueServicesAssetList().then((data: Asset[]) => {
-        setAssets(data);
+        let filteredAsset = data;
+        if (selectedCity) {
+          filteredAsset = data.filter((item) => item.city === selectedCity);
+        }
+        setAssets(filteredAsset);
         didLoad();
       });
     } catch (e) {

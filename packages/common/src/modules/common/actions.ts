@@ -35,6 +35,7 @@ export const CommonActionTypes = {
   CLEAR_MESSAGES: `${actionTypePrefix}CLEAR_MESSAGES`,
   CLEAR_ATTACHMENT: `${actionTypePrefix}CLEAR_ATTACHMENT`,
   CLEAR_CHAT_DETAIL: `${actionTypePrefix}CLEAR_CHAT_DETAIL`,
+  CLEAR_IFSC_DETAIL: `${actionTypePrefix}CLEAR_IFSC_DETAIL`,
 };
 
 const getCountries = (): IFluxStandardAction => ({
@@ -127,6 +128,10 @@ const setIfscDetail = (payload: IfscDetail): IFluxStandardAction<IfscDetail> => 
   payload,
 });
 
+const clearIfscDetail = (): IFluxStandardAction => ({
+  type: CommonActionTypes.CLEAR_IFSC_DETAIL,
+});
+
 export type CommonActionPayloadTypes =
   | ICountry[]
   | IRedirectionDetails
@@ -161,4 +166,5 @@ export const CommonActions = {
   getPillarsFailure,
   setReviewReferData,
   setIfscDetail,
+  clearIfscDetail,
 };

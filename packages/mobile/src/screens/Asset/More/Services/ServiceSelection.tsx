@@ -66,11 +66,13 @@ const ServiceSelection = (): React.ReactElement => {
   const onContinue = (): void => {
     const cityAsset = assets.filter((item) => item.city === selectedCity);
     if (cityAsset.length > 0) {
-      navigate(ScreensKeys.ValueAddedServices);
+      navigate(ScreensKeys.ValueAddedServices, { city: selectedCity });
     } else {
       navigate(ScreensKeys.ServicePayment);
     }
   };
+
+  const isDisabled = !valueAddedServices.filter((item) => item.value).length;
 
   return (
     <>
@@ -101,7 +103,13 @@ const ServiceSelection = (): React.ReactElement => {
         )}
       </UserScreen>
       <WithShadowView outerViewStyle={styles.shadowView}>
-        <Button type="primary" title={t('continue')} containerStyle={styles.button} onPress={onContinue} />
+        <Button
+          type="primary"
+          title={t('continue')}
+          containerStyle={styles.button}
+          disabled={isDisabled}
+          onPress={onContinue}
+        />
       </WithShadowView>
     </>
   );

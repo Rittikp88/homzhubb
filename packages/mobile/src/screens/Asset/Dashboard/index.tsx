@@ -35,6 +35,7 @@ import {
 import AssetMarketTrends from '@homzhub/mobile/src/components/molecules/AssetMarketTrends';
 import IconSheet, { ISheetData } from '@homzhub/mobile/src/components/molecules/IconSheet';
 import UserSubscriptionPlan from '@homzhub/common/src/components/molecules/UserSubscriptionPlan';
+import WelcomeCard from '@homzhub/common/src/components/molecules/WelcomeCard';
 import FinanceOverview from '@homzhub/mobile/src/components/organisms/FinanceOverview';
 import LeasePropertyList from '@homzhub/mobile/src/components/organisms/LeasePropertyList';
 import PendingPropertyListCard from '@homzhub/mobile/src/components/organisms/PendingPropertyListCard';
@@ -136,6 +137,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
               onViewProperty={this.onViewProperty}
             />
           )}
+          {!metrics?.metricValues?.assets?.count && <WelcomeCard handlePress={this.handleAddProperty} />}
           {metrics?.isTenant && <LeasePropertyList />}
           {metrics?.isTenant && <VisitListCard />}
           {!metrics?.isTenant && <FinanceOverview />}
@@ -255,6 +257,13 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     navigation.navigate(ScreensKeys.ServiceTicketScreen, { isFromDashboard: true });
   };
 
+  private handleAddProperty = (): void => {
+    const { navigation } = this.props;
+    // @ts-ignore
+    navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
+    AnalyticsService.track(EventType.AddPropertyInitiation);
+  };
+
   private handleNotification = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.AssetNotifications, { isFromDashboard: true });
@@ -320,12 +329,6 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
     const { t, navigation, assets, getFilterDetails, filters, setFilter, defaultCurrency } = this.props;
     const iconSize = 38;
 
-    const handleAddProperty = (): void => {
-      // @ts-ignore
-      navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
-      AnalyticsService.track(EventType.AddPropertyInitiation);
-    };
-
     const handleAddFinancialRecord = (): void => {
       if (assets.length <= 0) {
         AlertHelper.error({ message: t('assetFinancial:addProperty') });
@@ -361,7 +364,7 @@ export class Dashboard extends React.PureComponent<Props, IDashboardState> {
       {
         icon: ImageHOC(AddProperty),
         label: t('property:addProperty'),
-        onPress: handleAddProperty,
+        onPress: this.handleAddProperty,
       },
       {
         icon: ImageHOC(Finance),
