@@ -63,7 +63,7 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
         return null;
       case TicketActionTypes.PAY_LATER:
         if (handleActiveTicketAction) {
-          return <PayLater handleActiveTicketAction={handleActiveTicketAction} />;
+          return <PayLater handleActiveTicketAction={handleActiveTicketAction} onSuccess={onSuccessCallback} />;
         }
         return null;
       case TicketActionTypes.REASSIGN_TICKET:

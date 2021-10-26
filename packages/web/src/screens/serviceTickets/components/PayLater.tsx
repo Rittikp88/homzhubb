@@ -15,10 +15,11 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 
 interface IProps {
   handleActiveTicketAction: (value: TicketActionTypes) => void;
+  onSuccess: () => void;
 }
 
 const PayLater: React.FC<IProps> = (props: IProps): React.ReactElement => {
-  const { handleActiveTicketAction } = props;
+  const { handleActiveTicketAction, onSuccess } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const selectedTicket = useSelector(TicketSelectors.getCurrentTicket);
   const summary = useSelector(TicketSelectors.getInvoiceSummary);
@@ -48,6 +49,9 @@ const PayLater: React.FC<IProps> = (props: IProps): React.ReactElement => {
         ticket: selectedTicket?.ticketId ?? 0,
         ...(summary && { quotes: summary.userInvoiceItems.map((item) => item.id) }),
       },
+    }).then((response) => {
+      onSuccess();
+      return response;
     });
   };
   const buttonTitles = [t('common:cancel'), t('common:continue')];

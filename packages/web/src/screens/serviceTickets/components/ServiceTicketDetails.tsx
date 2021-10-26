@@ -112,7 +112,7 @@ const ServiceTicketDetails: React.FC = () => {
           containerStyle={styles.containerPropActivity as ViewStyle}
           onOpenModal={onOpenModal}
           handleActiveTicketAction={handleActiveTicketAction}
-          // onPressImage={(slideNumber: number) => { }}
+        // onPressImage={(slideNumber: number) => { }}
         />
       </View>
     );
@@ -194,6 +194,7 @@ const ServiceTicketDetails: React.FC = () => {
   };
   const onSuccess = (message?: string): void => {
     onCloseModal();
+    onClosePopoverList();
     dispatch(getTicketDetailAction(ticketId));
     if (message) {
       AlertHelper.success({ message });
