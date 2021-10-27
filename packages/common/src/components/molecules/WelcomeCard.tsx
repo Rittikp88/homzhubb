@@ -30,7 +30,7 @@ const WelcomeCard = ({ handlePress }: IProps): React.ReactElement => {
         </View>
         <House />
       </View>
-      <Button type="primary" title={t('addYourFirstProperty')} onPress={handlePress} />
+      <Button type="primary" title={t('property:addYourFirstProperty')} onPress={handlePress} />
     </View>
   );
 };

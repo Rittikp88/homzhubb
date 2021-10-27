@@ -65,7 +65,8 @@ const ServiceSelection = (): React.ReactElement => {
 
   const onContinue = (): void => {
     const cityAsset = assets.filter((item) => item.city === selectedCity);
-    if (cityAsset.length > 0) {
+    const assetService = valueAddedServices.filter((item) => item.valueBundle.isAssetDependent && item.value);
+    if (cityAsset.length > 0 && assetService.length > 0) {
       navigate(ScreensKeys.ValueAddedServices, { city: selectedCity });
     } else {
       navigate(ScreensKeys.ServicePayment);

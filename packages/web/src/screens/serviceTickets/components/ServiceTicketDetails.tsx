@@ -112,7 +112,7 @@ const ServiceTicketDetails: React.FC = () => {
           containerStyle={styles.containerPropActivity as ViewStyle}
           onOpenModal={onOpenModal}
           handleActiveTicketAction={handleActiveTicketAction}
-        // onPressImage={(slideNumber: number) => { }}
+          // onPressImage={(slideNumber: number) => { }}
         />
       </View>
     );

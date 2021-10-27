@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import InAppReview from 'react-native-in-app-review';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
-import Check from '@homzhub/common/src/assets/images/check.svg';
 import Refer from '@homzhub/common/src/assets/images/refer.svg';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
@@ -65,10 +64,9 @@ const ReviewAndRefer = (): React.ReactElement => {
       sheetHeight={500}
       sheetContainerStyle={styles.container}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <>
         <Loader visible={isLoading} />
-        <Check width={60} height={60} style={styles.check} />
-        <Text textType="bold" style={styles.textAlignment}>
+        <Text textType="bold" style={[styles.textAlignment, styles.title]}>
           {I18nService.t('congratulations')}
         </Text>
         {!!data && (
@@ -77,7 +75,7 @@ const ReviewAndRefer = (): React.ReactElement => {
           </Label>
         )}
         {renderReferComponent()}
-      </ScrollView>
+      </>
     </BottomSheet>
   );
 };
@@ -88,10 +86,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
   },
-  check: {
-    alignSelf: 'center',
-    marginBottom: 16,
-  },
   textAlignment: {
     textAlign: 'center',
   },
@@ -100,7 +94,7 @@ const styles = StyleSheet.create({
     marginVertical: 24,
   },
   referContainer: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   referText: {
     textAlign: 'center',
@@ -113,5 +107,8 @@ const styles = StyleSheet.create({
   share: {
     textAlign: 'center',
     marginBottom: 16,
+  },
+  title: {
+    color: theme.colors.green,
   },
 });

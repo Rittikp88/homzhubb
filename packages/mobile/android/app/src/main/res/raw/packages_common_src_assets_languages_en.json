@@ -328,7 +328,9 @@
     "disclaimer": "Disclaimer",
     "document": "Document",
     "selectYourCity": "Select your city",
-    "ifscNotFound": "IFSC code not found"
+    "ifscNotFound": "IFSC code not found",
+    "letsGetStarted": "Let’s get started!",
+    "welcomeText": "Welcome"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -747,7 +749,8 @@
     "selectPayee": "Select Payee",
     "serviceSelection": "Service Selection",
     "addOnService": "Add-on Services",
-    "selectCityForService": "Please select city for services"
+    "selectCityForService": "Please select city for services",
+    "addYourFirstProperty": "Add your first property"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -1422,7 +1425,8 @@
     "requestForMore": "Request for more",
     "inviteMorePartner": "Invite More Service Partners",
     "ticketDetailsTitle": "Ticket Details",
-    "ticketActionSuccess": "Service request action completed Successfully"
+    "ticketActionSuccess": "Service request action completed Successfully",
+    "paymentCancelled": "Payment has been cancelled!"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",
