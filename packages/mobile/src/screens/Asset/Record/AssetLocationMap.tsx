@@ -124,7 +124,7 @@ export class AssetLocationMap extends React.PureComponent<Props, IOwnState> {
     navigate(ScreensKeys.PostAssetDetails, {
       latitude: lat,
       longitude: lng,
-      name,
+      name: name.includes(city) ? name.split(city)[0] : name,
       address: formatted_address,
       city,
       pincode,
