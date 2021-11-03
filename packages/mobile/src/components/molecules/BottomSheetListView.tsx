@@ -7,6 +7,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 
 export interface IListItem extends PickerItemProps {
   isNegative?: boolean;
+  isDisable?: boolean;
 }
 interface IProps<T> {
   data: IListItem[];
@@ -80,9 +81,10 @@ export class BottomSheetListView<T> extends Component<IProps<T>> {
         onItemSelect={onItemSelect}
         key={index}
         testID={testID}
+        isDisable={item.isDisable}
         // @ts-ignore
         listItemViewStyle={returnStyles()}
-        itemStyle={[item.isNegative && styles.redText]}
+        itemStyle={[item.isNegative && styles.redText, item.isDisable && styles.disable]}
         hasFullySpannedItems={hasFullySpannedItems}
       />
     );
@@ -112,5 +114,8 @@ const styles = StyleSheet.create({
   },
   redText: {
     color: theme.colors.error,
+  },
+  disable: {
+    color: theme.colors.disabled,
   },
 });

@@ -309,6 +309,8 @@ const SocietyController = (): React.ReactElement => {
   };
 
   const renderSocietyMenu = (societyData: Society): React.ReactElement => {
+    if (!societyData.canDelete && !societyData.canEdit) return <View />;
+
     const formattedMenu = menu.map((item: IMenu) => {
       if (item.value === MenuEnum.EDIT) {
         item = { ...item, isDisable: !societyData.canEdit };

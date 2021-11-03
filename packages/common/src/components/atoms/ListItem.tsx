@@ -7,6 +7,7 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 interface IListItemProps {
   listItem: PickerItemProps;
   isCheck: boolean;
+  isDisable?: boolean;
   onItemSelect?: () => void;
   listItemViewStyle?: StyleProp<ViewStyle>;
   itemContentStyle?: StyleProp<ViewStyle>;
@@ -25,10 +26,16 @@ export const ListItem = (props: IListItemProps): React.ReactElement => {
     testID,
     itemStyle,
     hasFullySpannedItems = false,
+    isDisable = false,
   } = props;
   return (
     <View style={[hasFullySpannedItems ? styles.fullySpannedItems : styles.listItemView, listItemViewStyle]}>
-      <TouchableOpacity style={[styles.itemContent, itemContentStyle]} onPress={onItemSelect} testID={testID}>
+      <TouchableOpacity
+        disabled={isDisable}
+        style={[styles.itemContent, itemContentStyle]}
+        onPress={onItemSelect}
+        testID={testID}
+      >
         <Text type="small" textType="regular" style={[styles.item, itemStyle && itemStyle]}>
           {listItem.label}
         </Text>

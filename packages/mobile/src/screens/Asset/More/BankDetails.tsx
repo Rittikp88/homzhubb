@@ -131,11 +131,13 @@ const BankDetails = (): React.ReactElement => {
         {
           label: t('assetFinancial:editAccount'),
           value: BankAccountActions.EDIT,
+          isDisable: !currentBank?.canEdit ?? false,
         },
         {
           label: t('assetFinancial:deleteAccount'),
           value: BankAccountActions.DELETE,
           isNegative: true,
+          isDisable: !currentBank?.canDelete ?? false,
         },
       ];
       if (!currentBank?.isActive) {
