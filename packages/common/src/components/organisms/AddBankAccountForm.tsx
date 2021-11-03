@@ -32,6 +32,9 @@ interface IOwnProps {
   setLoading?: (loading: boolean) => void;
   isEditFlow?: boolean;
   isSocietyAccount?: boolean;
+  isConfirmed?: boolean;
+  handleConfirmation?: () => void;
+  onError?: (isConfirm: boolean) => void;
 }
 interface IBankAccount {
   beneficiaryName: string;
@@ -42,21 +45,32 @@ interface IBankAccount {
   panNumber?: string;
 }
 
-const AddBankAccountForm = ({
-  onSubmit,
-  userId,
-  setLoading,
-  isEditFlow = false,
-  isSocietyAccount = false,
-}: IOwnProps): React.ReactElement => {
+const AddBankAccountForm = (props: IOwnProps): React.ReactElement => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const {
+    onSubmit,
+    userId,
+    setLoading,
+    isEditFlow = false,
+    isSocietyAccount = false,
+    isConfirmed = false,
+    handleConfirmation,
+    onError,
+  } = props;
   const [panDetail, setPanDetail] = useState(new PanNumber());
   const [ifscError, setIfscError] = useState('');
+  const [formDetail, setFormDetail] = useState<IBankAccountPayload>();
   const ifscDetail = useSelector(CommonSelectors.getIfscDetail);
   const currentBankId = useSelector(UserSelector.getCurrentBankId);
   const currentBank = useSelector(UserSelector.getCurrentBankAccountSelected);
   const societyBankData = useSelector(PropertyPaymentSelector.getSocietyBankData);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      handleSubmit();
+    }
+  }, [isConfirmed]);
 
   const getInitialData = (): IBankAccount => {
     if (isEditFlow && currentBank) {
@@ -164,54 +178,71 @@ const AddBankAccountForm = ({
     }
   };
 
-  const onFormSubmit = async (values: IBankAccount): Promise<void> => {
+  const onFormSubmit = (values: IBankAccount): void => {
     const { beneficiaryName, bankName, bankAccNum, ifscCode, panNumber } = values;
-    try {
-      if (setLoading) {
-        setLoading(true);
-      }
+
+    // Handle bank account addition flow for society
+    if (isSocietyAccount && onSubmit) {
+      dispatch(
+        PropertyPaymentActions.setSocietyBankData({
+          beneficiary_name: beneficiaryName,
+          bank_name: bankName,
+          account_number: bankAccNum,
+          ifsc_code: ifscCode.toUpperCase(),
+        })
+      );
+      onSubmit();
+    } else {
       const payload = {
         beneficiary_name: beneficiaryName,
         bank_name: bankName,
         account_number: bankAccNum,
         pan_number: panNumber && panNumber.length > 0 ? panNumber : undefined,
         ifsc_code: ifscCode.toUpperCase(),
+        is_confirmed: false,
       } as IBankAccountPayload;
 
-      // Handle bank account addition flow for society
-      if (isSocietyAccount && onSubmit) {
-        dispatch(
-          PropertyPaymentActions.setSocietyBankData({
-            beneficiary_name: beneficiaryName,
-            bank_name: bankName,
-            account_number: bankAccNum,
-            ifsc_code: ifscCode.toUpperCase(),
-          })
-        );
-        onSubmit();
-        return;
+      setFormDetail(payload);
+      if (handleConfirmation) {
+        handleConfirmation();
       }
+    }
+  };
 
-      // Handle bank account addition flow for users
-      if (isEditFlow && currentBankId !== -1 && userId) {
-        await UserRepository.editBankDetails(userId, currentBankId, payload);
-        AlertHelper.success({ message: t('assetFinancial:bankAccountEditedSuccessfully') });
-      } else {
-        if (userId) {
-          await UserRepository.addBankDetails(userId, payload);
+  const handleSubmit = async (): Promise<void> => {
+    if (formDetail) {
+      try {
+        if (setLoading) {
+          setLoading(true);
         }
-        AlertHelper.success({ message: t('assetFinancial:addBankDetailsSuccess') });
+        const payload = {
+          ...formDetail,
+          is_confirmed: isConfirmed,
+        };
+        // Handle bank account addition flow for users
+        if (isEditFlow && currentBankId !== -1 && userId) {
+          await UserRepository.editBankDetails(userId, currentBankId, payload);
+          AlertHelper.success({ message: t('assetFinancial:bankAccountEditedSuccessfully') });
+        } else {
+          if (userId) {
+            await UserRepository.addBankDetails(userId, payload);
+          }
+          AlertHelper.success({ message: t('assetFinancial:addBankDetailsSuccess') });
+        }
+        dispatch(CommonActions.clearIfscDetail());
+        if (setLoading) {
+          setLoading(false);
+        }
+        if (onSubmit) onSubmit();
+      } catch (e) {
+        if (setLoading) {
+          setLoading(false);
+        }
+        if (onError) {
+          onError(false);
+        }
+        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
       }
-      dispatch(CommonActions.clearIfscDetail());
-      if (setLoading) {
-        setLoading(false);
-      }
-      if (onSubmit) onSubmit();
-    } catch (e) {
-      if (setLoading) {
-        setLoading(false);
-      }
-      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 

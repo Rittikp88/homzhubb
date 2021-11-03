@@ -1105,6 +1105,7 @@ export interface IReminderPayload {
   user_bank_info?: number;
   lease_transaction?: number;
   society?: number;
+  is_confirmed: boolean;
 }
 
 export interface IBankAccountPayload {
@@ -1113,6 +1114,7 @@ export interface IBankAccountPayload {
   account_number: string;
   pan_number?: string;
   ifsc_code: string;
+  is_confirmed: boolean;
 }
 export interface IAssetUserPayload {
   assetId: number;

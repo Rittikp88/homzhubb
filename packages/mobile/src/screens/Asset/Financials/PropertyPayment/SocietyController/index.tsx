@@ -11,7 +11,6 @@ import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPay
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
@@ -20,6 +19,7 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
 import ReminderSheet from '@homzhub/common/src/components/molecules/ReminderSheet';
+import VerificationSheet from '@homzhub/mobile/src/components/molecules/VerificationSheet';
 import AddSocietyBank from '@homzhub/common/src/components/organisms/Society/AddSocietyBank';
 import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/AddSocietyForm';
 import SocietyList from '@homzhub/common/src/components/organisms/Society/SocietyList';
@@ -342,19 +342,13 @@ const SocietyController = (): React.ReactElement => {
 
   const renderConfirmationSheet = (): React.ReactElement => {
     return (
-      <BottomSheet visible={flags.showConfirmationSheet} onCloseSheet={(): void => handleConfirmationSheet(false)}>
-        <View style={styles.sheetContainer}>
-          <RNCheckbox selected={flags.isCheckboxSelected} label={t('verificationMsg')} onToggle={handleCheckBox} />
-          <Button
-            type="primary"
-            title={t('common:proceed')}
-            onPress={onProceed}
-            disabled={!flags.isCheckboxSelected}
-            containerStyle={styles.buttonContainer}
-            titleStyle={styles.buttonTitle}
-          />
-        </View>
-      </BottomSheet>
+      <VerificationSheet
+        isVisible={flags.showConfirmationSheet}
+        isCheckboxSelected={flags.isCheckboxSelected}
+        onCloseSheet={(): void => handleConfirmationSheet(false)}
+        handleCheckBox={handleCheckBox}
+        onProceed={onProceed}
+      />
     );
   };
 
@@ -427,12 +421,6 @@ const styles = StyleSheet.create({
     flex: 0,
     height: 50,
     marginVertical: 20,
-  },
-  buttonTitle: {
-    marginVertical: 4,
-  },
-  sheetContainer: {
-    marginHorizontal: 24,
   },
   disclaimer: {
     color: theme.colors.darkTint3,

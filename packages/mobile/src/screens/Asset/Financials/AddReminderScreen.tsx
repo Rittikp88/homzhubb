@@ -13,6 +13,7 @@ import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Screen } from '@homzhub/mobile/src/components/HOC/Screen';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
+import VerificationSheet from '@homzhub/mobile/src/components/molecules/VerificationSheet';
 import ReminderForm from '@homzhub/common/src/components/organisms/ReminderForm';
 import { IAddReminder, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -26,6 +27,11 @@ const AddReminderScreen = (): React.ReactElement => {
   const [isLoading, setLoading] = useState(false);
   const [isSheetVisible, setSheetVisibility] = useState(false);
   const [showDeleteIcon, setShowDeleteIcon] = useState(false);
+  const [flags, setFlagValues] = useState({
+    showConfirmationSheet: false,
+    isCheckboxSelected: false,
+    isConfirmed: false,
+  });
   const selectedReminderId = useSelector(FinancialSelectors.getCurrentReminderId);
 
   const param = params as IAddReminder;
@@ -48,6 +54,25 @@ const AddReminderScreen = (): React.ReactElement => {
 
   const handleAddAccount = (id?: number): void => {
     navigate(ScreensKeys.AddBankAccount, { id });
+  };
+
+  const handleConfirmationSheet = (value: boolean): void => {
+    setFlagValues({ ...flags, showConfirmationSheet: value });
+    if (!value) {
+      setFlagValues({ ...flags, isCheckboxSelected: false });
+    }
+  };
+
+  const handleCheckBox = (): void => {
+    setFlagValues({ ...flags, isCheckboxSelected: !flags.isCheckboxSelected });
+  };
+
+  const onProceed = (): void => {
+    setFlagValues({ ...flags, isConfirmed: true, showConfirmationSheet: false });
+  };
+
+  const handleError = (isConfirm: boolean): void => {
+    setFlagValues({ ...flags, isConfirmed: isConfirm, isCheckboxSelected: false });
   };
 
   const onAddSociety = (): void => {
@@ -84,6 +109,9 @@ const AddReminderScreen = (): React.ReactElement => {
           onAddSociety={onAddSociety}
           onAddAccount={handleAddAccount}
           setShowDeleteIcon={setShowDeleteIcon}
+          isConfirmed={flags.isConfirmed}
+          handleConfirmation={(): void => handleConfirmationSheet(true)}
+          onError={handleError}
         />
       </Screen>
       <ConfirmationSheet
@@ -92,6 +120,13 @@ const AddReminderScreen = (): React.ReactElement => {
         message={t('property:deleteConfirmation', { name: t('assetFinancial:thisReminder') })}
         onCloseSheet={(): void => onPressIcon(false)}
         onPressDelete={onPressDelete}
+      />
+      <VerificationSheet
+        isVisible={flags.showConfirmationSheet}
+        isCheckboxSelected={flags.isCheckboxSelected}
+        onCloseSheet={(): void => handleConfirmationSheet(false)}
+        handleCheckBox={handleCheckBox}
+        onProceed={onProceed}
       />
     </>
   );

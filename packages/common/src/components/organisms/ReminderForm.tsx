@@ -48,6 +48,9 @@ interface IOwnProp {
   isFromDues?: boolean;
   setLoading?: (isLoading: boolean) => void;
   setShowDeleteIcon?: (showDeleteIcon: boolean) => void;
+  isConfirmed?: boolean;
+  handleConfirmation?: () => void;
+  onError?: (isConfirm: boolean) => void;
 }
 
 const ReminderForm = (props: IOwnProp): React.ReactElement => {
@@ -59,6 +62,9 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     onAddAccount,
     setShowDeleteIcon,
     onAddSociety,
+    isConfirmed = false,
+    handleConfirmation,
+    onError,
   } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetFinancial);
@@ -81,6 +87,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   const [isEmailError, setEmailError] = useState(false);
   const [canEdit, setCanEdit] = useState(true);
   const [currency, setCurrency] = useState('');
+  const [formDetail, setFormDetail] = useState<IReminderPayload>();
 
   useEffect(() => {
     dispatch(FinancialActions.getReminderCategories());
@@ -110,6 +117,12 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
       });
     }
   }, [assetUsers]);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      finalSubmission(true);
+    }
+  }, [isConfirmed]);
 
   const onChangeOwner = (id: string): void => {
     dispatch(UserActions.getBankInfo(Number(id)));
@@ -392,17 +405,32 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
       ...(isMaintenance && { amount: Number(maintenanceAmount) }),
       ...(isMaintenance && { payer_user: user?.id ?? paidBy }),
       ...(isMaintenance && societyCharges && { currency: societyCharges.maintenance.currency.currencyCode }),
-    };
-    const finalPayload = {
-      ...(isEdit && { id: selectedReminderId }),
-      data: reminderPayload,
-      onCallback: handleReminderCallback,
+      is_confirmed: true,
     };
 
-    if (isEdit) {
-      dispatch(FinancialActions.updateReminder(finalPayload as IUpdateReminderPayload));
+    setFormDetail(reminderPayload);
+    if ((isRent || isMaintenance) && handleConfirmation) {
+      handleConfirmation();
     } else {
-      dispatch(FinancialActions.addReminder(finalPayload as IAddReminderPayload));
+      finalSubmission(false);
+    }
+  };
+
+  const finalSubmission = (isRentMaintenace: boolean): void => {
+    if (formDetail) {
+      const finalPayload = {
+        ...(isEdit && { id: selectedReminderId }),
+        data: {
+          ...formDetail,
+          is_confirmed: isRentMaintenace ? isConfirmed : true,
+        },
+        onCallback: handleReminderCallback,
+      };
+      if (isEdit) {
+        dispatch(FinancialActions.updateReminder(finalPayload as IUpdateReminderPayload));
+      } else {
+        dispatch(FinancialActions.addReminder(finalPayload as IAddReminderPayload));
+      }
     }
   };
 
@@ -410,6 +438,8 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     if (status) {
       AlertHelper.success({ message: t(isEdit ? 'reminderUpdateMsg' : 'reminderSuccessMsg') });
       onSubmit(isEdit);
+    } else if (onError) {
+      onError(false);
     }
   };
 
