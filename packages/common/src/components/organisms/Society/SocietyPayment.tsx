@@ -8,6 +8,7 @@ import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
@@ -29,6 +30,7 @@ const SocietyPayment = ({ handlePayNow, onSetReminder }: IProps): React.ReactEle
   const paymentData = useSelector(PropertyPaymentSelector.getPaymentData);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const societyCharges = useSelector(PropertyPaymentSelector.getSocietyCharges);
+  const user = useSelector(UserSelector.getUserProfile);
 
   useEffect(() => {
     dispatch(PropertyPaymentActions.getSocietyCharges({ id: asset.id, onCallback }));
@@ -208,7 +210,7 @@ const SocietyPayment = ({ handlePayNow, onSetReminder }: IProps): React.ReactEle
                   type="primary"
                   title={t('assetFinancial:payNow')}
                   onPress={onPayNow}
-                  disabled={paymentData.amount < 1}
+                  disabled={paymentData.amount < 1 || paymentData.paid_by !== user.id}
                 />
               </View>
             </>

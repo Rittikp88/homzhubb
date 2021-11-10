@@ -313,6 +313,8 @@ const styles = StyleSheet.create({
   },
   titleContainerMobile: {
     flex: 1,
+    paddingHorizontal: 16,
+    marginTop: 16,
   },
   titleContainerWeb: {
     paddingVertical: 20,

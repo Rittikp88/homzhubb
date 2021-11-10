@@ -55,9 +55,9 @@ const QuoteBox = (props: IProps): ReactElement => {
         </View>
       </View>
       <View style={[styles.documentContainer, !!document && styles.filledDocument]}>
-        <View style={styles.row}>
+        <>
           {!PlatformUtils.isWeb() && onUploadAttachment && (
-            <View>
+            <View style={styles.row}>
               <Icon name={!document ? icons.attachDoc : icons.docFilled} color={theme.colors.darkTint5} size={20} />
               <TouchableOpacity
                 activeOpacity={!document ? 0 : 0.8}
@@ -82,7 +82,7 @@ const QuoteBox = (props: IProps): ReactElement => {
               </View>
             </CustomUpload>
           )}
-        </View>
+        </>
         {!!document && (
           <Icon
             name={icons.circularCrossFilled}

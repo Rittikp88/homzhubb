@@ -443,7 +443,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: theme.viewport.width - 64,
     borderRadius: 10,
-    height: 160,
+    height: 150,
     marginHorizontal: 16,
   },
   buttonContainer: {

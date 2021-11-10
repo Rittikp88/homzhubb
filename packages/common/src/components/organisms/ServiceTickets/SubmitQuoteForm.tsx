@@ -24,10 +24,10 @@ interface IRoute {
 }
 
 interface IProps {
+  onSuccess: () => void;
+  setLoader: (loading: boolean) => void;
   renderCollapsibleSection: (data: ICollapseSection) => React.ReactElement;
   onUploadDoc?: (index: number, tabIndex: number) => void;
-  setLoader: (loading: boolean) => void;
-  onSuccess: () => void;
   onUploadWeb?: (file: File, index: number, tabIndex: number) => void;
 }
 
@@ -61,10 +61,6 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
     if (quoteCategories && tabIndex + 1 < quoteCategories.length) {
       setTabIndex(tabIndex + 1);
     }
-  };
-
-  const onIndexChange = (value: number): void => {
-    setTabIndex(value);
   };
 
   const onRemovedDoc = (index: number): void => {
@@ -209,7 +205,16 @@ const SubmitQuoteForm = (props: IProps): React.ReactElement => {
   const isSubmit = quoteCategories && tabIndex + 1 === quoteCategories?.length;
   const filterData = quotes[tabIndex]?.data.filter((item) => !item.price || !item.document);
   const haveQuotesWithoutDoc = quotes[tabIndex]?.data.find((item) => item.price && !item.document);
+  const haveQuotesWithoutAmount = quotes[tabIndex]?.data.find((item) => item.document && !item.price);
   const isDisabled = Boolean(haveQuotesWithoutDoc) || filterData?.length === quotes[tabIndex]?.data?.length;
+
+  const onIndexChange = (value: number): void => {
+    if (!haveQuotesWithoutDoc && !haveQuotesWithoutAmount) {
+      setTabIndex(value);
+    } else {
+      AlertHelper.error({ message: t('common:pleaseFillDetails') });
+    }
+  };
 
   return (
     <View style={styles.container}>

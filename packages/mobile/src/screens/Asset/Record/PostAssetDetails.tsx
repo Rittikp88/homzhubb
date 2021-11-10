@@ -14,6 +14,7 @@ import { IPostAssetDetailsProps, NavigationScreenProps, ScreensKeys } from '@hom
 import { PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -49,6 +50,7 @@ interface IDispatchProps {
   resetState: () => void;
   setEditPropertyFlow: (payload: boolean) => void;
   toggleEditPropertyFlowBottomSheet: (payload: boolean) => void;
+  getAssets: () => void;
 }
 
 interface IFormData {
@@ -305,6 +307,7 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       navigation,
       lastVisitedStep,
       route: { params },
+      getAssets,
     } = this.props;
     const {
       projectName: project_name,
@@ -365,6 +368,9 @@ class PostAssetDetails extends React.PureComponent<Props, IOwnState> {
       } else {
         const response = await AssetRepository.createAsset(payload);
         setAssetId(response.id);
+        if (response) {
+          getAssets();
+        }
         AnalyticsService.track(EventType.AddPropertySuccess, { property_address: address });
       }
       this.setState({ loading: false });
@@ -580,6 +586,7 @@ const mapStateToProps = (state: IState): IStateProps => {
 const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   const { getAssetGroups, setAssetId, setEditPropertyFlow, toggleEditPropertyFlowBottomSheet, resetState } =
     RecordAssetActions;
+  const { getAssets } = UserActions;
   return bindActionCreators(
     {
       setAssetId,
@@ -587,6 +594,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
       setEditPropertyFlow,
       toggleEditPropertyFlowBottomSheet,
       resetState,
+      getAssets,
     },
     dispatch
   );

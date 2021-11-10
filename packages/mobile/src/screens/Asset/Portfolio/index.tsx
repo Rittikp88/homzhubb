@@ -213,7 +213,7 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     const { currentFilter } = this.props;
     const handleViewProperty = (data: ISetAssetPayload, assetData: Asset, key?: Tabs): void =>
       this.onViewProperty({ ...data, dataType: type }, assetData, key);
-    const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type);
+    const handleArrowPress = (id: number): void => this.handleExpandCollapse(id, type, index);
     const onPressAction = (payload: IClosureReasonPayload, param?: IListingParam): void => {
       this.handleActions(item, payload, param);
     };
@@ -222,7 +222,7 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
         assetData={item}
         key={index}
         isFilteredApplied={currentFilter !== Filters.ALL}
-        expandedId={type === DataType.PROPERTIES ? expandedAssetId : expandedTenanciesId}
+        isExpanded={type === DataType.PROPERTIES ? expandedAssetId === index : expandedTenanciesId === index}
         isFromTenancies={type === DataType.TENANCIES}
         onViewProperty={handleViewProperty}
         onPressArrow={handleArrowPress}
@@ -335,12 +335,12 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     await this.getAssetFilters();
   };
 
-  private handleExpandCollapse = (id: number, type: DataType): void => {
+  private handleExpandCollapse = (id: number, type: DataType, index: number): void => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
     if (type === DataType.PROPERTIES) {
-      this.setState({ expandedAssetId: expandedAssetId === id ? 0 : id });
+      this.setState({ expandedAssetId: expandedAssetId === index ? 0 : index });
     } else {
-      this.setState({ expandedTenanciesId: expandedTenanciesId === id ? 0 : id });
+      this.setState({ expandedTenanciesId: expandedTenanciesId === index ? 0 : index });
     }
   };
 
@@ -412,13 +412,13 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
     if ((tenanciesById && tenanciesById.length > 0) || (propertiesById && propertiesById.length > 0)) {
       if (tenanciesById && tenanciesById.length > 0) {
         this.setState({
-          expandedTenanciesId: tenanciesById[0].id,
+          expandedTenanciesId: 0,
         });
       }
 
       if (propertiesById && propertiesById.length > 0) {
         this.setState({
-          expandedAssetId: propertiesById[0].id,
+          expandedAssetId: 0,
         });
       }
     }

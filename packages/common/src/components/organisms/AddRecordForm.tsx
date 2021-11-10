@@ -433,12 +433,24 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
     try {
       toggleLoading(true);
       const transactionData = await LedgerRepository.getLedgerDetails(transactionId);
-      const { asset, label, transactionDate, attachmentDetails, amount, notes, tellerName, categoryId, formType } =
-        transactionData;
+      const {
+        asset,
+        label,
+        transactionDate,
+        attachmentDetails,
+        amount,
+        notes,
+        tellerName,
+        categoryId,
+        formType,
+        currency,
+      } = transactionData;
       const existingAttachments = this.formatExistingAttachments(attachmentDetails);
       this.setState({
         selectedFormType: formType,
         existingAttachments,
+        currencyCode: currency.currencyCode,
+        currencySymbol: currency.currencySymbol,
         formValues: {
           property: asset?.id ?? -1,
           label,
@@ -503,6 +515,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
 
   private getInitialValues = (): IFormData => {
     const { assetId, isFromDues, currentDue, t } = this.props;
+
     if (currentDue && isFromDues) {
       const { asset, invoiceTitle, totalPrice, dueDate } = currentDue;
       const getDefaultDate = (): string => {
@@ -511,6 +524,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
           ? DateUtils.getCurrentDate()
           : DateUtils.getUtcDisplayDate(dueDate, DateFormats.YYYYMMDD);
       };
+
       return {
         property: asset?.id ?? -1,
         label: invoiceTitle,

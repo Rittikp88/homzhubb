@@ -69,7 +69,7 @@ const ProfileLeaseTerm = (props: IProps): React.ReactElement => {
       annual_rent_increment_percentage: Number(values[LeaseFormKeys.annualIncrement]),
       maintenance_paid_by: values[LeaseFormKeys.maintenanceBy],
       utility_paid_by: values[LeaseFormKeys.utilityBy],
-      lease_start_date: DateUtils.getDisplayDate(values[LeaseFormKeys.availableFrom], DateFormats.ISO),
+      lease_start_date: DateUtils.convertToISO(values[LeaseFormKeys.availableFrom]),
       tentative_end_date: DateUtils.getFutureDateByUnit(
         values[LeaseFormKeys.availableFrom],
         values[LeaseFormKeys.maximumLeasePeriod],

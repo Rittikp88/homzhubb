@@ -330,7 +330,8 @@
     "selectYourCity": "Select your city",
     "ifscNotFound": "IFSC code not found",
     "letsGetStarted": "Let’s get started!",
-    "welcomeText": "Welcome"
+    "welcomeText": "Welcome",
+    "pleaseFillDetails": "Please fill all the details"
   },
   "auth": {
     "verifyNumber": "Verify your number",

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { PropertyPaymentActions } from '@homzhub/common/src/modules/propertyPayment/actions';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -15,8 +16,8 @@ import { Reminder } from '@homzhub/common/src/domain/models/Reminder';
 import { InvoiceActions } from '@homzhub/common/src/domain/repositories/interfaces';
 
 interface IProps {
-  renderMenu: (id: number) => React.ReactElement;
   handlePayNow: () => void;
+  renderMenu?: (id: number) => React.ReactElement;
 }
 
 const SocietyReminderList = ({ renderMenu, handlePayNow }: IProps): React.ReactElement => {
@@ -24,6 +25,7 @@ const SocietyReminderList = ({ renderMenu, handlePayNow }: IProps): React.ReactE
   const { t } = useTranslation();
   const societyReminder = useSelector(PropertyPaymentSelector.getSocietyReminders);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
+  const user = useSelector(UserSelector.getUserProfile);
 
   if (!societyReminder) return <EmptyState />;
 
@@ -58,6 +60,7 @@ const SocietyReminderList = ({ renderMenu, handlePayNow }: IProps): React.ReactE
   };
 
   const renderItem = ({ item }: { item: Reminder }): React.ReactElement => {
+    const isMenuVisible = item.payerUser?.id === user.id;
     return (
       <View style={styles.itemContainer}>
         <View style={styles.itemHeader}>
@@ -74,7 +77,7 @@ const SocietyReminderList = ({ renderMenu, handlePayNow }: IProps): React.ReactE
               </Label>
             </View>
           </View>
-          {renderMenu(item.id)}
+          {renderMenu && isMenuVisible && renderMenu(item.id)}
         </View>
         <Text type="small" textType="semiBold" style={styles.label}>
           {t('propertyPayment:payee')}

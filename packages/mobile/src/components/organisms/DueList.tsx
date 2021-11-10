@@ -5,6 +5,7 @@ import { SvgProps } from 'react-native-svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -35,6 +36,7 @@ const DueList = ({ numOfDues }: IProps): React.ReactElement => {
   // HOOKS END
 
   const handleAlreadyPaid = (): void => {
+    dispatch(AssetActions.getActiveAssets());
     navigate(ScreensKeys.AddRecordScreen, { isFromDues: true });
   };
 

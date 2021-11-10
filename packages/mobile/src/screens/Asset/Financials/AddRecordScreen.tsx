@@ -4,6 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
+import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { CommonParamList } from '@homzhub/mobile/src/navigation/Common';
@@ -25,6 +26,7 @@ interface IScreenState {
 interface IStateToProps {
   currency: Currency;
   assets: Asset[];
+  activeAsset: Asset[];
 }
 
 type libraryProps = WithTranslation & NavigationScreenProps<CommonParamList, ScreensKeys.AddRecordScreen>;
@@ -69,12 +71,12 @@ export class AddRecordScreen extends React.PureComponent<IProps, IScreenState> {
 
   private renderAddRecordForm = (): ReactElement => {
     const { clearForm } = this.state;
-    const { currency, assets, route } = this.props;
+    const { currency, assets, route, activeAsset } = this.props;
     const isFromDues = Boolean(route?.params?.isFromDues);
 
     return (
       <AddRecordForm
-        properties={assets}
+        properties={isFromDues ? activeAsset : assets}
         clear={clearForm}
         defaultCurrency={currency}
         onFormClear={this.onClearPress}
@@ -136,6 +138,7 @@ const mapStateToProps = (state: IState): IStateToProps => {
   return {
     currency: UserSelector.getCurrency(state),
     assets: UserSelector.getUserAssets(state),
+    activeAsset: AssetSelectors.getUserActiveAssets(state),
   };
 };
 

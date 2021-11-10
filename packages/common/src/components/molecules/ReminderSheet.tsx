@@ -40,6 +40,7 @@ const ReminderSheet = ({ onReminderSuccess }: IProps): React.ReactElement => {
 
   const onRemindOnce = (): void => {
     setCheckboxValue({ remindOnce: !checkboxValue.remindOnce, recurringRemind: false });
+    setFrequency(0);
   };
 
   const onRecurringRemind = (): void => {
@@ -60,6 +61,7 @@ const ReminderSheet = ({ onReminderSuccess }: IProps): React.ReactElement => {
       emails: [],
       society,
       currency,
+      is_confirmed: true,
       reminder_category: categories.find((item) => item.code === 'SOCIETY_MAINTENANCE')?.id ?? -1,
     };
 

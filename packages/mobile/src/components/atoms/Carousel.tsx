@@ -39,7 +39,9 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
       extraData,
       onLoadMore,
     } = this.props;
+
     return (
+      // @ts-ignore
       <Carousel
         testID={testID}
         data={carouselData}

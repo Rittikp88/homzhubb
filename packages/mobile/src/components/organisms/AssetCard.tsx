@@ -49,7 +49,7 @@ interface IUserInfo {
 
 interface IListProps {
   assetData: Asset;
-  expandedId?: number;
+  isExpanded?: boolean;
   isDetailView?: boolean;
   isFromTenancies?: boolean;
   customDesignation?: string;
@@ -89,7 +89,7 @@ export class AssetCard extends Component<Props, IState> {
       isDetailView,
       onViewProperty,
       onPressArrow,
-      expandedId = 0,
+      isExpanded = false,
       containerStyle,
       isFilteredApplied = false,
     } = this.props;
@@ -112,7 +112,6 @@ export class AssetCard extends Component<Props, IState> {
 
     const handlePropertyView = (key?: Tabs): void => onViewProperty && onViewProperty(detailPayload, assetData, key);
     const handleArrowPress = (): void => onPressArrow && onPressArrow(id);
-    const isExpanded: boolean = expandedId === id;
 
     const RenderIconWithCount = ({ item }: { item: ICountWithIcon }): React.ReactElement | null => {
       const { count, iconName, onPress } = item;

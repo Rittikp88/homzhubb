@@ -132,9 +132,13 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
     });
   };
 
-  const navigateToProperty = (listingId: number, transaction: number, assetId: number): void => {
-    dispatch(SearchActions.setFilter({ asset_transaction_type: transaction }));
-    navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId: listingId, propertyId: assetId });
+  const navigateToProperty = (listingId: number, transaction: number, assetId: number, isActive: boolean): void => {
+    if (isActive) {
+      dispatch(SearchActions.setFilter({ asset_transaction_type: transaction }));
+      navigation.navigate(ScreensKeys.PropertyAssetDescription, { propertyTermId: listingId, propertyId: assetId });
+    } else {
+      AlertHelper.error({ message: t('property:inValidVisit') });
+    }
   };
 
   const navigateToPropertyVisit = (leaseTermId?: number, saleTermId?: number): void => {
@@ -187,6 +191,44 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
       const error = ErrorUtils.getErrorMessage(e.details);
       AlertHelper.error({ message: error });
     }
+  };
+
+  const renderImages = (
+    attachments: Attachment[] = [],
+    isActive: boolean,
+    leaseTermId?: number,
+    saleTermId?: number
+  ): React.ReactElement => {
+    const onCrossPress = (): void => {
+      if (isActive) {
+        removeFromWishList(leaseTermId ?? saleTermId).then();
+      } else {
+        AlertHelper.error({ message: t('property:inValidVisit') });
+      }
+    };
+
+    return (
+      <View style={styles.imageContainer}>
+        {attachments && attachments.length > 0 ? (
+          <AssetDetailsImageCarousel
+            enterFullScreen={onFullScreenToggle}
+            data={attachments}
+            activeSlide={activeSlide}
+            updateSlide={updateSlide}
+            containerStyles={styles.carouselStyle}
+          />
+        ) : (
+          <ImagePlaceholder containerStyle={styles.imagePlaceHolder} />
+        )}
+        <Icon
+          onPress={onCrossPress}
+          style={styles.crossStyle}
+          name={icons.circularCrossFilled}
+          size={20}
+          color={theme.colors.white}
+        />
+      </View>
+    );
   };
 
   const renderButtonGroup = (asset: Asset): ReactElement => {
@@ -243,39 +285,6 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
     );
   };
 
-  const renderImages = (
-    attachments: Attachment[] = [],
-    leaseTermId?: number,
-    saleTermId?: number
-  ): React.ReactElement => {
-    const onCrossPress = (): void => {
-      removeFromWishList(leaseTermId ?? saleTermId).then();
-    };
-
-    return (
-      <View style={styles.imageContainer}>
-        {attachments && attachments.length > 0 ? (
-          <AssetDetailsImageCarousel
-            enterFullScreen={onFullScreenToggle}
-            data={attachments}
-            activeSlide={activeSlide}
-            updateSlide={updateSlide}
-            containerStyles={styles.carouselStyle}
-          />
-        ) : (
-          <ImagePlaceholder containerStyle={styles.imagePlaceHolder} />
-        )}
-        <Icon
-          onPress={onCrossPress}
-          style={styles.crossStyle}
-          name={icons.circularCrossFilled}
-          size={20}
-          color={theme.colors.white}
-        />
-      </View>
-    );
-  };
-
   const screenTitle = route?.params?.screenTitle ? route?.params.screenTitle : t('assetMore:more');
 
   return (
@@ -298,6 +307,7 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
               assetGroup: { code },
               leaseTerm,
               saleTerm,
+              isActive,
             } = asset;
             const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
               spaces,
@@ -310,10 +320,10 @@ export const SavedProperties = (props: NavigationProps): React.ReactElement => {
             const transaction = leaseTerm ? 0 : 1;
             return (
               <View style={styles.cardView} key={index}>
-                {renderImages(asset.attachments, asset.leaseTerm?.id, asset.saleTerm?.id)}
+                {renderImages(asset.attachments, isActive, asset.leaseTerm?.id, asset.saleTerm?.id)}
                 <TouchableOpacity
                   style={styles.screenPadding}
-                  onPress={(): void => navigateToProperty(listingId, transaction, id)}
+                  onPress={(): void => navigateToProperty(listingId, transaction, id, isActive)}
                 >
                   <ShieldGroup propertyType={name} />
                   <PropertyAddress

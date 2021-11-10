@@ -144,7 +144,6 @@ const styles = StyleSheet.create({
   },
   ticketImage: {
     maxWidth: 650,
-    maxHeight: 300,
   },
   badgeStyle: {
     minWidth: 75,

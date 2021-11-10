@@ -109,6 +109,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     if (inputType !== 'phone' || formProps.values[phoneCodeKey]) {
       return;
     }
+    this.fetchPhoneCodes();
     formProps.setFieldValue(phoneCodeKey, defaultPhoneCode);
   };
 

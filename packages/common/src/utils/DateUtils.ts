@@ -415,6 +415,10 @@ class DateUtils {
   public getMonth = (format?: string): string => {
     return moment().format(format || 'MMMM');
   };
+
+  public convertToISO = (date: string): string => {
+    return `${date}T00:00:00Z`;
+  };
 }
 
 const dateUtils = new DateUtils();

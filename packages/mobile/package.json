@@ -12,7 +12,7 @@
     "android:build:prod": "ENVFILE=.env yarn android:clean && yarn android:bundle:prod && cd android && ./gradlew assembleHomzhubRelease -x bundleHomzhubReleaseJsAndAssets",
     "android:build:partner:prod": "ENVFILE=.env yarn android:clean && yarn android:bundle:prod && cd android && ./gradlew assemblePartnerRelease -x bundlePartnerReleaseJsAndAssets",
     "ios": "ENVFILE=.env.development react-native run-ios --configuration Debug --scheme homzhub",
-    "ios:partner": "ENVFILE=.env.partner react-native run-ios --configuration Debug --scheme homzhub-partner",
+    "ios:partner": "ENVFILE=.env react-native run-ios --configuration Debug --scheme homzhub-partner",
     "ios:clean": "rm -rf ios/build",
     "pod:install": "cd ios && pod install",
     "ios:build": "ENVFILE=.env.development yarn ios:clean && yarn ios:bundle",

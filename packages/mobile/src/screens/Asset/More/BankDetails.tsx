@@ -149,6 +149,7 @@ const BankDetails = (): React.ReactElement => {
         options.splice(1, 0, {
           label: t('moreSettings:deactivateAccount'),
           value: BankAccountActions.DEACTIVATE,
+          isDisable: !currentBank?.canDeactivate ?? false,
         });
       }
       return options;
