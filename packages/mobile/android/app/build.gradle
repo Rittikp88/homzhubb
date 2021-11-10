@@ -199,7 +199,7 @@ android {
             dimension 'default'
             applicationId "com.homzhub"
             resValue "string", "build_config_package", "com.homzhub"
-            versionCode 7
+            versionCode 8
             versionName "2.1.8"
             manifestPlaceholders =[fb_provider:"com.facebook.app.FacebookContentProvider306770337332135"]
         }
