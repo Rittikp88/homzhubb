@@ -34,7 +34,7 @@ const PropertyDetailsMap: FC = () => {
     setMap(mapInstance);
   };
   const onDragEnd = (event: google.maps.MapMouseEvent): void => {
-    const newCenter = { lat: event.latLng.lat(), lng: event.latLng.lng() } as ILatLng;
+    const newCenter = { lat: event?.latLng?.lat(), lng: event?.latLng?.lng() } as ILatLng;
     setUpdatedLatLng(newCenter);
   };
   return (

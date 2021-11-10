@@ -45,6 +45,7 @@ interface IProps {
   postReviewProps?: IAssetReviewProps;
   reportReviewProps?: IReportReviewProps;
   setSiteVisitActionType?: React.Dispatch<React.SetStateAction<SiteVisitAction>>;
+  onSuccessCallback?: () => void;
 }
 
 export interface IReviewFormProps {
@@ -75,6 +76,7 @@ const SiteVisitsActionsPopover: React.FC<IProps> = (props: IProps) => {
     postReviewProps,
     reportReviewProps,
     setSiteVisitActionType,
+    onSuccessCallback
   } = props;
   const {
     review: { isReported, reviewReportId },
@@ -90,7 +92,7 @@ const SiteVisitsActionsPopover: React.FC<IProps> = (props: IProps) => {
           <BookVisit
             paramsBookVisit={paramsBookVisit as IBookVisitProps}
             isReschedule={false}
-            onCloseModal={onCloseModal}
+            onCloseModal={onSuccessCallback ?? onCloseModal}
           />
         );
       case SiteVisitAction.RESCHEDULE_VISIT:

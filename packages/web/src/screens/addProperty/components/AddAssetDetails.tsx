@@ -244,7 +244,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
     this.setState({
       formData: {
         ...formData,
-        projectName: name,
+        projectName: name as string,
         pincode,
         city,
         state,
@@ -257,8 +257,8 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       assetGroupId: asset?.assetGroupId ?? -1,
       assetGroupTypeId: asset?.assetGroupTypeId ?? -1,
       assetGroupSelectionDisabled: !!asset,
-      longitude: geometry?.location.lng() ?? 0,
-      latitude: geometry?.location.lat() ?? 0,
+      longitude: geometry?.location?.lng() ?? 0,
+      latitude: geometry?.location?.lat() ?? 0,
     });
   };
 

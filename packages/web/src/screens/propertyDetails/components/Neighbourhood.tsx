@@ -68,7 +68,9 @@ const Neighbourhood: React.FC<Props> = (props: Props) => {
       const service = new google.maps.places.PlacesService(map);
       service.nearbySearch(request, (results, status) => {
         setSelectedPlaceType(argSelectedPlaceType);
-        nearbyCallback(results, status);
+        if (results) {
+          nearbyCallback(results, status);
+        }
       });
     }
   };

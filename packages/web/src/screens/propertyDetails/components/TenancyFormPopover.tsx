@@ -34,10 +34,11 @@ interface IProps {
   userData: UserProfileModel;
   propertyLeaseType: string;
   changePopUpStatus: (datum: string) => void;
+  onSuccessCallback?: () => void;
 }
 
 const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
-  const { asset, userData, popupRef, propertyLeaseType, changePopUpStatus } = props;
+  const { asset, userData, popupRef, propertyLeaseType, changePopUpStatus, onSuccessCallback } = props;
   const isAuthenticated = useSelector(UserSelector.isLoggedIn);
   const history = useHistory();
   const isMobile = useDown(deviceBreakpoint.MOBILE);
@@ -85,6 +86,10 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
       AnalyticsService.track(EventType.NewOffer, trackData);
       onClosePopover();
       changePopUpStatus('CONFIRM');
+      AlertHelper.success({ message: t('offers:offerRequestSuccess') });
+      if (onSuccessCallback) {
+        onSuccessCallback();
+      }
     }
   };
 
