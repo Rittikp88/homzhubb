@@ -10,7 +10,6 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Dashboard from '@homzhub/web/src/screens/dashboard';
 import AddPropertyListing from '@homzhub/web/src/screens/addPropertyListing';
-import ComingSoon from '@homzhub/web/src/screens/comingSoon';
 import ListedPropertyOffers from '@homzhub/web/src/screens/offers/components/ListedPropertyOffers';
 import Profile from '@homzhub/web/src/screens/profile';
 import Portfolio from '@homzhub/web/src/screens/portfolio';
@@ -18,6 +17,7 @@ import PropertyDetails from '@homzhub/web/src/screens/propertyDetails';
 import SearchProperty from '@homzhub/web/src/screens/searchProperty';
 import Settings from '@homzhub/web/src/screens/settings';
 import ValueAddedServices from '@homzhub/web/src/screens/valueAddedServices';
+import SavedProperties from '@homzhub/web/src/screens/savedProperties/index';
 import SelectProperty from '@homzhub/web/src/screens/selectProperty';
 import SelectServices from '@homzhub/web/src/screens/selectServices';
 import PropertyDetailsOwner from '@homzhub/web/src/screens/propertyDetailOwner';
@@ -94,7 +94,7 @@ const MainRouter = (props: MainRouterProps): React.ReactElement => {
         <PrivateRoute exact path={PROPERTY_VIEW} component={PropertyView} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SELECT_PROPERTY} component={SelectProperty} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SELECT_SERVICES} component={SelectServices} isAuthenticated={isAuthenticated} />
-        <PrivateRoute exact path={SAVED_PROPERTIES} component={ComingSoon} isAuthenticated={isAuthenticated} />
+        <PrivateRoute exact path={SAVED_PROPERTIES} component={SavedProperties} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={OFFERS} component={Offers} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={PROPERTY_VISITS} component={PropertyVisits} isAuthenticated={isAuthenticated} />
         <PrivateRoute exact path={SERVICE_TICKETS} component={ServiceTickets} isAuthenticated={isAuthenticated} />

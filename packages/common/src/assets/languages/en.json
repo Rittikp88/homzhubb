@@ -1545,7 +1545,8 @@
     "yourExpectation": "Your expectation for {{property}}",
     "compareProspect": "Compare Prospects",
     "localTaxHeading": "(Local taxes (VAT, GST, etc.) will be charged in addition to the prices mentioned.)",
-    "pricingCost": "Pricing Cost"
+    "pricingCost": "Pricing Cost",
+    "offerRequestSuccess": "Offer Request Raised Successfully"
   },
   "error": {
     "pageNotFound": "Page Not Found",

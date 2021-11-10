@@ -5,7 +5,7 @@ export const getDataFromPlaceID = (
   const geocoder = new google.maps.Geocoder();
   geocoder.geocode({ placeId: placeID }, (results, status) => {
     if (status === 'OK') {
-      if (results[0]) {
+      if (results?.length && results[0]) {
         callback(results[0]);
       } else {
         // window.alert('No results found');
