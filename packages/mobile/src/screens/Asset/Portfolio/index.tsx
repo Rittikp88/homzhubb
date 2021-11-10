@@ -338,9 +338,9 @@ export class Portfolio extends React.PureComponent<Props, IScreenState> {
   private handleExpandCollapse = (id: number, type: DataType, index: number): void => {
     const { expandedAssetId, expandedTenanciesId } = this.state;
     if (type === DataType.PROPERTIES) {
-      this.setState({ expandedAssetId: expandedAssetId === index ? 0 : index });
+      this.setState({ expandedAssetId: expandedAssetId === index ? -1 : index });
     } else {
-      this.setState({ expandedTenanciesId: expandedTenanciesId === index ? 0 : index });
+      this.setState({ expandedTenanciesId: expandedTenanciesId === index ? -1 : index });
     }
   };
 

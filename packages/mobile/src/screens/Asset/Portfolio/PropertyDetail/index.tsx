@@ -254,10 +254,11 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
 
   private renderShareView = (): React.ReactElement => {
     const { t } = this.props;
-    const { isShare, sharingMessage } = this.state;
+    const { isShare, sharingMessage, propertyData } = this.state;
     return (
       <SocialMediaShare
         visible={isShare}
+        asset={propertyData}
         headerTitle={t('assetDescription:shareProperty')}
         sharingMessage={sharingMessage}
         onCloseSharing={(): void => this.onToggleSharing(false)}

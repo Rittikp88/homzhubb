@@ -8,6 +8,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { AnalyticsHelper } from '@homzhub/common/src/utils/AnalyticsHelper';
 import { AssetSelectors } from '@homzhub/common/src/modules/asset/selectors';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 import SharingService from '@homzhub/mobile/src/services/SharingService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Facebook from '@homzhub/common/src/assets/images/facebook.svg';
@@ -17,13 +18,14 @@ import Whatsapp from '@homzhub/common/src/assets/images/whatsapp.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 
 interface ISocialMediaProps {
   headerTitle: string;
   onCloseSharing: () => void;
   visible: boolean;
   sharingMessage: string;
+  asset?: Asset;
 }
 
 interface ISocialMedium {
@@ -36,15 +38,16 @@ interface ISocialMedium {
 const { Social } = Share;
 
 const SocialMediaShareComp = (props: ISocialMediaProps): React.ReactElement => {
-  const { headerTitle, onCloseSharing, visible, sharingMessage } = props;
+  const { headerTitle, onCloseSharing, visible, sharingMessage, asset } = props;
   const { t } = useTranslation();
   const assetData = useSelector(AssetSelectors.getAsset);
+  const propertyData = asset ?? assetData;
 
   const handleOnPress = (medium: Share.Social): void => {
-    if (assetData) {
-      const sharingUrl = assetData.attachments.length ? assetData.attachments[0].link : undefined;
+    if (propertyData) {
+      const sharingUrl = propertyData.attachments.length ? propertyData.attachments[0].link : undefined;
       SharingService.Share(medium, sharingMessage, sharingUrl).then();
-      const trackData = AnalyticsHelper.getPropertyTrackData(assetData);
+      const trackData = AnalyticsHelper.getPropertyTrackData(propertyData);
       AnalyticsService.track(EventType.PropertyShare, {
         ...trackData,
         source: medium,
