@@ -12,10 +12,12 @@ import {
   IQuoteSubmitPayload,
   IReassignTicketParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IFile } from '@homzhub/common/src/constants/AttachmentTypes';
 import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
 
 export interface ITicketState {
-  proofAttachment: IImageSource[];
+  proofAttachment: IImageSource[] | IFile[];
+  proofAttachmentWeb: File[];
   currentTicket: ICurrentTicket | null;
   tickets: ITicket[];
   ticketDetail: ITicket | null;

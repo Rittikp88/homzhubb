@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { StyleProp, StyleSheet, View, ViewStyle, TouchableOpacity } from 'react-native';
+import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { Formik, FormikHelpers, FormikProps, FormikValues } from 'formik';
@@ -55,7 +55,7 @@ interface ILocalState {
   ledgerCategories: LedgerCategory[];
   selectedFormType: FormType;
   formValues: IFormData;
-  attachments: IDocumentSource[];
+  attachments: IDocumentSource[] | File[];
   currencyCode: string;
   currencySymbol: string;
   existingAttachments: IFormattedAttachment[];
@@ -68,13 +68,15 @@ export interface IUploadAttachmentResponse {
 }
 
 export interface IUploadCompProps {
-  attachments: IDocumentSource[];
+  attachments: IDocumentSource[] | File[];
   icon: string;
   header: string;
   subHeader: string;
-  onCapture: (attachments: IDocumentSource[]) => void;
   onDelete: (uri: string) => void;
   containerStyle: StyleProp<ViewStyle>;
+  onCapture?: (attachments: IDocumentSource[]) => void;
+  onDropAccepted?: (attachments: File[]) => void;
+  multipleUpload?: boolean;
 }
 
 interface IStateToProps {
@@ -133,7 +135,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
   public async componentDidMount(): Promise<void> {
     const { toggleLoading, assetId, isEditFlow, isFromDues } = this.props;
     if (isEditFlow) {
-      this.fetchExistingLedgerDetails();
+      await this.fetchExistingLedgerDetails();
     }
 
     if (assetId) {
@@ -557,23 +559,31 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
 
   private handleUpload = (attachments: IDocumentSource[]): void => {
     this.setState((prevState: ILocalState) => {
-      return { attachments: [...prevState.attachments, ...attachments] };
+      return { attachments: [...(prevState.attachments as IDocumentSource[]), ...attachments] };
     });
   };
 
-  private handleDocumentDelete = (uri: string): void => {
-    this.setState((prevState) => {
-      return { attachments: prevState.attachments.filter((file) => file.uri !== uri) };
-    });
+  private handleDocumentDelete = (uri: string, name?: string): void => {
+    const { attachments } = this.state;
+    if (PlatformUtils.isWeb() && name) {
+      const webAttachments = attachments as File[];
+      this.setState(() => {
+        return { attachments: webAttachments.filter((file: File) => file.name !== name) };
+      });
+    } else {
+      const mobAttachments = attachments as IDocumentSource[];
+      this.setState(() => {
+        return { attachments: mobAttachments.filter((file: IDocumentSource) => file.uri !== uri) };
+      });
+    }
   };
 
   private formatExistingAttachments = (attachments: Attachment[]): IFormattedAttachment[] => {
-    const formatted = attachments.map((item) => ({
+    return attachments.map((item) => ({
       id: item.id,
       fileName: item.fileName,
       link: item.link,
     }));
-    return formatted;
   };
 
   private handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
@@ -590,7 +600,7 @@ export class AddRecordForm extends React.PureComponent<IOwnProps, ILocalState> {
       if (attachments.length) {
         /* Make an API call for uploading the document and extract the doc Id */
         const formData = new FormData();
-        attachments.forEach((attachment: IDocumentSource) => {
+        attachments.forEach((attachment: IDocumentSource | File) => {
           // @ts-ignore
           formData.append('files[]', attachment);
         });

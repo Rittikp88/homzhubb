@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import DocumentPicker from 'react-native-document-picker';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
@@ -42,8 +41,9 @@ const AddServiceTicket: React.FC<Props> = (props: Props) => {
   const history = useHistory();
   const loaders = useSelector((state: IState) => AssetSelectors.getAssetLoaders(state));
   const { activeAssets } = loaders;
+
   const renderUploadBoxComponent = (uploadProps: IUploadCompProps): React.ReactElement => {
-    return <UploadBoxComponent allowedTypes={[DocumentPicker.types.images]} {...uploadProps} />;
+    return <UploadBoxComponent {...uploadProps} />;
   };
 
   const onAddProperty = (): void => {

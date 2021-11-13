@@ -1,7 +1,8 @@
 import React, { ReactElement, useState } from 'react';
-import { FlatList, ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { FlatList, ImageBackground, StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
@@ -10,16 +11,25 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { TextArea } from '@homzhub/common/src/components/atoms/TextArea';
 import { UploadBox } from '@homzhub/common/src/components/molecules/UploadBox';
+import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { TOTAL_IMAGES } from '@homzhub/common/src/constants/ServiceTickets';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
-import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 interface IProps {
-  onUploadImage: () => void;
   onUpdateComment: (value: string) => void;
+  onUploadImage?: () => void;
+  renderUploadBox?: (uploadProps: IUploadPropsWeb) => React.ReactElement;
 }
 
-const ProofOfCompletion = ({ onUploadImage, onUpdateComment }: IProps): ReactElement => {
+export interface IUploadPropsWeb {
+  icon: string;
+  header: string;
+  subHeader: string;
+  containerStyle: StyleProp<ViewStyle>;
+}
+
+const ProofOfCompletion = (props: IProps): ReactElement => {
+  const { renderUploadBox, onUpdateComment, onUploadImage } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
   const dispatch = useDispatch();
   const attachments = useSelector(TicketSelectors.getProofAttachment);
@@ -32,10 +42,10 @@ const ProofOfCompletion = ({ onUploadImage, onUpdateComment }: IProps): ReactEle
     onUpdateComment(value);
   };
 
-  const onAddProof = (): void => {
-    if (attachments.length === TOTAL_IMAGES) {
+  const onAddProof = (images: IImageSource[] | File[]): void => {
+    if (images.length === TOTAL_IMAGES) {
       AlertHelper.error({ message: t('common:uploadWarning') });
-    } else {
+    } else if (onUploadImage) {
       onUploadImage();
     }
   };
@@ -45,16 +55,35 @@ const ProofOfCompletion = ({ onUploadImage, onUpdateComment }: IProps): ReactEle
   };
   // HANDLERS
 
-  const renderImageView = ({ item }: { item: IImageSource }): ReactElement => {
+  const renderImageView = ({ item }: { item: IImageSource | File }): ReactElement => {
+    let imageSrc;
+    let imageName: string;
+    if (PlatformUtils.isWeb()) {
+      item = item as File;
+      // @ts-ignore
+      imageSrc = item.path;
+      imageName = item.name;
+    }
+
+    const { path, filename } = item as IImageSource;
+    imageSrc = path;
+    imageName = filename;
     return (
       <View style={styles.imageContainer}>
-        <ImageBackground source={{ uri: item.path }} style={styles.image}>
-          <TouchableOpacity style={styles.iconContainer} onPress={(): void => onRemoveProof(item.filename)}>
+        <ImageBackground source={{ uri: imageSrc }} style={styles.image}>
+          <TouchableOpacity style={styles.iconContainer} onPress={(): void => onRemoveProof(imageName)}>
             <Icon name={icons.close} color={theme.colors.white} size={18} />
           </TouchableOpacity>
         </ImageBackground>
       </View>
     );
+  };
+
+  const uploadBoxProps = {
+    icon: icons.gallery,
+    header: t('common:addPhoto'),
+    subHeader: t('uploadIssuePhotoHelperText'),
+    containerStyle: styles.uploadButton,
   };
 
   return (
@@ -65,17 +94,21 @@ const ProofOfCompletion = ({ onUploadImage, onUpdateComment }: IProps): ReactEle
       <Text type="small" style={styles.subHeading}>
         {t('showcasePhoto')}
       </Text>
-      <UploadBox
-        icon={icons.gallery}
-        header={t('common:addPhoto')}
-        subHeader={t('uploadIssuePhotoHelperText')}
-        onPress={onAddProof}
-        containerStyle={styles.uploadButton}
-      />
+      {!PlatformUtils.isWeb() && (
+        <UploadBox
+          icon={icons.gallery}
+          header={t('common:addPhoto')}
+          subHeader={t('uploadIssuePhotoHelperText')}
+          onPress={onAddProof}
+          containerStyle={styles.uploadButton}
+        />
+      )}
+      {PlatformUtils.isWeb() && renderUploadBox && renderUploadBox(uploadBoxProps)}
       {attachments.length > 0 && (
         <>
           <Text type="small">{t('property:uploadedImages')}</Text>
           <FlatList
+            // @ts-ignore
             data={attachments}
             renderItem={renderImageView}
             numColumns={2}

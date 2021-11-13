@@ -19,6 +19,7 @@ import {
   ISubmitQuote,
 } from '@homzhub/common/src/modules/tickets/interface';
 import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IFile } from '@homzhub/common/src/constants/AttachmentTypes';
 import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
 
 const actionTypePrefix = 'Ticket/';
@@ -62,6 +63,7 @@ export const TicketActionTypes = {
   },
   SET: {
     PROOF_ATTACHMENT: `${actionTypePrefix}PROOF_ATTACHMENT`,
+    PROOF_ATTACHMENT_WEB: `${actionTypePrefix}PROOF_ATTACHMENT_WEB`,
     CURRENT_TICKET: `${actionTypePrefix}CURRENT_TICKET`,
     QUOTE_ATTACHMENT: `${actionTypePrefix}QUOTE_ATTACHMENT`,
     QUOTE: `${actionTypePrefix}QUOTE`,
@@ -75,8 +77,13 @@ export const TicketActionTypes = {
   CLEAR_STATE: `${actionTypePrefix}CLEAR_STATE`,
 };
 
-const setAttachment = (payload: IImageSource[]): IFluxStandardAction<IImageSource[]> => ({
+const setAttachment = (payload: IImageSource[] | IFile[]): IFluxStandardAction<IImageSource[] | IFile[]> => ({
   type: TicketActionTypes.SET.PROOF_ATTACHMENT,
+  payload,
+});
+
+const setAttachmentWeb = (payload: File[]): IFluxStandardAction<File[]> => ({
+  type: TicketActionTypes.SET.PROOF_ATTACHMENT_WEB,
   payload,
 });
 
@@ -295,10 +302,13 @@ export type TicketActionPayloadTypes =
   | IApproveQuote
   | IRequestMorePayload
   | RequestedQuote[]
-  | IRequestedQuote[];
+  | IRequestedQuote[]
+  | File[]
+  | IFile[];
 
 export const TicketActions = {
   setAttachment,
+  setAttachmentWeb,
   removeAttachment,
   clearState,
   getTickets,

@@ -2,17 +2,18 @@ import React, { Fragment } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import ProgressBar from 'react-native-progress/Bar';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
-import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UploadFileType } from '@homzhub/common/src/domain/models/Attachment';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
 interface IFileUploadProps {
-  attachments: IDocumentSource[];
-  onDelete: (uri: string) => void;
+  attachments: IDocumentSource[] | File[];
+  onDelete: (uri: string, name?: string) => void;
 }
 
 const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
@@ -25,17 +26,22 @@ const FileUpload = (props: IFileUploadProps): React.ReactElement | null => {
   if (attachments.length) {
     return (
       <>
-        {attachments.map((attachment: IDocumentSource, index) => {
-          const { name, uri, size } = attachment;
+        {attachments.map((attachment: IDocumentSource | File, index: number) => {
+          const customAttachement = PlatformUtils.isWeb() ? (attachment as File) : (attachment as IDocumentSource);
+          const customAttachements = PlatformUtils.isWeb()
+            ? (attachments as File[])
+            : (attachments as IDocumentSource[]);
+          const { name, size } = attachment;
+          const { uri } = attachment as IDocumentSource;
           const extension = name.split('.').reverse()[0];
           const fileType = extension === 'pdf' ? UploadFileType.PDF : UploadFileType.IMAGE;
-          const isLastAttachment = attachments.indexOf(attachment) === attachments.length - 1;
+          const isLastAttachment = customAttachements.indexOf(customAttachement) === attachments.length - 1;
           const fileIcon = fileType === UploadFileType.PDF ? icons.doc : icons.imageFile;
 
           const RenderDivider = (): React.ReactElement =>
             !isLastAttachment ? <Divider containerStyles={styles.divider} /> : <View style={styles.endingEmptyView} />;
 
-          const onPress = (): void => onDelete(uri);
+          const onPress = (): void => onDelete(uri, name);
 
           return (
             <Fragment key={index.toString()}>

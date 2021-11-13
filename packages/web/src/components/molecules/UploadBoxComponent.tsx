@@ -16,29 +16,60 @@ interface IProps {
   iconSize?: number;
   iconColor?: string;
   key?: number;
-  onCapture: (DocumentSource: IDocumentSource[]) => void;
-  onDelete: (uri: string) => void;
+  onCapture?: (attachments: IDocumentSource[]) => void;
+  onDropAccepted?: (attachments: File[]) => void;
+  onDelete: (uri: string, name?: string) => void;
   displayThumbnail?: boolean;
-  attachments: IDocumentSource[] | [];
+  attachments: IDocumentSource[] | File[];
   allowedTypes?: string[];
   children?: React.ReactElement | React.ReactNode;
 }
 
 const UploadBoxComponent = (props: IProps): React.ReactElement => {
-  const { attachments, onDelete, onCapture, children, ...rest } = props;
+  const { attachments, onDelete, onCapture, children, onDropAccepted, ...rest } = props;
   const { t } = useTranslation();
 
   const captureDocument = (files: File[]): void => {
     try {
-      const documentSource: IDocumentSource[] = [];
       if (files.length) {
-        files.forEach((item) => {
-          const uri = URL.createObjectURL(item);
+        const promise = Promise.resolve();
+        const promises = files.map((file: File) =>
+          promise.then(() => {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = (): void => {
+                const customFile: IDocumentSource = {
+                  name: file.name,
+                  uri: reader.result as string,
+                  type: file.type,
+                  size: file.size,
+                  fileCopyUri: reader.result as string,
+                };
 
-          documentSource.push({ type: item.type, name: item.name, uri, size: item.size, fileCopyUri: uri });
+                resolve({
+                  file,
+                  customFile,
+                });
+              };
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            });
+          })
+        );
+
+        promise.then(() => {
+          Promise.all(promises).then((res) => {
+            const fileData: File[] = res.map((item: any) => item.file);
+            const customFiles: IDocumentSource[] = res.map((item: any) => item.customFile);
+            if (onDropAccepted) {
+              onDropAccepted(fileData);
+            }
+            if (onCapture) {
+              onCapture(customFiles);
+            }
+          });
         });
       }
-      onCapture(documentSource);
     } catch (e) {
       AlertHelper.error({ message: e.message });
     }

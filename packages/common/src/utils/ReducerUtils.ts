@@ -5,6 +5,7 @@ import { Message, IMessageKeyValue, IMessages } from '@homzhub/common/src/domain
 import { IFinancialTransaction } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { IPaginationPayload } from '@homzhub/common/src/modules/interfaces';
+import { IFile } from '@homzhub/common/src/constants/AttachmentTypes';
 
 class ReducerUtils {
   public formatMessages = (data: Message[], prevObj: IMessages | null, isNew?: boolean): IMessageKeyValue => {
@@ -30,10 +31,10 @@ class ReducerUtils {
     return resultObj;
   };
 
-  public removeAttachment = (key: string, prevData: IImageSource[]): IImageSource[] => {
+  public removeAttachment = (key: string, prevData: IImageSource[] | IFile[]): IImageSource[] | IFile[] => {
     const attachments = cloneDeep(prevData);
-
-    const index = attachments.findIndex((item) => item.filename === key);
+    // @ts-ignore
+    const index = attachments.findIndex((item) => item.filename || item.name === key);
     attachments.splice(index, 1);
     return attachments;
   };

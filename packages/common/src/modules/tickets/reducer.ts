@@ -7,11 +7,12 @@ import { IQuoteCategory } from '@homzhub/common/src/domain/models/QuoteCategory'
 import { IRequestedQuote } from '@homzhub/common/src/domain/models/RequestedQuote';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
-import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
+import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
 
 export const initialTicketState: ITicketState = {
   proofAttachment: [],
+  proofAttachmentWeb: [],
   currentTicket: null,
   tickets: [],
   ticketDetail: null,
@@ -46,7 +47,12 @@ export const ticketReducer = (
     case TicketActionTypes.SET.PROOF_ATTACHMENT:
       return {
         ...state,
-        ['proofAttachment']: [...state.proofAttachment, ...(action.payload as IImageSource[])],
+        ['proofAttachment']: [...state.proofAttachment, ...(action.payload as any)],
+      };
+    case TicketActionTypes.SET.PROOF_ATTACHMENT_WEB:
+      return {
+        ...state,
+        ['proofAttachmentWeb']: [...state.proofAttachmentWeb, ...(action.payload as File[])],
       };
     case TicketActionTypes.REMOVE_ATTACHMENT:
       return {

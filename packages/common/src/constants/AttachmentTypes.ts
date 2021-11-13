@@ -11,3 +11,10 @@ export enum AttachmentType {
 export enum AttachmentError {
   UPLOAD_IMAGE_ERROR = 'File is corrupted',
 }
+
+export interface IFile {
+  name: string;
+  type: string;
+  path: string;
+  size: number;
+}

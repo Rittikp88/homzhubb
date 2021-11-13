@@ -7,6 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet } from 'react-native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { AttachmentService } from '@homzhub/common/src/services/AttachmentService';
@@ -43,7 +44,7 @@ interface IFormValues {
 
 interface IScreeState {
   serviceForm: IFormValues;
-  attachments: IDocumentSource[];
+  attachments: IDocumentSource[] | File[];
   selectedCategoryId: number;
   categories: IDropdownOption[];
   subCategories: IDropdownOption[];
@@ -140,15 +141,28 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 
     const isPropertiesPresent = properties && properties.length > 0;
 
-    const uploadProps: IUploadCompProps = {
+    const uploadPropsWeb: IUploadCompProps = {
       attachments,
       icon: icons.document,
       header: t('common:uploadDocument'),
       subHeader: t('common:uploadDocHelperText'),
-      onCapture: this.handleUpload,
       onDelete: this.handleDocumentDelete,
       containerStyle: styles.uploadBox,
+      onDropAccepted: this.onUploadAccept,
+      multipleUpload: true,
     };
+
+    const uploadPropsApp: IUploadCompProps = {
+      attachments,
+      icon: icons.document,
+      header: t('common:uploadDocument'),
+      subHeader: t('common:uploadDocHelperText'),
+      onDelete: this.handleDocumentDelete,
+      containerStyle: styles.uploadBox,
+      onCapture: this.handleUpload,
+    };
+
+    const uploadProps = PlatformUtils.isWeb() ? uploadPropsWeb : uploadPropsApp;
 
     return (
       <>
@@ -284,6 +298,12 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     );
   };
 
+  private onUploadAccept = (attachments: File[]): void => {
+    this.setState((prevState: IScreeState) => {
+      return { attachments: [...(prevState.attachments as File[]), ...attachments] };
+    });
+  };
+
   private setSelectedCategory = (value: string, props?: FormikProps<FormikValues>): void => {
     if (props) {
       const { setFieldValue } = props;
@@ -314,13 +334,18 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
 
   private handleUpload = (attachments: IDocumentSource[]): void => {
     this.setState((prevState: IScreeState) => {
-      return { attachments: [...prevState.attachments, ...attachments] };
+      return { attachments: [...(prevState.attachments as IDocumentSource[]), ...attachments] };
     });
   };
 
-  private handleDocumentDelete = (uri: string): void => {
+  private handleDocumentDelete = (uri: string, name?: string): void => {
     this.setState((prevState: IScreeState) => {
-      return { attachments: prevState.attachments.filter((file) => file.uri !== uri) };
+      if (PlatformUtils.isWeb() && name) {
+        const webAttachments = prevState.attachments as File[];
+        return { attachments: webAttachments.filter((file: File) => file.name !== name) };
+      }
+      const mobAttachments = prevState.attachments as IDocumentSource[];
+      return { attachments: mobAttachments.filter((file: IDocumentSource) => file.uri !== uri) };
     });
   };
 
@@ -370,7 +395,7 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
     if (attachments.length > 0) {
       /* Make an API call for uploading the document and extract the doc Id */
       const formData = new FormData();
-      attachments.forEach((attachment: IDocumentSource) => {
+      attachments.forEach((attachment: IDocumentSource | File) => {
         // @ts-ignore
         formData.append('files[]', attachment);
       });

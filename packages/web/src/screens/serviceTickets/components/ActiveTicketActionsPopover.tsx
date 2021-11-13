@@ -19,6 +19,7 @@ import RejectTicket from '@homzhub/web/src/screens/serviceTickets/components/Rej
 import RequestMoreQuotes from '@homzhub/web/src/screens/serviceTickets/components/RequestMoreQuotes';
 import SubmitQuote from '@homzhub/web/src/screens/serviceTickets/components/SubmitQuote';
 import UpdateWorkStatus from '@homzhub/web/src/screens/serviceTickets/components/UpdateWorkStatus';
+import WorkCompleted from '@homzhub/web/src/screens/serviceTickets/components/WorkCompleted';
 import WorkInitiated from '@homzhub/web/src/screens/serviceTickets/components/WorkInitiated';
 import { TicketActions as TicketActionTypes } from '@homzhub/common/src/constants/ServiceTickets';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
@@ -27,8 +28,8 @@ interface IProps {
   popupRef: React.MutableRefObject<PopupActions | null>;
   activeTicketActionType: TicketActionTypes | null;
   onCloseModal: () => void;
-  handleActiveTicketAction?: (value: TicketActionTypes) => void;
   onSuccessCallback: (message?: string) => void;
+  handleActiveTicketAction?: (value: TicketActionTypes) => void;
 }
 
 const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
@@ -71,7 +72,7 @@ const ActiveTicketActionsPopover: React.FC<IProps> = (props: IProps) => {
       case TicketActionTypes.INITIATE_WORK:
         return <WorkInitiated onSuccess={onSuccessCallback} />;
       case TicketActionTypes.WORK_COMPLETED:
-        return <View />;
+        return <WorkCompleted onSuccess={onSuccessCallback} />;
       case TicketActionTypes.SEND_UPDATES:
         return <UpdateWorkStatus onSuccess={onSuccessCallback} />;
       case TicketActionTypes.REJECT_TICKET:

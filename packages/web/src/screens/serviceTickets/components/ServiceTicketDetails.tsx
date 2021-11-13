@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
@@ -81,7 +82,7 @@ const ServiceTicketDetails: React.FC = () => {
       return <ImagePlaceholder height="100%" containerStyle={styles.carousel} />;
     }
 
-    return <AssetDetailsImageCarousel data={detail.ticketAttachments} />;
+    return <AssetDetailsImageCarousel data={detail.ticketAttachments} fullScreen />;
   };
 
   const renderDetailsCard = (): React.ReactElement | null => {
@@ -112,7 +113,7 @@ const ServiceTicketDetails: React.FC = () => {
           containerStyle={styles.containerPropActivity as ViewStyle}
           onOpenModal={onOpenModal}
           handleActiveTicketAction={handleActiveTicketAction}
-          // onPressImage={(slideNumber: number) => { }}
+          onPressImage={FunctionUtils.noop}
         />
       </View>
     );

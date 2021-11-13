@@ -8,12 +8,20 @@ import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket, ITicketState } from '@homzhub/common/src/modules/tickets/interface';
 import { IDocumentSource, IImageSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 import { IQuoteGroup } from '@homzhub/common/src/constants/ServiceTickets';
+import { IFile } from '@homzhub/common/src/constants/AttachmentTypes';
 
-const getProofAttachment = (state: IState): IImageSource[] => {
+const getProofAttachment = (state: IState): IImageSource[] | IFile[] => {
   const {
     ticket: { proofAttachment },
   } = state;
   return proofAttachment;
+};
+
+const getProofAttachmentWeb = (state: IState): File[] => {
+  const {
+    ticket: { proofAttachmentWeb },
+  } = state;
+  return proofAttachmentWeb;
 };
 
 const getTickets = (state: IState): Ticket[] => {
@@ -105,6 +113,7 @@ const getQuoteRequests = (state: IState): RequestedQuote[] => {
 
 export const TicketSelectors = {
   getProofAttachment,
+  getProofAttachmentWeb,
   getTickets,
   getCurrentTicket,
   getTicketDetail,
