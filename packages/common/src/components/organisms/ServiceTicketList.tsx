@@ -30,6 +30,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   isDesktop?: boolean;
   isTablet?: boolean;
+  renderWebRating?: (children: React.ReactElement, onClose: () => void, isOpen: boolean) => React.ReactElement;
 }
 
 interface IDispatchProps {
@@ -167,7 +168,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
   };
 
   private renderItem = (item: Ticket, totalItems: number): ReactElement => {
-    const { isFromMore, getTickets } = this.props;
+    const { isFromMore, getTickets, renderWebRating } = this.props;
     const isOdd = (num: number): boolean => {
       return num % 2 === 1;
     };
@@ -179,6 +180,7 @@ class ServiceTicketList extends Component<Props, IScreenState> {
         isFromMore={isFromMore}
         onSubmitReview={getTickets}
         isOddElement={isOddElement}
+        renderWebRating={renderWebRating}
       />
     );
   };

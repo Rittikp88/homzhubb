@@ -21,6 +21,7 @@ interface IProps {
   isFromMore?: boolean;
   onSubmitReview: () => void;
   isOddElement: boolean;
+  renderWebRating?: (children: React.ReactElement, onClose: () => void, isOpen: boolean) => React.ReactElement;
 }
 
 /* Get color for status  */
@@ -72,7 +73,7 @@ const keyValue = (key: string, data: IDataType): string => {
 };
 
 export const TicketCard = (props: IProps): React.ReactElement => {
-  const { cardData, onCardPress, isFromMore = false, onSubmitReview, isOddElement } = props;
+  const { cardData, onCardPress, isFromMore = false, onSubmitReview, isOddElement, renderWebRating } = props;
   const {
     title,
     createdAt,
@@ -122,7 +123,11 @@ export const TicketCard = (props: IProps): React.ReactElement => {
     return (
       <View style={styles.experienceContent}>
         <Divider containerStyles={styles.divider} />
-        <TicketReview ticketData={cardData} renderRatingForm={renderRatingSheet} successCallback={onSubmitReview} />
+        <TicketReview
+          ticketData={cardData}
+          renderRatingForm={renderWebRating && !PlatformUtils.isMobile() ? renderWebRating : renderRatingSheet}
+          successCallback={onSubmitReview}
+        />
       </View>
     );
   };
@@ -130,39 +135,38 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   const isWeb = PlatformUtils.isWeb();
 
   return (
-    <TouchableOpacity
-      style={[styles.container, isWeb && isOddElement ? styles.oddElement : styles.evenElement]}
-      onPress={onCardPress}
-    >
-      <View style={styles.row}>
-        <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
-        <View>
-          <View style={styles.titleView}>
-            <Label type="large" textType="semiBold" style={styles.title}>
-              {title}
-            </Label>
-            {isFromMore && (
-              <Label type="regular" style={styles.subTitle}>
-                {formattedAddressWithProjectAndCity}
+    <View style={[styles.container, isWeb && isOddElement ? styles.oddElement : styles.evenElement]}>
+      <TouchableOpacity onPress={onCardPress}>
+        <View style={styles.row}>
+          <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
+          <View>
+            <View style={styles.titleView}>
+              <Label type="large" textType="semiBold" style={styles.title}>
+                {title}
               </Label>
-            )}
-          </View>
-          <View style={styles.detailsContainer}>
-            {Object.keys(dataByStatus).map((key, indexValue: number) => (
-              <View key={indexValue} style={styles.detailsColumn}>
-                <Label type="small" textType="regular" style={styles.details}>
-                  {t(key)}
+              {isFromMore && (
+                <Label type="regular" style={styles.subTitle}>
+                  {formattedAddressWithProjectAndCity}
                 </Label>
-                <Label type="regular" textType="semiBold" style={onColorChange(dataByStatus[key])}>
-                  {keyValue(key, dataByStatus)}
-                </Label>
-              </View>
-            ))}
+              )}
+            </View>
+            <View style={styles.detailsContainer}>
+              {Object.keys(dataByStatus).map((key, indexValue: number) => (
+                <View key={indexValue} style={styles.detailsColumn}>
+                  <Label type="small" textType="regular" style={styles.details}>
+                    {t(key)}
+                  </Label>
+                  <Label type="regular" textType="semiBold" style={onColorChange(dataByStatus[key])}>
+                    {keyValue(key, dataByStatus)}
+                  </Label>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
       {isClosed && renderRatingView()}
-    </TouchableOpacity>
+    </View>
   );
 };
 

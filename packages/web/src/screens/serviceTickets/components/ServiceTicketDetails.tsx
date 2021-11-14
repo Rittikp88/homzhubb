@@ -8,7 +8,9 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { CommonActions } from '@homzhub/common/src/modules/common/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -18,9 +20,11 @@ import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlac
 import ListViewPopup from '@homzhub/web/src/components/molecules/ListViewPopup';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { AssetDetailsImageCarousel } from '@homzhub/common/src/components/molecules/AssetDetailsImageCarousel';
+import CustomPopup from '@homzhub/web/src/components/molecules/CustomPopup';
 import TicketActivityCard from '@homzhub/common/src/components/molecules/TicketActivity';
 import TicketDetailsCard from '@homzhub/common/src/components/molecules/TicketDetailsCard';
 import ActiveTicketActionsPopover from '@homzhub/web/src/screens/serviceTickets/components/ActiveTicketActionsPopover';
+import { PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ICurrentTicket } from '@homzhub/common/src/modules/tickets/interface';
@@ -38,17 +42,24 @@ const ServiceTicketDetails: React.FC = () => {
   const isSingleColumn = useDown(deviceBreakpoint.TABLET);
   const dispatch = useDispatch();
   const { getCurrentTicket, getTicketDetail, getTicketDetailLoader, getTicketActions } = TicketSelectors;
+  const pillarData = useSelector(CommonSelectors.getPillars);
   const currentTicket = useSelector((state: IState) => getCurrentTicket(state));
   const ticketDetails = useSelector((state: IState) => getTicketDetail(state));
   const isLoading = useSelector((state: IState) => getTicketDetailLoader(state));
   //   const ticketLoader = useSelector((state: IState) => getTicketLoaders(state));
   const ticketActions = useSelector((state: IState) => getTicketActions(state));
   const history = useHistory<ICurrentTicket>();
+
+  // Refs
+  const popupRefRating = useRef<PopupActions>(null);
+  const popupRef = useRef<PopupActions>(null);
+
   const {
     location: {
       state: { ticketId, assetId, assignedUserId },
     },
   } = history;
+
   const getActionList = (): PickerItemProps[] => {
     if (!ticketActions) return [];
 
@@ -63,8 +74,13 @@ const ServiceTicketDetails: React.FC = () => {
       });
   };
   const actionList = getActionList();
+
   const { getTicketDetail: getTicketDetailAction, setCurrentTicket } = TicketActions;
+
   useEffect(() => {
+    if (!pillarData.length) {
+      dispatch(CommonActions.getPillars(PillarTypes.SERVICE_TICKET_REVIEW));
+    }
     if (currentTicket) {
       dispatch(getTicketDetailAction(currentTicket.ticketId));
     } else {
@@ -73,8 +89,39 @@ const ServiceTicketDetails: React.FC = () => {
     }
   }, []);
 
-  const renderRatingSheet = (): React.ReactElement => {
-    return <View />;
+  const onOpenRatingModal = (): void => {
+    if (popupRefRating && popupRefRating.current) {
+      popupRefRating.current.open();
+    }
+  };
+
+  const onCloseRatingModal = (): void => {
+    if (popupRefRating && popupRefRating.current) {
+      popupRefRating.current.close();
+    }
+  };
+
+  const renderRatingSheet = (
+    children: React.ReactElement,
+    onClose: () => void,
+    isOpen: boolean
+  ): React.ReactElement => {
+    const onCloseCustom = (): void => {
+      onCloseRatingModal();
+      onClose();
+    };
+
+    return (
+      <CustomPopup
+        popupRef={popupRefRating}
+        onOpenModal={onOpenRatingModal}
+        title={t('serviceTickets:ticketReview')}
+        onCloseModal={onCloseCustom}
+        isOpen={isOpen}
+      >
+        {children}
+      </CustomPopup>
+    );
   };
 
   const renderCarousel = (detail: Ticket): React.ReactElement => {
@@ -93,6 +140,8 @@ const ServiceTicketDetails: React.FC = () => {
         ticketImages={renderCarousel(ticketDetails)}
         renderRatingForm={renderRatingSheet}
         successCallback={onSuccess}
+        onOpenRatingModal={onOpenRatingModal}
+        onCloseRatingModal={onCloseRatingModal}
       />
     );
   };
@@ -168,7 +217,6 @@ const ServiceTicketDetails: React.FC = () => {
     setActiveTicketType(code);
   };
 
-  const popupRef = useRef<PopupActions>(null);
   const onOpenModal = (): void => {
     if (popupRef && popupRef.current) {
       popupRef.current.open();
@@ -201,6 +249,9 @@ const ServiceTicketDetails: React.FC = () => {
       AlertHelper.success({ message });
     } else {
       AlertHelper.success({ message: t('serviceTickets:ticketActionSuccess') });
+    }
+    if (activeTicketType === TicketActionTypes.REJECT_TICKET) {
+      onClosePopoverList();
     }
   };
   if (!isLoading && !ticketDetails) {

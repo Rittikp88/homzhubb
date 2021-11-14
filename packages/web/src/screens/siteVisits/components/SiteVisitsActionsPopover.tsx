@@ -76,7 +76,7 @@ const SiteVisitsActionsPopover: React.FC<IProps> = (props: IProps) => {
     postReviewProps,
     reportReviewProps,
     setSiteVisitActionType,
-    onSuccessCallback
+    onSuccessCallback,
   } = props;
   const {
     review: { isReported, reviewReportId },

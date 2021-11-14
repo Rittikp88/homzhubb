@@ -62,7 +62,7 @@ const SavedProperty: FC = () => {
 
   useEffect(() => {
     dispatch(UserActions.getFavouriteProperties());
-    getProspectProfile();
+    getProspectProfile().then();
     setLoading(false);
   }, []);
 
@@ -169,8 +169,7 @@ const SavedProperty: FC = () => {
 
       dispatch(UserActions.getFavouriteProperties());
     } catch (e) {
-      const error = ErrorUtils.getErrorMessage({ message: e.details, statusCode: error.details.statusCode });
-      AlertHelper.error({ message: error });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
     }
   };
 

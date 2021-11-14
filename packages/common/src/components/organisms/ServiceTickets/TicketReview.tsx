@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -20,8 +21,10 @@ import { IListingReviewParams, ISubmitReview } from '@homzhub/common/src/domain/
 
 interface IProps {
   ticketData: Ticket;
-  renderRatingForm: (children: React.ReactElement, onClose: () => void) => React.ReactElement;
+  renderRatingForm: (children: React.ReactElement, onClose: () => void, isReview: boolean) => React.ReactElement;
   successCallback: () => void;
+  onOpenRatingModal?: () => void;
+  onCloseRatingModal?: () => void;
 }
 
 const TicketReview = (props: IProps): React.ReactElement => {
@@ -29,6 +32,8 @@ const TicketReview = (props: IProps): React.ReactElement => {
     ticketData: { title, createdAt, id, review },
     renderRatingForm,
     successCallback,
+    onOpenRatingModal,
+    onCloseRatingModal,
   } = props;
   const pillarData = useSelector(CommonSelectors.getPillars);
   const [isReview, setIsReview] = useState(false);
@@ -63,6 +68,9 @@ const TicketReview = (props: IProps): React.ReactElement => {
 
   const onCloseForm = (): void => {
     setIsReview(false);
+    if (PlatformUtils.isWeb() && onCloseRatingModal) {
+      onCloseRatingModal();
+    }
   };
 
   const onUpdate = async (payload: IListingReviewParams): Promise<void> => {
@@ -152,10 +160,17 @@ const TicketReview = (props: IProps): React.ReactElement => {
     );
   };
 
+  const onPressReview = (): void => {
+    setIsReview(!isReview);
+    if (PlatformUtils.isWeb() && onOpenRatingModal) {
+      onOpenRatingModal();
+    }
+  };
+
   return (
     <>
       {review ? (
-        <TouchableOpacity onPress={(): void => setIsReview(!isReview)}>
+        <TouchableOpacity onPress={onPressReview}>
           <Rating value={review.rating} isOverallRating containerStyle={styles.overallContainer} />
         </TouchableOpacity>
       ) : (
@@ -164,12 +179,12 @@ const TicketReview = (props: IProps): React.ReactElement => {
           textType="label"
           textSize="large"
           title={t('common:writeReview')}
-          onPress={(): void => setIsReview(!isReview)}
+          onPress={onPressReview}
           containerStyle={styles.buttonContainer}
           titleStyle={styles.buttonTitle}
         />
       )}
-      {isReview && renderRatingForm(renderRating(), onCloseForm)}
+      {isReview && renderRatingForm(renderRating(), onCloseForm, isReview)}
     </>
   );
 };

@@ -3,6 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTranslation } from 'react-i18next';
 import { cloneDeep } from 'lodash';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
@@ -96,6 +97,8 @@ const RatingForm = (props: IProps): React.ReactElement => {
     }
   };
 
+  const isWeb = PlatformUtils.isWeb();
+
   return (
     <KeyboardAwareScrollView
       style={[styles.container, containerStyle]}
@@ -135,14 +138,18 @@ const RatingForm = (props: IProps): React.ReactElement => {
           type="secondary"
           title={isEdit && isDeleteRequired ? t('common:delete') : t('common:notNow')}
           titleStyle={isEdit && isDeleteRequired ? styles.buttonTitle : styles.buttonTitleText}
-          containerStyle={[isEdit && isDeleteRequired ? styles.deleteButton : undefined, buttonStyle]}
+          containerStyle={[
+            isEdit && isDeleteRequired ? styles.deleteButton : undefined,
+            buttonStyle,
+            isWeb && styles.buttonWeb,
+          ]}
         />
         <Button
           onPress={onClick}
           disabled={isEdit ? false : overallRating === 0}
           type="primary"
           title={isEdit ? t('common:update') : t('common:submit')}
-          containerStyle={[styles.submitButton, buttonStyle]}
+          containerStyle={[styles.submitButton, buttonStyle, isWeb && styles.buttonWeb]}
         />
       </View>
     </KeyboardAwareScrollView>
@@ -169,6 +176,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     flexDirection: 'row',
     marginBottom: 12,
+    justifyContent: 'space-around',
   },
   submitButton: {
     marginStart: 16,
@@ -190,5 +198,8 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     borderColor: theme.colors.error,
+  },
+  buttonWeb: {
+    width: 120,
   },
 });

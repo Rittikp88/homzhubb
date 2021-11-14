@@ -13,9 +13,11 @@ import { priorityColors } from '@homzhub/common/src/constants/ServiceTickets';
 interface IProps {
   ticketData: Ticket;
   ticketImages: React.ReactElement;
-  renderRatingForm: (children: React.ReactElement, onClose: () => void) => React.ReactElement;
+  renderRatingForm: (children: React.ReactElement, onClose: () => void, isOpen: boolean) => React.ReactElement;
   successCallback: () => void;
   containerStyle?: StyleProp<ViewStyle>;
+  onOpenRatingModal?: () => void;
+  onCloseRatingModal?: () => void;
 }
 
 interface ITicketDetails {
@@ -25,7 +27,15 @@ interface ITicketDetails {
 
 const TicketDetailsCard = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { ticketData, ticketImages, renderRatingForm, successCallback, containerStyle } = props;
+  const {
+    ticketData,
+    ticketImages,
+    renderRatingForm,
+    successCallback,
+    containerStyle,
+    onOpenRatingModal,
+    onCloseRatingModal,
+  } = props;
   const {
     createdAt,
     updatedAt,
@@ -123,7 +133,13 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
         </Text>
         <RenderDetails />
         {status === TicketStatus.CLOSED && (
-          <TicketReview ticketData={ticketData} renderRatingForm={renderRatingForm} successCallback={successCallback} />
+          <TicketReview
+            ticketData={ticketData}
+            renderRatingForm={renderRatingForm}
+            successCallback={successCallback}
+            onOpenRatingModal={onOpenRatingModal}
+            onCloseRatingModal={onCloseRatingModal}
+          />
         )}
       </View>
     </View>
