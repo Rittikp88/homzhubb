@@ -3,7 +3,10 @@ import { StyleSheet } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
+import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
@@ -21,6 +24,7 @@ import {
 
 interface IStateProps {
   isLoading: boolean;
+  redirectionDetails: IRedirectionDetails;
 }
 
 interface IDispatchProps {
@@ -89,15 +93,24 @@ export class EmailLoginScreen extends React.PureComponent<Props> {
     const loginPayload: ILoginPayload = {
       data: emailLoginData,
       ...(params && params.onCallback && { callback: params.onCallback }),
+      handleDynamicLink: this.handleDynamicLink,
     };
 
     login(loginPayload);
+  };
+
+  private handleDynamicLink = (): void => {
+    const { redirectionDetails } = this.props;
+    if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
+      NavigationService.handleDynamicLinkNavigation(redirectionDetails).then();
+    }
   };
 }
 
 export const mapStateToProps = (state: IState): IStateProps => {
   return {
     isLoading: UserSelector.getLoadingState(state),
+    redirectionDetails: CommonSelectors.getRedirectionDetails(state) as IRedirectionDetails,
   };
 };
 
@@ -111,11 +124,13 @@ export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
   );
 };
 
+// @ts-ignore
 export default connect<IStateProps, IDispatchProps, WithTranslation, IState>(
   mapStateToProps,
   mapDispatchToProps
 )(withTranslation()(EmailLoginScreen));
 
+// @ts-ignore
 const styles = StyleSheet.create({
   container: {
     flex: 1,

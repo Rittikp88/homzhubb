@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { View, StyleSheet } from 'react-native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FormUtils } from '@homzhub/common/src/utils/FormUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
@@ -450,7 +451,7 @@ class AddServiceTicketForm extends React.PureComponent<Props, IScreeState> {
       this.setState({ selectedCategoryId: -1, attachments: [] });
       formActions.setSubmitting(false);
       formActions.resetForm({});
-      AlertHelper.error({ message: e.message });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 }

@@ -331,7 +331,8 @@
     "ifscNotFound": "IFSC code not found",
     "letsGetStarted": "Let’s get started!",
     "welcomeText": "Welcome",
-    "pleaseFillDetails": "Please fill all the details"
+    "pleaseFillDetails": "Please fill all the details",
+    "supplies": "Supplies"
   },
   "auth": {
     "verifyNumber": "Verify your number",

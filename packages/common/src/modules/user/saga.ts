@@ -4,7 +4,6 @@ import { select } from 'redux-saga/effects';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { DeviceUtils } from '@homzhub/common/src/utils/DeviceUtils';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
-import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { AssetRepository } from '@homzhub/common/src/domain/repositories/AssetRepository';
 import { ServiceRepository } from '@homzhub/common/src/domain/repositories/ServiceRepository';
@@ -13,7 +12,6 @@ import { AnalyticsService } from '@homzhub/common/src/services/Analytics/Analyti
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { UserActions, UserActionTypes } from '@homzhub/common/src/modules/user/actions';
 import { SearchActions } from '@homzhub/common/src/modules/search/actions';
-import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { SearchSelector } from '@homzhub/common/src/modules/search/selectors';
 import { IFilter } from '@homzhub/common/src/domain/models/Search';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -33,7 +31,7 @@ import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 export function* login(action: IFluxStandardAction<ILoginPayload>) {
   if (!action.payload) return;
   const {
-    payload: { data, callback, is_referral, is_from_signup },
+    payload: { data, callback, is_referral, is_from_signup, handleDynamicLink },
   } = action;
   const { EMAIL, OTP, REFERRAL } = AuthenticationType;
 
@@ -48,9 +46,8 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
     const tokens = { refresh_token: userData.refreshToken, access_token: userData.accessToken };
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
-    const redirectionDetails = yield select(CommonSelectors.getRedirectionDetails);
-    if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
-      yield call(NavigationService.handleDynamicLinkNavigation, redirectionDetails);
+    if (handleDynamicLink) {
+      handleDynamicLink();
     }
     const handleCallback = (): void => {
       if (is_referral || is_from_signup) {

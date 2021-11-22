@@ -1,28 +1,33 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import RNBootSplash from 'react-native-bootsplash';
+import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@homzhub/common/src/modules/store';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
+import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
+import { RootNavigator } from '@homzhub/ffm/src/navigation/RootNavigator';
+import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
 
-// Dummy App file to setup FFM module
-const App: () => React.ReactNode = () => {
+StoreProviderService.init(configureStore);
+const store = StoreProviderService.getStore();
+
+const App: () => React.ReactElement = () => {
+  const [booting, setBooting] = useState(true);
   useEffect(() => {
-    RNBootSplash.hide();
+    bootUp().then();
   }, []);
 
+  const bootUp = async (): Promise<void> => {
+    const selectedLanguage: SupportedLanguages | null = await StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE);
+    await I18nService.init(selectedLanguage || undefined);
+
+    setBooting(false);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Welcome</Text>
-      <Text>To</Text>
-      <Text>Homzhub Partner Connect</Text>
-    </View>
+    <Provider store={store}>
+      <RootNavigator booting={booting} />
+    </Provider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;

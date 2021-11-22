@@ -185,10 +185,14 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
-  - react-native-config (1.4.4):
-    - react-native-config/App (= 1.4.4)
-  - react-native-config/App (1.4.4):
+  - react-native-config (1.4.5):
+    - react-native-config/App (= 1.4.5)
+  - react-native-config/App (1.4.5):
     - React-Core
+  - react-native-restart (0.0.22):
+    - React-Core
+  - react-native-safe-area-context (1.0.2):
+    - React
   - React-RCTActionSheet (0.63.3):
     - React-Core/RCTActionSheetHeaders (= 0.63.3)
   - React-RCTAnimation (0.63.3):
@@ -249,8 +253,18 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
+  - ReactNativeART (1.2.0):
+    - React
   - RNBootSplash (3.2.6):
     - React-Core
+  - RNCAsyncStorage (1.12.1):
+    - React-Core
+  - RNGestureHandler (1.10.3):
+    - React-Core
+  - RNSVG (12.1.1):
+    - React
+  - RNVectorIcons (6.6.0):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -272,6 +286,8 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../../../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../../../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-config (from `../../../node_modules/react-native-config`)
+  - react-native-restart (from `../../../node_modules/react-native-restart`)
+  - react-native-safe-area-context (from `../../../node_modules/react-native-safe-area-context`)
   - React-RCTActionSheet (from `../../../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../../../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../../../node_modules/react-native/Libraries/Blob`)
@@ -282,7 +298,12 @@ DEPENDENCIES:
   - React-RCTText (from `../../../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../../../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../../../node_modules/react-native/ReactCommon`)
+  - "ReactNativeART (from `../../../node_modules/@react-native-community/art`)"
   - RNBootSplash (from `../../../node_modules/react-native-bootsplash`)
+  - "RNCAsyncStorage (from `../../../node_modules/@react-native-community/async-storage`)"
+  - RNGestureHandler (from `../../../node_modules/react-native-gesture-handler`)
+  - RNSVG (from `../../../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../../../node_modules/react-native-vector-icons`)
   - Yoga (from `../../../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -322,6 +343,10 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/ReactCommon/jsinspector"
   react-native-config:
     :path: "../../../node_modules/react-native-config"
+  react-native-restart:
+    :path: "../../../node_modules/react-native-restart"
+  react-native-safe-area-context:
+    :path: "../../../node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
     :path: "../../../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -342,8 +367,18 @@ EXTERNAL SOURCES:
     :path: "../../../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../../../node_modules/react-native/ReactCommon"
+  ReactNativeART:
+    :path: "../../../node_modules/@react-native-community/art"
   RNBootSplash:
     :path: "../../../node_modules/react-native-bootsplash"
+  RNCAsyncStorage:
+    :path: "../../../node_modules/@react-native-community/async-storage"
+  RNGestureHandler:
+    :path: "../../../node_modules/react-native-gesture-handler"
+  RNSVG:
+    :path: "../../../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../../../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../../../node_modules/react-native/ReactCommon/yoga"
 
@@ -364,7 +399,9 @@ SPEC CHECKSUMS:
   React-jsi: df07aa95b39c5be3e41199921509bfa929ed2b9d
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
-  react-native-config: 72d948053a442779b3178fddd571e37f118ef606
+  react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
+  react-native-restart: 733a51ad137f15b0f8dc34c4082e55af7da00979
+  react-native-safe-area-context: 9d9640a9085014864052e38496fc1dfde0b93974
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
   React-RCTBlob: 0b284339cbe4b15705a05e2313a51c6d8b51fa40
@@ -375,7 +412,12 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
+  ReactNativeART: 78edc68dd4a1e675338cd0cd113319cf3a65f2ab
   RNBootSplash: 51eef7e143faeab63f81ddbb7c1de38b8fba66ed
+  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
+  RNVectorIcons: 0bb4def82230be1333ddaeee9fcba45f0b288ed4
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
 
 PODFILE CHECKSUM: 643c817c7857f15f1ecbe4a3c0dbda8fe492ab18

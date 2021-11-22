@@ -15,6 +15,7 @@
     "lint:web": "yarn workspace @homzhub/web run lint",
     "start:web": "yarn workspace @homzhub/web run start",
     "start:mobile": "yarn workspace @homzhub/mobile run start",
+    "start:ffm": "yarn workspace @homzhub/ffm run start",
     "test": "yarn workspaces run test",
     "test:common": "yarn workspace @homzhub/common run test",
     "test:mobile": "yarn workspace @homzhub/mobile run test",

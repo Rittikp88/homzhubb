@@ -9,7 +9,10 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { UserRepository } from '@homzhub/common/src/domain/repositories/UserRepository';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
+import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
+import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { UserService } from '@homzhub/common/src/services/UserService';
+import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -33,6 +36,7 @@ import { EventType } from '@homzhub/common/src/services/Analytics/EventType';
 
 interface IStateProps {
   isLoading: boolean;
+  redirectionDetails: IRedirectionDetails;
 }
 
 interface IDispatchProps {
@@ -216,10 +220,18 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
         is_referral: !!userData.signup_referral_code,
         is_from_signup: true,
         ...(onCallback && { callback: onCallback }),
+        handleDynamicLink: this.handleDynamicLink,
       };
       login(loginPayload);
     } catch (e) {
       AlertHelper.error({ message: e.message });
+    }
+  };
+
+  private handleDynamicLink = (): void => {
+    const { redirectionDetails } = this.props;
+    if (redirectionDetails.shouldRedirect && redirectionDetails.redirectionLink) {
+      NavigationService.handleDynamicLinkNavigation(redirectionDetails).then();
     }
   };
 
@@ -255,6 +267,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
       await StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
 
       AnalyticsService.track(EventType.SignupSuccess, trackData);
+      // @ts-ignore
       AnalyticsService.setUser(ObjectMapper.deserialize(User, socialUserData.user));
     } catch (e) {
       AnalyticsService.track(EventType.SignupFailure, { ...trackData, error: e.message });
@@ -282,6 +295,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
     const loginPayload: ILoginPayload = {
       data: loginData,
       callback: onCallback,
+      handleDynamicLink: this.handleDynamicLink,
     };
     login(loginPayload);
   };
@@ -322,6 +336,7 @@ export class Otp extends React.PureComponent<IProps, IOtpState> {
 export const mapStateToProps = (state: IState): IStateProps => {
   return {
     isLoading: UserSelector.getLoadingState(state),
+    redirectionDetails: CommonSelectors.getRedirectionDetails(state) as IRedirectionDetails,
   };
 };
 

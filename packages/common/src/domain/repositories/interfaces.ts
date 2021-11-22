@@ -173,6 +173,7 @@ export interface ILoginPayload {
   callback?: () => void;
   is_referral?: boolean;
   is_from_signup?: boolean;
+  handleDynamicLink?: () => void;
 }
 
 export interface ISocialLogin {

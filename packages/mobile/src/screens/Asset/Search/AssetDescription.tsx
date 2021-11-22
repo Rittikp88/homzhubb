@@ -835,7 +835,7 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       assetDetails,
     } = this.props;
     const { RouteType, PropertyTermId, AssetTransactionType, AssetName } = DynamicLinkParamKeys;
-    const name = assetDetails ? assetDetails.projectName.replace(' ', '_') : '';
+    const name = assetDetails ? assetDetails.projectName.replace(/ /g, '_') : '';
     return LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
       `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${propertyTermId}&${AssetTransactionType}=${asset_transaction_type}&${AssetName}=${name}`
