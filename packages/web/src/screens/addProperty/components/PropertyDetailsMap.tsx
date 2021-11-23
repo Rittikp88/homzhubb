@@ -15,7 +15,8 @@ const PropertyDetailsMap: FC = () => {
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [placeDetails, setPlaceDetails] = useState<google.maps.places.PlaceResult | undefined>(undefined);
-  const { hasScriptLoaded, latLng, setUpdatedLatLng, projectName, setProjectName } = useContext(AddPropertyContext);
+  const { hasScriptLoaded, latLng, setUpdatedLatLng, projectDetails } = useContext(AddPropertyContext);
+  const { projectName, projectId } = projectDetails;
   useEffect(() => {
     if (hasScriptLoaded && map !== null) {
       GooglePlacesService.getLocationData(latLng).then((r) => {
@@ -23,7 +24,7 @@ const PropertyDetailsMap: FC = () => {
           if (projectName) {
             result.name = projectName;
           }
-          setProjectName(null);
+
           setPlaceDetails(result);
         });
       });
@@ -34,7 +35,7 @@ const PropertyDetailsMap: FC = () => {
     setMap(mapInstance);
   };
   const onDragEnd = (event: google.maps.MapMouseEvent): void => {
-    const newCenter = { lat: event?.latLng?.lat(), lng: event?.latLng?.lng() } as ILatLng;
+    const newCenter = { lat: event.latLng?.lat(), lng: event.latLng?.lng() } as ILatLng;
     setUpdatedLatLng(newCenter);
   };
   return (
@@ -47,7 +48,7 @@ const PropertyDetailsMap: FC = () => {
         )}
       </View>
       <View style={[styles.subContainer, isTablet && styles.formTablet]}>
-        <PropertyDetailsForm data={placeDetails} />
+        <PropertyDetailsForm data={placeDetails} projectId={projectId} />
       </View>
     </View>
   );

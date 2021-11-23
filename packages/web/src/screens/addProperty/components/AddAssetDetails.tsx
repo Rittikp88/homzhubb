@@ -65,6 +65,7 @@ interface IOwnState {
 interface IOwnProps {
   data: google.maps.places.PlaceResult | undefined;
   onSubmitPress: () => void;
+  projectId: number | undefined;
 }
 
 type Props = WithTranslation & IDispatchProps & IStateProps & IOwnProps & IWithMediaQuery;
@@ -173,7 +174,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       countryIsoCode: country_iso2_code,
       address,
     } = values;
-    const { setAssetId, assetId, lastVisitedStep, onSubmitPress } = this.props;
+    const { setAssetId, assetId, lastVisitedStep, onSubmitPress, projectId } = this.props;
     const { assetGroupTypeId: asset_type, longitude, latitude } = this.state;
     let visitedStep = {
       asset_creation: {
@@ -207,6 +208,7 @@ class AddAssetDetails extends React.PureComponent<Props, IOwnState> {
       latitude,
       longitude,
       last_visited_step: visitedStep,
+      ...(projectId && { project: projectId }),
     };
 
     formActions.setSubmitting(true);

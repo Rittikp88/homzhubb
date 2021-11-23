@@ -23,3 +23,8 @@ export interface ILatLng {
   lat: number;
   lng: number;
 }
+
+export interface IProjectDetails {
+  projectName: string;
+  projectId?: number;
+}

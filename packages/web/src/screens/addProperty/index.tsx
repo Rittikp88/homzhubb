@@ -18,7 +18,7 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import AddPropertyLocation from '@homzhub/web/src/screens/addPropertyLocation';
 import AddPropertyView from '@homzhub/common/src/components/organisms/AddPropertyView';
 import PropertyDetailsMap from '@homzhub/web/src/screens/addProperty/components/PropertyDetailsMap';
-import { ILatLng } from '@homzhub/common/src/modules/search/interface';
+import { ILatLng, IProjectDetails } from '@homzhub/common/src/modules/search/interface';
 import { AttachmentType } from '@homzhub/common/src/constants/AttachmentTypes';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 import { IPropertySelectedImages } from '@homzhub/common/src/domain/models/VerificationDocuments';
@@ -53,7 +53,7 @@ const AddProperty: FC<IProps> = (props: IProps) => {
   const [placeData, setPlacesData] = useState({});
   const [addressDetails, setAddressDetails] = useState({});
   const [currentScreens, setCurrentScreens] = useState(location.state.currentScreen);
-  const [projectName, setProjectName] = useState<string | null>(null);
+  const [projectDetails, setProjectDetails] = useState({ projectName: '' } as IProjectDetails);
   useEffect(() => {
     if (goBackClicked) {
       goBack();
@@ -159,7 +159,7 @@ const AddProperty: FC<IProps> = (props: IProps) => {
             setUpdatedLatLng={setLatLng}
             hasScriptLoaded={hasScriptLoaded}
             navigateScreen={navigateScreen}
-            setProjectName={setProjectName}
+            setProjectDetails={setProjectDetails}
           />
         );
     }
@@ -176,8 +176,8 @@ const AddProperty: FC<IProps> = (props: IProps) => {
         addressDetails,
         setAddressDetails,
         goBack,
-        projectName,
-        setProjectName,
+        projectDetails,
+        setProjectDetails,
       }}
     >
       <View style={[styles.container, isTablet && styles.containerTablet]}>

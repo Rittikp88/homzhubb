@@ -10,8 +10,9 @@ import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 
 interface IProps {
   data: google.maps.places.PlaceResult | undefined;
+  projectId: number | undefined;
 }
-const PropertyDetailsForm: FC<IProps> = ({ data }: IProps) => {
+const PropertyDetailsForm: FC<IProps> = ({ data, projectId }: IProps) => {
   const { navigateScreen } = useContext(AddPropertyContext);
   const isTablet = useDown(deviceBreakpoint.TABLET);
   const locationAddress = data?.formatted_address ?? '';
@@ -27,7 +28,7 @@ const PropertyDetailsForm: FC<IProps> = ({ data }: IProps) => {
       <Typography variant="label" size="large" fontWeight="regular" style={styles.subTitle}>
         {locationAddress}
       </Typography>
-      <AddAssetDetails data={data} onSubmitPress={onSubmitPress} />
+      <AddAssetDetails data={data} projectId={projectId} onSubmitPress={onSubmitPress} />
     </View>
   );
 };

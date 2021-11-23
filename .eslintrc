@@ -190,6 +190,7 @@
         "allowBind": false
       }
     ],
-    "react/display-name": "off"
+    "react/display-name": "off",
+    "react/prop-types": "off"
   }
 }

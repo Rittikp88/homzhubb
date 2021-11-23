@@ -15,9 +15,9 @@ import Popover from '@homzhub/web/src/components/atoms/Popover';
 import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/molecules/PopupMenuOptions';
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 import { GeolocationError, GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
-import { ILatLng } from '@homzhub/common/src/modules/search/interface';
+import { ILatLng, IProjectDetails } from '@homzhub/common/src/modules/search/interface';
 
-interface IAddressComponent {
+export interface IAddressComponent {
   long_name: string;
   short_name: string;
   types: Array<string>;
@@ -34,7 +34,7 @@ interface ISearchBarProps {
   hasScriptLoaded?: boolean;
   navigateAddProperty?: (screen: AddPropertyStack) => void;
   onSuggestionPress?: (place: IAddressComponent[], address: string, latLng: ILatLng) => void;
-  setProjectName?: (name: string | null) => void;
+  setProjectDetails?: (projectDetails: IProjectDetails) => void;
 }
 type IProps = ISearchBarProps;
 
@@ -44,7 +44,7 @@ const AutoCompletionSearchBar: FC<IProps> = (props: IProps) => {
   const history = useHistory();
   const address = useSelector(SearchSelector.getSearchAddress);
   const [searchText, setSearchText] = useState('');
-  const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty, onSuggestionPress, setProjectName } = props;
+  const { setUpdatedLatLng, hasScriptLoaded, navigateAddProperty, onSuggestionPress, setProjectDetails } = props;
   const { t } = useTranslation();
   const [popOverWidth, setPopoverWidth] = useState<string | number>('100%');
   const popupRef = useRef<PopupActions>(null);
@@ -81,9 +81,11 @@ const AutoCompletionSearchBar: FC<IProps> = (props: IProps) => {
     setSearchText(selectedOption.label);
     if (selectedOption && selectedOption.value) {
       getDataFromPlaceID((selectedOption?.value as string) ?? '', (result) => {
-        if (setUpdatedLatLng && setProjectName) {
-          setProjectName(selectedOption.label.split(',')[0]);
-          setUpdatedLatLng({ lat: result.geometry.location.lat(), lng: result.geometry.location.lng() } as ILatLng);
+        if (setUpdatedLatLng && setProjectDetails) {
+          setProjectDetails({ projectName: selectedOption.label.split(',')[0] });
+          const lat = result.geometry.location.lat();
+          const lng = result.geometry.location.lng();
+          setUpdatedLatLng({ lat, lng } as ILatLng);
         }
         if (onSuggestionPress) {
           onSuggestionPress(result.address_components, result.formatted_address, {
