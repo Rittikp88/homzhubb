@@ -1,6 +1,7 @@
 import React from 'react';
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import ComingSoon from '@homzhub/ffm/src/screens/Common/ComingSoon';
+import OnBoarding from '@homzhub/ffm/src/screens/Common/OnBoarding';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 type AuthStackParamList = {
@@ -19,7 +20,7 @@ const AuthStack = (): React.ReactElement => {
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
       }}
     >
-      <AuthStackNavigator.Screen name={ScreenKeys.OnBoarding} component={ComingSoon} />
+      <AuthStackNavigator.Screen name={ScreenKeys.OnBoarding} component={OnBoarding} />
       <AuthStackNavigator.Screen name={ScreenKeys.Login} component={ComingSoon} />
     </AuthStackNavigator.Navigator>
   );

@@ -11,12 +11,16 @@ import { ServiceRepository } from '@homzhub/common/src/domain/repositories/Servi
 import { RecordAssetActions, RecordAssetActionTypes } from '@homzhub/common/src/modules/recordAsset/actions';
 import { RecordAssetSelectors } from '@homzhub/common/src/modules/recordAsset/selectors';
 import { IGetServicesByIds, ValueAddedService } from '@homzhub/common/src/domain/models/ValueAddedService';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetGroup } from '@homzhub/common/src/domain/models/AssetGroup';
+import { AssetPlan } from '@homzhub/common/src/domain/models/AssetPlan';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 
 export function* getAssetPlanList(): VoidGenerator {
   try {
     const data = yield call(ServiceRepository.getAssetPlans);
-    yield put(RecordAssetActions.getAssetPlanListSuccess(data));
+    yield put(RecordAssetActions.getAssetPlanListSuccess(data as AssetPlan[]));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error, statusCode: e.details.statusCode });
@@ -27,7 +31,7 @@ export function* getAssetPlanList(): VoidGenerator {
 export function* getAssetGroups(): VoidGenerator {
   try {
     const data = yield call(AssetRepository.getAssetGroups);
-    yield put(RecordAssetActions.getAssetGroupsSuccess(data));
+    yield put(RecordAssetActions.getAssetGroupsSuccess(data as AssetGroup[]));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error, statusCode: e.details.statusCode });
@@ -40,7 +44,7 @@ export function* getAssetById(): VoidGenerator {
     const assetId = yield select(RecordAssetSelectors.getCurrentAssetId);
     if (assetId > 0) {
       const data = yield call(AssetRepository.getAssetById, assetId as number);
-      yield put(RecordAssetActions.getAssetByIdSuccess(data));
+      yield put(RecordAssetActions.getAssetByIdSuccess(data as Asset));
     } else {
       AlertHelper.error({ message: I18nService.t('property:assetIdWarning') });
     }
@@ -54,7 +58,7 @@ export function* getAssetById(): VoidGenerator {
 export function* getMaintenanceUnits(): VoidGenerator {
   try {
     const data = yield call(CommonRepository.getMaintenanceUnits);
-    yield put(RecordAssetActions.getMaintenanceUnitsSuccess(data));
+    yield put(RecordAssetActions.getMaintenanceUnitsSuccess(data as Unit[]));
   } catch (e) {
     const error = ErrorUtils.getErrorMessage(e.details);
     AlertHelper.error({ message: error, statusCode: e.details.statusCode });

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import { assetReducer } from '@homzhub/common/src/modules/asset/reducer';
 import { commonReducer } from '@homzhub/common/src/modules/common/reducer';
+import { ffmReducer } from '@homzhub/common/src/modules/ffm/reducer';
 import { financialsReducer } from '@homzhub/common/src/modules/financials/reducer';
 import { offerReducer } from '@homzhub/common/src/modules/offers/reducer';
 import { portfolioReducer } from '@homzhub/common/src/modules/portfolio/reducer';
@@ -23,4 +24,5 @@ export default combineReducers({
   user: userReducer,
   propertyPayment: propertyPaymentReducer,
   service: serviceReducer,
+  ffm: ffmReducer,
 });

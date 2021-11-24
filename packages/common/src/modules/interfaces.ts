@@ -1,6 +1,7 @@
 import { CallEffect, PutEffect, SelectEffect } from '@redux-saga/core/effects';
 import { IAssetState } from '@homzhub/common/src/modules/asset/interfaces';
 import { ICommonState } from '@homzhub/common/src/modules/common/interfaces';
+import { IFFMState } from '@homzhub/common/src/modules/ffm/interface';
 import { IFinancialState } from '@homzhub/common/src/modules/financials/interfaces';
 import { IOfferState } from '@homzhub/common/src/modules/offers/interfaces';
 import { IPortfolioState } from '@homzhub/common/src/modules/portfolio/interfaces';
@@ -33,6 +34,7 @@ export interface IState {
   financials: IFinancialState;
   propertyPayment: IPropertyPaymentState;
   service: IServiceState;
+  ffm: IFFMState;
 }
 
 export interface IPaginationPayload<T> {

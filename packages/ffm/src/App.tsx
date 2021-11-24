@@ -6,6 +6,7 @@ import { StoreProviderService } from '@homzhub/common/src/services/StoreProvider
 import { StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
 import { RootNavigator } from '@homzhub/ffm/src/navigation/RootNavigator';
 import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
+import ErrorBoundary from '@homzhub/mobile/src/components/HOC/ErrorBoundary';
 
 StoreProviderService.init(configureStore);
 const store = StoreProviderService.getStore();
@@ -24,9 +25,11 @@ const App: () => React.ReactElement = () => {
   };
 
   return (
-    <Provider store={store}>
-      <RootNavigator booting={booting} />
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <RootNavigator booting={booting} />
+      </Provider>
+    </ErrorBoundary>
   );
 };
 

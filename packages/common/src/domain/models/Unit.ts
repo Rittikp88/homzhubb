@@ -44,6 +44,9 @@ export class Unit {
   @JsonProperty('field_type', String, true)
   private _fieldType = '';
 
+  @JsonProperty('icon_url', String, true)
+  private _iconUrl = '';
+
   get id(): number {
     return this._id;
   }
@@ -82,5 +85,9 @@ export class Unit {
 
   get fieldType(): string {
     return this._fieldType;
+  }
+
+  get iconUrl(): string {
+    return this._iconUrl;
   }
 }
