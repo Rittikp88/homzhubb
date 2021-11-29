@@ -1,12 +1,15 @@
 import { FFMActionPayloadTypes, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
 import { IOnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
-import { IUnit } from '@homzhub/common/src/domain/models/Unit';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { IFFMState } from '@homzhub/common/src/modules/ffm/interface';
 
 export const initialFFMState: IFFMState = {
   onBoardingData: [],
   roles: [],
+  selectedRole: null,
+  workLocations: [],
   loaders: {
     onBoarding: false,
     roles: false,
@@ -49,6 +52,16 @@ export const ffmReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['roles']: false },
+      };
+    case FFMActionTypes.SET.SELECTED_ROLE:
+      return {
+        ...state,
+        ['selectedRole']: action.payload as Unit,
+      };
+    case FFMActionTypes.SET.WORK_LOCATION:
+      return {
+        ...state,
+        ['workLocations']: action.payload as IWorkLocation[],
       };
     default:
       return {

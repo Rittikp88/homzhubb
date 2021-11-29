@@ -150,6 +150,24 @@ export interface ISignUpPayload {
   phone_number: string;
   password: string;
   signup_referral_code?: string;
+  company?: ICompany;
+  role?: number;
+  work_locations?: IWorkLocation[];
+}
+
+export interface ICompany {
+  name: string;
+}
+
+export interface IWorkLocation {
+  name: string;
+  latitude: number;
+  longitude: number;
+  postal_code?: string;
+  city_name: string;
+  country_name: string;
+  state_name?: string;
+  location_type?: string;
 }
 
 export interface ISocialSignUpPayload {

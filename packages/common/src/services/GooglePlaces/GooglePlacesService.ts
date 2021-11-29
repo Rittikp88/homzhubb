@@ -50,7 +50,6 @@ class GooglePlacesService {
     });
 
     this.checkError(response.data);
-
     return response.data.result;
   };
 

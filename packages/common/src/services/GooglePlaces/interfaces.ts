@@ -57,7 +57,7 @@ interface StructuredFormatting {
   secondary_text_matched_substrings: Record<string, any>[][];
 }
 
-interface AddressComponent {
+export interface AddressComponent {
   long_name: string;
   short_name: string;
   types: PlaceType[];

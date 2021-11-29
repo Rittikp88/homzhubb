@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
@@ -12,9 +13,12 @@ import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { OnBoarding as OnBoardingModel } from '@homzhub/common/src/domain/models/OnBoarding';
+import { Unit } from '@homzhub/common/src/domain/models/Unit';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 const OnBoarding = (): React.ReactElement => {
   const dispatch = useDispatch();
+  const { navigate } = useNavigation();
   const [activeSlide, setActiveSlide] = useState(0);
   const onBoardingData = useSelector(FFMSelector.getOnBoardingData);
   const roles = useSelector(FFMSelector.getRoles);
@@ -54,6 +58,11 @@ const OnBoarding = (): React.ReactElement => {
     );
   };
 
+  const onPressRole = (role: Unit): void => {
+    dispatch(FFMActions.setSelectedRole(role));
+    navigate(ScreenKeys.Signup);
+  };
+
   const onSnapToItem = (slideNumber: number): void => {
     setActiveSlide(slideNumber);
   };
@@ -86,7 +95,7 @@ const OnBoarding = (): React.ReactElement => {
           <View style={styles.roleView}>
             {roles.length > 0 &&
               roles.map((item, index) => (
-                <TouchableOpacity key={index} style={styles.roleContent}>
+                <TouchableOpacity key={index} style={styles.roleContent} onPress={(): void => onPressRole(item)}>
                   <SVGUri uri={item.iconUrl} height={40} width={40} stroke={theme.colors.active} strokeWidth={0.4} />
                   <Label type="regular" textType="semiBold" style={styles.role}>
                     {item.name}

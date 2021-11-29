@@ -103,7 +103,6 @@ class ResponseHelper {
         }
       });
     });
-
     return locationData;
   };
 

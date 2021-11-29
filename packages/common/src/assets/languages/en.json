@@ -334,7 +334,15 @@
     "pleaseFillDetails": "Please fill all the details",
     "supplies": "Supplies",
     "iam": "I am",
-    "alreadyAccount": "Already have an account ?"
+    "alreadyAccount": "Already have an account ?",
+    "helpAndSupport": "Help & Support",
+    "maxSelected": "You have selected maximum allowed number of location",
+    "addWorkLocation": "Add Work Locations",
+    "searchLocation": "Search for location",
+    "workLocation": "Work Location ({{count}})",
+    "yourCompanyName": "Your Company Name",
+    "companyName": "Company Name",
+    "password": "Password"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -430,7 +438,9 @@
     "enterMobileNo": "Enter your mobile number",
     "updatePasswordWeb": "Update password",
     "duplicateEmail": "This email is already used. Please use unique email",
-    "emails": "E-mails"
+    "emails": "E-mails",
+    "verifyMobile": "Verify your mobile number",
+    "signUpWith": "{{name}} Sign up"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",

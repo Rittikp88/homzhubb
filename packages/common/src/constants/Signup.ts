@@ -17,3 +17,8 @@ export const ImageData: IImageDataProps[] = [
     image: require('@homzhub/common/src/assets/images/signUp3.svg'),
   },
 ];
+
+export enum Role {
+  PROPERTY_MANAGER = 'PROPERTY_MANAGER',
+  PROPERTY_AGENT = 'PROPERTY_AGENT',
+}

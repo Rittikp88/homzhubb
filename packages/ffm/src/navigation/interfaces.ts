@@ -1,5 +1,7 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
@@ -18,6 +20,8 @@ export enum ScreenKeys {
   // Auth
   Login = 'LoginScreen',
   Signup = 'SignupScreen',
+  WorkLocations = 'AddWorkLocations',
+  MobileVerification = 'MobileVerification',
 
   // BottomTabs
   Dashboard = 'Dashboard',
@@ -25,4 +29,9 @@ export enum ScreenKeys {
   Requests = 'Requests',
   Supplies = 'Supplies',
   More = 'More',
+}
+
+export interface IVerification {
+  type: OtpNavTypes;
+  userData: ISignUpPayload;
 }

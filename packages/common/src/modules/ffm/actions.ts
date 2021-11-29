@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IOnBoarding, OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
+import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'FFM/';
@@ -12,6 +13,10 @@ export const FFMActionTypes = {
     ROLES: `${actionTypePrefix}ROLES`,
     ROLES_SUCCESS: `${actionTypePrefix}ROLES_SUCCESS`,
     ROLES_FAILURE: `${actionTypePrefix}ROLES_FAILURE`,
+  },
+  SET: {
+    SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
+    WORK_LOCATION: `${actionTypePrefix}WORK_LOCATION`,
   },
 };
 
@@ -41,7 +46,17 @@ const getRolesFailure = (): IFluxStandardAction => ({
   type: FFMActionTypes.GET.ROLES_FAILURE,
 });
 
-export type FFMActionPayloadTypes = IUnit[] | IOnBoarding[];
+const setSelectedRole = (role: Unit): IFluxStandardAction<Unit> => ({
+  type: FFMActionTypes.SET.SELECTED_ROLE,
+  payload: role,
+});
+
+const setWorkLocations = (payload: IWorkLocation[]): IFluxStandardAction<IWorkLocation[]> => ({
+  type: FFMActionTypes.SET.WORK_LOCATION,
+  payload,
+});
+
+export type FFMActionPayloadTypes = string | IUnit[] | IOnBoarding[] | Unit | IWorkLocation[];
 
 export const FFMActions = {
   getOnBoardingData,
@@ -50,4 +65,6 @@ export const FFMActions = {
   getRoles,
   getRolesSuccess,
   getRolesFailure,
+  setSelectedRole,
+  setWorkLocations,
 };

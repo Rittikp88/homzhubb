@@ -119,13 +119,15 @@ class LinkingService {
     email,
     subject,
   }: {
-    body: string;
+    body?: string;
     email?: string;
     subject?: string;
   }): Promise<void> => {
     let url = 'mailto:';
 
-    if (email) {
+    if (email && !body) {
+      url = `${url}${email}`;
+    } else if (email) {
       url = `${url}${email}?body=${body}`;
     } else {
       url = `${url}?body=${body}`;
