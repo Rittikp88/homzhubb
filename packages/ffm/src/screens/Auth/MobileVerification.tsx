@@ -13,10 +13,15 @@ import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { OtpTimer } from '@homzhub/common/src/components/atoms/OtpTimer';
-import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import { OtpInputs, OtpTypes } from '@homzhub/common/src/components/molecules/OtpInputs';
-import { IEmailLoginPayload, ILoginPayload, LoginTypes } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IEmailLoginPayload,
+  ILoginPayload,
+  IOtpLoginPayload,
+  LoginTypes,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IVerification, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -26,7 +31,7 @@ const MobileVerification = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [error, setError] = useState(false);
-  const { type, userData } = params as IVerification;
+  const { type, userData, title, otpSentTo, countryCode } = params as IVerification;
 
   useEffect(() => {
     fetchOtp().then();
@@ -34,12 +39,12 @@ const MobileVerification = (): React.ReactElement => {
 
   const fetchOtp = async (): Promise<void> => {
     try {
-      if (StringUtils.isValidEmail(userData.phone_number)) {
-        await UserService.fetchEmailOtp(userData.phone_number);
+      if (StringUtils.isValidEmail(otpSentTo)) {
+        await UserService.fetchEmailOtp(otpSentTo);
         return;
       }
 
-      await UserService.fetchOtp(userData.phone_number, userData.phone_code);
+      await UserService.fetchOtp(otpSentTo, countryCode);
     } catch (e) {
       AlertHelper.error({
         message: ErrorUtils.getErrorMessage(e.details),
@@ -48,10 +53,11 @@ const MobileVerification = (): React.ReactElement => {
   };
   const handleOtpVerification = async (otp: string): Promise<void> => {
     if (type === OtpNavTypes.Login) {
+      loginOtp(otp);
       return;
     }
     try {
-      await UserService.verifyOtp(otp, userData.phone_number, userData.phone_code);
+      await UserService.verifyOtp(otp, otpSentTo, countryCode);
       if (type === OtpNavTypes.SignUp) {
         await signUp();
       }
@@ -59,22 +65,40 @@ const MobileVerification = (): React.ReactElement => {
       setError(true);
     }
   };
+  const loginOtp = (otp: string): void => {
+    const loginData: IOtpLoginPayload = {
+      action: LoginTypes.OTP,
+      payload: {
+        phone_code: countryCode,
+        phone_number: otpSentTo,
+        otp,
+      },
+    };
+
+    const loginPayload: ILoginPayload = {
+      data: loginData,
+    };
+    dispatch(UserActions.login(loginPayload));
+  };
+
   const signUp = async (): Promise<void> => {
     try {
-      await UserRepository.signUp(userData);
-      const loginData: IEmailLoginPayload = {
-        action: LoginTypes.EMAIL,
-        payload: {
-          email: userData.email,
-          password: userData.password,
-        },
-      };
-      const loginPayload: ILoginPayload = {
-        data: loginData,
-        is_from_signup: true,
-        callback: handleCallback,
-      };
-      dispatch(UserActions.login(loginPayload));
+      if (userData) {
+        await UserRepository.signUp(userData);
+        const loginData: IEmailLoginPayload = {
+          action: LoginTypes.EMAIL,
+          payload: {
+            email: userData.email,
+            password: userData.password,
+          },
+        };
+        const loginPayload: ILoginPayload = {
+          data: loginData,
+          is_from_signup: true,
+          callback: handleCallback,
+        };
+        dispatch(UserActions.login(loginPayload));
+      }
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -85,13 +109,17 @@ const MobileVerification = (): React.ReactElement => {
   };
 
   const onEdit = (): void => {
-    navigate(ScreenKeys.Signup);
+    if (type === OtpNavTypes.Login) {
+      goBack();
+    } else {
+      navigate(ScreenKeys.Signup);
+    }
   };
 
   return (
     <GradientScreen onGoBack={goBack}>
       <Text type="large" textType="semiBold" style={styles.title}>
-        {t('auth:verifyMobile')}
+        {title}
       </Text>
       <Label type="large" style={styles.subHeading}>
         {t('auth:enterOtpWeb')}
@@ -99,7 +127,7 @@ const MobileVerification = (): React.ReactElement => {
       <>
         <View style={styles.numberContainer}>
           <Text type="small" textType="semiBold">
-            {`${userData.phone_code} ${userData.phone_number}`}
+            {`${countryCode} ${otpSentTo}`}
           </Text>
           <Icon
             name={icons.noteBook}

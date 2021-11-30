@@ -30,9 +30,10 @@ interface IAuthenticationGatewayProps {
   isFromLogin: boolean;
   onEmailLogin?: () => void;
   testID?: string;
-  navigation: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
+  navigation?: StackNavigationProp<AuthStackParamList, ScreensKeys.SignUp | ScreensKeys.Login>;
   toggleLoading?: (isLoading: boolean) => void;
   onSuccessCallback?: () => void;
+  isSocialAllowed?: boolean;
 }
 
 type Props = IAuthenticationGatewayProps & WithTranslation & IDispatchProps;
@@ -63,11 +64,11 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
   }
 
   public render(): React.ReactNode {
-    const { onEmailLogin, isFromLogin } = this.props;
+    const { onEmailLogin, isFromLogin, isSocialAllowed = true } = this.props;
 
     return (
       <CommonAuthenticationHoc isFromLogin={isFromLogin} onEmailLogin={onEmailLogin}>
-        {!PlatformUtils.isIOS() && this.renderSocialAuths()}
+        {(!PlatformUtils.isIOS() || isSocialAllowed) && this.renderSocialAuths()}
       </CommonAuthenticationHoc>
     );
   }
@@ -98,21 +99,23 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
   private onSocialAuthSuccess = async (userData: ISocialUserData): Promise<void> => {
     const { loginSuccess, navigation, isFromLogin, onSuccessCallback } = this.props;
 
-    await SocialAuthUtils.onSocialAuthSuccess(
-      userData,
-      () => {
-        navigation.navigate(ScreensKeys.MobileVerification, {
-          isFromLogin,
-          userData,
-        });
-      },
-      (response) => {
-        loginSuccess(response);
-        if (onSuccessCallback) {
-          onSuccessCallback();
+    if (navigation) {
+      await SocialAuthUtils.onSocialAuthSuccess(
+        userData,
+        () => {
+          navigation.navigate(ScreensKeys.MobileVerification, {
+            isFromLogin,
+            userData,
+          });
+        },
+        (response) => {
+          loginSuccess(response);
+          if (onSuccessCallback) {
+            onSuccessCallback();
+          }
         }
-      }
-    );
+      );
+    }
   };
 
   private initiateSocialAuthentication = async (key: string): Promise<void> => {

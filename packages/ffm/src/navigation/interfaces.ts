@@ -19,6 +19,7 @@ export enum ScreenKeys {
   OnBoarding = 'OnBoarding',
   // Auth
   Login = 'LoginScreen',
+  EmailLogin = 'EmailLoginScreen',
   Signup = 'SignupScreen',
   WorkLocations = 'AddWorkLocations',
   MobileVerification = 'MobileVerification',
@@ -33,5 +34,8 @@ export enum ScreenKeys {
 
 export interface IVerification {
   type: OtpNavTypes;
-  userData: ISignUpPayload;
+  title: string;
+  countryCode: string;
+  otpSentTo: string;
+  userData?: ISignUpPayload;
 }

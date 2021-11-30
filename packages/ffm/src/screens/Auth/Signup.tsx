@@ -61,6 +61,9 @@ const Signup = (): React.ReactElement => {
 
       navigate(ScreenKeys.WorkLocations, {
         type: OtpNavTypes.SignUp,
+        title: t('auth:verifyMobile'),
+        countryCode: userData.phone_code,
+        otpSentTo: userData.phone_number,
         userData,
       });
     } catch (e) {

@@ -63,6 +63,10 @@ const OnBoarding = (): React.ReactElement => {
     navigate(ScreenKeys.Signup);
   };
 
+  const onPressLogin = (): void => {
+    navigate(ScreenKeys.Login);
+  };
+
   const onSnapToItem = (slideNumber: number): void => {
     setActiveSlide(slideNumber);
   };
@@ -105,7 +109,7 @@ const OnBoarding = (): React.ReactElement => {
           </View>
           <Label type="large" textType="regular" style={styles.helpText}>
             {`${I18nService.t('alreadyAccount')}  `}
-            <Label type="large" textType="bold" style={styles.login}>
+            <Label type="large" textType="bold" style={styles.login} onPress={onPressLogin}>
               {I18nService.t('login')}
             </Label>
           </Label>

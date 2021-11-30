@@ -92,7 +92,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
                 title={buttonTitle || t('login')}
                 containerStyle={styles.submitStyle}
               />
-              {isEmailLogin && PlatformUtils.isMobile() && (
+              {isEmailLogin && PlatformUtils.isMobile() && handleForgotPassword && (
                 <Button
                   type="secondary"
                   title={t('auth:forgotPassword')}
