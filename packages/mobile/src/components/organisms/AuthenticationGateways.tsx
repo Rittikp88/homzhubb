@@ -68,7 +68,7 @@ class AuthenticationGateways extends React.PureComponent<Props, IOwnState> {
 
     return (
       <CommonAuthenticationHoc isFromLogin={isFromLogin} onEmailLogin={onEmailLogin}>
-        {(!PlatformUtils.isIOS() || isSocialAllowed) && this.renderSocialAuths()}
+        {!PlatformUtils.isIOS() && isSocialAllowed && this.renderSocialAuths()}
       </CommonAuthenticationHoc>
     );
   }

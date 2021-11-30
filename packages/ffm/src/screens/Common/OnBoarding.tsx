@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
   },
   imageView: {
     alignSelf: 'center',
+    marginVertical: PlatformUtils.isAndroid() ? 20 : 0,
   },
   roleView: {
     flexDirection: 'row',
