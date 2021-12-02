@@ -1,4 +1,5 @@
 import { FFMActionPayloadTypes, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
+import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IOnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -10,9 +11,11 @@ export const initialFFMState: IFFMState = {
   roles: [],
   selectedRole: null,
   workLocations: [],
+  visits: [],
   loaders: {
     onBoarding: false,
     roles: false,
+    visits: false,
   },
 };
 
@@ -62,6 +65,22 @@ export const ffmReducer = (
       return {
         ...state,
         ['workLocations']: action.payload as IWorkLocation[],
+      };
+    case FFMActionTypes.GET.VISITS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['visits']: true },
+      };
+    case FFMActionTypes.GET.VISITS_SUCCESS:
+      return {
+        ...state,
+        ['visits']: action.payload as IFFMVisit[],
+        ['loaders']: { ...state.loaders, ['visits']: false },
+      };
+    case FFMActionTypes.GET.VISITS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['visits']: false },
       };
     default:
       return {

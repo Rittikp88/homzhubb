@@ -13,7 +13,7 @@ import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import ErrorBoundary from '@homzhub/mobile/src/components/HOC/ErrorBoundary';
 import { Toast } from '@homzhub/common/src/components/molecules/Toast';
 import { RootNavigator } from '@homzhub/ffm/src/navigation/RootNavigator';
-import { SupportedLanguages } from '@homzhub/common/src/services/Localization/constants';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 StoreProviderService.init(configureStore);
 const store = StoreProviderService.getStore();
@@ -26,19 +26,25 @@ const App: () => React.ReactElement = () => {
 
   const bootUp = async (): Promise<void> => {
     store.dispatch(CommonActions.getCountries());
-    const userData = await StorageService.get<IUserTokens>(StorageKeys.USER);
+    await Promise.all([
+      StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE),
+      StorageService.get<IUserTokens>(StorageKeys.USER),
+      LinkingService.firebaseInit(),
+      NotificationService.init(),
+      AnalyticsService.initMixpanel(),
+    ]).then((res: any) => {
+      if (res[0] === null) {
+        I18nService.init(LocaleConstants.fallback);
+      } else {
+        I18nService.init(res[0]);
+      }
 
-    if (userData) {
-      store.dispatch(UserActions.loginSuccess(userData));
-    }
+      if (res[1]) {
+        store.dispatch(UserActions.loginSuccess(res[1]));
+      }
 
-    const selectedLanguage: SupportedLanguages | null = await StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE);
-    await I18nService.init(selectedLanguage || undefined);
-    await LinkingService.firebaseInit();
-    await NotificationService.init();
-    await AnalyticsService.initMixpanel();
-
-    setBooting(false);
+      setBooting(false);
+    });
   };
 
   const renderToast = (props: MessageComponentProps): React.ReactElement => <Toast {...props} />;

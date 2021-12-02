@@ -419,6 +419,10 @@ class DateUtils {
   public convertToISO = (date: string): string => {
     return `${date}T00:00:00Z`;
   };
+
+  public isDatePassed = (date: string): boolean => {
+    return new Date(date).getTime() <= new Date().getTime();
+  };
 }
 
 const dateUtils = new DateUtils();

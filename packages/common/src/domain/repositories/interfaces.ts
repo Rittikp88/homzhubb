@@ -1227,3 +1227,8 @@ export interface IProjectSearchPayload {
   longitude: number;
   name: string;
 }
+
+export interface IFFMVisitParam {
+  status__in?: string;
+  status?: string;
+}

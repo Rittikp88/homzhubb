@@ -1,4 +1,5 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -39,10 +40,19 @@ const getWorkLocations = (state: IState): IWorkLocation[] => {
   return workLocations;
 };
 
+const getVisits = (state: IState): FFMVisit[] => {
+  const {
+    ffm: { visits },
+  } = state;
+  if (visits.length < 1) return [];
+  return ObjectMapper.deserializeArray(FFMVisit, visits);
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
   getRoles,
   getSelectedRole,
   getWorkLocations,
+  getVisits,
 };

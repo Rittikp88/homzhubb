@@ -26,6 +26,7 @@ export interface IUser {
   rating?: number;
   is_asset_owner?: boolean;
   workInfo: IWorkInfo;
+  role?: string;
 }
 @JsonObject('User')
 export class User {
@@ -67,6 +68,9 @@ export class User {
 
   @JsonProperty('work_info', WorkInfo, true)
   private _workInfo = new WorkInfo();
+
+  @JsonProperty('role', String, true)
+  private _role = '';
 
   get refreshToken(): string {
     return this._refreshToken;
@@ -122,5 +126,9 @@ export class User {
 
   get workInfo(): WorkInfo {
     return this._workInfo;
+  }
+
+  get role(): string {
+    return this._role;
   }
 }

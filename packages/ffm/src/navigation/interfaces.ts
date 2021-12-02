@@ -25,11 +25,18 @@ export enum ScreenKeys {
   MobileVerification = 'MobileVerification',
 
   // BottomTabs
+  BottomTab = 'BottomTab',
   Dashboard = 'Dashboard',
   SiteVisits = 'SiteVisits',
   Requests = 'Requests',
   Supplies = 'Supplies',
   More = 'More',
+
+  // Visit
+  SiteVisitDashboard = 'SiteVisitDashboard',
+
+  // More
+  MoreScreen = 'MoreScreen',
 }
 
 export interface IVerification {

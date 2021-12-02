@@ -1572,7 +1572,12 @@
   },
   "siteVisits": {
     "schedulePropertyVisit": "Schedule Property Visit",
-    "reschedulePropertyVisit": "Reschedule Property Visit"
+    "reschedulePropertyVisit": "Reschedule Property Visit",
+    "visitUpdate": "Visit Updated Successfully",
+    "cancelVisit": "Are you sure you want to cancel visit ?",
+    "prospectFeedbackForm": "Prospect Feedback Form",
+    "visitExpired": "Visit Expired",
+    "visitMissed": "Visit {{action}} by {{name}}"
   },
   "propertyPayment": {
     "propertyPayment": "Property Payment",

@@ -11,6 +11,8 @@ export enum VisitActions {
   APPROVE = 'APPROVE',
   REJECT = 'REJECT',
   CANCEL = 'CANCEL',
+  SCHEDULED = 'SCHEDULED',
+  AWAITING = 'AWAITING',
 }
 
 export enum RoleType {

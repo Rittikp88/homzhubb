@@ -7,6 +7,8 @@ import Focused from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.svg';
 import { theme } from '@homzhub/common/src/styles/theme';
 import ComingSoon from '@homzhub/ffm/src/screens/Common/ComingSoon';
+import MoreStack from '@homzhub/ffm/src/navigation/MoreStack';
+import VisitStack from '@homzhub/ffm/src/navigation/VisitStack';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 type BottomTabNavigatorParamList = {
@@ -51,7 +53,7 @@ const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.SiteVisits}
-        component={ComingSoon}
+        component={VisitStack}
         options={{
           tabBarLabel: t('property:siteVisits'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
@@ -81,7 +83,7 @@ const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.More}
-        component={ComingSoon}
+        component={MoreStack}
         options={{
           tabBarLabel: t('assetMore:more'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {

@@ -1,18 +1,18 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import ComingSoon from '@homzhub/ffm/src/screens/Common/ComingSoon';
+import BottomTabs from '@homzhub/ffm/src/navigation/BottomTabs';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 type AppStackParamList = {
-  [ScreenKeys.Dashboard]: undefined;
+  [ScreenKeys.BottomTab]: undefined;
 };
 
 const AppStackNavigator = createStackNavigator<AppStackParamList>();
 
 const AppStack = (): React.ReactElement => {
   return (
-    <AppStackNavigator.Navigator>
-      <AppStackNavigator.Screen name={ScreenKeys.Dashboard} component={ComingSoon} />
+    <AppStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+      <AppStackNavigator.Screen name={ScreenKeys.BottomTab} component={BottomTabs} />
     </AppStackNavigator.Navigator>
   );
 };

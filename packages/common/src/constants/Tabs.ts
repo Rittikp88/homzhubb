@@ -44,6 +44,8 @@ export enum Tabs {
   GAS_PIPELINE_SERVICE = 'Gas and Pipeline Service',
   WATER_SERVICE = 'Water Service',
   ELECTRICITY_MANAGEMENT = 'Electricity management',
+  NEW = 'New',
+  ONGOING = 'Ongoing',
 }
 
 // enum END
@@ -179,3 +181,14 @@ export const PropertyPaymentRoutes: IRoutes[] = [
   },
 ];
 // Property Payment Tabs END
+
+// FFM Site Visit Tabs START
+
+export const FFMVisitRoutes: IRoutes[] = [
+  { key: Tabs.NEW, title: Tabs.NEW, color: theme.colors.yellow },
+  { key: Tabs.ONGOING, title: Tabs.ONGOING, color: theme.colors.mediumPriority },
+  { key: Tabs.MISSED, title: Tabs.MISSED, color: theme.colors.error },
+  { key: Tabs.COMPLETED, title: Tabs.COMPLETED, color: theme.colors.green },
+];
+
+// FFM Site Visit Tabs END

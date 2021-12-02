@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import RNBootSplash from 'react-native-bootsplash';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
 import { IRedirectionDetails } from '@homzhub/mobile/src/services/LinkingService';
 import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
+import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
 import AppStack from '@homzhub/ffm/src/navigation/AppStack';
@@ -15,12 +16,16 @@ interface IProps {
 }
 
 export const RootNavigator = ({ booting }: IProps): React.ReactElement => {
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector(UserSelector.isLoggedIn);
   const redirectionDetails = useSelector(CommonSelectors.getRedirectionDetails);
 
   useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(UserActions.getUserProfile());
+    }
     GeolocationService.setLocationDetails(false, '').then();
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (!booting) {

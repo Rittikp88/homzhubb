@@ -1,7 +1,8 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { FFMVisit, IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IOnBoarding, OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
-import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IFFMVisitParam, IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 
 const actionTypePrefix = 'FFM/';
@@ -13,6 +14,9 @@ export const FFMActionTypes = {
     ROLES: `${actionTypePrefix}ROLES`,
     ROLES_SUCCESS: `${actionTypePrefix}ROLES_SUCCESS`,
     ROLES_FAILURE: `${actionTypePrefix}ROLES_FAILURE`,
+    VISITS: `${actionTypePrefix}VISITS`,
+    VISITS_SUCCESS: `${actionTypePrefix}VISITS_SUCCESS`,
+    VISITS_FAILURE: `${actionTypePrefix}VISITS_FAILURE`,
   },
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
@@ -56,7 +60,29 @@ const setWorkLocations = (payload: IWorkLocation[]): IFluxStandardAction<IWorkLo
   payload,
 });
 
-export type FFMActionPayloadTypes = string | IUnit[] | IOnBoarding[] | Unit | IWorkLocation[];
+const getVisits = (payload?: IFFMVisitParam): IFluxStandardAction<IFFMVisitParam> => ({
+  type: FFMActionTypes.GET.VISITS,
+  payload,
+});
+
+const getVisitsSuccess = (payload: FFMVisit[]): IFluxStandardAction<IFFMVisit[]> => ({
+  type: FFMActionTypes.GET.VISITS_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getVisitsFailure = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.VISITS_FAILURE,
+});
+
+export type FFMActionPayloadTypes =
+  | string
+  | IUnit[]
+  | IOnBoarding[]
+  | Unit
+  | IWorkLocation[]
+  | FFMVisit[]
+  | IFFMVisit[]
+  | IFFMVisitParam;
 
 export const FFMActions = {
   getOnBoardingData,
@@ -67,4 +93,7 @@ export const FFMActions = {
   getRolesFailure,
   setSelectedRole,
   setWorkLocations,
+  getVisits,
+  getVisitsSuccess,
+  getVisitsFailure,
 };
