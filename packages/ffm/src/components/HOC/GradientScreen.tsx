@@ -1,25 +1,39 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useSelector } from 'react-redux';
+import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
-import { useSelector } from 'react-redux';
-import { UserSelector } from '../../../../common/src/modules/user/selectors';
 
 interface IProps {
   children: React.ReactNode;
   screenTitle?: string;
+  pageTitle?: string;
   isScrollable?: boolean;
   onGoBack?: () => void;
   isUserHeader?: boolean;
+  loading?: boolean;
   containerStyle?: ViewStyle;
+  pageHeaderStyle?: ViewStyle;
 }
 
 const GradientScreen = (props: IProps): React.ReactElement => {
-  const { screenTitle, children, isScrollable, onGoBack, isUserHeader = false, containerStyle } = props;
+  const {
+    screenTitle,
+    children,
+    isScrollable,
+    onGoBack,
+    isUserHeader = false,
+    containerStyle,
+    pageTitle,
+    pageHeaderStyle,
+    loading = false,
+  } = props;
   const user = useSelector(UserSelector.getUserProfile);
   return (
     <HandleBack onBack={onGoBack}>
@@ -46,8 +60,15 @@ const GradientScreen = (props: IProps): React.ReactElement => {
       </ImageBackground>
       <View style={[styles.childrenContainer, containerStyle]}>
         {onGoBack && (
-          <View style={styles.header}>
-            <Icon name={icons.leftArrow} size={16} onPress={onGoBack} />
+          <View style={[styles.header, pageHeaderStyle]}>
+            <TouchableOpacity onPress={onGoBack}>
+              <Icon name={icons.leftArrow} size={18} />
+            </TouchableOpacity>
+            {!!pageTitle && (
+              <Text type="small" textType="semiBold" style={styles.pageTitle}>
+                {pageTitle}
+              </Text>
+            )}
           </View>
         )}
         {isScrollable ? (
@@ -58,6 +79,7 @@ const GradientScreen = (props: IProps): React.ReactElement => {
           children
         )}
       </View>
+      <Loader visible={loading} />
     </HandleBack>
   );
 };
@@ -84,6 +106,8 @@ const styles = StyleSheet.create({
   header: {
     marginTop: 10,
     marginBottom: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   userBackground: {
     alignItems: 'center',
@@ -95,5 +119,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     alignContent: 'center',
     paddingTop: '15%',
+  },
+  pageTitle: {
+    marginHorizontal: 6,
+    color: theme.colors.darkTint1,
   },
 });

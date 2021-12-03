@@ -18,9 +18,10 @@ import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
   tab: Tabs;
+  onReschedule: (visit: FFMVisit) => void;
 }
 
-const VisitList = ({ tab }: IProps): React.ReactElement => {
+const VisitList = ({ tab, onReschedule }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const visits = useSelector(FFMSelector.getVisits);
@@ -100,6 +101,7 @@ const VisitList = ({ tab }: IProps): React.ReactElement => {
               key={index}
               visit={item}
               tab={tab}
+              onReschedule={(): void => onReschedule(item)}
               handleActions={(action: VisitActions): Promise<void> => handleActions(item.id, action)}
             />
           );

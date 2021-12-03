@@ -4,6 +4,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -20,6 +21,7 @@ interface IProps {
   visit: FFMVisit;
   tab: Tabs;
   handleActions: (action: VisitActions) => void;
+  onReschedule: () => void;
 }
 
 const VisitCard = (props: IProps): React.ReactElement => {
@@ -35,9 +37,12 @@ const VisitCard = (props: IProps): React.ReactElement => {
       statusUpdatedBy,
       prospectFeedback,
       startDate,
+      updatedAt,
+      createdAt,
     },
     tab,
     handleActions,
+    onReschedule,
   } = props;
 
   const isMissed = tab === Tabs.MISSED;
@@ -97,7 +102,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
   };
 
   const getMissedMessage = (updatedBy: User): string => {
-    return t('visitMissed', {
+    return t('siteVisits:visitMissed', {
       action: StringUtils.toTitleCase(status),
       name: user.id === updatedBy.id ? 'you' : updatedBy.firstName,
     });
@@ -175,7 +180,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
             </Label>
             <Label style={styles.address}>{address}</Label>
           </View>
-          <Label style={styles.time}>1 hr ago</Label>
+          <Label style={styles.time}>{TimeUtils.getLocaltimeDifference(updatedAt ?? createdAt)}</Label>
         </View>
         {renderUsers()}
         <View style={[styles.row, styles.details]}>
@@ -191,7 +196,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
               </Label>
             </View>
           </View>
-          <TouchableOpacity style={[styles.row, styles.center]}>
+          <TouchableOpacity style={[styles.row, styles.center]} onPress={onReschedule}>
             <Icon name={icons.schedule} size={16} style={styles.schedule} color={theme.colors.primaryColor} />
             <Label type="large" textType="semiBold" style={styles.title}>
               {t('property:reschedule')}

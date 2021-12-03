@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, TouchableOpacity, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -47,9 +47,13 @@ interface IVisitProp {
   isReschedule?: boolean;
   isCollapsed?: boolean;
   userId?: number;
+  startDate?: string;
+  comment?: string;
+  isFromFFM?: boolean;
   setLoading: (isLoading: boolean) => void;
   onSubmitSuccess: () => void;
   renderCollapseSection?: (children: React.ReactElement, title: string) => React.ReactElement;
+  pickerStyle?: ViewStyle;
 }
 
 interface IVisitState {
@@ -126,7 +130,15 @@ class ScheduleVisitForm extends Component<Props, IVisitState> {
 
   private renderVisitType = (): React.ReactElement => {
     const { visitType } = this.state;
-    return <SelectionPicker data={VisitTypeData} selectedItem={visitType} onValueChange={this.onChangeVisitType} />;
+    const { pickerStyle } = this.props;
+    return (
+      <SelectionPicker
+        data={VisitTypeData}
+        selectedItem={visitType}
+        onValueChange={this.onChangeVisitType}
+        containerStyles={pickerStyle}
+      />
+    );
   };
 
   private renderVisitorType = (): React.ReactElement => {
@@ -293,7 +305,20 @@ class ScheduleVisitForm extends Component<Props, IVisitState> {
   };
 
   private getExistingData = (): void => {
-    const { visitDetail, isReschedule, leaseListingId, saleListingId } = this.props;
+    const { visitDetail, isReschedule, leaseListingId, saleListingId, isFromFFM, startDate, comment } = this.props;
+    if (isFromFFM && startDate) {
+      const dateTime = DateUtils.convertTimeFormat(startDate, 'YYYY-MM-DD HH');
+      const time = TimeSlot.find((item) => item.from === Number(dateTime[1]));
+
+      if (isReschedule) {
+        this.setState({
+          selectedDate: startDate ? DateUtils.getDisplayDate(dateTime[0], 'll') : '',
+          selectedTimeSlot: time ? time.id : 0,
+          message: comment ?? '',
+        });
+      }
+      return;
+    }
     if (!visitDetail) return;
 
     const dateTime = DateUtils.convertTimeFormat(visitDetail.startDate, 'YYYY-MM-DD HH');

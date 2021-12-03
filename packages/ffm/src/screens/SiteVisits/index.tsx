@@ -2,20 +2,24 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
+import { AssetActions } from '@homzhub/common/src/modules/asset/actions';
 import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import VisitList from '@homzhub/ffm/src/screens/SiteVisits/VisitList';
+import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { FFMVisitRoutes, IRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 const SiteVisitDashboard = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { navigate } = useNavigation();
   const [currentIndex, setIndex] = useState(0);
-  const [currentStatus, setStatus] = useState('');
+  const [currentStatus, setStatus] = useState('PENDING');
 
   useFocusEffect(
     useCallback(() => {
@@ -50,16 +54,21 @@ const SiteVisitDashboard = (): React.ReactElement => {
     dispatch(FFMActions.getVisitsSuccess([]));
   };
 
+  const onReschedule = (visit: FFMVisit): void => {
+    dispatch(AssetActions.setVisitIds([visit.id]));
+    navigate(ScreenKeys.VisitForm, { startDate: visit.startDate, comment: visit.comments });
+  };
+
   const renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
     switch (route.key) {
       case Tabs.NEW:
-        return <VisitList tab={Tabs.NEW} />;
+        return <VisitList tab={Tabs.NEW} onReschedule={onReschedule} />;
       case Tabs.ONGOING:
-        return <VisitList tab={Tabs.ONGOING} />;
+        return <VisitList tab={Tabs.ONGOING} onReschedule={onReschedule} />;
       case Tabs.MISSED:
-        return <VisitList tab={Tabs.MISSED} />;
+        return <VisitList tab={Tabs.MISSED} onReschedule={onReschedule} />;
       case Tabs.COMPLETED:
-        return <VisitList tab={Tabs.COMPLETED} />;
+        return <VisitList tab={Tabs.COMPLETED} onReschedule={onReschedule} />;
       default:
         return null;
     }

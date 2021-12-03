@@ -1577,7 +1577,9 @@
     "cancelVisit": "Are you sure you want to cancel visit ?",
     "prospectFeedbackForm": "Prospect Feedback Form",
     "visitExpired": "Visit Expired",
-    "visitMissed": "Visit {{action}} by {{name}}"
+    "visitMissed": "Visit {{action}} by {{name}}",
+    "rescheduleVisit": "Rescheduled visit successfully",
+    "rescheduleForm": "Reschedule Form"
   },
   "propertyPayment": {
     "propertyPayment": "Property Payment",

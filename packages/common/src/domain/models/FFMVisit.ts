@@ -62,6 +62,9 @@ export class FFMVisit {
   @JsonProperty('asset', Asset)
   private _asset = new Asset();
 
+  @JsonProperty('comments', String, true)
+  private _comments = '';
+
   get id(): number {
     return this._id;
   }
@@ -112,5 +115,9 @@ export class FFMVisit {
 
   get asset(): Asset {
     return this._asset;
+  }
+
+  get comments(): string {
+    return this._comments;
   }
 }

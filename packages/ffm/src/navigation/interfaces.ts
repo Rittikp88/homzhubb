@@ -34,6 +34,7 @@ export enum ScreenKeys {
 
   // Visit
   SiteVisitDashboard = 'SiteVisitDashboard',
+  VisitForm = 'VisitForm',
 
   // More
   MoreScreen = 'MoreScreen',
@@ -45,4 +46,9 @@ export interface IVerification {
   countryCode: string;
   otpSentTo: string;
   userData?: ISignUpPayload;
+}
+
+export interface IVisitParam {
+  startDate: string;
+  comment: string;
 }
