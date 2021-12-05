@@ -342,7 +342,8 @@
     "workLocation": "Work Location ({{count}})",
     "yourCompanyName": "Your Company Name",
     "companyName": "Company Name",
-    "password": "Password"
+    "password": "Password",
+    "remark": "Remark"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1579,7 +1580,16 @@
     "visitExpired": "Visit Expired",
     "visitMissed": "Visit {{action}} by {{name}}",
     "rescheduleVisit": "Rescheduled visit successfully",
-    "rescheduleForm": "Reschedule Form"
+    "rescheduleForm": "Reschedule Form",
+    "feedbackSubmitted": "Feedback submitted Successfully",
+    "tenantInterested": "Tenant Interested ?",
+    "tenantShortlisted": "Tenant Shortlisted ?",
+    "negotiationRaised": "Negotiation / Offer raised",
+    "prospectRequest": "Type in the prospect's requests",
+    "reasonRejection": "Reason for Rejection",
+    "selectRejectionReason": "Select Rejection Reason",
+    "offerRaised": "Offer raised",
+    "yesNo": "Yes/No"
   },
   "propertyPayment": {
     "propertyPayment": "Property Payment",

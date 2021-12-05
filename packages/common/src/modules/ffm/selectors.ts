@@ -1,4 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
@@ -48,6 +50,29 @@ const getVisits = (state: IState): FFMVisit[] => {
   return ObjectMapper.deserializeArray(FFMVisit, visits);
 };
 
+const getRejectionReason = (state: IState): IDropdownOption[] => {
+  const {
+    ffm: { reasons },
+  } = state;
+
+  const deserializedData = ObjectMapper.deserializeArray(Unit, reasons);
+
+  return deserializedData.map((item) => {
+    return {
+      label: item.title,
+      value: item.id,
+    };
+  });
+};
+
+const getFeedback = (state: IState): Feedback | null => {
+  const {
+    ffm: { feedback },
+  } = state;
+  if (!feedback) return null;
+  return ObjectMapper.deserialize(Feedback, feedback);
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
@@ -55,4 +80,6 @@ export const FFMSelector = {
   getSelectedRole,
   getWorkLocations,
   getVisits,
+  getRejectionReason,
+  getFeedback,
 };

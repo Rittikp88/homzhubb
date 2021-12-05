@@ -1,4 +1,5 @@
 import { FFMActionPayloadTypes, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
+import { IFeedback } from '@homzhub/common/src/domain/models/Feedback';
 import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IOnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
@@ -12,10 +13,14 @@ export const initialFFMState: IFFMState = {
   selectedRole: null,
   workLocations: [],
   visits: [],
+  reasons: [],
+  feedback: null,
   loaders: {
     onBoarding: false,
     roles: false,
     visits: false,
+    reasons: false,
+    feedback: false,
   },
 };
 
@@ -81,6 +86,43 @@ export const ffmReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['visits']: false },
+      };
+    case FFMActionTypes.GET.REJECTION_REASON:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reasons']: true },
+      };
+    case FFMActionTypes.GET.REJECTION_REASON_SUCCESS:
+      return {
+        ...state,
+        ['reasons']: action.payload as IUnit[],
+        ['loaders']: { ...state.loaders, ['reasons']: false },
+      };
+    case FFMActionTypes.GET.REJECTION_REASON_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reasons']: false },
+      };
+    case FFMActionTypes.GET.FEEDBACK:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['feedback']: true },
+      };
+    case FFMActionTypes.GET.FEEDBACK_SUCCESS:
+      return {
+        ...state,
+        ['feedback']: action.payload as IFeedback,
+        ['loaders']: { ...state.loaders, ['feedback']: false },
+      };
+    case FFMActionTypes.GET.FEEDBACK_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['feedback']: false },
+      };
+    case FFMActionTypes.CLEAR.FEEDBACK_DATA:
+      return {
+        ...state,
+        ['feedback']: null,
       };
     default:
       return {

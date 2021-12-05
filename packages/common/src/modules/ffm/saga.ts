@@ -4,11 +4,12 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMRepository';
 import { FFMActions, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
+import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
-import { IFFMVisitParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IFFMVisitParam, IGetFeedbackParam } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export function* getOnBoardingData(): VoidGenerator {
   try {
@@ -40,8 +41,30 @@ export function* getVisits(action: IFluxStandardAction<IFFMVisitParam>): VoidGen
   }
 }
 
+export function* getRejectionReason(action: IFluxStandardAction<number>): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getRejectReason, action.payload as number);
+    yield put(FFMActions.getRejectionReasonsSuccess(response as Unit[]));
+  } catch (e) {
+    yield put(FFMActions.getRejectionReasonsFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
+export function* getFeedbackById(action: IFluxStandardAction<IGetFeedbackParam>): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getFeedbackById, action.payload as IGetFeedbackParam);
+    yield put(FFMActions.getFeedbackSuccess(response as Feedback));
+  } catch (e) {
+    yield put(FFMActions.getFeedbackFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
   yield takeLatest(FFMActionTypes.GET.VISITS, getVisits);
+  yield takeLatest(FFMActionTypes.GET.REJECTION_REASON, getRejectionReason);
+  yield takeLatest(FFMActionTypes.GET.FEEDBACK, getFeedbackById);
 }

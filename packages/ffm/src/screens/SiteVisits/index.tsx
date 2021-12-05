@@ -12,7 +12,7 @@ import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import VisitList from '@homzhub/ffm/src/screens/SiteVisits/VisitList';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { FFMVisitRoutes, IRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
-import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
+import { IFeedbackParam, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 const SiteVisitDashboard = (): React.ReactElement => {
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ const SiteVisitDashboard = (): React.ReactElement => {
   useFocusEffect(
     useCallback(() => {
       dispatch(FFMActions.getVisits(currentStatus ? { status__in: currentStatus } : undefined));
+      dispatch(FFMActions.clearFeedbackData());
     }, [])
   );
 
@@ -59,16 +60,20 @@ const SiteVisitDashboard = (): React.ReactElement => {
     navigate(ScreenKeys.VisitForm, { startDate: visit.startDate, comment: visit.comments });
   };
 
+  const navigateToFeedback = (param: IFeedbackParam): void => {
+    navigate(ScreenKeys.FeedbackForm, param);
+  };
+
   const renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
     switch (route.key) {
       case Tabs.NEW:
-        return <VisitList tab={Tabs.NEW} onReschedule={onReschedule} />;
+        return <VisitList tab={Tabs.NEW} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
       case Tabs.ONGOING:
-        return <VisitList tab={Tabs.ONGOING} onReschedule={onReschedule} />;
+        return <VisitList tab={Tabs.ONGOING} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
       case Tabs.MISSED:
-        return <VisitList tab={Tabs.MISSED} onReschedule={onReschedule} />;
+        return <VisitList tab={Tabs.MISSED} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
       case Tabs.COMPLETED:
-        return <VisitList tab={Tabs.COMPLETED} onReschedule={onReschedule} />;
+        return <VisitList tab={Tabs.COMPLETED} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
       default:
         return null;
     }

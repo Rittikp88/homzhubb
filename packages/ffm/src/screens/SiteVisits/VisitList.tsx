@@ -14,14 +14,16 @@ import VisitCard from '@homzhub/ffm/src/components/molecules/VisitCard';
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IUpdateVisitPayload, VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
+import { IFeedbackParam } from '@homzhub/ffm/src/navigation/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
   tab: Tabs;
   onReschedule: (visit: FFMVisit) => void;
+  navigateToFeedback: (param: IFeedbackParam) => void;
 }
 
-const VisitList = ({ tab, onReschedule }: IProps): React.ReactElement => {
+const VisitList = ({ tab, onReschedule, navigateToFeedback }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const visits = useSelector(FFMSelector.getVisits);
@@ -96,12 +98,18 @@ const VisitList = ({ tab, onReschedule }: IProps): React.ReactElement => {
     <ScrollView showsVerticalScrollIndicator={false}>
       {getVisitList().length ? (
         getVisitList().map((item, index) => {
+          const param = {
+            visitId: item.id,
+            isSubmitted: !item.canSubmitFeedback,
+            feedbackId: item.prospectFeedback ? item.prospectFeedback.id : null,
+          };
           return (
             <VisitCard
               key={index}
               visit={item}
               tab={tab}
               onReschedule={(): void => onReschedule(item)}
+              navigateToFeedback={(): void => navigateToFeedback(param)}
               handleActions={(action: VisitActions): Promise<void> => handleActions(item.id, action)}
             />
           );

@@ -1,7 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
-import { IUnit } from '@homzhub/common/src/domain/models/Unit';
+import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
 import { VisitStatus, VisitType } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -50,7 +50,7 @@ export class FFMVisit {
   @JsonProperty('can_submit_feedback', Boolean)
   private _canSubmitFeedback = false;
 
-  @JsonProperty('prospect_feedback', Boolean, true)
+  @JsonProperty('prospect_feedback', Unit, true)
   private _prospectFeedback = null;
 
   @JsonProperty('status_updated_by', User, true)
@@ -64,6 +64,12 @@ export class FFMVisit {
 
   @JsonProperty('comments', String, true)
   private _comments = '';
+
+  @JsonProperty('lease_listing', Unit, true)
+  private _leaseListing = null;
+
+  @JsonProperty('sale_listing', Unit, true)
+  private _saleListing = null;
 
   get id(): number {
     return this._id;
@@ -101,7 +107,7 @@ export class FFMVisit {
     return this._canSubmitFeedback;
   }
 
-  get prospectFeedback(): null {
+  get prospectFeedback(): Unit | null {
     return this._prospectFeedback;
   }
 
@@ -119,5 +125,13 @@ export class FFMVisit {
 
   get comments(): string {
     return this._comments;
+  }
+
+  get leaseListing(): Unit | null {
+    return this._leaseListing;
+  }
+
+  get saleListing(): Unit | null {
+    return this._saleListing;
   }
 }

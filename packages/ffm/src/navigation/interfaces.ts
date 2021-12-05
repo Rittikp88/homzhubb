@@ -35,6 +35,7 @@ export enum ScreenKeys {
   // Visit
   SiteVisitDashboard = 'SiteVisitDashboard',
   VisitForm = 'VisitForm',
+  FeedbackForm = 'FeedbackForm',
 
   // More
   MoreScreen = 'MoreScreen',
@@ -51,4 +52,10 @@ export interface IVerification {
 export interface IVisitParam {
   startDate: string;
   comment: string;
+}
+
+export interface IFeedbackParam {
+  visitId: number;
+  isSubmitted: boolean;
+  feedbackId: number | null;
 }

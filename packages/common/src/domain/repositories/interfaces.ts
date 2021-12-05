@@ -1232,3 +1232,22 @@ export interface IFFMVisitParam {
   status__in?: string;
   status?: string;
 }
+
+export interface IFeedback {
+  is_tenant_interested: boolean;
+  is_tenant_shortlisted?: boolean;
+  negotiation_raised?: number;
+  requests?: string;
+  remarks?: string;
+  reject_reason?: number | null;
+}
+
+export interface IPostFeedback {
+  visitId: number;
+  data: IFeedback;
+}
+
+export interface IGetFeedbackParam {
+  visitId: number;
+  feedbackId: number;
+}

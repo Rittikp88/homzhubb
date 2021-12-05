@@ -22,6 +22,7 @@ interface IProps {
   tab: Tabs;
   handleActions: (action: VisitActions) => void;
   onReschedule: () => void;
+  navigateToFeedback: () => void;
 }
 
 const VisitCard = (props: IProps): React.ReactElement => {
@@ -43,6 +44,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
     tab,
     handleActions,
     onReschedule,
+    navigateToFeedback,
   } = props;
 
   const isMissed = tab === Tabs.MISSED;
@@ -159,7 +161,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
           </View>
         )}
         {isCompleted && prospectFeedback && (
-          <TouchableOpacity style={[styles.row, styles.completeSection]}>
+          <TouchableOpacity style={[styles.row, styles.completeSection]} onPress={navigateToFeedback}>
             <Label type="large" textType="semiBold" style={styles.feedback}>
               {t('siteVisits:prospectFeedbackForm')}
             </Label>
@@ -204,7 +206,12 @@ const VisitCard = (props: IProps): React.ReactElement => {
           </TouchableOpacity>
         </View>
         {isCompleted && canSubmitFeedback && (
-          <Button type="primary" title={t('siteVisits:prospectFeedbackForm')} containerStyle={styles.feedbackButton} />
+          <Button
+            type="primary"
+            title={t('siteVisits:prospectFeedbackForm')}
+            containerStyle={styles.feedbackButton}
+            onPress={navigateToFeedback}
+          />
         )}
       </View>
       {renderActions()}
