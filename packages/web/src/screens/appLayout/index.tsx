@@ -13,7 +13,11 @@ import SideBar from '@homzhub/web/src/components/molecules/Drawer/BurgerMenu';
 import MobileSideMenu from '@homzhub/web/src/screens/dashboard/components/MobileSideMenu';
 import SideMenu from '@homzhub/web/src/screens/dashboard/components/SideMenu';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
-import { AppLayoutContext, IFinancialsActions } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
+import {
+  AppLayoutContext,
+  IButtonActions,
+  IFinancialsActions,
+} from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 
 interface IProps {
   location: LocationParams;
@@ -66,6 +70,9 @@ const AppLayout: FC<IProps> = (props: IProps) => {
     financialsActionType: null,
     isOpen: false,
   });
+  const [buttonGrpActions, setButtonGrpActions] = useState<IButtonActions>({
+    isClicked: false,
+  });
 
   const onMenuClose = (): void => {
     setIsMenuOpen(false);
@@ -84,6 +91,8 @@ const AppLayout: FC<IProps> = (props: IProps) => {
         setIsMenuLoading,
         financialsActions,
         setFinancialsActions,
+        buttonGrpActions,
+        setButtonGrpActions,
       }}
     >
       <View style={styles.container}>

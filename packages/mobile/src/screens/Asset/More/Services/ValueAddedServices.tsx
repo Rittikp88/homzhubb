@@ -21,13 +21,14 @@ export const ValueAddedServices = (props: IProps): ReactElement => {
   // Local States
   const [loading, setLoading] = useState(true);
 
+  const apiDidLoad = (): void => {
+    setLoading(false);
+  };
+
   const navigateToAddPropertyScreen = (): void => {
     navigation.navigate(ScreensKeys.PropertyPostStack, {
       screen: ScreensKeys.AssetLocationSearch,
     });
-  };
-  const apiDidLoad = (): void => {
-    setLoading(false);
   };
 
   const render = (): ReactElement => {

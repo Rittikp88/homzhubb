@@ -71,9 +71,15 @@ export const Dropdown = (props: IProps): React.ReactElement => {
   } = props;
 
   const valueChange = (changedValue: IPopupOptions): void => {
-    const selectedValue = changedValue.value && changedValue.value === placeholder ? '' : changedValue.value;
+    const selectedValue = !changedValue.value || changedValue.value === placeholder ? '' : changedValue.value;
     // @ts-ignore
-    if (onDonePress && selectedValue > -1) {
+    let isValid = false;
+    if (typeof selectedValue === 'string') {
+      isValid = selectedValue.length > 0;
+    } else {
+      isValid = selectedValue > -1;
+    }
+    if (onDonePress && isValid) {
       onDonePress(selectedValue);
       closeDropdown();
     }

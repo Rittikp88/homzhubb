@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image, StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { ShieldGroup } from '@homzhub/mobile/src/components';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { PricePerUnit } from '@homzhub/common/src/components/atoms/PricePerUnit';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
@@ -18,6 +18,14 @@ interface IProps {
   isPriceVisible?: boolean;
   isShieldVisible?: boolean;
   containerStyle?: StyleProp<ViewStyle>;
+  renderShieldGroup?: (compProps: IShieldProps) => React.ReactElement;
+}
+
+export interface IShieldProps {
+  propertyType: string;
+  text: string;
+  isInfoRequired: boolean;
+  isShieldVisible: boolean;
 }
 
 const PropertyCard = (props: IProps): React.ReactElement => {
@@ -44,6 +52,7 @@ const PropertyCard = (props: IProps): React.ReactElement => {
     isShieldVisible = true,
     isIcon = true,
     showAddress = true,
+    renderShieldGroup,
   } = props;
 
   const isAttachmentPresent = images && images.length > 0;
@@ -57,51 +66,59 @@ const PropertyCard = (props: IProps): React.ReactElement => {
     true
   );
   const showAmenities = isExpanded && amenitiesData && amenitiesData.length > 0;
-
+  const compProps = {
+    propertyType: assetType,
+    text: description,
+    isInfoRequired: true,
+    isShieldVisible,
+  };
+  const isShiledGroup = isExpanded && renderShieldGroup;
   return (
     <View style={containerStyle}>
-      {isExpanded && (
-        <View style={styles.imageContainer}>
-          {isAttachmentPresent ? (
-            <Image
-              source={{
-                uri: images[0].link,
-              }}
-              style={styles.carouselImage}
-            />
-          ) : (
-            <ImagePlaceholder containerStyle={styles.placeholder} />
-          )}
-        </View>
-      )}
-      {isExpanded && (
-        <ShieldGroup propertyType={assetType} text={description} isInfoRequired isShieldVisible={isShieldVisible} />
-      )}
-      <PropertyAddressCountry
-        primaryAddress={projectName}
-        countryFlag={flag}
-        subAddress={formattedAddressWithCity}
-        isIcon={isIcon}
-        showAddress={showAddress}
-      />
-      {isExpanded && isPriceVisible && (
-        <PricePerUnit
-          price={pricePerUnit}
-          currency={currencyData}
-          unit={maintenancePaymentSchedule}
-          textStyle={styles.emptyView}
+      <View>
+        {isExpanded && (
+          <View style={styles.imageContainer}>
+            {isAttachmentPresent ? (
+              <Image
+                source={{
+                  uri: images[0].link,
+                }}
+                style={styles.carouselImage}
+              />
+            ) : (
+              <ImagePlaceholder containerStyle={styles.placeholder} />
+            )}
+          </View>
+        )}
+      </View>
+      <View style={[PlatformUtils.isWeb() && styles.leftChild]}>
+        {!PlatformUtils.isWeb() && isShiledGroup && renderShieldGroup(compProps)}
+        <PropertyAddressCountry
+          primaryAddress={projectName}
+          countryFlag={flag}
+          subAddress={formattedAddressWithCity}
+          isIcon={isIcon}
+          showAddress={showAddress}
         />
-      )}
-      {showAmenities && (
-        <>
-          <PropertyAmenities
-            data={amenitiesData}
-            direction="row"
-            containerStyle={styles.amenitiesContainer}
-            contentContainerStyle={styles.amenities}
+        {isExpanded && isPriceVisible && (
+          <PricePerUnit
+            price={pricePerUnit}
+            currency={currencyData}
+            unit={maintenancePaymentSchedule}
+            textStyle={styles.emptyView}
           />
-        </>
-      )}
+        )}
+        {showAmenities && (
+          <>
+            <PropertyAmenities
+              data={amenitiesData}
+              direction="row"
+              containerStyle={styles.amenitiesContainer}
+              contentContainerStyle={styles.amenities}
+            />
+          </>
+        )}
+      </View>
     </View>
   );
 };
@@ -129,5 +146,8 @@ const styles = StyleSheet.create({
   },
   emptyView: {
     marginTop: 10,
+  },
+  leftChild: {
+    marginLeft: 16,
   },
 });

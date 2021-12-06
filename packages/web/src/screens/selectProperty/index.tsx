@@ -1,19 +1,30 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { NavigationService } from '@homzhub/web/src/services/NavigationService';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { ValueAddedServiceCardList } from '@homzhub/common/src/components/organisms/ValueAddedServiceCardList';
+import OrderSummaryPopover from '@homzhub/web/src/components/organisms/OrderSummaryPopover';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { IGetServicesByIds } from '@homzhub/common/src/domain/models/ValueAddedService';
 import { IAmenitiesIcons } from '@homzhub/common/src/domain/models/Search';
 import { IBadgeInfo } from '@homzhub/mobile/src/navigation/interfaces';
-import { RouteNames } from '@homzhub/web/src/router/RouteNames';
+
+interface ILocationProps {
+  city: string;
+}
 
 const SelectProperty: FC = () => {
-  const history = useHistory();
+  const history = useHistory<ILocationProps>();
+  const {
+    location: {
+      state: { city },
+    },
+  } = history;
+  const [propertyId, setPropertyId] = useState<number | null>(null);
   const navigateToService = (
-    propertyId: number,
+    propertyIdArg: number,
     assetType: string,
     projectName = '',
     address = '',
@@ -25,30 +36,49 @@ const SelectProperty: FC = () => {
     assetCount = 0,
     iso2Code = ''
   ): void => {
-    const locationState = {
-      propertyId,
-      assetType,
-      projectName,
-      address,
-      serviceByIds,
-      badgeInfo,
-      amenities,
-      attachments,
-      assetCount,
-      iso2Code,
-    };
-
-    NavigationService.navigate(history, {
-      path: RouteNames.protectedRoutes.SELECT_SERVICES,
-      params: { ...locationState },
-    });
+    // console.log('I was here', propertyId);
+    setPropertyId(propertyIdArg);
   };
+
+  const [loading, setLoading] = useState(true);
+
+  const apiDidLoad = (): void => {
+    setLoading(false);
+  };
+
+  const popupRef = useRef<PopupActions>(null);
+
+  const onOpenModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.open();
+    }
+  };
+  const onCloseModal = (): void => {
+    if (popupRef && popupRef.current) {
+      popupRef.current.close();
+    }
+  };
+
+  useEffect(() => {
+    if (propertyId) {
+      onOpenModal();
+    }
+  }, [propertyId]);
+
   return (
     <View style={styles.container}>
+      <Loader visible={loading} />
       <ValueAddedServiceCardList
-        didLoad={FunctionUtils.noop}
+        didLoad={apiDidLoad}
         navigateToAddPropertyScreen={FunctionUtils.noop}
         navigateToService={navigateToService}
+        selectedCity={city}
+      />
+      <OrderSummaryPopover
+        popupRef={popupRef}
+        onOpenModal={onOpenModal}
+        onCloseModal={onCloseModal}
+        propertyId={propertyId as number}
       />
     </View>
   );

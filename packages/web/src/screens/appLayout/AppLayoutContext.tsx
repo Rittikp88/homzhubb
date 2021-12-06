@@ -7,6 +7,10 @@ export interface IFinancialsActions {
   isOpen: boolean;
 }
 
+export interface IButtonActions {
+  isClicked: boolean;
+}
+
 type AppLayoutContextType = {
   goBackClicked: boolean;
   setGoBackClicked: (value: boolean) => void;
@@ -14,6 +18,8 @@ type AppLayoutContextType = {
   setIsMenuLoading: (value: boolean) => void;
   financialsActions: IFinancialsActions;
   setFinancialsActions: (value: IFinancialsActions) => void;
+  buttonGrpActions: IButtonActions;
+  setButtonGrpActions: React.Dispatch<React.SetStateAction<IButtonActions>>;
 };
 export const AppLayoutContext = React.createContext<AppLayoutContextType>({
   goBackClicked: false,
@@ -25,4 +31,8 @@ export const AppLayoutContext = React.createContext<AppLayoutContextType>({
     isOpen: false,
   },
   setFinancialsActions: FunctionUtils.noop,
+  buttonGrpActions: {
+    isClicked: false,
+  },
+  setButtonGrpActions: FunctionUtils.noop,
 });

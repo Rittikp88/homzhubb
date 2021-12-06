@@ -7,8 +7,9 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
-import PropertyCard from '@homzhub/common/src/components/molecules/PropertyCard';
+import PropertyCard, { IShieldProps } from '@homzhub/common/src/components/molecules/PropertyCard';
 import ServiceCard from '@homzhub/mobile/src/components/molecules/ServiceCard';
+import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
 import { Asset, ServiceGroup } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 import { ServiceOption } from '@homzhub/common/src/constants/Services';
@@ -48,6 +49,10 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
     ServiceHelper.handleServiceActions(value, data.id, attachment, invoice);
   };
 
+  const renderShieldGroup = (compProps: IShieldProps): React.ReactElement => {
+    return <ShieldGroup {...compProps} />;
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity disabled={isExpanded} onPress={(): void => setIsExpanded(!isExpanded)}>
@@ -83,6 +88,7 @@ const PropertyServiceCard = ({ data, onAttachmentPress }: IProps): React.ReactEl
               isShieldVisible={false}
               isIcon={false}
               containerStyle={styles.propertyCard}
+              renderShieldGroup={renderShieldGroup}
             />
           )}
           {isExpanded && (

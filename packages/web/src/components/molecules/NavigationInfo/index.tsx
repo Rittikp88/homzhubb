@@ -264,6 +264,32 @@ const FinancialsActionGrp: FC = () => {
   );
 };
 
+const ValueAddedActionGrp: FC = () => {
+  const { t } = useTranslation();
+  const styles = buttonGrpStyles;
+  const { setButtonGrpActions } = useContext(AppLayoutContext);
+  const onPressAction = (): void => {
+    setButtonGrpActions((prevState) => {
+      return {
+        ...prevState,
+        isClicked: !prevState.isClicked,
+      };
+    });
+  };
+  return (
+    <Button
+      type="secondary"
+      containerStyle={[styles.buttonItem, styles.buttonSecondary]}
+      onPress={(): void => onPressAction()}
+      icon={icons.portfolioFilled}
+      title={t('property:buyNewService')}
+      iconColor={theme.colors.primaryColor}
+      iconSize={25}
+      textStyle={styles.buttonTextStyle}
+    />
+  );
+};
+
 const GoBackActionButton: FC = () => {
   const { t } = useTranslation();
   const styles = goBackActionStyles;
@@ -301,6 +327,8 @@ export const NavigationInfo: FC = () => {
         return <GoBackActionButton />;
       case protectedRoutes.FINANCIALS:
         return <FinancialsActionGrp />;
+      case protectedRoutes.VALUE_ADDED_SERVICES:
+        return <ValueAddedActionGrp />;
       default:
         return <GoBackActionButton />;
     }
