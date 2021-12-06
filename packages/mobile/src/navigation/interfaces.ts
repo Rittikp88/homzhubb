@@ -283,6 +283,7 @@ export interface IUpdateProfileProps {
 export interface IComingSoon {
   title: string;
   tabHeader: string;
+  message?: string;
 }
 
 export interface IVerifyEmail {

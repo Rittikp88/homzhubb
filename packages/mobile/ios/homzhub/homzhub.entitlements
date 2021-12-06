@@ -11,6 +11,7 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:homzhubPartner.page.link</string>
+		<string>applinks:homzhubapps.page.link</string>
 	</array>
 </dict>
 </plist>

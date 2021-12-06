@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
@@ -11,53 +11,54 @@ import { Text } from '@homzhub/common/src/components/atoms/Text';
 import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import VisitList from '@homzhub/ffm/src/screens/SiteVisits/VisitList';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
-import { FFMVisitRoutes, IRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
 import { IFeedbackParam, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
+import { FFMVisitRoutes, IRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
 
 const SiteVisitDashboard = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { navigate } = useNavigation();
   const [currentIndex, setIndex] = useState(0);
-  const [currentStatus, setStatus] = useState('PENDING');
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(FFMActions.getVisits(currentStatus ? { status__in: currentStatus } : undefined));
+      dispatch(FFMActions.getVisits({ status__in: getStatus(currentIndex) }));
       dispatch(FFMActions.clearFeedbackData());
     }, [])
   );
 
-  useEffect(() => {
-    const currentRoute = FFMVisitRoutes[currentIndex];
-    switch (currentRoute.key) {
-      case Tabs.NEW:
-        setStatus('PENDING');
-        break;
-      case Tabs.ONGOING:
-      case Tabs.COMPLETED:
-        setStatus('ACCEPTED');
-        break;
-      case Tabs.MISSED:
-        setStatus('PENDING,CANCELLED,REJECTED');
-        break;
-      default:
-        setStatus('');
-    }
-  }, [currentIndex]);
-
-  useEffect(() => {
-    dispatch(FFMActions.getVisits(currentStatus ? { status__in: currentStatus } : undefined));
-  }, [currentStatus]);
-
   const onIndexChange = (value: number): void => {
     setIndex(value);
+    getData(value);
     dispatch(FFMActions.getVisitsSuccess([]));
+  };
+
+  const getStatus = (value: number): string => {
+    const currentRoute = FFMVisitRoutes[value];
+    switch (currentRoute.key) {
+      case Tabs.ONGOING:
+      case Tabs.COMPLETED:
+        return 'ACCEPTED';
+      case Tabs.MISSED:
+        return 'PENDING,CANCELLED,REJECTED';
+      case Tabs.NEW:
+        return 'PENDING';
+      default:
+        return '';
+    }
+  };
+
+  const getData = (value: number): void => {
+    dispatch(FFMActions.getVisits({ status__in: getStatus(value) }));
   };
 
   const onReschedule = (visit: FFMVisit): void => {
     dispatch(AssetActions.setVisitIds([visit.id]));
     navigate(ScreenKeys.VisitForm, { startDate: visit.startDate, comment: visit.comments });
+  };
+
+  const navigateToDetail = (visitId: number, tab: Tabs): void => {
+    navigate(ScreenKeys.VisitDetail, { visitId, tab });
   };
 
   const navigateToFeedback = (param: IFeedbackParam): void => {
@@ -67,13 +68,45 @@ const SiteVisitDashboard = (): React.ReactElement => {
   const renderScene = ({ route }: { route: IRoutes }): React.ReactElement | null => {
     switch (route.key) {
       case Tabs.NEW:
-        return <VisitList tab={Tabs.NEW} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
+        return (
+          <VisitList
+            tab={Tabs.NEW}
+            status={getStatus(0)}
+            onReschedule={onReschedule}
+            navigateToFeedback={navigateToFeedback}
+            navigateToDetail={(visitId): void => navigateToDetail(visitId, Tabs.NEW)}
+          />
+        );
       case Tabs.ONGOING:
-        return <VisitList tab={Tabs.ONGOING} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
+        return (
+          <VisitList
+            tab={Tabs.ONGOING}
+            status={getStatus(1)}
+            onReschedule={onReschedule}
+            navigateToFeedback={navigateToFeedback}
+            navigateToDetail={(visitId): void => navigateToDetail(visitId, Tabs.ONGOING)}
+          />
+        );
       case Tabs.MISSED:
-        return <VisitList tab={Tabs.MISSED} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
+        return (
+          <VisitList
+            tab={Tabs.MISSED}
+            status={getStatus(2)}
+            onReschedule={onReschedule}
+            navigateToFeedback={navigateToFeedback}
+            navigateToDetail={(visitId): void => navigateToDetail(visitId, Tabs.MISSED)}
+          />
+        );
       case Tabs.COMPLETED:
-        return <VisitList tab={Tabs.COMPLETED} onReschedule={onReschedule} navigateToFeedback={navigateToFeedback} />;
+        return (
+          <VisitList
+            tab={Tabs.COMPLETED}
+            status={getStatus(3)}
+            onReschedule={onReschedule}
+            navigateToFeedback={navigateToFeedback}
+            navigateToDetail={(visitId): void => navigateToDetail(visitId, Tabs.COMPLETED)}
+          />
+        );
       default:
         return null;
     }

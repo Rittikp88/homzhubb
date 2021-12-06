@@ -15,6 +15,8 @@ interface ICheckboxOptions {
   iconSelectedStyle?: object;
   labelType?: TextSizeType;
   testID?: string;
+  subLabel?: string;
+  onPressLink?: () => void;
 }
 
 const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
@@ -29,6 +31,8 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
     labelType = 'large',
     onToggle,
     testID,
+    subLabel,
+    onPressLink,
   } = props;
   return (
     <TouchableOpacity style={[styles.container, containerStyle]} onPress={onToggle} testID={testID}>
@@ -41,6 +45,11 @@ const RNCheckbox = (props: ICheckboxOptions): React.ReactElement => {
       {!!label && (
         <Label type={labelType} textType="regular" style={[styles.label, labelStyle]}>
           {label}
+          {!!subLabel && (
+            <Label type="regular" style={styles.subLabel} onPress={onPressLink}>
+              {subLabel}
+            </Label>
+          )}
         </Label>
       )}
     </TouchableOpacity>
@@ -57,5 +66,8 @@ const styles = StyleSheet.create({
     marginStart: 12,
     marginEnd: 4,
     flex: 1,
+  },
+  subLabel: {
+    color: theme.colors.primaryColor,
   },
 });

@@ -319,6 +319,10 @@ class NavigationService {
       this.navigator.navigate(routeName, params);
     }
   };
+
+  public navigateToTermsCondition = (): void => {
+    this.navigator.navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/terms&Condition' });
+  };
 }
 
 const navigationService = new NavigationService();

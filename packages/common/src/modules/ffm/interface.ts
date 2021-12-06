@@ -11,11 +11,13 @@ export interface IFFMState {
   selectedRole: Unit | null;
   workLocations: IWorkLocation[];
   visits: IFFMVisit[];
+  visitDetail: IFFMVisit | null;
   feedback: IFeedback | null;
   loaders: {
     onBoarding: boolean;
     roles: boolean;
     visits: boolean;
+    visitDetail: boolean;
     reasons: boolean;
     feedback: boolean;
   };

@@ -106,10 +106,6 @@ const ServicesDashboard = (): React.ReactElement => {
     setSlideIndex(0);
   };
 
-  const onAddProperty = (): void => {
-    navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.AssetLocationSearch });
-  };
-
   const onBuyService = (): void => {
     navigate(ScreensKeys.ServiceSelection);
   };
@@ -122,45 +118,37 @@ const ServicesDashboard = (): React.ReactElement => {
         loading={userService}
         isGradient
       >
-        {userAsset.length <= 0 ? (
-          <EmptyState
-            title={t('property:noPropertyAdded')}
-            containerStyle={styles.emptyContainer}
-            buttonProps={{ type: 'secondary', title: t('property:addProperty'), onPress: onAddProperty }}
+        <View>
+          <AssetMetricsList
+            // @ts-ignore
+            showBackIcon={params?.isFromNavigation ?? false}
+            data={metricsData}
+            numOfElements={2}
+            title={userAsset.length.toString()}
           />
-        ) : (
-          <View>
-            <AssetMetricsList
-              // @ts-ignore
-              showBackIcon={params?.isFromNavigation ?? false}
-              data={metricsData}
-              numOfElements={2}
-              title={userAsset.length.toString()}
-            />
-            <Button
-              type="secondary"
-              iconSize={20}
-              title={t('property:buyNewService')}
-              icon={icons.portfolioFilled}
-              iconColor={theme.colors.primaryColor}
-              textStyle={styles.buttonText}
-              containerStyle={styles.newServiceButton}
-              onPress={onBuyService}
-            />
-            {openServiceCount > 0 && services.length > 0 ? (
-              <>
-                {services.map((item, index) => {
-                  const attachmentPress = (attachment: Attachment[]): void => {
-                    handleAttachmentPress(attachment, item.id);
-                  };
-                  return <PropertyServiceCard data={item} key={index} onAttachmentPress={attachmentPress} />;
-                })}
-              </>
-            ) : (
-              <EmptyState title={t('property:noServiceAdded')} containerStyle={styles.emptyContainer} />
-            )}
-          </View>
-        )}
+          <Button
+            type="secondary"
+            iconSize={20}
+            title={t('property:buyNewService')}
+            icon={icons.portfolioFilled}
+            iconColor={theme.colors.primaryColor}
+            textStyle={styles.buttonText}
+            containerStyle={styles.newServiceButton}
+            onPress={onBuyService}
+          />
+          {openServiceCount > 0 && services.length > 0 ? (
+            <>
+              {services.map((item, index) => {
+                const attachmentPress = (attachment: Attachment[]): void => {
+                  handleAttachmentPress(attachment, item.id);
+                };
+                return <PropertyServiceCard data={item} key={index} onAttachmentPress={attachmentPress} />;
+              })}
+            </>
+          ) : (
+            <EmptyState title={t('property:noServiceAdded')} containerStyle={styles.emptyContainer} />
+          )}
+        </View>
       </UserScreen>
       {imageView && (
         <FullScreenAssetDetailsCarousel

@@ -13,12 +13,14 @@ export const initialFFMState: IFFMState = {
   selectedRole: null,
   workLocations: [],
   visits: [],
+  visitDetail: null,
   reasons: [],
   feedback: null,
   loaders: {
     onBoarding: false,
     roles: false,
     visits: false,
+    visitDetail: false,
     reasons: false,
     feedback: false,
   },
@@ -86,6 +88,22 @@ export const ffmReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['visits']: false },
+      };
+    case FFMActionTypes.GET.VISIT_DETAIL:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['visitDetail']: true },
+      };
+    case FFMActionTypes.GET.VISIT_DETAIL_SUCCESS:
+      return {
+        ...state,
+        ['visitDetail']: action.payload as IFFMVisit,
+        ['loaders']: { ...state.loaders, ['visitDetail']: false },
+      };
+    case FFMActionTypes.GET.VISIT_DETAIL_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['visitDetail']: false },
       };
     case FFMActionTypes.GET.REJECTION_REASON:
       return {

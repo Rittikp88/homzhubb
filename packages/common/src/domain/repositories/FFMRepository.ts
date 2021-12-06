@@ -11,6 +11,7 @@ const ENDPOINTS = {
   onBoarding: 'v1/ffm-onboardings',
   roles: 'v1/roles',
   visits: 'v1/ffm/tasks/site-visits/',
+  visitDetail: (visitId: number): string => `v1/ffm/tasks/site-visits/${visitId}/`,
   rejectReason: (visitId: number): string => `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/reject-reasons/`,
   feedback: (visitId: number): string => `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/`,
   feedbackById: (visitId: number, feedbackId: number): string =>
@@ -37,6 +38,11 @@ class FFMRepository {
   public getVisits = async (param?: IFFMVisitParam): Promise<FFMVisit[]> => {
     const response = await this.apiClient.get(ENDPOINTS.visits, param);
     return ObjectMapper.deserializeArray(FFMVisit, response);
+  };
+
+  public getVisitDetail = async (visitId: number): Promise<FFMVisit> => {
+    const response = await this.apiClient.get(ENDPOINTS.visitDetail(visitId));
+    return ObjectMapper.deserialize(FFMVisit, response);
   };
 
   public getRejectReason = async (visitId: number): Promise<Unit[]> => {

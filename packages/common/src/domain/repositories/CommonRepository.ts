@@ -3,6 +3,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { CarpetArea } from '@homzhub/common/src/domain/models/CarpetArea';
 import { Country } from '@homzhub/common/src/domain/models/Country';
 import { Currency } from '@homzhub/common/src/domain/models/Currency';
+import { DeepLink } from '@homzhub/common/src/domain/models/DeepLink';
 import { MarketTrends } from '@homzhub/common/src/domain/models/MarketTrends';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Pillar, PillarTypes } from '@homzhub/common/src/domain/models/Pillar';
@@ -17,6 +18,7 @@ import {
   ISupportPayload,
   IDeviceTokenPayload,
   ILimitedOfferPayload,
+  IDeepLinkBody,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { SocialAuthProviders } from '@homzhub/common/src/constants/SocialAuthProviders';
 
@@ -34,6 +36,7 @@ const ENDPOINTS = {
   subscribeToNewsLetter: 'v1/newslettters/subscriptions/',
   updateMarketTrends: (id: number): string => `v1/market-trends/${id}/`,
   postDeviceToken: (): string => 'v1/devices/',
+  deepLinks: 'v1/deep-links',
 };
 
 class CommonRepository {
@@ -115,6 +118,11 @@ class CommonRepository {
 
   public postDeviceToken = async (requestBody: IDeviceTokenPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.postDeviceToken(), requestBody);
+  };
+
+  public getDeepLink = async (requestBody: IDeepLinkBody): Promise<DeepLink> => {
+    const response = await this.apiClient.post(ENDPOINTS.deepLinks, requestBody);
+    return ObjectMapper.deserialize(DeepLink, response);
   };
 }
 

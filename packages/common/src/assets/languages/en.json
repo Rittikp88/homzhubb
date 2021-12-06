@@ -332,6 +332,7 @@
     "letsGetStarted": "Let’s get started!",
     "welcomeText": "Welcome",
     "pleaseFillDetails": "Please fill all the details",
+    "agreeToHomzhub": "I agree to Homzhub ",
     "supplies": "Supplies",
     "iam": "I am",
     "alreadyAccount": "Already have an account ?",
@@ -765,7 +766,8 @@
     "serviceSelection": "Service Selection",
     "addOnService": "Add-on Services",
     "selectCityForService": "Please select city for services",
-    "addYourFirstProperty": "Add your first property"
+    "addYourFirstProperty": "Add your first property",
+    "rentPayment": "Coming Soon,\\n' +\n 'However, you can pay your rent by setting up a reminder with category as \"Rent\"."
   },
   "propertySearch": {
     "showProperties": "Show Properties",

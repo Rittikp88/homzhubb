@@ -17,15 +17,15 @@ class ComingSoonScreen extends React.PureComponent<Props> {
     const {
       t,
       route: {
-        params: { title, tabHeader },
+        params: { title, tabHeader, message },
       },
     } = this.props;
 
     return (
       <UserScreen title={tabHeader} pageTitle={title} onBackPress={this.goBack}>
-        <View style={styles.screen}>
-          <Text type="large" textType="semiBold">
-            {t('comingSoonText')}
+        <View style={[styles.screen, !!message && styles.extraStyle]}>
+          <Text type={message ? 'small' : 'large'} textType="semiBold">
+            {message ?? t('comingSoonText')}
           </Text>
         </View>
       </UserScreen>
@@ -48,5 +48,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     paddingTop: theme.viewport.height / 3,
     paddingBottom: theme.viewport.height / 3,
+  },
+  extraStyle: {
+    paddingTop: theme.viewport.height / 4,
   },
 });

@@ -1,5 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Asset, IAsset } from '@homzhub/common/src/domain/models/Asset';
+import { AssetKey, IAssetKey } from '@homzhub/common/src/domain/models/AssetKey';
 import { VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IUser, User } from '@homzhub/common/src/domain/models/User';
@@ -17,8 +18,9 @@ export interface IFFMVisit {
   actions: string[];
   created_at: string;
   can_submit_feedback: boolean;
-  prospect_feedback: any; // TODO: (Shikha) - Update type
+  prospect_feedback: IUnit | null;
   status_updated_by: IUser | null;
+  asset_keys: IAssetKey[];
 }
 
 @JsonObject('FFMVisit')
@@ -64,6 +66,9 @@ export class FFMVisit {
 
   @JsonProperty('comments', String, true)
   private _comments = '';
+
+  @JsonProperty('asset_keys', [AssetKey], true)
+  private _assetKeys = [];
 
   @JsonProperty('lease_listing', Unit, true)
   private _leaseListing = null;
@@ -125,6 +130,10 @@ export class FFMVisit {
 
   get comments(): string {
     return this._comments;
+  }
+
+  get assetKeys(): AssetKey[] {
+    return this._assetKeys;
   }
 
   get leaseListing(): Unit | null {

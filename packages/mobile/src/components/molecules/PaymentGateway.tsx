@@ -7,11 +7,14 @@ import { ConfigHelper } from '@homzhub/common/src/utils/ConfigHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
-import { IPaymentParams, PaymentFailureResponse } from '@homzhub/common/src/domain/repositories/interfaces';
+import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button, IButtonProps } from '@homzhub/common/src/components/atoms/Button';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
+import { IPaymentParams, PaymentFailureResponse } from '@homzhub/common/src/domain/repositories/interfaces';
 
 let options = {
   image: '',
@@ -38,27 +41,52 @@ interface IProps extends IButtonProps {
   initiatePayment: () => Promise<Payment>;
   paymentApi: (paymentSuccessData: IPaymentParams) => void;
   outerContainerStyle?: StyleProp<ViewStyle>;
+  isVerificationRequired?: boolean;
 }
 
 interface IOwnState {
   loading: boolean;
+  isCheckboxSelected: boolean;
 }
 
 export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
   public state = {
     loading: false,
+    isCheckboxSelected: false,
   };
 
   public render = (): React.ReactElement => {
-    const { loading } = this.state;
-    const { outerContainerStyle = {} } = this.props;
+    const { loading, isCheckboxSelected } = this.state;
+    const { outerContainerStyle = {}, isVerificationRequired = false, disabled } = this.props;
     return (
       <>
+        {isVerificationRequired && (
+          <RNCheckbox
+            label={I18nService.t('common:agreeToHomzhub')}
+            labelType="regular"
+            subLabel={I18nService.t('moreSettings:termsConditionsText')}
+            selected={isCheckboxSelected}
+            onToggle={this.onToggleCheckbox}
+            onPressLink={NavigationService.navigateToTermsCondition}
+            labelStyle={styles.checkboxLabel}
+            containerStyle={styles.checkboxContainer}
+          />
+        )}
         {/* @ts-ignore */}
-        <Button {...this.props} onPress={this.onPress} containerStyle={[styles.button, outerContainerStyle]} />
+        <Button
+          {...this.props}
+          onPress={this.onPress}
+          disabled={(isVerificationRequired && !isCheckboxSelected) || disabled}
+          containerStyle={[styles.button, outerContainerStyle]}
+        />
         <Loader visible={loading} />
       </>
     );
+  };
+
+  private onToggleCheckbox = (): void => {
+    const { isCheckboxSelected } = this.state;
+    this.setState({ isCheckboxSelected: !isCheckboxSelected });
   };
 
   private onPress = (): void => {
@@ -134,6 +162,13 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
 const styles = StyleSheet.create({
   button: {
     flex: 0,
+    marginHorizontal: 16,
+  },
+  checkboxLabel: {
+    color: theme.colors.darkTint3,
+  },
+  checkboxContainer: {
+    marginVertical: 16,
     marginHorizontal: 16,
   },
 });

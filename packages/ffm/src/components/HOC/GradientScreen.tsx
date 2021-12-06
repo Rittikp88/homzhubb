@@ -2,6 +2,7 @@ import React from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useSelector } from 'react-redux';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     alignContent: 'center',
-    paddingTop: '15%',
+    paddingTop: PlatformUtils.isAndroid() ? '10%' : '15%',
   },
   pageTitle: {
     marginHorizontal: 6,

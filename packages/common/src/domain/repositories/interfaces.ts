@@ -1251,3 +1251,15 @@ export interface IGetFeedbackParam {
   visitId: number;
   feedbackId: number;
 }
+
+export interface IDeepLinkPayload {
+  type: string;
+  routeType: string;
+  propertyTermId: number;
+  asset_transaction_type: string;
+}
+
+export interface IDeepLinkBody {
+  action: string;
+  payload: IDeepLinkPayload;
+}

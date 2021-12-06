@@ -1,5 +1,6 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { Address, IAddress } from '@homzhub/common/src/domain/models/Address';
 import { IWorkInfo, WorkInfo } from '@homzhub/common/src/domain/models/WorkInfo';
 
 export enum UserRole {
@@ -27,6 +28,7 @@ export interface IUser {
   is_asset_owner?: boolean;
   workInfo: IWorkInfo;
   role?: string;
+  user_address?: IAddress[];
 }
 @JsonObject('User')
 export class User {
@@ -71,6 +73,9 @@ export class User {
 
   @JsonProperty('role', String, true)
   private _role = '';
+
+  @JsonProperty('user_address', [Address], true)
+  private _userAddress = [];
 
   get refreshToken(): string {
     return this._refreshToken;
@@ -130,5 +135,9 @@ export class User {
 
   get role(): string {
     return this._role;
+  }
+
+  get userAddress(): Address[] {
+    return this._userAddress;
   }
 }

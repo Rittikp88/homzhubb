@@ -19,11 +19,13 @@ import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
   tab: Tabs;
+  status: number;
+  navigateToDetail: (id: number) => void;
   onReschedule: (visit: FFMVisit) => void;
   navigateToFeedback: (param: IFeedbackParam) => void;
 }
 
-const VisitList = ({ tab, onReschedule, navigateToFeedback }: IProps): React.ReactElement => {
+const VisitList = ({ tab, onReschedule, navigateToDetail, navigateToFeedback, status }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const visits = useSelector(FFMSelector.getVisits);
@@ -64,7 +66,7 @@ const VisitList = ({ tab, onReschedule, navigateToFeedback }: IProps): React.Rea
     try {
       await AssetRepository.updatePropertyVisit(payload);
       AlertHelper.success({ message: t('siteVisits:visitUpdate') });
-      dispatch(FFMActions.getVisits());
+      dispatch(FFMActions.getVisits({ status__in: status }));
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
@@ -108,6 +110,7 @@ const VisitList = ({ tab, onReschedule, navigateToFeedback }: IProps): React.Rea
               key={index}
               visit={item}
               tab={tab}
+              navigateToDetail={(): void => navigateToDetail(item.id)}
               onReschedule={(): void => onReschedule(item)}
               navigateToFeedback={(): void => navigateToFeedback(param)}
               handleActions={(action: VisitActions): Promise<void> => handleActions(item.id, action)}

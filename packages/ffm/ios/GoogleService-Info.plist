@@ -30,5 +30,7 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:854478832801:ios:c8066e9ae7967c80439ce0</string>
+	<key>DATABASE_URL</key>
+	<string>https://homzhub-ffm-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

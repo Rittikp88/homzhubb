@@ -41,6 +41,15 @@ export function* getVisits(action: IFluxStandardAction<IFFMVisitParam>): VoidGen
   }
 }
 
+export function* getVisitDetail(action: IFluxStandardAction<number>): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getVisitDetail, action.payload as number);
+    yield put(FFMActions.getVisitDetailSuccess(response as FFMVisit));
+  } catch (e) {
+    yield put(FFMActions.getVisitDetailFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
 export function* getRejectionReason(action: IFluxStandardAction<number>): VoidGenerator {
   try {
     const response = yield call(FFMRepository.getRejectReason, action.payload as number);
@@ -65,6 +74,7 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
   yield takeLatest(FFMActionTypes.GET.VISITS, getVisits);
+  yield takeLatest(FFMActionTypes.GET.VISIT_DETAIL, getVisitDetail);
   yield takeLatest(FFMActionTypes.GET.REJECTION_REASON, getRejectionReason);
   yield takeLatest(FFMActionTypes.GET.FEEDBACK, getFeedbackById);
 }

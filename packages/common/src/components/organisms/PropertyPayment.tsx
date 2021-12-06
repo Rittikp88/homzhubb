@@ -144,6 +144,7 @@ class PropertyPayment extends Component<Props, IPaymentState> {
               containerStyle={styles.payButton}
               initiatePayment={this.initiatePayment}
               paymentApi={this.paymentApi}
+              isVerificationRequired
             />
           ))}
         <View style={styles.secureView}>

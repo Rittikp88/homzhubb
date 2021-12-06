@@ -6,6 +6,7 @@ import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
+import Call from '@homzhub/common/src/assets/images/call.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Rating } from '@homzhub/common/src/components/atoms/Rating';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -20,6 +21,7 @@ interface IProps {
   phoneCode?: string;
   rating?: number;
   date?: string;
+  isPhoneImage?: boolean;
   isButtonType?: boolean;
   isSelected?: boolean;
   isRightIcon?: boolean;
@@ -63,6 +65,7 @@ const Avatar = (props: IProps): React.ReactElement => {
     customTextStyle = {},
     nameStyle = {},
     isSelected = false,
+    isPhoneImage = false,
   } = props;
 
   const renderText = (): React.ReactElement => {
@@ -147,8 +150,12 @@ const Avatar = (props: IProps): React.ReactElement => {
               )}
 
               {!!phoneNumber && (
-                <View style={styles.numberContainer}>
-                  <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+                <View style={[styles.numberContainer, isPhoneImage && styles.phoneView]}>
+                  {isPhoneImage ? (
+                    <Call style={styles.phoneImage} />
+                  ) : (
+                    <Icon name={icons.roundFilled} color={theme.colors.disabled} size={12} style={styles.iconStyle} />
+                  )}
                   {!!phoneCode && (
                     <Label textType="regular" type="regular" style={styles.designation}>
                       {`(${phoneCode}) `}
@@ -261,6 +268,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     top: 66,
     left: 30,
+  },
+  phoneView: {
+    marginTop: 6,
+  },
+  phoneImage: {
+    marginRight: 10,
   },
 });
 

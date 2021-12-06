@@ -63,6 +63,9 @@ const PropertyServices = (): React.ReactElement => {
       navigate(ScreensKeys.ComingSoonScreen, {
         title: key as string,
         tabHeader: t('propertyPayment'),
+        ...(key === Tabs.RENT_PAYMENT && {
+          message: t('property:rentPayment'),
+        }),
       });
     }
   };

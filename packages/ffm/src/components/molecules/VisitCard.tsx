@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
@@ -9,8 +9,11 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import VisitContact from '@homzhub/ffm/src/components/molecules/VisitContact';
 import { IVisitActions, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { User } from '@homzhub/common/src/domain/models/User';
@@ -22,6 +25,8 @@ interface IProps {
   tab: Tabs;
   handleActions: (action: VisitActions) => void;
   onReschedule: () => void;
+  navigateToDetail: () => void;
+  isFromDetail?: boolean;
   navigateToFeedback: () => void;
 }
 
@@ -31,7 +36,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
   const {
     visit: {
       status,
-      asset: { projectName, address },
+      asset: { projectName, address, attachments },
       users,
       actions,
       canSubmitFeedback,
@@ -40,12 +45,17 @@ const VisitCard = (props: IProps): React.ReactElement => {
       startDate,
       updatedAt,
       createdAt,
+      assetKeys,
     },
     tab,
+    isFromDetail = false,
     handleActions,
     onReschedule,
+    navigateToDetail,
     navigateToFeedback,
   } = props;
+  const [isContactVisible, setContactVisible] = useState(false);
+  const [selectedUser, setUser] = useState<User | null>(null);
 
   const isMissed = tab === Tabs.MISSED;
   const isCompleted = tab === Tabs.COMPLETED;
@@ -64,6 +74,11 @@ const VisitCard = (props: IProps): React.ReactElement => {
       action.unshift(VisitActions.AWAITING);
     }
     return action;
+  };
+
+  const handleContactDetails = (value: boolean, userData: User | null): void => {
+    setContactVisible(value);
+    setUser(userData);
   };
 
   const getActions = (action: string): IVisitActions | null => {
@@ -121,7 +136,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
               designation={StringUtils.toTitleCase(item.role.replace(/_/g, ' '))}
               isRightIcon
               image={item.profilePicture}
-              onPressRightIcon={(): void => {}} // TODO: (Shikha) Add logic
+              onPressRightIcon={(): void => handleContactDetails(true, item)}
               containerStyle={styles.user}
             />
           );
@@ -172,18 +187,41 @@ const VisitCard = (props: IProps): React.ReactElement => {
     );
   };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.detailContainer}>
-        <View style={styles.row}>
-          <View style={styles.flexOne}>
-            <Label type="large" textType="semiBold" style={styles.project}>
-              {projectName}
-            </Label>
-            <Label style={styles.address}>{address}</Label>
+  const renderDetailContainer = (): React.ReactElement => {
+    return (
+      <TouchableOpacity style={[styles.row, isFromDetail && styles.user]} onPress={navigateToDetail}>
+        {isFromDetail && (
+          <View>
+            {attachments.length > 0 ? (
+              <Image
+                source={{
+                  uri: attachments.filter((item) => item.isCoverImage)[0].link,
+                }}
+                style={styles.carouselImage}
+              />
+            ) : (
+              <ImagePlaceholder width={80} height={80} containerStyle={styles.placeholder} />
+            )}
           </View>
+        )}
+        <View style={styles.flexOne}>
+          <Label type="large" textType="semiBold" style={styles.project}>
+            {projectName}
+          </Label>
+          <Label style={styles.address}>{address}</Label>
+        </View>
+        <View>
+          {isFromDetail && <Icon name={icons.rightArrow} size={18} style={styles.arrow} />}
           <Label style={styles.time}>{TimeUtils.getLocaltimeDifference(updatedAt ?? createdAt)}</Label>
         </View>
+      </TouchableOpacity>
+    );
+  };
+
+  return (
+    <View style={[styles.container, isFromDetail && styles.detailContentContainer]}>
+      <View style={[styles.detailContainer, isFromDetail && styles.fromDetail]}>
+        {renderDetailContainer()}
         {renderUsers()}
         <View style={[styles.row, styles.details]}>
           <View>
@@ -205,6 +243,19 @@ const VisitCard = (props: IProps): React.ReactElement => {
             </Label>
           </TouchableOpacity>
         </View>
+        {isFromDetail && assetKeys.length > 0 && (
+          <View style={styles.keysContainer}>
+            <View style={styles.keyHeading}>
+              <Icon name={icons.logOut} size={16} style={styles.schedule} color={theme.colors.darkTint3} />
+              <Label type="large" textType="semiBold" style={styles.detailTitle}>
+                Keys
+              </Label>
+            </View>
+            {assetKeys.map((item, index) => {
+              return <VisitContact key={index} assetKey={item} />;
+            })}
+          </View>
+        )}
         {isCompleted && canSubmitFeedback && (
           <Button
             type="primary"
@@ -215,6 +266,17 @@ const VisitCard = (props: IProps): React.ReactElement => {
         )}
       </View>
       {renderActions()}
+      {selectedUser && isContactVisible && (
+        <BottomSheet
+          visible={isContactVisible}
+          isShadowView
+          sheetHeight={300}
+          headerTitle={`Contact (${selectedUser.role.replace(/_/g, ' ').toLocaleLowerCase()})`}
+          onCloseSheet={(): void => handleContactDetails(false, null)}
+        >
+          <VisitContact user={selectedUser} imageSize={80} containerStyle={styles.contactCard} />
+        </BottomSheet>
+      )}
     </View>
   );
 };
@@ -274,6 +336,7 @@ const styles = StyleSheet.create({
   },
   feedbackButton: {
     marginTop: 16,
+    flex: 0,
   },
   actionContainer: {
     borderTopWidth: 1,
@@ -305,5 +368,38 @@ const styles = StyleSheet.create({
   },
   missed: {
     color: theme.colors.error,
+  },
+  placeholder: {
+    backgroundColor: theme.colors.darkTint5,
+    borderRadius: 4,
+    marginRight: 12,
+  },
+  carouselImage: {
+    height: 200,
+    width: 200,
+  },
+  arrow: {
+    alignSelf: 'flex-end',
+    marginBottom: 16,
+  },
+  detailContentContainer: {
+    borderWidth: 0,
+    margin: 0,
+  },
+  fromDetail: {
+    padding: 0,
+    paddingHorizontal: 12,
+  },
+  keysContainer: {
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.darkTint10,
+    paddingVertical: 16,
+  },
+  keyHeading: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  contactCard: {
+    marginHorizontal: 16,
   },
 });

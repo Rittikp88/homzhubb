@@ -50,6 +50,14 @@ const getVisits = (state: IState): FFMVisit[] => {
   return ObjectMapper.deserializeArray(FFMVisit, visits);
 };
 
+const getVisitDetail = (state: IState): FFMVisit | null => {
+  const {
+    ffm: { visitDetail },
+  } = state;
+  if (!visitDetail) return null;
+  return ObjectMapper.deserialize(FFMVisit, visitDetail);
+};
+
 const getRejectionReason = (state: IState): IDropdownOption[] => {
   const {
     ffm: { reasons },
@@ -80,6 +88,7 @@ export const FFMSelector = {
   getSelectedRole,
   getWorkLocations,
   getVisits,
+  getVisitDetail,
   getRejectionReason,
   getFeedback,
 };

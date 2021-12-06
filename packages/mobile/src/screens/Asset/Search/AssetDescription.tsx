@@ -201,12 +201,14 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
       <>
         <Loader visible={isLoading || asset} />
         {this.renderComponent()}
-        <SocialMediaShare
-          visible={isSharing && !isPreview}
-          headerTitle={t('shareProperty')}
-          sharingMessage={sharingMessage}
-          onCloseSharing={this.onCloseSharing}
-        />
+        {isSharing && !isPreview && (
+          <SocialMediaShare
+            visible={isSharing && !isPreview}
+            headerTitle={t('shareProperty')}
+            sharingMessage={sharingMessage}
+            onCloseSharing={this.onCloseSharing}
+          />
+        )}
       </>
     );
   };
@@ -846,9 +848,10 @@ export class AssetDescription extends React.PureComponent<Props, IOwnState> {
     const { assetDetails } = this.props;
     const url = await this.getDynamicUrl();
     const bhk = assetDetails
-      ? assetDetails.spaces.filter((space: IData) => space.name === SpaceAvailableTypes.BEDROOM)
-      : [];
-    const detail = `${bhk ? `${bhk.length} BHK, ` : ''}${assetDetails?.projectName}`;
+      ? assetDetails.spaces.filter((space: IData) => space.name === SpaceAvailableTypes.BEDROOM)[0].count
+      : 0;
+
+    const detail = `${bhk > 0 ? `${bhk} BHK, ` : ''}${assetDetails?.projectName}`;
     const sharingMessage = I18nService.t('common:shareMessage', { url, detail });
     this.setState({ sharingMessage });
   };

@@ -2,6 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
@@ -35,6 +36,7 @@ export enum ScreenKeys {
   // Visit
   SiteVisitDashboard = 'SiteVisitDashboard',
   VisitForm = 'VisitForm',
+  VisitDetail = 'VisitDetail',
   FeedbackForm = 'FeedbackForm',
 
   // More
@@ -58,4 +60,9 @@ export interface IFeedbackParam {
   visitId: number;
   isSubmitted: boolean;
   feedbackId: number | null;
+}
+
+export interface IVisitDetailParam {
+  visitId: number;
+  tab: Tabs;
 }

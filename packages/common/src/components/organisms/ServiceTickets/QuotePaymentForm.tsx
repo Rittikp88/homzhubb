@@ -4,12 +4,14 @@ import { StyleSheet, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
+import { NavigationService } from '@homzhub/mobile/src/services/NavigationService';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
+import { RNCheckbox } from '@homzhub/common/src/components/atoms/Checkbox';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
@@ -44,6 +46,7 @@ const QuotePaymentForm = (props: IProps): React.ReactElement => {
   const summary = useSelector(TicketSelectors.getInvoiceSummary);
   const [isPayLater, setPayLater] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isCheckboxSelected, setCheckboxSelection] = useState(false);
 
   useEffect(() => {
     if (selectedTicket) {
@@ -148,8 +151,6 @@ const QuotePaymentForm = (props: IProps): React.ReactElement => {
 
   if (!summary) return <EmptyState />;
 
-  const isPayLaterSheet = !PlatformUtils.isWeb() && payLaterSheet;
-
   return (
     <>
       <View style={styles.container}>
@@ -171,6 +172,16 @@ const QuotePaymentForm = (props: IProps): React.ReactElement => {
         <Divider containerStyles={styles.divider} />
         {renderRow({ title: t('property:youPay'), value: summary.formattedPrice, isTextField: true })}
         <Divider containerStyles={styles.divider} />
+        <RNCheckbox
+          label={t('common:agreeToHomzhub')}
+          labelType="regular"
+          subLabel={t('moreSettings:termsConditionsText')}
+          selected={isCheckboxSelected}
+          onToggle={(): void => setCheckboxSelection(!isCheckboxSelected)}
+          onPressLink={NavigationService.navigateToTermsCondition}
+          labelStyle={styles.checkboxLabel}
+          containerStyle={styles.checkboxContainer}
+        />
         <View style={styles.buttonView}>
           <Button type="secondary" title={t('payLater')} onPress={onPayLater} />
           <View style={styles.buttonSeparator} />
@@ -185,7 +196,7 @@ const QuotePaymentForm = (props: IProps): React.ReactElement => {
           ) : (
             <PaymentGateway
               type="primary"
-              disabled={isDisabled}
+              disabled={isDisabled || !isCheckboxSelected}
               title={t('assetFinancial:payNow')}
               outerContainerStyle={styles.payButton}
               initiatePayment={initiatePayment}
@@ -200,7 +211,7 @@ const QuotePaymentForm = (props: IProps): React.ReactElement => {
           </Label>
         </View>
       </View>
-      {isPayLater && isPayLaterSheet && payLaterSheet(generateInvoice, onCloseSheet)}
+      {payLaterSheet && isPayLater && !PlatformUtils.isWeb() && payLaterSheet(generateInvoice, onCloseSheet)}
     </>
   );
 };
@@ -250,5 +261,11 @@ const styles = StyleSheet.create({
   payButton: {
     flex: 1,
     marginHorizontal: 0,
+  },
+  checkboxLabel: {
+    color: theme.colors.darkTint3,
+  },
+  checkboxContainer: {
+    marginTop: 16,
   },
 });

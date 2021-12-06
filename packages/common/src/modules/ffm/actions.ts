@@ -18,6 +18,9 @@ export const FFMActionTypes = {
     VISITS: `${actionTypePrefix}VISITS`,
     VISITS_SUCCESS: `${actionTypePrefix}VISITS_SUCCESS`,
     VISITS_FAILURE: `${actionTypePrefix}VISITS_FAILURE`,
+    VISIT_DETAIL: `${actionTypePrefix}VISIT_DETAIL`,
+    VISIT_DETAIL_SUCCESS: `${actionTypePrefix}VISIT_DETAIL_SUCCESS`,
+    VISIT_DETAIL_FAILURE: `${actionTypePrefix}VISIT_DETAIL_FAILURE`,
     REJECTION_REASON: `${actionTypePrefix}REJECTION_REASON`,
     REJECTION_REASON_SUCCESS: `${actionTypePrefix}REJECTION_REASON_SUCCESS`,
     REJECTION_REASON_FAILURE: `${actionTypePrefix}REJECTION_REASON_FAILURE`,
@@ -84,6 +87,22 @@ const getVisitsFailure = (): IFluxStandardAction => ({
   type: FFMActionTypes.GET.VISITS_FAILURE,
 });
 
+const getVisitDetail = (visitId: number): IFluxStandardAction<number> => ({
+  type: FFMActionTypes.GET.VISIT_DETAIL,
+  payload: visitId,
+});
+
+const getVisitDetailSuccess = (payload: FFMVisit): IFluxStandardAction<IFFMVisit> => {
+  return {
+    type: FFMActionTypes.GET.VISIT_DETAIL_SUCCESS,
+    payload: ObjectMapper.serialize(payload),
+  };
+};
+
+const getVisitDetailFailure = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.VISIT_DETAIL_FAILURE,
+});
+
 const getRejectionReasons = (payload: number): IFluxStandardAction<number> => ({
   type: FFMActionTypes.GET.REJECTION_REASON,
   payload,
@@ -126,6 +145,7 @@ export type FFMActionPayloadTypes =
   | FFMVisit[]
   | IFFMVisit[]
   | IFFMVisitParam
+  | IFFMVisit
   | IFeedback;
 
 export const FFMActions = {
@@ -140,6 +160,9 @@ export const FFMActions = {
   getVisits,
   getVisitsSuccess,
   getVisitsFailure,
+  getVisitDetail,
+  getVisitDetailSuccess,
+  getVisitDetailFailure,
   getRejectionReasons,
   getRejectionReasonsSuccess,
   getRejectionReasonsFailure,

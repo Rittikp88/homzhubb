@@ -282,6 +282,7 @@ const ServiceOrderSummary = ({ invoiceId, onSuccess, isLabelRequired = false }: 
             // @ts-ignore
             initiatePayment={initiatePayment}
             paymentApi={onOrderPlaced}
+            isVerificationRequired
           />
         )}
         <View style={styles.secureView}>
