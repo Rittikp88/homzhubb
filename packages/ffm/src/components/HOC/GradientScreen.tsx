@@ -8,6 +8,7 @@ import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
+import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 
@@ -42,6 +43,7 @@ const GradientScreen = (props: IProps): React.ReactElement => {
         source={require('../../../../common/src/assets/images/background.png')}
         style={[styles.background, !isUserHeader && styles.userBackground]}
       >
+        <StatusBar barStyle="light-content" statusBarBackground="transparent" />
         {isUserHeader ? (
           <View style={styles.userHeader}>
             <Text type="regular" textType="semiBold" style={styles.title} maxLength={25}>
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     alignContent: 'center',
-    paddingTop: PlatformUtils.isAndroid() ? '10%' : '15%',
+    paddingTop: PlatformUtils.isAndroid() ? '10%' : '1%',
   },
   pageTitle: {
     marginHorizontal: 6,

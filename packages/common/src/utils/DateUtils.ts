@@ -421,7 +421,7 @@ class DateUtils {
   };
 
   public isDatePassed = (date: string): boolean => {
-    return new Date(date).getTime() <= new Date().getTime();
+    return moment(date).isBefore();
   };
 }
 

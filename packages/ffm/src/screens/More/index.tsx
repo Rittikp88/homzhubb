@@ -15,7 +15,7 @@ const MoreScreen = (): React.ReactElement => {
   };
 
   return (
-    <GradientScreen screenTitle="More">
+    <GradientScreen screenTitle="More" isUserHeader>
       <TouchableOpacity style={styles.container} onPress={handleLogout}>
         <Text textType="semiBold">LOGOUT</Text>
       </TouchableOpacity>

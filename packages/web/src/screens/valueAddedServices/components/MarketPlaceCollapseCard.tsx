@@ -10,7 +10,6 @@ import ServiceCard from '@homzhub/web/src/screens/valueAddedServices/components/
 import { Asset, ServiceGroup } from '@homzhub/common/src/domain/models/Asset';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
-
 const AccordianHeader: React.FC<IAccordionProps> = (props: IAccordionProps) => {
   const { serviceData, isOpen } = props;
   const {
@@ -70,8 +69,8 @@ const AccordianHeader: React.FC<IAccordionProps> = (props: IAccordionProps) => {
 const AccordianContent: React.FC<IAccordionProps> = (props: IAccordionProps) => {
   const { serviceData } = props;
   const { valueAddedServices } = serviceData;
-  const handleSelection = (value: string, attachmentsSelect: Attachment[], invoiceAttachment: Attachment): void => { }; // TODO: To Acess Multiple Attachments
-  const onAttachmentPress = (attachementsArray: Attachment[]): void => { }; // TODO: TO access single attachment.
+  const handleSelection = (value: string, attachmentsSelect: Attachment[], invoiceAttachment: Attachment): void => {}; // TODO: To Acess Multiple Attachments
+  const onAttachmentPress = (attachementsArray: Attachment[]): void => {}; // TODO: TO access single attachment.
   return (
     <View>
       <Typography size="small" variant="text" fontWeight="semiBold" style={styles.serviceHeading}>

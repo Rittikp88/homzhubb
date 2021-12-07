@@ -17,19 +17,22 @@ const VisitContact = ({ assetKey, user, containerStyle, imageSize = 50 }: IProps
   const name = assetKey ? assetKey.keyHolderName : user?.name;
   const phoneCode = assetKey ? assetKey.keyHolderPhoneCode : user?.countryCode;
   const phoneNumber = assetKey ? assetKey.keyHolderContactNumber : user?.phoneNumber;
-  const address = assetKey ? assetKey.keyHolderAddressLine1 : user?.userAddress[0].address;
+  const userAddress = user?.userAddress.length ? user?.userAddress[0].address : '';
+  const address = assetKey ? assetKey.keyHolderAddressLine1 : userAddress;
+  const image = assetKey ? assetKey.keyHolderProfileImageUrl ?? '' : user?.profilePicture ?? '';
 
   return (
     <View style={containerStyle}>
       <Avatar
         isPhoneImage
         imageSize={imageSize}
+        image={image}
         fullName={name}
         phoneCode={phoneCode}
         phoneNumber={phoneNumber}
         containerStyle={styles.container}
       />
-      {address && (
+      {!!address && (
         <Label type="regular" style={styles.address}>
           {address}
         </Label>

@@ -17,12 +17,11 @@ import VisitContact from '@homzhub/ffm/src/components/molecules/VisitContact';
 import { IVisitActions, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { User } from '@homzhub/common/src/domain/models/User';
-import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import { VisitStatus } from '@homzhub/common/src/domain/repositories/interfaces';
 import { VisitSlot } from '@homzhub/common/src/mocks/BookVisit';
 
 interface IProps {
   visit: FFMVisit;
-  tab: Tabs;
   handleActions: (action: VisitActions) => void;
   onReschedule: () => void;
   navigateToDetail: () => void;
@@ -46,8 +45,8 @@ const VisitCard = (props: IProps): React.ReactElement => {
       updatedAt,
       createdAt,
       assetKeys,
+      endDate,
     },
-    tab,
     isFromDetail = false,
     handleActions,
     onReschedule,
@@ -57,10 +56,12 @@ const VisitCard = (props: IProps): React.ReactElement => {
   const [isContactVisible, setContactVisible] = useState(false);
   const [selectedUser, setUser] = useState<User | null>(null);
 
-  const isMissed = tab === Tabs.MISSED;
-  const isCompleted = tab === Tabs.COMPLETED;
-  const isUpcoming = tab === Tabs.ONGOING;
-  const isNew = tab === Tabs.NEW;
+  const isPendingMissed = status === VisitStatus.PENDING && DateUtils.isDatePassed(endDate);
+  const isMissed = status === VisitStatus.REJECTED || status === VisitStatus.CANCELLED || isPendingMissed;
+  const isCompleted = status === VisitStatus.ACCEPTED && DateUtils.isDatePassed(endDate);
+  const isUpcoming = status === VisitStatus.ACCEPTED && !DateUtils.isDatePassed(endDate);
+  const isNew = status === VisitStatus.PENDING && !DateUtils.isDatePassed(endDate);
+
   const isActionsUsed = isNew || isUpcoming;
   const dateTime = DateUtils.convertTimeFormat(startDate, 'YYYY-MM-DD HH');
   const time = VisitSlot.find((item) => item.from === Number(dateTime[1]));
@@ -151,6 +152,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
         {isActionsUsed &&
           formattedActions().map((item, index) => {
             const actionData = getActions(item);
+            const isReject = item === VisitActions.REJECT;
             return (
               <>
                 <Button
@@ -160,7 +162,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
                   iconSize={16}
                   iconColor={actionData?.color}
                   titleStyle={[styles.schedule, { color: actionData?.color }]}
-                  containerStyle={styles.buttonContainer}
+                  containerStyle={[styles.buttonContainer, !isReject && index === 1 && styles.flexStyle]}
                   onPress={(): void => handleActions(item)}
                 />
                 {index === 0 && <View style={styles.border} />}
@@ -375,8 +377,9 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   carouselImage: {
-    height: 200,
-    width: 200,
+    height: 80,
+    width: 80,
+    marginRight: 10,
   },
   arrow: {
     alignSelf: 'flex-end',
@@ -401,5 +404,8 @@ const styles = StyleSheet.create({
   },
   contactCard: {
     marginHorizontal: 16,
+  },
+  flexStyle: {
+    flex: 0.5,
   },
 });

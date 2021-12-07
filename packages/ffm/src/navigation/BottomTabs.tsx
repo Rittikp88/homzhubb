@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { StackActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -31,6 +32,8 @@ const BottomTabs = (): React.ReactElement => {
         inactiveTintColor: theme.colors.darkTint7,
         style: {
           height: PlatformUtils.isIOS() ? theme.viewport.height * 0.1 : 60,
+          ...(PlatformUtils.isAndroid() && { paddingTop: 10 }),
+          ...(PlatformUtils.isAndroid() && { paddingBottom: 10 }),
           shadowOffset: {
             width: 0,
             height: 12,
@@ -44,6 +47,11 @@ const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreenKeys.Dashboard}
         component={ComingSoon}
+        listeners={({ navigation }): any => ({
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={{
           tabBarLabel: t('assetDashboard:dashboard'),
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
@@ -54,6 +62,11 @@ const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreenKeys.SiteVisits}
         component={VisitStack}
+        listeners={({ navigation }): any => ({
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={{
           tabBarLabel: t('property:siteVisits'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
@@ -64,6 +77,11 @@ const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreenKeys.Requests}
         component={ComingSoon}
+        listeners={({ navigation }): any => ({
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={{
           tabBarLabel: t('assetDashboard:tickets'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
@@ -74,6 +92,11 @@ const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreenKeys.Supplies}
         component={ComingSoon}
+        listeners={({ navigation }): any => ({
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={{
           tabBarLabel: t('supplies'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
@@ -84,6 +107,11 @@ const BottomTabs = (): React.ReactElement => {
       <BottomTabNavigator.Screen
         name={ScreenKeys.More}
         component={MoreStack}
+        listeners={({ navigation }): any => ({
+          focus: (e: any): void => {
+            resetStackOnTabPress(e, navigation);
+          },
+        })}
         options={{
           tabBarLabel: t('assetMore:more'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
@@ -93,6 +121,28 @@ const BottomTabs = (): React.ReactElement => {
       />
     </BottomTabNavigator.Navigator>
   );
+};
+
+const resetStackOnTabPress = (e: any, navigation: any): void => {
+  const state = navigation.dangerouslyGetState();
+
+  if (state) {
+    // Grab all the tabs that are NOT the one we just pressed
+    const nonTargetTabs = state.routes.filter((r: any) => r.key !== e.target);
+
+    nonTargetTabs.forEach((tab: any) => {
+      // Find the tab we want to reset and grab the key of the nested stack
+      const stackKey = tab?.state?.key;
+
+      if (stackKey) {
+        // Pass the stack key that we want to reset and use popToTop to reset it
+        navigation.dispatch({
+          ...StackActions.popToTop(),
+          target: stackKey,
+        });
+      }
+    });
+  }
 };
 
 export default BottomTabs;

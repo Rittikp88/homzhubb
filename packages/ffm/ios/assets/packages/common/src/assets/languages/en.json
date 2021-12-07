@@ -331,7 +331,20 @@
     "ifscNotFound": "IFSC code not found",
     "letsGetStarted": "Let’s get started!",
     "welcomeText": "Welcome",
-    "pleaseFillDetails": "Please fill all the details"
+    "pleaseFillDetails": "Please fill all the details",
+    "agreeToHomzhub": "I agree to Homzhub ",
+    "supplies": "Supplies",
+    "iam": "I am",
+    "alreadyAccount": "Already have an account ?",
+    "helpAndSupport": "Help & Support",
+    "maxSelected": "You have selected maximum allowed number of location",
+    "addWorkLocation": "Add Work Locations",
+    "searchLocation": "Search for location",
+    "workLocation": "Work Location ({{count}})",
+    "yourCompanyName": "Your Company Name",
+    "companyName": "Company Name",
+    "password": "Password",
+    "remark": "Remark"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -427,7 +440,9 @@
     "enterMobileNo": "Enter your mobile number",
     "updatePasswordWeb": "Update password",
     "duplicateEmail": "This email is already used. Please use unique email",
-    "emails": "E-mails"
+    "emails": "E-mails",
+    "verifyMobile": "Verify your mobile number",
+    "signUpWith": "{{name}} Sign up"
   },
   "property": {
     "searchInWeb": "Search for projects, location, builders",
@@ -751,7 +766,8 @@
     "serviceSelection": "Service Selection",
     "addOnService": "Add-on Services",
     "selectCityForService": "Please select city for services",
-    "addYourFirstProperty": "Add your first property"
+    "addYourFirstProperty": "Add your first property",
+    "rentPayment": "Coming Soon,\\n' +\n 'However, you can pay your rent by setting up a reminder with category as \"Rent\"."
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -1559,7 +1575,23 @@
   },
   "siteVisits": {
     "schedulePropertyVisit": "Schedule Property Visit",
-    "reschedulePropertyVisit": "Reschedule Property Visit"
+    "reschedulePropertyVisit": "Reschedule Property Visit",
+    "visitUpdate": "Visit Updated Successfully",
+    "cancelVisit": "Are you sure you want to cancel visit ?",
+    "prospectFeedbackForm": "Prospect Feedback Form",
+    "visitExpired": "Visit Expired",
+    "visitMissed": "Visit {{action}} by {{name}}",
+    "rescheduleVisit": "Rescheduled visit successfully",
+    "rescheduleForm": "Reschedule Form",
+    "feedbackSubmitted": "Feedback submitted Successfully",
+    "tenantInterested": "Tenant Interested ?",
+    "tenantShortlisted": "Tenant Shortlisted ?",
+    "negotiationRaised": "Negotiation / Offer raised",
+    "prospectRequest": "Type in the prospect's requests",
+    "reasonRejection": "Reason for Rejection",
+    "selectRejectionReason": "Select Rejection Reason",
+    "offerRaised": "Offer raised",
+    "yesNo": "Yes/No"
   },
   "propertyPayment": {
     "propertyPayment": "Property Payment",

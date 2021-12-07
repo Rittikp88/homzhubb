@@ -19,7 +19,7 @@ import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 interface IProps {
   tab: Tabs;
-  status: number;
+  status: string;
   navigateToDetail: (id: number) => void;
   onReschedule: (visit: FFMVisit) => void;
   navigateToFeedback: (param: IFeedbackParam) => void;
@@ -109,7 +109,6 @@ const VisitList = ({ tab, onReschedule, navigateToDetail, navigateToFeedback, st
             <VisitCard
               key={index}
               visit={item}
-              tab={tab}
               navigateToDetail={(): void => navigateToDetail(item.id)}
               onReschedule={(): void => onReschedule(item)}
               navigateToFeedback={(): void => navigateToFeedback(param)}

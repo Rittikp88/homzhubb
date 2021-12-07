@@ -22,7 +22,8 @@ const SiteVisitDashboard = (): React.ReactElement => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(FFMActions.getVisits({ status__in: getStatus(currentIndex) }));
+      setIndex(0);
+      dispatch(FFMActions.getVisits({ status__in: getStatus(0) }));
       dispatch(FFMActions.clearFeedbackData());
     }, [])
   );
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     backgroundColor: theme.colors.white,
-    marginTop: 10,
+    paddingTop: 10,
   },
   tabLabel: {
     color: theme.colors.darkTint3,

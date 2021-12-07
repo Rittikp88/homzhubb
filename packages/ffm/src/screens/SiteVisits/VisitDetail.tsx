@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute, CommonActions } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -20,14 +20,14 @@ import { IUpdateVisitPayload } from '@homzhub/common/src/domain/repositories/int
 import { DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
 
 const VisitDetail = (): React.ReactElement => {
-  const { goBack, navigate } = useNavigation();
+  const { navigate, dispatch: navDispatch } = useNavigation();
   const dispatch = useDispatch();
   const { params } = useRoute();
   const { t } = useTranslation();
   const detail = useSelector(FFMSelector.getVisitDetail);
   const [deepLinkUrl, setUrl] = useState('');
   const [isConfirmation, setConfirmation] = useState(false);
-  const { visitId, tab } = params as IVisitDetailParam;
+  const { visitId } = params as IVisitDetailParam;
 
   useEffect(() => {
     dispatch(FFMActions.getVisitDetail(visitId));
@@ -63,6 +63,15 @@ const VisitDetail = (): React.ReactElement => {
       dispatch(AssetActions.setVisitIds([detail.id]));
       navigate(ScreenKeys.VisitForm, { startDate: detail.startDate, comment: detail.comments });
     }
+  };
+
+  const onGoBack = (): void => {
+    navDispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [{ name: ScreenKeys.SiteVisitDashboard }],
+      })
+    );
   };
 
   const navigateToFeedback = (): void => {
@@ -120,14 +129,13 @@ const VisitDetail = (): React.ReactElement => {
       isUserHeader
       screenTitle={t('property:siteVisits')}
       pageTitle={t('property:visitDetails')}
-      onGoBack={goBack}
+      onGoBack={onGoBack}
       loading={!detail}
     >
       {detail ? (
         <VisitCard
           visit={detail}
           isFromDetail
-          tab={tab}
           handleActions={handleActions}
           navigateToFeedback={navigateToFeedback}
           onReschedule={onReschedule}

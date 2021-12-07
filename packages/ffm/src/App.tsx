@@ -4,7 +4,7 @@ import FlashMessage, { MessageComponentProps } from 'react-native-flash-message'
 import { configureStore } from '@homzhub/common/src/modules/store';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
-import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { LinkingService } from '@homzhub/ffm/src/services/LinkingService';
 import { NotificationService } from '@homzhub/mobile/src/services/NotificationService';
 import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { IUserTokens, StorageKeys, StorageService } from '@homzhub/common/src/services/storage/StorageService';
