@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { Feedback, IFeedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit, IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
+import { IInspectionReport, InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding, OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFFMVisitParam, IGetFeedbackParam, IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -27,6 +28,9 @@ export const FFMActionTypes = {
     FEEDBACK: `${actionTypePrefix}FEEDBACK`,
     FEEDBACK_SUCCESS: `${actionTypePrefix}FEEDBACK_SUCCESS`,
     FEEDBACK_FAILURE: `${actionTypePrefix}FEEDBACK_FAILURE`,
+    INSPECTION_REPORT: `${actionTypePrefix}INSPECTION_REPORT`,
+    INSPECTION_REPORT_SUCCESS: `${actionTypePrefix}INSPECTION_REPORT_SUCCESS`,
+    INSPECTION_REPORT_FAILURE: `${actionTypePrefix}INSPECTION_REPORT_FAILURE`,
   },
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
@@ -135,6 +139,19 @@ const clearFeedbackData = (): IFluxStandardAction => ({
   type: FFMActionTypes.CLEAR.FEEDBACK_DATA,
 });
 
+const getInspectionReport = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.INSPECTION_REPORT,
+});
+
+const getInspectionReportSuccess = (payload: InspectionReport): IFluxStandardAction<IInspectionReport> => ({
+  type: FFMActionTypes.GET.INSPECTION_REPORT_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getInspectionReportFailure = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.INSPECTION_REPORT_FAILURE,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
@@ -146,7 +163,8 @@ export type FFMActionPayloadTypes =
   | IFFMVisit[]
   | IFFMVisitParam
   | IFFMVisit
-  | IFeedback;
+  | IFeedback
+  | IInspectionReport;
 
 export const FFMActions = {
   getOnBoardingData,
@@ -170,4 +188,7 @@ export const FFMActions = {
   getFeedbackSuccess,
   getFeedbackFailure,
   clearFeedbackData,
+  getInspectionReport,
+  getInspectionReportSuccess,
+  getInspectionReportFailure,
 };

@@ -9,6 +9,7 @@ import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.sv
 import { theme } from '@homzhub/common/src/styles/theme';
 import ComingSoon from '@homzhub/ffm/src/screens/Common/ComingSoon';
 import MoreStack from '@homzhub/ffm/src/navigation/MoreStack';
+import ReportStack from '@homzhub/ffm/src/navigation/ReportStack';
 import VisitStack from '@homzhub/ffm/src/navigation/VisitStack';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
@@ -76,7 +77,7 @@ const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.Requests}
-        component={ComingSoon}
+        component={ReportStack}
         listeners={({ navigation }): any => ({
           focus: (e: any): void => {
             resetStackOnTabPress(e, navigation);

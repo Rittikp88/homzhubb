@@ -38,6 +38,9 @@ export enum ScreenKeys {
   VisitDetail = 'VisitDetail',
   FeedbackForm = 'FeedbackForm',
 
+  // Reports
+  ReportDashboard = 'ReportDashboard',
+
   // More
   MoreScreen = 'MoreScreen',
 }

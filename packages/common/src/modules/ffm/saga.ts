@@ -6,6 +6,7 @@ import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMReposi
 import { FFMActions, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
+import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
@@ -70,6 +71,16 @@ export function* getFeedbackById(action: IFluxStandardAction<IGetFeedbackParam>)
   }
 }
 
+export function* getInspectionReports(): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getInspectionReport);
+    yield put(FFMActions.getInspectionReportSuccess(response as InspectionReport));
+  } catch (e) {
+    yield put(FFMActions.getInspectionReportFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
@@ -77,4 +88,5 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.VISIT_DETAIL, getVisitDetail);
   yield takeLatest(FFMActionTypes.GET.REJECTION_REASON, getRejectionReason);
   yield takeLatest(FFMActionTypes.GET.FEEDBACK, getFeedbackById);
+  yield takeLatest(FFMActionTypes.GET.INSPECTION_REPORT, getInspectionReports);
 }

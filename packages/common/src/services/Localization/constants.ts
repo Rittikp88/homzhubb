@@ -53,6 +53,7 @@ enum namespacesKey {
   microSite = 'microSite',
   offers = 'offers',
   propertyPayment = 'propertyPayment',
+  reports = 'reports',
 }
 const namespaces = Object.values(namespacesKey);
 const defaultNamespace = namespacesKey.common;

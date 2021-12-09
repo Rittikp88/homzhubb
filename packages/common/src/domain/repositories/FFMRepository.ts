@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
+import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
@@ -16,6 +17,7 @@ const ENDPOINTS = {
   feedback: (visitId: number): string => `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/`,
   feedbackById: (visitId: number, feedbackId: number): string =>
     `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/${feedbackId}`,
+  inspectionReport: 'v1/ffm/tasks/inspection-reports',
 };
 
 class FFMRepository {
@@ -58,6 +60,11 @@ class FFMRepository {
   public getFeedbackById = async (payload: IGetFeedbackParam): Promise<Feedback> => {
     const response = await this.apiClient.get(ENDPOINTS.feedbackById(payload.visitId, payload.feedbackId));
     return ObjectMapper.deserialize(Feedback, response);
+  };
+
+  public getInspectionReport = async (): Promise<InspectionReport> => {
+    const response = await this.apiClient.get(ENDPOINTS.inspectionReport);
+    return ObjectMapper.deserialize(InspectionReport, response);
   };
 }
 

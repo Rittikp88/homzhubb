@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
-import { TimeUtils } from '@homzhub/common/src/utils/TimeUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
-import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import UserWithAddressCard from '@homzhub/ffm/src/components/molecules/UserWithAddressCard';
 import VisitContact from '@homzhub/ffm/src/components/molecules/VisitContact';
 import { IVisitActions, VisitActions } from '@homzhub/common/src/domain/models/AssetVisit';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
@@ -35,7 +33,7 @@ const VisitCard = (props: IProps): React.ReactElement => {
   const {
     visit: {
       status,
-      asset: { projectName, address, attachments },
+      asset,
       users,
       actions,
       canSubmitFeedback,
@@ -126,26 +124,6 @@ const VisitCard = (props: IProps): React.ReactElement => {
     });
   };
 
-  const renderUsers = (): React.ReactElement => {
-    return (
-      <View style={styles.userContainer}>
-        {users?.map((item, index) => {
-          return (
-            <Avatar
-              key={index}
-              fullName={item.name}
-              designation={StringUtils.toTitleCase(item.role.replace(/_/g, ' '))}
-              isRightIcon
-              image={item.profilePicture}
-              onPressRightIcon={(): void => handleContactDetails(true, item)}
-              containerStyle={styles.user}
-            />
-          );
-        })}
-      </View>
-    );
-  };
-
   const renderActions = (): React.ReactElement => {
     return (
       <View style={[styles.row, styles.actionContainer]}>
@@ -189,42 +167,17 @@ const VisitCard = (props: IProps): React.ReactElement => {
     );
   };
 
-  const renderDetailContainer = (): React.ReactElement => {
-    return (
-      <TouchableOpacity style={[styles.row, isFromDetail && styles.user]} onPress={navigateToDetail}>
-        {isFromDetail && (
-          <View>
-            {attachments.length > 0 ? (
-              <Image
-                source={{
-                  uri: attachments.filter((item) => item.isCoverImage)[0].link,
-                }}
-                style={styles.carouselImage}
-              />
-            ) : (
-              <ImagePlaceholder width={80} height={80} containerStyle={styles.placeholder} />
-            )}
-          </View>
-        )}
-        <View style={styles.flexOne}>
-          <Label type="large" textType="semiBold" style={styles.project}>
-            {projectName}
-          </Label>
-          <Label style={styles.address}>{address}</Label>
-        </View>
-        <View>
-          {isFromDetail && <Icon name={icons.rightArrow} size={18} style={styles.arrow} />}
-          <Label style={styles.time}>{TimeUtils.getLocaltimeDifference(updatedAt ?? createdAt)}</Label>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <View style={[styles.container, isFromDetail && styles.detailContentContainer]}>
       <View style={[styles.detailContainer, isFromDetail && styles.fromDetail]}>
-        {renderDetailContainer()}
-        {renderUsers()}
+        <UserWithAddressCard
+          asset={asset}
+          users={users}
+          isFromDetail={isFromDetail}
+          date={updatedAt ?? createdAt}
+          navigateToDetail={navigateToDetail}
+          handleContactDetails={handleContactDetails}
+        />
         <View style={[styles.row, styles.details]}>
           <View>
             <Label style={styles.detailTitle}>{t('property:visitDetails')}</Label>
@@ -286,18 +239,6 @@ const VisitCard = (props: IProps): React.ReactElement => {
 export default VisitCard;
 
 const styles = StyleSheet.create({
-  flexOne: {
-    flex: 1,
-  },
-  project: {
-    color: theme.colors.darkTint2,
-  },
-  address: {
-    color: theme.colors.darkTint4,
-  },
-  time: {
-    color: theme.colors.darkTint5,
-  },
   container: {
     margin: 16,
     borderColor: theme.colors.darkTint10,
@@ -309,12 +250,6 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  userContainer: {
-    marginVertical: 16,
-  },
-  user: {
-    marginBottom: 16,
   },
   details: {
     alignItems: 'flex-end',
@@ -370,20 +305,6 @@ const styles = StyleSheet.create({
   },
   missed: {
     color: theme.colors.error,
-  },
-  placeholder: {
-    backgroundColor: theme.colors.darkTint5,
-    borderRadius: 4,
-    marginRight: 12,
-  },
-  carouselImage: {
-    height: 80,
-    width: 80,
-    marginRight: 10,
-  },
-  arrow: {
-    alignSelf: 'flex-end',
-    marginBottom: 16,
   },
   detailContentContainer: {
     borderWidth: 0,

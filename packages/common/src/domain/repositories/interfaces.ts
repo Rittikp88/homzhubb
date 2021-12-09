@@ -1263,3 +1263,11 @@ export interface IDeepLinkBody {
   action: string;
   payload: IDeepLinkPayload;
 }
+
+export interface IReportAction {
+  title: string;
+  color: string;
+  iconColor?: string;
+  icon?: string;
+  isReverse?: boolean;
+}

@@ -1,6 +1,7 @@
 import { FFMActionPayloadTypes, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
 import { IFeedback } from '@homzhub/common/src/domain/models/Feedback';
 import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
+import { IInspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -16,6 +17,7 @@ export const initialFFMState: IFFMState = {
   visitDetail: null,
   reasons: [],
   feedback: null,
+  inspectionReport: null,
   loaders: {
     onBoarding: false,
     roles: false,
@@ -23,6 +25,7 @@ export const initialFFMState: IFFMState = {
     visitDetail: false,
     reasons: false,
     feedback: false,
+    inspectionReport: false,
   },
 };
 
@@ -141,6 +144,22 @@ export const ffmReducer = (
       return {
         ...state,
         ['feedback']: null,
+      };
+    case FFMActionTypes.GET.INSPECTION_REPORT:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['inspectionReport']: true },
+      };
+    case FFMActionTypes.GET.INSPECTION_REPORT_SUCCESS:
+      return {
+        ...state,
+        ['inspectionReport']: action.payload as IInspectionReport,
+        ['loaders']: { ...state.loaders, ['inspectionReport']: false },
+      };
+    case FFMActionTypes.GET.INSPECTION_REPORT_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['inspectionReport']: false },
       };
     default:
       return {

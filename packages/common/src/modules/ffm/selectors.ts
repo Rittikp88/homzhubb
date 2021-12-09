@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
+import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -81,6 +82,14 @@ const getFeedback = (state: IState): Feedback | null => {
   return ObjectMapper.deserialize(Feedback, feedback);
 };
 
+const getInspectionReport = (state: IState): InspectionReport | null => {
+  const {
+    ffm: { inspectionReport },
+  } = state;
+  if (!inspectionReport) return null;
+  return ObjectMapper.deserialize(InspectionReport, inspectionReport);
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
@@ -91,4 +100,5 @@ export const FFMSelector = {
   getVisitDetail,
   getRejectionReason,
   getFeedback,
+  getInspectionReport,
 };

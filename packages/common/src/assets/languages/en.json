@@ -1627,5 +1627,10 @@
     "billDeleted": "Maintenance Bill Deleted Successfully",
     "modifySocietyBill": "Modify Society Bill Reminder",
     "bankInfo": "This account is not verified please do your due diligence before making payment to this account.\n\n Homzhub will not be responsible for any wrong payments"
+  },
+  "reports": {
+    "reports": "Reports",
+    "overdueSince": "Overdue Since",
+    "contactUser": "Contact ({{name}})"
   }
 }
