@@ -12,16 +12,19 @@ import UserWithAddressCard from '@homzhub/ffm/src/components/molecules/UserWithA
 import VisitContact from '@homzhub/ffm/src/components/molecules/VisitContact';
 import { Report, ReportStatus } from '@homzhub/common/src/domain/models/Report';
 import { User } from '@homzhub/common/src/domain/models/User';
+import { IUpdateReport } from '@homzhub/common/src/domain/repositories/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   data: Report;
+  handleAction: (payload: IUpdateReport) => void;
 }
 
 const ReportCard = (props: IProps): React.ReactElement => {
   const {
-    data: { asset, users, updatedAt, createdAt, dueDate, status, completedPercentage },
+    data: { id, asset, users, updatedAt, createdAt, dueDate, status, completedPercentage },
     data,
+    handleAction,
   } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const [selectedUser, setUser] = useState<User | null>(null);
@@ -55,6 +58,7 @@ const ReportCard = (props: IProps): React.ReactElement => {
               title={item.title}
               icon={item.icon}
               iconSize={16}
+              onPress={(): void => handleAction({ reportId: id, status: item.title })}
               iconColor={item.iconColor}
               titleStyle={[styles.titleStyle, { color: item.color }]}
               containerStyle={[
@@ -91,7 +95,12 @@ const ReportCard = (props: IProps): React.ReactElement => {
             </Label>
           </View>
           {getCancelVisibility() && (
-            <Button type="secondary" containerStyle={styles.cancelButton} title={t('common:cancel')} />
+            <Button
+              type="secondary"
+              containerStyle={styles.cancelButton}
+              onPress={(): void => handleAction({ reportId: id, status: 'Cancel' })}
+              title={t('common:cancel')}
+            />
           )}
         </View>
       </View>

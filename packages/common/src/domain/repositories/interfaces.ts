@@ -1271,3 +1271,8 @@ export interface IReportAction {
   icon?: string;
   isReverse?: boolean;
 }
+
+export interface IUpdateReport {
+  reportId: number;
+  status: string;
+}

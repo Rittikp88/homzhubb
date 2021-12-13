@@ -6,7 +6,12 @@ import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionRe
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
-import { IFFMVisitParam, IGetFeedbackParam, IPostFeedback } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IFFMVisitParam,
+  IGetFeedbackParam,
+  IPostFeedback,
+  IUpdateReport,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
   onBoarding: 'v1/ffm-onboardings',
@@ -17,7 +22,8 @@ const ENDPOINTS = {
   feedback: (visitId: number): string => `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/`,
   feedbackById: (visitId: number, feedbackId: number): string =>
     `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/${feedbackId}`,
-  inspectionReport: 'v1/ffm/tasks/inspection-reports',
+  inspectionReport: 'v1/ffm/tasks/inspection-reports/',
+  inspectionReportById: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/`,
 };
 
 class FFMRepository {
@@ -65,6 +71,12 @@ class FFMRepository {
   public getInspectionReport = async (): Promise<InspectionReport> => {
     const response = await this.apiClient.get(ENDPOINTS.inspectionReport);
     return ObjectMapper.deserialize(InspectionReport, response);
+  };
+
+  public updateInspectionReport = async (payload: IUpdateReport): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.inspectionReportById(payload.reportId), {
+      status: payload.status,
+    });
   };
 }
 

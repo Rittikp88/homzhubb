@@ -1,11 +1,12 @@
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { StringUtils } from '@homzhub/common/src/utils/StringUtils';
+import { StoreProviderService } from '@homzhub/common/src/services/StoreProviderService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Report, ReportStatus } from '@homzhub/common/src/domain/models/Report';
 import { IReportAction } from '@homzhub/common/src/domain/repositories/interfaces';
 
-enum ReportAction {
+export enum ReportAction {
   ACCEPT = 'Accept',
   REJECT = 'Reject',
   RESUME = 'Resume',
@@ -16,11 +17,16 @@ enum ReportAction {
   REJECTED = 'Rejected',
   AWAITING_APPROVAL = 'Awaiting Approval',
   OVERDUE = 'Overdue',
+  CANCEL = 'Cancel',
 }
 
 class ReportService {
   public getActions = (payload: Report): IReportAction[] => {
+    const {
+      user: { userProfile },
+    } = StoreProviderService.getStore().getState();
     const { status, completedPercentage, statusUpdatedBy, dueDate } = payload;
+    const isLoggedInUser = userProfile?.id === statusUpdatedBy?.id;
     const { ACCEPT, RESUME, REJECT, REJECTED, START, ACCEPTED, VIEW, SCHEDULED, AWAITING_APPROVAL, OVERDUE } =
       ReportAction;
     switch (status) {
@@ -73,12 +79,14 @@ class ReportService {
       }
       case ReportStatus.CANCELLED:
       case ReportStatus.REJECTED: {
-        return [`${StringUtils.toTitleCase(status)} by ${statusUpdatedBy?.name}`].map((item) => {
-          return {
-            title: item,
-            color: theme.colors.error,
-          };
-        });
+        return [`${StringUtils.toTitleCase(status)} by ${isLoggedInUser ? 'you' : statusUpdatedBy?.firstName}`].map(
+          (item) => {
+            return {
+              title: item,
+              color: theme.colors.error,
+            };
+          }
+        );
       }
       case ReportStatus.AWAITING_APPROVAL:
         return [AWAITING_APPROVAL, VIEW].map((item, index) => {
