@@ -31,7 +31,7 @@ class ReportService {
       ReportAction;
     switch (status) {
       case ReportStatus.NEW:
-        if (DateUtils.isDatePassed(dueDate)) {
+        if (DateUtils.isPastDate(dueDate)) {
           return [OVERDUE].map((item, index) => {
             return {
               title: item,
@@ -60,7 +60,7 @@ class ReportService {
             };
           });
         }
-        if (DateUtils.isDatePassed(dueDate)) {
+        if (DateUtils.isPastDate(dueDate)) {
           return [OVERDUE].map((item, index) => {
             return {
               title: item,

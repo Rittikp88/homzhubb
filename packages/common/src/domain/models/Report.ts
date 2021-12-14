@@ -17,6 +17,8 @@ export enum ReportStatus {
 export interface IReport {
   id: number;
   due_date: string;
+  started_at: string | null;
+  completed_at: string | null;
   completed_percentage: number;
   status: VisitStatus;
   users: IUser[];
@@ -26,6 +28,7 @@ export interface IReport {
   status_updated_by: IUser | null;
   lease_listing: IUnit | null;
   sale_listing: IUnit | null;
+  inspection_type: IUnit | null;
 }
 
 @JsonObject('Report')
@@ -33,8 +36,17 @@ export class Report {
   @JsonProperty('id', Number)
   private _id = 0;
 
+  @JsonProperty('inspection_type', Unit, true)
+  private _inspectionType = null;
+
   @JsonProperty('due_date', String)
   private _dueDate = '';
+
+  @JsonProperty('started_at', String, true)
+  private _startedAt = null;
+
+  @JsonProperty('completed_at', String, true)
+  private _completedAt = null;
 
   @JsonProperty('completed_percentage', Number)
   private _completedPercentage = 0;
@@ -105,5 +117,17 @@ export class Report {
 
   get saleListing(): Unit | null {
     return this._saleListing;
+  }
+
+  get inspectionType(): Unit | null {
+    return this._inspectionType;
+  }
+
+  get startedAt(): string | null {
+    return this._startedAt;
+  }
+
+  get completedAt(): string | null {
+    return this._completedAt;
   }
 }

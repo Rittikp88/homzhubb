@@ -71,9 +71,9 @@ export function* getFeedbackById(action: IFluxStandardAction<IGetFeedbackParam>)
   }
 }
 
-export function* getInspectionReports(): VoidGenerator {
+export function* getInspectionReports(action: IFluxStandardAction<string>): VoidGenerator {
   try {
-    const response = yield call(FFMRepository.getInspectionReport);
+    const response = yield call(FFMRepository.getInspectionReport, action.payload as string);
     yield put(FFMActions.getInspectionReportSuccess(response as InspectionReport));
   } catch (e) {
     yield put(FFMActions.getInspectionReportFailure());

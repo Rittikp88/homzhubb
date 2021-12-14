@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { DateUtils } from '@homzhub/common/src/utils/DateUtils';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { ReportService } from '@homzhub/ffm/src/services/ReportService';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
-import { Label } from '@homzhub/common/src/components/atoms/Text';
+import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import UserWithAddressCard from '@homzhub/ffm/src/components/molecules/UserWithAddressCard';
 import VisitContact from '@homzhub/ffm/src/components/molecules/VisitContact';
@@ -22,7 +21,7 @@ interface IProps {
 
 const ReportCard = (props: IProps): React.ReactElement => {
   const {
-    data: { id, asset, users, updatedAt, createdAt, dueDate, status, completedPercentage },
+    data: { id, asset, users, updatedAt, createdAt, dueDate, status, completedPercentage, completedAt, inspectionType },
     data,
     handleAction,
   } = props;
@@ -38,10 +37,17 @@ const ReportCard = (props: IProps): React.ReactElement => {
   const getCancelVisibility = (): boolean => {
     const { ACCEPTED, NEW } = ReportStatus;
     return (
-      (status === ACCEPTED && !DateUtils.isDatePassed(dueDate)) ||
-      (status === ACCEPTED && DateUtils.isDatePassed(dueDate) && completedPercentage > 0) ||
-      (status === NEW && !DateUtils.isDatePassed(dueDate))
+      (status === ACCEPTED && !DateUtils.isPastDate(dueDate)) ||
+      (status === ACCEPTED && DateUtils.isPastDate(dueDate) && completedPercentage > 0) ||
+      (status === NEW && !DateUtils.isPastDate(dueDate))
     );
+  };
+
+  const getDateTitle = (): string => {
+    if (completedAt) {
+      return 'Completed On';
+    }
+    return DateUtils.isPastDate(dueDate) ? t('overdueSince') : t('assetFinancial:dueBy');
   };
 
   const renderActions = (): React.ReactElement => {
@@ -76,22 +82,23 @@ const ReportCard = (props: IProps): React.ReactElement => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.container}>
+        {inspectionType && (
+          <Text type="small" textType="semiBold" style={styles.reportTitle}>
+            {inspectionType.label}
+          </Text>
+        )}
         <UserWithAddressCard
           users={users}
           asset={asset}
           isFromDetail={false}
           date={updatedAt ?? createdAt}
-          navigateToDetail={FunctionUtils.noop}
           handleContactDetails={handleContactDetails}
         />
         <View style={styles.row}>
           <View>
-            {/* TODO: Handle Completed case */}
-            <Label style={styles.detailTitle}>
-              {DateUtils.isDatePassed(dueDate) ? t('overdueSince') : t('assetFinancial:dueBy')}
-            </Label>
+            <Label style={styles.detailTitle}>{getDateTitle()}</Label>
             <Label textType="semiBold" style={styles.detailTitle}>
-              {DateUtils.getDisplayDate(dueDate, 'DD MMM YYYY')}
+              {DateUtils.getDisplayDate(completedAt || dueDate, 'DD MMM YYYY')}
             </Label>
           </View>
           {getCancelVisibility() && (
@@ -163,5 +170,9 @@ const styles = StyleSheet.create({
   cancelButton: {
     borderWidth: 0,
     flex: 0,
+  },
+  reportTitle: {
+    color: theme.colors.primaryColor,
+    marginBottom: 12,
   },
 });

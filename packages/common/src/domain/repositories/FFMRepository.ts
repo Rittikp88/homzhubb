@@ -68,8 +68,8 @@ class FFMRepository {
     return ObjectMapper.deserialize(Feedback, response);
   };
 
-  public getInspectionReport = async (): Promise<InspectionReport> => {
-    const response = await this.apiClient.get(ENDPOINTS.inspectionReport);
+  public getInspectionReport = async (payload: string): Promise<InspectionReport> => {
+    const response = await this.apiClient.get(ENDPOINTS.inspectionReport, { status_category: payload });
     return ObjectMapper.deserialize(InspectionReport, response);
   };
 

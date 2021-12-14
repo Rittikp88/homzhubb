@@ -15,7 +15,7 @@ interface IProps {
   users: User[];
   date: string;
   handleContactDetails: (isVisible: boolean, detail: User) => void;
-  navigateToDetail: () => void;
+  navigateToDetail?: () => void;
   isFromDetail?: boolean;
 }
 
@@ -31,7 +31,11 @@ const UserWithAddressCard = (props: IProps): React.ReactElement => {
 
   const renderDetailContainer = (): React.ReactElement => {
     return (
-      <TouchableOpacity style={[styles.row, isFromDetail && styles.user]} onPress={navigateToDetail}>
+      <TouchableOpacity
+        style={[styles.row, isFromDetail && styles.user]}
+        activeOpacity={navigateToDetail ? 0.5 : 1}
+        onPress={navigateToDetail}
+      >
         {isFromDetail && (
           <View>
             {attachments.length > 0 ? (

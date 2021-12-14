@@ -139,8 +139,9 @@ const clearFeedbackData = (): IFluxStandardAction => ({
   type: FFMActionTypes.CLEAR.FEEDBACK_DATA,
 });
 
-const getInspectionReport = (): IFluxStandardAction => ({
+const getInspectionReport = (payload: string): IFluxStandardAction<string> => ({
   type: FFMActionTypes.GET.INSPECTION_REPORT,
+  payload,
 });
 
 const getInspectionReportSuccess = (payload: InspectionReport): IFluxStandardAction<IInspectionReport> => ({

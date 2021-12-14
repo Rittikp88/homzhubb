@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -8,10 +9,12 @@ import { ReportAction } from '@homzhub/ffm/src/services/ReportService';
 import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import { FFMSelector } from '@homzhub/common/src/modules/ffm/selectors';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
+import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
 import ReportCard from '@homzhub/ffm/src/components/molecules/ReportCard';
-import { Report, ReportStatus } from '@homzhub/common/src/domain/models/Report';
+import { Report } from '@homzhub/common/src/domain/models/Report';
 import { IUpdateReport } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
+import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
   currentTab: Tabs;
@@ -19,15 +22,22 @@ interface IProps {
 
 const ReportList = ({ currentTab }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
+  const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const reports = useSelector(FFMSelector.getInspectionReport);
+  const [selectedReportId, setReportId] = useState(0);
+  const [isCancelSheet, setCancelSheet] = useState(false);
 
   const handleReportAction = (payload: IUpdateReport): void => {
-    const { ACCEPT, REJECT } = ReportAction;
+    const { ACCEPT, REJECT, CANCEL } = ReportAction;
     const { status, reportId } = payload;
+    setReportId(reportId);
     switch (status) {
       case ACCEPT:
       case REJECT:
         updateReport({ reportId, status: status.toLocaleUpperCase() }).then();
+        break;
+      case CANCEL:
+        setCancelSheet(true);
         break;
       default:
     }
@@ -36,35 +46,21 @@ const ReportList = ({ currentTab }: IProps): React.ReactElement => {
   const updateReport = async (payload: IUpdateReport): Promise<void> => {
     try {
       await FFMRepository.updateInspectionReport(payload);
-      dispatch(FFMActions.getInspectionReport());
+      dispatch(FFMActions.getInspectionReport(currentTab.toLocaleUpperCase()));
     } catch (e) {
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
     }
   };
 
-  // TODO: (Shikha) - Refactor once BE logic done
+  const onCancel = (): void => {
+    updateReport({ reportId: selectedReportId, status: ReportAction.CANCEL.toLocaleUpperCase() }).then(() =>
+      setCancelSheet(false)
+    );
+  };
+
   const getReportList = (): Report[] => {
     if (reports) {
-      const { results } = reports;
-      switch (currentTab) {
-        case Tabs.NEW:
-          return results.filter((item) => item.status === ReportStatus.NEW);
-        case Tabs.ONGOING:
-          return results.filter((item) => item.status === ReportStatus.ACCEPTED);
-        case Tabs.MISSED:
-          return results.filter(
-            (item) => item.status === ReportStatus.REJECTED || item.status === ReportStatus.CANCELLED
-          );
-        case Tabs.COMPLETED:
-          return results.filter(
-            (item) =>
-              item.status === ReportStatus.AWAITING_APPROVAL ||
-              item.status === ReportStatus.QA_REJECTED ||
-              item.status === ReportStatus.QA_APPROVED
-          );
-        default:
-          return results;
-      }
+      return reports.results;
     }
 
     return [];
@@ -79,6 +75,13 @@ const ReportList = ({ currentTab }: IProps): React.ReactElement => {
       ) : (
         <EmptyState />
       )}
+      <ConfirmationSheet
+        isVisible={isCancelSheet}
+        message={t('reportCancel')}
+        onCloseSheet={(): void => setCancelSheet(false)}
+        buttonTitles={[t('common:notNow'), t('common:cancel')]}
+        onPressDelete={onCancel}
+      />
     </ScrollView>
   );
 };

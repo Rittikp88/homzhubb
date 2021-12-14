@@ -21,12 +21,15 @@ const ReportDashboard = (): React.ReactElement => {
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(FFMActions.getInspectionReport());
+      setIndex(0);
+      dispatch(FFMActions.getInspectionReport(Tabs.NEW.toLocaleUpperCase()));
     }, [])
   );
 
   const onIndexChange = (value: number): void => {
+    const { key } = FFMVisitRoutes[value];
     setIndex(value);
+    dispatch(FFMActions.getInspectionReport(key.toLocaleUpperCase()));
   };
 
   const renderScene = ({ route }: { route: IRoutes }): React.ReactElement => {

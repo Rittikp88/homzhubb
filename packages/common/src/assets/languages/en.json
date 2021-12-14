@@ -1631,6 +1631,7 @@
   "reports": {
     "reports": "Reports",
     "overdueSince": "Overdue Since",
-    "contactUser": "Contact ({{name}})"
+    "contactUser": "Contact ({{name}})",
+    "reportCancel": "Are you sure you want to cancel this report ?"
   }
 }
