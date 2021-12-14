@@ -3,6 +3,7 @@ import { IFeedback } from '@homzhub/common/src/domain/models/Feedback';
 import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
+import { Report } from '@homzhub/common/src/domain/models/Report';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -18,6 +19,7 @@ export const initialFFMState: IFFMState = {
   reasons: [],
   feedback: null,
   inspectionReport: null,
+  currentReport: null,
   loaders: {
     onBoarding: false,
     roles: false,
@@ -160,6 +162,16 @@ export const ffmReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['inspectionReport']: false },
+      };
+    case FFMActionTypes.SET.CURRENT_REPORT:
+      return {
+        ...state,
+        ['currentReport']: action.payload as Report,
+      };
+    case FFMActionTypes.CLEAR.SELECTED_REPORT:
+      return {
+        ...state,
+        ['currentReport']: null,
       };
     default:
       return {

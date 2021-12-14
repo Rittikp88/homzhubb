@@ -4,10 +4,14 @@ require_relative '../../../node_modules/@react-native-community/cli-platform-ios
 platform :ios, '10.0'
 
 target 'ffm' do
-  config = use_native_modules!
 
   pod 'Permission-LocationAlways', :path => "../../../node_modules/react-native-permissions/ios/LocationAlways.podspec"
   pod 'Permission-LocationWhenInUse', :path => "../../../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec"
+
+    pod 'GoogleMaps'
+    pod 'Google-Maps-iOS-Utils'
+
+  config = use_native_modules!
 
   use_react_native!(
     :path => config[:reactNativePath],

@@ -1632,6 +1632,13 @@
     "reports": "Reports",
     "overdueSince": "Overdue Since",
     "contactUser": "Contact ({{name}})",
-    "reportCancel": "Are you sure you want to cancel this report ?"
+    "reportCancel": "Are you sure you want to cancel this report ?",
+    "selectionProcess": "Inspection process selection",
+    "needToBeAtProperty": "You need to be at the property in order to continue",
+    "iAmAtProperty": "Yes, I am at the property",
+    "notIAmAtProperty": "No, I am not at the property",
+    "physicalInspection": "Are you conducting a physical inspection",
+    "instructions": "Instructions",
+    "startInspection": "Start Inspection"
   }
 }

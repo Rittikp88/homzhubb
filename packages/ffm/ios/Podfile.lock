@@ -73,10 +73,34 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
+  - Google-Maps-iOS-Utils (4.0.0):
+    - Google-Maps-iOS-Utils/Clustering (= 4.0.0)
+    - Google-Maps-iOS-Utils/Geometry (= 4.0.0)
+    - Google-Maps-iOS-Utils/GeometryUtils (= 4.0.0)
+    - Google-Maps-iOS-Utils/Heatmap (= 4.0.0)
+    - Google-Maps-iOS-Utils/QuadTree (= 4.0.0)
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Clustering (4.0.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Geometry (4.0.0):
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/GeometryUtils (4.0.0):
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/Heatmap (4.0.0):
+    - Google-Maps-iOS-Utils/QuadTree
+    - GoogleMaps
+  - Google-Maps-iOS-Utils/QuadTree (4.0.0):
+    - GoogleMaps
   - GoogleDataTransport (8.4.0):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
     - PromisesObjC (~> 1.2)
+  - GoogleMaps (4.2.0):
+    - GoogleMaps/Maps (= 4.2.0)
+  - GoogleMaps/Base (4.2.0)
+  - GoogleMaps/Maps (4.2.0):
+    - GoogleMaps/Base
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
@@ -453,6 +477,8 @@ DEPENDENCIES:
   - FBReactNativeSpec (from `../../../node_modules/react-native/Libraries/FBReactNativeSpec`)
   - Folly (from `../../../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../../../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Google-Maps-iOS-Utils
+  - GoogleMaps
   - MixpanelReactNative (from `../../../node_modules/mixpanel-react-native`)
   - Permission-LocationAlways (from `../../../node_modules/react-native-permissions/ios/LocationAlways.podspec`)
   - Permission-LocationWhenInUse (from `../../../node_modules/react-native-permissions/ios/LocationWhenInUse.podspec`)
@@ -531,7 +557,9 @@ SPEC REPOS:
     - FirebaseInstanceID
     - FirebaseMessaging
     - FirebaseRemoteConfig
+    - Google-Maps-iOS-Utils
     - GoogleDataTransport
+    - GoogleMaps
     - GoogleSignIn
     - GoogleUtilities
     - GTMAppAuth
@@ -698,7 +726,9 @@ SPEC CHECKSUMS:
   FirebaseRemoteConfig: f805089c5c383c17d68bcc0799d8a3622f9ae28f
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  Google-Maps-iOS-Utils: a06cb5c3a0e5b2a505fed82d936ba1b935f8971f
   GoogleDataTransport: cd9db2180fcecd8da1b561aea31e3e56cf834aa7
+  GoogleMaps: eb03e327edfd70b06de1e6e321653f73712df7ad
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
@@ -771,6 +801,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YoutubePlayer-in-WKWebView: 4fca3b4f6f09940077bfbae7bddb771f2b43aacd
 
-PODFILE CHECKSUM: d317cec0926bfffc2453bda9cc677f18379e3c04
+PODFILE CHECKSUM: a3544aad7cccbfe94a0ae27a320eef17dbe11db5
 
 COCOAPODS: 1.10.2

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/core';
 import { StackActions } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
@@ -53,12 +54,13 @@ const BottomTabs = (): React.ReactElement => {
             resetStackOnTabPress(e, navigation);
           },
         })}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetDashboard:dashboard'),
           tabBarIcon: ({ focused }: { focused: boolean }): React.ReactElement => {
             return focused ? <Focused /> : <Unfocused />;
           },
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.SiteVisits}
@@ -68,12 +70,13 @@ const BottomTabs = (): React.ReactElement => {
             resetStackOnTabPress(e, navigation);
           },
         })}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('property:siteVisits'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return <Icon name={icons.visit} color={color} size={focused ? 24 : 20} />;
           },
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.Requests}
@@ -83,12 +86,13 @@ const BottomTabs = (): React.ReactElement => {
             resetStackOnTabPress(e, navigation);
           },
         })}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetDashboard:tickets'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return <Icon name={icons.serviceRequest} color={color} size={focused ? 24 : 20} />;
           },
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.Supplies}
@@ -98,12 +102,13 @@ const BottomTabs = (): React.ReactElement => {
             resetStackOnTabPress(e, navigation);
           },
         })}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('supplies'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return <Icon name={icons.home} color={color} size={focused ? 24 : 20} />;
           },
-        }}
+        })}
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.More}
@@ -113,15 +118,27 @@ const BottomTabs = (): React.ReactElement => {
             resetStackOnTabPress(e, navigation);
           },
         })}
-        options={{
+        options={({ route }): any => ({
+          tabBarVisible: getTabBarVisibility(route),
           tabBarLabel: t('assetMore:more'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
             return <Icon name={icons.threeDots} color={color} size={focused ? 24 : 20} />;
           },
-        }}
+        })}
       />
     </BottomTabNavigator.Navigator>
   );
+};
+
+/**
+ * Get tab visibility for specific screens
+ * @param route
+ */
+const getTabBarVisibility = (route: any): boolean => {
+  const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
+
+  const notAllowedRoutes = [ScreenKeys.InspectionSelection, ScreenKeys.ReportLocationMap];
+  return !notAllowedRoutes.includes(currentRouteName as ScreenKeys);
 };
 
 const resetStackOnTabPress = (e: any, navigation: any): void => {

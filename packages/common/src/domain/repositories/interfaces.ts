@@ -1276,3 +1276,11 @@ export interface IUpdateReport {
   reportId: number;
   status: string;
 }
+
+export interface IOutsetCheckParam {
+  reportId: number;
+  body: {
+    latitude: number;
+    longitude: number;
+  };
+}

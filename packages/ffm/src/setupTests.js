@@ -6,6 +6,7 @@ require('../../../setupTests');
 jest.mock('@homzhub/common/src/services/storage/StorageService', () => 'StorageService');
 jest.mock('mixpanel-react-native', () => {});
 jest.mock('react-native-device-info', () => {});
+jest.mock('react-native-maps', () => 'MapView');
 jest.mock('@react-navigation/material-top-tabs', () => {
   return {
     createMaterialTopTabNavigator: jest.fn(),

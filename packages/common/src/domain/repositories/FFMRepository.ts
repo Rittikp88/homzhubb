@@ -4,11 +4,13 @@ import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
+import { OutsetCheck } from '@homzhub/common/src/domain/models/OutsetCheck';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IFFMVisitParam,
   IGetFeedbackParam,
+  IOutsetCheckParam,
   IPostFeedback,
   IUpdateReport,
 } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -24,6 +26,7 @@ const ENDPOINTS = {
     `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/${feedbackId}`,
   inspectionReport: 'v1/ffm/tasks/inspection-reports/',
   inspectionReportById: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/`,
+  outsetsCheck: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/outsets/`,
 };
 
 class FFMRepository {
@@ -77,6 +80,11 @@ class FFMRepository {
     return await this.apiClient.patch(ENDPOINTS.inspectionReportById(payload.reportId), {
       status: payload.status,
     });
+  };
+
+  public outsetsCheck = async (payload: IOutsetCheckParam): Promise<OutsetCheck> => {
+    const response = await this.apiClient.post(ENDPOINTS.outsetsCheck(payload.reportId), payload.body);
+    return ObjectMapper.deserialize(OutsetCheck, response);
   };
 }
 

@@ -3,6 +3,7 @@ import { Feedback, IFeedback } from '@homzhub/common/src/domain/models/Feedback'
 import { FFMVisit, IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport, InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding, OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
+import { Report } from '@homzhub/common/src/domain/models/Report';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFFMVisitParam, IGetFeedbackParam, IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -35,9 +36,11 @@ export const FFMActionTypes = {
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
     WORK_LOCATION: `${actionTypePrefix}WORK_LOCATION`,
+    CURRENT_REPORT: `${actionTypePrefix}CURRENT_REPORT`,
   },
   CLEAR: {
     FEEDBACK_DATA: `${actionTypePrefix}FEEDBACK_DATA`,
+    SELECTED_REPORT: `${actionTypePrefix}SELECTED_REPORT`,
   },
 };
 
@@ -153,6 +156,15 @@ const getInspectionReportFailure = (): IFluxStandardAction => ({
   type: FFMActionTypes.GET.INSPECTION_REPORT_FAILURE,
 });
 
+const setCurrentReport = (payload: Report): IFluxStandardAction<Report> => ({
+  type: FFMActionTypes.SET.CURRENT_REPORT,
+  payload,
+});
+
+const clearCurrentReport = (): IFluxStandardAction => ({
+  type: FFMActionTypes.CLEAR.SELECTED_REPORT,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
@@ -165,7 +177,8 @@ export type FFMActionPayloadTypes =
   | IFFMVisitParam
   | IFFMVisit
   | IFeedback
-  | IInspectionReport;
+  | IInspectionReport
+  | Report;
 
 export const FFMActions = {
   getOnBoardingData,
@@ -192,4 +205,6 @@ export const FFMActions = {
   getInspectionReport,
   getInspectionReportSuccess,
   getInspectionReportFailure,
+  setCurrentReport,
+  clearCurrentReport,
 };

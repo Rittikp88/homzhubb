@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -13,6 +14,7 @@ import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/Confirma
 import ReportCard from '@homzhub/ffm/src/components/molecules/ReportCard';
 import { Report } from '@homzhub/common/src/domain/models/Report';
 import { IUpdateReport } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -22,13 +24,14 @@ interface IProps {
 
 const ReportList = ({ currentTab }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
+  const { navigate } = useNavigation();
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const reports = useSelector(FFMSelector.getInspectionReport);
   const [selectedReportId, setReportId] = useState(0);
   const [isCancelSheet, setCancelSheet] = useState(false);
 
-  const handleReportAction = (payload: IUpdateReport): void => {
-    const { ACCEPT, REJECT, CANCEL } = ReportAction;
+  const handleReportAction = (payload: IUpdateReport, report: Report): void => {
+    const { ACCEPT, REJECT, CANCEL, START } = ReportAction;
     const { status, reportId } = payload;
     setReportId(reportId);
     switch (status) {
@@ -39,6 +42,11 @@ const ReportList = ({ currentTab }: IProps): React.ReactElement => {
       case CANCEL:
         setCancelSheet(true);
         break;
+      case START: {
+        dispatch(FFMActions.setCurrentReport(report));
+        navigate(ScreenKeys.InspectionSelection);
+        break;
+      }
       default:
     }
   };
@@ -70,7 +78,9 @@ const ReportList = ({ currentTab }: IProps): React.ReactElement => {
     <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
       {getReportList().length > 0 ? (
         getReportList().map((item, index) => {
-          return <ReportCard key={index} data={item} handleAction={handleReportAction} />;
+          return (
+            <ReportCard key={index} data={item} handleAction={(payload): void => handleReportAction(payload, item)} />
+          );
         })
       ) : (
         <EmptyState />

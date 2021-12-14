@@ -40,6 +40,8 @@ export enum ScreenKeys {
 
   // Reports
   ReportDashboard = 'ReportDashboard',
+  InspectionSelection = 'InspectionSelection',
+  ReportLocationMap = 'ReportLocationMap',
 
   // More
   MoreScreen = 'MoreScreen',
@@ -66,4 +68,8 @@ export interface IFeedbackParam {
 
 export interface IVisitDetailParam {
   visitId: number;
+}
+
+export interface ILocationParam {
+  placeData: GooglePlaceDetail;
 }
