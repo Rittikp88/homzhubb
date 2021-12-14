@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useRef, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,7 @@ import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { UploadBoxComponent } from '@homzhub/web/src/components/molecules/UploadBoxComponent';
+import AddBankAccountPopover from '@homzhub/web/src/components/organisms/AddBankAccountPopover';
 import AddRecordForm, { IUploadCompProps } from '@homzhub/common/src/components/organisms/AddRecordForm';
 import ReminderForm from '@homzhub/common/src/components/organisms/ReminderForm';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
@@ -92,10 +93,30 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
     dispatch(FinancialActions.getReminders());
   };
 
+  const popupRefBank = useRef<PopupActions>(null);
+
+  const onOpenBankModal = (): void => {
+    if (popupRefBank && popupRefBank.current) {
+      popupRefBank.current.open();
+    }
+  };
+  const onCloseBankModal = (): void => {
+    if (popupRefBank && popupRefBank.current) {
+      popupRefBank.current.close();
+    }
+  };
+
+  const onAddBankAccount = (id?: number | undefined): void => {
+    console.log('id => ', id);
+    onOpenBankModal();
+  };
+
   const renderActionsPopover = (): React.ReactNode | null => {
     switch (financialsActionType) {
       case FinancialsActions.AddReminder:
-        return <ReminderForm onSubmit={onSubmitReminder} onAddSociety={FunctionUtils.noop} />;
+        return (
+          <ReminderForm onSubmit={onSubmitReminder} onAddSociety={FunctionUtils.noop} onAddAccount={onAddBankAccount} />
+        );
       case FinancialsActions.AddRecord:
         return (
           <AddRecordForm
@@ -158,23 +179,26 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
     );
   };
   return (
-    <Popover
-      content={renderPopoverContent}
-      popupProps={{
-        closeOnDocumentClick: false,
-        arrow: false,
-        contentStyle: {
-          ...financialPopoverType?.styles,
-          maxHeight: '100%',
-          borderRadius: 8,
-        },
-        children: undefined,
-        modal: true,
-        position: 'center center',
-        onClose: onCloseModal,
-      }}
-      forwardedRef={popupRef}
-    />
+    <View>
+      <Popover
+        content={renderPopoverContent}
+        popupProps={{
+          closeOnDocumentClick: false,
+          arrow: false,
+          contentStyle: {
+            ...financialPopoverType?.styles,
+            maxHeight: '100%',
+            borderRadius: 8,
+          },
+          children: undefined,
+          modal: true,
+          position: 'center center',
+          onClose: onCloseModal,
+        }}
+        forwardedRef={popupRef}
+      />
+      <AddBankAccountPopover popupRef={popupRefBank} onCloseModal={onCloseBankModal} />
+    </View>
   );
 };
 

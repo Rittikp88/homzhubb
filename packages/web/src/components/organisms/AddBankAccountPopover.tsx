@@ -25,11 +25,11 @@ export enum BankAccoutAction {
 interface IProps {
   popupRef: React.MutableRefObject<PopupActions | null>;
   onCloseModal: () => void;
-  isOpen?: boolean;
   onOpenModal?: () => void;
-  children: React.ReactElement;
-  title: string;
+  isOpen?: boolean;
+  children?: React.ReactElement;
   onSuccessCallback?: (message?: string) => void;
+  title?: string;
   contentStyle?: StyleProp<ViewStyle>;
   isEdit?: boolean;
   id?: number;

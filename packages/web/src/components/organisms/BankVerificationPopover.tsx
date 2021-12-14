@@ -25,10 +25,9 @@ interface IPopoverProps extends IContentProps {
 }
 
 const BankVerificationPopover = (props: IPopoverProps): React.ReactElement => {
-  const { t } = useTranslation();
   const { popupRef, onCloseModal, handleCheckBox, onProceed, isCheckboxSelected } = props;
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
-
+  const { t } = useTranslation();
   const renderPopoverContent = (): React.ReactNode => {
     return (
       <View>
