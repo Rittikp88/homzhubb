@@ -4,6 +4,7 @@ import { FFMVisit, IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit'
 import { IInspectionReport, InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding, OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Report } from '@homzhub/common/src/domain/models/Report';
+import { IReportSpace, ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFFMVisitParam, IGetFeedbackParam, IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -32,6 +33,9 @@ export const FFMActionTypes = {
     INSPECTION_REPORT: `${actionTypePrefix}INSPECTION_REPORT`,
     INSPECTION_REPORT_SUCCESS: `${actionTypePrefix}INSPECTION_REPORT_SUCCESS`,
     INSPECTION_REPORT_FAILURE: `${actionTypePrefix}INSPECTION_REPORT_FAILURE`,
+    REPORT_SPACE: `${actionTypePrefix}REPORT_SPACE`,
+    REPORT_SPACE_SUCCESS: `${actionTypePrefix}REPORT_SPACE_SUCCESS`,
+    REPORT_SPACE_FAILURE: `${actionTypePrefix}REPORT_SPACE_FAILURE`,
   },
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
@@ -165,6 +169,20 @@ const clearCurrentReport = (): IFluxStandardAction => ({
   type: FFMActionTypes.CLEAR.SELECTED_REPORT,
 });
 
+const getReportSpace = (payload: number): IFluxStandardAction<number> => ({
+  type: FFMActionTypes.GET.REPORT_SPACE,
+  payload,
+});
+
+const getReportSpaceSuccess = (payload: ReportSpace[]): IFluxStandardAction<IReportSpace[]> => ({
+  type: FFMActionTypes.GET.REPORT_SPACE_SUCCESS,
+  payload: ObjectMapper.serializeArray(payload),
+});
+
+const getReportSpaceFailure = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.REPORT_SPACE_FAILURE,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
@@ -178,7 +196,8 @@ export type FFMActionPayloadTypes =
   | IFFMVisit
   | IFeedback
   | IInspectionReport
-  | Report;
+  | Report
+  | IReportSpace[];
 
 export const FFMActions = {
   getOnBoardingData,
@@ -207,4 +226,7 @@ export const FFMActions = {
   getInspectionReportFailure,
   setCurrentReport,
   clearCurrentReport,
+  getReportSpace,
+  getReportSpaceSuccess,
+  getReportSpaceFailure,
 };

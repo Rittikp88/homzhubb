@@ -344,7 +344,8 @@
     "yourCompanyName": "Your Company Name",
     "companyName": "Company Name",
     "password": "Password",
-    "remark": "Remark"
+    "remark": "Remark",
+    "preview": "Preview"
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1639,6 +1640,11 @@
     "notIAmAtProperty": "No, I am not at the property",
     "physicalInspection": "Are you conducting a physical inspection",
     "instructions": "Instructions",
-    "startInspection": "Start Inspection"
+    "startInspection": "Start Inspection",
+    "inspection": "Inspection",
+    "inspectionMessage": "Start by selecting an area for the inspection. All areas need to be completed before submitting to Homzhub",
+    "addNewSpace": "Add New Space",
+    "enterAreaName": "Enter Name of the Area",
+    "area": "Area {{count}}"
   }
 }

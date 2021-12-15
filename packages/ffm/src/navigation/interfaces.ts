@@ -2,6 +2,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
+import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
   navigation: StackNavigationProp<S, T>;
@@ -37,6 +38,7 @@ export enum ScreenKeys {
   VisitForm = 'VisitForm',
   VisitDetail = 'VisitDetail',
   FeedbackForm = 'FeedbackForm',
+  Inspection = 'Inspection',
 
   // Reports
   ReportDashboard = 'ReportDashboard',

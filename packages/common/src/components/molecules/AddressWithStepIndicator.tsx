@@ -15,7 +15,7 @@ import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules
 import { IAmenitiesData, PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { TypeOfPlan } from '@homzhub/common/src/domain/models/AssetPlan';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
-import { ILabelColor } from '@homzhub/common/src/domain/models/LeaseTransaction';
+import { ILabelColor } from '@homzhub/common/src/domain/models/LabelColor';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
@@ -152,7 +152,7 @@ export const AddressWithStepIndicator = (props: IProps): React.ReactElement => {
               </Label>
               {icon && <Icon name={icon} size={23} color={blue} onPress={onEditPress} />}
               {(selectedPan || badgeInfo) && (
-                <Badge title={badge.label.toUpperCase()} badgeColor={badge.color} badgeStyle={badgeStyle} />
+                <Badge title={badge.label.toUpperCase()} badgeColor={badge.color ?? ''} badgeStyle={badgeStyle} />
               )}
             </View>
             <PropertyAddressCountry

@@ -5,6 +5,7 @@ import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Report } from '@homzhub/common/src/domain/models/Report';
+import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -99,6 +100,14 @@ const getCurrentReport = (state: IState): Report | null => {
   return currentReport;
 };
 
+const getReportSpaces = (state: IState): ReportSpace[] => {
+  const {
+    ffm: { reportSpace },
+  } = state;
+  if (reportSpace.length < 1) return [];
+  return ObjectMapper.deserializeArray(ReportSpace, reportSpace);
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
@@ -111,4 +120,5 @@ export const FFMSelector = {
   getFeedback,
   getInspectionReport,
   getCurrentReport,
+  getReportSpaces,
 };

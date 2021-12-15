@@ -1284,3 +1284,8 @@ export interface IOutsetCheckParam {
     longitude: number;
   };
 }
+
+export interface IReportSpaceParam {
+  reportId: number;
+  body: string[];
+}

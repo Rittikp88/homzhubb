@@ -13,12 +13,12 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
 import { WithShadowView } from '@homzhub/common/src/components/atoms/WithShadowView';
 import FullHeaderScreen from '@homzhub/ffm/src/components/HOC/FullHeaderScreen';
-import { ILocationParam } from '@homzhub/ffm/src/navigation/interfaces';
+import { ILocationParam, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { LocationInstruction } from '@homzhub/common/src/constants/Location';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const ReportLocationMap = (): React.ReactElement => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
   const { params } = useRoute();
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const report = useSelector(FFMSelector.getCurrentReport);
@@ -43,7 +43,7 @@ const ReportLocationMap = (): React.ReactElement => {
   }, [lat, lng]);
 
   const onContinue = (): void => {
-    // TODO: Navigate to Inspection
+    navigate(ScreenKeys.Inspection);
   };
 
   const onStart = (): void => {

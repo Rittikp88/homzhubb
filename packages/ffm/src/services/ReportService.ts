@@ -61,10 +61,12 @@ class ReportService {
           });
         }
         if (DateUtils.isPastDate(dueDate)) {
-          return [OVERDUE].map((item, index) => {
+          return [OVERDUE, START].map((item, index) => {
             return {
               title: item,
-              color: theme.colors.error,
+              color: index === 0 ? theme.colors.error : theme.colors.darkTint1,
+              iconColor: theme.colors.green,
+              ...(index === 1 && { icon: icons.play }),
             };
           });
         }

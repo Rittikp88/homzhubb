@@ -5,6 +5,7 @@ import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { OutsetCheck } from '@homzhub/common/src/domain/models/OutsetCheck';
+import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
@@ -12,6 +13,7 @@ import {
   IGetFeedbackParam,
   IOutsetCheckParam,
   IPostFeedback,
+  IReportSpaceParam,
   IUpdateReport,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
@@ -27,6 +29,7 @@ const ENDPOINTS = {
   inspectionReport: 'v1/ffm/tasks/inspection-reports/',
   inspectionReportById: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/`,
   outsetsCheck: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/outsets/`,
+  reportSpaces: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/inspection-report-spaces/`,
 };
 
 class FFMRepository {
@@ -85,6 +88,15 @@ class FFMRepository {
   public outsetsCheck = async (payload: IOutsetCheckParam): Promise<OutsetCheck> => {
     const response = await this.apiClient.post(ENDPOINTS.outsetsCheck(payload.reportId), payload.body);
     return ObjectMapper.deserialize(OutsetCheck, response);
+  };
+
+  public getReportSpaces = async (payload: number): Promise<ReportSpace[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.reportSpaces(payload));
+    return ObjectMapper.deserializeArray(ReportSpace, response);
+  };
+
+  public createReportSpaces = async (payload: IReportSpaceParam): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.reportSpaces(payload.reportId), payload.body);
   };
 }
 

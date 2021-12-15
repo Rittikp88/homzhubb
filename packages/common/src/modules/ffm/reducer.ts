@@ -4,6 +4,7 @@ import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { Report } from '@homzhub/common/src/domain/models/Report';
+import { IReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -20,6 +21,7 @@ export const initialFFMState: IFFMState = {
   feedback: null,
   inspectionReport: null,
   currentReport: null,
+  reportSpace: [],
   loaders: {
     onBoarding: false,
     roles: false,
@@ -28,6 +30,7 @@ export const initialFFMState: IFFMState = {
     reasons: false,
     feedback: false,
     inspectionReport: false,
+    reportSpace: false,
   },
 };
 
@@ -172,6 +175,22 @@ export const ffmReducer = (
       return {
         ...state,
         ['currentReport']: null,
+      };
+    case FFMActionTypes.GET.REPORT_SPACE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reportSpace']: true },
+      };
+    case FFMActionTypes.GET.REPORT_SPACE_SUCCESS:
+      return {
+        ...state,
+        ['reportSpace']: action.payload as IReportSpace[],
+        ['loaders']: { ...state.loaders, ['reportSpace']: false },
+      };
+    case FFMActionTypes.GET.REPORT_SPACE_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['reportSpace']: false },
       };
     default:
       return {

@@ -8,6 +8,7 @@ import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
+import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import { IFFMVisitParam, IGetFeedbackParam } from '@homzhub/common/src/domain/repositories/interfaces';
@@ -81,6 +82,16 @@ export function* getInspectionReports(action: IFluxStandardAction<string>): Void
   }
 }
 
+export function* getReportSpaces(action: IFluxStandardAction<number>): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getReportSpaces, action.payload as number);
+    yield put(FFMActions.getReportSpaceSuccess(response as ReportSpace[]));
+  } catch (e) {
+    yield put(FFMActions.getReportSpaceFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
@@ -89,4 +100,5 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.REJECTION_REASON, getRejectionReason);
   yield takeLatest(FFMActionTypes.GET.FEEDBACK, getFeedbackById);
   yield takeLatest(FFMActionTypes.GET.INSPECTION_REPORT, getInspectionReports);
+  yield takeLatest(FFMActionTypes.GET.REPORT_SPACE, getReportSpaces);
 }
