@@ -43,6 +43,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
   const { t } = useTranslation();
   // eslint-disable-next-line
   const [isLoading, setIsLoading] = useState(false);
+  const [ownerId, setOwnerId] = useState(0);
   const [clearForm, setClearForm] = useState(0);
   const dispatch = useDispatch();
   const {
@@ -106,8 +107,10 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
     }
   };
 
-  const onAddBankAccount = (id?: number | undefined): void => {
-    console.log('id => ', id);
+  const onAddBankAccount = (id?: number): void => {
+    if (id) {
+      setOwnerId(id);
+    }
     onOpenBankModal();
   };
 
@@ -189,6 +192,8 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
             ...financialPopoverType?.styles,
             maxHeight: '100%',
             borderRadius: 8,
+            height: 600,
+            overflow: 'auto',
           },
           children: undefined,
           modal: true,
@@ -197,7 +202,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
         }}
         forwardedRef={popupRef}
       />
-      <AddBankAccountPopover popupRef={popupRefBank} onCloseModal={onCloseBankModal} />
+      <AddBankAccountPopover popupRef={popupRefBank} onCloseModal={onCloseBankModal} id={ownerId} />
     </View>
   );
 };
@@ -214,8 +219,6 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     padding: 24,
-    height: 400,
-    overflowY: 'scroll',
   },
   verticalStyle: {
     marginTop: 20,

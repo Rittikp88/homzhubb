@@ -554,6 +554,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     );
   };
 
+
   return (
     <Formik
       initialValues={{ ...reminderFormData }}
@@ -648,7 +649,7 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
   );
 };
 
-export default ReminderForm;
+export default React.memo(ReminderForm);
 
 const styles = StyleSheet.create({
   field: {

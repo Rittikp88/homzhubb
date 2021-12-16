@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
@@ -18,7 +19,8 @@ import HomzhubCoins from '@homzhub/common/src/components/molecules/HomzhubCoins'
 import OrderSummary from '@homzhub/common/src/components/molecules/OrderSummary';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import PromoCode from '@homzhub/common/src/components/molecules/PromoCode';
-import { PaymentGateway } from '@homzhub/mobile/src/components';
+import { PaymentGateway } from '@homzhub/mobile/src/components/molecules/PaymentGateway';
+import PaymentGatewayWeb from '@homzhub/web/src/components/molecules/PaymentGateway';
 import { DueOrderSummaryAction } from '@homzhub/common/src/domain/models/DueOrderSummary';
 import { Coins } from '@homzhub/common/src/domain/models/OrderSummary';
 import { Payment } from '@homzhub/common/src/domain/models/Payment';
@@ -274,17 +276,27 @@ const ServiceOrderSummary = ({ invoiceId, onSuccess, isLabelRequired = false }: 
           showOrderSummaryHeader={false}
           hasDottedDivider
         />
-        {orderSummary.totalPricePayable > 0 && (
-          <PaymentGateway
-            type="primary"
-            title={t('assetFinancial:payNow')}
-            containerStyle={styles.payButton}
-            // @ts-ignore
-            initiatePayment={initiatePayment}
-            paymentApi={onOrderPlaced}
-            isVerificationRequired
-          />
-        )}
+        {orderSummary.totalPricePayable > 0 &&
+          (PlatformUtils.isWeb() ? (
+            <PaymentGatewayWeb
+              type="primary"
+              title={t('assetFinancial:payNow')}
+              containerStyle={styles.payButton}
+              // @ts-ignore
+              initiatePayment={initiatePayment}
+              paymentApi={onOrderPlaced}
+            />
+          ) : (
+            <PaymentGateway
+              type="primary"
+              title={t('assetFinancial:payNow')}
+              containerStyle={styles.payButton}
+              // @ts-ignore
+              initiatePayment={initiatePayment}
+              paymentApi={onOrderPlaced}
+              isVerificationRequired
+            />)
+          )}
         <View style={styles.secureView}>
           <Icon name={icons.badge} color={theme.colors.darkTint7} size={28} />
           <Label type="large" textType="semiBold" style={styles.secureText}>

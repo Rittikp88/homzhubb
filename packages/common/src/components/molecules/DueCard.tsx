@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
 import { CommonSelectors } from '@homzhub/common/src/modules/common/selectors';
@@ -14,23 +13,20 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
   due: DueItem;
   onPressClose?: (dueId?: number) => void;
-  onPressPayNow: () => void;
+  onPayNav?: () => void;
 }
 
 const DueCard = (props: IProps): React.ReactElement => {
-  const { due, onPressClose } = props;
+  const { due, onPressClose, onPayNav } = props;
   const { id, invoiceTitle, asset, totalDue, dueDate, isOverDue, createdAt, dueTitle, currency } = due;
 
   const { t } = useTranslation();
   const countries = useSelector(CommonSelectors.getCountryList);
   const dispatch = useDispatch();
-
-  const { navigate } = useNavigation();
 
   const onPressCrossIcon = (): void => {
     if (onPressClose) {
@@ -40,7 +36,9 @@ const DueCard = (props: IProps): React.ReactElement => {
 
   const onPressPayNow = (): void => {
     dispatch(FinancialActions.setCurrentDueId(id));
-    navigate(ScreensKeys.DuesOrderSummary);
+    if (onPayNav) {
+      onPayNav();
+    }
   };
 
   const getFlag = (): React.ReactElement => {

@@ -83,12 +83,11 @@ const DueList = ({ numOfDues }: IProps): React.ReactElement => {
       }
     };
 
-    const onPressPayNow = (): void => {
-      dispatch(FinancialActions.setCurrentDueId(item.id));
+    const onPayNav = (): void => {
       navigate(ScreensKeys.DuesOrderSummary);
     };
 
-    return <DueCard due={item} onPressClose={onPressClose} onPressPayNow={onPressPayNow} />;
+    return <DueCard due={item} onPressClose={onPressClose} onPayNav={onPayNav} />;
   };
 
   const itemSeparator = (): React.ReactElement => <Divider containerStyles={styles.divider} />;

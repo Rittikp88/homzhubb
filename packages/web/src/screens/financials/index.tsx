@@ -16,7 +16,7 @@ import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutCo
 import { theme } from '@homzhub/common/src/styles/theme';
 import { PropertyByCountryDropdown } from '@homzhub/common/src/components/molecules/PropertyByCountryDropdown';
 import { PropertyVisualsEstimates } from '@homzhub/web/src/screens/dashboard/components/PropertyVisualEstimates';
-import DuesContainer from '@homzhub/web/src/screens/financials/Dues';
+import DueList from '@homzhub/web/src/screens/financials/Dues';
 import Transactions from '@homzhub/web/src/screens/financials/Transactions';
 import FinancialsPopover, { FinancialsActions } from '@homzhub/web/src/screens/financials/FinancialsPopover';
 import ReminderList from '@homzhub/web/src/screens/financials/Reminders/ReminderList';
@@ -153,6 +153,13 @@ const Financials: FC<IProps> = (props: IProps) => {
     }
   };
 
+  const onPressDueActions = (): void => {
+    setFinancialsActions({
+      financialsActionType: FinancialsActions.AddReminder,
+      isOpen: true,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.containerFilters}>
@@ -169,7 +176,7 @@ const Financials: FC<IProps> = (props: IProps) => {
       </View>
       <View style={styles.container}>
         <PropertyVisualsEstimates selectedCountry={selectedCountry} selectedProperty={selectedProperty} />
-        <DuesContainer />
+        <DueList onPressDueActions={onPressDueActions} />
         <Transactions isAddRecord={false} onOpenModal={onAddRecord} onDeleteRecord={onDeleteRecord} />
         <ReminderList />
         <FinancialsPopover

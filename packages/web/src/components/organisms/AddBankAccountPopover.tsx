@@ -37,7 +37,7 @@ interface IProps {
 
 const AddBankAccountPopover: React.FC<IProps> = (props: IProps): React.ReactElement => {
   const { t } = useTranslation();
-  const { id } = useSelector(UserSelector.getUserProfile);
+  const userProfile = useSelector(UserSelector.getUserProfile);
   const [isLoading, setLoading] = useState(false);
   const [flags, setFlagValues] = useState({
     showConfirmationSheet: false,
@@ -46,7 +46,7 @@ const AddBankAccountPopover: React.FC<IProps> = (props: IProps): React.ReactElem
   });
   const dispatch = useDispatch();
   const { id: props_id, isEdit, onCloseModal, popupRef } = props;
-  const userId = props_id && props_id > 0 ? props_id : id;
+  const userId = props_id && props_id > 0 ? props_id : userProfile?.id ?? 0;
   const { showConfirmationSheet } = flags;
   useEffect(() => {
     if (showConfirmationSheet) {

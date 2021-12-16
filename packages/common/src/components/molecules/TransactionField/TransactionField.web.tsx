@@ -1,9 +1,10 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { FormikProps } from 'formik';
 import { FontWeightType, TextFieldType, TextSizeType } from '@homzhub/common/src/components/atoms/Text';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { FormDropdown, IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { WithFieldError } from '@homzhub/common/src/components/molecules/WithFieldError';
 
 interface ITransactionProp {
@@ -19,9 +20,9 @@ interface ITransactionProp {
   fontType?: FontWeightType;
   rightNode?: React.ReactElement;
 }
-// TODO: (Lakshit) - Add Dropdown for bank account selection
 export const TransactionField = (props: ITransactionProp): React.ReactElement => {
-  const { label, textType, textSize = 'regular', fontType, rightNode } = props;
+  const { label, textType, textSize = 'regular', fontType, rightNode, options, formProps, name } = props;
+  const { t } = useTranslation();
   return (
     <WithFieldError>
       <View style={styles.rowView}>
@@ -30,6 +31,17 @@ export const TransactionField = (props: ITransactionProp): React.ReactElement =>
         </Typography>
         {rightNode}
       </View>
+      {options.length ?
+        (<FormDropdown
+          name={name}
+          placeholder={t('assetFinancial:addBankAccount')}
+          options={options}
+          formProps={formProps}
+          listHeight={300}
+        />
+        ) : (
+          <View />
+        )}
     </WithFieldError>
   );
 };
@@ -38,5 +50,7 @@ const styles = StyleSheet.create({
   rowView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 16,
   },
 });
