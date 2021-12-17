@@ -52,7 +52,6 @@ class ImageThumbnail extends React.PureComponent<IProps> {
     } = this.props;
 
     const { handleIconPress } = this;
-
     const Content = React.memo(
       (): React.ReactElement => (
         <>

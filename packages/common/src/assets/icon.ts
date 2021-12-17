@@ -199,6 +199,7 @@ export const icons = {
   bulb: 'bulb',
   water: 'water',
   gas: 'gas',
+  circularAttach: 'circular-attach',
 
   // COMMUTE
   train: 'train',

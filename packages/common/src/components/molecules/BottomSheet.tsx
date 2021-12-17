@@ -18,6 +18,7 @@ export interface IBottomSheetProps {
   isAlwaysVisible?: boolean;
   sheetContainerStyle?: StyleProp<ViewStyle>;
   headerStyles?: StyleProp<ViewStyle | TextStyle>;
+  renderRightNode?: React.ReactElement;
 }
 
 export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
@@ -34,6 +35,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
     isCloseOnDrag = true,
     isAlwaysVisible = false,
     headerStyles,
+    renderRightNode,
   } = props;
 
   useEffect(() => {
@@ -67,6 +69,7 @@ export const BottomSheet = (props: IBottomSheetProps): React.ReactElement => {
         <Label type="large" textType="semiBold" style={[styles.headerTitle, headerStyles]}>
           {headerTitle}
         </Label>
+        {renderRightNode}
       </View>
     );
   };

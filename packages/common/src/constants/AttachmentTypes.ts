@@ -6,6 +6,7 @@ export enum AttachmentType {
   PROFILE_IMAGE = 'profile_images',
   CHAT_DOCUMENT = 'chat_document',
   TICKET_DOCUMENTS = 'ticket_documents',
+  INSPECTION_REPORT_IMAGES = 'inspection_report_images',
 }
 
 export enum AttachmentError {

@@ -8,7 +8,14 @@ import { IReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
-import { IFFMState } from '@homzhub/common/src/modules/ffm/interface';
+import { IFFMState, ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
+
+const initialSpaceData: ILocalSpaceUpdatePayload = {
+  condition_of_space: 0,
+  comments: '',
+  attachments: [],
+  space_inspection_units: [],
+};
 
 export const initialFFMState: IFFMState = {
   onBoardingData: [],
@@ -22,6 +29,7 @@ export const initialFFMState: IFFMState = {
   inspectionReport: null,
   currentReport: null,
   reportSpace: [],
+  reportSpaceData: initialSpaceData,
   loaders: {
     onBoarding: false,
     roles: false,
@@ -31,6 +39,7 @@ export const initialFFMState: IFFMState = {
     feedback: false,
     inspectionReport: false,
     reportSpace: false,
+    spaceDetail: false,
   },
 };
 
@@ -191,6 +200,27 @@ export const ffmReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['reportSpace']: false },
+      };
+    case FFMActionTypes.SET.REPORT_SPACE_DATA:
+      return {
+        ...state,
+        ['reportSpaceData']: action.payload as ILocalSpaceUpdatePayload,
+      };
+    case FFMActionTypes.CLEAR.SPACE_DATA:
+      return {
+        ...state,
+        ['reportSpaceData']: { ...initialSpaceData, space_inspection_units: [] },
+      };
+    case FFMActionTypes.GET.SPACE_DETAIL:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['spaceDetail']: true },
+      };
+    case FFMActionTypes.GET.SPACE_DETAIL_SUCCESS:
+    case FFMActionTypes.GET.SPACE_DETAIL_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['spaceDetail']: false },
       };
     default:
       return {

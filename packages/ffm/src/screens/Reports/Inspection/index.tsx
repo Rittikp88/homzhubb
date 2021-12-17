@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
@@ -9,7 +9,9 @@ import { Progress } from '@homzhub/common/src/components/atoms/Progress/Progress
 import { ITypographyProps } from '@homzhub/common/src/components/atoms/Typography';
 import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
+import SpaceDetail from '@homzhub/ffm/src/screens/Reports/Inspection/SpaceDetail';
 import SpaceList from '@homzhub/ffm/src/screens/Reports/Inspection/SpaceList';
+import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const Inspection = (): React.ReactElement => {
@@ -17,13 +19,27 @@ const Inspection = (): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const report = useSelector(FFMSelector.getCurrentReport);
   const spaces = useSelector(FFMSelector.getReportSpaces);
-  const { reportSpace } = useSelector(FFMSelector.getFFMLoaders);
+  const { reportSpace, spaceDetail } = useSelector(FFMSelector.getFFMLoaders);
+  const [selectedSpace, setSelectedSpace] = useState<ReportSpace | null>(null);
 
   useEffect(() => {
     if (report) {
       dispatch(FFMActions.getReportSpace(report.id));
+      dispatch(FFMActions.clearSpaceData());
     }
   }, []);
+
+  const onUpdateSpaceSuccess = (): void => {
+    if (report) {
+      dispatch(FFMActions.getReportSpace(report.id));
+      setSelectedSpace(null);
+    }
+  };
+
+  const onBack = (): void => {
+    setSelectedSpace(null);
+    dispatch(FFMActions.clearSpaceData());
+  };
 
   const getPercentage = (): number => {
     return (spaces?.filter((item) => item.isCompleted).length / spaces.length) * 100;
@@ -36,7 +52,7 @@ const Inspection = (): React.ReactElement => {
     <GradientScreen
       isUserHeader
       isScrollable
-      loading={reportSpace}
+      loading={reportSpace || spaceDetail}
       screenTitle={t('inspection')}
       containerStyle={styles.container}
     >
@@ -49,11 +65,15 @@ const Inspection = (): React.ReactElement => {
             subAddressTextStyles={subAddressStyle}
             primaryAddressTextStyles={primaryStyle}
           />
-          <Progress progress={getPercentage()} containerStyles={styles.progress} />
+          {spaces.length > 0 && <Progress progress={getPercentage()} containerStyles={styles.progress} />}
         </View>
       )}
       <View style={styles.content}>
-        <SpaceList />
+        {selectedSpace ? (
+          <SpaceDetail spaceDetail={selectedSpace} onBack={onBack} onSuccess={onUpdateSpaceSuccess} />
+        ) : (
+          <SpaceList onSelectSpace={setSelectedSpace} />
+        )}
       </View>
     </GradientScreen>
   );

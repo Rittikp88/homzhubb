@@ -16,7 +16,11 @@ import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomShee
 import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
-const SpaceList = (): React.ReactElement => {
+interface IProps {
+  onSelectSpace: (space: ReportSpace) => void;
+}
+
+const SpaceList = ({ onSelectSpace }: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const spaces = useSelector(FFMSelector.getReportSpaces);
@@ -60,7 +64,11 @@ const SpaceList = (): React.ReactElement => {
     const { name, iconUrl, isCompleted } = item;
     return (
       <>
-        <TouchableOpacity activeOpacity={0.5} style={customStyles.spaceCard(isCompleted)}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          style={customStyles.spaceCard(isCompleted)}
+          onPress={(): void => onSelectSpace(item)}
+        >
           {isCompleted && (
             <View style={styles.checkIcon}>
               <Icon name={icons.checkFilled} color={theme.colors.green} />

@@ -9,9 +9,11 @@ import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
+import { SpaceDetail } from '@homzhub/common/src/domain/models/SpaceDetail';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
-import { IFFMVisitParam, IGetFeedbackParam } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
+import { IFFMVisitParam, IGetFeedbackParam, IGetSpaceDetail } from '@homzhub/common/src/domain/repositories/interfaces';
 
 export function* getOnBoardingData(): VoidGenerator {
   try {
@@ -92,6 +94,32 @@ export function* getReportSpaces(action: IFluxStandardAction<number>): VoidGener
   }
 }
 
+export function* getSpaceDetail(action: IFluxStandardAction<IGetSpaceDetail>): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getSpaceDetail, action.payload as IGetSpaceDetail);
+    const { reportSpaceUnits, spaceInspection } = response as SpaceDetail;
+    const formattedData: ILocalSpaceUpdatePayload = {
+      condition_of_space: spaceInspection?.conditionOfSpace,
+      comments: spaceInspection?.comments,
+      attachments: spaceInspection?.spaceInspectionAttachments,
+      space_inspection_units: reportSpaceUnits.map((item) => {
+        return {
+          id: item.spaceInspection?.id,
+          name: item.name,
+          comments: item.spaceInspection?.comments,
+          condition_of_space: item.spaceInspection?.conditionOfSpace,
+          attachments: item.spaceInspection?.spaceInspectionAttachments,
+        };
+      }),
+    };
+    yield put(FFMActions.setReportSpaceData(formattedData));
+    yield put(FFMActions.getSpaceDetailSuccess());
+  } catch (e) {
+    yield put(FFMActions.getSpaceDetailFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
@@ -101,4 +129,5 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.FEEDBACK, getFeedbackById);
   yield takeLatest(FFMActionTypes.GET.INSPECTION_REPORT, getInspectionReports);
   yield takeLatest(FFMActionTypes.GET.REPORT_SPACE, getReportSpaces);
+  yield takeLatest(FFMActionTypes.GET.SPACE_DETAIL, getSpaceDetail);
 }

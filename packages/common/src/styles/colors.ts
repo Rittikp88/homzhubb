@@ -102,6 +102,8 @@ const tintColors = {
   redTint4: '#FF1F00',
   redTint5: '#FB6E07',
   redTint6: '#FFBE9D',
+  redTint8: '#F99746',
+  redTint9: '#FD5C4C',
 
   // yellow
   yellowTint1: '#FCD980',

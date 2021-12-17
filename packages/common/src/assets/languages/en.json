@@ -1646,6 +1646,11 @@
     "inspectionMessage": "Start by selecting an area for the inspection. All areas need to be completed before submitting to Homzhub",
     "addNewSpace": "Add New Space",
     "enterAreaName": "Enter Name of the Area",
-    "area": "Area {{count}}"
+    "area": "Area {{count}}",
+    "addNote": "Please add notes about the area. ",
+    "fillUnitDetail": "Please fill the unit details",
+    "fillSpaceDetail": "Please fill the space details",
+    "pleaseSelect": "Please select condition and pictures for each area before completion.",
+    "addNewUnit": "Add New Unit"
   }
 }

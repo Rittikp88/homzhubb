@@ -31,7 +31,7 @@ const ReportList = ({ currentTab }: IProps): React.ReactElement => {
   const [isCancelSheet, setCancelSheet] = useState(false);
 
   const handleReportAction = (payload: IUpdateReport, report: Report): void => {
-    const { ACCEPT, REJECT, CANCEL, START } = ReportAction;
+    const { ACCEPT, REJECT, CANCEL, START, RESUME } = ReportAction;
     const { status, reportId } = payload;
     setReportId(reportId);
     switch (status) {
@@ -45,6 +45,11 @@ const ReportList = ({ currentTab }: IProps): React.ReactElement => {
       case START: {
         dispatch(FFMActions.setCurrentReport(report));
         navigate(ScreenKeys.InspectionSelection);
+        break;
+      }
+      case RESUME: {
+        dispatch(FFMActions.setCurrentReport(report));
+        navigate(ScreenKeys.Inspection);
         break;
       }
       default:

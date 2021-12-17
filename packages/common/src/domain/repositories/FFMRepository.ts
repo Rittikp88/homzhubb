@@ -6,15 +6,18 @@ import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionRe
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { OutsetCheck } from '@homzhub/common/src/domain/models/OutsetCheck';
 import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
+import { SpaceDetail } from '@homzhub/common/src/domain/models/SpaceDetail';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
   IFFMVisitParam,
   IGetFeedbackParam,
+  IGetSpaceDetail,
   IOutsetCheckParam,
   IPostFeedback,
   IReportSpaceParam,
   IUpdateReport,
+  IUpdateSpaceParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 
 const ENDPOINTS = {
@@ -30,6 +33,10 @@ const ENDPOINTS = {
   inspectionReportById: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/`,
   outsetsCheck: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/outsets/`,
   reportSpaces: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/inspection-report-spaces/`,
+  reportSpacesDetail: (reportId: number, spaceId: number): string =>
+    `v1/ffm/tasks/inspection-reports/${reportId}/inspection-report-spaces/${spaceId}/`,
+  spaceInspection: (reportId: number, spaceId: number): string =>
+    `v1/ffm/tasks/inspection-reports/${reportId}/inspection-report-spaces/${spaceId}/space-inspections/`,
 };
 
 class FFMRepository {
@@ -97,6 +104,15 @@ class FFMRepository {
 
   public createReportSpaces = async (payload: IReportSpaceParam): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.reportSpaces(payload.reportId), payload.body);
+  };
+
+  public updateSpaceDetail = async (payload: IUpdateSpaceParam): Promise<void> => {
+    return await this.apiClient.put(ENDPOINTS.spaceInspection(payload.reportId, payload.spaceId), payload.body);
+  };
+
+  public getSpaceDetail = async (payload: IGetSpaceDetail): Promise<SpaceDetail> => {
+    const response = await this.apiClient.get(ENDPOINTS.reportSpacesDetail(payload.reportId, payload.spaceId));
+    return ObjectMapper.deserialize(SpaceDetail, response);
   };
 }
 

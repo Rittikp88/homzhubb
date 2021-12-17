@@ -5,6 +5,7 @@ import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 export enum PERMISSION_TYPE {
   location = 'location',
   storage = 'storage',
+  camera = 'camera',
 }
 
 // Define platform specific permissions for each of the above type here
@@ -18,10 +19,16 @@ const PLATFORM_STORAGE_PERMISSIONS = {
   android: PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE,
 };
 
+const PLATFORM_CAMERA_PERMISSIONS = {
+  ios: PERMISSIONS.IOS.CAMERA,
+  android: PERMISSIONS.ANDROID.CAMERA,
+};
+
 // Final aggregate of all permissions grouped by Platform
 export const REQUEST_PERMISSION_TYPE = {
   [PERMISSION_TYPE.location]: PLATFORM_LOCATION_PERMISSIONS,
   [PERMISSION_TYPE.storage]: PLATFORM_STORAGE_PERMISSIONS,
+  [PERMISSION_TYPE.camera]: PLATFORM_CAMERA_PERMISSIONS,
 };
 
 class Permissions {

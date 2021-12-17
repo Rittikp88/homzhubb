@@ -9,7 +9,7 @@ import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IState } from '@homzhub/common/src/modules/interfaces';
-import { IFFMState } from '@homzhub/common/src/modules/ffm/interface';
+import { IFFMState, ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
 
 const getFFMLoaders = (state: IState): IFFMState['loaders'] => {
   return state.ffm.loaders;
@@ -108,6 +108,13 @@ const getReportSpaces = (state: IState): ReportSpace[] => {
   return ObjectMapper.deserializeArray(ReportSpace, reportSpace);
 };
 
+const getReportSpaceData = (state: IState): ILocalSpaceUpdatePayload => {
+  const {
+    ffm: { reportSpaceData },
+  } = state;
+  return reportSpaceData;
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
@@ -121,4 +128,5 @@ export const FFMSelector = {
   getInspectionReport,
   getCurrentReport,
   getReportSpaces,
+  getReportSpaceData,
 };

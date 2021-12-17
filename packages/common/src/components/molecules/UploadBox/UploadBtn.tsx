@@ -14,13 +14,25 @@ interface IProps {
   subHeaderStyle?: StyleProp<ViewStyle>;
   iconSize?: number;
   iconColor?: string;
+  iconStyle?: StyleProp<ViewStyle>;
 }
 
 export const UploadBtn = <T extends IProps>(props: T): React.ReactElement => {
-  const { icon, header, subHeader, onPress, containerStyle, headerStyle, subHeaderStyle, iconSize, iconColor } = props;
+  const {
+    icon,
+    header,
+    subHeader,
+    onPress,
+    containerStyle,
+    headerStyle,
+    subHeaderStyle,
+    iconSize,
+    iconColor,
+    iconStyle,
+  } = props;
   return (
     <TouchableOpacity style={[styles.container, containerStyle]} onPress={onPress}>
-      <View style={styles.icon}>
+      <View style={[styles.icon, iconStyle]}>
         <Icon name={icon} size={iconSize ?? 40} color={iconColor ?? theme.colors.primaryColor} />
       </View>
       <View style={styles.headerView}>

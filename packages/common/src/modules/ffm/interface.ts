@@ -19,6 +19,7 @@ export interface IFFMState {
   inspectionReport: IInspectionReport | null;
   currentReport: Report | null;
   reportSpace: IReportSpace[];
+  reportSpaceData: ILocalSpaceUpdatePayload;
   loaders: {
     onBoarding: boolean;
     roles: boolean;
@@ -28,5 +29,26 @@ export interface IFFMState {
     feedback: boolean;
     inspectionReport: boolean;
     reportSpace: boolean;
+    spaceDetail: boolean;
   };
+}
+
+export interface ISpaceAttachment {
+  id: number;
+  attachmentUrl: string;
+}
+
+export interface ILocalSpaceUnitPayload {
+  id?: number | null;
+  name?: string;
+  condition_of_space?: number;
+  attachments?: ISpaceAttachment[];
+  comments?: string;
+}
+
+export interface ILocalSpaceUpdatePayload {
+  condition_of_space?: number;
+  attachments?: ISpaceAttachment[];
+  comments?: string;
+  space_inspection_units?: ILocalSpaceUnitPayload[];
 }

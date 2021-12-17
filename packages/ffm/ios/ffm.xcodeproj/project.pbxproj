@@ -54,6 +54,7 @@
 		EC9E73D202507B74573C087F /* libPods-ffm-ffmTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A71551D966D33D7076636B09 /* libPods-ffm-ffmTests.a */; };
 		EDF1FDA0AFBE9C0314B29C28 /* libPods-ffm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DB3F24A3B0A6A4EBC8C1F3 /* libPods-ffm.a */; };
 		F96494953A6F4C2DB93C8F5C /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97923CDF4D5140799704EDAD /* OpenSans-Light.ttf */; };
+		0823D8B2D129429A9638F373 /* fonts.ts in Resources */ = {isa = PBXBuildFile; fileRef = 1B5DAC3D7854494396A5946F /* fonts.ts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,6 +126,7 @@
 		E8DD28472768A1A7009CF16E /* AIRGoogleMapCalloutManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AIRGoogleMapCalloutManager.m; path = "../../../node_modules/react-native-maps/lib/ios/AirGoogleMaps/AIRGoogleMapCalloutManager.m"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FB8F30997FABC66641A2EF50 /* Pods-ffm-ffmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ffm-ffmTests.release.xcconfig"; path = "Target Support Files/Pods-ffm-ffmTests/Pods-ffm-ffmTests.release.xcconfig"; sourceTree = "<group>"; };
+		1B5DAC3D7854494396A5946F /* fonts.ts */ = {isa = PBXFileReference; name = "fonts.ts"; path = "../../common/src/assets/fonts/fonts.ts"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,6 +278,7 @@
 				14C9A5212FEE4C42B3E87D80 /* Raleway-Bold.ttf */,
 				3AB1378950764534936D002D /* Raleway-Light.ttf */,
 				38BA9B7705504C34A2B95522 /* Raleway-Medium.ttf */,
+				1B5DAC3D7854494396A5946F /* fonts.ts */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				E09D05FF98AB4C3494F214E4 /* Raleway-Bold.ttf in Resources */,
 				C626D2198F5546CE9A1AEFFD /* Raleway-Light.ttf in Resources */,
 				41FCF41F76E24E2AAB3035EA /* Raleway-Medium.ttf in Resources */,
+				0823D8B2D129429A9638F373 /* fonts.ts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

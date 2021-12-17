@@ -1289,3 +1289,29 @@ export interface IReportSpaceParam {
   reportId: number;
   body: string[];
 }
+
+export interface ISpaceUnitUpdatePayload {
+  id?: number | null;
+  name?: string;
+  condition_of_space?: number;
+  attachments?: number[];
+  comments?: string;
+}
+
+export interface ISpaceUpdatePayload {
+  condition_of_space?: number;
+  attachments?: number[];
+  comments?: string;
+  space_inspection_units: ISpaceUnitUpdatePayload[];
+}
+
+export interface IUpdateSpaceParam {
+  reportId: number;
+  spaceId: number;
+  body: ISpaceUpdatePayload;
+}
+
+export interface IGetSpaceDetail {
+  reportId: number;
+  spaceId: number;
+}

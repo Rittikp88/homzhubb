@@ -6,8 +6,14 @@ import { IOnBoarding, OnBoarding } from '@homzhub/common/src/domain/models/OnBoa
 import { Report } from '@homzhub/common/src/domain/models/Report';
 import { IReportSpace, ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { IUnit, Unit } from '@homzhub/common/src/domain/models/Unit';
-import { IFFMVisitParam, IGetFeedbackParam, IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IFFMVisitParam,
+  IGetFeedbackParam,
+  IGetSpaceDetail,
+  IWorkLocation,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
+import { ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
 
 const actionTypePrefix = 'FFM/';
 export const FFMActionTypes = {
@@ -36,15 +42,20 @@ export const FFMActionTypes = {
     REPORT_SPACE: `${actionTypePrefix}REPORT_SPACE`,
     REPORT_SPACE_SUCCESS: `${actionTypePrefix}REPORT_SPACE_SUCCESS`,
     REPORT_SPACE_FAILURE: `${actionTypePrefix}REPORT_SPACE_FAILURE`,
+    SPACE_DETAIL: `${actionTypePrefix}SPACE_DETAIL`,
+    SPACE_DETAIL_SUCCESS: `${actionTypePrefix}SPACE_DETAIL_SUCCESS`,
+    SPACE_DETAIL_FAILURE: `${actionTypePrefix}SPACE_DETAIL_FAILURE`,
   },
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
     WORK_LOCATION: `${actionTypePrefix}WORK_LOCATION`,
     CURRENT_REPORT: `${actionTypePrefix}CURRENT_REPORT`,
+    REPORT_SPACE_DATA: `${actionTypePrefix}REPORT_SPACE_DATA`,
   },
   CLEAR: {
     FEEDBACK_DATA: `${actionTypePrefix}FEEDBACK_DATA`,
     SELECTED_REPORT: `${actionTypePrefix}SELECTED_REPORT`,
+    SPACE_DATA: `${actionTypePrefix}SPACE_DATA`,
   },
 };
 
@@ -183,6 +194,28 @@ const getReportSpaceFailure = (): IFluxStandardAction => ({
   type: FFMActionTypes.GET.REPORT_SPACE_FAILURE,
 });
 
+const setReportSpaceData = (payload: ILocalSpaceUpdatePayload): IFluxStandardAction<ILocalSpaceUpdatePayload> => ({
+  type: FFMActionTypes.SET.REPORT_SPACE_DATA,
+  payload,
+});
+
+const clearSpaceData = (): IFluxStandardAction => ({
+  type: FFMActionTypes.CLEAR.SPACE_DATA,
+});
+
+const getSpaceDetail = (payload: IGetSpaceDetail): IFluxStandardAction<IGetSpaceDetail> => ({
+  type: FFMActionTypes.GET.SPACE_DETAIL,
+  payload,
+});
+
+const getSpaceDetailSuccess = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.SPACE_DETAIL_SUCCESS,
+});
+
+const getSpaceDetailFailure = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.SPACE_DETAIL_FAILURE,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
@@ -197,7 +230,8 @@ export type FFMActionPayloadTypes =
   | IFeedback
   | IInspectionReport
   | Report
-  | IReportSpace[];
+  | IReportSpace[]
+  | ILocalSpaceUpdatePayload;
 
 export const FFMActions = {
   getOnBoardingData,
@@ -229,4 +263,9 @@ export const FFMActions = {
   getReportSpace,
   getReportSpaceSuccess,
   getReportSpaceFailure,
+  setReportSpaceData,
+  clearSpaceData,
+  getSpaceDetail,
+  getSpaceDetailSuccess,
+  getSpaceDetailFailure,
 };
