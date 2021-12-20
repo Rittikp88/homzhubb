@@ -4,6 +4,12 @@ import {
   SpaceInspectionAttachment,
 } from '@homzhub/common/src/domain/models/SpaceInspectionAttachment';
 
+export enum Condition {
+  GOOD = 'GOOD',
+  OK = 'OK',
+  BROKEN = 'BROKEN',
+}
+
 export interface ISpaceInspection {
   id: number;
   condition_of_space: number;
@@ -39,5 +45,15 @@ export class SpaceInspection {
 
   get spaceInspectionAttachments(): SpaceInspectionAttachment[] {
     return this._spaceInspectionAttachments;
+  }
+
+  get spaceCondition(): Condition {
+    if (this.conditionOfSpace > 1 && this.conditionOfSpace <= 3) {
+      return Condition.OK;
+    }
+    if (this.conditionOfSpace > 3) {
+      return Condition.GOOD;
+    }
+    return Condition.BROKEN;
   }
 }

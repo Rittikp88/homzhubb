@@ -13,20 +13,35 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label } from '@homzhub/common/src/components/atoms/Text';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
+import InspectionReport from '@homzhub/ffm/src/screens/Reports/Inspection/InspectionReport';
 import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
+import { SpaceInspection } from '@homzhub/common/src/domain/models/SpaceInspection';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 interface IProps {
-  onSelectSpace: (space: ReportSpace) => void;
+  onSelectSpace: (space: ReportSpace, fromPreview?: boolean) => void;
+  onSetInspection: (inspection: SpaceInspection) => void;
+  onSubmit: () => void;
+  onGoBack: () => void;
+  isPreview?: boolean;
+  isCompletedReport?: boolean;
 }
 
-const SpaceList = ({ onSelectSpace }: IProps): React.ReactElement => {
+const SpaceList = ({
+  onSelectSpace,
+  onSetInspection,
+  onSubmit,
+  onGoBack,
+  isPreview = false,
+  isCompletedReport = false,
+}: IProps): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const spaces = useSelector(FFMSelector.getReportSpaces);
   const report = useSelector(FFMSelector.getCurrentReport);
   const [canCreateSpace, setSpaceCreation] = useState(false);
   const [spacesText, setSpaces] = useState(['']);
+  const [isFinal, setFinalReport] = useState(false);
 
   const isAllDone = spaces.filter((item) => item.isCompleted).length === spaces.length;
 
@@ -45,6 +60,15 @@ const SpaceList = ({ onSelectSpace }: IProps): React.ReactElement => {
   const onCloseSheet = (): void => {
     setSpaceCreation(false);
     setSpaces(['']);
+  };
+
+  const onPreview = (): void => {
+    setFinalReport(true);
+  };
+
+  const onEditSpace = (id: number): void => {
+    const selectedSpace = spaces.filter((item) => item.id === id)[0];
+    onSelectSpace(selectedSpace, true);
   };
 
   const onSave = (): void => {
@@ -89,6 +113,18 @@ const SpaceList = ({ onSelectSpace }: IProps): React.ReactElement => {
     );
   };
 
+  if (isFinal || isPreview || isCompletedReport) {
+    return (
+      <InspectionReport
+        onEdit={onEditSpace}
+        onSubmit={onSubmit}
+        onGoBack={onGoBack}
+        onSetInspection={onSetInspection}
+        isCompletedReport={isCompletedReport}
+      />
+    );
+  }
+
   return (
     <View>
       <Label type="large" style={styles.header}>
@@ -98,7 +134,14 @@ const SpaceList = ({ onSelectSpace }: IProps): React.ReactElement => {
       <TouchableOpacity style={styles.addSpace} onPress={(): void => setSpaceCreation(true)}>
         <Icon name={icons.circularPlus} color={theme.colors.primaryColor} size={25} />
       </TouchableOpacity>
-      {isAllDone && <Button type="primary" title={t('common:preview')} containerStyle={styles.buttonContainer} />}
+      {isAllDone && (
+        <Button
+          type="primary"
+          title={t('common:preview')}
+          onPress={onPreview}
+          containerStyle={styles.buttonContainer}
+        />
+      )}
       <BottomSheet
         visible={canCreateSpace}
         headerTitle={t('addNewSpace')}

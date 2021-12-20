@@ -75,3 +75,7 @@ export interface IVisitDetailParam {
 export interface ILocationParam {
   placeData: GooglePlaceDetail;
 }
+
+export interface IInspectionParam {
+  isCompleted: boolean;
+}

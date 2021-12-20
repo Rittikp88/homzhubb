@@ -4,13 +4,13 @@ import Inspection from '@homzhub/ffm/src/screens/Reports/Inspection';
 import InspectionSelection from '@homzhub/ffm/src/screens/Reports/InspectionSelection';
 import ReportDashboard from '@homzhub/ffm/src/screens/Reports';
 import ReportLocationMap from '@homzhub/ffm/src/screens/Reports/ReportLocationMap';
-import { ILocationParam, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
+import { IInspectionParam, ILocationParam, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 type ReportStackParamList = {
   [ScreenKeys.ReportDashboard]: undefined;
   [ScreenKeys.InspectionSelection]: undefined;
   [ScreenKeys.ReportLocationMap]: ILocationParam;
-  [ScreenKeys.Inspection]: undefined;
+  [ScreenKeys.Inspection]: undefined | IInspectionParam;
 };
 
 const ReportStackNavigator = createStackNavigator<ReportStackParamList>();

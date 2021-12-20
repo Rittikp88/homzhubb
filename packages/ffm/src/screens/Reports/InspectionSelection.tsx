@@ -15,8 +15,13 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
-import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import {
+  GooglePlaceDetail,
+  GooglePlaceData,
+  GoogleGeocodeData,
+} from '@homzhub/common/src/services/GooglePlaces/interfaces';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
+import { GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { PERMISSION_TYPE } from '@homzhub/common/src/constants/PermissionTypes';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 

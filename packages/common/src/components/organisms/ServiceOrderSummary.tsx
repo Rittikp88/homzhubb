@@ -295,8 +295,8 @@ const ServiceOrderSummary = ({ invoiceId, onSuccess, isLabelRequired = false }: 
               initiatePayment={initiatePayment}
               paymentApi={onOrderPlaced}
               isVerificationRequired
-            />)
-          )}
+            />
+          ))}
         <View style={styles.secureView}>
           <Icon name={icons.badge} color={theme.colors.darkTint7} size={28} />
           <Label type="large" textType="semiBold" style={styles.secureText}>

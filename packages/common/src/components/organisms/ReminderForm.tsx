@@ -554,7 +554,6 @@ const ReminderForm = (props: IOwnProp): React.ReactElement => {
     );
   };
 
-
   return (
     <Formik
       initialValues={{ ...reminderFormData }}

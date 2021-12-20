@@ -22,7 +22,6 @@ import DueConfirmPopover from '@homzhub/web/src/screens/financials/components/Du
 import DuesOrderSummary from '@homzhub/web/src/screens/financials/components/DuesOrderSummary';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 
-
 interface IProps {
   onPressDueActions: () => void;
 }

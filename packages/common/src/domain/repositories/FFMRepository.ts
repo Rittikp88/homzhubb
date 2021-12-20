@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
+import { InspectionFinalReport } from '@homzhub/common/src/domain/models/InspectionFinalReport';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { OutsetCheck } from '@homzhub/common/src/domain/models/OutsetCheck';
@@ -37,6 +38,7 @@ const ENDPOINTS = {
     `v1/ffm/tasks/inspection-reports/${reportId}/inspection-report-spaces/${spaceId}/`,
   spaceInspection: (reportId: number, spaceId: number): string =>
     `v1/ffm/tasks/inspection-reports/${reportId}/inspection-report-spaces/${spaceId}/space-inspections/`,
+  finalReport: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/final-report/`,
 };
 
 class FFMRepository {
@@ -113,6 +115,11 @@ class FFMRepository {
   public getSpaceDetail = async (payload: IGetSpaceDetail): Promise<SpaceDetail> => {
     const response = await this.apiClient.get(ENDPOINTS.reportSpacesDetail(payload.reportId, payload.spaceId));
     return ObjectMapper.deserialize(SpaceDetail, response);
+  };
+
+  public getFinalReport = async (payload: number): Promise<InspectionFinalReport> => {
+    const response = await this.apiClient.get(ENDPOINTS.finalReport(payload));
+    return ObjectMapper.deserialize(InspectionFinalReport, response);
   };
 }
 

@@ -18,6 +18,7 @@ interface ICarouselProps<T> {
   testID?: string;
   extraData?: number[];
   onLoadMore?: () => void;
+  hasParallaxImages?: boolean;
 }
 
 const ACTIVE_SLIDE_OFFSET = 20;
@@ -38,6 +39,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
       itemWidth = theme.viewport.width - 30,
       extraData,
       onLoadMore,
+      hasParallaxImages = false,
     } = this.props;
 
     return (
@@ -49,6 +51,7 @@ export class SnapCarousel<T> extends React.PureComponent<ICarouselProps<T>> {
         sliderWidth={sliderWidth}
         itemWidth={itemWidth}
         renderItem={this.renderItem}
+        hasParallaxImages={hasParallaxImages}
         initialNumToRender={initialNumToRender}
         activeSlideOffset={ACTIVE_SLIDE_OFFSET}
         contentContainerCustomStyle={contentStyle}

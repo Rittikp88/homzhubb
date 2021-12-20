@@ -31,17 +31,17 @@ export const TransactionField = (props: ITransactionProp): React.ReactElement =>
         </Typography>
         {rightNode}
       </View>
-      {options.length ?
-        (<FormDropdown
+      {options.length ? (
+        <FormDropdown
           name={name}
           placeholder={t('assetFinancial:addBankAccount')}
           options={options}
           formProps={formProps}
           listHeight={300}
         />
-        ) : (
-          <View />
-        )}
+      ) : (
+        <View />
+      )}
     </WithFieldError>
   );
 };

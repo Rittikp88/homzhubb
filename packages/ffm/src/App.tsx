@@ -26,10 +26,10 @@ const App: () => React.ReactElement = () => {
 
   const bootUp = async (): Promise<void> => {
     store.dispatch(CommonActions.getCountries());
+    LinkingService.firebaseInit();
     await Promise.all([
       StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE),
       StorageService.get<IUserTokens>(StorageKeys.USER),
-      LinkingService.firebaseInit(),
       NotificationService.init(),
       AnalyticsService.initMixpanel(),
     ]).then((res: any) => {

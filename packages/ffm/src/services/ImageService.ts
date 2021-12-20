@@ -61,14 +61,11 @@ class ImageService {
       if (e.code !== 'E_PICKER_CANCELLED') {
         AlertHelper.error({ message: e.message });
       }
-
-      onClose();
     }
   };
 
   public handleCameraUpload = async (props: IUploadImage): Promise<void> => {
     const { selectedImages, onUploadImage, setLoading, onClose } = props;
-    // TODO: (Shikha) - Check Camera functionality
     const permissionCheck = await PermissionsService.checkPermission(PERMISSION_TYPE.camera);
 
     try {
@@ -91,12 +88,11 @@ class ImageService {
 
         try {
           const response = await AttachmentService.uploadImage(formData, AttachmentType.INSPECTION_REPORT_IMAGES);
-
           const { data } = response;
-          const localSelectedImages: ISpaceAttachment[] = [...selectedImages];
+          const localSelectedImages: ISpaceAttachment[] = selectedImages;
           localSelectedImages.push({
-            id: data.id,
-            attachmentUrl: data.link,
+            id: data[0].id,
+            attachmentUrl: data[0].link,
           });
           setLoading(false);
           onUploadImage(localSelectedImages);
@@ -111,8 +107,6 @@ class ImageService {
       if (e.code !== 'E_PICKER_CANCELLED') {
         AlertHelper.error({ message: e.message });
       }
-
-      onClose();
     }
   };
 }
