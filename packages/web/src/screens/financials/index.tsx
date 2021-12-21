@@ -7,6 +7,7 @@ import { uniqBy } from 'lodash';
 import { bindActionCreators, Dispatch } from 'redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
+import { useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { LedgerRepository } from '@homzhub/common/src/domain/repositories/LedgerRepository';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { FinancialSelectors } from '@homzhub/common/src/modules/financials/selectors';
@@ -26,6 +27,7 @@ import { Currency } from '@homzhub/common/src/domain/models/Currency';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ITransactionParams } from '@homzhub/common/src/domain/repositories/interfaces';
+import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
 
 interface IStateToProps {
   currency: Currency;
@@ -160,9 +162,11 @@ const Financials: FC<IProps> = (props: IProps) => {
     });
   };
 
+  const isTabUp = useUp(deviceBreakpoint.TABLET);
+
   return (
     <View style={styles.container}>
-      <View style={styles.containerFilters}>
+      <View style={[styles.containerFilters, isTabUp && styles.containerFiltersTabUp]}>
         <PropertyByCountryDropdown
           selectedProperty={selectedProperty}
           selectedCountry={selectedCountry}
@@ -183,6 +187,7 @@ const Financials: FC<IProps> = (props: IProps) => {
           popupRef={popupRef}
           onCloseModal={onCloseModal}
           financialsActionType={financialsActionType}
+          setFinancialsActionType={setFinancialsActionType}
           currency={currency}
           assets={assets}
           isEditRecord={isEditRecord}
@@ -248,6 +253,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     paddingBottom: 20,
     minHeight: 40,
+  },
+  containerFiltersTabUp: {
+    minHeight: 70,
   },
   dropdownContainerStyle: {
     flexDirection: 'row-reverse',

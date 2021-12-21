@@ -12,11 +12,11 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 
 interface IProps {
   popupRef: React.MutableRefObject<PopupActions | null>;
-  isOpen?: boolean;
   onOpenModal: () => void;
   onCloseModal: () => void;
   children: React.ReactElement;
   title: string;
+  isOpen?: boolean;
   onSuccessCallback?: (message?: string) => void;
   contentStyle?: StyleProp<ViewStyle>;
 }

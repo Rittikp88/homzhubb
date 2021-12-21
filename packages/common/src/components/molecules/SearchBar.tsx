@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleProp, StyleSheet, TextInput, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, TextInput, TextStyle, View, ViewStyle } from 'react-native';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
@@ -10,13 +10,14 @@ interface IProps {
   updateValue: (value: string) => void;
   containerStyle?: StyleProp<ViewStyle>;
   searchBarStyle?: StyleProp<ViewStyle>;
+  textFieldStyle?: StyleProp<TextStyle>;
   iconStyle?: StyleProp<ViewStyle>;
   testID?: string;
 }
 
 export class SearchBar extends React.PureComponent<IProps> {
   public render = (): React.ReactNode => {
-    const { placeholder, value, containerStyle = {}, searchBarStyle = {}, iconStyle } = this.props;
+    const { placeholder, value, containerStyle = {}, searchBarStyle = {}, iconStyle, textFieldStyle = {} } = this.props;
 
     return (
       <View style={[styles.container, containerStyle]}>
@@ -30,7 +31,7 @@ export class SearchBar extends React.PureComponent<IProps> {
             testID="btnSearch"
           />
           <TextInput
-            style={styles.textInput}
+            style={[styles.textInput, textFieldStyle]}
             value={value}
             placeholder={placeholder}
             placeholderTextColor={theme.colors.darkTint7}

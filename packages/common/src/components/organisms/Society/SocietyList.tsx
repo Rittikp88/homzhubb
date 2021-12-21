@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { PropertyPaymentSelector } from '@homzhub/common/src/modules/propertyPayment/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
@@ -28,7 +29,7 @@ const SocietyList = ({
   const societies = useSelector(PropertyPaymentSelector.getSocieties);
   const asset = useSelector(PropertyPaymentSelector.getSelectedAsset);
   const [searchValue, setSearchValue] = useState('');
-
+  const isWeb = PlatformUtils.isWeb();
   const getFormattedSocieties = (): Society[] => {
     if (searchValue) {
       const response = societies.filter(
@@ -68,6 +69,7 @@ const SocietyList = ({
           containerStyle={styles.searchContainer}
           searchBarStyle={styles.searchBar}
           iconStyle={styles.icon}
+          textFieldStyle={[isWeb && styles.textFieldWeb]}
         />
       )}
       {getFormattedSocieties().length > 0 ? (
@@ -106,6 +108,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginEnd: 0,
+  },
+  textFieldWeb: {
+    paddingLeft: 32,
   },
   emptyContainer: {
     marginVertical: 80,

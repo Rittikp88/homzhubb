@@ -4,7 +4,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { uniqBy } from 'lodash';
 import { PopupActions, PopupProps } from 'reactjs-popup/dist/types';
-import { useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useDown, useUp } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { NavigationService } from '@homzhub/web/src/services/NavigationService';
 import { AnalyticsService } from '@homzhub/common/src/services/Analytics/AnalyticsService';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
@@ -260,6 +260,16 @@ const FinancialsActionGrp: FC = () => {
         iconSize={25}
         textStyle={styles.buttonTextStyle}
       />
+      <Button
+        type="secondary"
+        containerStyle={[styles.buttonItem, styles.buttonSecondary]}
+        onPress={(): void => onPressAction(FinancialsActions.PropertyPayment_SelectProperties)}
+        icon={icons.propertyPayment}
+        title={t('propertyPayment:propertyPayment')}
+        iconColor={theme.colors.primaryColor}
+        iconSize={25}
+        textStyle={styles.buttonTextStyle}
+      />
     </View>
   );
 };
@@ -334,6 +344,8 @@ export const NavigationInfo: FC = () => {
     }
   };
 
+  const isTabUp = useUp(deviceBreakpoint.TABLET);
+
   return (
     <View>
       <div className="navigation-bg" />
@@ -346,7 +358,7 @@ export const NavigationInfo: FC = () => {
             <BreadCrumbs />
           </View>
         </View>
-        {renderNavInfo()}
+        <View style={[!isTabUp && styles.infoGrpTabDown]}>{renderNavInfo()}</View>
       </View>
     </View>
   );
@@ -453,6 +465,10 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  infoGrpTabDown: {
+    width: '100vw',
+    overflowX: 'auto',
   },
 });
 

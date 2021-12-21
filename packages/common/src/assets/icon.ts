@@ -200,6 +200,7 @@ export const icons = {
   water: 'water',
   gas: 'gas',
   circularAttach: 'circular-attach',
+  propertyPayment: 'propertyPayment',
 
   // COMMUTE
   train: 'train',

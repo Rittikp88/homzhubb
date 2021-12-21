@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
@@ -15,6 +16,7 @@ interface ISocietyCardProp {
 
 const SocietyInfoCard = ({ society, renderMenu, onPressInfo }: ISocietyCardProp): React.ReactElement => {
   const { t } = useTranslation();
+  const isWeb = PlatformUtils.isWeb();
   const {
     societyBankInfo: { beneficiaryName, ifscCode, accountNumber, isVerified },
   } = society;
@@ -26,6 +28,7 @@ const SocietyInfoCard = ({ society, renderMenu, onPressInfo }: ISocietyCardProp)
       { label: t('assetFinancial:ifscCode'), value: ifscCode },
     ];
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -46,7 +49,7 @@ const SocietyInfoCard = ({ society, renderMenu, onPressInfo }: ISocietyCardProp)
         </Typography>
         {!isVerified && onPressInfo && (
           <TouchableOpacity onPress={onPressInfo}>
-            <Icon name={icons.circularFilledInfo} size={16} color={theme.colors.error} />
+            <Icon name={icons.circularFilledInfo} size={isWeb ? 20 : 16} color={theme.colors.error} />
           </TouchableOpacity>
         )}
       </Typography>
