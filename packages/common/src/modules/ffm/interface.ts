@@ -20,6 +20,7 @@ export interface IFFMState {
   currentReport: Report | null;
   reportSpace: IReportSpace[];
   reportSpaceData: ILocalSpaceUpdatePayload;
+  isFromDeeplink: boolean;
   loaders: {
     onBoarding: boolean;
     roles: boolean;

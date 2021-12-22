@@ -12,6 +12,8 @@ interface IProps {
   serviceTickets?: number;
   dues?: number;
   messages?: number;
+  jobs?: number;
+  isFFM?: boolean;
   onPressNotification?: () => void;
   onPressServiceTickets?: () => void;
   onPressDue?: () => void;
@@ -34,6 +36,8 @@ const AssetSummary = (props: IProps): React.ReactElement => {
     serviceTickets = 0,
     dues = 0,
     messages = 0,
+    jobs = 0,
+    isFFM = false,
     containerStyle,
     onPressDue,
     onPressNotification,
@@ -62,9 +66,9 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       {
         icon: icons.chat,
         color: theme.colors.blue,
-        title: t('moreSettings:messagesText'),
+        title: isFFM ? t('Jobs') : t('moreSettings:messagesText'),
         onPress: onPressMessages,
-        count: messages,
+        count: isFFM ? jobs : messages,
       },
     ]);
   }, [

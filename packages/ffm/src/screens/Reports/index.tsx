@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
@@ -17,6 +17,7 @@ const ReportDashboard = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const { inspectionReport } = useSelector(FFMSelector.getFFMLoaders);
+  const isFromDeeplink = useSelector(FFMSelector.getDeeplinkData);
   const [currentIndex, setIndex] = useState(0);
 
   useFocusEffect(
@@ -26,9 +27,17 @@ const ReportDashboard = (): React.ReactElement => {
     }, [])
   );
 
+  useEffect(() => {
+    if (isFromDeeplink) {
+      setIndex(1);
+      dispatch(FFMActions.getInspectionReport(Tabs.ONGOING.toLocaleUpperCase()));
+    }
+  }, [isFromDeeplink]);
+
   const onIndexChange = (value: number): void => {
     const { key } = FFMVisitRoutes[value];
     setIndex(value);
+    dispatch(FFMActions.setDeeplinkData(false));
     dispatch(FFMActions.getInspectionReport(key.toLocaleUpperCase()));
   };
 
@@ -61,6 +70,7 @@ const ReportDashboard = (): React.ReactElement => {
             navigationState: { index, routes },
           } = props;
           const currentRoute = routes[index];
+
           return (
             <TabBar
               {...props}

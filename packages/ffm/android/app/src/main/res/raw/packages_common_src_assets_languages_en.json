@@ -12,6 +12,7 @@
     "header": "Simplifying Real Estate for Owners",
     "getStarted": "Get Started",
     "newAroundHere": "New around here?",
+    "previous": "Previous",
     "next": "Next",
     "cancel": "Cancel",
     "gotIt": "Got It",
@@ -1650,6 +1651,10 @@
     "fillUnitDetail": "Please fill the unit details",
     "fillSpaceDetail": "Please fill the space details",
     "pleaseSelect": "Please select condition and pictures for each area before completion.",
-    "addNewUnit": "Add New Unit"
+    "addNewUnit": "Add New Unit",
+    "backToReports": "Back to Reports",
+    "submitInspection": "Submit Property Inspection",
+    "inspectionSentToReview": "Property inspection sent to Homzhub for review",
+    "inspectionReview": "We will review the inspection and revert with estimates in the required areas."
   }
 }

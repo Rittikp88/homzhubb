@@ -115,6 +115,13 @@ const getReportSpaceData = (state: IState): ILocalSpaceUpdatePayload => {
   return reportSpaceData;
 };
 
+const getDeeplinkData = (state: IState): boolean => {
+  const {
+    ffm: { isFromDeeplink },
+  } = state;
+  return isFromDeeplink;
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
@@ -129,4 +136,5 @@ export const FFMSelector = {
   getCurrentReport,
   getReportSpaces,
   getReportSpaceData,
+  getDeeplinkData,
 };

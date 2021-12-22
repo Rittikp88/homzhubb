@@ -29,6 +29,7 @@ export const initialFFMState: IFFMState = {
   inspectionReport: null,
   currentReport: null,
   reportSpace: [],
+  isFromDeeplink: false,
   reportSpaceData: initialSpaceData,
   loaders: {
     onBoarding: false,
@@ -221,6 +222,11 @@ export const ffmReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['spaceDetail']: false },
+      };
+    case FFMActionTypes.SET.DEEPLINK_DATA:
+      return {
+        ...state,
+        ['isFromDeeplink']: action.payload as boolean,
       };
     default:
       return {

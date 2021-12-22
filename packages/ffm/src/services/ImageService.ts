@@ -73,6 +73,8 @@ class ImageService {
         // @ts-ignore
         const image: ImagePickerResponse = await ImagePicker.openCamera({
           multiple: true,
+          compressImageMaxHeight: 400,
+          compressImageMaxWidth: 400,
           compressImageQuality: PlatformUtils.isAndroid() ? 1 : 0.8,
           includeBase64: true,
           mediaType: 'photo',
@@ -90,12 +92,14 @@ class ImageService {
           const response = await AttachmentService.uploadImage(formData, AttachmentType.INSPECTION_REPORT_IMAGES);
           const { data } = response;
           const localSelectedImages: ISpaceAttachment[] = selectedImages;
-          localSelectedImages.push({
-            id: data[0].id,
-            attachmentUrl: data[0].link,
-          });
-          setLoading(false);
-          onUploadImage(localSelectedImages);
+          if (data) {
+            localSelectedImages.push({
+              id: data[0].id,
+              attachmentUrl: data[0].link,
+            });
+            setLoading(false);
+            onUploadImage(localSelectedImages);
+          }
         } catch (e) {
           setLoading(false);
           AlertHelper.error({ message: e.message });

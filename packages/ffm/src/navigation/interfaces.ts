@@ -33,6 +33,9 @@ export enum ScreenKeys {
   Supplies = 'Supplies',
   More = 'More',
 
+  // Dashboard
+  DashboardScreen = 'DashboardScreen',
+
   // Visit
   SiteVisitDashboard = 'SiteVisitDashboard',
   VisitForm = 'VisitForm',

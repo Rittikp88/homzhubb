@@ -51,6 +51,7 @@ export const FFMActionTypes = {
     WORK_LOCATION: `${actionTypePrefix}WORK_LOCATION`,
     CURRENT_REPORT: `${actionTypePrefix}CURRENT_REPORT`,
     REPORT_SPACE_DATA: `${actionTypePrefix}REPORT_SPACE_DATA`,
+    DEEPLINK_DATA: `${actionTypePrefix}DEEPLINK_DATA`,
   },
   CLEAR: {
     FEEDBACK_DATA: `${actionTypePrefix}FEEDBACK_DATA`,
@@ -216,9 +217,15 @@ const getSpaceDetailFailure = (): IFluxStandardAction => ({
   type: FFMActionTypes.GET.SPACE_DETAIL_FAILURE,
 });
 
+const setDeeplinkData = (payload: boolean): IFluxStandardAction<boolean> => ({
+  type: FFMActionTypes.SET.DEEPLINK_DATA,
+  payload,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
+  | boolean
   | IUnit[]
   | IOnBoarding[]
   | Unit
@@ -268,4 +275,5 @@ export const FFMActions = {
   getSpaceDetail,
   getSpaceDetailSuccess,
   getSpaceDetailFailure,
+  setDeeplinkData,
 };

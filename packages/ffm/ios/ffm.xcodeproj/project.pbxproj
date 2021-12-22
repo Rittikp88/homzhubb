@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* ffmTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ffmTests.m */; };
+		0823D8B2D129429A9638F373 /* fonts.ts in Resources */ = {isa = PBXBuildFile; fileRef = 1B5DAC3D7854494396A5946F /* fonts.ts */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
@@ -54,7 +55,6 @@
 		EC9E73D202507B74573C087F /* libPods-ffm-ffmTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A71551D966D33D7076636B09 /* libPods-ffm-ffmTests.a */; };
 		EDF1FDA0AFBE9C0314B29C28 /* libPods-ffm.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4DB3F24A3B0A6A4EBC8C1F3 /* libPods-ffm.a */; };
 		F96494953A6F4C2DB93C8F5C /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 97923CDF4D5140799704EDAD /* OpenSans-Light.ttf */; };
-		0823D8B2D129429A9638F373 /* fonts.ts in Resources */ = {isa = PBXBuildFile; fileRef = 1B5DAC3D7854494396A5946F /* fonts.ts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +81,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ffm/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ffm/main.m; sourceTree = "<group>"; };
 		14C9A5212FEE4C42B3E87D80 /* Raleway-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Bold.ttf"; path = "../../common/src/assets/fonts/Raleway-Bold.ttf"; sourceTree = "<group>"; };
+		1B5DAC3D7854494396A5946F /* fonts.ts */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = fonts.ts; path = ../../common/src/assets/fonts/fonts.ts; sourceTree = "<group>"; };
 		3102F690B71FF41DB1511349 /* Pods-ffm.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ffm.release.xcconfig"; path = "Target Support Files/Pods-ffm/Pods-ffm.release.xcconfig"; sourceTree = "<group>"; };
 		38602F7AFB424E6994BCDFD8 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "OpenSans-SemiBold.ttf"; path = "../../common/src/assets/fonts/OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		38BA9B7705504C34A2B95522 /* Raleway-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Raleway-Medium.ttf"; path = "../../common/src/assets/fonts/Raleway-Medium.ttf"; sourceTree = "<group>"; };
@@ -126,7 +127,6 @@
 		E8DD28472768A1A7009CF16E /* AIRGoogleMapCalloutManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AIRGoogleMapCalloutManager.m; path = "../../../node_modules/react-native-maps/lib/ios/AirGoogleMaps/AIRGoogleMapCalloutManager.m"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		FB8F30997FABC66641A2EF50 /* Pods-ffm-ffmTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ffm-ffmTests.release.xcconfig"; path = "Target Support Files/Pods-ffm-ffmTests/Pods-ffm-ffmTests.release.xcconfig"; sourceTree = "<group>"; };
-		1B5DAC3D7854494396A5946F /* fonts.ts */ = {isa = PBXFileReference; name = "fonts.ts"; path = "../../common/src/assets/fonts/fonts.ts"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -635,7 +635,7 @@
 				CODE_SIGN_ENTITLEMENTS = ffm/ffm.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development: Harish Taori (KB2425WYJP)";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -679,7 +679,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ffm/ffm.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution: Homzhub Pte Ltd (9TKZH83J22)";
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

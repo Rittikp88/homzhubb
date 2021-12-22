@@ -2,6 +2,7 @@
 
 export enum DynamicLinkTypes {
   PropertyVisitAssignment = 'PROPERTY_VISIT_ASSIGNMENT',
+  Inspection = 'INSPECTION',
 }
 
 export enum DynamicLinkParamKeys {
