@@ -58,10 +58,10 @@ export class LeaseTerm {
   @JsonProperty('available_from_date', String)
   private _availableFromDate = '';
 
-  @JsonProperty('maintenance_paid_by', String)
+  @JsonProperty('maintenance_paid_by', String, true)
   private _maintenancePaidBy = PaidByTypes.OWNER;
 
-  @JsonProperty('utility_paid_by', String)
+  @JsonProperty('utility_paid_by', String, true)
   private _utilityPaidBy = PaidByTypes.TENANT;
 
   @JsonProperty('maintenance_unit', Unit, true)

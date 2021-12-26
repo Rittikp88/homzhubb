@@ -465,6 +465,9 @@ export class Asset {
   @JsonProperty('society', Society, true)
   private _society = null;
 
+  @JsonProperty('owner_info', User, true)
+  private _ownerInfo = null;
+
   get investmentStatus(): string {
     return this._investmentStatus;
   }
@@ -952,5 +955,9 @@ export class Asset {
 
   get groupedBy(): ServiceGroup {
     return this._groupedBy as ServiceGroup;
+  }
+
+  get ownerInfo(): User | null {
+    return this._ownerInfo;
   }
 }

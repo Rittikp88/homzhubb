@@ -35,6 +35,7 @@ export enum ScreenKeys {
 
   // Dashboard
   DashboardScreen = 'DashboardScreen',
+  HotProperties = 'HotProperties',
 
   // Visit
   SiteVisitDashboard = 'SiteVisitDashboard',

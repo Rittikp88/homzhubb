@@ -769,7 +769,9 @@
     "addOnService": "Add-on Services",
     "selectCityForService": "Please select city for services",
     "addYourFirstProperty": "Add your first property",
-    "rentPayment": "Coming Soon,\\n' +\n 'However, you can pay your rent by setting up a reminder with category as \"Rent\"."
+    "rentPayment": "Coming Soon,\\n' +\n 'However, you can pay your rent by setting up a reminder with category as \"Rent\".",
+    "expectedRent": "Expected Rent",
+    "hotProperties": "Hot Properties"
   },
   "propertySearch": {
     "showProperties": "Show Properties",

@@ -56,7 +56,7 @@ interface IListProps {
   onPressArrow?: (id: number) => void;
   onResend?: (id: number) => void;
   isFilteredApplied?: boolean;
-  onCompleteDetails: (id: number) => void;
+  onCompleteDetails?: (id: number) => void;
   containerStyle?: StyleProp<ViewStyle>;
   enterFullScreen?: (attachments: Attachment[]) => void;
   onViewProperty?: (data: ISetAssetPayload, assetData: Asset, key?: Tabs) => void;
@@ -446,7 +446,9 @@ export class AssetCard extends Component<Props, IState> {
 
   private onCompleteDetails = (): void => {
     const { onCompleteDetails, assetData } = this.props;
-    onCompleteDetails(assetData.id);
+    if (onCompleteDetails) {
+      onCompleteDetails(assetData.id);
+    }
   };
 
   private onPressAction = (): void => {

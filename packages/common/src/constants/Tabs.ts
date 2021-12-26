@@ -46,6 +46,8 @@ export enum Tabs {
   ELECTRICITY_MANAGEMENT = 'Electricity management',
   NEW = 'New',
   ONGOING = 'Ongoing',
+  RENT = 'Rent',
+  SELL = 'Sell',
 }
 
 // enum END
@@ -192,3 +194,12 @@ export const FFMVisitRoutes: IRoutes[] = [
 ];
 
 // FFM Site Visit Tabs END
+
+// FFM Hot Properties Tabs START
+
+export const HotPropertiesRoutes: IRoutes[] = [
+  { key: Tabs.RENT, title: Tabs.RENT },
+  { key: Tabs.SELL, title: Tabs.SELL },
+];
+
+// FFM Hot Properties Tabs END

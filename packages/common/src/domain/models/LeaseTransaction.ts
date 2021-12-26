@@ -15,7 +15,7 @@ export interface ITransaction {
 @JsonObject('Transaction')
 export class Transaction {
   @JsonProperty('label', String)
-  private _label = '';
+  private readonly _label: string = '';
 
   @JsonProperty('currency_code', String, true)
   private _currencyCode = '';
@@ -24,10 +24,15 @@ export class Transaction {
   private _currencySymbol = '';
 
   @JsonProperty('amount', Number)
-  private _amount = 0;
+  private readonly _amount: number = 0;
 
   @JsonProperty('status', String)
   private _status = '';
+
+  constructor(label: string, amount: number) {
+    this._label = label;
+    this._amount = amount;
+  }
 
   get label(): string {
     return this._label;

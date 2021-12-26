@@ -11,8 +11,8 @@ export interface IAssetSearch {
 
 @JsonObject('AssetSearch')
 export class AssetSearch {
-  @JsonProperty('count', Number)
-  private _count = 0;
+  @JsonProperty('count', Number, true)
+  private _count = null;
 
   @JsonProperty('links', Links)
   private _links: Links = new Links();
@@ -20,7 +20,7 @@ export class AssetSearch {
   @JsonProperty('results', [Asset])
   private _results: Asset[] = [];
 
-  get count(): number {
+  get count(): number | null {
     return this._count;
   }
 

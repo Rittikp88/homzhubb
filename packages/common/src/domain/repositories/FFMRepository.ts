@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionFinalReport } from '@homzhub/common/src/domain/models/InspectionFinalReport';
@@ -20,6 +21,7 @@ import {
   IUpdateReport,
   IUpdateSpaceParam,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 const ENDPOINTS = {
   onBoarding: 'v1/ffm-onboardings',
@@ -39,6 +41,8 @@ const ENDPOINTS = {
   spaceInspection: (reportId: number, spaceId: number): string =>
     `v1/ffm/tasks/inspection-reports/${reportId}/inspection-report-spaces/${spaceId}/space-inspections/`,
   finalReport: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/final-report/`,
+  hotLeaseProperties: 'v1/ffm/assets/lease-listing-hot-properties/',
+  hotSaleProperties: 'v1/ffm/assets/sale-listing-hot-properties/',
 };
 
 class FFMRepository {
@@ -120,6 +124,12 @@ class FFMRepository {
   public getFinalReport = async (payload: number): Promise<InspectionFinalReport> => {
     const response = await this.apiClient.get(ENDPOINTS.finalReport(payload));
     return ObjectMapper.deserialize(InspectionFinalReport, response);
+  };
+
+  public getHotProperties = async (payload: Tabs): Promise<AssetSearch> => {
+    const url = payload === Tabs.RENT ? ENDPOINTS.hotLeaseProperties : ENDPOINTS.hotSaleProperties;
+    const response = await this.apiClient.get(url);
+    return ObjectMapper.deserialize(AssetSearch, response);
   };
 }
 

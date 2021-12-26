@@ -103,4 +103,12 @@ export class SaleTerm {
   get status(): string {
     return this._status;
   }
+
+  get actualPrice(): number {
+    return this._expectedPrice;
+  }
+
+  get actualBookingAmount(): number {
+    return this._expectedBookingAmount;
+  }
 }
