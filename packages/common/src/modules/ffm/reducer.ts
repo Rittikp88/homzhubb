@@ -1,4 +1,5 @@
 import { FFMActionPayloadTypes, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
+import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { IFeedback } from '@homzhub/common/src/domain/models/Feedback';
 import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
@@ -31,6 +32,7 @@ export const initialFFMState: IFFMState = {
   reportSpace: [],
   isFromDeeplink: false,
   reportSpaceData: initialSpaceData,
+  hotProperties: null,
   loaders: {
     onBoarding: false,
     roles: false,
@@ -41,6 +43,7 @@ export const initialFFMState: IFFMState = {
     inspectionReport: false,
     reportSpace: false,
     spaceDetail: false,
+    hotProperties: false,
   },
 };
 
@@ -227,6 +230,22 @@ export const ffmReducer = (
       return {
         ...state,
         ['isFromDeeplink']: action.payload as boolean,
+      };
+    case FFMActionTypes.GET.HOT_PROPERTIES:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['hotProperties']: true },
+      };
+    case FFMActionTypes.GET.HOT_PROPERTIES_SUCCESS:
+      return {
+        ...state,
+        ['hotProperties']: action.payload as IAssetSearch,
+        ['loaders']: { ...state.loaders, ['hotProperties']: false },
+      };
+    case FFMActionTypes.GET.HOT_PROPERTIES_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['hotProperties']: false },
       };
     default:
       return {

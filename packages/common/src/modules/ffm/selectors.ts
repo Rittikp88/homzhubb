@@ -1,5 +1,6 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
+import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
@@ -122,6 +123,14 @@ const getDeeplinkData = (state: IState): boolean => {
   return isFromDeeplink;
 };
 
+const getHotProperties = (state: IState): Asset[] => {
+  const {
+    ffm: { hotProperties },
+  } = state;
+  if (!hotProperties) return [];
+  return ObjectMapper.deserializeArray(Asset, hotProperties.results);
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
@@ -137,4 +146,5 @@ export const FFMSelector = {
   getReportSpaces,
   getReportSpaceData,
   getDeeplinkData,
+  getHotProperties,
 };

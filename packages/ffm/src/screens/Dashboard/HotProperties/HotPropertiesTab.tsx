@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
-import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMRepository';
 import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
+import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
+import { FFMSelector } from '@homzhub/common/src/modules/ffm/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { SelectionPicker } from '@homzhub/common/src/components/atoms/SelectionPicker';
@@ -18,23 +20,15 @@ interface IProps {
 }
 
 const HotPropertiesTab = ({ isOnDashboard = false }: IProps): React.ReactElement => {
+  const dispatch = useDispatch();
+  const properties = useSelector(FFMSelector.getHotProperties);
   const [currentTab, setCurrentTab] = useState(Tabs.RENT);
-  const [properties, setProperties] = useState<Asset[]>([]);
   const [selectedAsset, setAsset] = useState<number>(0);
   const [isLoading, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     setAsset(0);
-    setLoader(true);
-    FFMRepository.getHotProperties(currentTab)
-      .then((res) => {
-        setLoader(false);
-        setProperties(res.results);
-      })
-      .catch((e) => {
-        setLoader(false);
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
-      });
+    dispatch(FFMActions.getHotProperties(currentTab));
   }, [currentTab]);
 
   const onPressProperty = (item: Asset): void => {

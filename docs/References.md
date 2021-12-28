@@ -1,3 +1,6 @@
+# Monorepo
+1. https://dev.to/brunolemos/tutorial-100-code-sharing-between-ios-android--web-using-react-native-web-andmonorepo-4pej
+
 # Testing
 1. https://reactsharing.com/testing-react-native-jest-detox.html
 

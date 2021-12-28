@@ -4,6 +4,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMRepository';
 import { FFMActions, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
+import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
@@ -14,6 +15,7 @@ import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import { ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
 import { IFFMVisitParam, IGetFeedbackParam, IGetSpaceDetail } from '@homzhub/common/src/domain/repositories/interfaces';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export function* getOnBoardingData(): VoidGenerator {
   try {
@@ -120,6 +122,16 @@ export function* getSpaceDetail(action: IFluxStandardAction<IGetSpaceDetail>): V
   }
 }
 
+export function* getHotProperties(action: IFluxStandardAction<Tabs>): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getHotProperties, action.payload as Tabs);
+    yield put(FFMActions.getHotPropertiesSuccess(response as AssetSearch));
+  } catch (e) {
+    yield put(FFMActions.getHotPropertiesFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
@@ -130,4 +142,5 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.INSPECTION_REPORT, getInspectionReports);
   yield takeLatest(FFMActionTypes.GET.REPORT_SPACE, getReportSpaces);
   yield takeLatest(FFMActionTypes.GET.SPACE_DETAIL, getSpaceDetail);
+  yield takeLatest(FFMActionTypes.GET.HOT_PROPERTIES, getHotProperties);
 }

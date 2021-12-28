@@ -1,7 +1,7 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Count } from '@homzhub/common/src/domain/models/Count';
 import { Data } from '@homzhub/common/src/domain/models/Asset';
-import { MetricsCount } from '@homzhub/common/src/domain/models/MetricsCount';
+import { IMetricsCount, MetricsCount } from '@homzhub/common/src/domain/models/MetricsCount';
 
 enum DashboardRole {
   OWNER = 'OWNER',
@@ -36,6 +36,15 @@ export class UserServicePlan {
   get label(): string {
     return this._label;
   }
+}
+
+export interface IMiscellaneous {
+  name: string;
+  label: string;
+  count: number;
+  color_code: string;
+  code?: string;
+  currency_symbol?: string;
 }
 
 @JsonObject('Miscellaneous')
@@ -114,6 +123,13 @@ export class AssetMetricsData {
   }
 }
 
+export interface IAssetUpdates {
+  notifications: IMetricsCount;
+  tickets: IMetricsCount;
+  messages?: IMetricsCount;
+  jobs?: IMetricsCount;
+}
+
 @JsonObject('AssetUpdates')
 export class AssetUpdates {
   @JsonProperty('notifications', MetricsCount)
@@ -129,6 +145,9 @@ export class AssetUpdates {
   @JsonProperty('messages', MetricsCount, true)
   private _messages = new MetricsCount();
 
+  @JsonProperty('jobs', MetricsCount, true)
+  private _jobs = new MetricsCount();
+
   get notifications(): MetricsCount {
     return this._notifications;
   }
@@ -143,6 +162,10 @@ export class AssetUpdates {
 
   get messages(): MetricsCount {
     return this._messages;
+  }
+
+  get jobs(): MetricsCount {
+    return this._jobs;
   }
 }
 

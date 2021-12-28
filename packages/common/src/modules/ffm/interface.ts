@@ -1,3 +1,4 @@
+import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { IFeedback } from '@homzhub/common/src/domain/models/Feedback';
 import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
@@ -21,6 +22,7 @@ export interface IFFMState {
   reportSpace: IReportSpace[];
   reportSpaceData: ILocalSpaceUpdatePayload;
   isFromDeeplink: boolean;
+  hotProperties: IAssetSearch | null;
   loaders: {
     onBoarding: boolean;
     roles: boolean;
@@ -31,6 +33,7 @@ export interface IFFMState {
     inspectionReport: boolean;
     reportSpace: boolean;
     spaceDetail: boolean;
+    hotProperties: boolean;
   };
 }
 

@@ -1,4 +1,5 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
+import { AssetSearch, IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback, IFeedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMVisit, IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport, InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
@@ -14,6 +15,7 @@ import {
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
 import { ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
+import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 const actionTypePrefix = 'FFM/';
 export const FFMActionTypes = {
@@ -45,6 +47,9 @@ export const FFMActionTypes = {
     SPACE_DETAIL: `${actionTypePrefix}SPACE_DETAIL`,
     SPACE_DETAIL_SUCCESS: `${actionTypePrefix}SPACE_DETAIL_SUCCESS`,
     SPACE_DETAIL_FAILURE: `${actionTypePrefix}SPACE_DETAIL_FAILURE`,
+    HOT_PROPERTIES: `${actionTypePrefix}HOT_PROPERTIES`,
+    HOT_PROPERTIES_SUCCESS: `${actionTypePrefix}HOT_PROPERTIES_SUCCESS`,
+    HOT_PROPERTIES_FAILURE: `${actionTypePrefix}HOT_PROPERTIES_FAILURE`,
   },
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
@@ -222,6 +227,20 @@ const setDeeplinkData = (payload: boolean): IFluxStandardAction<boolean> => ({
   payload,
 });
 
+const getHotProperties = (payload: Tabs): IFluxStandardAction<Tabs> => ({
+  type: FFMActionTypes.GET.HOT_PROPERTIES,
+  payload,
+});
+
+const getHotPropertiesSuccess = (payload: AssetSearch): IFluxStandardAction<IAssetSearch> => ({
+  type: FFMActionTypes.GET.HOT_PROPERTIES_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getHotPropertiesFailure = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.HOT_PROPERTIES_FAILURE,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
@@ -238,7 +257,9 @@ export type FFMActionPayloadTypes =
   | IInspectionReport
   | Report
   | IReportSpace[]
-  | ILocalSpaceUpdatePayload;
+  | ILocalSpaceUpdatePayload
+  | Tabs
+  | IAssetSearch;
 
 export const FFMActions = {
   getOnBoardingData,
@@ -276,4 +297,7 @@ export const FFMActions = {
   getSpaceDetailSuccess,
   getSpaceDetailFailure,
   setDeeplinkData,
+  getHotProperties,
+  getHotPropertiesSuccess,
+  getHotPropertiesFailure,
 };

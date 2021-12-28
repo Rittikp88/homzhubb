@@ -1,6 +1,10 @@
 import { JsonObject, JsonProperty } from '@homzhub/common/src/utils/ObjectMapper';
 import { Count } from '@homzhub/common/src/domain/models/Count';
 
+export interface IMetricsCount {
+  count: number;
+}
+
 @JsonObject('MetricsCount')
 export class MetricsCount {
   @JsonProperty('count', Number)

@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppService';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
+import { FFMMetrics } from '@homzhub/common/src/domain/models/FFMMetrics';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionFinalReport } from '@homzhub/common/src/domain/models/InspectionFinalReport';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
@@ -43,6 +44,7 @@ const ENDPOINTS = {
   finalReport: (reportId: number): string => `v1/ffm/tasks/inspection-reports/${reportId}/final-report/`,
   hotLeaseProperties: 'v1/ffm/assets/lease-listing-hot-properties/',
   hotSaleProperties: 'v1/ffm/assets/sale-listing-hot-properties/',
+  managementTab: 'v1/ffm/management-tab',
 };
 
 class FFMRepository {
@@ -130,6 +132,11 @@ class FFMRepository {
     const url = payload === Tabs.RENT ? ENDPOINTS.hotLeaseProperties : ENDPOINTS.hotSaleProperties;
     const response = await this.apiClient.get(url);
     return ObjectMapper.deserialize(AssetSearch, response);
+  };
+
+  public getManagementTab = async (): Promise<FFMMetrics> => {
+    const response = await this.apiClient.get(ENDPOINTS.managementTab);
+    return ObjectMapper.deserialize(FFMMetrics, response);
   };
 }
 
