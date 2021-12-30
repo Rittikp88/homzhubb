@@ -86,6 +86,9 @@ export class Ticket {
   @JsonProperty('closed_by', User, true)
   private _closedBy = new User();
 
+  @JsonProperty('ffm_status_updated_by', User, true)
+  private _ffmStatusUpdatedBy = null;
+
   @JsonProperty('asset', Asset, true)
   private _asset = new Asset();
 
@@ -98,7 +101,13 @@ export class Ticket {
   @JsonProperty('status', String)
   private _status = '';
 
-  @JsonProperty('priority', String)
+  @JsonProperty('ffm_status', String, true)
+  private _ffmStatus = '';
+
+  @JsonProperty('assigned_to_role', String, true)
+  private _assignedToRole = '';
+
+  @JsonProperty('priority', String, true)
   private _priority = '';
 
   @JsonProperty('created_at', String, true)
@@ -109,6 +118,12 @@ export class Ticket {
 
   @JsonProperty('updated_at', String, true)
   private _updatedAt = '';
+
+  @JsonProperty('overall_rating', Number, true)
+  private _overallRating = null;
+
+  @JsonProperty('ffm_status_updated_at', String, true)
+  private _ffmStatusUpdatedAt = null;
 
   @JsonProperty('attachments', [Attachment], true)
   private _ticketAttachments = [] as Attachment[];
@@ -232,5 +247,25 @@ export class Ticket {
 
   get review(): Pillar {
     return this._review;
+  }
+
+  get ffmStatusUpdatedBy(): User | null {
+    return this._ffmStatusUpdatedBy;
+  }
+
+  get ffmStatus(): string {
+    return this._ffmStatus;
+  }
+
+  get assignedToRole(): string {
+    return this._assignedToRole;
+  }
+
+  get overallRating(): number | null {
+    return this._overallRating;
+  }
+
+  get ffmStatusUpdatedAt(): string | null {
+    return this._ffmStatusUpdatedAt;
   }
 }

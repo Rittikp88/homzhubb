@@ -859,9 +859,9 @@ export class Asset {
   }
 
   get formattedAddressWithProjectAndCity(): string {
-    return `${this.unitNumber},${this.blockNumber && ` ${this.blockNumber},`} ${this.projectName}${
-      this.city && `, ${this.city}`
-    }`;
+    return `${this.unitNumber && `${this.unitNumber}, `}${this.blockNumber && ` ${this.blockNumber},`} ${
+      this.projectName
+    }${this.city && `, ${this.city}`}`;
   }
 
   get valueAddedServices(): Service[] {
@@ -876,12 +876,12 @@ export class Asset {
         leaseListingId,
         saleListingId,
       } = this.assetStatusInfo;
-      const isUnderReview =
+      return (
         Boolean(leaseListingId || saleListingId) &&
         [`${Filters.FOR_RENT}`, `${Filters.FOR_SALE}`].includes(code) &&
         status === 'DRAFT' &&
-        this.isVerificationDocumentUploaded;
-      return isUnderReview;
+        this.isVerificationDocumentUploaded
+      );
     }
     return false;
   }

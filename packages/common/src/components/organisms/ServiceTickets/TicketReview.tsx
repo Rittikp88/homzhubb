@@ -22,7 +22,7 @@ import { IListingReviewParams, ISubmitReview } from '@homzhub/common/src/domain/
 interface IProps {
   ticketData: Ticket;
   renderRatingForm: (children: React.ReactElement, onClose: () => void, isReview: boolean) => React.ReactElement;
-  successCallback: () => void;
+  successCallback?: () => void;
   onOpenRatingModal?: () => void;
   onCloseRatingModal?: () => void;
 }
@@ -86,7 +86,9 @@ const TicketReview = (props: IProps): React.ReactElement => {
       await TicketRepository.updateReviewById(finalPayload);
       setIsReview(false);
       AlertHelper.success({ message: t('serviceTickets:reviewUpdateSuccess') });
-      successCallback();
+      if (successCallback) {
+        successCallback();
+      }
     } catch (e) {
       setIsReview(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
@@ -106,10 +108,19 @@ const TicketReview = (props: IProps): React.ReactElement => {
       await TicketRepository.reviewSubmit(finalPayload);
       setIsReview(false);
       AlertHelper.success({ message: t('serviceTickets:reviewSuccess') });
-      successCallback();
+      if (successCallback) {
+        successCallback();
+      }
     } catch (e) {
       setIsReview(false);
       AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+    }
+  };
+
+  const onPressReview = (): void => {
+    setIsReview(!isReview);
+    if (PlatformUtils.isWeb() && onOpenRatingModal) {
+      onOpenRatingModal();
     }
   };
 
@@ -158,13 +169,6 @@ const TicketReview = (props: IProps): React.ReactElement => {
         />
       </View>
     );
-  };
-
-  const onPressReview = (): void => {
-    setIsReview(!isReview);
-    if (PlatformUtils.isWeb() && onOpenRatingModal) {
-      onOpenRatingModal();
-    }
   };
 
   return (

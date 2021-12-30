@@ -139,6 +139,12 @@ export enum QuoteActions {
   REQUEST_MORE_QUOTE = 'REQUEST_MORE_QUOTE',
 }
 
+export enum StatusCategory {
+  NEW = 'NEW',
+  OPEN = 'OPEN',
+  CLOSED = 'CLOSED',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -1314,4 +1320,14 @@ export interface IUpdateSpaceParam {
 export interface IGetSpaceDetail {
   reportId: number;
   spaceId: number;
+}
+
+export interface IGetTicket {
+  status_category: StatusCategory;
+  priority?: string;
+}
+
+export interface IUpdateTicket {
+  id: number;
+  action: string;
 }

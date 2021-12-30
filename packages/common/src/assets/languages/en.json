@@ -1447,7 +1447,8 @@
     "inviteMorePartner": "Invite More Service Partners",
     "ticketDetailsTitle": "Ticket Details",
     "ticketActionSuccess": "Service request action completed Successfully",
-    "paymentCancelled": "Payment has been cancelled!"
+    "paymentCancelled": "Payment has been cancelled!",
+    "approvalPending": "Approval Pending"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

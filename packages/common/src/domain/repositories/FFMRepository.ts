@@ -3,6 +3,7 @@ import { BootstrapAppService } from '@homzhub/common/src/services/BootstrapAppSe
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMMetrics } from '@homzhub/common/src/domain/models/FFMMetrics';
+import { FFMTicket } from '@homzhub/common/src/domain/models/FFMTicket';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionFinalReport } from '@homzhub/common/src/domain/models/InspectionFinalReport';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
@@ -16,11 +17,13 @@ import {
   IFFMVisitParam,
   IGetFeedbackParam,
   IGetSpaceDetail,
+  IGetTicket,
   IOutsetCheckParam,
   IPostFeedback,
   IReportSpaceParam,
   IUpdateReport,
   IUpdateSpaceParam,
+  IUpdateTicket,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
@@ -45,6 +48,8 @@ const ENDPOINTS = {
   hotLeaseProperties: 'v1/ffm/assets/lease-listing-hot-properties/',
   hotSaleProperties: 'v1/ffm/assets/sale-listing-hot-properties/',
   managementTab: 'v1/ffm/management-tab',
+  tickets: 'v1/ffm/tasks/tickets/',
+  ticketById: (id: number): string => `v1/ffm/tasks/tickets/${id}`,
 };
 
 class FFMRepository {
@@ -137,6 +142,15 @@ class FFMRepository {
   public getManagementTab = async (): Promise<FFMMetrics> => {
     const response = await this.apiClient.get(ENDPOINTS.managementTab);
     return ObjectMapper.deserialize(FFMMetrics, response);
+  };
+
+  public getTickets = async (payload: IGetTicket): Promise<FFMTicket> => {
+    const response = await this.apiClient.get(ENDPOINTS.tickets, payload);
+    return ObjectMapper.deserialize(FFMTicket, response);
+  };
+
+  public updateTicket = async (payload: IUpdateTicket): Promise<void> => {
+    return await this.apiClient.patch(ENDPOINTS.ticketById(payload.id), { action: payload.action });
   };
 }
 

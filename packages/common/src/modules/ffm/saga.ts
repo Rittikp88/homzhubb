@@ -6,6 +6,7 @@ import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMReposi
 import { FFMActions, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
+import { FFMTicket } from '@homzhub/common/src/domain/models/FFMTicket';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
@@ -14,7 +15,12 @@ import { SpaceDetail } from '@homzhub/common/src/domain/models/SpaceDetail';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import { ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
-import { IFFMVisitParam, IGetFeedbackParam, IGetSpaceDetail } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  IFFMVisitParam,
+  IGetFeedbackParam,
+  IGetSpaceDetail,
+  IGetTicket,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
 export function* getOnBoardingData(): VoidGenerator {
@@ -132,6 +138,16 @@ export function* getHotProperties(action: IFluxStandardAction<Tabs>): VoidGenera
   }
 }
 
+export function* getTickets(action: IFluxStandardAction<IGetTicket>): VoidGenerator {
+  try {
+    const response = yield call(FFMRepository.getTickets, action.payload as IGetTicket);
+    yield put(FFMActions.getTicketsSuccess(response as FFMTicket));
+  } catch (e) {
+    yield put(FFMActions.getTicketsFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
 export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
@@ -143,4 +159,5 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.REPORT_SPACE, getReportSpaces);
   yield takeLatest(FFMActionTypes.GET.SPACE_DETAIL, getSpaceDetail);
   yield takeLatest(FFMActionTypes.GET.HOT_PROPERTIES, getHotProperties);
+  yield takeLatest(FFMActionTypes.GET.TICKETS, getTickets);
 }

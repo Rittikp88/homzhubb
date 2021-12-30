@@ -1,6 +1,7 @@
 import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { AssetSearch, IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback, IFeedback } from '@homzhub/common/src/domain/models/Feedback';
+import { FFMTicket, IFFMTicket } from '@homzhub/common/src/domain/models/FFMTicket';
 import { FFMVisit, IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport, InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding, OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
@@ -11,6 +12,7 @@ import {
   IFFMVisitParam,
   IGetFeedbackParam,
   IGetSpaceDetail,
+  IGetTicket,
   IWorkLocation,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { IFluxStandardAction } from '@homzhub/common/src/modules/interfaces';
@@ -50,6 +52,9 @@ export const FFMActionTypes = {
     HOT_PROPERTIES: `${actionTypePrefix}HOT_PROPERTIES`,
     HOT_PROPERTIES_SUCCESS: `${actionTypePrefix}HOT_PROPERTIES_SUCCESS`,
     HOT_PROPERTIES_FAILURE: `${actionTypePrefix}HOT_PROPERTIES_FAILURE`,
+    TICKETS: `${actionTypePrefix}TICKETS`,
+    TICKETS_SUCCESS: `${actionTypePrefix}TICKETS_SUCCESS`,
+    TICKETS_FAILURE: `${actionTypePrefix}TICKETS_FAILURE`,
   },
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
@@ -241,6 +246,20 @@ const getHotPropertiesFailure = (): IFluxStandardAction => ({
   type: FFMActionTypes.GET.HOT_PROPERTIES_FAILURE,
 });
 
+const getTickets = (payload: IGetTicket): IFluxStandardAction<IGetTicket> => ({
+  type: FFMActionTypes.GET.TICKETS,
+  payload,
+});
+
+const getTicketsSuccess = (payload: FFMTicket): IFluxStandardAction<IFFMTicket> => ({
+  type: FFMActionTypes.GET.TICKETS_SUCCESS,
+  payload: ObjectMapper.serialize(payload),
+});
+
+const getTicketsFailure = (): IFluxStandardAction => ({
+  type: FFMActionTypes.GET.TICKETS_FAILURE,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
@@ -259,7 +278,8 @@ export type FFMActionPayloadTypes =
   | IReportSpace[]
   | ILocalSpaceUpdatePayload
   | Tabs
-  | IAssetSearch;
+  | IAssetSearch
+  | IFFMTicket;
 
 export const FFMActions = {
   getOnBoardingData,
@@ -300,4 +320,7 @@ export const FFMActions = {
   getHotProperties,
   getHotPropertiesSuccess,
   getHotPropertiesFailure,
+  getTickets,
+  getTicketsSuccess,
+  getTicketsFailure,
 };

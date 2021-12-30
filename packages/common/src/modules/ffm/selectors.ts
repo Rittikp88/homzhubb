@@ -2,6 +2,7 @@ import { ObjectMapper } from '@homzhub/common/src/utils/ObjectMapper';
 import { IDropdownOption } from '@homzhub/common/src/components/molecules/FormDropdown';
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
+import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { FFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
@@ -131,6 +132,14 @@ const getHotProperties = (state: IState): Asset[] => {
   return ObjectMapper.deserializeArray(Asset, hotProperties.results);
 };
 
+const getTickets = (state: IState): Ticket[] => {
+  const {
+    ffm: { tickets },
+  } = state;
+  if (!tickets) return [];
+  return ObjectMapper.deserializeArray(Ticket, tickets.results);
+};
+
 export const FFMSelector = {
   getFFMLoaders,
   getOnBoardingData,
@@ -147,4 +156,5 @@ export const FFMSelector = {
   getReportSpaceData,
   getDeeplinkData,
   getHotProperties,
+  getTickets,
 };

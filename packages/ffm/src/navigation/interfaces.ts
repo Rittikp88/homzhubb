@@ -49,6 +49,9 @@ export enum ScreenKeys {
   InspectionSelection = 'InspectionSelection',
   ReportLocationMap = 'ReportLocationMap',
 
+  // Requests
+  RequestsDashboard = 'RequestsDashboard',
+
   // More
   MoreScreen = 'MoreScreen',
 }

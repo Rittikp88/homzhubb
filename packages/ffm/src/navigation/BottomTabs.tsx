@@ -11,7 +11,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import ComingSoon from '@homzhub/ffm/src/screens/Common/ComingSoon';
 import DashboardStack from '@homzhub/ffm/src/navigation/DashboardStack';
 import MoreStack from '@homzhub/ffm/src/navigation/MoreStack';
-import ReportStack from '@homzhub/ffm/src/navigation/ReportStack';
+import RequestStack from '@homzhub/ffm/src/navigation/RequestStack';
 import VisitStack from '@homzhub/ffm/src/navigation/VisitStack';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
@@ -81,7 +81,7 @@ const BottomTabs = (): React.ReactElement => {
       />
       <BottomTabNavigator.Screen
         name={ScreenKeys.Requests}
-        component={ReportStack}
+        component={RequestStack}
         listeners={({ navigation }): any => ({
           focus: (e: any): void => {
             resetStackOnTabPress(e, navigation);

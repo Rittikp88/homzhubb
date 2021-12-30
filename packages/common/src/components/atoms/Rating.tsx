@@ -19,6 +19,7 @@ interface IProps {
   onChange?: (rating: number) => void;
   containerStyle?: StyleProp<ViewStyle>;
   size?: number;
+  isTitleRequired?: boolean;
 }
 
 const MULTI_LENGTH = 5;
@@ -31,6 +32,7 @@ const Rating = ({
   onChange,
   containerStyle,
   size = 14,
+  isTitleRequired = true,
 }: IProps): React.ReactElement => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.property);
   const isMobile = useOnly(deviceBreakpoint.MOBILE);
@@ -89,13 +91,19 @@ const Rating = ({
       ]}
       pointerEvents={!onChange ? 'none' : 'auto'}
     >
-      <Label
-        textType="regular"
-        type={isOverallRating ? 'regular' : 'large'}
-        style={[styles.countStyle, overallRatingText, isOverallRating && isMobile ? styles.widthOverall : mobileStyle]}
-      >
-        {title}
-      </Label>
+      {isTitleRequired && (
+        <Label
+          textType="regular"
+          type={isOverallRating ? 'regular' : 'large'}
+          style={[
+            styles.countStyle,
+            overallRatingText,
+            isOverallRating && isMobile ? styles.widthOverall : mobileStyle,
+          ]}
+        >
+          {title}
+        </Label>
+      )}
       <View style={styles.starContainer}>
         {[...Array(MULTI_LENGTH)].map((_, index) => (
           <Icon

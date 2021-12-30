@@ -1,6 +1,7 @@
 import { FFMActionPayloadTypes, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
 import { IAssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { IFeedback } from '@homzhub/common/src/domain/models/Feedback';
+import { IFFMTicket } from '@homzhub/common/src/domain/models/FFMTicket';
 import { IFFMVisit } from '@homzhub/common/src/domain/models/FFMVisit';
 import { IInspectionReport } from '@homzhub/common/src/domain/models/InspectionReport';
 import { IOnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
@@ -33,6 +34,7 @@ export const initialFFMState: IFFMState = {
   isFromDeeplink: false,
   reportSpaceData: initialSpaceData,
   hotProperties: null,
+  tickets: null,
   loaders: {
     onBoarding: false,
     roles: false,
@@ -44,6 +46,7 @@ export const initialFFMState: IFFMState = {
     reportSpace: false,
     spaceDetail: false,
     hotProperties: false,
+    tickets: false,
   },
 };
 
@@ -246,6 +249,22 @@ export const ffmReducer = (
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['hotProperties']: false },
+      };
+    case FFMActionTypes.GET.TICKETS:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['tickets']: true },
+      };
+    case FFMActionTypes.GET.TICKETS_SUCCESS:
+      return {
+        ...state,
+        ['tickets']: action.payload as IFFMTicket,
+        ['loaders']: { ...state.loaders, ['tickets']: false },
+      };
+    case FFMActionTypes.GET.TICKETS_FAILURE:
+      return {
+        ...state,
+        ['loaders']: { ...state.loaders, ['tickets']: false },
       };
     default:
       return {

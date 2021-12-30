@@ -1,4 +1,5 @@
 import React from 'react';
+import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { IDocumentSource } from '@homzhub/common/src/services/AttachmentService/interfaces';
 
@@ -60,3 +61,16 @@ export interface IInitialQuote {
   price: string;
   document: IDocumentSource | File | null;
 }
+
+export const FFMTicketAction = [
+  {
+    title: 'Accept',
+    icon: icons.circularCheckFilled,
+    color: theme.colors.green,
+  },
+  {
+    title: 'Reject',
+    icon: icons.circularCrossFilled,
+    color: theme.colors.red,
+  },
+];

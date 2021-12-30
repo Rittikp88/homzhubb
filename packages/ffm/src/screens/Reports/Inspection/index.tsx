@@ -81,7 +81,7 @@ const Inspection = (): React.ReactElement => {
   };
 
   const getPercentage = (): number => {
-    return (spaces?.filter((item) => item.isCompleted).length / spaces.length) * 100;
+    return Math.floor((spaces?.filter((item) => item.isCompleted).length / spaces.length) * 100);
   };
 
   const primaryStyle: ITypographyProps = { size: 'small' };
