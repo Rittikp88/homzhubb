@@ -11,6 +11,7 @@ import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { OutsetCheck } from '@homzhub/common/src/domain/models/OutsetCheck';
 import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { SpaceDetail } from '@homzhub/common/src/domain/models/SpaceDetail';
+import { TicketManagement } from '@homzhub/common/src/domain/models/TicketManagement';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
 import {
@@ -50,6 +51,7 @@ const ENDPOINTS = {
   managementTab: 'v1/ffm/management-tab',
   tickets: 'v1/ffm/tasks/tickets/',
   ticketById: (id: number): string => `v1/ffm/tasks/tickets/${id}`,
+  ticketManagement: 'v1/ffm/tasks/tickets/management-tab/',
 };
 
 class FFMRepository {
@@ -151,6 +153,11 @@ class FFMRepository {
 
   public updateTicket = async (payload: IUpdateTicket): Promise<void> => {
     return await this.apiClient.patch(ENDPOINTS.ticketById(payload.id), { action: payload.action });
+  };
+
+  public getTicketManagement = async (): Promise<TicketManagement> => {
+    const response = await this.apiClient.get(ENDPOINTS.ticketManagement);
+    return ObjectMapper.deserialize(TicketManagement, response);
   };
 }
 

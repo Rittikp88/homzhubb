@@ -33,18 +33,34 @@ const RequestDashboard = (): React.ReactElement => {
   const { tickets: ticketLoader } = useSelector(FFMSelector.getFFMLoaders);
   const [selectedValue, setSelectedValue] = useState<string>(StatusCategory.NEW.toString());
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [pickerData, setPickerData] = useState(picker);
 
   useFocusEffect(
     useCallback(() => {
       setCurrentIndex(0);
       setSelectedValue(StatusCategory.NEW);
       dispatch(FFMActions.getTickets({ status_category: StatusCategory.NEW }));
+      getTicketManagement();
     }, [])
   );
 
   useEffect(() => {
     getData();
   }, [selectedValue, currentIndex]);
+
+  const getTicketManagement = (): void => {
+    FFMRepository.getTicketManagement().then((res) => {
+      const options = picker.map((item) => {
+        if (item.value === StatusCategory.NEW && res.count.pendingTickets > 0) {
+          return { ...item, title: `New (${res.count.pendingTickets})` };
+        }
+
+        return item;
+      });
+
+      setPickerData(options);
+    });
+  };
 
   const getData = (): void => {
     const priority = TicketRoutes[currentIndex].key;
@@ -122,7 +138,7 @@ const RequestDashboard = (): React.ReactElement => {
 
   return (
     <GradientScreen isUserHeader loading={ticketLoader} screenTitle={t('assetDashboard:tickets')}>
-      <SelectionPicker data={picker} selectedItem={[selectedValue]} onValueChange={setSelectedValue} />
+      <SelectionPicker data={pickerData} selectedItem={[selectedValue]} onValueChange={setSelectedValue} />
       <TabView
         renderScene={renderScene}
         onIndexChange={onIndexChange}
