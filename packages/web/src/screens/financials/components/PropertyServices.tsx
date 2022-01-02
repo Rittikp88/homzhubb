@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FinancialActions } from '@homzhub/common/src/modules/financials/actions';
@@ -13,11 +14,12 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
-import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
-import Menu from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu from '@homzhub/common/src/components/molecules/Menu';
+import MenuListPopup from '@homzhub/web/src/components/molecules/MenuListPopup';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
 import SocietyReminderList from '@homzhub/common/src/components/organisms/Society/SocietyReminderList';
+import DueConfirmPopover from '@homzhub/web/src/screens/financials/components/DueConfirmPopover';
 import { FinancialsActions, INavProps } from '@homzhub/web/src/screens/financials/FinancialsPopover';
 import { InvoiceId } from '@homzhub/common/src/domain/models/InvoiceSummary';
 import { IRoutes, PropertyPaymentRoutes, Tabs } from '@homzhub/common/src/constants/Tabs';
@@ -66,8 +68,7 @@ const PropertyServices: React.FC<IProps> = (props: IProps): React.ReactElement =
   const handleCallback = (status: boolean, data?: number): void => {
     if (status) {
       if (data && data > 0) {
-        // setReminderView(true); // Society Reminder Flow
-        setFinancialsActionType(FinancialsActions.PropertyPayment_SocietyController);
+        setReminderView(true); // Society Reminder Flow
       } else {
         setFinancialsActionType(FinancialsActions.PropertyPayment_SocietyController);
       }
@@ -107,14 +108,40 @@ const PropertyServices: React.FC<IProps> = (props: IProps): React.ReactElement =
       });
   };
 
+  useEffect(() => {
+    if (isDeleteView) {
+      onOpenConfirmModal();
+    }
+  }, [isDeleteView]);
+
+  const popupRefConfirm = useRef<PopupActions>(null);
+  const onOpenConfirmModal = (): void => {
+    if (popupRefConfirm && popupRefConfirm.current) {
+      popupRefConfirm.current.open();
+    }
+  };
+  const onCloseConfirmModal = (): void => {
+    if (popupRefConfirm && popupRefConfirm.current) {
+      popupRefConfirm.current.close();
+    }
+  };
+
   const renderExtraNode = (id: number): React.ReactElement => {
     return (
-      <ConfirmationSheet
-        isVisible={isDeleteView}
-        onCloseSheet={(): void => setDeleteView(false)}
-        onPressDelete={(): void => onPressDelete(id)}
-      />
+      <DueConfirmPopover popupRef={popupRefConfirm} onCloseModal={onCloseConfirmModal} onPressDelete={(): void => onPressDelete(id)} />
     );
+  };
+
+  const renderMenuPopup = (menuList: React.ReactElement) => {
+    return (
+      <MenuListPopup
+        popupRef={popupRefMenuList}
+        onOpenModal={onOpenMenuList}
+        onCloseModal={onCloseMenuList}
+      >
+        {menuList}
+      </MenuListPopup>
+    )
   };
 
   const renderMenu = (id: number): React.ReactElement => {
@@ -127,6 +154,9 @@ const PropertyServices: React.FC<IProps> = (props: IProps): React.ReactElement =
         onSelect={(value): void => handleMenuSelection(value, id)}
         iconStyle={styles.icon}
         extraNode={renderExtraNode(id)}
+        renderMenuPopup={renderMenuPopup}
+        onCloseMenuPopup={onCloseMenuList}
+        onPressIcon={onOpenMenuList}
       />
     );
   };
@@ -144,6 +174,20 @@ const PropertyServices: React.FC<IProps> = (props: IProps): React.ReactElement =
   };
 
   const keyExtractor = (item: IRoutes): string => item.key.toString();
+
+  const popupRefMenuList = useRef<PopupActions>(null);
+  const onOpenMenuList = (): void => {
+    if (popupRefMenuList && popupRefMenuList.current) {
+      popupRefMenuList.current.open();
+    }
+  };
+  const onCloseMenuList = (): void => {
+    if (popupRefMenuList && popupRefMenuList.current) {
+      popupRefMenuList.current.close();
+    }
+  };
+
+
 
   return (
     <View>
@@ -216,5 +260,8 @@ const styles = StyleSheet.create({
   backTextWithIcon: {
     flexDirection: 'row',
     marginBottom: 24,
+  },
+  listContainer: {
+    marginVertical: 10,
   },
 });

@@ -17,7 +17,7 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
-import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu, { IMenu } from '@homzhub/common/src/components/molecules/Menu';
 import ReminderSheet from '@homzhub/common/src/components/molecules/ReminderSheet';
 import VerificationSheet from '@homzhub/mobile/src/components/molecules/VerificationSheet';
 import AddSocietyBank from '@homzhub/common/src/components/organisms/Society/AddSocietyBank';

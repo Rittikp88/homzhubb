@@ -30,9 +30,27 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
     super(props);
     this.state = {
       offset: 0,
-      hasMore: props.hasMore && !props.loader,
+      hasMore: false,
     };
   }
+
+  public componentDidMount(): void {
+    const { hasMore } = this.props;
+    this.setState({
+      hasMore: hasMore,
+    });
+  }
+
+  public componentDidUpdate(prevProps: IProps, prevState: IState): void {
+    const { hasMore: hasMoreProp } = prevProps;
+    const { hasMore: hasMoreState } = prevState;
+    if (hasMoreProp !== hasMoreState) {
+      this.setState({
+        hasMore: hasMoreProp,
+      });
+    }
+  }
+
 
   public render(): React.ReactNode {
     const { children, containerStyle, contentStyle, t, isPrevDisabled, isNextDisabled } = this.props;
@@ -67,11 +85,11 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
 
   private onPressPrev = (): void => {
     const { hasMore } = this.state;
-    const { onPressPrevBtn } = this.props;
+    const { onPressPrevBtn, fetchMoreData } = this.props;
     if (onPressPrevBtn) {
       onPressPrevBtn();
-    } else if (hasMore) {
-      this.fetchMore();
+    } else if (fetchMoreData) {
+      this.fetchMore(false);
     }
   };
 
@@ -81,14 +99,21 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
     if (onPressNextBtn) {
       onPressNextBtn();
     } else if (hasMore) {
-      this.fetchMore();
+      this.fetchMore(true);
     }
   };
 
-  private fetchMore = (): void => {
+  private fetchMore = (isNext: boolean): void => {
     const { fetchMoreData, limit } = this.props;
     const { offset } = this.state;
-    const newOffset = offset + limit;
+    let newOffset = 0;
+    if (isNext) {
+      newOffset = offset + limit;
+    }
+    else if (offset !== 0) {
+      newOffset = offset - limit;
+    }
+
     this.setState({ offset: newOffset });
     if (fetchMoreData) {
       fetchMoreData(newOffset);

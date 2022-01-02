@@ -39,6 +39,8 @@ interface IProps {
   setIsEditRecord: (isEdit: boolean) => void;
   transactionId: number;
   getGeneralLedgers: (reset: boolean) => void;
+  isFromDues: boolean;
+  setIsFromDues: (isFromDues: boolean) => void;
 }
 
 export enum FinancialsActions {
@@ -76,6 +78,8 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
     setIsEditRecord,
     transactionId,
     getGeneralLedgers,
+    isFromDues,
+    setIsFromDues,
   } = props;
   const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
   const isTablet = useOnly(deviceBreakpoint.TABLET);
@@ -103,6 +107,10 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
   const onSubmitFormSuccess = (): void => {
     onCloseModal();
     setIsEditRecord(false);
+    if (isFromDues) {
+      setIsFromDues(false);
+      dispatch(FinancialActions.getDues());
+    }
     getGeneralLedgers(true);
     AlertHelper.success({
       message: t(isEditRecord ? 'assetFinancial:editedSuccessfullyMessage' : 'assetFinancial:addedSuccessfullyMessage'),
@@ -164,7 +172,7 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
             containerStyles={styles.addFormContainer}
             isEditFlow={isEditRecord}
             isDesktopWeb={isDesktop}
-            isFromDues={false}
+            isFromDues={isFromDues}
           />
         );
       case FinancialsActions.PropertyPayment_SelectProperties:
@@ -188,6 +196,13 @@ const FinancialsPopover: React.FC<IProps> = (props: IProps) => {
   const financialsPopoverTypes = {
     [FinancialsActions.AddReminder.toString()]: {
       title: t('assetFinancial:addReminder'),
+      styles: {
+        height: '500px',
+        width: isDesktop ? '480px' : isTablet ? '480px' : '90%',
+      },
+    },
+    [FinancialsActions.EditReminder.toString()]: {
+      title: t('assetFinancial:editReminder'),
       styles: {
         height: '500px',
         width: isDesktop ? '480px' : isTablet ? '480px' : '90%',

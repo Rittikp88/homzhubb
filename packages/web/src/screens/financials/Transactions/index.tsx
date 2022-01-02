@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
+import PrevNextPagination from '@homzhub/web/src/components/hoc/PrevNextPagination';
 import TransactionAccordian from '@homzhub/web/src/screens/financials/Transactions/TransactionAccordian';
 import { FinancialRecords } from '@homzhub/common/src/domain/models/FinancialTransactions';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -20,6 +21,7 @@ interface IReduxState {
   transactionsCount: number;
   selectedProperty: number;
   selectedCountry: number;
+  transactionsLoading: boolean;
 }
 
 interface IDispatchProps {
@@ -36,22 +38,46 @@ interface IProps {
 type Props = IReduxState & IDispatchProps & IProps;
 
 const Transactions = (props: Props): React.ReactElement<Props> => {
-  const { selectedCountry, selectedProperty, onDeleteRecord } = props;
+  const { selectedCountry, selectedProperty, onDeleteRecord, getTransactions, transactionsData, transactionsCount, isAddRecord, onOpenModal, transactionsLoading } = props;
   useEffect(() => {
     getGeneralLedgers(true);
   }, [selectedCountry, selectedProperty]);
 
   const getGeneralLedgers = (reset = false): void => {
-    const { getTransactions, transactionsData } = props;
     getTransactions({
       offset: reset ? 0 : transactionsData.length,
-      limit: 10,
+      limit: 3,
       asset_id: selectedProperty || undefined,
       country_id: selectedCountry || undefined,
     });
   };
+
+  const [currOffset, setCurrOffset] = useState(0);
+  const limit = 3;
+  const hasMore = transactionsCount > currOffset;
+  useEffect(() => {
+    if (transactionsData.length === limit) {
+      setTransactionsArray(transactionsData);
+    }
+  }, [transactionsData]);
+  useEffect(() => {
+    setTransactionsArray(transactionsData.splice(currOffset - limit, currOffset));
+  }, [currOffset]);
+
+  const [transactionsArray, setTransactionsArray] = useState(transactionsData);
+
+
   const { t } = useTranslation();
-  const { transactionsData, isAddRecord, onOpenModal } = props;
+  const fetchMoreData = (updatedOffset: number) => {
+    getTransactions({
+      offset: updatedOffset,
+      limit: 3,
+      asset_id: selectedProperty || undefined,
+      country_id: selectedCountry || undefined,
+    });
+    setCurrOffset(updatedOffset);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -70,9 +96,16 @@ const Transactions = (props: Props): React.ReactElement<Props> => {
           />
         )}
       </View>
-      <ScrollView>
-        {transactionsData.length ? (
-          transactionsData.map((item) => (
+      <PrevNextPagination
+        isPrevDisabled={currOffset === 0}
+        isNextDisabled={currOffset >= transactionsCount}
+        hasMore={hasMore}
+        limit={limit}
+        loader={transactionsLoading}
+        fetchMoreData={fetchMoreData}
+      >
+        {transactionsArray.length ? (
+          transactionsArray.map((item) => (
             <TransactionAccordian
               key={item.id}
               transactionItem={item}
@@ -80,10 +113,11 @@ const Transactions = (props: Props): React.ReactElement<Props> => {
               onDeleteRecord={onDeleteRecord}
             />
           ))
+
         ) : (
           <EmptyState />
         )}
-      </ScrollView>
+      </PrevNextPagination>
     </View>
   );
 };
@@ -126,6 +160,7 @@ const mapStateToProps = (state: IState): IReduxState => {
     transactionsCount: getTransactionsCount(state),
     selectedCountry: getSelectedCountry(state),
     selectedProperty: getSelectedProperty(state),
+    transactionsLoading: state.financials.loaders.transactions,
   };
 };
 

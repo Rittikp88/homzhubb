@@ -8,7 +8,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
-import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu, { IMenu } from '@homzhub/common/src/components/molecules/Menu';
 import { Attachment, MediaType } from '@homzhub/common/src/domain/models/Attachment';
 import { Service } from '@homzhub/common/src/domain/models/Service';
 

@@ -8,7 +8,7 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Image } from '@homzhub/common/src/components/atoms/Image';
 import { ImageVideoPagination } from '@homzhub/common/src/components/atoms/ImageVideoPagination';
 import { YoutubeVideo } from '@homzhub/mobile/src/components/atoms/YoutubeVideo';
-import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu, { IMenu } from '@homzhub/common/src/components/molecules/Menu';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
 
 interface IProps {

@@ -14,7 +14,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
-import Menu from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu from '@homzhub/common/src/components/molecules/Menu';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
 import SocietyReminderList from '@homzhub/common/src/components/organisms/Society/SocietyReminderList';

@@ -28,7 +28,7 @@ import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { FullScreenAssetDetailsCarousel } from '@homzhub/mobile/src/components';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { BottomSheet } from '@homzhub/common/src/components/molecules/BottomSheet';
-import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu, { IMenu } from '@homzhub/common/src/components/molecules/Menu';
 import PropertyConfirmationView from '@homzhub/mobile/src/components/molecules/PropertyConfirmationView';
 import TabCard from '@homzhub/common/src/components/molecules/TabCard';
 import { SocialMediaShare } from '@homzhub/mobile/src/components/molecules/SocialMediaShare';
@@ -482,8 +482,7 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { RouteType, PropertyTermId, AssetTransactionType } = DynamicLinkParamKeys;
     return LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
-      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${listing_id}&${AssetTransactionType}=${
-        assetType === DetailType.LEASE_LISTING ? 0 : 1
+      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${listing_id}&${AssetTransactionType}=${assetType === DetailType.LEASE_LISTING ? 0 : 1
       }`
     );
   };

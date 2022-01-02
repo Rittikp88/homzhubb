@@ -22,7 +22,7 @@ import { IApiClientError } from '@homzhub/common/src/network/ApiClientError';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import ChatInputBox from '@homzhub/common/src/components/molecules/ChatInputBox';
-import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu, { IMenu } from '@homzhub/common/src/components/molecules/Menu';
 import MessagePreview from '@homzhub/common/src/components/organisms/MessagePreview';
 import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
 import { IGetMessageParam, IMessagePayload, MessageAction } from '@homzhub/common/src/domain/repositories/interfaces';

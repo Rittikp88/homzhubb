@@ -50,6 +50,7 @@ const Financials: FC<IProps> = (props: IProps) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [isEditRecord, setIsEditRecord] = useState(false);
+  const [isFromDues, setIsFromDues] = useState(false);
   const [transactionId, setTransactionId] = useState(-1);
   const {
     currency,
@@ -155,9 +156,10 @@ const Financials: FC<IProps> = (props: IProps) => {
     }
   };
 
-  const onPressDueActions = (): void => {
+  const onPressDueActions = (actionType: FinancialsActions): void => {
+    setIsFromDues(true);
     setFinancialsActions({
-      financialsActionType: FinancialsActions.AddReminder,
+      financialsActionType: actionType,
       isOpen: true,
     });
   };
@@ -194,6 +196,8 @@ const Financials: FC<IProps> = (props: IProps) => {
           setIsEditRecord={setIsEditRecord}
           transactionId={transactionId}
           getGeneralLedgers={getGeneralLedgers}
+          isFromDues={isFromDues}
+          setIsFromDues={setIsFromDues}
         />
       </View>
     </View>

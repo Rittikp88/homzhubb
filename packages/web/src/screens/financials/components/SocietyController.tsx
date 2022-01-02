@@ -20,7 +20,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import ConfirmationSheet from '@homzhub/mobile/src/components/molecules/ConfirmationSheet';
-import Menu, { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import Menu, { IMenu } from '@homzhub/common/src/components/molecules/Menu';
 import ReminderSheet from '@homzhub/common/src/components/molecules/ReminderSheet';
 import AddSocietyBank from '@homzhub/common/src/components/organisms/Society/AddSocietyBank';
 import AddSocietyForm from '@homzhub/common/src/components/organisms/Society/AddSocietyForm';

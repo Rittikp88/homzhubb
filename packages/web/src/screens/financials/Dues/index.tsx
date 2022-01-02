@@ -20,10 +20,12 @@ import PrevNextPagination from '@homzhub/web/src/components/hoc/PrevNextPaginati
 import CrossActionsPopover, { ISheetData } from '@homzhub/web/src/screens/financials/components/CrossActionsPopover';
 import DueConfirmPopover from '@homzhub/web/src/screens/financials/components/DueConfirmPopover';
 import DuesOrderSummary from '@homzhub/web/src/screens/financials/components/DuesOrderSummary';
+import { FinancialsActions } from '@homzhub/web/src/screens/financials/FinancialsPopover';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 
+
 interface IProps {
-  onPressDueActions: () => void;
+  onPressDueActions: (actionType: FinancialsActions) => void;
 }
 
 const DueList: React.FC<IProps> = (props: IProps) => {
@@ -56,13 +58,14 @@ const DueList: React.FC<IProps> = (props: IProps) => {
 
   const handleAlreadyPaid = (): void => {
     dispatch(AssetActions.getActiveAssets());
-    // (AddRecordScreen, { isFromDues: true });
+    // isFromDues: true
+    onPressDueActions(FinancialsActions.AddRecord);
   };
 
   const onSetReminder = (): void => {
     if (currentDue && currentDue.canAddReminder) {
       // isFromDues: true
-      onPressDueActions();
+      onPressDueActions(FinancialsActions.AddReminder);
       return;
     }
     AlertHelper.error({ message: t('assetFinancial:reminderAlreadySetForDue') });

@@ -6,7 +6,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { Text, Label } from '@homzhub/common/src/components/atoms/Text';
-import { IMenu } from '@homzhub/mobile/src/components/molecules/Menu';
+import { IMenu } from '@homzhub/common/src/components/molecules/Menu';
 import PropertyCard, { IShieldProps } from '@homzhub/common/src/components/molecules/PropertyCard';
 import ServiceCard from '@homzhub/mobile/src/components/molecules/ServiceCard';
 import { ShieldGroup } from '@homzhub/mobile/src/components/molecules/ShieldGroup';
