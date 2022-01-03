@@ -15,12 +15,13 @@ import { IUpdateTicketWorkStatus, TicketAction } from '@homzhub/common/src/domai
 
 interface IProps {
   containerStyle?: ViewStyle;
+  buttonContainerStyle?: ViewStyle;
   onSubmit?: () => void;
   toggleLoader: (loading: boolean) => void;
 }
 
 const WorkInitiatedForm = (props: IProps): ReactElement => {
-  const { containerStyle, onSubmit, toggleLoader } = props;
+  const { containerStyle, onSubmit, toggleLoader, buttonContainerStyle } = props;
   const { t } = useTranslation(LocaleConstants.namespacesKey.serviceTickets);
 
   const [comment, setComment] = useState('');
@@ -73,7 +74,12 @@ const WorkInitiatedForm = (props: IProps): ReactElement => {
           onMessageChange={setComment}
           containerStyle={styles.commentBox}
         />
-        <Button type="primary" title={t('common:submit')} onPress={onFormSubmit} />
+        <Button
+          type="primary"
+          title={t('common:submit')}
+          onPress={onFormSubmit}
+          containerStyle={buttonContainerStyle}
+        />
       </View>
     </>
   );

@@ -117,6 +117,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   const isClosed = status === TicketStatus.CLOSED;
   const isRejected = ffmStatus === 'REJECTED';
+  const isAcceptedClosed = ffmStatus === 'ACCEPTED_AND_CLOSED';
 
   // Data formation for closed and open tickets
   const openTicket = {
@@ -127,9 +128,10 @@ export const TicketCard = (props: IProps): React.ReactElement => {
   };
   const closedTicket = {
     'serviceTickets:closedOn': DateUtils.convertDateFormatted(
-      isRejected && ffmStatusUpdatedAt ? ffmStatusUpdatedAt : closedAt
+      (isRejected || isAcceptedClosed) && ffmStatusUpdatedAt ? ffmStatusUpdatedAt : closedAt
     ),
-    'serviceTickets:closedBy': isRejected && ffmStatusUpdatedBy ? ffmStatusUpdatedBy.firstName : closedBy.firstName,
+    'serviceTickets:closedBy':
+      (isRejected || isAcceptedClosed) && ffmStatusUpdatedBy ? ffmStatusUpdatedBy.firstName : closedBy.firstName,
   };
 
   const dataByStatus: IDataType = isClosed || isRejected ? closedTicket : openTicket;
@@ -178,7 +180,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   const renderFFMClosedView = (): React.ReactElement | null => {
     const isTicketClosed = ffmStatus === 'CLOSED';
-    if (!isTicketClosed && !isRejected) return null;
+    if (!isTicketClosed && !isRejected && !isAcceptedClosed) return null;
 
     return (
       <View style={styles.closedView}>
@@ -232,7 +234,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   return (
     <View style={[styles.container, isWeb && isOddElement ? styles.oddElement : styles.evenElement]}>
-      <TouchableOpacity onPress={onCardPress}>
+      <TouchableOpacity disabled={ffmStatus === 'PENDING'} onPress={onCardPress}>
         <View style={styles.row}>
           <View style={[styles.line, { backgroundColor: cardColor(cardData.priority) }]} />
           <View>
@@ -263,7 +265,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
       </TouchableOpacity>
       {ffmStatus === 'PENDING' && renderActions()}
       {renderFFMClosedView()}
-      {isClosed && renderRatingView()}
+      {isClosed && !ffmStatusUpdatedBy && renderRatingView()}
     </View>
   );
 };

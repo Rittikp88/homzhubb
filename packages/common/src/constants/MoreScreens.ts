@@ -33,6 +33,7 @@ export enum MoreScreenTypes {
   OFFERS = 'Offers',
   FAQS = 'Faqs',
   BANK_DETAILS = 'bankDetails',
+  REPORTS = 'reports',
 }
 
 const ICON_COLOR = theme.colors.lowPriority;
@@ -174,6 +175,19 @@ export const MORE_SCREENS: IMoreScreens = {
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.FAQS,
+    },
+  ],
+};
+
+export const FFM_MORE_SCREEN = {
+  sectionA: [
+    {
+      id: 1,
+      title: `${LocaleConstants.namespacesKey.reports}:reports`,
+      icon: icons.serviceRequest,
+      iconColor: ICON_COLOR,
+      textColor: TEXT_COLOR,
+      type: MoreScreenTypes.REPORTS,
     },
   ],
 };

@@ -1,21 +1,19 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
-import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import TicketDetail from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/components/TicketDetail';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { TicketActions as Actions } from '@homzhub/common/src/constants/ServiceTickets';
 
 const RequestDetail = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { navigate, goBack } = useNavigation();
-  const { params } = useRoute();
   const { t } = useTranslation();
   const currentTicket = useSelector(TicketSelectors.getCurrentTicket);
   const ticketDetails = useSelector(TicketSelectors.getTicketDetail);
@@ -31,12 +29,7 @@ const RequestDetail = (): React.ReactElement => {
 
   const handleGoBack = (): void => {
     dispatch(TicketActions.clearState());
-    // @ts-ignore
-    if (params && params.isFromScreen) {
-      navigate(ScreensKeys.ServiceTicketScreen, { isFromScreenLevel: true });
-    } else {
-      goBack();
-    }
+    goBack();
   };
 
   const handleNavigation = (action: string): void => {
@@ -76,7 +69,7 @@ const RequestDetail = (): React.ReactElement => {
     );
   };
 
-  return <TicketDetail renderScreen={renderScreen} handleNavigation={handleNavigation} />;
+  return <TicketDetail isFFMUser renderScreen={renderScreen} handleNavigation={handleNavigation} />;
 };
 
 export default RequestDetail;

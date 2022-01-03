@@ -3,7 +3,7 @@ import ComingSoon from '@homzhub/ffm/src/screens/Common/ComingSoon';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 export type CommonStackParamList = {
-  // common screen
+  [ScreenKeys.ComingSoon]: undefined;
 };
 
 /**
@@ -15,7 +15,7 @@ export const getCommonScreen = (Stack: any): React.ReactElement => {
   return (
     <>
       {/* Example */}
-      <Stack.Screen name={ScreenKeys.OnBoarding} component={ComingSoon} />
+      <Stack.Screen name={ScreenKeys.ComingSoon} component={ComingSoon} />
     </>
   );
 };

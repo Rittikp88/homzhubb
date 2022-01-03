@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import { FFMSelector } from '@homzhub/common/src/modules/ffm/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -15,6 +15,7 @@ import { FFMVisitRoutes, IRoutes, Tabs } from '@homzhub/common/src/constants/Tab
 
 const ReportDashboard = (): React.ReactElement => {
   const dispatch = useDispatch();
+  const { goBack } = useNavigation();
   const { t } = useTranslation(LocaleConstants.namespacesKey.reports);
   const { inspectionReport } = useSelector(FFMSelector.getFFMLoaders);
   const isFromDeeplink = useSelector(FFMSelector.getDeeplinkData);
@@ -59,7 +60,10 @@ const ReportDashboard = (): React.ReactElement => {
     <GradientScreen
       isUserHeader
       loading={inspectionReport}
-      screenTitle={t('reports')}
+      screenTitle={t('assetMore:more')}
+      pageTitle={t('reports')}
+      onGoBack={goBack}
+      pageHeaderStyle={styles.pageHeader}
       containerStyle={styles.container}
     >
       <TabView
@@ -103,9 +107,13 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     backgroundColor: theme.colors.white,
-    paddingTop: 10,
   },
   tabLabel: {
     color: theme.colors.darkTint3,
+  },
+  pageHeader: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    marginTop: 16,
   },
 });

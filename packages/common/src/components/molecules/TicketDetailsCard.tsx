@@ -18,6 +18,7 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   onOpenRatingModal?: () => void;
   onCloseRatingModal?: () => void;
+  isFFMUser?: boolean;
 }
 
 interface ITicketDetails {
@@ -35,6 +36,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
     containerStyle,
     onOpenRatingModal,
     onCloseRatingModal,
+    isFFMUser = false,
   } = props;
   const {
     createdAt,
@@ -132,7 +134,7 @@ const TicketDetailsCard = (props: IProps): React.ReactElement => {
           {title}
         </Text>
         <RenderDetails />
-        {status === TicketStatus.CLOSED && (
+        {status === TicketStatus.CLOSED && !isFFMUser && (
           <TicketReview
             ticketData={ticketData}
             renderRatingForm={renderRatingForm}

@@ -32,10 +32,11 @@ interface IProps {
   containerStyle?: StyleProp<ViewStyle>;
   onOpenModal?: () => void;
   handleActiveTicketAction?: (value: TicketActionTypes) => void;
+  isFFMUser?: boolean;
 }
 
 interface IDispatchProps {
-  closeTicket: () => void;
+  closeTicket: (payload?: boolean) => void;
 }
 
 interface IActivityStatusBadge {
@@ -68,7 +69,8 @@ class TicketActivityCard extends PureComponent<Props> {
     const { groupedActivities, status } = ticketData;
 
     const onConfirmClose = (): void => {
-      closeTicket();
+      const { isFFMUser = false } = this.props;
+      closeTicket(isFFMUser);
       this.closeSheet();
     };
 

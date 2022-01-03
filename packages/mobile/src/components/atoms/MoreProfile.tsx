@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { connect } from 'react-redux';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { IState } from '@homzhub/common/src/modules/interfaces';
@@ -11,6 +11,7 @@ import { UserProfile as UserProfileModel } from '@homzhub/common/src/domain/mode
 
 interface IProps {
   onIconPress: () => void;
+  headerContainerStyle?: ViewStyle;
 }
 
 interface IStateProps {
@@ -25,10 +26,10 @@ class MoreProfile extends Component<Props> {
   }
 
   private renderHeader = (): React.ReactElement | null => {
-    const { onIconPress, userProfile } = this.props;
+    const { onIconPress, userProfile, headerContainerStyle } = this.props;
 
     return (
-      <TouchableOpacity onPress={onIconPress} style={styles.headerContainer}>
+      <TouchableOpacity onPress={onIconPress} style={[styles.headerContainer, headerContainerStyle]}>
         <View style={styles.flexRow}>
           <Avatar
             isOnlyAvatar

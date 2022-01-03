@@ -147,6 +147,7 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreenKeys.WorkInitiated,
     ScreenKeys.SendUpdate,
     ScreenKeys.WorkCompleted,
+    ScreenKeys.Reports,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreenKeys);
 };

@@ -18,6 +18,8 @@ export type NestedNavigatorParams<ParamList> = {
 export enum ScreenKeys {
   // Common
   OnBoarding = 'OnBoarding',
+  ComingSoon = 'ComingSoon',
+
   // Auth
   Login = 'LoginScreen',
   EmailLogin = 'EmailLoginScreen',
@@ -59,6 +61,7 @@ export enum ScreenKeys {
 
   // More
   MoreScreen = 'MoreScreen',
+  Reports = 'Reports',
 }
 
 export interface IVerification {

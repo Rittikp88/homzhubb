@@ -42,8 +42,8 @@ const RequestDashboard = (): React.ReactElement => {
     useCallback(() => {
       setCurrentIndex(0);
       setSelectedValue(StatusCategory.NEW);
-      dispatch(FFMActions.getTickets({ status_category: StatusCategory.NEW }));
       getTicketManagement();
+      dispatch(FFMActions.getTickets({ status_category: StatusCategory.NEW }));
     }, [])
   );
 
@@ -80,7 +80,11 @@ const RequestDashboard = (): React.ReactElement => {
 
   const onCardPress = (item: Ticket): void => {
     dispatch(
-      TicketActions.setCurrentTicket({ ticketId: item.id, assetId: item.asset.id, assignedUserId: item.assignedTo.id })
+      TicketActions.setCurrentTicket({
+        ticketId: item.id,
+        assetId: item.asset.id,
+        assignedUserId: item.assignedTo.id,
+      })
     );
     navigate(ScreenKeys.RequestDetail);
   };
@@ -105,6 +109,7 @@ const RequestDashboard = (): React.ReactElement => {
         )}
         <FlatList
           data={tickets}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={renderEmptyComponent}
           renderItem={({ item }): ReactElement => renderItem(item, tickets.length)}
           extraData={tickets}

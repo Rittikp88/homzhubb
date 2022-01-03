@@ -1,5 +1,6 @@
 import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
@@ -23,9 +24,15 @@ const WorkInitiated = (): ReactElement => {
       pageTitle={t('workInitiated')}
       screenTitle={selectedTicket?.propertyName ?? ''}
     >
-      <WorkInitiatedForm toggleLoader={setLoader} onSubmit={goBack} />
+      <WorkInitiatedForm toggleLoader={setLoader} onSubmit={goBack} buttonContainerStyle={styles.buttonContainer} />
     </GradientScreen>
   );
 };
 
 export default WorkInitiated;
+
+const styles = StyleSheet.create({
+  buttonContainer: {
+    flex: 0,
+  },
+});

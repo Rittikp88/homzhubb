@@ -52,9 +52,9 @@ export const FFMActionTypes = {
     HOT_PROPERTIES: `${actionTypePrefix}HOT_PROPERTIES`,
     HOT_PROPERTIES_SUCCESS: `${actionTypePrefix}HOT_PROPERTIES_SUCCESS`,
     HOT_PROPERTIES_FAILURE: `${actionTypePrefix}HOT_PROPERTIES_FAILURE`,
-    TICKETS: `${actionTypePrefix}TICKETS`,
-    TICKETS_SUCCESS: `${actionTypePrefix}TICKETS_SUCCESS`,
-    TICKETS_FAILURE: `${actionTypePrefix}TICKETS_FAILURE`,
+    FFM_TICKETS: `${actionTypePrefix}FFM_TICKETS`,
+    FFM_TICKETS_SUCCESS: `${actionTypePrefix}FFM_TICKETS_SUCCESS`,
+    FFM_TICKETS_FAILURE: `${actionTypePrefix}FFM_TICKETS_FAILURE`,
     TICKET_DETAIL: `${actionTypePrefix}TICKET_DETAIL`,
     TICKET_ACTIONS: `${actionTypePrefix}TICKET_ACTIONS`,
   },
@@ -249,17 +249,17 @@ const getHotPropertiesFailure = (): IFluxStandardAction => ({
 });
 
 const getTickets = (payload: IGetTicket): IFluxStandardAction<IGetTicket> => ({
-  type: FFMActionTypes.GET.TICKETS,
+  type: FFMActionTypes.GET.FFM_TICKETS,
   payload,
 });
 
 const getTicketsSuccess = (payload: FFMTicket): IFluxStandardAction<IFFMTicket> => ({
-  type: FFMActionTypes.GET.TICKETS_SUCCESS,
+  type: FFMActionTypes.GET.FFM_TICKETS_SUCCESS,
   payload: ObjectMapper.serialize(payload),
 });
 
 const getTicketsFailure = (): IFluxStandardAction => ({
-  type: FFMActionTypes.GET.TICKETS_FAILURE,
+  type: FFMActionTypes.GET.FFM_TICKETS_FAILURE,
 });
 
 const getTicketDetail = (payload: number): IFluxStandardAction<number> => ({

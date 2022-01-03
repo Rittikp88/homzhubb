@@ -250,18 +250,18 @@ export const ffmReducer = (
         ...state,
         ['loaders']: { ...state.loaders, ['hotProperties']: false },
       };
-    case FFMActionTypes.GET.TICKETS:
+    case FFMActionTypes.GET.FFM_TICKETS:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['tickets']: true },
       };
-    case FFMActionTypes.GET.TICKETS_SUCCESS:
+    case FFMActionTypes.GET.FFM_TICKETS_SUCCESS:
       return {
         ...state,
         ['tickets']: action.payload as IFFMTicket,
         ['loaders']: { ...state.loaders, ['tickets']: false },
       };
-    case FFMActionTypes.GET.TICKETS_FAILURE:
+    case FFMActionTypes.GET.FFM_TICKETS_FAILURE:
       return {
         ...state,
         ['loaders']: { ...state.loaders, ['tickets']: false },

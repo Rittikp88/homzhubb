@@ -50,7 +50,7 @@ const GradientScreen = (props: IProps): React.ReactElement => {
               {screenTitle}
             </Text>
             <TouchableOpacity>
-              <Avatar isOnlyAvatar imageSize={34} fullName={user?.name} />
+              <Avatar isOnlyAvatar image={user?.profilePicture} imageSize={34} fullName={user?.name} />
             </TouchableOpacity>
           </View>
         ) : (

@@ -143,8 +143,9 @@ const getInvoiceSummaryFailure = (): IFluxStandardAction => ({
   type: TicketActionTypes.POST.INVOICE_SUMMARY_FAILURE,
 });
 
-const closeTicket = (): IFluxStandardAction => ({
+const closeTicket = (payload?: boolean): IFluxStandardAction<boolean> => ({
   type: TicketActionTypes.CLOSE_TICKET,
+  payload,
 });
 
 const closeTicketSuccess = (): IFluxStandardAction => ({

@@ -111,5 +111,6 @@ export default ReportList;
 const styles = StyleSheet.create({
   container: {
     padding: 16,
+    marginBottom: 20,
   },
 });

@@ -203,7 +203,7 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.REPORT_SPACE, getReportSpaces);
   yield takeLatest(FFMActionTypes.GET.SPACE_DETAIL, getSpaceDetail);
   yield takeLatest(FFMActionTypes.GET.HOT_PROPERTIES, getHotProperties);
-  yield takeLatest(FFMActionTypes.GET.TICKETS, getTickets);
+  yield takeLatest(FFMActionTypes.GET.FFM_TICKETS, getTickets);
   yield takeLatest(FFMActionTypes.GET.TICKET_DETAIL, getTicketDetails);
   yield takeLatest(FFMActionTypes.GET.TICKET_ACTIONS, getTicketActions);
 }

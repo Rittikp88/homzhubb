@@ -57,6 +57,7 @@ interface IScreenState {
 interface IProps {
   renderScreen: (children: React.ReactElement) => React.ReactElement;
   handleNavigation: (action: string) => void;
+  isFFMUser?: boolean;
 }
 
 type Props = WithTranslation & IDispatchProps & IStateProps & IProps;
@@ -111,11 +112,12 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   };
 
   private renderDetailsCard = (): React.ReactElement | null => {
-    const { ticketDetails } = this.props;
+    const { ticketDetails, isFFMUser } = this.props;
     if (!ticketDetails) return null;
     return (
       <TicketDetailsCard
         ticketData={ticketDetails}
+        isFFMUser={isFFMUser}
         ticketImages={this.renderCarousel(ticketDetails)}
         renderRatingForm={this.renderRatingSheet}
         successCallback={this.onSuccessCallback}
@@ -167,7 +169,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
   };
 
   private renderActivityCard = (): React.ReactElement | null => {
-    const { ticketDetails, ticketActions } = this.props;
+    const { ticketDetails, ticketActions, isFFMUser } = this.props;
     if (!ticketDetails) return null;
 
     // Check close ticket action is allowed or not
@@ -175,6 +177,7 @@ class ServiceTicketDetails extends React.Component<Props, IScreenState> {
     return (
       <TicketActivityCard
         ticketData={ticketDetails}
+        isFFMUser={isFFMUser}
         isCloseAllowed={isCloseAllowed}
         onPressQuote={this.handleQuoteClick}
         onPressImage={this.onFullScreenToggleCompleted}

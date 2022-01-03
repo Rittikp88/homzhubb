@@ -7,6 +7,7 @@ import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { PaymentRepository } from '@homzhub/common/src/domain/repositories/PaymentRepository';
 import { TicketRepository } from '@homzhub/common/src/domain/repositories/TicketRepository';
 import { I18nService } from '@homzhub/common/src/services/Localization/i18nextService';
+import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import { TicketActions, TicketActionTypes } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
@@ -80,7 +81,7 @@ export function* getInvoiceSummary(action: IFluxStandardAction<IInvoiceSummaryPa
   }
 }
 
-export function* closeTicket() {
+export function* closeTicket(action: IFluxStandardAction<boolean>) {
   try {
     const currentTicket: ICurrentTicket = yield select(TicketSelectors.getCurrentTicket);
     const requestBody: IUpdateTicketWorkStatus = {
@@ -89,7 +90,11 @@ export function* closeTicket() {
     };
     yield call(TicketRepository.updateTicketStatusById, currentTicket.ticketId, requestBody);
     yield put(TicketActions.closeTicketSuccess());
-    yield put(TicketActions.getTicketDetail(currentTicket.ticketId));
+    if (action.payload) {
+      yield put(FFMActions.getTicketDetail(currentTicket.ticketId));
+    } else {
+      yield put(TicketActions.getTicketDetail(currentTicket.ticketId));
+    }
     AlertHelper.success({ message: I18nService.t('serviceTickets:closeTicketSuccess') });
   } catch (e) {
     yield put(TicketActions.closeTicketFailure());
