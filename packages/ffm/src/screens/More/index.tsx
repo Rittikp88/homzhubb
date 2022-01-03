@@ -17,7 +17,11 @@ const More = (): React.ReactElement => {
   const { navigate } = useNavigation();
   const screenKeys: string[] = Object.keys(FFM_MORE_SCREEN);
 
-  const handleNavigation = (type: MoreScreenTypes, title: string): void => {
+  const onPressIcon = (): void => {
+    navigate(ScreenKeys.UserProfile);
+  };
+
+  const handleNavigation = (type: MoreScreenTypes): void => {
     switch (type) {
       case MoreScreenTypes.REPORTS:
         navigate(ScreenKeys.Reports);
@@ -34,9 +38,7 @@ const More = (): React.ReactElement => {
 
   const renderItem = (item: IMoreScreenItem): React.ReactElement => {
     return (
-      <TouchableOpacity onPress={(): void => handleNavigation(item.type, t(item.title))}>
-        {renderItemWithIcon(item)}
-      </TouchableOpacity>
+      <TouchableOpacity onPress={(): void => handleNavigation(item.type)}>{renderItemWithIcon(item)}</TouchableOpacity>
     );
   };
 
@@ -61,8 +63,8 @@ const More = (): React.ReactElement => {
   };
 
   return (
-    <GradientScreen isScrollable isUserHeader screenTitle={t('assetMore:more')}>
-      <MoreProfile headerContainerStyle={styles.profileContainer} />
+    <GradientScreen isScrollable isUserHeader screenTitle={t('assetMore:more')} containerStyle={styles.container}>
+      <MoreProfile headerContainerStyle={styles.profileContainer} onIconPress={onPressIcon} />
       <View style={styles.background}>
         {screenKeys.map((section: string, sectionCount: number): React.ReactElement => {
           const currentData: IMoreScreenItem[] = FFM_MORE_SCREEN[section];
@@ -88,6 +90,9 @@ const More = (): React.ReactElement => {
 export default More;
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 0,
+  },
   profileContainer: {
     flex: 0,
   },
@@ -108,6 +113,7 @@ const styles = StyleSheet.create({
   },
   iconAndText: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   iconPosition: {
     paddingHorizontal: 5,

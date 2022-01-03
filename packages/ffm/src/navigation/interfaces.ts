@@ -1,7 +1,5 @@
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
-import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
 import { GooglePlaceDetail } from '@homzhub/common/src/services/GooglePlaces/interfaces';
 
 export type NavigationScreenProps<S extends Record<string, object | undefined>, T extends keyof S> = {
@@ -62,14 +60,9 @@ export enum ScreenKeys {
   // More
   MoreScreen = 'MoreScreen',
   Reports = 'Reports',
-}
-
-export interface IVerification {
-  type: OtpNavTypes;
-  title: string;
-  countryCode: string;
-  otpSentTo: string;
-  userData?: ISignUpPayload;
+  UserProfile = 'UserProfile',
+  UpdateUserProfile = 'UpdateUserProfile',
+  UpdatePassword = 'UpdatePassword',
 }
 
 export interface IVisitParam {

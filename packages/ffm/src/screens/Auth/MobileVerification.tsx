@@ -22,8 +22,8 @@ import {
   IOtpLoginPayload,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IVerification, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
-import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
+import { IOtpNavProps, OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
 
 const MobileVerification = (): React.ReactElement => {
   const { goBack, navigate } = useNavigation();
@@ -31,7 +31,7 @@ const MobileVerification = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [error, setError] = useState(false);
-  const { type, userData, title, otpSentTo, countryCode } = params as IVerification;
+  const { type, userData, title, otpSentTo, countryCode } = params as IOtpNavProps;
 
   useEffect(() => {
     fetchOtp().then();
@@ -104,6 +104,14 @@ const MobileVerification = (): React.ReactElement => {
     }
   };
 
+  const handleBack = (): void => {
+    if ([OtpNavTypes.UpdateProfileByOtp, OtpNavTypes.UpdateProfileByEmailPhoneOtp].includes(type)) {
+      navigate(ScreenKeys.UserProfile);
+    } else {
+      goBack();
+    }
+  };
+
   const handleCallback = (): void => {
     dispatch(FFMActions.setWorkLocations([]));
   };
@@ -117,7 +125,7 @@ const MobileVerification = (): React.ReactElement => {
   };
 
   return (
-    <GradientScreen onGoBack={goBack}>
+    <GradientScreen onGoBack={handleBack}>
       <Text type="large" textType="semiBold" style={styles.title}>
         {title}
       </Text>

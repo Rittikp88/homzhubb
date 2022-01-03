@@ -109,7 +109,7 @@ export type CommonParamList = {
   [ScreensKeys.UpdateTicketStatus]: undefined;
   [ScreensKeys.MarkdownScreen]: IMarkdownProps;
   [ScreensKeys.ProspectProfile]: IAssetDescriptionProps;
-  [ScreensKeys.UserProfileScreen]: IVerifyEmail;
+  [ScreensKeys.UserProfileScreen]: IVerifyEmail | undefined;
   [ScreensKeys.UpdateUserProfileScreen]: IUpdateProfileProps;
   [ScreensKeys.OTP]: IOtpNavProps;
   [ScreensKeys.UpdatePassword]: undefined;

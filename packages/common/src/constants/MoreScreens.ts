@@ -184,7 +184,7 @@ export const FFM_MORE_SCREEN = {
     {
       id: 1,
       title: `${LocaleConstants.namespacesKey.reports}:reports`,
-      icon: icons.serviceRequest,
+      icon: icons.barChartOutline,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
       type: MoreScreenTypes.REPORTS,

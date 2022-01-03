@@ -769,7 +769,9 @@
     "addOnService": "Add-on Services",
     "selectCityForService": "Please select city for services",
     "addYourFirstProperty": "Add your first property",
-    "rentPayment": "Coming Soon,\\n' +\n 'However, you can pay your rent by setting up a reminder with category as \"Rent\"."
+    "rentPayment": "Coming Soon,\\n' +\n 'However, you can pay your rent by setting up a reminder with category as \"Rent\".",
+    "expectedRent": "Expected Rent",
+    "hotProperties": "Hot Properties"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -1445,7 +1447,8 @@
     "inviteMorePartner": "Invite More Service Partners",
     "ticketDetailsTitle": "Ticket Details",
     "ticketActionSuccess": "Service request action completed Successfully",
-    "paymentCancelled": "Payment has been cancelled!"
+    "paymentCancelled": "Payment has been cancelled!",
+    "approvalPending": "Approval Pending"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",

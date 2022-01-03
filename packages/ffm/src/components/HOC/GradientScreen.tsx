@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImageBackground, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
@@ -11,6 +12,7 @@ import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
 interface IProps {
   children: React.ReactNode;
@@ -37,6 +39,12 @@ const GradientScreen = (props: IProps): React.ReactElement => {
     loading = false,
   } = props;
   const user = useSelector(UserSelector.getUserProfile);
+  const { navigate } = useNavigation();
+
+  const onPressProfile = (): void => {
+    navigate(ScreenKeys.UserProfile);
+  };
+
   return (
     <HandleBack onBack={onGoBack}>
       <ImageBackground
@@ -49,7 +57,7 @@ const GradientScreen = (props: IProps): React.ReactElement => {
             <Text type="regular" textType="semiBold" style={styles.title} maxLength={25}>
               {screenTitle}
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={onPressProfile}>
               <Avatar isOnlyAvatar image={user?.profilePicture} imageSize={34} fullName={user?.name} />
             </TouchableOpacity>
           </View>
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: 20,
     alignContent: 'center',
-    paddingTop: PlatformUtils.isAndroid() ? '10%' : '1%',
+    paddingTop: PlatformUtils.isAndroid() ? '6%' : '1%',
   },
   pageTitle: {
     marginHorizontal: 6,

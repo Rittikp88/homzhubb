@@ -60,7 +60,7 @@ const RequestDetail = (): React.ReactElement => {
         screenTitle={title}
         onGoBack={handleGoBack}
         pageTitle={t('serviceTickets:ticketDetails')}
-        loading={detailLoader || closeTicket || ticketReminder}
+        loading={detailLoader || closeTicket || ticketReminder || !ticketDetails}
         containerStyle={styles.userScreen}
         pageHeaderStyle={styles.pageHeader}
       >

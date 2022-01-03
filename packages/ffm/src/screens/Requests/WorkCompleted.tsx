@@ -6,7 +6,7 @@ import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
 import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import WorkComplete from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/components/WorkComplete';
-import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
 const WorkCompleted = (): React.ReactElement => {
@@ -24,7 +24,7 @@ const WorkCompleted = (): React.ReactElement => {
   };
 
   const onSuccess = (): void => {
-    navigate(ScreensKeys.ServiceTicketDetail);
+    navigate(ScreenKeys.RequestDetail);
   };
 
   // HANDLERS

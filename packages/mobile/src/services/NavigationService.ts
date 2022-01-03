@@ -204,6 +204,15 @@ class NavigationService {
           initial: false,
         });
         break;
+      case DynamicLinkTypes.UserProfile:
+        this.navigateTo(ScreensKeys.BottomTabs, {
+          screen: ScreensKeys.More,
+          params: {
+            screen: ScreensKeys.UserProfileScreen,
+            initial: false,
+          },
+        });
+        break;
       default:
         AlertHelper.error({ message: I18nService.t('common:invalidLink') });
         break;

@@ -18,12 +18,13 @@ import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSearchBar';
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
-import { IVerification, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import {
   AddressComponent,
   GooglePlaceData,
   GooglePlaceDetail,
 } from '@homzhub/common/src/services/GooglePlaces/interfaces';
+import { IOtpNavProps } from '@homzhub/mobile/src/navigation/interfaces';
 
 const LocationKeysToMatch = {
   sublocality_level_1: 'LOCALITY',
@@ -93,7 +94,7 @@ const WorkLocations = (): React.ReactElement => {
 
   const onNext = (): void => {
     if (params) {
-      const verificationData = params as IVerification;
+      const verificationData = params as IOtpNavProps;
       navigate(ScreenKeys.MobileVerification, {
         ...verificationData,
         userData: { ...verificationData.userData, work_locations: locations },

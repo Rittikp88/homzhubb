@@ -12,6 +12,7 @@ export enum DynamicLinkTypes {
   Offer = 'OFFER',
   Asset = 'ASSET',
   Due = 'DUE',
+  UserProfile = 'USER_PROFILE',
 }
 
 export enum RouteTypes {

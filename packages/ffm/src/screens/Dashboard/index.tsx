@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleProp, ViewStyle, View, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
@@ -23,7 +23,13 @@ const Dashboard = (): React.ReactElement => {
   const [loading, setLoading] = useState(false);
   const [metrics, setMetrics] = useState<FFMMetrics | null>(null);
 
-  useEffect(() => {
+  useFocusEffect(
+    useCallback(() => {
+      getMetrics();
+    }, [])
+  );
+
+  const getMetrics = (): void => {
     setLoading(true);
     FFMRepository.getManagementTab()
       .then((res) => {
@@ -34,10 +40,14 @@ const Dashboard = (): React.ReactElement => {
         setLoading(false);
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
       });
-  }, []);
+  };
 
   const onViewAllProperties = (): void => {
     navigate(ScreenKeys.HotProperties);
+  };
+
+  const navigateToRequests = (): void => {
+    navigate(ScreenKeys.Requests);
   };
 
   const renderAssetMetricsAndUpdates = (data: FFMMetrics): React.ReactElement => {
@@ -56,6 +66,7 @@ const Dashboard = (): React.ReactElement => {
           serviceTickets={tickets.count}
           notification={notifications.count}
           containerStyle={styles.assetCards()}
+          onPressServiceTickets={navigateToRequests}
         />
       </>
     );

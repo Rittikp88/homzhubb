@@ -5,7 +5,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import { Divider } from '@homzhub/common/src/components/atoms/Divider';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
-import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/UpdateUserProfile';
+import { UpdateUserFormTypes } from '@homzhub/mobile/src/screens/Asset/More/User/UpdateProfile';
 
 export interface IDetailsInfo {
   icon: string;
@@ -91,7 +91,7 @@ class DetailsCard extends React.PureComponent<IOwnProps, {}> {
                   <Icon size={20} name={icons.filledWarning} color={theme.colors.error} />
                 ))}
             </View>
-            {textType === 'EMAIL' && !item.emailVerified && (
+            {textType === 'EMAIL' && !!text && !item.emailVerified && (
               <Label onPress={handleEmailVerifyPress} style={styles.verifyMail} type="large">
                 {t('moreProfile:verifyYourEmailText')}
               </Label>

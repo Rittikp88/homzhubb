@@ -49,6 +49,7 @@ const RequestDashboard = (): React.ReactElement => {
 
   useEffect(() => {
     getData();
+    getTicketManagement();
   }, [selectedValue, currentIndex]);
 
   const getTicketManagement = (): void => {
@@ -93,6 +94,7 @@ const RequestDashboard = (): React.ReactElement => {
     FFMRepository.updateTicket(payload)
       .then(() => {
         getData();
+        getTicketManagement();
       })
       .catch((e) => {
         AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
