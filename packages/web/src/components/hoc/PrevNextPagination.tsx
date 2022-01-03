@@ -37,7 +37,7 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
   public componentDidMount(): void {
     const { hasMore } = this.props;
     this.setState({
-      hasMore: hasMore,
+      hasMore,
     });
   }
 
@@ -45,12 +45,12 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
     const { hasMore: hasMoreProp } = prevProps;
     const { hasMore: hasMoreState } = prevState;
     if (hasMoreProp !== hasMoreState) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         hasMore: hasMoreProp,
       });
     }
   }
-
 
   public render(): React.ReactNode {
     const { children, containerStyle, contentStyle, t, isPrevDisabled, isNextDisabled } = this.props;
@@ -84,7 +84,6 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
   }
 
   private onPressPrev = (): void => {
-    const { hasMore } = this.state;
     const { onPressPrevBtn, fetchMoreData } = this.props;
     if (onPressPrevBtn) {
       onPressPrevBtn();
@@ -109,8 +108,7 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
     let newOffset = 0;
     if (isNext) {
       newOffset = offset + limit;
-    }
-    else if (offset !== 0) {
+    } else if (offset !== 0) {
       newOffset = offset - limit;
     }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleProp, StyleSheet, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -44,7 +44,7 @@ const Menu = (props: IProps): React.ReactElement => {
     isShadowView = false,
     iconStyle,
     renderMenuPopup,
-    onCloseMenuPopup
+    onCloseMenuPopup,
   } = props;
   const [isVisible, setIsVisible] = useState(false);
   const [isExtraData, setExtraData] = useState(false);
@@ -101,7 +101,7 @@ const Menu = (props: IProps): React.ReactElement => {
         <View style={[!isWeb && styles.listContainer]}>{data.map((item, index) => renderMenuItem(item, index))}</View>
         {isExtraData && extraNode}
       </View>
-    )
+    );
   };
 
   return (
@@ -109,11 +109,9 @@ const Menu = (props: IProps): React.ReactElement => {
       <TouchableOpacity onPress={onPress} style={iconStyle}>
         <Icon name={icons.verticalDots} color={theme.colors.primaryColor} size={18} />
       </TouchableOpacity>
-      {isWeb && renderMenuPopup ?
-        <View>
-          {renderMenuPopup(renderMenuList())}
-        </View>
-        :
+      {isWeb && renderMenuPopup ? (
+        <View>{renderMenuPopup(renderMenuList())}</View>
+      ) : (
         <BottomSheet
           visible={isVisible}
           headerTitle={optionTitle}
@@ -126,7 +124,7 @@ const Menu = (props: IProps): React.ReactElement => {
         >
           {renderMenuList()}
         </BottomSheet>
-      }
+      )}
     </>
   );
 };

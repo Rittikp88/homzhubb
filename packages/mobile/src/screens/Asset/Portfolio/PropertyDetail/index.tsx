@@ -482,7 +482,8 @@ export class PropertyDetailScreen extends PureComponent<Props, IDetailState> {
     const { RouteType, PropertyTermId, AssetTransactionType } = DynamicLinkParamKeys;
     return LinkingService.buildShortLink(
       DynamicLinkTypes.AssetDescription,
-      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${listing_id}&${AssetTransactionType}=${assetType === DetailType.LEASE_LISTING ? 0 : 1
+      `${RouteType}=${RouteTypes.Public}&${PropertyTermId}=${listing_id}&${AssetTransactionType}=${
+        assetType === DetailType.LEASE_LISTING ? 0 : 1
       }`
     );
   };

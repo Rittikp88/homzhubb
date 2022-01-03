@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import WorkComplete from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/components/WorkComplete';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -31,14 +31,16 @@ const WorkCompleted = (): React.ReactElement => {
 
   const renderScreen = (children: React.ReactElement): React.ReactElement => {
     return (
-      <UserScreen
+      <GradientScreen
+        isUserHeader
+        isScrollable
         loading={isLoading}
-        onBackPress={onGoBack}
+        onGoBack={onGoBack}
         pageTitle={t('workCompleted')}
-        title={selectedTicket?.propertyName ?? ''}
+        screenTitle={selectedTicket?.propertyName ?? ''}
       >
         {children}
-      </UserScreen>
+      </GradientScreen>
     );
   };
 

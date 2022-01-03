@@ -3,15 +3,16 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
+import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import TicketDetail from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/components/TicketDetail';
-import HandleBack from '@homzhub/mobile/src/navigation/HandleBack';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { TicketActions as Actions } from '@homzhub/common/src/constants/ServiceTickets';
 
-const ServiceTicketDetails = (): React.ReactElement => {
+const RequestDetail = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { navigate, goBack } = useNavigation();
   const { params } = useRoute();
@@ -23,7 +24,7 @@ const ServiceTicketDetails = (): React.ReactElement => {
   useFocusEffect(
     useCallback(() => {
       if (currentTicket) {
-        dispatch(TicketActions.getTicketDetail(currentTicket.ticketId));
+        dispatch(FFMActions.getTicketDetail(currentTicket.ticketId));
       }
     }, [])
   );
@@ -40,29 +41,17 @@ const ServiceTicketDetails = (): React.ReactElement => {
 
   const handleNavigation = (action: string): void => {
     switch (action) {
-      case Actions.REQUEST_QUOTE:
-        navigate(ScreensKeys.RequestQuote);
-        break;
       case Actions.SUBMIT_QUOTE:
-        navigate(ScreensKeys.SubmitQuote);
-        break;
-      case Actions.APPROVE_QUOTE:
-        navigate(ScreensKeys.ApproveQuote);
+        navigate(ScreenKeys.SubmitQuote);
         break;
       case Actions.INITIATE_WORK:
-        navigate(ScreensKeys.WorkInitiated);
+        navigate(ScreenKeys.WorkInitiated);
         break;
       case Actions.WORK_COMPLETED:
-        navigate(ScreensKeys.WorkCompleted);
+        navigate(ScreenKeys.WorkCompleted);
         break;
       case Actions.SEND_UPDATES:
-        navigate(ScreensKeys.UpdateTicketStatus);
-        break;
-      case Actions.REASSIGN_TICKET:
-        navigate(ScreensKeys.ReassignTicket);
-        break;
-      case Actions.QUOTE_PAYMENT:
-        navigate(ScreensKeys.QuotePayment);
+        navigate(ScreenKeys.SendUpdate);
         break;
       default:
         break;
@@ -72,27 +61,33 @@ const ServiceTicketDetails = (): React.ReactElement => {
   const renderScreen = (children: React.ReactElement): React.ReactElement => {
     const title = ticketDetails ? ticketDetails.asset.projectName : t('common:detail');
     return (
-      <HandleBack onBack={handleGoBack}>
-        <UserScreen
-          title={title}
-          onBackPress={handleGoBack}
-          contentContainerStyle={styles.userScreen}
-          pageTitle={t('serviceTickets:ticketDetails')}
-          loading={detailLoader || closeTicket || ticketReminder}
-        >
-          {children}
-        </UserScreen>
-      </HandleBack>
+      <GradientScreen
+        isUserHeader
+        isScrollable
+        screenTitle={title}
+        onGoBack={handleGoBack}
+        pageTitle={t('serviceTickets:ticketDetails')}
+        loading={detailLoader || closeTicket || ticketReminder}
+        containerStyle={styles.userScreen}
+        pageHeaderStyle={styles.pageHeader}
+      >
+        {children}
+      </GradientScreen>
     );
   };
 
   return <TicketDetail renderScreen={renderScreen} handleNavigation={handleNavigation} />;
 };
 
-export default ServiceTicketDetails;
+export default RequestDetail;
 
 const styles = StyleSheet.create({
   userScreen: {
-    paddingBottom: 0,
+    padding: 0,
+  },
+  pageHeader: {
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    marginTop: 16,
   },
 });

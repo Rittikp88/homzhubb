@@ -55,6 +55,8 @@ export const FFMActionTypes = {
     TICKETS: `${actionTypePrefix}TICKETS`,
     TICKETS_SUCCESS: `${actionTypePrefix}TICKETS_SUCCESS`,
     TICKETS_FAILURE: `${actionTypePrefix}TICKETS_FAILURE`,
+    TICKET_DETAIL: `${actionTypePrefix}TICKET_DETAIL`,
+    TICKET_ACTIONS: `${actionTypePrefix}TICKET_ACTIONS`,
   },
   SET: {
     SELECTED_ROLE: `${actionTypePrefix}SELECTED_ROLE`,
@@ -260,6 +262,16 @@ const getTicketsFailure = (): IFluxStandardAction => ({
   type: FFMActionTypes.GET.TICKETS_FAILURE,
 });
 
+const getTicketDetail = (payload: number): IFluxStandardAction<number> => ({
+  type: FFMActionTypes.GET.TICKET_DETAIL,
+  payload,
+});
+
+const getTicketActions = (payload: number): IFluxStandardAction<number> => ({
+  type: FFMActionTypes.GET.TICKET_ACTIONS,
+  payload,
+});
+
 export type FFMActionPayloadTypes =
   | string
   | number
@@ -323,4 +335,6 @@ export const FFMActions = {
   getTickets,
   getTicketsSuccess,
   getTicketsFailure,
+  getTicketDetail,
+  getTicketActions,
 };

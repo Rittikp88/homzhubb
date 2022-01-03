@@ -128,20 +128,20 @@ const PropertyServices: React.FC<IProps> = (props: IProps): React.ReactElement =
 
   const renderExtraNode = (id: number): React.ReactElement => {
     return (
-      <DueConfirmPopover popupRef={popupRefConfirm} onCloseModal={onCloseConfirmModal} onPressDelete={(): void => onPressDelete(id)} />
+      <DueConfirmPopover
+        popupRef={popupRefConfirm}
+        onCloseModal={onCloseConfirmModal}
+        onPressDelete={(): void => onPressDelete(id)}
+      />
     );
   };
 
-  const renderMenuPopup = (menuList: React.ReactElement) => {
+  const renderMenuPopup = (menuList: React.ReactElement): React.ReactElement => {
     return (
-      <MenuListPopup
-        popupRef={popupRefMenuList}
-        onOpenModal={onOpenMenuList}
-        onCloseModal={onCloseMenuList}
-      >
+      <MenuListPopup popupRef={popupRefMenuList} onOpenModal={onOpenMenuList} onCloseModal={onCloseMenuList}>
         {menuList}
       </MenuListPopup>
-    )
+    );
   };
 
   const renderMenu = (id: number): React.ReactElement => {
@@ -186,8 +186,6 @@ const PropertyServices: React.FC<IProps> = (props: IProps): React.ReactElement =
       popupRefMenuList.current.close();
     }
   };
-
-
 
   return (
     <View>

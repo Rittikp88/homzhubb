@@ -12,7 +12,12 @@ import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions'
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
 import { NotificationScreens, NotificationTypes } from '@homzhub/mobile/src/services/constants';
 import { ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-import { DetailType, IDeviceTokenPayload, ListingType } from '@homzhub/common/src/domain/repositories/interfaces';
+import {
+  AppType,
+  DetailType,
+  IDeviceTokenPayload,
+  ListingType,
+} from '@homzhub/common/src/domain/repositories/interfaces';
 
 const notificationScreenMap = {
   [NotificationTypes.Chat]: ScreensKeys.ChatScreen,
@@ -204,9 +209,10 @@ class NotificationService {
       name: deviceName,
       type: PlatformUtils.getPlatform(),
       active: isFirstTime ? true : undefined,
+      homzhub_app_type: AppType.MAIN,
     };
 
-    CommonRepository.postDeviceToken(payload);
+    await CommonRepository.postDeviceToken(payload);
   }
 
   private getCurrentNavigation = (): IGetCurrentNavigation => {

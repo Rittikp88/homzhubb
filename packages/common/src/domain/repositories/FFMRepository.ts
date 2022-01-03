@@ -11,6 +11,8 @@ import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { OutsetCheck } from '@homzhub/common/src/domain/models/OutsetCheck';
 import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { SpaceDetail } from '@homzhub/common/src/domain/models/SpaceDetail';
+import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
+import { TicketAction } from '@homzhub/common/src/domain/models/TicketAction';
 import { TicketManagement } from '@homzhub/common/src/domain/models/TicketManagement';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IApiClient } from '@homzhub/common/src/network/Interfaces';
@@ -50,8 +52,9 @@ const ENDPOINTS = {
   hotSaleProperties: 'v1/ffm/assets/sale-listing-hot-properties/',
   managementTab: 'v1/ffm/management-tab',
   tickets: 'v1/ffm/tasks/tickets/',
-  ticketById: (id: number): string => `v1/ffm/tasks/tickets/${id}`,
   ticketManagement: 'v1/ffm/tasks/tickets/management-tab/',
+  ticketById: (id: number): string => `v1/ffm/tasks/tickets/${id}/`,
+  ticketActions: (id: number): string => `v1/ffm/tasks/tickets/${id}/actions/`,
 };
 
 class FFMRepository {
@@ -153,6 +156,16 @@ class FFMRepository {
 
   public updateTicket = async (payload: IUpdateTicket): Promise<void> => {
     return await this.apiClient.patch(ENDPOINTS.ticketById(payload.id), { action: payload.action });
+  };
+
+  public getTicketDetail = async (payload: number): Promise<Ticket> => {
+    const response = await this.apiClient.get(ENDPOINTS.ticketById(payload));
+    return ObjectMapper.deserialize(Ticket, response);
+  };
+
+  public getTicketActions = async (ticketId: number): Promise<TicketAction[]> => {
+    const response = await this.apiClient.get(ENDPOINTS.ticketActions(ticketId));
+    return ObjectMapper.deserializeArray(TicketAction, response);
   };
 
   public getTicketManagement = async (): Promise<TicketManagement> => {

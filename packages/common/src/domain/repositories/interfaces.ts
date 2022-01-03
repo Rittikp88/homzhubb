@@ -145,6 +145,11 @@ export enum StatusCategory {
   CLOSED = 'CLOSED',
 }
 
+export enum AppType {
+  MAIN = 'MAIN',
+  FFM = 'FFM',
+}
+
 // ENUMS - END
 
 // USER AUTH - START
@@ -833,6 +838,7 @@ export interface IDeviceTokenPayload {
   device_id: string;
   type: OSTypes;
   active?: boolean;
+  homzhub_app_type?: AppType;
 }
 
 // SERVICE TICKETS START

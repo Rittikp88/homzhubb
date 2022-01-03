@@ -3,11 +3,12 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { TabBar, TabView } from 'react-native-tab-view';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMRepository';
 import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { FFMSelector } from '@homzhub/common/src/modules/ffm/selectors';
 import { icons } from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
@@ -18,6 +19,7 @@ import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import { TicketCard } from '@homzhub/common/src/components/organisms/TicketCard';
 import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { IGetTicket, IUpdateTicket, StatusCategory } from '@homzhub/common/src/domain/repositories/interfaces';
+import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { IRoutes, Tabs, TicketRoutes } from '@homzhub/common/src/constants/Tabs';
 
 const picker: ISelectionPicker<string>[] = [
@@ -29,6 +31,7 @@ const picker: ISelectionPicker<string>[] = [
 const RequestDashboard = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { navigate } = useNavigation();
   const tickets = useSelector(FFMSelector.getTickets);
   const { tickets: ticketLoader } = useSelector(FFMSelector.getFFMLoaders);
   const [selectedValue, setSelectedValue] = useState<string>(StatusCategory.NEW.toString());
@@ -75,6 +78,13 @@ const RequestDashboard = (): React.ReactElement => {
     setCurrentIndex(value);
   };
 
+  const onCardPress = (item: Ticket): void => {
+    dispatch(
+      TicketActions.setCurrentTicket({ ticketId: item.id, assetId: item.asset.id, assignedUserId: item.assignedTo.id })
+    );
+    navigate(ScreenKeys.RequestDetail);
+  };
+
   const handleAction = (payload: IUpdateTicket): void => {
     FFMRepository.updateTicket(payload)
       .then(() => {
@@ -113,7 +123,7 @@ const RequestDashboard = (): React.ReactElement => {
       <TicketCard
         cardData={item}
         isFromMore
-        onCardPress={(): void => {}}
+        onCardPress={(): void => onCardPress(item)}
         handleAction={handleAction}
         isOddElement={isOddElement}
       />

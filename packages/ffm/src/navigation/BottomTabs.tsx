@@ -138,7 +138,16 @@ const BottomTabs = (): React.ReactElement => {
 const getTabBarVisibility = (route: any): boolean => {
   const currentRouteName = getFocusedRouteNameFromRoute(route) ?? '';
 
-  const notAllowedRoutes = [ScreenKeys.InspectionSelection, ScreenKeys.ReportLocationMap, ScreenKeys.HotProperties];
+  const notAllowedRoutes = [
+    ScreenKeys.InspectionSelection,
+    ScreenKeys.ReportLocationMap,
+    ScreenKeys.HotProperties,
+    ScreenKeys.RequestDetail,
+    ScreenKeys.SubmitQuote,
+    ScreenKeys.WorkInitiated,
+    ScreenKeys.SendUpdate,
+    ScreenKeys.WorkCompleted,
+  ];
   return !notAllowedRoutes.includes(currentRouteName as ScreenKeys);
 };
 

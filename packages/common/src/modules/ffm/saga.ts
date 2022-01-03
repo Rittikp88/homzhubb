@@ -4,6 +4,7 @@ import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
 import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMRepository';
 import { FFMActions, FFMActionTypes } from '@homzhub/common/src/modules/ffm/actions';
+import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { Feedback } from '@homzhub/common/src/domain/models/Feedback';
 import { FFMTicket } from '@homzhub/common/src/domain/models/FFMTicket';
@@ -12,6 +13,7 @@ import { InspectionReport } from '@homzhub/common/src/domain/models/InspectionRe
 import { OnBoarding } from '@homzhub/common/src/domain/models/OnBoarding';
 import { ReportSpace } from '@homzhub/common/src/domain/models/ReportSpace';
 import { SpaceDetail } from '@homzhub/common/src/domain/models/SpaceDetail';
+import { Ticket } from '@homzhub/common/src/domain/models/Ticket';
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { IFluxStandardAction, VoidGenerator } from '@homzhub/common/src/modules/interfaces';
 import { ILocalSpaceUpdatePayload } from '@homzhub/common/src/modules/ffm/interface';
@@ -148,6 +150,48 @@ export function* getTickets(action: IFluxStandardAction<IGetTicket>): VoidGenera
   }
 }
 
+export function* getTicketActions(action: IFluxStandardAction<number>) {
+  try {
+    const response = yield call(FFMRepository.getTicketActions, action.payload as number);
+    yield put(TicketActions.getTicketActionsSuccess(response));
+  } catch (e) {
+    yield put(TicketActions.getTicketActionsFailure());
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+  }
+}
+
+export function* getTicketDetails(action: IFluxStandardAction<number>) {
+  const { payload } = action;
+  try {
+    const response: Ticket = yield call(FFMRepository.getTicketDetail, payload as number);
+    const {
+      id,
+      quoteRequestId,
+      assignedTo: { id: assignedUserId },
+      asset: {
+        projectName,
+        country: { currencies },
+        id: assetId,
+      },
+    } = response;
+    yield put(TicketActions.getTicketDetailSuccess(response));
+    yield put(FFMActions.getTicketActions(id));
+    yield put(
+      TicketActions.setCurrentTicket({
+        ticketId: id,
+        quoteRequestId,
+        propertyName: projectName,
+        currency: currencies[0],
+        assetId,
+        assignedUserId,
+      })
+    );
+  } catch (e) {
+    AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details), statusCode: e.details.statusCode });
+    yield put(TicketActions.getTicketDetailFailure());
+  }
+}
+
 export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.ONBOARDING, getOnBoardingData);
   yield takeLatest(FFMActionTypes.GET.ROLES, getRoles);
@@ -160,4 +204,6 @@ export function* watchFFM() {
   yield takeLatest(FFMActionTypes.GET.SPACE_DETAIL, getSpaceDetail);
   yield takeLatest(FFMActionTypes.GET.HOT_PROPERTIES, getHotProperties);
   yield takeLatest(FFMActionTypes.GET.TICKETS, getTickets);
+  yield takeLatest(FFMActionTypes.GET.TICKET_DETAIL, getTicketDetails);
+  yield takeLatest(FFMActionTypes.GET.TICKET_ACTIONS, getTicketActions);
 }

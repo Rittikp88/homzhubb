@@ -3,6 +3,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { GeolocationService } from '@homzhub/common/src/services/Geolocation/GeolocationService';
+import { NotificationService } from '@homzhub/ffm/src/services/NotificationService';
 import { IRedirectionDetails } from '@homzhub/ffm/src/services/LinkingService';
 import { NavigationService } from '@homzhub/ffm/src/services/NavigationService';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
@@ -23,6 +24,7 @@ export const RootNavigator = ({ booting }: IProps): React.ReactElement => {
   useEffect(() => {
     if (isLoggedIn) {
       dispatch(UserActions.getUserProfile());
+      NotificationService.postDeviceToken();
     }
     GeolocationService.setLocationDetails(false, '').then();
   }, [isLoggedIn]);

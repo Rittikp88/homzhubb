@@ -38,7 +38,24 @@ interface IProps {
 type Props = IReduxState & IDispatchProps & IProps;
 
 const Transactions = (props: Props): React.ReactElement<Props> => {
-  const { selectedCountry, selectedProperty, onDeleteRecord, getTransactions, transactionsData, transactionsCount, isAddRecord, onOpenModal, transactionsLoading } = props;
+  const { t } = useTranslation();
+  const {
+    selectedCountry,
+    selectedProperty,
+    onDeleteRecord,
+    getTransactions,
+    transactionsData,
+    transactionsCount,
+    isAddRecord,
+    onOpenModal,
+    transactionsLoading,
+  } = props;
+
+  const [currOffset, setCurrOffset] = useState(0);
+  const [transactionsArray, setTransactionsArray] = useState(transactionsData);
+  const limit = 3;
+  const hasMore = transactionsCount > currOffset;
+
   useEffect(() => {
     getGeneralLedgers(true);
   }, [selectedCountry, selectedProperty]);
@@ -52,23 +69,17 @@ const Transactions = (props: Props): React.ReactElement<Props> => {
     });
   };
 
-  const [currOffset, setCurrOffset] = useState(0);
-  const limit = 3;
-  const hasMore = transactionsCount > currOffset;
   useEffect(() => {
     if (transactionsData.length === limit) {
       setTransactionsArray(transactionsData);
     }
   }, [transactionsData]);
+
   useEffect(() => {
     setTransactionsArray(transactionsData.splice(currOffset - limit, currOffset));
   }, [currOffset]);
 
-  const [transactionsArray, setTransactionsArray] = useState(transactionsData);
-
-
-  const { t } = useTranslation();
-  const fetchMoreData = (updatedOffset: number) => {
+  const fetchMoreData = (updatedOffset: number): void => {
     getTransactions({
       offset: updatedOffset,
       limit: 3,
@@ -113,7 +124,6 @@ const Transactions = (props: Props): React.ReactElement<Props> => {
               onDeleteRecord={onDeleteRecord}
             />
           ))
-
         ) : (
           <EmptyState />
         )}

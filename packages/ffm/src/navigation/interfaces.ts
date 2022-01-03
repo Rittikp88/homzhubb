@@ -51,6 +51,11 @@ export enum ScreenKeys {
 
   // Requests
   RequestsDashboard = 'RequestsDashboard',
+  RequestDetail = 'RequestDetail',
+  SubmitQuote = 'SubmitQuote',
+  WorkInitiated = 'WorkInitiated',
+  SendUpdate = 'SendUpdate',
+  WorkCompleted = 'WorkCompleted',
 
   // More
   MoreScreen = 'MoreScreen',

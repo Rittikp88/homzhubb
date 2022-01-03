@@ -23,7 +23,6 @@ import DuesOrderSummary from '@homzhub/web/src/screens/financials/components/Due
 import { FinancialsActions } from '@homzhub/web/src/screens/financials/FinancialsPopover';
 import { DueItem } from '@homzhub/common/src/domain/models/DueItem';
 
-
 interface IProps {
   onPressDueActions: (actionType: FinancialsActions) => void;
 }

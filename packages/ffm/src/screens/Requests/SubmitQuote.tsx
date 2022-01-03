@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { TicketActions } from '@homzhub/common/src/modules/tickets/actions';
 import { TicketSelectors } from '@homzhub/common/src/modules/tickets/selectors';
-import { UserScreen } from '@homzhub/mobile/src/components/HOC/UserScreen';
+import GradientScreen from '@homzhub/ffm/src/components/HOC/GradientScreen';
 import QuoteSubmit from '@homzhub/mobile/src/screens/Asset/More/ServiceTickets/components/QuoteSubmit';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
 
@@ -18,7 +18,7 @@ const SubmitQuote = (): ReactElement => {
 
   // HANDLERS
 
-  const onBack = (): void => {
+  const handleBack = (): void => {
     dispatch(TicketActions.setQuotes([]));
     goBack();
   };
@@ -27,19 +27,20 @@ const SubmitQuote = (): ReactElement => {
 
   const renderScreen = (children: ReactElement): ReactElement => {
     return (
-      <UserScreen
-        title={selectedTicket?.propertyName ?? ''}
+      <GradientScreen
+        isUserHeader
+        isScrollable
+        onGoBack={handleBack}
         pageTitle={t('submitQuote')}
-        onBackPress={onBack}
-        keyboardShouldPersistTaps
+        screenTitle={selectedTicket?.propertyName ?? ''}
         loading={quotesCategory || isLoading || submitQuote}
       >
         {children}
-      </UserScreen>
+      </GradientScreen>
     );
   };
 
-  return <QuoteSubmit renderScreen={renderScreen} handleGoBack={onBack} setLoading={setLoading} />;
+  return <QuoteSubmit renderScreen={renderScreen} handleGoBack={handleBack} setLoading={setLoading} />;
 };
 
 export default SubmitQuote;
