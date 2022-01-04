@@ -61,7 +61,7 @@
     "react-native-device-info": "^8.0.1",
     "react-native-document-picker": "^3.5.1",
     "react-native-easy-markdown": "^2.0.0",
-    "react-native-fbsdk": "^2.0.0",
+    "react-native-fbsdk": "3.0.0",
     "react-native-geolocation-service": "^5.0.0",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-iap": "^6.0.2",

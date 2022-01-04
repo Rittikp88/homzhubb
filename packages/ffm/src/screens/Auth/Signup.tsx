@@ -95,12 +95,18 @@ const Signup = (): React.ReactElement => {
   return (
     <GradientScreen screenTitle={getTitle()} isScrollable>
       <>
-        <TouchableOpacity style={styles.helpContainer} onPress={(): void => setSupportVisibility(true)}>
-          <Icon name={icons.supportTicket} size={16} color={theme.colors.primaryColor} />
-          <Label type="large" style={styles.helpText}>
-            {t('common:helpAndSupport')}
-          </Label>
-        </TouchableOpacity>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.helpContainer} onPress={goBack}>
+            <Icon name={icons.close} size={20} color={theme.colors.darkTint3} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.helpContainer} onPress={(): void => setSupportVisibility(true)}>
+            <Icon name={icons.supportTicket} size={16} color={theme.colors.primaryColor} />
+            <Label type="large" style={styles.helpText}>
+              {t('common:helpAndSupport')}
+            </Label>
+          </TouchableOpacity>
+        </View>
+
         <SignUpForm onSubmit={onSubmit} onBack={onBack} />
         <BottomSheet visible={isSupportVisible} onCloseSheet={(): void => setSupportVisibility(false)}>
           <View style={styles.sheetContent}>
@@ -126,6 +132,11 @@ const Signup = (): React.ReactElement => {
 export default Signup;
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   helpContainer: {
     alignSelf: 'flex-end',
     flexDirection: 'row',

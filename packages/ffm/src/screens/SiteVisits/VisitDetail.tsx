@@ -68,7 +68,7 @@ const VisitDetail = (): React.ReactElement => {
   const onGoBack = (): void => {
     navDispatch(
       CommonActions.reset({
-        index: 1,
+        index: 0,
         routes: [{ name: ScreenKeys.SiteVisitDashboard }],
       })
     );

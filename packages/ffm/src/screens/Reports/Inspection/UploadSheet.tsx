@@ -211,7 +211,13 @@ const UploadSheet = (props: IProps): React.ReactElement => {
           onMessageChange={setComment}
           containerStyle={styles.textAreaContainer}
         />
-        <Button type="primary" title={t('next')} containerStyle={styles.nextButton} onPress={onNext} />
+        <Button
+          type="primary"
+          title={t('next')}
+          disabled={attachments.length < 1 || !comment}
+          containerStyle={styles.nextButton}
+          onPress={onNext}
+        />
       </View>
     </BottomSheet>
   );

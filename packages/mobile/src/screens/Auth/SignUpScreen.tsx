@@ -58,7 +58,7 @@ export class SignUpScreen extends Component<Props, IOwnState> {
           />
           {!PlatformUtils.isIOS() && (
             <AuthenticationGateways
-              onSuccessCallback={params.onCallback}
+              onSuccessCallback={params?.onCallback}
               toggleLoading={this.toggleLoading}
               isFromLogin={false}
               navigation={navigation}

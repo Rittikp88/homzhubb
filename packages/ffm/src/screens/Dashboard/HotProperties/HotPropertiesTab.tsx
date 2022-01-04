@@ -33,7 +33,7 @@ const HotPropertiesTab = ({ isOnDashboard = false }: IProps): React.ReactElement
 
   const onPressProperty = (item: Asset): void => {
     const { leaseTerm, saleTerm } = item;
-    const transactionType = leaseTerm ? 'RENT' : 'SELL';
+    const transactionType = leaseTerm ? 0 : 1;
     setLoader(true);
     CommonRepository.getDeepLink({
       action: 'MAIN',

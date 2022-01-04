@@ -65,7 +65,7 @@ const AssetSummary = (props: IProps): React.ReactElement => {
       },
       {
         icon: icons.chat,
-        color: theme.colors.blue,
+        color: isFFM ? theme.colors.danger : theme.colors.blue,
         title: isFFM ? t('Jobs') : t('moreSettings:messagesText'),
         onPress: onPressMessages,
         count: isFFM ? jobs : messages,

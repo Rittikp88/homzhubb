@@ -1586,7 +1586,7 @@
     "reschedulePropertyVisit": "Reschedule Property Visit",
     "visitUpdate": "Visit Updated Successfully",
     "cancelVisit": "Are you sure you want to cancel visit ?",
-    "prospectFeedbackForm": "Prospect Feedback Form",
+    "prospectFeedbackForm": "Prospect Feedback",
     "visitExpired": "Visit Expired",
     "visitMissed": "Visit {{action}} by {{name}}",
     "rescheduleVisit": "Rescheduled visit successfully",

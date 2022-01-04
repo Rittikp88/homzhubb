@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: theme.colors.white,
-    marginBottom: 16,
+    paddingBottom: '16%',
   },
   childrenContainer: {
     flex: 1,

@@ -5,7 +5,7 @@ import LoginScreen from '@homzhub/ffm/src/screens/Auth/LoginScreen';
 import Signup from '@homzhub/ffm/src/screens/Auth/Signup';
 import WorkLocations from '@homzhub/ffm/src/screens/Auth/WorkLocations';
 import OnBoarding from '@homzhub/ffm/src/screens/Common/OnBoarding';
-import { getCommonScreen } from '@homzhub/ffm/src/navigation/CommonStack';
+import { CommonStackParamList, getCommonScreen } from '@homzhub/ffm/src/navigation/CommonStack';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { IOtpNavProps } from '@homzhub/mobile/src/navigation/interfaces';
 
@@ -15,7 +15,7 @@ type AuthStackParamList = {
   [ScreenKeys.EmailLogin]: undefined;
   [ScreenKeys.Signup]: undefined;
   [ScreenKeys.WorkLocations]: IOtpNavProps;
-};
+} & CommonStackParamList;
 
 export const AuthStackNavigator = createStackNavigator<AuthStackParamList>();
 const commonScreens = getCommonScreen(AuthStackNavigator);

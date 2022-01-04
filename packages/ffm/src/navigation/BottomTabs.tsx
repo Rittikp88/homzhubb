@@ -8,9 +8,9 @@ import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import Focused from '@homzhub/common/src/assets/images/homzhubLogo.svg';
 import Unfocused from '@homzhub/common/src/assets/images/homzhubLogoUnfocused.svg';
 import { theme } from '@homzhub/common/src/styles/theme';
-import ComingSoon from '@homzhub/ffm/src/screens/Common/ComingSoon';
 import DashboardStack from '@homzhub/ffm/src/navigation/DashboardStack';
 import MoreStack from '@homzhub/ffm/src/navigation/MoreStack';
+import ReportStack from '@homzhub/ffm/src/navigation/ReportStack';
 import RequestStack from '@homzhub/ffm/src/navigation/RequestStack';
 import VisitStack from '@homzhub/ffm/src/navigation/VisitStack';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
@@ -96,8 +96,8 @@ const BottomTabs = (): React.ReactElement => {
         })}
       />
       <BottomTabNavigator.Screen
-        name={ScreenKeys.Supplies}
-        component={ComingSoon}
+        name={ScreenKeys.Reports}
+        component={ReportStack}
         listeners={({ navigation }): any => ({
           focus: (e: any): void => {
             resetStackOnTabPress(e, navigation);
@@ -105,9 +105,9 @@ const BottomTabs = (): React.ReactElement => {
         })}
         options={({ route }): any => ({
           tabBarVisible: getTabBarVisibility(route),
-          tabBarLabel: t('supplies'),
+          tabBarLabel: t('reports:reports'),
           tabBarIcon: ({ color, focused }: { color: string; focused: boolean }): React.ReactElement => {
-            return <Icon name={icons.home} color={color} size={focused ? 24 : 20} />;
+            return <Icon name={icons.barChartOutline} color={color} size={focused ? 24 : 20} />;
           },
         })}
       />
@@ -147,7 +147,6 @@ const getTabBarVisibility = (route: any): boolean => {
     ScreenKeys.WorkInitiated,
     ScreenKeys.SendUpdate,
     ScreenKeys.WorkCompleted,
-    ScreenKeys.Reports,
     ScreenKeys.UpdateUserProfile,
   ];
   return !notAllowedRoutes.includes(currentRouteName as ScreenKeys);

@@ -1268,7 +1268,7 @@ export interface IDeepLinkPayload {
   type: string;
   routeType: string;
   propertyTermId: number;
-  asset_transaction_type: string;
+  asset_transaction_type: number;
 }
 
 export interface IDeepLinkBody {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { CommonStackParamList, getCommonScreen } from '@homzhub/ffm/src/navigation/CommonStack';
 import RequestDashboard from '@homzhub/ffm/src/screens/Requests';
 import RequestDetail from '@homzhub/ffm/src/screens/Requests/RequestDetail';
 import SendUpdate from '@homzhub/ffm/src/screens/Requests/SendUpdate';
@@ -15,9 +16,10 @@ type MoreStackParamList = {
   [ScreenKeys.WorkInitiated]: undefined;
   [ScreenKeys.SendUpdate]: undefined;
   [ScreenKeys.WorkCompleted]: undefined;
-};
+} & CommonStackParamList;
 
 const RequestStackNavigator = createStackNavigator<MoreStackParamList>();
+const commonScreen = getCommonScreen(RequestStackNavigator);
 
 const RequestStack = (): React.ReactElement => {
   return (
@@ -28,6 +30,7 @@ const RequestStack = (): React.ReactElement => {
       <RequestStackNavigator.Screen name={ScreenKeys.WorkInitiated} component={WorkInitiated} />
       <RequestStackNavigator.Screen name={ScreenKeys.SendUpdate} component={SendUpdate} />
       <RequestStackNavigator.Screen name={ScreenKeys.WorkCompleted} component={WorkCompleted} />
+      {commonScreen}
     </RequestStackNavigator.Navigator>
   );
 };

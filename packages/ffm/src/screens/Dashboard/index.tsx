@@ -54,12 +54,7 @@ const Dashboard = (): React.ReactElement => {
     const { jobs, notifications, tickets } = data.updates;
     return (
       <>
-        <AssetMetricsList
-          title={`${0}`}
-          subTitleText={t('properties')}
-          data={data.miscellaneous}
-          onMetricsClicked={onViewAllProperties}
-        />
+        <AssetMetricsList title={`${0}`} subTitleText={t('properties')} data={data.miscellaneous} />
         <AssetSummary
           isFFM
           jobs={jobs.count}

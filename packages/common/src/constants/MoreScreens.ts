@@ -33,7 +33,7 @@ export enum MoreScreenTypes {
   OFFERS = 'Offers',
   FAQS = 'Faqs',
   BANK_DETAILS = 'bankDetails',
-  REPORTS = 'reports',
+  SUPPLIES = 'supplies',
 }
 
 const ICON_COLOR = theme.colors.lowPriority;
@@ -183,11 +183,11 @@ export const FFM_MORE_SCREEN = {
   sectionA: [
     {
       id: 1,
-      title: `${LocaleConstants.namespacesKey.reports}:reports`,
-      icon: icons.barChartOutline,
+      title: 'common:supplies',
+      icon: icons.home,
       iconColor: ICON_COLOR,
       textColor: TEXT_COLOR,
-      type: MoreScreenTypes.REPORTS,
+      type: MoreScreenTypes.SUPPLIES,
     },
   ],
 };

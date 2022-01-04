@@ -23,9 +23,7 @@ const More = (): React.ReactElement => {
 
   const handleNavigation = (type: MoreScreenTypes): void => {
     switch (type) {
-      case MoreScreenTypes.REPORTS:
-        navigate(ScreenKeys.Reports);
-        break;
+      case MoreScreenTypes.SUPPLIES:
       default:
         navigate(ScreenKeys.ComingSoon);
         break;

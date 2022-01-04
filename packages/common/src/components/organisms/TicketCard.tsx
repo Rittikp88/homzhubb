@@ -34,25 +34,32 @@ interface IProps {
   renderWebRating?: (children: React.ReactElement, onClose: () => void, isOpen: boolean) => React.ReactElement;
 }
 
+const getColor = (color: string, statusFFM?: string): string => {
+  if (statusFFM === 'PENDING') {
+    return theme.colors.error;
+  }
+  return color;
+};
+
 /* Get color for status  */
-const getStatusColor = (type: string): string => {
+const getStatusColor = (type: string, statusFFM?: string): string => {
   switch (type) {
     case TicketStatus.OPEN:
-      return theme.colors.red;
+      return getColor(theme.colors.red, statusFFM);
     case TicketStatus.QUOTE_REQUESTED:
-      return theme.colors.blueTint5;
+      return getColor(theme.colors.blueTint5, statusFFM);
     case TicketStatus.QUOTE_SUBMITTED:
-      return theme.colors.blueTint4;
+      return getColor(theme.colors.blueTint4, statusFFM);
     case TicketStatus.QUOTE_APPROVED:
-      return theme.colors.greenTint6;
+      return getColor(theme.colors.greenTint6, statusFFM);
     case TicketStatus.PAYMENT_REQUESTED:
-      return theme.colors.pinkRed;
+      return getColor(theme.colors.pinkRed, statusFFM);
     case TicketStatus.PAYMENT_DONE:
-      return theme.colors.greenTint7;
+      return getColor(theme.colors.greenTint7, statusFFM);
     case TicketStatus.WORK_INITIATED:
-      return theme.colors.blueTint3;
+      return getColor(theme.colors.blueTint3, statusFFM);
     case TicketStatus.CLOSED:
-      return theme.colors.greenTint8;
+      return getColor(theme.colors.greenTint8, statusFFM);
     default:
       return theme.colors.darkTint3;
   }
@@ -138,8 +145,8 @@ export const TicketCard = (props: IProps): React.ReactElement => {
 
   // HANDLERS START
 
-  const onColorChange = (value: string): TextStyle => {
-    const color = getStatusColor(value);
+  const onColorChange = (value: string, statusFFM?: string): TextStyle => {
+    const color = getStatusColor(value, statusFFM);
     return { ...styles.detail, color };
   };
 
@@ -254,7 +261,7 @@ export const TicketCard = (props: IProps): React.ReactElement => {
                   <Label type="small" textType="regular" style={styles.details}>
                     {t(key)}
                   </Label>
-                  <Label type="regular" textType="semiBold" style={onColorChange(dataByStatus[key])}>
+                  <Label type="regular" textType="semiBold" style={onColorChange(dataByStatus[key], ffmStatus)}>
                     {keyValue(key, dataByStatus, ffmStatus)}
                   </Label>
                 </View>
