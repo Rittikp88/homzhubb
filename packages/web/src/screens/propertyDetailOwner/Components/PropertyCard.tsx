@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, ViewStyle, TouchableOpacity, TextStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { PropertyUtils } from '@homzhub/common/src/utils/PropertyUtils';
 import {
@@ -23,6 +23,7 @@ import { Typography } from '@homzhub/common/src/components/atoms/Typography';
 import { AssetDetailsImageCarousel } from '@homzhub/common/src/components/molecules/AssetDetailsImageCarousel';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
 import GalleryView from '@homzhub/web/src/components/molecules/GalleryView';
+import GetAppPopup from '@homzhub/web/src/components/molecules/GetAppPopup';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
@@ -56,6 +57,7 @@ interface IUserInfo {
 type Props = IProp & IStateProps & WithTranslation & IWithMediaQuery;
 
 export class PropertyCardDetails extends React.PureComponent<Props> {
+  private popupRefGetApp = React.createRef<PopupActions>();
   public render = (): React.ReactNode => {
     const {
       assetDetails,
@@ -151,6 +153,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
         <View style={styles.dividerContainer}>
           <TabSection assetDetails={assetDetails} propertyTermId={propertyTermId} />
         </View>
+        <GetAppPopup popupRef={this.popupRefGetApp} onOpenModal={this.onOpenModal} onCloseModal={this.onCloseModal} />
       </>
     );
   };
@@ -185,10 +188,10 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
           {!isVacant && (
             <>
               <Divider />
-
               <View style={styles.avatar}>
                 <Avatar
-                  onPressRightIcon={FunctionUtils.noop}
+                  isRightIcon
+                  onPressRightIcon={this.onOpenModal}
                   fullName={userData.name}
                   image={userData.profilePicture}
                   designation={userInfo.designation}
@@ -198,7 +201,6 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
             </>
           )}
           <Divider />
-
           <View>
             {rent && securityDeposit && (
               <>
@@ -340,6 +342,18 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
         </View>
       </>
     );
+  };
+
+  private onOpenModal = (): void => {
+    if (this.popupRefGetApp.current && this.popupRefGetApp.current.open) {
+      this.popupRefGetApp.current.open();
+    }
+  };
+
+  private onCloseModal = (): void => {
+    if (this.popupRefGetApp.current && this.popupRefGetApp.current.close) {
+      this.popupRefGetApp.current.close();
+    }
   };
 
   private onPressAction = (): void => {

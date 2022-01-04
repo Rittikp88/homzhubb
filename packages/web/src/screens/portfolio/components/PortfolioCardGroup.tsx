@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, StyleProp, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { withTranslation, WithTranslation } from 'react-i18next';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { History } from 'history';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
 import { IWithMediaQuery, withMediaQuery } from '@homzhub/common/src/utils/MediaQueryUtils';
@@ -14,6 +15,7 @@ import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlac
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
 import ProgressBar from '@homzhub/web/src/components/atoms/ProgressBar';
 import { Avatar } from '@homzhub/common/src/components/molecules/Avatar';
+import GetAppPopup from '@homzhub/web/src/components/molecules/GetAppPopup';
 import { PropertyAmenities } from '@homzhub/common/src/components/molecules/PropertyAmenities';
 import { RentAndMaintenance } from '@homzhub/common/src/components/molecules/RentAndMaintenance';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
@@ -62,6 +64,7 @@ interface IListProps {
 
 type Props = WithTranslation & IListProps & IWithMediaQuery;
 export class AssetCard extends Component<Props> {
+  private popupRef = React.createRef<PopupActions>();
   public render(): React.ReactElement {
     const { assetData, isDetailView, onViewProperty, containerStyle, isTablet, isMobile } = this.props;
     const {
@@ -158,6 +161,7 @@ export class AssetCard extends Component<Props> {
             </View>
           </View>
           {this.renderExpandedView()}
+          <GetAppPopup popupRef={this.popupRef} onOpenModal={this.onOpenModal} onCloseModal={this.onCloseModal} />
         </View>
       </View>
     );
@@ -387,13 +391,29 @@ export class AssetCard extends Component<Props> {
     onCompleteDetails(assetData.id);
   };
 
+  private onOpenModal = (): void => {
+    if (this.popupRef.current && this.popupRef.current.open) {
+      this.popupRef.current.open();
+    }
+  };
+
+  private onCloseModal = (): void => {
+    if (this.popupRef.current && this.popupRef.current.close) {
+      this.popupRef.current.close();
+    }
+  };
+
   private onPressAction = (): void => {
     const {
       onHandleAction,
       assetData: { assetGroup, country, assetStatusInfo },
     } = this.props;
+
     const { LEASE_LISTING_CANCELLATION, SALE_LISTING_CANCELLATION, LEASE_TRANSACTION_TERMINATION } = ClosureReasonType;
     if (assetStatusInfo) {
+      if (ActionType.TERMINATE) {
+        this.onOpenModal();
+      }
       const {
         action,
         leaseListingId,

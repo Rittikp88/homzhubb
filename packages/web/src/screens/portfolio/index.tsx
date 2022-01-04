@@ -16,13 +16,14 @@ import { PortfolioActions } from '@homzhub/common/src/modules/portfolio/actions'
 import { RecordAssetActions } from '@homzhub/common/src/modules/recordAsset/actions';
 import { PortfolioSelectors } from '@homzhub/common/src/modules/portfolio/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
-import { icons } from '@homzhub/common/src/assets/icon';
+import Icon, { icons } from '@homzhub/common/src/assets/icon';
 import ConfirmationContent from '@homzhub/web/src/components/atoms/ConfirmationContent';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import Popover from '@homzhub/web/src/components/atoms/Popover';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import CancelTerminateListing from '@homzhub/web/src/components/molecules/CancelTerminateListing';
+import GetAppPopup from '@homzhub/web/src/components/molecules/GetAppPopup';
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 import { AppLayoutContext } from '@homzhub/web/src/screens/appLayout/AppLayoutContext';
 import AssetCard from '@homzhub/web/src/screens/portfolio/components/PortfolioCardGroup';
@@ -164,6 +165,7 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
             children: undefined,
           }}
         />
+        <GetAppPopup popupRef={this.popupRefGetApp} onCloseModal={this.onCloseModal} onOpenModal={this.onOpenModal} />
       </View>
     );
   };
@@ -187,6 +189,20 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
     );
   };
 
+  private popupRefGetApp = React.createRef<PopupActions>();
+
+  private onOpenModal = (): void => {
+    if (this.popupRefGetApp.current && this.popupRefGetApp.current.open) {
+      this.popupRefGetApp.current.open();
+    }
+  };
+
+  private onCloseModal = (): void => {
+    if (this.popupRefGetApp.current && this.popupRefGetApp.current.close) {
+      this.popupRefGetApp.current.close();
+    }
+  };
+
   private renderPortfolio = (): React.ReactElement => {
     const { t, currentFilter, properties, propertiesById } = this.props;
     const { assetType } = this.state;
@@ -201,6 +217,13 @@ export class Portfolio extends React.PureComponent<Props, ILocalState> {
           <Text type="small" textType="semiBold" style={styles.title}>
             {t('propertyPortfolio')}
           </Text>
+          <Icon
+            name={icons.verticalDots}
+            color={theme.colors.darkTint4}
+            size={18}
+            onPress={this.onOpenModal}
+            style={styles.settigsIcon}
+          />
         </View>
         {isEmpty ? (
           <EmptyState title={title} icon={icons.home} containerStyle={styles.emptyView} />
@@ -384,9 +407,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     marginTop: 4,
   },
+  settigsIcon: {
+    marginBottom: 16,
+    marginTop: 4,
+  },
   headingView: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   emptyView: {
     minHeight: 200,

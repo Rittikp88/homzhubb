@@ -12,6 +12,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import ConfirmationPopup from '@homzhub/web/src/components/molecules/ConfirmationPopup';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
+import ChatScreenPopover from '@homzhub/web/src/components/organisms/ChatScreenPopover';
 import TenancyFormPopover from '@homzhub/web/src/screens/propertyDetails/components/TenancyFormPopover';
 import { OffersCard } from '@homzhub/web/src/screens/offers/components/OffersCard';
 import OfferActionsPopover from '@homzhub/web/src/screens/offers/components/OfferActionsPopover';
@@ -33,7 +34,6 @@ const OffersMade: FC<IProps> = (props: IProps) => {
   const {
     property,
     property: { leaseNegotiation, saleNegotiation, leaseTerm, saleTerm },
-    onPressMessages,
     handleClose,
     refreshOffersData,
   } = props;
@@ -126,7 +126,7 @@ const OffersMade: FC<IProps> = (props: IProps) => {
         })
       );
     }
-    onPressMessages();
+    onOpenChatModal();
   };
 
   const handleOfferAction = (value: OfferAction): void => {
@@ -143,6 +143,20 @@ const OffersMade: FC<IProps> = (props: IProps) => {
     setOfferActionType(OfferAction.CREATE_LEASE);
     if (popupRef && popupRef.current) {
       popupRef.current.open();
+    }
+  };
+
+  const popupRefChatScreen = React.useRef<PopupActions>(null);
+
+  const onOpenChatModal = (): void => {
+    if (popupRefChatScreen.current && popupRefChatScreen.current.open) {
+      popupRefChatScreen.current.open();
+    }
+  };
+
+  const onCloseChatModal = (): void => {
+    if (popupRefChatScreen.current && popupRefChatScreen.current.close) {
+      popupRefChatScreen.current.close();
     }
   };
 
@@ -200,6 +214,12 @@ const OffersMade: FC<IProps> = (props: IProps) => {
         compareData={compareData()}
         handleOfferAction={handleOfferAction}
         onCloseModal={onCloseModal}
+      />
+      <ChatScreenPopover
+        isFromOffers
+        popupRef={popupRefChatScreen}
+        onOpenModal={onOpenChatModal}
+        onCloseModal={onCloseChatModal}
       />
     </View>
   );

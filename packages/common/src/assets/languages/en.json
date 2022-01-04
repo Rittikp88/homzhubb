@@ -346,7 +346,10 @@
     "companyName": "Company Name",
     "password": "Password",
     "remark": "Remark",
-    "preview": "Preview"
+    "preview": "Preview",
+    "getAppPopupTitle": "Get Homzhub Application",
+    "getAppPopupContentTitle": "This feature is only available on our mobile app",
+    "getAppPopupContentSubTitle": "Click on the following links below to download our app and unlock all the possibilities."
   },
   "auth": {
     "verifyNumber": "Verify your number",

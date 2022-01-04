@@ -155,9 +155,9 @@ const SearchProperty = (props: SearchPropertyProps): React.ReactElement | null =
           <View>
             <Label type="large" textType="regular" style={[styles.label, isMobile && styles.labelMobile]}>
               {t('propertySearch:filterCount', {
-                intialCount: initialCount,
+                intialCount: initialCount as number,
                 resultLength: properties.results.length,
-                count: properties.count,
+                count: properties.count as number,
               })}
             </Label>
           </View>

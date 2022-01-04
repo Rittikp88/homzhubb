@@ -14,6 +14,7 @@ import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import ConfirmationPopup from '@homzhub/web/src/components/molecules/ConfirmationPopup';
 import OfferCard from '@homzhub/common/src/components/organisms/OfferCard';
+import ChatScreenPopover from '@homzhub/web/src/components/organisms/ChatScreenPopover';
 import TenancyFormPopover from '@homzhub/web/src/screens/propertyDetails/components/TenancyFormPopover';
 import { OffersCard } from '@homzhub/web/src/screens/offers/components/OffersCard';
 import OfferActionsPopover from '@homzhub/web/src/screens/offers/components/OfferActionsPopover';
@@ -127,6 +128,7 @@ const OfferView: FC<IProps> = (props: IProps) => {
         threadId,
       })
     );
+    onOpenChatModal();
   };
   const handleOfferAction = (value: OfferAction): void => {
     setOfferActionType(value);
@@ -166,6 +168,20 @@ const OfferView: FC<IProps> = (props: IProps) => {
     setOfferActionType(OfferAction.CREATE_LEASE);
     if (popupRef && popupRef.current) {
       popupRef.current.open();
+    }
+  };
+
+  const popupRefChatScreen = createRef<PopupActions>();
+
+  const onOpenChatModal = (): void => {
+    if (popupRefChatScreen.current && popupRefChatScreen.current.open) {
+      popupRefChatScreen.current.open();
+    }
+  };
+
+  const onCloseChatModal = (): void => {
+    if (popupRefChatScreen.current && popupRefChatScreen.current.close) {
+      popupRefChatScreen.current.close();
     }
   };
 
@@ -223,6 +239,12 @@ const OfferView: FC<IProps> = (props: IProps) => {
         asset={listingDetail}
         handleOfferAction={handleOfferAction}
         onCloseModal={onCloseModal}
+      />
+      <ChatScreenPopover
+        isFromOffers
+        popupRef={popupRefChatScreen}
+        onOpenModal={onOpenChatModal}
+        onCloseModal={onCloseChatModal}
       />
     </View>
   );

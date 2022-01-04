@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { useHistory } from 'react-router-dom';
+import { PopupActions } from 'reactjs-popup/dist/types';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { TFunction } from 'i18next';
@@ -11,6 +12,7 @@ import { RouteNames } from '@homzhub/web/src/router/RouteNames';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import Icon from '@homzhub/common/src/assets/icon';
 import { theme } from '@homzhub/common/src/styles/theme';
+import GetAppPopup from '@homzhub/web/src/components/molecules/GetAppPopup';
 import { Hoverable } from '@homzhub/web/src/components/hoc/Hoverable';
 import { IAuthCallback } from '@homzhub/common/src/modules/user/interface';
 import { LocaleConstants } from '@homzhub/common/src/services/Localization/constants';
@@ -51,6 +53,20 @@ const SideMenu: FC<Props> = (props: Props) => {
     }
   }, [pathname]);
 
+  const popupRefGetApp = React.createRef<PopupActions>();
+
+  const onOpenModal = (): void => {
+    if (popupRefGetApp.current && popupRefGetApp.current.open) {
+      popupRefGetApp.current.open();
+    }
+  };
+
+  const onCloseModal = (): void => {
+    if (popupRefGetApp.current && popupRefGetApp.current.close) {
+      popupRefGetApp.current.close();
+    }
+  };
+
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
   const onItemPress = (item: IMenuItem): void => {
     const { id, url } = item;
@@ -63,6 +79,8 @@ const SideMenu: FC<Props> = (props: Props) => {
           }
         },
       });
+    } else if (item.name === sideMenuItems.bankDetails || item.name === sideMenuItems.referAndEarn) {
+      onOpenModal();
     } else {
       NavigationService.navigate(history, { path: MenuItemList[id - 1].url });
     }
@@ -73,6 +91,7 @@ const SideMenu: FC<Props> = (props: Props) => {
       {MenuItemList.map((item, index) => {
         return renderMenuItem(item, t, isSelectedItem(item.id), onItemPress);
       })}
+      <GetAppPopup popupRef={popupRefGetApp} onOpenModal={onOpenModal} onCloseModal={onCloseModal} />
     </View>
   );
 };
