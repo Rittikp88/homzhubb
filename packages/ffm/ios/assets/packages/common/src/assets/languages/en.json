@@ -346,7 +346,10 @@
     "companyName": "Company Name",
     "password": "Password",
     "remark": "Remark",
-    "preview": "Preview"
+    "preview": "Preview",
+    "getAppPopupTitle": "Get Homzhub Application",
+    "getAppPopupContentTitle": "This feature is only available on our mobile app",
+    "getAppPopupContentSubTitle": "Click on the following links below to download our app and unlock all the possibilities."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -1583,7 +1586,7 @@
     "reschedulePropertyVisit": "Reschedule Property Visit",
     "visitUpdate": "Visit Updated Successfully",
     "cancelVisit": "Are you sure you want to cancel visit ?",
-    "prospectFeedbackForm": "Prospect Feedback Form",
+    "prospectFeedbackForm": "Prospect Feedback",
     "visitExpired": "Visit Expired",
     "visitMissed": "Visit {{action}} by {{name}}",
     "rescheduleVisit": "Rescheduled visit successfully",

@@ -10,6 +10,7 @@
     "android:build": "ENVFILE=.env.development yarn android:clean && yarn android:bundle && cd android && ./gradlew assembleHomzhubRelease -x bundleHomzhubReleaseJsAndAssets",
     "android:bundle:prod": "ENVFILE=.env react-native bundle --platform android --dev false --entry-file packages/mobile/index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "android:build:prod": "ENVFILE=.env yarn android:clean && yarn android:bundle:prod && cd android && ./gradlew assembleHomzhubRelease -x bundleHomzhubReleaseJsAndAssets",
+    "android:build:aab": "ENVFILE=.env yarn android:clean && yarn android:bundle:prod && cd android && ./gradlew bundleHomzhubRelease -x bundleHomzhubReleaseJsAndAssets",
     "android:build:partner:prod": "ENVFILE=.env yarn android:clean && yarn android:bundle:prod && cd android && ./gradlew assemblePartnerRelease -x bundlePartnerReleaseJsAndAssets",
     "ios": "ENVFILE=.env.development react-native run-ios --configuration Debug --scheme homzhub",
     "ios:partner": "ENVFILE=.env react-native run-ios --configuration Debug --scheme homzhub-partner",

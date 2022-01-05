@@ -77,10 +77,12 @@ class LinkingService {
         link: `${ConfigHelper.getMainUrl()}?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
         android: {
           packageName: ConfigHelper.getAndroidAppId(),
+          fallbackUrl: `${ConfigHelper.getMainUrl()}?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
         },
         ios: {
           bundleId: ConfigHelper.getIosAppId(),
           appStoreId: ConfigHelper.getAppStoreId(),
+          fallbackUrl: `${ConfigHelper.getMainUrl()}?${DynamicLinkParamKeys.Type}=${type}&${extraParams}`,
         },
         domainUriPrefix: ConfigHelper.getDynamicUrlPrefix(),
       },

@@ -27,6 +27,7 @@
     "android:partner": "jetify && yarn workspace @homzhub/mobile run android:partner",
     "android:build": "jetify && yarn workspace @homzhub/mobile run android:build",
     "android:build:prod": "jetify && yarn workspace @homzhub/mobile run android:build:prod",
+    "android:build:aab": "jetify && yarn workspace @homzhub/mobile run android:build:aab",
     "android:build:partner:prod": "jetify && yarn workspace @homzhub/mobile run android:build:partner:prod",
     "android:build:ffm": "jetify && yarn workspace @homzhub/ffm run android:build",
     "ios": "yarn workspace @homzhub/mobile run ios",
