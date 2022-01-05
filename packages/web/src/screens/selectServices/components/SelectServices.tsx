@@ -96,7 +96,6 @@ const SelectServices = (): ReactElement => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isStepDone, setStepPositionArr] = useState<boolean[]>([false, false]);
   const [tabViewHeights, setIsStepDone] = useState<number[]>([height, height]);
-
   // Redux
   const dispatch = useDispatch();
   const history = useHistory();

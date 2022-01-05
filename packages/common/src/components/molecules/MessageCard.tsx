@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Image, ImageStyle, StyleSheet, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { useSelector } from 'react-redux';
 import { DateFormats, DateUtils } from '@homzhub/common/src/utils/DateUtils';
+import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
@@ -108,7 +109,7 @@ const MessageCard = (props: IProps): React.ReactElement => {
     <>
       {messageView()}
       {attachmentView()}
-      <UserView isVisible={isUserView} user={user} onClose={onCloseUserView} />
+      {!PlatformUtils.isWeb() && <UserView isVisible={isUserView} user={user} onClose={onCloseUserView} />}
     </>
   );
 };

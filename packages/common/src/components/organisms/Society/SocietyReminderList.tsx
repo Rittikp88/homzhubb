@@ -77,7 +77,7 @@ const SocietyReminderList = ({ renderMenu, handlePayNow }: IProps): React.ReactE
               </Label>
             </View>
           </View>
-          {renderMenu && isMenuVisible && renderMenu(item.id)}
+          {renderMenu && isMenuVisible && <View> {renderMenu(item.id)}</View>}
         </View>
         <Text type="small" textType="semiBold" style={styles.label}>
           {t('propertyPayment:payee')}

@@ -1,6 +1,6 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useUp, useDown } from '@homzhub/common/src/utils/MediaQueryUtils';
+import { useOnly } from '@homzhub/common/src/utils/MediaQueryUtils';
 import { theme } from '@homzhub/common/src/styles/theme';
 import InfiniteScrollView from '@homzhub/web/src/components/hoc/InfiniteScroll';
 import PropertyCard from '@homzhub/web/src/screens/searchProperty/components/PropertyCard';
@@ -8,6 +8,7 @@ import SearchMapView from '@homzhub/web/src/screens/searchProperty/components/Se
 import { Asset } from '@homzhub/common/src/domain/models/Asset';
 import { AssetSearch } from '@homzhub/common/src/domain/models/AssetSearch';
 import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoints';
+
 // TODO : shagun - fix mobile and tab view
 interface IProps {
   isListView: boolean;
@@ -23,9 +24,17 @@ const noStyles = {};
 
 const PropertiesView: FC<IProps> = (props: IProps) => {
   const { isListView, property, fetchData, hasMore, limit, transaction_type, loader } = props;
-  const isDesktop = useUp(deviceBreakpoint.DESKTOP);
-  const isTab = useDown(deviceBreakpoint.TABLET);
-  const isMobile = useDown(deviceBreakpoint.MOBILE);
+  const isDesktop = useOnly(deviceBreakpoint.DESKTOP);
+  const isTab = useOnly(deviceBreakpoint.TABLET);
+  const isMobile = useOnly(deviceBreakpoint.MOBILE);
+  const [containerWidth, setContainerWidth] = useState<string | number>('100%');
+  const onLayout = (): void => {
+    if (property.results.length >= 3) {
+      setContainerWidth('32%');
+    } else if (property.results.length === 2) {
+      setContainerWidth('64%');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -38,6 +47,7 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
             height={isDesktop && isListView ? '1200px' : '150vh'}
             style={{
               display: 'flex',
+              flexDirection: 'row',
               flexWrap: 'wrap',
               width: '100%',
               justifyContent: isTab ? 'space-between' : 'flex-start',
@@ -50,13 +60,14 @@ const PropertiesView: FC<IProps> = (props: IProps) => {
               <View
                 key={item.id}
                 style={[
-                  isListView ? styles.cardList : styles.cardGrid,
+                  isListView ? styles.cardList : [styles.cardGrid, { width: containerWidth }],
                   !isListView ? ((index + 1) % 3 === 0 ? noStyles : !isTab && styles.cardAlignment) : noStyles,
                   isMobile && isListView && styles.cardListMobile,
                   isTab && !isListView && styles.cardGridTab,
                   isMobile && !isListView && styles.cardGridMobile,
                   isTab && isListView && styles.listViewTablet,
                 ]}
+                onLayout={onLayout}
               >
                 <PropertyCard
                   key={item.id}
@@ -133,7 +144,6 @@ const styles = StyleSheet.create({
     width: '85vw',
   },
   cardGrid: {
-    width: '32%',
     alignItems: 'stretch',
     alignSelf: 'flex-start',
   },

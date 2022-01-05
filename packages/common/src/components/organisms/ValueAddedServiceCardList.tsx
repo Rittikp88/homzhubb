@@ -10,6 +10,7 @@ import { theme } from '@homzhub/common/src/styles/theme';
 import { Badge } from '@homzhub/common/src/components/atoms/Badge';
 import { EmptyState } from '@homzhub/common/src/components/atoms/EmptyState';
 import { ImagePlaceholder } from '@homzhub/common/src/components/atoms/ImagePlaceholder';
+import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { Text } from '@homzhub/common/src/components/atoms/Text';
 import { AssetDetailsImageCarousel } from '@homzhub/common/src/components/molecules/AssetDetailsImageCarousel';
 import { PropertyAddressCountry } from '@homzhub/common/src/components/molecules/PropertyAddressCountry';
@@ -26,7 +27,6 @@ import { deviceBreakpoint } from '@homzhub/common/src/constants/DeviceBreakpoint
 import { IBadgeInfo } from '@homzhub/mobile/src/navigation/interfaces';
 
 interface IProps {
-  didLoad: () => void;
   navigateToService: (
     propertyId: number,
     assetType: string,
@@ -47,7 +47,7 @@ interface IProps {
 
 export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
-  const { navigateToAddPropertyScreen, navigateToService, didLoad, selectedCity } = props;
+  const { navigateToAddPropertyScreen, navigateToService, selectedCity } = props;
 
   // Local States
   const [activeSlide, setActiveSlide] = useState(0);
@@ -59,18 +59,19 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
 
   useEffect(() => {
     try {
+      setLoading(true);
       AssetRepository.getValueServicesAssetList().then((data: Asset[]) => {
         let filteredAsset = data;
         if (selectedCity) {
           filteredAsset = data.filter((item) => item.city === selectedCity);
         }
         setAssets(filteredAsset);
-        didLoad();
       });
+      setLoading(false);
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e);
       AlertHelper.error({ message: error, statusCode: e.details.statusCode });
-      didLoad();
+      setLoading(false);
     }
   }, []);
 
@@ -94,6 +95,8 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
     );
   };
 
+  const [loading, setLoading] = useState(false);
+
   const updateSlide = (currentSlideNumber: number): void => {
     setActiveSlide(currentSlideNumber);
   };
@@ -103,6 +106,7 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
   };
   return (
     <>
+      <Loader visible={loading} />
       {assets && assets.length > 0 ? (
         <>
           {!isMobile && <ValueAddedServicesOverview propertiesCount={assets.length} />}

@@ -101,19 +101,19 @@ export const MenuItemList: IMenuItemList[] = [
     icon: icons.settingOutline,
     url: RouteNames.protectedRoutes.VALUE_ADDED_SERVICES,
   },
-   {
+  {
     id: 10,
     name: sideMenuItems.bankDetails,
     icon: icons.bankBuilding,
     url: RouteNames.protectedRoutes.REFER_EARN,
   },
-   {
+  {
     id: 11,
     name: sideMenuItems.referAndEarn,
     icon: icons.refer,
     url: RouteNames.protectedRoutes.REFER_EARN,
   },
-  
+
   {
     id: 12,
     name: sideMenuItems.logout,

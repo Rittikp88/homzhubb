@@ -52,6 +52,7 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
   };
 
   let param: IOfferManagementParam;
+  const { isActive } = asset;
   if (asset) {
     param = {
       ...(asset.leaseTerm && { lease_listing_id: asset.leaseTerm.id }),
@@ -70,7 +71,7 @@ const TenancyFormPopover: React.FC<IProps> = (props: IProps) => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isActive) {
       getOfferCount().then();
     }
   }, []);

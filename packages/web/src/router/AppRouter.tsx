@@ -61,6 +61,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
   return (
     <Suspense fallback={<div style={{ height: '100vh' }}>{t('webLoader:loadingText')}</div>}>
       <Switch>
+        <PrivateRoute path={DASHBOARD} component={AppLayout} isAuthenticated={isAuthenticated} />
         <Route
           exact
           path={APP_BASE}
@@ -101,7 +102,6 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
         <Route exact path={FAQS} component={FAQ} />
         <Route exact path={MEMBERSHIP_PLANS} component={MembershipPlans} />
         {!isAuthenticated && <Route exact path={PROPERTY_DETAIL} component={PropertyDetails} />}
-        <PrivateRoute path={DASHBOARD} component={AppLayout} isAuthenticated={isAuthenticated} />
         <Route exact path={ERROR} component={Error} />
         <Route exact path={ERROR504} component={Error504} />
         <Route exact path={ERROR404} component={Error404} />

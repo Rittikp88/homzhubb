@@ -199,7 +199,7 @@ const Notification: FC = () => {
             <NotificationBox
               data={filterData()}
               onPress={onNotificationClicked}
-              unreadCount={notifications?.unreadCount ?? 0}
+              unreadCount={countMetrics}
               shouldEnableOuterScroll={FunctionUtils.noop}
               onLoadMore={FunctionUtils.noop}
               isTablet={isTab}

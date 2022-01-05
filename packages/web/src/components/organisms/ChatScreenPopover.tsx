@@ -384,30 +384,35 @@ const ChatScreenPopover: React.FC<Props> = (props: Props) => {
         </View>
         <Divider containerStyles={styles.verticalStyle} />
         <View style={styles.modalContent}>
-          <Loader visible={isLoading} />
-          <View>{!isFromOffers && currentChat ? renderRightNode() : undefined}</View>
-          {isPreview ? (
-            <MessagePreview
-              isFromOffers={isFromOffers}
-              isScrollToBottom={isScrollToBottom}
-              shouldScrollToBottom={updateScroll}
-              shouldReverseOrder={!isFromOffers}
-            />
-          ) : (
-            <EmptyState
-              isIconRequired={false}
-              title={t('assetMore:noActiveThread')}
-              subTitle={t('assetMore:accessOldMessage')}
-            />
-          )}
+          {!isFromOffers && !!currentChat && <View> {renderRightNode()} </View>}
 
-          {isPreview && renderInputView()}
+          <View>
+            <View>
+              {isPreview ? (
+                <MessagePreview
+                  isFromOffers={isFromOffers}
+                  isScrollToBottom={isScrollToBottom}
+                  shouldScrollToBottom={updateScroll}
+                  shouldReverseOrder={!isFromOffers}
+                />
+              ) : (
+                <EmptyState
+                  isIconRequired={false}
+                  title={t('assetMore:noActiveThread')}
+                  subTitle={t('assetMore:accessOldMessage')}
+                />
+              )}
+            </View>
+          </View>
         </View>
+        <View>{isPreview && renderInputView()}</View>
       </View>
     );
   };
+
   return (
     <View>
+      <Loader visible={isLoading} />
       <Popover
         content={renderPopoverContent}
         popupProps={{
@@ -457,8 +462,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ChatScreenPopover);
 
 const styles = StyleSheet.create({
   inputBox: {
-    marginHorizontal: 16,
-    position: 'relative',
+    marginTop: 8,
   },
   modalHeader: {
     flexDirection: 'column',
@@ -467,7 +471,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 20,
   },
-  modalContent: {},
+  modalContent: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 'calc(500px * 0.7)',
+  },
   verticalStyle: {
     marginTop: 20,
   },

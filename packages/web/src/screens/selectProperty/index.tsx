@@ -3,7 +3,6 @@ import { View, StyleSheet } from 'react-native';
 import { useHistory } from 'react-router';
 import { PopupActions } from 'reactjs-popup/dist/types';
 import { FunctionUtils } from '@homzhub/common/src/utils/FunctionUtils';
-import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { ValueAddedServiceCardList } from '@homzhub/common/src/components/organisms/ValueAddedServiceCardList';
 import OrderSummaryPopover from '@homzhub/web/src/components/organisms/OrderSummaryPopover';
 import { Attachment } from '@homzhub/common/src/domain/models/Attachment';
@@ -40,12 +39,6 @@ const SelectProperty: FC = () => {
     setPropertyId(propertyIdArg);
   };
 
-  const [loading, setLoading] = useState(true);
-
-  const apiDidLoad = (): void => {
-    setLoading(false);
-  };
-
   const popupRef = useRef<PopupActions>(null);
 
   const onOpenModal = (): void => {
@@ -67,9 +60,7 @@ const SelectProperty: FC = () => {
 
   return (
     <View style={styles.container}>
-      <Loader visible={loading} />
       <ValueAddedServiceCardList
-        didLoad={apiDidLoad}
         navigateToAddPropertyScreen={FunctionUtils.noop}
         navigateToService={navigateToService}
         selectedCity={city}

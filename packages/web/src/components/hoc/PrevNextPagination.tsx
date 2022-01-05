@@ -11,7 +11,7 @@ interface IProps extends WithTranslation {
   hasMore: boolean;
   limit: number;
   loader: boolean;
-  fetchMoreData?: (value: number) => void;
+  fetchMoreData?: (value: number, isNext: boolean) => void;
   onPressPrevBtn?: () => void;
   onPressNextBtn?: () => void;
   isPrevDisabled: boolean;
@@ -114,7 +114,7 @@ class PrevNextPaginationHOC extends Component<IProps, IState> {
 
     this.setState({ offset: newOffset });
     if (fetchMoreData) {
-      fetchMoreData(newOffset);
+      fetchMoreData(newOffset, isNext);
     }
   };
 }

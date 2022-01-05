@@ -79,13 +79,15 @@ const Transactions = (props: Props): React.ReactElement<Props> => {
     setTransactionsArray(transactionsData.splice(currOffset - limit, currOffset));
   }, [currOffset]);
 
-  const fetchMoreData = (updatedOffset: number): void => {
-    getTransactions({
-      offset: updatedOffset,
-      limit: 3,
-      asset_id: selectedProperty || undefined,
-      country_id: selectedCountry || undefined,
-    });
+  const fetchMoreData = (updatedOffset: number, isNext: boolean): void => {
+    if (isNext) {
+      getTransactions({
+        offset: updatedOffset,
+        limit: 3,
+        asset_id: selectedProperty || undefined,
+        country_id: selectedCountry || undefined,
+      });
+    }
     setCurrOffset(updatedOffset);
   };
 

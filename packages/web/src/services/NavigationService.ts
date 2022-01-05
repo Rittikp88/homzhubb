@@ -105,7 +105,6 @@ class NavigationService<T extends History> {
       this.handlePrivateRoutes(dynamicLinkParams);
       return;
     }
-
     // Handle dynamic routes inside the below if statement
     if (userData && routeType === RouteTypes.Public) {
       const redirectionDetails = { dynamicLinks: { routeType: '', type: '', params: {} }, shouldRedirect: false };
@@ -124,7 +123,8 @@ class NavigationService<T extends History> {
 
   public handlePublicRoutes = (dynamicLinkParams: IDynamicLinkParams): void => {
     const { type, params } = dynamicLinkParams;
-    const { asset_name: projectName, asset_transaction_type: assetTransactionType, propertyTermId } = params;
+    const { asset_name, asset_transaction_type: assetTransactionType, propertyTermId } = params;
+    const projectName = asset_name ? asset_name.replace('_', ' ') : 'Property';
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigate(this.history, {
@@ -155,8 +155,7 @@ class NavigationService<T extends History> {
   public handlePublicProtectedRoutes = (dynamicLinkParams: IDynamicLinkParams): void => {
     const { type, params } = dynamicLinkParams;
     const { asset_name, asset_transaction_type: assetTransactionType, propertyTermId, popupInitType } = params;
-    const projectName = asset_name.replace('_', ' ');
-
+    const projectName = asset_name ? asset_name.replace('_', ' ') : 'Property';
     switch (type) {
       case DynamicLinkTypes.AssetDescription:
         this.navigate(this.history, {

@@ -62,7 +62,6 @@ const SavedProperty: FC = () => {
 
   useEffect(() => {
     dispatch(UserActions.getFavouriteProperties());
-    getProspectProfile().then();
     setLoading(false);
   }, []);
 
@@ -342,7 +341,6 @@ const SavedProperty: FC = () => {
                   style={styles.screenPadding}
                   onPress={(): void => navigateToProperty(listingId, transaction, projectName)}
                 >
-                  {/* <ShieldGroup propertyType={name} /> */}
                   <View style={styles.propertyAddress}>
                     <PropertyAddress
                       isIcon
@@ -409,6 +407,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
     marginVertical: 24,
   },
   cardView: {

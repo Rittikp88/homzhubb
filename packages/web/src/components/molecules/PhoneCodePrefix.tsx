@@ -20,7 +20,7 @@ const PhoneCodePrefix: FC<Props> = (props: Props) => {
   const popupRef = useRef<PopupActions>(null);
   useEffect(() => {
     if (popupRef && popupRef.current) {
-      if (isBottomSheetVisible === true) {
+      if (!isBottomSheetVisible === true) {
         popupRef.current.open();
       }
     }

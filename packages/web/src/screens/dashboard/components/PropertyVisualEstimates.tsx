@@ -124,7 +124,9 @@ const PropertyVisualsEstimates = ({
     closePopup();
     setSelectedDateFilter(selectedOption);
   };
-  const isDropDownVisible = !(RouteNames.protectedRoutes.FINANCIALS === NavigationService.appHistory.location.pathname);
+  const isDropDownVisible = !(
+    RouteNames.protectedRoutes.FINANCIALS === NavigationService?.appHistory?.location.pathname
+  );
   return (
     <View style={styles.chartsContainer}>
       <View style={styles.header}>
