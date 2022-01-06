@@ -1696,7 +1696,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
 				PRODUCT_NAME = "Homzhub Property Manager";
-				PROVISIONING_PROFILE_SPECIFIER = "Dev-homzhub";
+				PROVISIONING_PROFILE_SPECIFIER = "dev-homzhub";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1715,7 +1715,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1791,7 +1791,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
 				PRODUCT_NAME = "Homzhub Property Manager";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution-homzhub";
+				PROVISIONING_PROFILE_SPECIFIER = "distribution-homzhub";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2054,7 +2054,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn.homzhubImageNotification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Dev-Notification-service";
+				PROVISIONING_PROFILE_SPECIFIER = "dev-notification-service";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2079,7 +2079,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ImageNotification/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -2088,7 +2088,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn.homzhubImageNotification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution-Notification-service";
+				PROVISIONING_PROFILE_SPECIFIER = "distribution-homzhub-notification-service";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2243,7 +2243,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
 				PRODUCT_NAME = "Homzhub Partner";
-				PROVISIONING_PROFILE_SPECIFIER = "Dev-homzhub";
+				PROVISIONING_PROFILE_SPECIFIER = "dev-homzhub";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2362,7 +2362,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn.homzhubImageNotification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Dev-Notification-service";
+				PROVISIONING_PROFILE_SPECIFIER = "dev-notification-service";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -2532,7 +2532,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 9TKZH83J22;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -2608,7 +2608,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn;
 				PRODUCT_NAME = "Homzhub Partner";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution-homzhub";
+				PROVISIONING_PROFILE_SPECIFIER = "distribution-homzhub";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2709,7 +2709,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 9TKZH83J22;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = ImageNotification/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
@@ -2718,7 +2718,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.homzhub.rn.homzhubImageNotification;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Distribution-Notification-service";
+				PROVISIONING_PROFILE_SPECIFIER = "distribution-homzhub-notification-service";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
