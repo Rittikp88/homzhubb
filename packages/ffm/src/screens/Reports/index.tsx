@@ -59,7 +59,7 @@ const ReportDashboard = (): React.ReactElement => {
     <GradientScreen
       isUserHeader
       loading={inspectionReport}
-      screenTitle={t('assetMore:more')}
+      screenTitle={t('reports:reports')}
       containerStyle={styles.container}
     >
       <TabView
