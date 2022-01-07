@@ -13,10 +13,12 @@ import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAn
 import PromoCode from '@homzhub/common/src/components/molecules/PromoCode';
 import { IState } from '@homzhub/common/src/modules/interfaces';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { PrivacyPolicy } from '../molecules/PrivacyPolicy';
 
 interface ISignUpFormProps extends WithTranslation {
   testID?: string;
   onPressLink: () => void;
+  onPressPrivacyLink: () => void;
   onSubmitFormSuccess: (payload: ISignUpPayload) => void;
   referralCode?: string;
   webGroupPrefix?: (params: IWebProps) => React.ReactElement;
@@ -63,7 +65,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
   }
 
   public render(): React.ReactNode {
-    const { t, testID, onPressLink, referralCode, webGroupPrefix } = this.props;
+    const { t, testID, onPressLink, onPressPrivacyLink, referralCode, webGroupPrefix } = this.props;
     return (
       <Formik<IFormData>
         initialValues={{ ...this.state }}
@@ -140,6 +142,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
                 textType="regular"
               />
               <TermsCondition onPressLink={onPressLink} />
+              <PrivacyPolicy onPressLink={onPressPrivacyLink} />
               <FormButton
                 // @ts-ignore
                 onPress={formProps.handleSubmit}

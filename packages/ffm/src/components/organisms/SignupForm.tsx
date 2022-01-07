@@ -12,8 +12,12 @@ import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
 import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
+import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
+import { PrivacyPolicy } from '@homzhub/common/src/components/molecules/PrivacyPolicy';
 
 interface IProps {
+  onPressLink: () => void;
+  onPressPrivacyLink: () => void;
   onSubmit: (payload: ISignUpPayload) => void;
   onBack: () => void;
 }
@@ -29,7 +33,7 @@ interface IFormData {
 }
 
 const SignupForm = (props: IProps): React.ReactElement => {
-  const { onSubmit, onBack } = props;
+  const { onSubmit, onBack, onPressLink, onPressPrivacyLink } = props;
   const lastName: React.RefObject<any> = useRef();
   const email: React.RefObject<any> = useRef();
   const phone: React.RefObject<any> = useRef();
@@ -157,6 +161,8 @@ const SignupForm = (props: IProps): React.ReactElement => {
                 placeholder={t('yourCompanyName')}
                 formProps={formProps}
               />
+              <TermsCondition onPressLink={onPressLink} />
+              <PrivacyPolicy onPressLink={onPressPrivacyLink} />
               <View style={styles.buttonContainer}>
                 <Button type="secondary" title={t('backText')} containerStyle={styles.buttonStyle} onPress={onBack} />
                 <View style={styles.separator} />

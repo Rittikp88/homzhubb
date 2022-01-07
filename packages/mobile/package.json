@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "android": "ENVFILE=.env react-native run-android --variant=homzhubDebug",
-    "android:partner": "ENVFILE=.env react-native run-android --variant=partnerDebug",
+    "android": "ENVFILE=.env.development react-native run-android --variant=homzhubDebug",
+    "android:partner": "ENVFILE=.env.development react-native run-android --variant=partnerDebug",
     "android:clean": "cd android && ./gradlew clean",
     "android:bundle": "ENVFILE=.env.development react-native bundle --platform android --dev false --entry-file packages/mobile/index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/",
     "android:build": "ENVFILE=.env.development yarn android:clean && yarn android:bundle && cd android && ./gradlew assembleHomzhubRelease -x bundleHomzhubReleaseJsAndAssets",

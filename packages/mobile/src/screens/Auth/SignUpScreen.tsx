@@ -53,6 +53,7 @@ export class SignUpScreen extends Component<Props, IOwnState> {
           <SignUpForm
             onSubmitFormSuccess={this.onFormSubmit}
             onPressLink={this.handleTermsCondition}
+            onPressPrivacyLink={this.handlePrivacy}
             referralCode={params && params?.referralCode}
             testID="signupForm"
           />
@@ -128,6 +129,11 @@ export class SignUpScreen extends Component<Props, IOwnState> {
   private handleTermsCondition = (): void => {
     const { navigation } = this.props;
     navigation.navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/terms&Condition' });
+  };
+
+  private handlePrivacy = (): void => {
+    const { navigation } = this.props;
+    navigation.navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
   };
 
   private toggleLoading = (isLoading: boolean): void => {

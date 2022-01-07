@@ -20,7 +20,7 @@ import SignUpForm from '@homzhub/ffm/src/components/organisms/SignupForm';
 import { User } from '@homzhub/common/src/domain/models/User';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
-import { OtpNavTypes } from '@homzhub/mobile/src/navigation/interfaces';
+import { OtpNavTypes, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
 import { Role } from '@homzhub/common/src/constants/Signup';
 
 const Signup = (): React.ReactElement => {
@@ -43,6 +43,15 @@ const Signup = (): React.ReactElement => {
   const onBack = (): void => {
     goBack();
   };
+
+  const onTermsofUse = (): void => {
+    navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/terms&Condition' });
+  };
+
+  const onPrivacy = (): void => {
+    navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
+  };
+
 
   const onSubmit = async (userData: ISignUpPayload): Promise<void> => {
     try {
@@ -107,7 +116,7 @@ const Signup = (): React.ReactElement => {
           </TouchableOpacity>
         </View>
 
-        <SignUpForm onSubmit={onSubmit} onBack={onBack} />
+        <SignUpForm onSubmit={onSubmit} onBack={onBack} onPressLink={onTermsofUse} onPressPrivacyLink={onPrivacy}/>
         <BottomSheet visible={isSupportVisible} onCloseSheet={(): void => setSupportVisibility(false)}>
           <View style={styles.sheetContent}>
             <TouchableOpacity style={styles.sheetText} onPress={handleCalling}>
