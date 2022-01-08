@@ -17,6 +17,7 @@ export enum ScreenKeys {
   // Common
   OnBoarding = 'OnBoarding',
   ComingSoon = 'ComingSoon',
+  WebViewScreen = 'WebViewScreen',
 
   // Auth
   Login = 'LoginScreen',
@@ -86,4 +87,8 @@ export interface ILocationParam {
 
 export interface IInspectionParam {
   isCompleted: boolean;
+}
+
+export interface IWebviewProps {
+  url: string;
 }

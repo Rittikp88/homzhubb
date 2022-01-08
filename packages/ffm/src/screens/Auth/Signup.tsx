@@ -49,7 +49,7 @@ const Signup = (): React.ReactElement => {
   };
 
   const onPrivacy = (): void => {
-    navigate(ScreensKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
+    navigate(ScreenKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
   };
 
 

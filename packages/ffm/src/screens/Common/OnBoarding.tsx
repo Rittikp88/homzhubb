@@ -8,7 +8,6 @@ import { FFMActions } from '@homzhub/common/src/modules/ffm/actions';
 import { FFMSelector } from '@homzhub/common/src/modules/ffm/selectors';
 import { theme } from '@homzhub/common/src/styles/theme';
 import { SnapCarousel } from '@homzhub/mobile/src/components/atoms/Carousel';
-import { Loader } from '@homzhub/common/src/components/atoms/Loader';
 import { StatusBar } from '@homzhub/mobile/src/components/atoms/StatusBar';
 import { SVGUri } from '@homzhub/common/src/components/atoms/Svg';
 import { Label, Text } from '@homzhub/common/src/components/atoms/Text';
@@ -19,11 +18,11 @@ import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 const OnBoarding = (): React.ReactElement => {
   const dispatch = useDispatch();
   const { navigate } = useNavigation();
-  const [activeSlide, setActiveSlide] = useState(0);
   const onBoardingData = useSelector(FFMSelector.getOnBoardingData);
   const roles = useSelector(FFMSelector.getRoles);
   const loaders = useSelector(FFMSelector.getFFMLoaders);
-
+  const [activeSlide, setActiveSlide] = useState(0);
+  
   useEffect(() => {
     getScreenData();
   }, []);
@@ -70,8 +69,6 @@ const OnBoarding = (): React.ReactElement => {
   const onSnapToItem = (slideNumber: number): void => {
     setActiveSlide(slideNumber);
   };
-
-  if (loaders.onBoarding || loaders.roles) return <Loader visible />;
 
   const currentSlide: OnBoardingModel = onBoardingData[activeSlide];
 

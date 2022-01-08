@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import { PlatformUtils } from '@homzhub/common/src/utils/PlatformUtils';
 import { UserActions } from '@homzhub/common/src/modules/user/actions';
 import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
@@ -219,11 +220,10 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
   };
 
   private onAddProperty = (): void => {
-    const { isSheetVisible } = this.state;
-    this.setState({
-      isSheetVisible: !isSheetVisible,
-    });
-  };
+    const { navigation, setAddPropertyFlow } = this.props;
+    navigation.navigate(ScreensKeys.AuthStack, { screen: ScreensKeys.SignUp, params: {} });
+    setAddPropertyFlow(true);
+};
 
   private onCloseSheet = (): void => {
     this.setState({
@@ -247,7 +247,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
         data: response,
       });
     } catch (error) {
-      AlertHelper.error({ message: error.message });
+      AlertHelper.error({ message: ErrorUtils.getErrorMessage(error.details) });
     }
   };
 

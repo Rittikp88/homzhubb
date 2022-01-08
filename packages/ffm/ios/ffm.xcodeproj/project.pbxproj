@@ -298,6 +298,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				46A2B129528CE6477610323C /* [CP] Copy Pods Resources */,
+				9CE0D55BEE099B961624C9CC /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -321,6 +322,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				CD4747B1E327FD219DD20AB4 /* [CP] Copy Pods Resources */,
 				249660198057899A0D493E15 /* [CP-User] [RNFB] Core Configuration */,
+				9F1E26BD9174124B56FB18F6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -412,7 +414,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\nexport EXTRA_PACKAGER_ARGS=\"--entry-file packages/ffm/index.js\"\n../../../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			shellScript = "export NODE_BINARY=/opt/homebrew/opt/node@14/bin/node\nexport EXTRA_PACKAGER_ARGS=\"--entry-file packages/ffm/index.js\"\n../../../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		080D2775319D26A7C861EFEC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -461,6 +463,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ffm-ffmTests/Pods-ffm-ffmTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9CE0D55BEE099B961624C9CC /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ffm-ffmTests/Pods-ffm-ffmTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ffm-ffmTests/Pods-ffm-ffmTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ffm-ffmTests/Pods-ffm-ffmTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F1E26BD9174124B56FB18F6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ffm/Pods-ffm-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ffm/Pods-ffm-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ffm/Pods-ffm-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C4E737B8B090E56367828FFD /* [CP] Check Pods Manifest.lock */ = {
