@@ -5,7 +5,7 @@ export interface ILinks {
   previous: string | null;
 }
 
-@JsonObject('Links')
+@JsonObject('Links1')
 export class Links {
   @JsonProperty('next', String, true)
   private _next = '';

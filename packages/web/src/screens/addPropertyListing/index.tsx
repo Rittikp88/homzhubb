@@ -61,7 +61,6 @@ const AddPropertyListing = (): React.ReactElement => {
   const {
     location: { state },
   } = history;
-
   const { t } = useTranslation();
   const [scene, setScene] = useState(ComponentName.Listing_Plan_Selection);
   const Desktop = useOnly(deviceBreakpoint.DESKTOP);

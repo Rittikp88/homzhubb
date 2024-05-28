@@ -173,7 +173,7 @@ export class PropertyCardDetails extends React.PureComponent<Props> {
       },
       lastVisitedStep: { assetCreation },
     } = assetDetails;
-
+    // eslint-disable-next-line
     const userData: User = user;
     const isListed = (leaseListingId || saleListingId) && code !== Filters.OCCUPIED;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted);

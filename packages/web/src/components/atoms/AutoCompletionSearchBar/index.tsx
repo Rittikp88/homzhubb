@@ -16,6 +16,7 @@ import PopupMenuOptions, { IPopupOptions } from '@homzhub/web/src/components/mol
 import { AddPropertyStack } from '@homzhub/web/src/screens/addProperty';
 import { GeolocationError, GeolocationResponse } from '@homzhub/common/src/services/Geolocation/interfaces';
 import { ILatLng, IProjectDetails } from '@homzhub/common/src/modules/search/interface';
+import { Any } from 'json2typescript';
 
 export interface IAddressComponent {
   long_name: string;
@@ -148,7 +149,7 @@ const AutoCompletionSearchBar: FC<IProps> = (props: IProps) => {
   const onLayoutChange = (e: LayoutChangeEvent): void => {
     setPopoverWidth(e.nativeEvent.layout.width);
   };
-  const popoverContent = (): React.ReactElement => {
+  const popoverContent = (): React.ReactElement<Any> => {
     return (
       <PopupMenuOptions
         options={getAutoCompletionOptions()}

@@ -54,6 +54,7 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
   } = RouteNames.publicRoutes;
   const { DASHBOARD } = RouteNames.protectedRoutes;
   const { t } = useTranslation();
+
   const params = QueryString.parse(location.search);
   const { type, routeType, ...rest } = params;
   const dynamicLinkParams = { type, routeType, params: rest };
@@ -71,7 +72,8 @@ const AppRouter = (props: AppRouterProps): React.ReactElement => {
             ) : (
               <Landing isAuthenticated={isAuthenticated} {...renderProps} />
               // eslint-disable-next-line prettier/prettier
-            )}
+            )
+          }
         />
         <Route
           exact

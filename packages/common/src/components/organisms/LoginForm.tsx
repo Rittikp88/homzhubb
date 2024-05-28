@@ -171,6 +171,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
 
   public handleSubmit = async (values: IFormData, formActions: FormikHelpers<IFormData>): Promise<void> => {
     const { onLoginSuccess, isEmailLogin, t, isFromLogin } = this.props;
+    console.log('🚀 ~ file: LoginForm.tsx ~ line 174 ~ LoginForm ~ handleSubmit= ~ onLoginSuccess', onLoginSuccess);
     formActions.setSubmitting(true);
     if (!isEmailLogin) {
       try {
@@ -189,6 +190,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
           return;
         }
       } catch (err) {
+        console.log('🚀 ~ file: LoginForm.tsx ~ line 193 ~ LoginForm ~ handleSubmit= ~ err', err.details);
         AlertHelper.error({ message: t('common:genericErrorMessage'), statusCode: err.details.statusCode });
         return;
       }

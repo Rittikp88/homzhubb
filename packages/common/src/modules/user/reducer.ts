@@ -46,6 +46,7 @@ export const userReducer = (
 ): IUserState => {
   switch (action.type) {
     case UserActionTypes.AUTH.LOGOUT:
+    case UserActionTypes.AUTH.DEACTIVATE_USER_ACCOUNT:
     case UserActionTypes.AUTH.LOGIN:
       return {
         ...state,
@@ -59,6 +60,7 @@ export const userReducer = (
         ['loaders']: { ...state.loaders, ['user']: false },
       };
     case UserActionTypes.AUTH.LOGOUT_SUCCESS:
+    case UserActionTypes.AUTH.DEACTIVATE_USER_ACCOUNT:
       return {
         ...state,
         ['tokens']: null,

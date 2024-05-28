@@ -9,7 +9,7 @@ import { CommonStackParamList, getCommonScreen } from '@homzhub/ffm/src/navigati
 import { IWebviewProps, ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 import { IOtpNavProps } from '@homzhub/mobile/src/navigation/interfaces';
 import { WebViewScreen } from '@homzhub/ffm/src/screens/Common/WebViewScreen';
-
+import AppStack from '@homzhub/ffm/src/navigation/AppStack';
 
 export type AuthStackParamList = {
   [ScreenKeys.OnBoarding]: undefined;
@@ -37,7 +37,8 @@ const AuthStack = (): React.ReactElement => {
       <AuthStackNavigator.Screen name={ScreenKeys.EmailLogin} component={EmailLoginScreen} />
       <AuthStackNavigator.Screen name={ScreenKeys.Signup} component={Signup} />
       <AuthStackNavigator.Screen name={ScreenKeys.WorkLocations} component={WorkLocations} />
-      <AuthStackNavigator.Screen name={ScreenKeys.WebViewScreen} component={WebViewScreen}/>
+      <AuthStackNavigator.Screen name={ScreenKeys.WebViewScreen} component={WebViewScreen} />
+      <AuthStackNavigator.Screen name={ScreenKeys.AppStack} component={AppStack} />
       {commonScreens}
     </AuthStackNavigator.Navigator>
   );

@@ -60,7 +60,6 @@ const AddProperty: FC<IProps> = (props: IProps) => {
       setGoBackClicked(false);
     }
   }, [goBackClicked]);
-
   const navigateScreen = (comp: AddPropertyStack): void => {
     setCurrentScreens(comp);
   };
@@ -190,7 +189,6 @@ const AddProperty: FC<IProps> = (props: IProps) => {
     </AddPropertyContext.Provider>
   );
 };
-
 const AddPropertyStyles = StyleSheet.create({
   container: {
     flex: 1,

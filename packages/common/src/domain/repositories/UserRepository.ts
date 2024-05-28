@@ -51,6 +51,7 @@ const ENDPOINTS = {
   otp: 'v1/otp/verifications/',
   forgotPasswordEmail: 'v1/users/reset-password/',
   logout: 'v1/users/logout/',
+  deactivateUserAccount: 'v1/users/deactivate/',
   getUserSubscription: 'v1/user/service-plan/',
   getUserProfile: 'v1/users/profile/',
   updateEmergencyContact: 'v1/users/emergency-contact/',
@@ -140,6 +141,10 @@ class UserRepository {
 
   public logout = async (payload: IRefreshTokenPayload): Promise<void> => {
     return await this.apiClient.post(ENDPOINTS.logout, payload);
+  };
+
+  public deactivateUserAccount = async (payload: IRefreshTokenPayload): Promise<void> => {
+    return await this.apiClient.post(ENDPOINTS.deactivateUserAccount, payload);
   };
 
   public getUserSubscription = async (): Promise<UserSubscription> => {

@@ -65,7 +65,6 @@ interface IPropertyOverviewStyle {
   valueChangeTime: ViewStyle;
   changeOpacity: ViewStyle;
 }
-
 const propertyOverviewStyle = (isMobile?: boolean): StyleSheet.NamedStyles<IPropertyOverviewStyle> =>
   StyleSheet.create<IPropertyOverviewStyle>({
     container: {

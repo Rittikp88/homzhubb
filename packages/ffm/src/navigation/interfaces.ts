@@ -20,6 +20,8 @@ export enum ScreenKeys {
   WebViewScreen = 'WebViewScreen',
 
   // Auth
+  AuthStack = 'AuthStack',
+  AppStack = 'AppStack',
   Login = 'LoginScreen',
   EmailLogin = 'EmailLoginScreen',
   Signup = 'SignupScreen',

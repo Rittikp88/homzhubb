@@ -13,6 +13,7 @@ interface IProps {
 
 const ServiceView = (props: IProps): React.ReactElement => {
   const { services, setValueAddedServices, isMobile } = props;
+  // console.log("🚀 ~ file: ServiceView.tsx ~ line 16 ~ services", JSON.stringify(services))
   const { t } = useTranslation();
   return (
     <>

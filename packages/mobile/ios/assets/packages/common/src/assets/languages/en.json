@@ -12,6 +12,7 @@
     "header": "Simplifying Real Estate for Owners",
     "getStarted": "Get Started",
     "newAroundHere": "New around here?",
+    "previous": "Previous",
     "next": "Next",
     "cancel": "Cancel",
     "gotIt": "Got It",
@@ -332,6 +333,7 @@
     "letsGetStarted": "Let’s get started!",
     "welcomeText": "Welcome",
     "pleaseFillDetails": "Please fill all the details",
+    "agreeToHomzhub": "I agree to Homzhub ",
     "supplies": "Supplies",
     "iam": "I am",
     "alreadyAccount": "Already have an account ?",
@@ -343,7 +345,11 @@
     "yourCompanyName": "Your Company Name",
     "companyName": "Company Name",
     "password": "Password",
-    "remark": "Remark"
+    "remark": "Remark",
+    "preview": "Preview",
+    "getAppPopupTitle": "Get Homzhub Application",
+    "getAppPopupContentTitle": "This feature is only available on our mobile app",
+    "getAppPopupContentSubTitle": "Click on the following links below to download our app and unlock all the possibilities."
   },
   "auth": {
     "verifyNumber": "Verify your number",
@@ -765,7 +771,10 @@
     "serviceSelection": "Service Selection",
     "addOnService": "Add-on Services",
     "selectCityForService": "Please select city for services",
-    "addYourFirstProperty": "Add your first property"
+    "addYourFirstProperty": "Add your first property",
+    "rentPayment": "Coming Soon,\\n' +\n 'However, you can pay your rent by setting up a reminder with category as \"Rent\".",
+    "expectedRent": "Expected Rent",
+    "hotProperties": "Hot Properties"
   },
   "propertySearch": {
     "showProperties": "Show Properties",
@@ -1441,7 +1450,8 @@
     "inviteMorePartner": "Invite More Service Partners",
     "ticketDetailsTitle": "Ticket Details",
     "ticketActionSuccess": "Service request action completed Successfully",
-    "paymentCancelled": "Payment has been cancelled!"
+    "paymentCancelled": "Payment has been cancelled!",
+    "approvalPending": "Approval Pending"
   },
   "microSite": {
     "overviewSteps": "Manage your property without any hassles on our digital platform from anywhere, anytime. Download our app and start managing your properties for free. \n For owners with properties in Pune and Nagpur, we offer end-to-end property management services as well.",
@@ -1576,7 +1586,7 @@
     "reschedulePropertyVisit": "Reschedule Property Visit",
     "visitUpdate": "Visit Updated Successfully",
     "cancelVisit": "Are you sure you want to cancel visit ?",
-    "prospectFeedbackForm": "Prospect Feedback Form",
+    "prospectFeedbackForm": "Prospect Feedback",
     "visitExpired": "Visit Expired",
     "visitMissed": "Visit {{action}} by {{name}}",
     "rescheduleVisit": "Rescheduled visit successfully",
@@ -1625,5 +1635,32 @@
     "billDeleted": "Maintenance Bill Deleted Successfully",
     "modifySocietyBill": "Modify Society Bill Reminder",
     "bankInfo": "This account is not verified please do your due diligence before making payment to this account.\n\n Homzhub will not be responsible for any wrong payments"
+  },
+  "reports": {
+    "reports": "Reports",
+    "overdueSince": "Overdue Since",
+    "contactUser": "Contact ({{name}})",
+    "reportCancel": "Are you sure you want to cancel this report ?",
+    "selectionProcess": "Inspection process selection",
+    "needToBeAtProperty": "You need to be at the property in order to continue",
+    "iAmAtProperty": "Yes, I am at the property",
+    "notIAmAtProperty": "No, I am not at the property",
+    "physicalInspection": "Are you conducting a physical inspection",
+    "instructions": "Instructions",
+    "startInspection": "Start Inspection",
+    "inspection": "Inspection",
+    "inspectionMessage": "Start by selecting an area for the inspection. All areas need to be completed before submitting to Homzhub",
+    "addNewSpace": "Add New Space",
+    "enterAreaName": "Enter Name of the Area",
+    "area": "Area {{count}}",
+    "addNote": "Please add notes about the area. ",
+    "fillUnitDetail": "Please fill the unit details",
+    "fillSpaceDetail": "Please fill the space details",
+    "pleaseSelect": "Please select condition and pictures for each area before completion.",
+    "addNewUnit": "Add New Unit",
+    "backToReports": "Back to Reports",
+    "submitInspection": "Submit Property Inspection",
+    "inspectionSentToReview": "Property inspection sent to Homzhub for review",
+    "inspectionReview": "We will review the inspection and revert with estimates in the required areas."
   }
 }

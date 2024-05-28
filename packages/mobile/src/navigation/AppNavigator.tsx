@@ -6,7 +6,7 @@ import { CommonParamList, getCommonScreen } from '@homzhub/mobile/src/navigation
 import { PropertyPostStack, PropertyPostStackParamList } from '@homzhub/mobile/src/navigation/PropertyPostStack';
 import { UserSelector } from '@homzhub/common/src/modules/user/selectors';
 import { NestedNavigatorParams, ScreensKeys } from '@homzhub/mobile/src/navigation/interfaces';
-
+import UpdatePropertyListing from '@homzhub/mobile/src/screens/Asset/Portfolio/UpdatePropertyListing';
 export type AppStackParamList = {
   [ScreensKeys.BottomTabs]: NestedNavigatorParams<BottomTabNavigatorParamList>;
   [ScreensKeys.PropertyPostStack]: NestedNavigatorParams<PropertyPostStackParamList>;
@@ -28,6 +28,7 @@ export function AppNavigator(): React.ReactElement {
     >
       <AppStackNavigator.Screen name={ScreensKeys.BottomTabs} component={BottomTabs} />
       <AppStackNavigator.Screen name={ScreensKeys.PropertyPostStack} component={PropertyPostStack} />
+      <AppStackNavigator.Screen name={ScreensKeys.UpdatePropertyScreen} component={UpdatePropertyListing} />
       {commonScreen}
     </AppStackNavigator.Navigator>
   );

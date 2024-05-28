@@ -84,6 +84,7 @@ const MobileVerification = (): React.ReactElement => {
   const signUp = async (): Promise<void> => {
     try {
       if (userData) {
+        console.log('🚀 ~ file: MobileVerification.tsx ~ line 87 ~ signUp ~ userData', userData);
         await UserRepository.signUp(userData);
         const loginData: IEmailLoginPayload = {
           action: LoginTypes.EMAIL,

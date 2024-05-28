@@ -50,6 +50,8 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
 
   const [isRangeUpdate, setRangeUpdate] = useState(false);
   const [price, setPriceRange] = useState({ min: filters.min_price ?? 0, max: filters.max_price ?? 0 });
+  const [minPrice, setMinPrice] = useState<number>(filters.min_price ?? 0);
+  const [maxPrice, setMaxPrice] = useState<number>(filters.max_price ?? 0);
   const [moveInDate, setMoveInDate] = useState(DateUtils.getDisplayDate(new Date().toISOString(), 'MMM DD, YYYY'));
 
   const transactionData = [
@@ -93,8 +95,8 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
 
   const onSaveDetails = async (): Promise<void> => {
     const payload: ISearchRequirementPayload = {
-      min_budget: price.min,
-      max_budget: price.max,
+      min_budget: minPrice,
+      max_budget: maxPrice,
       asset_types: assetType,
       search_txn_type: transactionType === 0 ? 'RENT' : 'BUY',
       preferred_location: localities,
@@ -125,10 +127,13 @@ const RequirementForm = ({ onAddLocation, onSubmit }: IProps): React.ReactElemen
         setBedCount(value as number[]);
         break;
       case 'min_price':
-        setPriceRange({ ...price, min: value as number });
+        // alert(value)
+        setMinPrice(value as number);
+        // setPriceRange({ ...price, min: value as number });
         break;
       case 'max_price':
-        setPriceRange({ ...price, max: value as number });
+        setMaxPrice(value as number);
+        // setPriceRange({ ...price, max: value as number });
         break;
       default:
         break;

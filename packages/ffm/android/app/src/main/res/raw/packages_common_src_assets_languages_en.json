@@ -1181,7 +1181,8 @@
     "coinBalance": "Coin Balance",
     "coinsEarned": "Coins Earned",
     "marketPlace": "Market Place",
-    "bankDetails": "Bank Details"
+    "bankDetails": "Bank Details",
+    "delAccount": "Delete my account"
   },
   "moreSettings": {
     "loginSecurity": "Login & Security",

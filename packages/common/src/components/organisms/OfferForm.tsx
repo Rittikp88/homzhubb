@@ -493,9 +493,13 @@ class OfferForm extends React.Component<Props, IScreenState> {
         availableFromDate,
         tenantPreferences,
       } = values;
+      // proposed_rent_increment_percentage
       const leaseData = {
         proposed_rent: parseFloat(expectedPrice),
         proposed_security_deposit: parseFloat(securityDeposit),
+        proposed_annual_rent_increment_percentage: annualRentIncrementPercentage.length
+          ? parseFloat(annualRentIncrementPercentage)
+          : null,
         proposed_rent_increment_percentage: annualRentIncrementPercentage.length
           ? parseFloat(annualRentIncrementPercentage)
           : null,

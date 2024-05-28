@@ -147,7 +147,6 @@ export class CardWithCheckbox extends React.PureComponent<IOwnProps, IOwnState> 
 
   private renderMoreContent = (): ReactElement => {
     const { bundleItems } = this.props;
-
     return (
       <>
         <Divider containerStyles={styles.dividerStyles} />

@@ -13,11 +13,10 @@ export const WebViewScreen = (props: Props): React.ReactElement => {
   const {
     navigation,
     route: {
-      params: { url},
+      params: { url },
     },
   } = props;
   const { t } = useTranslation();
-
 
   const handleBackPress = useCallback((): void => {
     navigation.goBack();
@@ -31,10 +30,7 @@ export const WebViewScreen = (props: Props): React.ReactElement => {
 
   return (
     <View style={styles.container}>
-      <Header
-        icon={icons.leftArrow}
-        onIconPress={handleBackPress}
-      />
+      <Header icon={icons.leftArrow} onIconPress={handleBackPress} />
       <WebView source={{ uri: url }} />
     </View>
   );

@@ -84,7 +84,6 @@ export class AssetCard extends Component<Props> {
       furnishing,
       spaces,
     } = assetData;
-
     const amenitiesData: IAmenitiesIcons[] = PropertyUtils.getAmenities(
       spaces ?? ([] as Data[]),
       furnishing,
@@ -206,7 +205,6 @@ export class AssetCard extends Component<Props> {
       },
       lastVisitedStep: { assetCreation },
     } = assetData;
-
     const userData: User = user;
     const isListed = (leaseListingId || saleListingId) && code !== Filters.OCCUPIED;
     const userInfo = this.getFormattedInfo(userData, isInviteAccepted, assetData);

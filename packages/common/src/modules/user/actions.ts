@@ -21,6 +21,7 @@ export const UserActionTypes = {
     LOGOUT: `${actionTypePrefix}LOGOUT`,
     LOGOUT_SUCCESS: `${actionTypePrefix}LOGOUT_SUCCESS`,
     LOGOUT_FAILURE: `${actionTypePrefix}LOGOUT_FAILURE`,
+    DEACTIVATE_USER_ACCOUNT: `${actionTypePrefix}DEACTIVATE_USER_ACCOUNT`,
   },
   GET: {
     USER_PROFILE: `${actionTypePrefix}USER_PROFILE`,
@@ -85,6 +86,13 @@ const loginFailure = (error: string): IFluxStandardAction => {
 const logout = (payload?: IAuthCallback): IFluxStandardAction<IAuthCallback> => {
   return {
     type: UserActionTypes.AUTH.LOGOUT,
+    payload,
+  };
+};
+
+const deactivateUserAccount = (payload?: IAuthCallback): IFluxStandardAction<IAuthCallback> => {
+  return {
+    type: UserActionTypes.AUTH.DEACTIVATE_USER_ACCOUNT,
     payload,
   };
 };
@@ -279,6 +287,7 @@ export const UserActions = {
   loginSuccess,
   loginFailure,
   logout,
+  deactivateUserAccount,
   logoutSuccess,
   logoutFailure,
   updateOnBoarding,

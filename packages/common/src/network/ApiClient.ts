@@ -16,6 +16,7 @@ import {
 
 const createClient = (apiClient: IApiClient): AxiosInstance => {
   const baseURL = apiClient.getBaseUrl();
+  console.log('🚀 ~ file: ApiClient.ts ~ line 19 ~ createClient ~ baseURL', baseURL);
   if (!StringUtils.isValidUrl(baseURL)) {
     throw new Error('Base url is not valid');
   }

@@ -53,6 +53,7 @@ const ServiceSelection = (): React.ReactElement => {
 
     // If there is no asset in selected city show only asset independent services
     return filteredServices.filter((item) => !item.valueBundle.isAssetDependent);
+    // return filteredServices;
   };
 
   const setValueAddedServices = (payload: ISelectedValueServices): void => {

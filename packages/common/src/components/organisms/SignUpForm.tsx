@@ -74,6 +74,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
         enableReinitialize
       >
         {(formProps: FormikProps<IFormData>): React.ReactNode => {
+          // console.log("🚀 ~ file: SignUpForm.tsx ~ line 77 ~ SignUpForm ~ render ~ formProps", formProps.handleSubmit())
           const onEmailFocus = (): void => this.email.current?.focus();
           const onLastNameFocus = (): void => this.lastName.current?.focus();
           const onPhoneNumberFocus = (): void => this.phone.current?.focus();
@@ -188,6 +189,7 @@ class SignUpForm extends PureComponent<Props, IFormData> {
       password: values.password,
       ...(values.referralCode && { signup_referral_code: values.referralCode }),
     };
+    console.log('🚀 ~ file: SignUpForm.tsx ~ line 193 ~ SignUpForm ~ signUpData', signUpData);
     onSubmitFormSuccess(signUpData);
     formActions.setSubmitting(false);
   };

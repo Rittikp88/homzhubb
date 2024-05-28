@@ -52,9 +52,9 @@ const Signup = (): React.ReactElement => {
     navigate(ScreenKeys.WebViewScreen, { url: 'https://www.homzhub.com/privacyPolicy' });
   };
 
-
   const onSubmit = async (userData: ISignUpPayload): Promise<void> => {
     try {
+      console.log('🚀 ~ file: Signup.tsx ~ line 78 ~ onSubmit ~ userData', userData);
       const response = await UserRepository.emailExists(userData.email);
       if (response.is_exists) {
         AlertHelper.error({ message: t('auth:emailAlreadyExists') });
@@ -65,6 +65,9 @@ const Signup = (): React.ReactElement => {
       const isPhoneUsed = await UserRepository.phoneExists(phone);
       if (isPhoneUsed.is_exists) {
         AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
+        console.log("🚀 ~ file: Signup.tsx ~ line 69 ~ onSubmit ~ ({ message: t('auth:phoneAlreadyExists') })", {
+          message: t('auth:phoneAlreadyExists'),
+        });
         return;
       }
 
@@ -76,6 +79,7 @@ const Signup = (): React.ReactElement => {
         userData,
       });
     } catch (e) {
+      console.log('🚀 ~ file: Signup.tsx ~ line 80 ~ onSubmit ~ e', e);
       AlertHelper.error({ message: t('auth:phoneAlreadyExists') });
     }
   };
@@ -116,7 +120,7 @@ const Signup = (): React.ReactElement => {
           </TouchableOpacity>
         </View>
 
-        <SignUpForm onSubmit={onSubmit} onBack={onBack} onPressLink={onTermsofUse} onPressPrivacyLink={onPrivacy}/>
+        <SignUpForm onSubmit={onSubmit} onBack={onBack} onPressLink={onTermsofUse} onPressPrivacyLink={onPrivacy} />
         <BottomSheet visible={isSupportVisible} onCloseSheet={(): void => setSupportVisibility(false)}>
           <View style={styles.sheetContent}>
             <TouchableOpacity style={styles.sheetText} onPress={handleCalling}>

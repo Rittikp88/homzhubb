@@ -1,6 +1,6 @@
 import React from 'react';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -26,6 +26,7 @@ import { LocaleConstants } from '@homzhub/common/src/services/Localization/const
 interface IDispatchProps {
   getUserProfile: () => void;
   logout: () => void;
+  deactivateUserAccount: () => void;
 }
 
 interface IStateProps {
@@ -165,15 +166,41 @@ class Profile extends React.PureComponent<IOwnProps, IOwnState> {
     );
   };
 
+  public confirmDeleteAccount = (): React.ReactElement => {
+    const { deactivateUserAccount } = this.props;
+    Alert.alert('Homzhub', 'This action cannot be undone. Are you sure you want to delete your account?', [
+      {
+        text: 'No',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      { text: 'Yes', onPress: () => deactivateUserAccount() },
+    ]);
+  };
+
   private renderLogout = (): React.ReactElement => {
-    const { logout, t } = this.props;
+    const { logout, t, deactivateUserAccount } = this.props;
     return (
-      <TouchableOpacity style={styles.logOutHolder} onPress={logout}>
-        <Icon name={icons.logOut} size={22} color={theme.colors.error} style={styles.logOutIcon} />
-        <Text type="small" textType="semiBold" style={styles.logOutText} minimumFontScale={0.1} numberOfLines={1}>
-          {t('assetMore:logout')}
-        </Text>
-      </TouchableOpacity>
+      <>
+        <TouchableOpacity style={styles.logOutHolder} onPress={logout}>
+          <Icon name={icons.logOut} size={22} color={theme.colors.error} style={styles.logOutIcon} />
+          <Text type="small" textType="semiBold" style={styles.logOutText} minimumFontScale={0.1} numberOfLines={1}>
+            {t('assetMore:logout')}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.logOutHolder} onPress={this.confirmDeleteAccount}>
+          <Icon name={icons.trash} size={22} color={theme.colors.darkGrayishBlue} style={styles.logOutIcon} />
+          <Text
+            type="small"
+            textType="semiBold"
+            style={styles.delAccountOutText}
+            minimumFontScale={0.1}
+            numberOfLines={1}
+          >
+            {t('assetMore:delAccount')}
+          </Text>
+        </TouchableOpacity>
+      </>
     );
   };
 
@@ -235,8 +262,8 @@ const mapStateToProps = (state: IState): IStateProps => {
 };
 
 export const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
-  const { getUserProfile, logout } = UserActions;
-  return bindActionCreators({ getUserProfile, logout }, dispatch);
+  const { getUserProfile, logout, deactivateUserAccount } = UserActions;
+  return bindActionCreators({ getUserProfile, logout, deactivateUserAccount }, dispatch);
 };
 
 export default connect(
@@ -274,10 +301,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 17,
     backgroundColor: theme.colors.white,
-    marginVertical: 30,
+    marginTop: 20,
+    marginBottom: 10,
   },
   logOutText: {
     color: theme.colors.error,
+  },
+  delAccountOutText: {
+    color: theme.colors.darkGrayishBlue,
   },
   logOutIcon: {
     marginEnd: 13.5,

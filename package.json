@@ -27,6 +27,7 @@
     "android:partner": "jetify && yarn workspace @homzhub/mobile run android:partner",
     "android:build": "jetify && yarn workspace @homzhub/mobile run android:build",
     "android:build:prod": "jetify && yarn workspace @homzhub/mobile run android:build:prod",
+    "android:build:prod:aab": "jetify && yarn workspace @homzhub/mobile run android:build:prod:aab",
     "android:build:aab": "jetify && yarn workspace @homzhub/mobile run android:build:aab",
     "android:build:partner:prod": "jetify && yarn workspace @homzhub/mobile run android:build:partner:prod",
     "android:build:ffm": "jetify && yarn workspace @homzhub/ffm run android:build",
@@ -37,6 +38,8 @@
     "ios:build:prod": "yarn workspace @homzhub/mobile run ios:build:prod",
     "ios:build:partner:prod": "yarn workspace @homzhub/mobile run ios:build:partner:prod",
     "android:ffm": "jetify && yarn workspace @homzhub/ffm run android",
+    "android:build:prod:ffm": "jetify && yarn workspace @homzhub/ffm run android:build:prod",
+    "android:build:aab:ffm": "jetify && yarn workspace @homzhub/ffm run android:build:aab",
     "ios:build:ffm": "yarn workspace @homzhub/ffm run ios:build",
     "ios:ffm": "yarn workspace @homzhub/ffm run ios",
     "pod:install:ffm": "yarn workspace @homzhub/ffm run pod:install",
@@ -124,7 +127,20 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn premerge"
+      "pre-commit": "yarn premerge",
+      "eslint": "tsc && eslint \"src/**/*.{js,ts,tsx}\" --quiet --fix",
+      "precommit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{html,css,less,ejs,json}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

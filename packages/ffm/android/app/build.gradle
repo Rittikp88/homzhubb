@@ -155,13 +155,14 @@ android {
         javaMaxHeapSize "4g"
     }
 
-    defaultConfig {
-        applicationId "com.homzhub.partners"
+    defaultConfig { 
+        applicationId "com.ffm"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "0.0.1"
+        versionName "1.0.0"
         resValue "string", "build_config_package", "com.ffm"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -173,16 +174,20 @@ android {
     }
     signingConfigs {
         debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+             storeFile file('ffm-release.keystore')
+                    storePassword 'ffm123'
+                    keyAlias 'ffm-release-alias'
+                    keyPassword 'ffm123'
+            // storeFile file('debug.keystore')
+            // storePassword 'android'
+            // keyAlias 'androiddebugkey'
+            // keyPassword 'android'
         }
         release {
-                    storeFile file('debug.keystore')
-                    storePassword 'android'
-                    keyAlias 'androiddebugkey'
-                    keyPassword 'android'
+                    storeFile file('ffm-release.keystore')
+                    storePassword 'ffm123'
+                    keyAlias 'ffm-release-alias'
+                    keyPassword 'ffm123'
                 }
     }
     buildTypes {

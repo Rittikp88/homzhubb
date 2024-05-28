@@ -27,6 +27,8 @@ class Interceptor implements IApiInterceptor {
         return config;
       }
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('🚀 ~ file: Interceptor.ts ~ line 23 ~ Interceptor ~ onFulfilled ~ config', config);
+      // console.log("🚀 ~ file: Interceptor.ts ~ line 30 ~ Interceptor ~ onFulfilled ~ token", token)
       return config;
     };
 
@@ -73,6 +75,7 @@ class Interceptor implements IApiInterceptor {
         StoreProviderService.loginSuccess(tokens);
         await StorageService.set(StorageKeys.USER, tokens);
 
+        console.log('🚀 ~ file: Interceptor.ts ~ line 79 ~ Interceptor ~ onRejected ~ tokens', tokens);
         originalRequest.headers = {
           Authorization: `Bearer ${tokens.access_token}`,
         };

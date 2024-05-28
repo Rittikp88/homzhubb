@@ -223,7 +223,7 @@ export class OnBoardingScreen extends React.PureComponent<Props, IOnBoardingScre
     const { navigation, setAddPropertyFlow } = this.props;
     navigation.navigate(ScreensKeys.AuthStack, { screen: ScreensKeys.SignUp, params: {} });
     setAddPropertyFlow(true);
-};
+  };
 
   private onCloseSheet = (): void => {
     this.setState({

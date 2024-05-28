@@ -132,12 +132,12 @@ export class PaymentGateway extends React.PureComponent<IProps, IOwnState> {
     RazorpayCheckout.open(options)
       .then(paymentApi)
       .catch((error: IRazorPayError) => {
-        paymentApi({
-          error_code: this.getErrorResponse(error.code),
-          payment_transaction_id,
-          user_invoice_id,
-          razorpay_order_id: order_id,
-        });
+        // paymentApi({
+        //   error_code: this.getErrorResponse(error.code),
+        //   payment_transaction_id,
+        //   user_invoice_id,
+        //   razorpay_order_id: order_id,
+        // });
 
         if (this.getErrorResponse(error.code) === PaymentFailureResponse.PAYMENT_CANCELLED) {
           if (error.error) {

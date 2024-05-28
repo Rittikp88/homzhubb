@@ -44,6 +44,7 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
   try {
     const userData: User = yield call(UserRepository.login, data);
     const tokens = { refresh_token: userData.refreshToken, access_token: userData.accessToken };
+    console.log('🚀 ~ file: saga.ts ~ line 47 ~ function*login ~ userData', userData);
     yield put(UserActions.loginSuccess(tokens));
     yield StorageService.set<IUserTokens>(StorageKeys.USER, tokens);
     if (handleDynamicLink) {
@@ -77,6 +78,31 @@ export function* login(action: IFluxStandardAction<ILoginPayload>) {
 
     AlertHelper.error({ message: error, statusCode: e.details.statusCode });
     yield put(UserActions.loginFailure(error));
+  }
+}
+
+export function* deactivateUserAccount(action: IFluxStandardAction<IAuthCallback>) {
+  const { payload } = action;
+  try {
+    const tokens: IUserTokens = yield StorageService.get(StorageKeys.USER);
+    yield call(UserRepository.deactivateUserAccount, {
+      refresh_token: tokens.refresh_token,
+      device_id: DeviceUtils.getDeviceId(),
+    } as IRefreshTokenPayload);
+    yield put(UserActions.logoutSuccess());
+    yield put(UserActions.clearFavouriteProperties());
+    yield StorageService.remove(StorageKeys.USER);
+    yield StorageService.remove(StorageKeys.DEVICE_TOKEN);
+    if (payload?.callback) {
+      payload.callback(true);
+    }
+  } catch (e) {
+    const error = ErrorUtils.getErrorMessage(e.details);
+    AlertHelper.error({ message: error, statusCode: e.details.statusCode });
+    yield put(UserActions.logoutFailure(error));
+    if (payload?.callback) {
+      payload.callback(false);
+    }
   }
 }
 
@@ -237,6 +263,7 @@ export function* getBankInfo(action: IFluxStandardAction<number>) {
 export function* watchUser() {
   yield takeEvery(UserActionTypes.AUTH.LOGIN, login);
   yield takeEvery(UserActionTypes.AUTH.LOGOUT, logout);
+  yield takeEvery(UserActionTypes.AUTH.DEACTIVATE_USER_ACCOUNT, deactivateUserAccount);
   yield takeEvery(UserActionTypes.GET.USER_PROFILE, userProfile);
   yield takeEvery(UserActionTypes.GET.USER_PREFERENCES, userPreferences);
   yield takeEvery(UserActionTypes.UPDATE.USER_PREFERENCES, updateUserPreferences);

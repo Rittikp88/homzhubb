@@ -307,6 +307,10 @@ export interface IRefreshTokenPayload {
 // REFRESH TOKEN - END
 
 // USER LOGOUT - START
+export interface IUserDeactivateUserAccountPayload {
+  action: string;
+  payload: IRefreshTokenPayload;
+}
 export interface IUserLogoutPayload {
   action: string;
   payload: IRefreshTokenPayload;
@@ -964,7 +968,8 @@ export interface IUpdateTicketWorkStatus {
 export interface ISubmitOfferLease {
   proposed_rent: number;
   proposed_security_deposit: number;
-  proposed_rent_increment_percentage: number | null;
+  // proposed_rent_increment_percentage: number | null;
+  proposed_annual_rent_increment_percentage: number | null;
   proposed_move_in_date: string;
   proposed_lease_period: number;
   proposed_min_lock_in_period: number;
@@ -1257,6 +1262,10 @@ export interface IFeedback {
 export interface IPostFeedback {
   visitId: number;
   data: IFeedback;
+}
+
+export interface UserRole {
+  data: object;
 }
 
 export interface IGetFeedbackParam {

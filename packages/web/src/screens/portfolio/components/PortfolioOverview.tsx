@@ -42,7 +42,6 @@ const PortfolioOverview: React.FC<IProps> = (props: IProps) => {
     </View>
   );
 };
-
 const getPorfolioMetrics = async (callback: (response: AssetMetrics) => void): Promise<void> => {
   try {
     const response: AssetMetrics = await PortfolioRepository.getAssetMetrics();

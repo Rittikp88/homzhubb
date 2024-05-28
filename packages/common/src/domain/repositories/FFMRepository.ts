@@ -27,6 +27,7 @@ import {
   IUpdateReport,
   IUpdateSpaceParam,
   IUpdateTicket,
+  UserRole,
 } from '@homzhub/common/src/domain/repositories/interfaces';
 import { Tabs } from '@homzhub/common/src/constants/Tabs';
 
@@ -34,6 +35,7 @@ const ENDPOINTS = {
   onBoarding: 'v1/ffm-onboardings',
   roles: 'v1/roles',
   visits: 'v1/ffm/tasks/site-visits/',
+  userRole: () => 'v1/ffm/users/',
   visitDetail: (visitId: number): string => `v1/ffm/tasks/site-visits/${visitId}/`,
   rejectReason: (visitId: number): string => `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/reject-reasons/`,
   feedback: (visitId: number): string => `v1/ffm/listing-visits/${visitId}/prospect-feedbacks/`,
@@ -171,6 +173,11 @@ class FFMRepository {
   public getTicketManagement = async (): Promise<TicketManagement> => {
     const response = await this.apiClient.get(ENDPOINTS.ticketManagement);
     return ObjectMapper.deserialize(TicketManagement, response);
+  };
+
+  public updateUserRole = async (payload: UserRole): Promise<void> => {
+    const { data } = payload;
+    return await this.apiClient.post(ENDPOINTS.userRole(), data);
   };
 }
 

@@ -59,6 +59,7 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
     this.setState({ isLoading: true });
     AssetRepository.getClosureReason(params.payload)
       .then((res) => {
+        console.log('🚀 ~ file: UpdatePropertyListing.tsx ~ line 62 ~ UpdatePropertyListing ~ .then ~ res', res);
         const formattedData: IDropdownOption[] = [];
         res.forEach((item) => {
           formattedData.push({
@@ -254,7 +255,8 @@ class UpdatePropertyListing extends Component<Props, IScreenState> {
           this.updateAsset().then();
           this.setState({ isLoading: false });
           // @ts-ignore
-          navigation.navigate(ScreensKeys.PortfolioLandingScreen);
+          navigation.navigate(ScreensKeys.PropertyPostStack, { screen: ScreensKeys.PortfolioLandingScreen });
+          // navigation.navigate(ScreensKeys.PortfolioLandingScreen);
           AlertHelper.success({ message: t('property:listingCancelled') });
         })
         .catch((err) => {

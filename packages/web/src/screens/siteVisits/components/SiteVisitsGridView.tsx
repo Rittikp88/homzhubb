@@ -293,7 +293,8 @@ const SiteVisitsGridView: React.FC<IProps> = (props: IProps) => {
               handleAction={handleVisitActions}
               handleReschedule={(item: AssetVisit, userId: number | undefined): void =>
                 // eslint-disable-next-line prettier/prettier
-                handleRescheduleVisit(item, Tabs.COMPLETED, userId)}
+                handleRescheduleVisit(item, Tabs.COMPLETED, userId)
+              }
               handleDropdown={handleDropdownSelection}
               handleUserView={onShowProfile}
               pillars={pillars}

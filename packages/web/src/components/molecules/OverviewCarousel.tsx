@@ -324,5 +324,4 @@ const CarouselResponsive = {
     slidesToSlide: 1,
   },
 };
-
 export default OverviewCarousel;

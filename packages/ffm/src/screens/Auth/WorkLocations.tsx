@@ -19,6 +19,9 @@ import GoogleSearchBar from '@homzhub/mobile/src/components/molecules/GoogleSear
 import SearchResults from '@homzhub/mobile/src/components/molecules/SearchResults';
 import { IWorkLocation } from '@homzhub/common/src/domain/repositories/interfaces';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
+import { Role } from '@homzhub/common/src/constants/Signup';
+import { FFMRepository } from '@homzhub/common/src/domain/repositories/FFMRepository';
+import { ErrorUtils } from '@homzhub/common/src/utils/ErrorUtils';
 import {
   AddressComponent,
   GooglePlaceData,
@@ -35,7 +38,7 @@ const LocationKeysToMatch = {
   country: 'COUNTRY',
 };
 
-const WorkLocations = (): React.ReactElement => {
+const WorkLocations = (props: { props: number }): React.ReactElement => {
   const { t } = useTranslation();
   const { goBack, navigate } = useNavigation();
   const { params } = useRoute();
@@ -43,6 +46,8 @@ const WorkLocations = (): React.ReactElement => {
   const locations = useSelector(FFMSelector.getWorkLocations);
   const [searchString, setSearchString] = useState('');
   const [suggestions, setSuggestions] = useState<GooglePlaceData[]>([]);
+
+  const selectedRole = useSelector(FFMSelector.getSelectedRole);
 
   useEffect(() => {
     getAutoSuggestion();
@@ -99,6 +104,20 @@ const WorkLocations = (): React.ReactElement => {
         ...verificationData,
         userData: { ...verificationData.userData, work_locations: locations },
       });
+    } else {
+      var data = {
+        data: {
+          work_locations: locations,
+          role: selectedRole.id,
+          company: {
+            name: '',
+          },
+        },
+      };
+      FFMRepository.updateUserRole(data).then((res) => {
+        navigate(ScreenKeys.AppStack);
+      });
+      return;
     }
   };
 

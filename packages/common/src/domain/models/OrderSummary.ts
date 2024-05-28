@@ -111,7 +111,7 @@ export class Promo {
   }
 }
 
-@JsonObject('Coins')
+@JsonObject('Coins1')
 export class Coins {
   @JsonProperty('current_balance', Number)
   private _currentBalance = 0;

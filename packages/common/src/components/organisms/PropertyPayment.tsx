@@ -109,7 +109,9 @@ class PropertyPayment extends Component<Props, IPaymentState> {
       <View style={[styles.container, PlatformUtils.isWeb() && !isTablet && styles.containerWeb, containerStyle]}>
         {this.renderServices()}
         <HomzhubCoins
-          disabled={orderSummary.coins?.currentBalance <= 0 || orderSummary.promo?.promoApplied}
+          disabled={
+            orderSummary.coins ? orderSummary.coins?.currentBalance <= 0 || orderSummary.promo?.promoApplied : true
+          }
           onToggle={this.onToggleCoin}
           selected={isCoinApplied}
           coins={orderSummary.coins}

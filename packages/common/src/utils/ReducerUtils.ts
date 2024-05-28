@@ -48,11 +48,11 @@ class ReducerUtils {
       isReset || !initialState
         ? payload.data
         : ({
-          ...initialState,
-          count: data.count,
-          links: data.links,
-          results: [...initialState.results, ...data.results],
-        } as IFinancialTransaction);
+            ...initialState,
+            count: data.count,
+            links: data.links,
+            results: [...initialState.results, ...data.results],
+          } as IFinancialTransaction);
     return newData;
   };
 }

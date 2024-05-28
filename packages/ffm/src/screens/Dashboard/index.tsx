@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleProp, ViewStyle, View, TouchableOpacity } from 'react-native';
+import { StyleProp, ViewStyle, View, TouchableOpacity, Dimensions } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { AlertHelper } from '@homzhub/common/src/utils/AlertHelper';
@@ -15,16 +15,19 @@ import { AssetMetricsList } from '@homzhub/mobile/src/components/organisms/Asset
 import HotPropertiesTab from '@homzhub/ffm/src/screens/Dashboard/HotProperties/HotPropertiesTab';
 import { FFMMetrics } from '@homzhub/common/src/domain/models/FFMMetrics';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
-
+// setChangeStack
 const Dashboard = (): React.ReactElement => {
   const { t } = useTranslation();
-  const { navigate } = useNavigation();
+  const { navigate, replace } = useNavigation();
   const { hotProperties } = useSelector(FFMSelector.getFFMLoaders);
   const [loading, setLoading] = useState(false);
   const [metrics, setMetrics] = useState<FFMMetrics | null>(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorStatusCode, setErrorStatusCode] = useState(null);
 
   useFocusEffect(
     useCallback(() => {
+      // console.log("🚀 ~ file: index.tsx ~ line 33 ~ useCallback ~ theme", theme.colors.warning)
       getMetrics();
     }, [])
   );
@@ -33,12 +36,25 @@ const Dashboard = (): React.ReactElement => {
     setLoading(true);
     FFMRepository.getManagementTab()
       .then((res) => {
+        console.log('🚀 ~ file: index.tsx ~ line 36 ~ .then ~ res', res);
         setMetrics(res);
         setLoading(false);
+        setErrorMessage(null);
       })
       .catch((e) => {
-        setLoading(false);
-        AlertHelper.error({ message: ErrorUtils.getErrorMessage(e.details) });
+        var statusCode = ErrorUtils.getErrorCode(e.details);
+        // console.log('🚀 ~ file: index.tsx ~ line 45 ~ getMetrics ~ e', statusCode);
+        if (statusCode == 5001) {
+          replace(ScreenKeys.AuthStack, { screen: ScreenKeys.OnBoarding, params: { isFromDashboard: 1 } });
+          // return;
+          setLoading(false);
+        } else {
+          // alert(statusCode)
+          // console.log('🚀 ~ file: index.tsx ~ line 45 ~ getMetrics ~ e', ErrorUtils.getErrorCode(e.details));
+          setErrorStatusCode(statusCode);
+          setLoading(false);
+          setErrorMessage(ErrorUtils.getErrorMessage(e.details));
+        }
       });
   };
 
@@ -76,18 +92,38 @@ const Dashboard = (): React.ReactElement => {
     >
       {metrics && renderAssetMetricsAndUpdates(metrics)}
       <View style={styles.flexOne}>
-        {/* @ts-ignore */}
         <View style={styles.headerStyle}>
           <Text type="small" textType="semiBold">
             {t('property:hotProperties')}
           </Text>
-          <TouchableOpacity onPress={onViewAllProperties}>
-            <Text type="small" style={styles.view}>
-              {t('assetDashboard:viewAll')}
-            </Text>
-          </TouchableOpacity>
+          {!errorMessage && (
+            <TouchableOpacity onPress={onViewAllProperties}>
+              <Text type="small" style={styles.view}>
+                {t('assetDashboard:viewAll')}
+              </Text>
+            </TouchableOpacity>
+          )}
         </View>
-        <HotPropertiesTab isOnDashboard />
+        {!errorMessage && <HotPropertiesTab isOnDashboard />}
+      </View>
+      <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, marginTop: '60%' }}>
+        {errorMessage && (
+          <Text
+            style={[
+              styles.errorTextStyle,
+              {
+                color:
+                  errorStatusCode && errorStatusCode == 5003
+                    ? theme.colors.warning
+                    : errorStatusCode == 5004
+                    ? theme.colors.error
+                    : theme.colors.blackTint1,
+              },
+            ]}
+          >
+            {errorMessage}
+          </Text>
+        )}
       </View>
     </GradientScreen>
   );
@@ -110,6 +146,10 @@ const styles = {
   },
   view: {
     color: theme.colors.primaryColor,
+  },
+  errorTextStyle: {
+    fontSize: 16,
+    textAlign: 'center',
   },
   assetCards: (): StyleProp<ViewStyle> => ({
     marginVertical: 12,

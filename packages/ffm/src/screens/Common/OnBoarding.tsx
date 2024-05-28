@@ -15,14 +15,15 @@ import { OnBoarding as OnBoardingModel } from '@homzhub/common/src/domain/models
 import { Unit } from '@homzhub/common/src/domain/models/Unit';
 import { ScreenKeys } from '@homzhub/ffm/src/navigation/interfaces';
 
-const OnBoarding = (): React.ReactElement => {
+const OnBoarding = (route: { route: object }): React.ReactElement => {
+  // console.log('🚀 ~ file: OnBoarding.tsx ~ line 19 ~ props', route.route);
   const dispatch = useDispatch();
-  const { navigate } = useNavigation();
+  const { navigate, replace } = useNavigation();
   const onBoardingData = useSelector(FFMSelector.getOnBoardingData);
   const roles = useSelector(FFMSelector.getRoles);
   const loaders = useSelector(FFMSelector.getFFMLoaders);
   const [activeSlide, setActiveSlide] = useState(0);
-  
+
   useEffect(() => {
     getScreenData();
   }, []);
@@ -59,7 +60,11 @@ const OnBoarding = (): React.ReactElement => {
 
   const onPressRole = (role: Unit): void => {
     dispatch(FFMActions.setSelectedRole(role));
-    navigate(ScreenKeys.Signup);
+    if (typeof route.route.params == 'undefined') {
+      navigate(ScreenKeys.Signup);
+    } else {
+      replace(ScreenKeys.WorkLocations);
+    }
   };
 
   const onPressLogin = (): void => {
@@ -104,12 +109,15 @@ const OnBoarding = (): React.ReactElement => {
                 </TouchableOpacity>
               ))}
           </View>
-          <Label type="large" textType="regular" style={styles.helpText}>
-            {`${I18nService.t('alreadyAccount')}  `}
-            <Label type="large" textType="bold" style={styles.login} onPress={onPressLogin}>
-              {I18nService.t('login')}
+
+          {typeof route.route.params == 'undefined' && (
+            <Label type="large" textType="regular" style={styles.helpText}>
+              {`${I18nService.t('alreadyAccount')}  `}
+              <Label type="large" textType="bold" style={styles.login} onPress={onPressLogin}>
+                {I18nService.t('login')}
+              </Label>
             </Label>
-          </Label>
+          )}
         </View>
       </SafeAreaView>
     </>

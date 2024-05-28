@@ -47,7 +47,7 @@ interface IProps {
 
 export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
   const { t } = useTranslation(LocaleConstants.namespacesKey.assetMore);
-  const { navigateToAddPropertyScreen, navigateToService, selectedCity } = props;
+  const { navigateToAddPropertyScreen, navigateToService, selectedCity, didLoad } = props;
 
   // Local States
   const [activeSlide, setActiveSlide] = useState(0);
@@ -68,10 +68,12 @@ export const ValueAddedServiceCardList: FC<IProps> = (props: IProps) => {
         setAssets(filteredAsset);
       });
       setLoading(false);
+      didLoad();
     } catch (e) {
       const error = ErrorUtils.getErrorMessage(e);
       AlertHelper.error({ message: error, statusCode: e.details.statusCode });
       setLoading(false);
+      didLoad();
     }
   }, []);
 

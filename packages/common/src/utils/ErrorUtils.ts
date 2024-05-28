@@ -30,6 +30,17 @@ class ErrorUtils {
 
     return I18nService.t('genericErrorMessage');
   };
+
+  public getErrorCode = (e: IApiClientError, isFieldRequired?: boolean): string => {
+    if (e.description) {
+      e.description = JSON.parse(e.description);
+      if (e.description.error) {
+        return e.description.error[0].error_code;
+      } else {
+        return e.description.data[0].error_code;
+      }
+    }
+  };
 }
 
 const errorUtils = new ErrorUtils();

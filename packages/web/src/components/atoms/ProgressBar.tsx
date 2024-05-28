@@ -27,7 +27,6 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
       </View>
     );
   };
-
   return (
     <>
       <View style={styles.container}>
@@ -48,7 +47,6 @@ const ProgressBar = (props: IProgressBarProps): React.ReactElement => {
     </>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -76,7 +74,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
 });
-
 const customStyles = {
   containerStyle: (isVacant: boolean): StyleProp<ViewStyle> => ({
     backgroundColor: isVacant ? theme.colors.background : theme.colors.green,
@@ -90,5 +87,4 @@ const customStyles = {
     backgroundColor: isVacant ? theme.colors.green : filledColor,
   }),
 };
-
 export default ProgressBar;

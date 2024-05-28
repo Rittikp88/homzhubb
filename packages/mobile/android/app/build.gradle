@@ -175,10 +175,10 @@ android {
         }
         // FOR DEV RELEASE BUILD'S
         release {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+            storeFile file('release.keystore')
+            storePassword 'homzhub123'
+            keyAlias 'release-alias'
+            keyPassword 'homzhub123'
         }
     }
     buildTypes {
@@ -199,16 +199,16 @@ android {
             dimension 'default'
             applicationId "com.homzhub"
             resValue "string", "build_config_package", "com.homzhub"
-            versionCode 8
-            versionName "2.1.8"
+            versionCode 22
+            versionName "3.0.3"
             manifestPlaceholders =[fb_provider:"com.facebook.app.FacebookContentProvider306770337332135"]
         }
         partner {
             dimension 'default'
             applicationId "com.homzhub.partner"
             resValue "string", "build_config_package", "com.homzhub"
-            versionCode 2
-            versionName "0.0.1"
+            versionCode 3
+            versionName "1.0.0"
             manifestPlaceholders =[fb_provider:"com.facebook.app.FacebookContentProviderDummy"]
         }
     }
