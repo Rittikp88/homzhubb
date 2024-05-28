@@ -7,7 +7,7 @@ import { Label } from '@homzhub/common/src/components/atoms/Text';
 
 interface IProps {
   isFromLogin: boolean;
-  onEmailLogin?: () => void;
+  // onEmailLogin?: () => void;
   children?: React.ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
 }

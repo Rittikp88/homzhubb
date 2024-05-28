@@ -1,6 +1,7 @@
 {
   "name": "homzhub",
   "private": true,
+  "version": "1.0.0",
   "workspaces": {
     "packages": [
       "packages/*"
@@ -51,15 +52,16 @@
   "dependencies": {
     "axios": "^0.19.2",
     "formik": "^2.1.5",
+    "get-yarn-workspaces": "^1.0.2",
     "i18next": "^19.4.4",
     "json2typescript": "^1.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
-    "react": "16.13.1",
+    "react": "17.0.2",
     "react-dropzone": "^11.3.1",
     "react-i18next": "^11.4.0",
-    "react-native": "0.63.3",
+    "react-native": "0.65.0",
     "react-native-device-info": "^8.0.1",
     "react-native-flash-message": "^0.1.15",
     "react-native-progress": "^4.1.2",
@@ -75,7 +77,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-decorators": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "7.8.3",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
     "@babel/preset-typescript": "^7.9.0",
@@ -113,24 +115,16 @@
     "eslint-plugin-react": "7.20.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-react-native": "^3.8.1",
-    "husky": "^4.2.5",
     "jest": "^26.6.3",
     "jest-enzyme": "^7.0.2",
     "jest-sonar-reporter": "^2.0.0",
     "jsdom": "^15.1.1",
     "prettier": "^2.0.5",
-    "react-test-renderer": "^16.13.1",
+    "react-test-renderer": "17.0.2",
     "redux-mock-store": "^1.5.4",
     "sonarqube-scanner": "^2.6.0",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn premerge",
-      "eslint": "tsc && eslint \"src/**/*.{js,ts,tsx}\" --quiet --fix",
-      "precommit": "lint-staged"
-    }
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
@@ -142,5 +136,6 @@
       "prettier --write",
       "git add"
     ]
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

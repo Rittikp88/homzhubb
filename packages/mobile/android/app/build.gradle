@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: "org.jetbrains.kotlin.android"
 
 import com.android.build.OutputFile
 
@@ -82,6 +83,7 @@ project.ext.react = [
         bundleAssetName: "index.android.bundle",
         bundleInRelease: true,
         root: "../../../../",
+        cliPath: "$rootDir/../../node_modules/react-native/cli.js",
         enableHermes: false,  // clean and rebuild if changing
 ]
 
@@ -143,7 +145,7 @@ android {
 
     configurations.all {
             resolutionStrategy {
-                force "com.facebook.soloader:soloader:0.8.2"
+                force "com.facebook.soloader:soloader:0.9.0+"
             }
     }
 
@@ -214,10 +216,14 @@ android {
     }
 
     packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
+        pickFirst '**/libc++_shared.so'
+        pickFirst '**/libfbjni.so'
+        pickFirst 'lib/x86_64/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libjsc.so'
+        // pickFirst "lib/armeabi-v7a/libc++_shared.so"
+        // pickFirst "lib/arm64-v8a/libc++_shared.so"
+        // pickFirst "lib/x86/libc++_shared.so"
+        // pickFirst "lib/x86_64/libc++_shared.so"
     }
 
     // applicationVariants are e.g. debug, release

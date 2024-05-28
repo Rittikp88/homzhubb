@@ -21,10 +21,12 @@ const store = StoreProviderService.getStore();
 const App: () => React.ReactElement = () => {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
+    console.log("n dbsvbsd sn cbds cbsdv cvdscvs vsscv xscvxs")
     bootUp().then();
   }, []);
 
   const bootUp = async (): Promise<void> => {
+
     store.dispatch(CommonActions.getCountries());
     await Promise.all([
       StorageService.get(StorageKeys.USER_SELECTED_LANGUAGE),
@@ -50,13 +52,14 @@ const App: () => React.ReactElement = () => {
   const renderToast = (props: MessageComponentProps): React.ReactElement => <Toast {...props} />;
 
   return (
-    <ErrorBoundary>
+   <ErrorBoundary>
       <Provider store={store}>
         <RootNavigator booting={booting} />
         <FlashMessage position="bottom" MessageComponent={renderToast} />
       </Provider>
     </ErrorBoundary>
   );
+
 };
 
 export default App;

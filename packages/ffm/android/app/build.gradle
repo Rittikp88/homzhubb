@@ -2,6 +2,7 @@ apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
 
+
 /**
  * The react.gradle file registers a task for each build variant (e.g. bundleDebugJsAndAssets
  * and bundleReleaseJsAndAssets).
@@ -91,6 +92,7 @@ project.ext.envConfigFiles = [
 ]
 
 apply from: "../../../../node_modules/react-native/react.gradle"
+// apply from: "../../../../node_modules/react-native-config/android/dotenv.gradle"
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 /**
@@ -139,17 +141,18 @@ android {
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
+    flavorDimensions 'default'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    configurations.all {
-        resolutionStrategy {
-            force "com.facebook.soloader:soloader:0.8.2"
-        }
-    }
+    // configurations.all {
+    //     resolutionStrategy {
+    //         force "com.facebook.soloader:soloader:0.8.2"
+    //     }
+    // }
 
     dexOptions {
         javaMaxHeapSize "4g"
@@ -173,6 +176,14 @@ android {
         }
     }
     signingConfigs {
+        release {
+            if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
         debug {
              storeFile file('ffm-release.keystore')
                     storePassword 'ffm123'
@@ -183,12 +194,7 @@ android {
             // keyAlias 'androiddebugkey'
             // keyPassword 'android'
         }
-        release {
-                    storeFile file('ffm-release.keystore')
-                    storePassword 'ffm123'
-                    keyAlias 'ffm-release-alias'
-                    keyPassword 'ffm123'
-                }
+        
     }
     buildTypes {
         debug {
@@ -197,17 +203,40 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
 
+     productFlavors {
+        // homzhub {
+        //     dimension 'default'
+        //     applicationId "com.homzhub"
+        //     resValue "string", "build_config_package", "com.homzhub"
+        //     versionCode 22
+        //     versionName "3.0.3"
+        //     manifestPlaceholders =[fb_provider:"com.facebook.app.FacebookContentProvider306770337332135"]
+        // }
+        partner {
+            dimension 'default'
+            applicationId "com.ffm.partner"
+            resValue "string", "build_config_package", "com.ffm"
+            versionCode 3
+            versionName "1.0.0"
+            manifestPlaceholders =[fb_provider:"com.facebook.app.FacebookContentProviderDummy"]
+        }
+    }
+
     packagingOptions {
-        pickFirst "lib/armeabi-v7a/libc++_shared.so"
-        pickFirst "lib/arm64-v8a/libc++_shared.so"
-        pickFirst "lib/x86/libc++_shared.so"
-        pickFirst "lib/x86_64/libc++_shared.so"
+        pickFirst '**/libc++_shared.so'
+        pickFirst '**/libfbjni.so'
+        pickFirst 'lib/x86_64/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libjsc.so'
+        // pickFirst "lib/armeabi-v7a/libc++_shared.so"
+        // pickFirst "lib/arm64-v8a/libc++_shared.so"
+        // pickFirst "lib/x86/libc++_shared.so"
+        // pickFirst "lib/x86_64/libc++_shared.so"
     }
 
     // applicationVariants are e.g. debug, release
@@ -234,21 +263,21 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
-    debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.fbjni'
-        exclude group:'com.facebook.soloader'
-    }
+    // debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
+    //     exclude group:'com.facebook.fbjni'
+    //     exclude group:'com.facebook.soloader'
+    // }
 
-    debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-        exclude group:'com.squareup.okhttp3', module:'okhttp'
-        exclude group:'com.facebook.soloader'
-    }
+    // debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
+    //     exclude group:'com.facebook.flipper'
+    //     exclude group:'com.squareup.okhttp3', module:'okhttp'
+    //     exclude group:'com.facebook.soloader'
+    // }
 
-    debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
-        exclude group:'com.facebook.flipper'
-        exclude group:'com.facebook.soloader'
-    }
+    // debugImplementation("com.facebook.flipper:flipper-fresco-plugin:${FLIPPER_VERSION}") {
+    //     exclude group:'com.facebook.flipper'
+    //     exclude group:'com.facebook.soloader'
+    // }
 
     if (enableHermes) {
         def hermesPath = "../../../../node_modules/hermes-engine/android/";

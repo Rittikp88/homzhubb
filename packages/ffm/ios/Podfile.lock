@@ -143,7 +143,7 @@ PODS:
   - Permission-LocationWhenInUse (2.2.2):
     - RNPermissions
   - PromisesObjC (1.2.12)
-  - razorpay-pod (1.2.6)
+  - razorpay-pod (1.2.8)
   - RCTRequired (0.63.3)
   - RCTTypeSafety (0.63.3):
     - FBLazyVector (= 0.63.3)
@@ -748,7 +748,7 @@ SPEC CHECKSUMS:
   Permission-LocationAlways: 700dfb730b07b24a84f8c173b93ad816d71d3dc8
   Permission-LocationWhenInUse: 871e81c06c1fc578353fce962d5d8e6efa697f1a
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
-  razorpay-pod: 5bc966a581a05277eb7152cae6baa7433dda868d
+  razorpay-pod: 3ec6fe82e7d5927013cfbbef81a880188c86b077
   RCTRequired: 48884c74035a0b5b76dbb7a998bd93bcfc5f2047
   RCTTypeSafety: edf4b618033c2f1c5b7bc3d90d8e085ed95ba2ab
   RCTYouTube: a8bb45705622a6fc9decf64be04128d3658ed411

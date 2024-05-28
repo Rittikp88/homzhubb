@@ -1,24 +1,37 @@
 const path = require('path');
+const getWorkspaces = require('get-yarn-workspaces');
 const { getDefaultConfig } = require('metro-config');
 
-module.exports = (async () => {
-  const {
-    resolver: { sourceExts, assetExts },
-  } = await getDefaultConfig();
+async function getConfig(appDir) {
+  const workspaces = getWorkspaces(appDir);
+
+  const watchFolders = [
+    path.resolve(appDir, 'node_modules'),
+    ...workspaces.filter((workPath) => !workPath.match(/node_modules/)),
+  ];
+
+  const defaultConfig = await getDefaultConfig();
+
   return {
-    projectRoot: path.resolve(__dirname, '../../'),
+    watchFolders,
+    projectRoot: path.resolve(__dirname, '../../'), // This should point to the root of your monorepo
     transformer: {
       babelTransformerPath: require.resolve('react-native-svg-transformer'),
       getTransformOptions: async () => ({
         transform: {
           experimentalImportSupport: false,
-          inlineRequires: false,
+          inlineRequires: true,
         },
       }),
     },
     resolver: {
-      assetExts: assetExts.filter((ext) => ext !== 'svg'),
-      sourceExts: [...sourceExts, 'svg'],
+      assetExts: defaultConfig.resolver.assetExts.filter((ext) => ext !== 'svg'),
+      sourceExts: [...defaultConfig.resolver.sourceExts, 'svg'],
+      nodeModulesPaths: watchFolders,
+      disableHierarchicalLookup: false,
     },
+    resetCache: true,
   };
-})();
+}
+
+module.exports = (async () => await getConfig(__dirname))();

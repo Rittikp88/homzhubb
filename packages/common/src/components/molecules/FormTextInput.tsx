@@ -9,6 +9,7 @@ import {
   StyleProp,
   StyleSheet,
   ViewStyle,
+  Image,
 } from 'react-native';
 import { Dispatch, bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -143,6 +144,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       extraError,
       ...rest
     } = this.props;
+    console.log({secondaryLabel})
     let { inputGroupSuffix, inputGroupPrefix } = this.props;
     const { values, setFieldTouched } = formProps;
     const { showPassword, isFocused, showCurrencySymbol, phoneCodes, isBottomSheetVisible } = this.state;
@@ -172,6 +174,7 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
       },
       ...rest,
     };
+
     switch (inputType) {
       case 'email':
         inputProps = { ...inputProps, ...{ keyboardType: 'email-address', autoCapitalize: 'none' } };
@@ -359,7 +362,20 @@ class FormTextInput extends PureComponent<Props, IFormTextInputState> {
     const { formProps, countries, phoneCodeKey = PHONE_CODE } = this.props;
     for (let i = 0; i < countries.length; i++) {
       if (countries[i].phoneCodes[0].phoneCode.includes(formProps.values[phoneCodeKey])) {
-        return countries[i].flag;
+        // console.log(
+        //   '🚀 ~ file: FormTextInput.tsx:369 ~ FormTextInput ~ countries[i].:',
+        //   countries[i].phoneCodes[0]._phoneCode
+        // );
+        if (countries[i].phoneCodes[0]._phoneCode == '+91') {
+          return(<Image
+            source={{
+              uri: 'https://media.istockphoto.com/id/1270270387/vector/india-flag.jpg?s=612x612&w=0&k=20&c=sJrAdDoKVffgAm6xJlVmGGjVYxZGuSVzZ5DNnFJFbc8=',
+            }}
+            style={{ width: 24, height: 24 }}
+          />);
+        } else {
+          return countries[i].flag;
+        }
       }
     }
     return null;
@@ -466,6 +482,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     dispatch
   );
 };
+
 const HOC = connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(FormTextInput);
 export { HOC as FormTextInput };
 
@@ -480,6 +497,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
+
     backgroundColor: theme.colors.background,
     borderRightWidth: StyleSheet.hairlineWidth,
     borderRightColor: theme.colors.disabled,

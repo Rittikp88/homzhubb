@@ -111,9 +111,11 @@ const styles = StyleSheet.create({
   },
   itemWidth: {
     width: theme.viewport.width / 2.5,
+    
   },
   redText: {
     color: theme.colors.error,
+    
   },
   disable: {
     color: theme.colors.disabled,

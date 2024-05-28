@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,12 +15,35 @@ import {
   ILoginPayload,
   LoginTypes,
 } from '@homzhub/common/src/domain/repositories/interfaces';
+import { CommonRepository } from '@homzhub/common/src/domain/repositories/CommonRepository';
+import { DynamicLinkTypes, RouteTypes } from '@homzhub/mobile/src/services/constants';
+import { LinkingService } from '@homzhub/mobile/src/services/LinkingService';
 
 const EmailLoginScreen = (): React.ReactElement => {
   const { goBack } = useNavigation();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const loaders = useSelector(UserSelector.getUserLoaders);
+  const [deepLinkUrl, setUrl] = useState('');
+
+  useEffect(() => {
+    CommonRepository.getDeepLink({
+      action: 'MAIN',
+      payload: {
+        type: DynamicLinkTypes.UserProfile,
+        routeType: RouteTypes.Private,
+      },
+    }).then((res) => {
+      setUrl(res.deepLink);
+    });
+  }, []);
+  
+  const handleForgotPassword = (): void => {
+    if (deepLinkUrl) {
+      LinkingService.canOpenURL(deepLinkUrl).then();
+    }
+    console.log("hgfgg")
+  };
 
   const handleLoginSuccess = (values: ILoginFormData): void => {
     const emailLoginData: IEmailLoginPayload = {
@@ -56,7 +79,7 @@ const EmailLoginScreen = (): React.ReactElement => {
       keyboardShouldPersistTaps
       isLoading={loaders.user}
     >
-      <LoginForm isEmailLogin onLoginSuccess={handleLoginSuccess} />
+      <LoginForm isEmailLogin onLoginSuccess={handleLoginSuccess} handleForgotPassword={handleForgotPassword}/>
     </Screen>
   );
 };

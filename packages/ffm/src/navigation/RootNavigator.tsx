@@ -30,8 +30,9 @@ export const RootNavigator = ({ booting }: IProps): React.ReactElement => {
   }, [isLoggedIn]);
 
   useEffect(() => {
+    console.log("bvascgfasbvnbasvg####")
     if (!booting) {
-      RNBootSplash.hide();
+      RNBootSplash.hide({fade:true});
     }
   }, [booting]);
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Formik, FormikHelpers, FormikProps } from 'formik';
@@ -10,7 +10,7 @@ import { FFMSelector } from '@homzhub/common/src/modules/ffm/selectors';
 import Logo from '@homzhub/common/src/assets/images/logo.svg';
 import { Button } from '@homzhub/common/src/components/atoms/Button';
 import { FormButton } from '@homzhub/common/src/components/molecules/FormButton';
-import { FormTextInput } from '@homzhub/common/src/components/molecules/FormTextInput';
+import { FormTextInput, IWebProps } from '@homzhub/common/src/components/molecules/FormTextInput';
 import { ISignUpPayload } from '@homzhub/common/src/domain/repositories/interfaces';
 import { TermsCondition } from '@homzhub/common/src/components/molecules/TermsAndCondition';
 import { PrivacyPolicy } from '@homzhub/common/src/components/molecules/PrivacyPolicy';
@@ -20,6 +20,7 @@ interface IProps {
   onPressPrivacyLink: () => void;
   onSubmit: (payload: ISignUpPayload) => void;
   onBack: () => void;
+  webGroupPrefix?: (params: IWebProps) => React.ReactElement;
 }
 
 interface IFormData {
@@ -33,7 +34,7 @@ interface IFormData {
 }
 
 const SignupForm = (props: IProps): React.ReactElement => {
-  const { onSubmit, onBack, onPressLink, onPressPrivacyLink } = props;
+  const { onSubmit, onBack, onPressLink, onPressPrivacyLink, webGroupPrefix } = props;
   const lastName: React.RefObject<any> = useRef();
   const email: React.RefObject<any> = useRef();
   const phone: React.RefObject<any> = useRef();
@@ -87,6 +88,7 @@ const SignupForm = (props: IProps): React.ReactElement => {
     onSubmit(signUpData);
     formActions.setSubmitting(false);
   };
+
   return (
     <>
       <Logo style={styles.logo} />
@@ -139,6 +141,7 @@ const SignupForm = (props: IProps): React.ReactElement => {
                 isMandatory
                 inputType="phone"
                 inputPrefixText={formProps.values.phoneCode}
+                webGroupPrefix={webGroupPrefix}
                 placeholder={t('auth:yourNumber')}
                 helpText={t('auth:otpVerification')}
                 phoneFieldDropdownText={t('auth:countryRegion')}

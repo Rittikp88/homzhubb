@@ -22,13 +22,13 @@ class Interceptor implements IApiInterceptor {
     const onFulfilled = (config: AxiosRequestConfig): AxiosRequestConfig => {
       const token = StoreProviderService.getUserToken();
       config.headers.Timezone = TimeUtils.getTimeZone();
+      
 
       if (!token) {
         return config;
       }
       config.headers.Authorization = `Bearer ${token}`;
       console.log('🚀 ~ file: Interceptor.ts ~ line 23 ~ Interceptor ~ onFulfilled ~ config', config);
-      // console.log("🚀 ~ file: Interceptor.ts ~ line 30 ~ Interceptor ~ onFulfilled ~ token", token)
       return config;
     };
 

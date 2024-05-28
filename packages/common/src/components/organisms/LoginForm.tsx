@@ -115,17 +115,17 @@ class LoginForm extends PureComponent<Props, IFormData> {
 
     const onPasswordFocus = (): void => this.password.current?.focus();
 
-    const forgotPasswordButtonWeb = (): React.ReactElement => (
+    const ForgotPasswordButtonWeb = React.memo(() => (
       <Button
         type="secondary"
         title={t('auth:forgotPassword')}
         fontType="semiBold"
         textSize="small"
         onPress={handleForgotPassword}
-        containerStyle={PlatformUtils.isWeb() && styles.forgotButtonStyleWeb}
+        containerStyle={PlatformUtils.isWeb() ? styles.forgotButtonStyleWeb : null}
         titleStyle={styles.forgotButtonTextStyle}
       />
-    );
+    ));
 
     return (
       <>
@@ -148,7 +148,7 @@ class LoginForm extends PureComponent<Props, IFormData> {
               placeholder={t('auth:newPassword')}
               isMandatory
               formProps={formProps}
-              secondaryLabel={forgotPasswordButtonWeb}
+              secondaryLabel={<ForgotPasswordButtonWeb />}
             />
           </>
         ) : (
