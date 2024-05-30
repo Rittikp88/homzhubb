@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Video, { OnProgressData, OnLoadData } from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
-import Orientation from 'react-native-orientation-locker';
+// import Orientation from 'react-native-orientation-locker';
 import { theme } from '@homzhub/common/src/styles/theme';
 import Icon, { icons } from '@homzhub/common/src/assets/icon';
 
@@ -117,7 +117,7 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
   public onFullScreen = (): void => {
     const { onToggleFullScreenVideoPlayer, isFullScreenCarousel } = this.props;
     if (isFullScreenCarousel) {
-      Orientation.lockToLandscapeLeft();
+      // Orientation.lockToLandscapeLeft();
       return;
     }
     if (onToggleFullScreenVideoPlayer) {
@@ -133,7 +133,7 @@ class RNVideo extends React.Component<IProps, IRNVideoState> {
       if (onToggleFullScreenVideoPlayer) {
         onToggleFullScreenVideoPlayer();
       }
-      Orientation.lockToPortrait();
+      // Orientation.lockToPortrait();
     }
   };
 }

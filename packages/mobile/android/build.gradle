@@ -4,16 +4,16 @@ def REACT_NATIVE_VERSION = new File(['node', '--print',"JSON.parse(require('fs')
 
 buildscript {
     ext {
-        buildToolsVersion = "28.0.3"
+        buildToolsVersion = "33.0.0"
         minSdkVersion = 21
-        compileSdkVersion = 31
-        targetSdkVersion = 30
+        compileSdkVersion = 33
+        targetSdkVersion = 33
         googlePlayServicesAuthVersion = "18.0.0"
         supportLibVersion = "28.0.0"
         playServicesVersion = "17.0.0"
         androidMapsUtilsVersion = "1.3.1"
         ndkVersion = "22.1.7171670"
-        kotlinVersion = "1.4.10"
+        kotlinVersion = "1.7.10"
 
     }
     repositories {
@@ -27,7 +27,7 @@ buildscript {
         classpath('com.google.gms:google-services:4.3.3')
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10"
     }
 }
 
